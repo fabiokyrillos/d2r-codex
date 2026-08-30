@@ -133,8 +133,24 @@ that `hellLevel85` agrees with `levels.hell`.
 
 ### A new class
 
-Add a `CharacterClass` to `content/classes/classes.ts`. Skills live in
-`content/classes/<class>/skills.ts`; register them in `lib/registry`.
+1. Add a `CharacterClass` to `content/classes/classes.ts`.
+2. Create `content/classes/<class>/skills.ts` exporting `<class>Skills` and
+   `<class>Trees`.
+3. Add both to the arrays in `content/classes/index.ts`.
+
+`lib/registry` and every page that consumes skills stay untouched. Skill slugs
+must be globally unique, not just unique within a class — the registry throws on
+a duplicate at module load.
+
+### A new leveling journey
+
+Create `content/progression/<class>-journey.ts` exporting a `ProgressionJourney`
+and add it to `content/progression/index.ts`.
+
+Write stages, not levels. Ninety-nine pages would be unreadable, and the
+decisions that actually matter cluster tightly around skill unlocks (1/6/12/18/
+24/30), quest rewards and difficulty transitions — put every stage boundary on
+one of those. The validator warns if stages leave a gap in level coverage.
 
 ---
 
