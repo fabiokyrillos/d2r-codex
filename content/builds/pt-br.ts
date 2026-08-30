@@ -1259,4 +1259,310 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  zealot: {
+    summary:
+      "Cinco golpes por investida, com uma aura de velocidade de ataque lançada por você mesmo e bloqueio máximo permanente. O Paladin que nunca precisa de respec.",
+    playstyle:
+      "Entre num grupo e segure o botão de ataque. O Zeal te prende numa sequência de até cinco golpes — o primeiro no alvo, os outros no que estiver ao lado — e a Fanaticism deixa essa sequência rápida. Não há problema de posicionamento nem de mira. As duas coisas que vão te matar são o travamento da animação, que impede reagir no meio da sequência, e ser congelado, que estica esse travamento. As duas têm a mesma solução, e é um anel.",
+    strengths: [
+      "Evolui como ela mesma a partir do 12 e nunca precisa de respec — o único Paladin do qual isso é verdade",
+      "Fanaticism é uma aura sua, então o seu dano não depende de achar um item de aura",
+      "Bloqueio máximo com Holy Shield e resistências altas; genuinamente difícil de matar",
+      "Excelente contra alvo único e contra Ubers, com uma fração da especialização de um Smiter",
+      "Amigável para iniciantes. A rotação é um botão",
+    ],
+    weaknesses: [
+      "Só dano físico, o que faz dos imunes a físico no Hell uma parede absoluta",
+      "Ruim contra densidade. O Zeal atinge alguns alvos adjacentes, não uma tela inteira",
+      "Muito dependente de arma — esta build vale só o que ela estiver segurando",
+      "O travamento de animação do Zeal impede reagir, desviar ou beber no meio da sequência",
+      "Repetitiva, e as fontes honestas dizem isso",
+    ],
+    flexPoints: [
+      "**Defiance** é o melhor destino restante. É uma sinergia de 15% de armadura por nível do Holy Shield, então soma com um atributo em que você já investe.",
+      "**Mais Resist Lightning** se você pretende enfrentar o Uber Mephisto, cuja aura de Conviction mira exatamente nas suas resistências.",
+      "**Holy Freeze** com um ponto é uma aura alternativa legítima quando você prefere desacelerar um grupo a matá-lo mais rápido. Custa a cadeia de pré-requisitos passando por Holy Fire, então decida antes de gastar.",
+      "**Increased Attack Speed não é publicado como tabela de breakpoint aqui.** Os limiares de frame do Zeal dependem do modificador de velocidade da arma e dos dados de animação do jogo, e nenhuma fonte que tratamos como confiável publica isso. Na prática, Fanaticism mais um Grief resolvem; preferimos dizer isso a imprimir um número não verificado.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento. Normalmente é a arma que define o número, não a armadura.",
+      dexterity:
+        "O suficiente para bloqueio máximo **com o Holy Shield ativo**, mais o requisito da sua arma. Só a Phase Blade já pede 136, o que para a maioria dos Zealots cobre o requisito de bloqueio sozinho.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. O Zeal é barato, e Redemption mais um mercenário com Insight cobrem o resto.",
+      notes: [
+        "**Confira o bloqueio com o Holy Shield ativo.** Conferir com o buff desligado é como Paladins investem cinquenta pontos a mais em Dexterity e nunca os recuperam sem respec.",
+        "Escolha a arma antes de gastar qualquer coisa. Phase Blade, Berserker Axe e scepter têm requisitos muito diferentes, e o plano de Dexterity decorre dessa escolha.",
+        "Resistência vem de equipamento e charms, não de atributos. Não tente resolver o Hell com pontos de atributo.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48":
+        "O alvo prático para uma build que fica parada enquanto o ataque acontece. Ser interrompido no meio do Zeal é como o travamento de animação vira uma morte.",
+      "fbr-32":
+        "Barato, e vale mais que a porcentagem bruta de bloqueio — os frames de recuperação decidem se você consegue agir entre golpes bloqueados.",
+      "fhr-86":
+        "Alcançável com um cinto Verdungo's e um anel raro, normalmente ao custo de resistência de que você precisa mais.",
+    },
+    skillNotes: {
+      zeal:
+        "**Quatro pontos alcançam o teto de cinco golpes.** Tudo depois disso é +6% de dano por ponto, o que ainda vale maximizar — mas saber onde está o teto te diz quando é seguro gastar em outro lugar primeiro.",
+      fanaticism:
+        "Velocidade de ataque e dano, em você e no seu mercenário. Disponível no nível 30 e é o maior salto que a build dá.",
+      sacrifice:
+        "A única sinergia do Zeal, a 12% de dano por nível. Não conjure — o dano em si mesmo é real. É um investimento passivo.",
+      "holy-shield":
+        "Bloqueio e defesa. Maximize por último entre as quatro; o primeiro ponto já faz a maior parte do trabalho para o requisito de bloqueio.",
+      smite: "No caminho até o Holy Shield, e um atordoamento grátis quando você precisar.",
+      concentration:
+        "No caminho até a Fanaticism, e a aura para a qual trocar quando você preferir não morrer.",
+      vigor: "Velocidade de corrida. Um ponto, útil para sempre.",
+      redemption:
+        "Cadáveres em vida e mana. Útil mesmo com life steal, porque funciona entre lutas, quando o roubo não funciona.",
+      "resist-lightning": "Aumenta a resistência máxima a raio.",
+      salvation: "Uma aura de resistência de um ponto para trocar em Uber Tristram.",
+      charge: "Transporte antes do Enigma.",
+    },
+    immunityPlan:
+      "O Zeal é dano físico puro, então imunidade a físico é a única parede real da build — e no Hell ela é comum. Existem três respostas honestas e você deve escolher uma em vez de torcer. **Um sunder charm Bone Break** quebra imunidade a físico diretamente, ao custo de um slot de charm e de alguma redução de dano. **O seu mercenário** com uma arma elemental mata o que você não consegue tocar. **Uma fonte secundária de dano** — a carga de Berserk do Passion, o dano de frio do Duress, ou o +1 em Vengeance de um Kingslayer — te dá algo para golpear que não é físico. Passar direto também é legítimo; você não é obrigado a matar tudo. O outro perigo não é imunidade: **o Iron Maiden dos Oblivion Knights no Chaos Sanctuary reflete o seu dano físico**, e um ataque de cinco golpes contra uma maldição de dano refletido mata Zealots na hora.",
+    mercenaryNotes:
+      "Pegue **Might** no Ato 2 do Nightmare — ele não emana nada enquanto você roda Fanaticism, então a escolha de aura dele é na verdade sobre o dano dele próprio. **Holy Freeze** é a alternativa e a escolha mais comum: desacelerar um grupo vale mais para uma build com travamento de animação do que o dano pessoal dele. Dê um Insight para a sua mana e um Reaper's Toll depois, se quiser Decrepify em tudo.",
+    farmingWhy: {
+      "travincal-hell":
+        "O Council são alvos únicos bem agrupados com muita vida, que é exatamente para o que Zeal e Crushing Blow servem.",
+      "pit-hell":
+        "Nível de área 85, denso, e majoritariamente vulnerável a físico. O melhor farm geral de Zealot.",
+      "ancient-tunnels-hell": "Nível de área 85 com poucos imunes a físico e um trajeto curto.",
+      "pindleskin-hell": "Um alvo único de nível alto a dez segundos de um portal.",
+      "uber-tristram-hell":
+        "Um Zealot com Life Tap e resistências capadas mata Ubers mais devagar que um Smiter, mas de forma perfeitamente confiável — e, diferente de um Smiter, ainda farma o resto do jogo.",
+      "mausoleum-hell":
+        "Nível de área 85, denso e perto de um waypoint. A densidade combina com investidas de cinco golpes.",
+      "chaos-sanctuary-hell":
+        "Possível, mas não ideal — os Oblivion Knights lançam Iron Maiden, que reflete o seu dano físico direto de volta.",
+    },
+    levelingPath: {
+      summary:
+        "Esta é a build de evolução. O Zeal está disponível no nível 12 e quatro pontos dão todos os cinco golpes, então ela é eficaz de imediato. Rode Might até a Fanaticism abrir no 30, e então simplesmente continue gastando — não há respec e não há transição. Se você pretende terminar como Smiter ou Hammerdin, este ainda é o caminho para chegar lá.",
+    },
+    selfFoundNotes:
+      "Um dos melhores Paladins para self-found. Evolui como ela mesma sem respec, as armas iniciais vêm de vendedor, Herald of Zakarum e Gore Rider caem no Hell, e Raven Frost é comum. Grief é o único requisito genuinamente difícil, e a build limpa o Hell sem ele — Kingslayer ou uma arma rara bem rolada basta. A única coisa que quem joga self-found deve planejar é a resposta para imunidade a físico, porque isso não dá para improvisar.",
+    hardcoreNotes:
+      "Forte no Hardcore, com dois perigos específicos. O primeiro é o **Iron Maiden** — um Zealot que segura o botão de ataque contra uma maldição de dano refletido morre pelos próprios golpes antes de conseguir reagir, e essa é a morte mais comum de Zealot no Hardcore. Aprenda a animação de conjuração do Oblivion Knight ou evite o Chaos Sanctuary. O segundo é o **travamento de animação**: você não consegue beber, desviar nem teleportar no meio do Zeal, então uma fonte de Cannot Be Frozen não é opcional e Chains of Honor é uma armadura melhor que Fortitude. Fora isso, bloqueio máximo, resistências altas e life steal fazem dela uma das builds mais seguras do jogo.",
+    gearSets: {
+      starter: {
+        goal: "Zeal no 12, atravessar o Normal, entrar no Nightmare.",
+        nextUpgrade: "Nível 30 pela Fanaticism. Até lá, rode Might — é a mesma ideia com um número menor.",
+        notes:
+          "O Zeal está disponível no 12 e é utilizável de imediato, e é por isso que esta é a build padrão de evolução do Paladin. Quatro pontos te dão os cinco golpes; coloque o resto onde quiser até o 30.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer arma rápida de uma mão com bom roll de dano",
+            why: "O Zeal multiplica o que você estiver segurando por até cinco golpes, então velocidade base importa mais que dano base nesta fase. Compre scepters de vendedor e confira toda vez que estiver na cidade.",
+            lookFor: ["+2 Combat Skills", "+3 Zeal", "+3 Sacrifice", "Alta velocidade de ataque"],
+          },
+          "offhand-0": {
+            why: "Resistências quase no máximo por três runas da Countess, numa classe de escudo que soma resistência própria.",
+            sockets: "Ral, Ort, Tal num escudo de Paladin de 3 sockets.",
+          },
+          "body-0": {
+            why: "25% de Faster Hit Recovery e 25% de velocidade de corrida, com duas das runas mais comuns do jogo.",
+          },
+          "helm-0": { why: "+1 em Todas as Skills por duas runas." },
+        },
+      },
+      nightmare: {
+        goal: "Fanaticism ativa, uma arma de verdade, resistências caminhando para 75%.",
+        nextUpgrade: "Um Grief, e um plano para imunes a físico.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque e uma carga de Berserk para os imunes a físico em que você não consegue encostar de outro jeito. Barata, e resolve um problema real cedo.",
+          },
+          "weapon-0-alt0": {
+            why: "Mais dano e 33% de Crushing Blow se você achar as quatro runas médias. Melhor contra bosses, pior contra grupos.",
+          },
+          "offhand-0": {
+            why: "+2 skills de Paladin, +2 Combat Skills, +50 em todas as resistências e 30% de chance de bloqueio. O melhor custo-benefício de escudo de Paladin do jogo.",
+          },
+          "body-0": {
+            why: "O proc de Fade sobe resistências e corta dano físico, e custa três runas baratas.",
+          },
+          "helm-0": {
+            why: "Life steal e redução de dano. Diferente de um Smiter, um Zealot se beneficia de verdade do roubo.",
+          },
+          "ring1-0": {
+            why: "**Cannot Be Frozen.** Ser congelado estica o travamento de animação do Zeal, que é a forma mais comum de esta build morrer.",
+          },
+          "boots-0": {
+            why: "Crushing Blow, Deadly Strike e Open Wounds juntos, mais 30% de velocidade de corrida. Diferente de um Smiter, um Zealot usa os três.",
+          },
+        },
+        charms: [
+          {
+            label: "Small charms de resistência e vida",
+            why: "A resistência mais barata do jogo, e resistência é o que impede o Hell de ser impossível.",
+          },
+        ],
+      },
+      "early-hell": {
+        goal: "Sobreviver ao Hell e ter uma resposta para imunidade a físico.",
+        nextUpgrade: "Grief. É o maior upgrade isolado de dano que esta build vai fazer.",
+        notes:
+          "Este é o nível em que imunidade a físico deixa de ser teoria. Decida a sua resposta aqui — sunder charm, mercenário ou passar direto — em vez de descobrir o problema no Ato 2.",
+        picks: {
+          "weapon-0": {
+            why: "Crushing Blow e Open Wounds te carregam contra qualquer coisa com muita vida, e o +1 em Vengeance é uma saída genuína contra imunidade a físico.",
+          },
+          "offhand-0": { why: "Resistências e skills, inalterado." },
+          "body-0": {
+            why: "15% de Crushing Blow, dano de frio e redução de dano pesada, por três runas médias. O dano de frio também belisca imunes a físico.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque e resistências num slot sem concorrência forte de unique para esta build.",
+            lookFor: ["20% de Increased Attack Speed", "Resistências", "+2 Combat Skills (craftada)"],
+          },
+          "belt-0": {
+            why: "Redução de dano e life steal, que é exatamente do que um personagem de corpo a corpo no Hell está precisando.",
+          },
+          "amulet-0": {
+            why: "+1 em todas as skills, 20% de velocidade de ataque e Deadly Strike que cresce com o seu nível. O amuleto padrão de corpo a corpo, e diferente de um Smiter você usa todas as linhas dele.",
+          },
+        },
+        charms: [
+          {
+            label: "Bone Break (Sunder Charm físico)",
+            why: "A resposta direta para imunidade a físico. Custa um slot de charm e alguma redução de dano, e transforma uma parede absoluta numa luta lenta.",
+          },
+          { label: "Small charms de resistência e vida", why: "Segure 75% nas quatro." },
+        ],
+      },
+      budget: {
+        goal: "Limpar o Hell com conforto e começar os mini-Ubers.",
+        nextUpgrade: "Fortitude, se você pegou Chains of Honor, ou Enigma se estiver cansado de andar.",
+        picks: {
+          "weapon-0": {
+            why: "O dano fixo dele é aplicado depois dos multiplicadores de Enhanced Damage, o que o torna muito melhor num ataque rápido de cinco golpes do que o dano listado sugere. É o item que define a build.",
+            sockets: "Eth, Tir, Lo, Mal, Ral numa Phase Blade de 5 sockets.",
+          },
+          "offhand-0": {
+            why: "Ainda excelente. O Exile é o upgrade, e é majoritariamente defensivo.",
+          },
+          "offhand-0-alt0": {
+            why: "Life Tap ao golpear e uma aura de Defiance. Pegue para Ubers; Herald of Zakarum é melhor para limpeza geral.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage, que numa build física é a maior linha de dano disponível fora da arma.",
+          },
+          "body-0-alt0": {
+            why: "Troque o dano por +65 em todas as resistências e 8% de redução de dano. A escolha certa no Hardcore.",
+          },
+          "helm-0": { why: "Life steal e redução de dano, barato." },
+          "boots-0": { why: "Crushing Blow, Deadly Strike, Open Wounds." },
+          "belt-0": { why: "Redução de dano e life steal." },
+          "amulet-0": { why: "Skills, velocidade de ataque, Deadly Strike." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": {
+            why: "Magic find enquanto você farma, ou um anel raro com life steal e resistências se estiver morrendo.",
+          },
+        },
+        charms: [
+          { label: "Bone Break (Sunder Charm físico)", why: "Imunes a físico." },
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin e resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, atributos e resistências." },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders antes de qualquer coisa perigosa. Cerca de um terço mais de vida por uma tecla.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Limpezas rápidas no Hell e runs de Uber confiáveis.",
+        nextUpgrade: "Enigma, pelo Teleport. Muda a velocidade de limpeza mais que qualquer upgrade de dano restante.",
+        picks: {
+          "weapon-0": { why: "Inalterado. Nada substitui." },
+          "offhand-0": {
+            why: "Life Tap, uma aura de Defiance e +2 em Offensive Auras — o que sobe a própria Fanaticism.",
+            sockets: "Vex, Ohm, Ist, Dol num escudo de Paladin de 4 sockets. Base etérea; ele se repara sozinho.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage e +200 de defesa. A armadura de dano de uma build física.",
+          },
+          "helm-0": {
+            why: "+1 skills, resistências, redução de dano e até dois sockets para mais velocidade de ataque.",
+            lookFor: ["2 sockets", "30% em todas as resistências", "15% de redução de dano"],
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque, vida e resistências num slot só, e craftáveis em vez de achadas.",
+            lookFor: ["20% de Increased Attack Speed", "Vida", "Resistências"],
+          },
+          "boots-0": { why: "A bota de corpo a corpo. Nada compete." },
+          "belt-0": { why: "Redução de dano e life steal." },
+          "amulet-0": { why: "O Deadly Strike cresce com o seu nível." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": {
+            label: "Anel raro com life steal, resistências e Faster Hit Recovery",
+            why: "O único slot em que um raro bem rolado supera qualquer unique para esta build.",
+            lookFor: ["6%+ de Life Stolen per Hit", "Resistências", "10% de Faster Hit Recovery"],
+          },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Bone Break (Sunder Charm físico)", why: "Troque quando a zona estiver cheia de imunes a físico." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders." },
+          { why: "Mão secundária para a troca; o +2 skills dele sobe o Battle Orders." },
+        ],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "A escolha entre Enigma e Fortitude é genuinamente aberta. Fortitude é mais dano; Enigma é mais conteúdo limpo por hora. A maioria acaba com os dois e troca conforme a atividade.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de 400 de dano numa Phase Blade etérea.",
+            lookFor: ["400 de dano", "40% de Increased Attack Speed"],
+          },
+          "offhand-0": {
+            why: "Escudo de Paladin etéreo com roll alto de resistências.",
+            lookFor: ["Defiance nível 16", "base etérea com 45 em todas as resistências"],
+          },
+          "body-0": {
+            why: "Teleport. A esta altura mobilidade vale mais que o dano que o Fortitude daria.",
+          },
+          "body-0-alt0": {
+            why: "Mantenha o Fortitude se você tiver Teleport de outra fonte, ou se dano bruto importar mais que movimento para o seu jeito de jogar.",
+          },
+          "helm-0": {
+            why: "Dois sockets, resistências máximas, redução de dano máxima.",
+            lookFor: ["2 sockets", "30 em todas as resistências", "15% de redução de dano"],
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood, 20% de Increased Attack Speed",
+            why: "Velocidade de ataque, vida, life steal e resistências.",
+            lookFor: ["20% de Increased Attack Speed", "+3 Combat Skills", "Life steal"],
+          },
+          "boots-0": { why: "Crushing Blow e Deadly Strike." },
+          "belt-0": { why: "15% de redução de dano e 8% de life steal em rolls máximos." },
+          "amulet-0": { why: "No nível 90 o roll de Deadly Strike vale cerca de 34%." },
+          "ring1-0": { why: "Cannot Be Frozen, 20 de Dexterity." },
+          "ring2-0": {
+            label: "Anel raro: life steal, resistências, Faster Hit Recovery, Attack Rating",
+            why: "O último slot a aperfeiçoar, e o único em que um raro é o teto.",
+            lookFor: ["6-7% de Life Stolen per Hit", "Duas ou mais resistências", "10% de Faster Hit Recovery"],
+          },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
+          { label: "Small charms de vida e resistência", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
