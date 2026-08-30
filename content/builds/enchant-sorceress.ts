@@ -177,7 +177,7 @@ export const enchantSorceress: Build = {
             {
               ref: { kind: "unique", slug: "demon-machine" },
               why: "**The build.** 66% Piercing Attack on the fastest crossbow in the game, so each bolt carries Enchant's fire damage through a line of enemies.",
-              lookFor: ["Any roll — the piercing and the base speed are fixed"],
+              lookFor: ["Any roll will do"],
             },
           ],
         },

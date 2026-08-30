@@ -437,6 +437,53 @@ for (const locale of TRANSLATED) {
 }
 
 // ---------------------------------------------------------------------------
+// Gear pick affix length
+// ---------------------------------------------------------------------------
+
+/*
+ * `lookFor` entries render as `Badge`, which is `whitespace-nowrap` by design —
+ * a badge is a short affix chip, not a sentence. An over-long entry used to
+ * stretch its grid track and widen the whole page at mobile widths, which
+ * happened twice before this check existed.
+ *
+ * The longest legitimate affix found in content is 37 characters
+ * ("-20% de resistência a raio do inimigo"), so the limit sits just above it.
+ * Prose belongs in `why`.
+ */
+const MAX_AFFIX_LENGTH = 40;
+
+console.log("\nGear pick affixes:");
+for (const locale of LOCALES) {
+  let affixes = 0;
+  let tooLong = 0;
+  for (const build of getBuilds(locale)) {
+    for (const set of build.gearSets) {
+      const picks = [
+        ...set.slots.flatMap((entry) =>
+          entry.picks.flatMap((pick) => [pick, ...(pick.alternatives ?? [])]),
+        ),
+        ...(set.charms ?? []),
+        ...(set.weaponSwap ?? []),
+      ];
+      for (const pick of picks) {
+        for (const affix of pick.lookFor ?? []) {
+          affixes++;
+          if (affix.length <= MAX_AFFIX_LENGTH) continue;
+          tooLong++;
+          problems.push(
+            `${locale} > ${build.slug} > ${set.tier}: lookFor entry is ` +
+              `${affix.length} characters (limit ${MAX_AFFIX_LENGTH}). It renders as a ` +
+              `nowrap badge and will overflow on mobile — move the prose to \`why\`. ` +
+              `"${affix.slice(0, 50)}…"`,
+          );
+        }
+      }
+    }
+  }
+  console.log(`  ${locale}  ${affixes - tooLong}/${affixes} affixes within the badge length limit`);
+}
+
+// ---------------------------------------------------------------------------
 // Skill prerequisite chains
 // ---------------------------------------------------------------------------
 

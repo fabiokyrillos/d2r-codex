@@ -175,7 +175,11 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded border px-2 py-0.5 text-xs font-medium whitespace-nowrap",
+        // whitespace-nowrap is the design intent: a badge is a short chip, not
+        // prose. max-w-full plus truncate means an over-long one degrades to an
+        // ellipsis inside its own row rather than widening the page — which is
+        // what happened twice before check:content started enforcing the length.
+        "inline-flex max-w-full items-center gap-1.5 truncate rounded border px-2 py-0.5 text-xs font-medium whitespace-nowrap",
         tones[tone],
         className,
       )}

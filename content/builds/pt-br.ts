@@ -3873,7 +3873,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         picks: {
           "weapon-0": {
             why: "**A build.** 66% de Piercing Attack na crossbow mais rápida do jogo, então cada bolt carrega o dano de fogo do Enchant por uma fileira de inimigos.",
-            lookFor: ["Qualquer roll — a perfuração e a velocidade base são fixas"],
+            lookFor: ["Qualquer roll serve"],
           },
           "body-0": {
             why: "+1 skills e até +35 em todas as resistências com 43 de Strength. Sem escudo, resistência precisa vir de algum lugar.",
@@ -4529,6 +4529,264 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
           { label: "Annihilus", why: "+1 em todas as skills." },
           { label: "Small charms de vida e resistência", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
+  "frost-nova-sorceress": {
+    summary:
+      "Um anel de frio que se expande de você, congelando tudo que toca. A resposta de frio à Nova Sorceress, por uma fração do preço.",
+    playstyle:
+      "Teleporte para dentro do grupo e segure o botão. O anel se expande de onde você está, então não há nada para mirar, e tudo que ele toca fica desacelerado ou congelado — o que significa que o grupo dentro do qual você está para de se mover. Esse congelamento é a defesa real da build e o motivo de ela sobreviver a um estilo que deveria ser suicídio para uma Sorceress. A Cold Mastery trabalha em silêncio atrás disso, arrancando resistência para o dano seguir importando no Hell.",
+    strengths: [
+      "**O congelamento é a defesa.** Tudo no anel para, e é por isso que ficar no meio funciona",
+      "Nenhuma mira — a magia é centrada em você",
+      "A Cold Mastery reduz a resistência do inimigo em vez de aumentar o seu dano, então a build envelhece bem sem equipamento caro",
+      "Muito barata. Ela alcança o próprio teto sem uma única runa alta, diferente da Nova de raio",
+      "Toda sinergia também é pré-requisito no caminho da Cold Mastery, então nenhum ponto é desperdiçado",
+    ],
+    weaknesses: [
+      "**Nenhuma folga no plano de skills** — a build pronta são 108 dos seus 110 pontos",
+      "Imunes a frio são parada total, e não há segundo tipo de dano",
+      "Você luta do centro do grupo, que é onde as coisas te matam",
+      "Dano de alvo único ruim; bosses são problema do Static Field",
+      "A Cold Mastery é nível 30, então o dano da build fica estagnado até lá apesar de o Frost Nova abrir no 6",
+    ],
+    flexPoints: [
+      "**Não existem pontos flexíveis, e essa é a resposta honesta.** O plano pronto são 108 de 110. Se você está abaixo do nível 99 — e está — a decisão é qual sinergia deixar incompleta, não onde gastar pontos que sobram. O Glacial Spike costuma ser a resposta, porque o congelamento de emergência de um ponto é a maior parte do valor dele.",
+      "**Mais Frozen Orb** é a exceção que vale considerar. Ele já é pré-requisito, e um segundo ou terceiro ponto te dá uma opção à distância de verdade para os grupos dentro dos quais você preferiria não ficar. Custa dano de sinergia.",
+      "**Variante de magic find:** mesmo plano de skills, equipamento trocado por magic find. A build limpa rápido o bastante para bancar.",
+      "**Não coloque pontos em Energy.** Warmth e um mercenário com Insight cobrem o custo de conjurar continuamente.",
+    ],
+    statPlan: {
+      strength: "Só o que o equipamento exigir.",
+      dexterity: "Nenhuma. O congelamento é a defesa, não o bloqueio.",
+      vitality: "Todo o resto, e leve a sério — você luta do centro do grupo.",
+      energy: "Nenhum.",
+      notes: [
+        "Vida importa mais aqui que nas builds de frio à distância, pelo mesmo motivo que importa na Nova Sorceress: você fica dentro do que está matando.",
+        "Uma troca com Call to Arms vale mais que qualquer Vitality que você comprasse com a mesma moeda.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-105":
+        "A tabela padrão da Sorceress. Em 105% os anéis se sobrepõem e viram algo contínuo, que é quando o congelamento fica confiável em vez de intermitente.",
+      "fcr-63": "O mínimo para o congelamento acompanhar um grupo se fechando em cima de você.",
+      "fhr-60":
+        "**Obrigatório, não recomendado** — igual à Nova Sorceress, e pelo mesmo motivo. Você luta cercada.",
+    },
+    skillNotes: {
+      "frost-nova":
+        "Nível 6, e disponível quase de imediato — mas estagnada até a Cold Mastery chegar no 30. Expande da sua posição, então a única decisão é onde ficar.",
+      "cold-mastery":
+        "**Reduz a resistência a frio do inimigo em 20% no nível 1 e 5% por nível.** Não quebra imunidade verdadeira, mas é por isso que o dano ainda importa bem dentro do Hell.",
+      "ice-bolt":
+        "Sinergia do Frost Nova e o primeiro elo da cadeia até a Cold Mastery. Fazendo dois trabalhos ao mesmo tempo, como tudo nesta lista.",
+      "ice-blast": "A segunda sinergia, e o segundo elo.",
+      "glacial-spike":
+        "A terceira sinergia, o terceiro elo, e um congelamento de emergência de verdade por si só.",
+      blizzard: "No caminho até o Frozen Orb. Um ponto.",
+      "frozen-orb":
+        "Pré-requisito da Cold Mastery, e uma opção à distância aceitável para as coisas dentro das quais você preferiria não entrar.",
+      warmth: "Regeneração de mana desde o nível 1.",
+      teleport: "**Um ponto para sempre**, e é como você chega ao meio.",
+      "static-field": "Tira 25% da vida atual do alvo — a sua única resposta real contra um boss.",
+      "frozen-armor":
+        "Defesa e congelamento em quem te ataca, somando com o congelamento que você já está aplicando.",
+    },
+    immunityPlan:
+      "Um tipo de dano e nenhuma alternativa, que é o custo da simplicidade da build. **A Cold Mastery reduz a resistência a frio do inimigo em 20% no nível 1 mais 5% por nível**, o que mantém o dano relevante contra qualquer coisa resistente mas não imune — e isso cobre a maior parte do Hell. Contra um imune a frio de verdade ela quase não faz nada, porque redução de resistência é aplicada com um quinto da eficácia depois que um monstro já é imune. As respostas reais são um sunder charm **Cold Rupture** ao custo de 70 a 90 pontos da sua própria resistência a frio, um **Infinity** no mercenário, ou **escolher zonas** — e para uma build cujas melhores áreas são o cow level, o Mausoleum e o Worldstone Keep, escolher zonas costuma bastar. Os Ancient Tunnels estão avaliados em 1 acima exatamente por isso.",
+    mercenaryNotes:
+      "Mercenário do Ato 2 com **Might** pelo dano, um **Insight** pela mana, e **Treachery** mais um **Vampire Gaze** para mantê-lo de pé — ele está no meio do grupo com você. **Holy Freeze** é a aura alternativa e ela combina conceitualmente com o que você já faz: tudo desacelerado fica mais tempo dentro do seu anel. Depois, um **Infinity** nele é a única resposta real contra imunes a frio fora um Sunder Charm.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "Densidade enorme, nada imune a frio, e cada vaca anda para dentro de um anel centrado em você. A melhor coisa que esta build faz.",
+      "worldstone-keep-hell":
+        "Nível de área 85 e muito densa. O congelamento é o que torna ficar no meio dela sobrevivível.",
+      "mausoleum-hell":
+        "Nível de área 85 densa, perto de um waypoint, e leve em imunidade a frio.",
+      "pit-hell":
+        "Nível de área 85 e curta, ainda que as salas sejam mais abertas do que uma build de nova gostaria.",
+      "chaos-sanctuary-hell":
+        "Densa e de nível alto. O Static Field lida com os bosses dos Seals que o seu anel não consegue explodir.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 e muito imune a frio — a única grande zona que esta build não consegue usar sem um Cold Rupture.",
+    },
+    levelingPath: {
+      summary:
+        "Estranho, e vale entender antes de se comprometer. O Frost Nova está disponível no **nível 6** mas fica fraco até a Cold Mastery no 30, e a Cold Mastery está atrás da cadeia de pré-requisitos mais longa da classe — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Frozen Orb. A salvação é que três desses elos são as próprias sinergias do Frost Nova, então nada é desperdiçado. Evolua com Ice Blast e Glacial Spike, que você vai maximizar de qualquer forma, e troque para o Frost Nova como botão principal no 30. **Nenhum respec é necessário.**",
+    },
+    selfFoundNotes:
+      "Boa, e melhor do que o tier sugere para quem joga self-found. Ela não precisa de nada caro — dois Spirits, um Vipermagi e um Shako já é um personagem funcional no Hell — e a Cold Mastery significa que ela não precisa de um Infinity para seguir relevante. A fraqueza em self-found é a mesma que a geral: imunes a frio, sem segundo tipo de dano e sem forma barata de contornar.",
+    hardcoreNotes:
+      "Mais segura que a Nova de raio com que ela se parece, e a diferença é o congelamento. Tudo no seu anel para de se mover, o que converte o estilo mais perigoso do jogo num estilo administrável — e, diferente da Nova Sorceress, você mantém o escudo, porque nada aqui exige arma de duas mãos. Pegue Chains of Honor em vez de Enigma, trate os 60% de Faster Hit Recovery como o piso duro que estão listados, e mantenha o Glacial Spike numa tecla para os momentos em que o anel não basta.",
+    gearSets: {
+      starter: {
+        goal: "Frost Nova desde o nível 6, e a caminhada longa até a Cold Mastery no 30.",
+        nextUpgrade: "Nível 30 pela Cold Mastery. A build fica genuinamente estagnada até lá.",
+        notes:
+          "O Frost Nova está disponível no 6 mas é fraco, e a cadeia até a Cold Mastery é longa. A maioria evolui com Ice Blast e Glacial Spike — que são sinergias que você ia maximizar de qualquer jeito — e só troca para o Frost Nova como botão principal por volta do 30.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e até 35% de velocidade no nível 25.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "Velocidade de conjuração e recuperação no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+        },
+      },
+      nightmare: {
+        goal: "Cold Mastery ativa e o congelamento fazendo trabalho de verdade.",
+        nextUpgrade:
+          "Vida, resistências e velocidade de conjuração — nessa ordem, porque você luta cercada.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": {
+            why: "Um segundo Spirit — 70% de velocidade entre os dois, que é quase todo o caminho até um anel contínuo.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "body-0": { why: "+1 skills, velocidade e resistências com 43 de Strength." },
+          "helm-0": { why: "+1 skills e magic find." },
+          "gloves-0": {
+            why: "+1 em Cold Skills e um aumento grande de mana, os dois usados diretamente por esta build.",
+          },
+          "belt-0": { why: "Resistências e dano convertido em mana." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "O caminho mais barato até 75%." }],
+      },
+      "early-hell": {
+        goal: "105% de velocidade, 60% de recuperação, e resistências capadas.",
+        nextUpgrade: "Nightwing's Veil, e facets de frio para encaixar nele.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": { why: "O segundo." },
+          "body-0": { why: "Resistências e velocidade de conjuração." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências — vale mais que o normal numa build que luta do centro.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida, magic find e 10% de redução de dano. A vida é o que você está comprando.",
+          },
+          "amulet-0": { why: "+2 em todas as skills e resistências." },
+          "ring1-0": {
+            label: "Anel raro com 10% de Faster Cast Rate, resistências e vida",
+            why: "Velocidade mais as duas coisas de que esta build está carente.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": {
+            why: "Faster Hit Recovery e Vitality, que aqui importam mais que magic find.",
+          },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "Segure 75%, e prefira vida a dano." },
+        ],
+      },
+      budget: {
+        goal: "Farm rápido de Terror Zones e de áreas densas.",
+        nextUpgrade:
+          "Nightwing's Veil e facets de frio, ou um Cold Rupture se você quiser os Ancient Tunnels.",
+        picks: {
+          "weapon-0": {
+            why: "+3 skills de Sorceress, 30% de velocidade, +20 em todas as resistências e 50% de magic find — as resistências importam numa build sem distância.",
+          },
+          "weapon-0-alt0": {
+            why: "Até +30% de dano de skills de frio. A opção de dano, quando as suas resistências se sustentarem sem o Oculus.",
+          },
+          "offhand-0": { why: "Velocidade de conjuração e skills." },
+          "body-0": { why: "+2 skills, +65 em todas as resistências, 8% de redução de dano." },
+          "helm-0": { why: "+2 skills, vida, magic find." },
+          "gloves-0": { why: "+1 em Cold Skills." },
+          "belt-0": { why: "+1 em todas as skills e 20% de velocidade." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro com 10% de Faster Cast Rate e vida",
+            why: "Passa dos 105% e carrega vida.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Grand charms de skills de frio com vida",
+            why: "Dano e a vida de que uma build de centro de grupo precisa.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders. Não é opcional neste estilo." }],
+      },
+      optimized: {
+        goal: "Dano de frio empilhado, e um congelamento que segura uma sala inteira.",
+        nextUpgrade: "Facets de frio em todo socket.",
+        picks: {
+          "weapon-0": {
+            why: "Até +30% de dano de skills de frio além dos +3 skills de Sorceress.",
+            lookFor: ["+30% de dano de skills de frio", "sockets para facets de frio"],
+          },
+          "offhand-0": { why: "Velocidade de conjuração e skills." },
+          "helm-0": {
+            why: "+2 skills e até +15% de dano de skills de frio. Os 192 de Strength são cortados pela metade pelo próprio Requirements -50% dele.",
+            lookFor: ["+15% de dano de skills de frio", "2 sockets"],
+          },
+          "helm-0-alt0": {
+            why: "Mantenha o Shako pela vida e pela redução de dano se você está morrendo em vez de matando devagar.",
+          },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "body-0-alt0": { why: "Teleport com custo de mana fixo e magic find por nível." },
+          "gloves-0": { why: "+1 em Cold Skills." },
+          "belt-0": { why: "+1 skills, 20% de velocidade." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, resistências, vida",
+            why: "O slot em que um raro ganha.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find, ou Sandstorm Trek se a recuperação ainda estiver curta." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de frio com vida", why: "Dano e vida." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "Esta build termina barata e fica lá, que é a comparação honesta com a Nova Sorceress com que ela se parece. O Frost Nova alcança o próprio teto pelo preço de dois Spirits e um Death's Fathom; a Nova de raio precisa de um Infinity para alcançar o dela. Uma delas é um personagem muito melhor. A outra é um primeiro personagem muito melhor.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de +30% de dano de skills de frio com facets de frio encaixados.",
+            lookFor: ["+30% de dano de skills de frio", "sockets"],
+          },
+          "offhand-0": {
+            why: "35% de velocidade num Monarch.",
+            lookFor: ["35% de Faster Cast Rate"],
+          },
+          "helm-0": {
+            why: "+15% de dano de skills de frio com dois facets de frio.",
+            lookFor: ["+15% de dano de skills de frio", "2 sockets"],
+          },
+          "body-0": { why: "Teleport e magic find por nível." },
+          "gloves-0": { why: "+1 em Cold Skills." },
+          "belt-0": { why: "+1 skills, 20% de velocidade." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida",
+            why: "O último slot.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de frio com vida", why: "O resto do inventário." },
         ],
         weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
       },
