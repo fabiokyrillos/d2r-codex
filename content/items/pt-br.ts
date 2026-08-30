@@ -178,4 +178,43 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "Só 8 espaços de poção, que é o custo real. A conversão de dano em mana é genuinamente útil num caster sem investimento em Energy — transforma dano recebido em conjurações.",
   },
+  "heavens-light": {
+    summary:
+      "Um scepter de Paladin com 33% de Crushing Blow e até três sockets. O caminho barato para dano em boss sem um Grief.",
+    dropSummary:
+      "Nível de área 69+. Incomum, e pouco negociado porque a maioria dos Paladins prefere um Grief.",
+    notes:
+      "O motivo para usar é o Crushing Blow, que é o que realmente mata um boss — uma porcentagem da vida atual, ignorando quase tudo que o boss tem. Junto com Gore Rider chega a 48% de chance, que é o número em torno do qual as híbridas de Fist of the Heavens são montadas.",
+  },
+  "draculs-grasp": {
+    summary:
+      "Life Tap ao golpear, sem gastar um ponto de skill. O item que sozinho faz um Smiter sobreviver ao Uber Mephisto.",
+    dropSummary:
+      "Nível de área 84+, o que na prática significa farmar zonas de nível 85 no Hell. Sempre procurado.",
+    notes:
+      "Life Tap é o ponto. Ele converte o seu dano em cura enquanto dura, que é o que carrega um personagem de corpo a corpo por uma luta que ele não conseguiria curar de outro jeito. Os 5% de chance parecem pouco até você lembrar que Smite e Zeal batem várias vezes por segundo.",
+  },
+  "gore-rider": {
+    summary:
+      "15% de Crushing Blow, 15% de Deadly Strike e 10% de Open Wounds num par de botas. A bota padrão de corpo a corpo.",
+    dropSummary:
+      "Nível de área 55+. Comum o bastante para aparecer durante a evolução, e barata de trocar.",
+    notes:
+      "O requisito de Strength mostrado já considera o -25% de requisitos do próprio item; a base War Boots por si pede 125. Deadly Strike não faz nada para um Smiter — Smite o ignora — mas só o Crushing Blow já justifica o slot.",
+  },
+  "raven-frost": {
+    summary:
+      "Cannot Be Frozen num slot de anel, mais Dexterity e Attack Rating. Na prática, obrigatório para corpo a corpo.",
+    dropSummary:
+      "Nível de área 53+. Comum, e a solução mais barata para um problema que todo personagem de corpo a corpo tem.",
+    notes:
+      "Ser congelado é o assassino silencioso do corpo a corpo, e é pior ainda para o Zeal, cuja sequência de ataques te prende no lugar enquanto ela acontece. Cannot Be Frozen elimina isso por completo. O roll de Dexterity ainda conta para o bloqueio máximo, então o anel paga duas vezes.",
+  },
+  "highlords-wrath": {
+    summary:
+      "+1 em todas as skills, 20% de Increased Attack Speed e Deadly Strike que escala com o nível. O amuleto de corpo a corpo.",
+    dropSummary: "Nível de área 73+. Incomum, mas bastante negociado.",
+    notes:
+      "No nível 90 o roll de Deadly Strike vale cerca de 34%, e é por isso que o amuleto melhora quanto mais você joga com ele. Vale saber que Deadly Strike não faz absolutamente nada para um Smiter — para essa build o amuleto é só o +1 em skills e a velocidade de ataque.",
+  },
 };

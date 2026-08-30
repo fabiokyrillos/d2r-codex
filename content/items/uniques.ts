@@ -258,6 +258,43 @@ export const uniques: UniqueItem[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "heavens-light",
+    name: "Heaven's Light",
+    summary:
+      "A Paladin scepter with 33% Crushing Blow and up to three sockets. The cheap route to boss damage without a Grief.",
+    quality: "unique",
+    base: "Mighty Scepter",
+    category: "scepter",
+    tier: "elite",
+    slots: ["weapon"],
+    requiredLevel: 61,
+    requiredStrength: 125,
+    requiredDexterity: 65,
+    maxSockets: 3,
+    stats: [
+      { text: "+2-3 to Paladin Skill Levels", variable: true, notable: true },
+      { text: "33% Chance of Crushing Blow", notable: true },
+      { text: "+250-300% Enhanced Damage", variable: true },
+      { text: "+20% Increased Attack Speed" },
+      { text: "-33% Target Defense" },
+      { text: "+15-20 Life after each Demon Kill", variable: true },
+      { text: "+3 to Light Radius" },
+      { text: "Socketed (1-3)", variable: true },
+    ],
+    drop: {
+      summary:
+        "Area level 69+. Uncommon, and rarely traded because most Paladins want a Grief instead.",
+      minMonsterLevel: 69,
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "The reason to use it is the Crushing Blow, which is what actually kills a boss — a percentage of current life, ignoring almost everything the boss has. Paired with Gore Rider it reaches 48% chance, which is the number Fist of the Heavens hybrids build around.",
+    alternatives: [{ kind: "runeword", slug: "grief" }],
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Body armor
   // -------------------------------------------------------------------------
@@ -489,6 +526,75 @@ export const uniques: UniqueItem[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "draculs-grasp",
+    name: "Dracul's Grasp",
+    summary:
+      "Life Tap on striking, with no skill point spent. The single item that makes a Smiter survive Uber Mephisto.",
+    quality: "unique",
+    base: "Vampirebone Gloves",
+    category: "gloves",
+    tier: "elite",
+    slots: ["gloves"],
+    requiredLevel: 76,
+    requiredStrength: 50,
+    stats: [
+      {
+        text: "5% Chance to cast level 10 Life Tap on striking",
+        notable: true,
+      },
+      { text: "7-10% Life Stolen per Hit", variable: true, notable: true },
+      { text: "25% Chance of Open Wounds" },
+      { text: "+90-120% Enhanced Defense", variable: true },
+      { text: "+5-10 Life after each Kill", variable: true },
+      { text: "+10-15 to Strength", variable: true },
+    ],
+    drop: {
+      summary:
+        "Area level 84+, which in practice means Hell area level 85 farming. Always in demand.",
+      minMonsterLevel: 84,
+      tradeability: "rare",
+      confidence: "verified",
+    },
+    notes:
+      "Life Tap is the point. It converts your damage into healing for the duration, which is what carries a melee character through a fight it could not otherwise out-heal. The 5% chance sounds low until you remember Smite and Zeal hit several times a second.",
+    alternatives: [{ kind: "runeword", slug: "exile" }],
+    confidence: "verified",
+  },
+  {
+    slug: "gore-rider",
+    name: "Gore Rider",
+    summary:
+      "15% Crushing Blow, 15% Deadly Strike and 10% Open Wounds on one pair of boots. The default melee boot.",
+    quality: "unique",
+    base: "War Boots",
+    category: "boots",
+    tier: "elite",
+    slots: ["boots"],
+    requiredLevel: 47,
+    requiredStrength: 94,
+    stats: [
+      { text: "15% Chance of Crushing Blow", notable: true },
+      { text: "15% Deadly Strike", notable: true },
+      { text: "+30% Faster Run/Walk", notable: true },
+      { text: "10% Chance of Open Wounds" },
+      { text: "+160-200% Enhanced Defense", variable: true },
+      { text: "Requirements -25%" },
+      { text: "+20 Maximum Stamina" },
+      { text: "+10 Maximum Durability" },
+    ],
+    drop: {
+      summary:
+        "Area level 55+. Common enough to find while levelling and cheap to trade for.",
+      minMonsterLevel: 55,
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "The strength requirement shown is after the item's own -25% requirement reduction; the War Boots base itself asks for 125. Deadly Strike does nothing for a Smiter — Smite ignores it — but the Crushing Blow alone still justifies the slot.",
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Jewellery
   // -------------------------------------------------------------------------
@@ -570,6 +676,70 @@ export const uniques: UniqueItem[] = [
     },
     notes:
       "Simple and hard to beat. A crafted or rare amulet can exceed it if it rolls +2 class skills together with Faster Cast Rate — Mara's has no FCR at all, which is its one real weakness in an FCR-tight setup.",
+    confidence: "verified",
+  },
+
+  {
+    slug: "raven-frost",
+    name: "Raven Frost",
+    summary:
+      "Cannot Be Frozen in a ring slot, plus Dexterity and Attack Rating. Effectively mandatory for melee.",
+    quality: "unique",
+    base: "Ring",
+    category: "ring",
+    tier: "elite",
+    slots: ["ring1", "ring2"],
+    requiredLevel: 45,
+    stats: [
+      { text: "Cannot Be Frozen", notable: true },
+      { text: "+15-20 to Dexterity", variable: true, notable: true },
+      { text: "+150-250 to Attack Rating", variable: true },
+      { text: "Adds 15-45 Cold Damage" },
+      { text: "Cold Absorb 20%" },
+      { text: "+40 to Mana" },
+    ],
+    drop: {
+      summary:
+        "Area level 53+. Common, and the cheapest solution to a problem every melee character has.",
+      minMonsterLevel: 53,
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "Chilled attack speed is the quiet killer of melee characters, and it is worst for Zeal, whose attack sequence locks you in place while it plays out. Cannot Be Frozen removes that entirely. The Dexterity roll also counts toward maximum block, so it pays twice.",
+    confidence: "verified",
+  },
+  {
+    slug: "highlords-wrath",
+    name: "Highlord's Wrath",
+    summary:
+      "+1 all skills, 20% Increased Attack Speed and Deadly Strike that scales with level. The melee amulet.",
+    quality: "unique",
+    base: "Amulet",
+    category: "amulet",
+    tier: "elite",
+    slots: ["amulet"],
+    requiredLevel: 65,
+    stats: [
+      { text: "+1 to All Skills", notable: true },
+      { text: "+20% Increased Attack Speed", notable: true },
+      {
+        text: "+0.375% Deadly Strike per Character Level",
+        notable: true,
+      },
+      { text: "Lightning Resist +35%" },
+      { text: "Adds 1-30 Lightning Damage" },
+      { text: "Attacker Takes Lightning Damage of 15" },
+    ],
+    drop: {
+      summary: "Area level 73+. Uncommon but widely traded.",
+      minMonsterLevel: 73,
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "At level 90 the Deadly Strike roll is worth about 34%, which is why the amulet gets better the longer you play it. Worth knowing that Deadly Strike does nothing at all for a Smiter — for that build the amulet is only its +1 skills and attack speed.",
+    alternatives: [{ kind: "unique", slug: "maras-kaleidoscope" }],
     confidence: "verified",
   },
 
