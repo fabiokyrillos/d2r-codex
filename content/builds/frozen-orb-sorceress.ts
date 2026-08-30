@@ -94,7 +94,13 @@ export const frozenOrbSorceress: Build = {
     { skill: "charged-bolt", points: 1, role: "prerequisite" },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a freeze on attackers." },
     { skill: "frost-nova", points: 1, role: "utility", note: "A point-blank panic button that chills everything around you." },
-    { skill: "glacial-spike", points: 1, role: "utility", note: "Freezes a pack solid for a moment. One point is a genuine defensive tool on a character with no block." },
+    { skill: "glacial-spike", points: 1, role: "prerequisite", note: "On the way to Blizzard, and a genuine defensive tool in its own right — one point freezes a pack solid for a moment." },
+    {
+      skill: "blizzard",
+      points: 1,
+      role: "prerequisite",
+      note: "**Frozen Orb's prerequisite**, so this point is mandatory. It is also a whole other build — see the Blizzard Sorceress page if the ground-placement playstyle appeals more than the travelling orb.",
+    },
   ],
   flexPoints: [
     "**Remaining points go to Glacial Spike**, which is both a third synergy and the best emergency button the cold tree has.",

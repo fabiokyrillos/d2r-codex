@@ -102,6 +102,12 @@ export const novaSorceress: Build = {
     { skill: "frozen-armor", points: 1, role: "utility", note: "Free defence and a chance to freeze whatever reaches you." },
     { skill: "frost-nova", points: 1, role: "utility", note: "Chills everything around you. On a build that lives at the centre of packs, this is a real button." },
     { skill: "ice-bolt", points: 1, role: "prerequisite" },
+    {
+      skill: "thunder-storm",
+      points: 1,
+      role: "prerequisite",
+      note: "**Lightning Mastery's prerequisite.** You are spending this point whether you want the passive or not — and the passive is genuinely useful on a build that stands still.",
+    },
     { skill: "lightning", points: 1, role: "utility", note: "One point for the rare single target Static Field cannot finish. Do not invest further — it is on a different cast table." },
   ],
   flexPoints: [

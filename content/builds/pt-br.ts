@@ -2668,7 +2668,6 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     flexPoints: [
       "**Tudo além das quatro skills maximizadas vai para Charged Bolt ou Nova**, que são as duas sinergias. Charged Bolt primeiro.",
       "**O Energy Shield é uma bifurcação real.** Ele converte dano recebido em mana a uma taxa base de dois de mana por ponto de dano, melhorada pela Telekinesis. Numa build sem vida, pode ser a diferença entre sobreviver a um grupo lightning enchanted e não sobreviver — mas também significa que um mana burn ou uma reserva esvaziada te mata na hora. Pegue de propósito ou não pegue.",
-      "**Thunder Storm** com um ponto é um passivo grátis que acerta um inimigo próximo aleatório num cronômetro. Não faz nada pela sua velocidade de limpeza e ocasionalmente te salva de algo fora da tela.",
       "**Não coloque pontos em Energy.** A mana vem do Warmth, de um mercenário com Insight e do seu equipamento.",
     ],
     statPlan: {
@@ -2707,7 +2706,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       teleport: "**Um ponto é tudo de que você precisa, para sempre.** Mais pontos só reduzem o custo de mana.",
       warmth: "Regeneração de mana desde o nível 1. Um ponto se paga imediatamente.",
       "frozen-armor": "Defesa e chance de congelar quem te ataca. Um buff defensivo de graça.",
-      nova: "No caminho até o Lightning, e um botão de pânico aceitável à queima-roupa.",
+      nova: "Um botão de pânico aceitável à queima-roupa.",
+      "thunder-storm":
+        "**Pré-requisito da Lightning Mastery**, então este ponto não é opcional. Também é um passivo grátis que acerta um inimigo próximo aleatório num cronômetro, o que ocasionalmente te salva de algo fora da tela.",
       "energy-shield":
         "Opcional e genuinamente controverso — leia os pontos flexíveis antes de gastar aqui.",
     },
@@ -3249,7 +3250,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "frozen-armor": "Defesa e congelamento em quem te ataca.",
       "frost-nova": "Um botão de pânico à queima-roupa que congela tudo ao seu redor.",
       "glacial-spike":
-        "Congela um grupo inteiro por um instante. Um ponto é uma ferramenta defensiva de verdade num personagem sem bloqueio.",
+        "No caminho até o Blizzard, e uma ferramenta defensiva de verdade por si só — um ponto congela um grupo inteiro por um instante.",
+      blizzard:
+        "**Pré-requisito do Frozen Orb**, então este ponto é obrigatório. Também é uma build inteira — veja a página da Blizzard Sorceress se o estilo de colocar no chão te agradar mais que o orb que viaja.",
     },
     immunityPlan:
       "Builds de frio encontram menos paredes que as de fogo ou raio, e vale entender por quê. **A Cold Mastery reduz a resistência a frio do inimigo em 20% no nível 1 e mais 5% por nível**, enquanto as masteries de fogo e raio aumentam o seu próprio dano. Contra qualquer coisa que não seja de fato imune, isso significa que o seu dano continua acertando bem dentro do Hell sem um único item comprado para isso. **Mas ela não quebra imunidade verdadeira**: redução de resistência é aplicada com um quinto da eficácia contra um monstro já imune, então uma Cold Mastery maximizada vale cerca de −20% contra algo em 110%, o que está longe de bastar. As respostas contra imunes a frio de verdade são um sunder charm **Cold Rupture** ao custo de 70 a 90 pontos da sua própria resistência a frio, **o dano físico do seu mercenário**, ou **pular** — que numa build de farm costuma ser o certo. Os Ancient Tunnels são o único lugar em que essa escolha realmente custa caro, e a lista de farming acima está avaliada de acordo.",
@@ -3525,6 +3528,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "Congela tudo ao seu redor. Numa build que vive no centro dos grupos, este é um botão de verdade.",
       lightning:
         "Um ponto para o raro alvo único que o Static Field não termina. Não invista mais — ele está numa tabela de conjuração diferente.",
+      "thunder-storm":
+        "**Pré-requisito da Lightning Mastery.** Você vai gastar este ponto querendo o passivo ou não — e o passivo é genuinamente útil numa build que fica parada.",
     },
     immunityPlan:
       "Uma resposta, e a build é construída em torno de possuí-la. **A Lightning Mastery não quebra imunidade** — é um multiplicador de dano de 50% mais 12% por nível, igual à da Lightning Sorceress. O que quebra é a **Conviction do Infinity**, e a escolha que define esta build é empunhar esse Infinity você mesma em vez de colocá-lo no mercenário: a aura é idêntica dos dois jeitos, e empunhar libera ele para carregar o Insight que paga a sua conta de mana. O **Griffon's Eye** soma outros -15-20% de resistência a raio do inimigo por cima, e **facets de raio** somam mais ainda. Antes de o Infinity existir, as respostas honestas são a variante **híbrida com Hydra** por um segundo tipo de dano, ou escolher zonas — o Secret Cow Level não tem nada imune a raio dentro dele. Um sunder charm **Crack of the Heavens** funciona, mas custa 70 a 90 pontos da sua própria resistência a raio, o que numa build parada no meio de grupos lightning enchanted é uma troca pior que o normal.",

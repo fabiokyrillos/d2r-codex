@@ -97,13 +97,18 @@ export const lightningSorceress: Build = {
     { skill: "teleport", points: 1, role: "utility", note: "**One point is all you ever need.** More points only reduce the mana cost." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1. One point pays for itself immediately." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a chance to freeze attackers. A free defensive buff." },
-    { skill: "nova", points: 1, role: "prerequisite", note: "On the way to Lightning, and a serviceable panic button at point-blank range." },
+    { skill: "nova", points: 1, role: "prerequisite", note: "A serviceable panic button at point-blank range." },
+    {
+      skill: "thunder-storm",
+      points: 1,
+      role: "prerequisite",
+      note: "**Lightning Mastery's prerequisite**, so this point is not optional. It is also a free passive that strikes a random nearby enemy on a timer, which occasionally saves you from something offscreen.",
+    },
     { skill: "energy-shield", points: 1, role: "flex", note: "Optional and genuinely divisive — see the flex points before spending here." },
   ],
   flexPoints: [
     "**Everything past the four maxed skills goes to Charged Bolt or Nova**, both of which are synergies. Charged Bolt first.",
     "**Energy Shield is a real fork.** It converts incoming damage to mana at a base rate of two mana per point of damage, improved by Telekinesis. On a build with no life it can be the difference between surviving a lightning enchanted pack and not — but it also means a mana burn or a drained pool kills you outright. Take it deliberately or not at all.",
-    "**Thunder Storm** at one point is a free passive that strikes a random nearby enemy on a timer. It does nothing for your clear speed and occasionally saves you from something offscreen.",
     "**Do not put points in Energy.** The mana comes from Warmth, an Insight mercenary and your gear.",
   ],
   stats: {

@@ -437,6 +437,49 @@ for (const locale of TRANSLATED) {
 }
 
 // ---------------------------------------------------------------------------
+// Skill prerequisite chains
+// ---------------------------------------------------------------------------
+
+/*
+ * A build that allocates a skill must also allocate everything that skill
+ * requires. Nothing else catches this: the reference resolves (the skill
+ * exists), the page renders, and the plan is simply not something a character
+ * could actually spend points on.
+ *
+ * It found three real errors the first time it ran — Lightning Mastery needs
+ * Thunder Storm, and Frozen Orb needs Blizzard, in three shipped builds.
+ *
+ * Only checks the source locale: skill allocations are invariant data, so a
+ * translation cannot introduce or fix one.
+ */
+console.log("\nSkill prerequisites:");
+{
+  const bySlug = new Map(getSkills(SOURCE).map((skill) => [skill.slug, skill]));
+  let checked = 0;
+  let broken = 0;
+  for (const build of getBuilds(SOURCE)) {
+    const allocated = new Set(
+      build.skills.filter((a) => a.points > 0).map((a) => a.skill),
+    );
+    for (const allocation of build.skills) {
+      if (allocation.points <= 0) continue;
+      checked++;
+      for (const prerequisite of bySlug.get(allocation.skill)?.prerequisites ?? []) {
+        if (allocated.has(prerequisite)) continue;
+        broken++;
+        problems.push(
+          `${build.slug}: allocates ${allocation.skill} but not its prerequisite ` +
+            `${prerequisite}. The plan cannot be spent as written.`,
+        );
+      }
+    }
+  }
+  console.log(
+    `  ${checked - broken}/${checked} skill allocations have every prerequisite allocated`,
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Mechanics article structure parity
 // ---------------------------------------------------------------------------
 
