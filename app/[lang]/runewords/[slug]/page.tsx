@@ -20,7 +20,8 @@ import {
   StatLines,
 } from "@/components/game";
 import { getBuildsUsingItem, getRune, getRuneword, getRunewords } from "@/lib/registry";
-import { alternatesFor, fmt, isLocale } from "@/lib/i18n";
+import { fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { progressionTiers, releaseLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -38,12 +39,11 @@ export async function generateMetadata(
   if (!rw) return {};
 
   const runeNames = rw.runes.map((r) => getRune(lang, r)?.name ?? r).join(" + ");
-  return {
+  return pageMetadata(lang, {
+    path: `/runewords/${slug}`,
     title: `${rw.name} — ${runeNames}`,
     description: rw.summary,
-    alternates: alternatesFor(lang, `/runewords/${slug}`),
-    openGraph: { title: `${rw.name} — ${runeNames}`, description: rw.summary },
-  };
+  });
 }
 
 export default async function RunewordPage(

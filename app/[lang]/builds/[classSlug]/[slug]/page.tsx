@@ -24,7 +24,8 @@ import {
   getMercenary,
   getSkill,
 } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import {
   budgetLabels,
@@ -46,12 +47,11 @@ export async function generateMetadata(
   if (!isLocale(lang)) notFound();
   const build = getBuild(lang, slug);
   if (!build) return {};
-  return {
+  return pageMetadata(lang, {
+    path: `/builds/${classSlug}/${slug}`,
     title: build.name,
     description: build.summary,
-    alternates: alternatesFor(lang, `/builds/${classSlug}/${slug}`),
-    openGraph: { title: build.name, description: build.summary },
-  };
+  });
 }
 
 function roleLabels(t: ReturnType<typeof dictionaryFor>): Record<AllocationRole, string> {

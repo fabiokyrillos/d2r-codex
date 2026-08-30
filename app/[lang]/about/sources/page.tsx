@@ -12,7 +12,8 @@ import {
   Section,
 } from "@/components/ui";
 import { GAME_VERSION } from "@/lib/game-version";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { routes } from "@/lib/routes";
 
@@ -22,11 +23,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/about/sources",
     title: t.sources.title,
     description: t.sources.description,
-    alternates: alternatesFor(lang, "/about/sources"),
-  };
+  });
 }
 
 export default async function SourcesPage() {

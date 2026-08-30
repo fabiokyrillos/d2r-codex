@@ -26,7 +26,8 @@ import {
   getFarmingArea,
   getFarmingAreas,
 } from "@/lib/registry";
-import { alternatesFor, fmt, isLocale } from "@/lib/i18n";
+import { fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { progressionTiers } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -44,12 +45,11 @@ export async function generateMetadata(
   if (!isLocale(lang)) notFound();
   const area = getFarmingArea(lang, slug);
   if (!area) return {};
-  return {
+  return pageMetadata(lang, {
+    path: `/farming/${slug}`,
     title: area.name,
     description: area.summary,
-    alternates: alternatesFor(lang, `/farming/${slug}`),
-    openGraph: { title: area.name, description: area.summary },
-  };
+  });
 }
 
 function targetLabel(t: Dictionary, target: FarmTarget): string {

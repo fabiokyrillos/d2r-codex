@@ -18,7 +18,8 @@ import {
   getUnique,
   getUniques,
 } from "@/lib/registry";
-import { alternatesFor, fmt, isLocale } from "@/lib/i18n";
+import { fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { qualityColors, releaseLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -35,12 +36,11 @@ export async function generateMetadata(
   if (!isLocale(lang)) notFound();
   const item = getUnique(lang, slug);
   if (!item) return {};
-  return {
+  return pageMetadata(lang, {
+    path: `/items/${slug}`,
     title: item.name,
     description: item.summary,
-    alternates: alternatesFor(lang, `/items/${slug}`),
-    openGraph: { title: item.name, description: item.summary },
-  };
+  });
 }
 
 function tradeLabel(t: Dictionary, value: string): string {

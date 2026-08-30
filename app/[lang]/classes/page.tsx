@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Badge, Callout, Container, LinkCard, PageHeader, Section } from "@/components/ui";
 import { getBuilds, getClasses, getJourneys } from "@/lib/registry";
 import { GAME_VERSION } from "@/lib/game-version";
-import { fmt, dictionaryFor, isLocale, alternatesFor } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { releaseLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -16,11 +17,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/classes",
     title: t.nav.classes,
     description: t.classes.indexDescription,
-    alternates: alternatesFor(lang, "/classes"),
-  };
+  });
 }
 
 export default async function ClassesPage() {

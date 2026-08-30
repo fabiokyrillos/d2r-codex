@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 
 import { Badge, Callout, Container, LinkCard, PageHeader, Section } from "@/components/ui";
 import { getUniques } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { qualityColors } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -16,11 +17,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/items",
     title: t.nav.items,
     description: t.items.indexDescription,
-    alternates: alternatesFor(lang, "/items"),
-  };
+  });
 }
 
 export default async function ItemsPage() {

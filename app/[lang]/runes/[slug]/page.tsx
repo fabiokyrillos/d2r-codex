@@ -14,8 +14,9 @@ import {
 } from "@/components/ui";
 import { RuneSequence, SocketDisplay } from "@/components/game";
 import { getRune, getRunes, getRunewordsUsingRune } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
+import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 
 export function generateStaticParams() {
@@ -31,12 +32,11 @@ export async function generateMetadata(
   if (!rune) return {};
   const t = dictionaryFor(lang);
   const title = `${rune.name} ${t.searchKinds.rune}`;
-  return {
+  return pageMetadata(lang, {
+    path: `/runes/${slug}`,
     title,
     description: rune.summary,
-    alternates: alternatesFor(lang, `/runes/${slug}`),
-    openGraph: { title, description: rune.summary },
-  };
+  });
 }
 
 export default async function RunePage(props: PageProps<"/[lang]/runes/[slug]">) {

@@ -14,8 +14,9 @@ import {
 } from "@/components/ui";
 import { DifficultyBadge, GearPickView, ItemRefLink, RichText } from "@/components/game";
 import { getBuild, getClass, getJourney, getJourneys } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
+import { pageMetadata } from "@/lib/metadata";
 import { actionKindLabels, actionKindStyles } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 import type { ProgressionAction, ProgressionStage } from "@/lib/types";
@@ -35,12 +36,11 @@ export async function generateMetadata(
   if (!journey || !cls) return {};
   const t = dictionaryFor(lang);
   const title = fmt(t.leveling.pageTitle, { class: cls.name });
-  return {
+  return pageMetadata(lang, {
+    path: `/leveling/${classSlug}`,
     title,
     description: journey.summary,
-    alternates: alternatesFor(lang, `/leveling/${classSlug}`),
-    openGraph: { title, description: journey.summary },
-  };
+  });
 }
 
 export default async function LevelingPage(

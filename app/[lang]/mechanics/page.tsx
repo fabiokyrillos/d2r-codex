@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import { Badge, Callout, Container, LinkCard, PageHeader, Section } from "@/components/ui";
 import { ConfidenceNote } from "@/components/game";
 import { getMechanics } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { routes } from "@/lib/routes";
 import type { MechanicCategory } from "@/lib/types";
@@ -17,11 +18,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/mechanics",
     title: t.mechanics.indexTitle,
     description: t.mechanics.indexDescription,
-    alternates: alternatesFor(lang, "/mechanics"),
-  };
+  });
 }
 
 function categoryLabels(t: Dictionary): Record<MechanicCategory, string> {

@@ -25,11 +25,8 @@ import {
   getSkillsInTree,
   getSkillTree,
 } from "@/lib/registry";
-import {
-  alternatesFor,
-  fmt,
-  isLocale,
-} from "@/lib/i18n";
+import { fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { budgetLabels, playDifficultyLabels, releaseLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -50,12 +47,11 @@ export async function generateMetadata(
   if (!isLocale(lang)) notFound();
   const cls = getClass(lang, slug);
   if (!cls) return {};
-  return {
+  return pageMetadata(lang, {
+    path: `/classes/${slug}`,
     title: cls.name,
     description: cls.summary,
-    alternates: alternatesFor(lang, `/classes/${slug}`),
-    openGraph: { title: cls.name, description: cls.summary },
-  };
+  });
 }
 
 export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]">) {

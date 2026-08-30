@@ -12,7 +12,8 @@ import {
 } from "@/components/ui";
 import { RichText } from "@/components/game";
 import { getBreakpointTables } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 
 export async function generateMetadata(
@@ -21,11 +22,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/breakpoints",
     title: t.breakpoints.title,
     description: t.breakpoints.description,
-    alternates: alternatesFor(lang, "/breakpoints"),
-  };
+  });
 }
 
 export default async function BreakpointsPage() {

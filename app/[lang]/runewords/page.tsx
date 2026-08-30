@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Badge, Container, LinkCard, PageHeader, Section } from "@/components/ui";
 import { RuneSequence, SocketDisplay } from "@/components/game";
 import { getRune, getRunewords } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { progressionTiers, tierOrder } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -15,11 +16,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/runewords",
     title: t.nav.runewords,
     description: t.runewords.indexDescription,
-    alternates: alternatesFor(lang, "/runewords"),
-  };
+  });
 }
 
 export default async function RunewordsPage() {

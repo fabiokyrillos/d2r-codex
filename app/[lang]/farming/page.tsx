@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Badge, Callout, Container, LinkCard, PageHeader, Section } from "@/components/ui";
 import { AreaLevelBadge, ElementBadge } from "@/components/game";
 import { getFarmingAreas } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { routes } from "@/lib/routes";
 import type { FarmingArea } from "@/lib/types";
@@ -15,11 +16,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/farming",
     title: t.nav.farming,
     description: t.farming.indexDescription,
-    alternates: alternatesFor(lang, "/farming"),
-  };
+  });
 }
 
 export default async function FarmingPage() {

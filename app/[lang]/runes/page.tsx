@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 
 import { Badge, Callout, Container, DataTable, PageHeader, Section } from "@/components/ui";
 import { getRunes, getRunewordsUsingRune } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, isLocale } from "@/lib/i18n";
+import { dictionaryFor, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { routes } from "@/lib/routes";
 
@@ -14,11 +15,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/runes",
     title: t.nav.runes,
     description: t.runes.indexDescription,
-    alternates: alternatesFor(lang, "/runes"),
-  };
+  });
 }
 
 /**

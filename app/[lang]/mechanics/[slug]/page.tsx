@@ -6,7 +6,8 @@ import { Card, Container, PageHeader, Section } from "@/components/ui";
 import { ConfidenceNote } from "@/components/game";
 import { ContentBlocks } from "@/components/game/content-blocks";
 import { getMechanic, getMechanics } from "@/lib/registry";
-import { alternatesFor, isLocale } from "@/lib/i18n";
+import { isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { routes } from "@/lib/routes";
 
@@ -21,12 +22,11 @@ export async function generateMetadata(
   if (!isLocale(lang)) notFound();
   const article = getMechanic(lang, slug);
   if (!article) return {};
-  return {
+  return pageMetadata(lang, {
+    path: `/mechanics/${slug}`,
     title: article.name,
     description: article.summary,
-    alternates: alternatesFor(lang, `/mechanics/${slug}`),
-    openGraph: { title: article.name, description: article.summary },
-  };
+  });
 }
 
 export default async function MechanicPage(

@@ -13,7 +13,8 @@ import {
 } from "@/components/ui";
 import { ElementBadge } from "@/components/game";
 import { getBuilds, getClass, getClasses } from "@/lib/registry";
-import { alternatesFor, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { budgetLabels, playDifficultyLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -24,11 +25,11 @@ export async function generateMetadata(
   const { lang } = await props.params;
   if (!isLocale(lang)) notFound();
   const t = dictionaryFor(lang);
-  return {
+  return pageMetadata(lang, {
+    path: "/builds",
     title: t.nav.builds,
     description: t.builds.indexDescription,
-    alternates: alternatesFor(lang, "/builds"),
-  };
+  });
 }
 
 export default async function BuildsPage() {
