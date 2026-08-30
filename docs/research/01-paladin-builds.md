@@ -3,7 +3,38 @@
 **Researched:** 2026-08-30
 **Baseline:** Diablo II: Resurrected, Patch 3.3 / Ladder Season 15 (see
 [`00-game-state.md`](00-game-state.md))
-**Status:** Research and planning only. No build content written from this pass.
+**Status:** Executed. All five planned pages shipped, plus their dependencies.
+
+| Planned | Outcome |
+| --- | --- |
+| Smiter, Zealot, FoHdin, Avenger | Shipped (lote 1) |
+| Tesladin, Holy Fire Paladin | Shipped (lote 2) |
+| Dragon Paladin | Shipped as the Holy Fire page's `optimized` tier and flex point, as planned |
+| Holy Freeze Zealot | Shipped as a named variant in the Zealot's flex points, as planned |
+| Omnidin | Documented in the Holy Fire flex points; still no separate page |
+| Vindicator Templar, Tri-Brid | Documented in the FoHdin flex points, as planned |
+| PvP, Redeemer's Wrath | Not implemented, as planned |
+| Avenger cost divergence (D1) | **Resolved** — see the note below |
+
+**D1 is closed.** Working the point budget out from `skills.txt` showed the two
+sources were describing different resources. Vengeance plus its three
+resistance synergies plus Conviction is 100 skill points, and the prerequisite
+chains cost roughly 13 more — 113 against the 110 a level 99 character has. The
+Avenger is cheap in currency and expensive in levels. Both sources were right
+about the half they were talking about.
+
+**G2 (no IAS breakpoint table) remains open** and is now a stated position
+rather than a gap: D2Runewizard publishes FCR, FHR and FBR only, the thresholds
+depend on weapon speed and animation data, and every melee Paladin page says so
+explicitly instead of printing an unverified number.
+
+**Two further Tier 1 corrections came out of implementation.** The
+`blizzhackers/d2data` runeword extraction caps at seven properties per
+runeword, so stat lists past that point must come from Tier 3 — verified by
+round-tripping Grief, Infinity and Enigma against content already on the site.
+That same check settled two disagreements in favour of the game data:
+Kingslayer's Open Wounds reads 25% (not 50%) and Last Wish's Crushing Blow
+reads 40-50% (not 60-70%).
 
 > This document decides *which* Paladin builds the site documents, at what
 > granularity, and in what order. It does not contain build guidance. Numbers
