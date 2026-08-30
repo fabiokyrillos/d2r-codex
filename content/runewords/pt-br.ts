@@ -484,4 +484,24 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "Comprar pela aura sem uma segunda fonte de Holy Fire. Uma aura não é uma build.",
     ],
   },
+  beast: {
+    summary:
+      "Uma aura de Fanaticism e +3 em Werebear numa arma — o que permite qualquer classe se transformar, não só o Druid.",
+    basesDisplay: "Qualquer Axe, Scepter ou Hammer de 5 sockets",
+    basesExclusions: [
+      "Só axes, scepters e hammers — não swords, que é a base para a qual a maioria olha primeiro.",
+    ],
+    recommendedBases: [
+      "Uma Berserker Axe pelo dano que o roll de Enhanced Damage multiplica, ou um Scourge se o requisito de Strength for o problema.",
+      "Para quem não é Druid e usa para transformar, a base importa menos que o normal — o que você está comprando é o ataque da própria forma de Werebear.",
+    ],
+    usedBy:
+      "Dois leitores muito diferentes. **Summoners e personagens de party** querem a aura de Fanaticism, que ela emana para tudo por perto sem ocupar o seu próprio slot de aura. **Personagens que não são Druid** querem o +3 em Werebear, porque `Oskill` significa que a skill é concedida a qualquer classe — é a única forma de uma Sorceress ou um Barbarian se transformar.",
+    commonMistakes: [
+      "Montar numa sword. O Beast não aceita swords.",
+      "Esperar que a Fanaticism empilhe com a de um Paladin. Ela não empilha — só uma aura fica ativa por vez, e um Paladin rodando Fanaticism não ganha nada com a do Beast.",
+    ],
+    notes:
+      "O `Oskill` no Werebear e no Shape Shifting é a parte incomum: um Oskill é concedido a todas as classes em vez de só à dona da árvore. Essa única palavra é o que torna a Werebear Sorceress e o Werebear Barbarian possíveis.",
+  },
 };

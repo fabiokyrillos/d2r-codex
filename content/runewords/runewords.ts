@@ -1214,6 +1214,51 @@ export const runewords: Runeword[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "beast",
+    name: "Beast",
+    summary:
+      "A Fanaticism aura and +3 to Werebear on a weapon — which lets any class transform, not just a Druid.",
+    runes: ["ber", "tir", "um", "mal", "lum"],
+    sockets: 5,
+    requiredLevel: 63,
+    tier: "bis",
+    bases: {
+      categories: ["axe", "scepter", "hammer"],
+      display: "Any 5-socket Axe, Scepter or Hammer",
+      exclusions: [
+        "Axes, scepters and hammers only — not swords, which is the base most people reach for first.",
+      ],
+    },
+    stats: [
+      { text: "Level 9 Fanaticism Aura When Equipped", notable: true },
+      { text: "+3 to Werebear (Oskill)", notable: true },
+      { text: "+3 to Shape Shifting (Oskill)", notable: true },
+      { text: "+40% Increased Attack Speed", notable: true },
+      { text: "+240-270% Enhanced Damage", variable: true },
+      { text: "20% Chance of Crushing Blow" },
+      { text: "25% Chance of Open Wounds" },
+      { text: "Prevent Monster Heal" },
+      { text: "+25-40 to Strength", variable: true },
+      { text: "+10 to Energy" },
+      { text: "+2 to Mana after each Kill" },
+      { text: "Level 13 Summon Grizzly (5 charges)" },
+    ],
+    recommendedBases: [
+      "A Berserker Axe for the damage the Enhanced Damage roll multiplies, or a Scourge if the Strength requirement is the problem.",
+      "For a non-Druid using it to transform, the base matters less than usual — the Werebear form's own attack is what you are buying.",
+    ],
+    usedBy:
+      "Two very different readers. **Summoners and party characters** want the Fanaticism aura, which it emanates to everything nearby without occupying your own aura slot. **Non-Druid characters** want the +3 Werebear, because `Oskill` means the skill is granted to any class — it is the only way a Sorceress or Barbarian can transform.",
+    commonMistakes: [
+      "Building it in a sword. Beast does not accept swords.",
+      "Expecting the Fanaticism to stack with a Paladin's own. It does not — one aura is active at a time, and a Paladin running Fanaticism gains nothing from Beast's.",
+    ],
+    notes:
+      "The `Oskill` on Werebear and Shape Shifting is the unusual part: an Oskill is granted to every class rather than only to the one that owns the tree. That single word is what makes the Werebear Sorceress and Werebear Barbarian possible at all.",
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Reign of the Warlock
   // -------------------------------------------------------------------------
