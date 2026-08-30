@@ -4,89 +4,37 @@ import type {
   Confidence,
   Difficulty,
   Element,
+  GearSlot,
   ItemQuality,
   PlayDifficulty,
   ProgressionTier,
   Release,
 } from "@/lib/types";
+import type { Dictionary } from "@/lib/i18n";
+import type { SearchKind } from "@/lib/search";
 
 /**
- * Display labels and presentation metadata for the string-literal unions.
+ * Display labels, derived from the active dictionary.
  *
- * Keeping these out of the components means a union can gain a member and the
- * compiler will point at every map that needs updating (the `Record<T, …>`
- * types below are exhaustive on purpose).
+ * Colours and icons stay module-level constants because they are presentation,
+ * not language. Everything a reader can read is a function of the dictionary —
+ * which means adding a locale cannot leave a stray English label behind, since
+ * there is nowhere left to hard-code one.
+ *
+ * The `Record<T, string>` return types are exhaustive on purpose: a new member
+ * on any of these unions produces a compile error at every label map that has
+ * not been updated, in both languages at once.
  */
 
-export const difficultyLabels: Record<Difficulty, string> = {
-  normal: "Normal",
-  nightmare: "Nightmare",
-  hell: "Hell",
-};
+// ---------------------------------------------------------------------------
+// Presentation — not localized
+// ---------------------------------------------------------------------------
 
 export const difficultyColors: Record<Difficulty, string> = {
   normal: "text-diff-normal",
   nightmare: "text-diff-nightmare",
   hell: "text-diff-hell",
 };
-
-/**
- * Progression tiers, with the framing each one needs.
- *
- * `question` is the reader's actual question at that point — it drives the
- * gear-progression UI, which is built around "what do I do next" rather than
- * "here is the finished character".
- */
-export const progressionTiers: Record<
-  ProgressionTier,
-  { label: string; short: string; question: string; context: string }
-> = {
-  starter: {
-    label: "Starter",
-    short: "Start",
-    question: "I just made this character. What do I wear?",
-    context: "Normal difficulty, levels 1-30. Everything here is free or nearly free.",
-  },
-  nightmare: {
-    label: "Nightmare",
-    short: "NM",
-    question: "I'm in Nightmare and things are getting harder.",
-    context: "Levels 30-60. Resistances start to matter more than damage.",
-  },
-  "early-hell": {
-    label: "Early Hell",
-    short: "Hell",
-    question: "I've reached Hell and I'm dying. What now?",
-    context: "Levels 60-75. The hardest transition in the game.",
-    },
-  budget: {
-    label: "Budget",
-    short: "Budget",
-    question: "I can farm Hell. What's my next real upgrade?",
-    context: "Levels 75-85. A complete, self-found setup that works everywhere.",
-  },
-  optimized: {
-    label: "Optimized",
-    short: "Optimized",
-    question: "I have good gear. How do I make it great?",
-    context: "Levels 85+. Strong items, mostly obtainable solo with patience.",
-  },
-  bis: {
-    label: "Best in Slot",
-    short: "BiS",
-    question: "What does the finished character look like?",
-    context: "The ceiling. Expect trading, perfect rolls, and high runes.",
-  },
-};
-
-export const tierOrder: ProgressionTier[] = [
-  "starter",
-  "nightmare",
-  "early-hell",
-  "budget",
-  "optimized",
-  "bis",
-];
 
 export const qualityColors: Record<ItemQuality | "rune", string> = {
   normal: "text-rarity-normal",
@@ -109,65 +57,188 @@ export const elementColors: Record<Element, string> = {
   poison: "text-el-poison",
 };
 
-export const elementLabels: Record<Element, string> = {
-  physical: "Physical",
-  magic: "Magic",
-  fire: "Fire",
-  cold: "Cold",
-  lightning: "Lightning",
-  poison: "Poison",
+export const actionKindStyles: Record<ActionKind, { icon: string; tone: string }> = {
+  skill: { icon: "◆", tone: "text-el-magic" },
+  stat: { icon: "▲", tone: "text-info" },
+  gear: { icon: "▣", tone: "text-rarity-unique" },
+  runeword: { icon: "⬢", tone: "text-rarity-rune" },
+  quest: { icon: "✦", tone: "text-warning" },
+  shop: { icon: "◈", tone: "text-success" },
+  gamble: { icon: "◇", tone: "text-success" },
+  mercenary: { icon: "⚔", tone: "text-el-physical" },
+  respec: { icon: "↻", tone: "text-ember" },
+  farm: { icon: "◉", tone: "text-el-cold" },
+  transition: { icon: "→", tone: "text-diff-hell" },
+  warning: { icon: "!", tone: "text-danger" },
+  tip: { icon: "i", tone: "text-ink-muted" },
 };
 
-export const budgetLabels: Record<BudgetLevel, string> = {
-  low: "Low budget",
-  medium: "Medium budget",
-  high: "High budget",
-  extreme: "Extreme budget",
-};
+/** Tier order is structural, not editorial, so it stays a plain constant. */
+export const tierOrder: ProgressionTier[] = [
+  "starter",
+  "nightmare",
+  "early-hell",
+  "budget",
+  "optimized",
+  "bis",
+];
 
-export const playDifficultyLabels: Record<PlayDifficulty, string> = {
-  beginner: "Beginner friendly",
-  moderate: "Moderate",
-  advanced: "Advanced",
-  expert: "Expert",
-};
+// ---------------------------------------------------------------------------
+// Localized
+// ---------------------------------------------------------------------------
 
-export const releaseLabels: Record<Release, string> = {
-  classic: "Diablo II",
-  lod: "Lord of Destruction",
-  d2r: "Resurrected",
-  "reign-of-the-warlock": "Reign of the Warlock",
-};
+export const difficultyLabels = (t: Dictionary): Record<Difficulty, string> => ({
+  normal: t.difficulty.normal,
+  nightmare: t.difficulty.nightmare,
+  hell: t.difficulty.hell,
+});
+
+export const elementLabels = (t: Dictionary): Record<Element, string> => ({
+  physical: t.elements.physical,
+  magic: t.elements.magic,
+  fire: t.elements.fire,
+  cold: t.elements.cold,
+  lightning: t.elements.lightning,
+  poison: t.elements.poison,
+});
+
+export const budgetLabels = (t: Dictionary): Record<BudgetLevel, string> => ({
+  low: t.budget.low,
+  medium: t.budget.medium,
+  high: t.budget.high,
+  extreme: t.budget.extreme,
+});
+
+export const playDifficultyLabels = (
+  t: Dictionary,
+): Record<PlayDifficulty, string> => ({
+  beginner: t.playDifficulty.beginner,
+  moderate: t.playDifficulty.moderate,
+  advanced: t.playDifficulty.advanced,
+  expert: t.playDifficulty.expert,
+});
+
+export const releaseLabels = (t: Dictionary): Record<Release, string> => ({
+  classic: t.release.classic,
+  lod: t.release.lod,
+  d2r: t.release.d2r,
+  "reign-of-the-warlock": t.release.reignOfTheWarlock,
+});
 
 /**
- * Confidence labels. `verified` is deliberately not surfaced in the UI — the
- * baseline expectation is that content is verified, so only the exceptions are
- * worth a reader's attention.
+ * `verified` maps to null and is never rendered: the baseline expectation is
+ * that content is verified, so badging every verified claim would train readers
+ * to ignore the badge entirely.
  */
-export const confidenceLabels: Record<Confidence, string | null> = {
+export const confidenceLabels = (
+  t: Dictionary,
+): Record<Confidence, string | null> => ({
   verified: null,
-  single: "Single source",
-  community: "Community consensus",
-  unverified: "Unverified",
-};
+  single: t.confidence.single,
+  community: t.confidence.community,
+  unverified: t.confidence.unverified,
+});
 
-export const actionKindMeta: Record<
-  ActionKind,
-  { label: string; icon: string; tone: string }
-> = {
-  skill: { label: "Skill", icon: "◆", tone: "text-el-magic" },
-  stat: { label: "Stats", icon: "▲", tone: "text-info" },
-  gear: { label: "Gear", icon: "▣", tone: "text-rarity-unique" },
-  runeword: { label: "Runeword", icon: "⬢", tone: "text-rarity-rune" },
-  quest: { label: "Quest", icon: "✦", tone: "text-warning" },
-  shop: { label: "Shop", icon: "◈", tone: "text-success" },
-  gamble: { label: "Gamble", icon: "◇", tone: "text-success" },
-  mercenary: { label: "Mercenary", icon: "⚔", tone: "text-el-physical" },
-  respec: { label: "Respec", icon: "↻", tone: "text-ember" },
-  farm: { label: "Farm", icon: "◉", tone: "text-el-cold" },
-  transition: { label: "Difficulty", icon: "→", tone: "text-diff-hell" },
-  warning: { label: "Warning", icon: "!", tone: "text-danger" },
-  tip: { label: "Tip", icon: "i", tone: "text-ink-muted" },
-};
+export const gearSlotLabels = (t: Dictionary): Record<GearSlot, string> => ({
+  helm: t.gearSlots.helm,
+  amulet: t.gearSlots.amulet,
+  weapon: t.gearSlots.weapon,
+  offhand: t.gearSlots.offhand,
+  body: t.gearSlots.body,
+  gloves: t.gearSlots.gloves,
+  belt: t.gearSlots.belt,
+  boots: t.gearSlots.boots,
+  ring1: t.gearSlots.ring1,
+  ring2: t.gearSlots.ring2,
+});
 
-export const ratingLabels = ["", "Poor", "Weak", "Average", "Good", "Excellent"] as const;
+export const actionKindLabels = (t: Dictionary): Record<ActionKind, string> => ({
+  skill: t.actionKinds.skill,
+  stat: t.actionKinds.stat,
+  gear: t.actionKinds.gear,
+  runeword: t.actionKinds.runeword,
+  quest: t.actionKinds.quest,
+  shop: t.actionKinds.shop,
+  gamble: t.actionKinds.gamble,
+  mercenary: t.actionKinds.mercenary,
+  respec: t.actionKinds.respec,
+  farm: t.actionKinds.farm,
+  transition: t.actionKinds.transition,
+  warning: t.actionKinds.warning,
+  tip: t.actionKinds.tip,
+});
+
+export const searchKindLabels = (t: Dictionary): Record<SearchKind, string> => ({
+  class: t.searchKinds.class,
+  build: t.searchKinds.build,
+  leveling: t.searchKinds.leveling,
+  runeword: t.searchKinds.runeword,
+  rune: t.searchKinds.rune,
+  item: t.searchKinds.item,
+  area: t.searchKinds.area,
+  skill: t.searchKinds.skill,
+  mechanic: t.searchKinds.mechanic,
+  mercenary: t.searchKinds.mercenary,
+  breakpoints: t.searchKinds.breakpoints,
+  page: t.searchKinds.page,
+});
+
+export const ratingLabels = (t: Dictionary): readonly string[] => [
+  "",
+  t.ratings.poor,
+  t.ratings.weak,
+  t.ratings.average,
+  t.ratings.good,
+  t.ratings.excellent,
+];
+
+/**
+ * Progression tiers, with the framing each one needs.
+ *
+ * `question` is the reader's actual question at that point — it drives the
+ * gear-progression UI, which is built around "what do I do next" rather than
+ * "here is the finished character".
+ */
+export const progressionTiers = (
+  t: Dictionary,
+): Record<
+  ProgressionTier,
+  { label: string; short: string; question: string; context: string }
+> => ({
+  starter: {
+    label: t.tiers.starterLabel,
+    short: t.tiers.starterShort,
+    question: t.tiers.starterQuestion,
+    context: t.tiers.starterContext,
+  },
+  nightmare: {
+    label: t.tiers.nightmareLabel,
+    short: t.tiers.nightmareShort,
+    question: t.tiers.nightmareQuestion,
+    context: t.tiers.nightmareContext,
+  },
+  "early-hell": {
+    label: t.tiers.earlyHellLabel,
+    short: t.tiers.earlyHellShort,
+    question: t.tiers.earlyHellQuestion,
+    context: t.tiers.earlyHellContext,
+  },
+  budget: {
+    label: t.tiers.budgetLabel,
+    short: t.tiers.budgetShort,
+    question: t.tiers.budgetQuestion,
+    context: t.tiers.budgetContext,
+  },
+  optimized: {
+    label: t.tiers.optimizedLabel,
+    short: t.tiers.optimizedShort,
+    question: t.tiers.optimizedQuestion,
+    context: t.tiers.optimizedContext,
+  },
+  bis: {
+    label: t.tiers.bisLabel,
+    short: t.tiers.bisShort,
+    question: t.tiers.bisQuestion,
+    context: t.tiers.bisContext,
+  },
+});

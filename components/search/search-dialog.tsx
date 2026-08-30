@@ -4,24 +4,56 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import {
-  searchEntries,
-  searchKindLabels,
-  type SearchEntry,
-} from "@/lib/search";
+import { searchEntries, type SearchEntry, type SearchKind } from "@/lib/search";
 
 /**
  * Global search.
  *
- * The only client component on the site. Everything else is server-rendered
- * static HTML, so this is where the entire interactive budget goes.
+ * One of only two client components on the site, so this is where most of the
+ * interactive budget goes.
  *
- * The index is fetched lazily from a static JSON file the first time search
- * opens, rather than being serialised into every page. Inlining it cost about
- * 46KB per page across 117 routes; this way it is downloaded at most once per
- * visitor and only if they actually search.
+ * It cannot call `next/root-params`, which is server-only, so the locale
+ * reaches it as props: the index URL for the active locale, and the already
+ * translated strings. That keeps the dictionary out of the client bundle —
+ * only the handful of strings this component actually renders cross the
+ * boundary.
+ *
+ * The index itself is fetched lazily from a per-locale static JSON file the
+ * first time search opens. Inlining it cost about 46KB per page across every
+ * route; this way it is downloaded at most once per visitor, and only if they
+ * actually search.
  */
-export function SearchDialog({ entryCount }: { entryCount: number }) {
+export interface SearchStrings {
+  button: string;
+  ariaLabel: string;
+  dialogLabel: string;
+  closeLabel: string;
+  queryLabel: string;
+  placeholder: string;
+  minChars: string;
+  nicknamesHint: string;
+  loading: string;
+  failed: string;
+  noResults: string;
+  noResultsHint: string;
+  coverageLink: string;
+  navigate: string;
+  open: string;
+  close: string;
+  entriesIndexed: string;
+}
+
+export function SearchDialog({
+  indexUrl,
+  entryCount,
+  strings,
+  kindLabels,
+}: {
+  indexUrl: string;
+  entryCount: number;
+  strings: SearchStrings;
+  kindLabels: Record<SearchKind, string>;
+}) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -42,7 +74,6 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
     setActive(0);
   }, []);
 
-  // Cmd/Ctrl+K opens, "/" opens when not already typing somewhere.
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
       const target = e.target as HTMLElement | null;
@@ -73,7 +104,7 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
   useEffect(() => {
     if (!open || index || loadFailed) return;
     let cancelled = false;
-    fetch("/search-index.json")
+    fetch(indexUrl)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -87,7 +118,7 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
     return () => {
       cancelled = true;
     };
-  }, [open, index, loadFailed]);
+  }, [open, index, loadFailed, indexUrl]);
 
   // Keep the highlighted row in view when arrowing past the fold.
   useEffect(() => {
@@ -113,16 +144,19 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
     }
   }
 
+  const [noResultsBefore, noResultsAfter] = strings.noResultsHint.split("{link}");
+  const sourcesHref = indexUrl.replace("/search-index.json", "/about/sources");
+
   return (
     <>
       <button
         type="button"
         onClick={() => setOpen(true)}
         className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-ink-subtle transition-colors hover:border-border-strong hover:text-ink-muted"
-        aria-label="Search the site"
+        aria-label={strings.ariaLabel}
       >
         <span aria-hidden>⌕</span>
-        <span className="hidden sm:inline">Search</span>
+        <span className="hidden sm:inline">{strings.button}</span>
         <kbd className="ml-2 hidden rounded border border-border px-1.5 font-mono text-[10px] text-ink-subtle lg:inline">
           Ctrl K
         </kbd>
@@ -133,12 +167,11 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
           className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[10vh]"
           role="dialog"
           aria-modal="true"
-          aria-label="Search"
+          aria-label={strings.dialogLabel}
         >
-          {/* Backdrop */}
           <button
             type="button"
-            aria-label="Close search"
+            aria-label={strings.closeLabel}
             className="absolute inset-0 cursor-default bg-abyss/80 backdrop-blur-sm"
             onClick={close}
           />
@@ -158,9 +191,9 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
                   setActive(0);
                 }}
                 onKeyDown={onInputKeyDown}
-                placeholder="Search items, runewords, builds, mechanics…"
+                placeholder={strings.placeholder}
                 className="flex-1 bg-transparent py-3.5 text-base text-ink placeholder:text-ink-subtle focus:outline-none"
-                aria-label="Search query"
+                aria-label={strings.queryLabel}
                 aria-controls="search-results"
                 autoComplete="off"
                 spellCheck={false}
@@ -172,13 +205,13 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
 
             {query.trim().length >= 2 && loadFailed && (
               <p className="px-4 py-6 text-center text-sm text-danger">
-                Search index failed to load. Use the navigation instead.
+                {strings.failed}
               </p>
             )}
 
             {query.trim().length >= 2 && !index && !loadFailed && (
               <p className="px-4 py-6 text-center text-sm text-ink-subtle">
-                Loading index…
+                {strings.loading}
               </p>
             )}
 
@@ -190,17 +223,17 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
               >
                 {results.length === 0 && (
                   <li className="px-4 py-6 text-center text-sm text-ink-subtle">
-                    Nothing matches &ldquo;{query}&rdquo;.
+                    {strings.noResults.replace("{query}", query)}
                     <p className="mt-1 text-xs">
-                      Not every item in the game is catalogued yet — see{" "}
+                      {noResultsBefore}
                       <Link
-                        href="/about/sources"
+                        href={sourcesHref}
                         onClick={close}
                         className="text-ember hover:text-ember-bright"
                       >
-                        coverage
+                        {strings.coverageLink}
                       </Link>
-                      .
+                      {noResultsAfter}
                     </p>
                   </li>
                 )}
@@ -216,7 +249,7 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
                       }`}
                     >
                       <span className="mt-0.5 w-20 shrink-0 text-[10px] font-semibold tracking-wide text-ink-subtle uppercase">
-                        {searchKindLabels[entry.k]}
+                        {kindLabels[entry.k]}
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-sm font-medium text-ink">
@@ -234,28 +267,29 @@ export function SearchDialog({ entryCount }: { entryCount: number }) {
 
             {query.trim().length < 2 && (
               <div className="px-4 py-6 text-sm text-ink-subtle">
-                <p>Type at least two characters.</p>
+                <p>{strings.minChars}</p>
                 <p className="mt-2 text-xs">
-                  Nicknames work: <span className="text-ink-muted">shako</span>,{" "}
-                  <span className="text-ink-muted">hoto</span>,{" "}
-                  <span className="text-ink-muted">soj</span>,{" "}
-                  <span className="text-ink-muted">alvl 85</span>,{" "}
-                  <span className="text-ink-muted">hdin</span>.
+                  {strings.nicknamesHint.replace(
+                    "{examples}",
+                    "shako, hoto, soj, alvl 85, hdin",
+                  )}
                 </p>
               </div>
             )}
 
             <div className="flex items-center gap-4 border-t border-border px-4 py-2 text-[10px] text-ink-subtle">
               <span>
-                <kbd className="font-mono">↑↓</kbd> navigate
+                <kbd className="font-mono">↑↓</kbd> {strings.navigate}
               </span>
               <span>
-                <kbd className="font-mono">↵</kbd> open
+                <kbd className="font-mono">↵</kbd> {strings.open}
               </span>
               <span>
-                <kbd className="font-mono">esc</kbd> close
+                <kbd className="font-mono">esc</kbd> {strings.close}
               </span>
-              <span className="ml-auto">{entryCount} entries indexed</span>
+              <span className="ml-auto">
+                {strings.entriesIndexed.replace("{count}", String(entryCount))}
+              </span>
             </div>
           </div>
         </div>

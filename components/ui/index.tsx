@@ -309,12 +309,22 @@ export function DataTable({
   );
 }
 
-export function ProsCons({ pros, cons }: { pros: string[]; cons: string[] }) {
+export function ProsCons({
+  pros,
+  cons,
+  prosLabel,
+  consLabel,
+}: {
+  pros: string[];
+  cons: string[];
+  prosLabel: string;
+  consLabel: string;
+}) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       <div className="rounded-lg border border-border bg-surface p-4">
         <h3 className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-success">
-          <span aria-hidden>+</span> Strengths
+          <span aria-hidden>+</span> {prosLabel}
         </h3>
         <ul className="space-y-2">
           {pros.map((p) => (
@@ -327,7 +337,7 @@ export function ProsCons({ pros, cons }: { pros: string[]; cons: string[] }) {
       </div>
       <div className="rounded-lg border border-border bg-surface p-4">
         <h3 className="mb-2.5 flex items-center gap-2 text-sm font-semibold text-danger">
-          <span aria-hidden>−</span> Weaknesses
+          <span aria-hidden>−</span> {consLabel}
         </h3>
         <ul className="space-y-2">
           {cons.map((c) => (
@@ -342,12 +352,26 @@ export function ProsCons({ pros, cons }: { pros: string[]; cons: string[] }) {
   );
 }
 
-/** A 1-5 rating rendered as pips. Coarse on purpose. */
-export function Rating({ value, label }: { value: number; label: string }) {
+/**
+ * A 1-5 rating rendered as pips. Coarse on purpose.
+ *
+ * `valueLabel` carries the already-localized "N out of 5" string — the
+ * component has no dictionary access of its own because it is used inside both
+ * server and (potentially) client trees.
+ */
+export function Rating({
+  value,
+  label,
+  valueLabel,
+}: {
+  value: number;
+  label: string;
+  valueLabel: string;
+}) {
   return (
     <div className="flex items-center justify-between gap-4 py-1.5">
       <span className="text-sm text-ink-muted">{label}</span>
-      <span className="flex gap-1" role="img" aria-label={`${value} out of 5`}>
+      <span className="flex gap-1" role="img" aria-label={valueLabel}>
         {[1, 2, 3, 4, 5].map((i) => (
           <span
             key={i}

@@ -6,25 +6,38 @@ import type {
   Difficulty,
   Element,
   GearPick,
-  GearSlot,
   ItemRef,
   Rune,
   Runeword,
   StatLine,
 } from "@/lib/types";
 import { resolveRef } from "@/lib/registry/resolve";
+import { type Dictionary } from "@/lib/i18n";
+import { getI18n } from "@/lib/i18n/server";
 import {
   confidenceLabels,
   difficultyColors,
   difficultyLabels,
   elementColors,
   elementLabels,
+  gearSlotLabels,
   qualityColors,
 } from "@/lib/labels";
 import { Badge, Callout, cn } from "@/components/ui";
 import { RichText } from "./rich-text";
 
 export { RichText };
+
+/**
+ * Domain components.
+ *
+ * These are async Server Components that read the active locale themselves via
+ * `next/root-params` rather than taking it as a prop. That is the single
+ * biggest simplification internationalisation brought: an `<ItemRefLink>` deep
+ * inside a gear table needs the locale to build its href, and without root
+ * params that would have meant threading `locale` through every intermediate
+ * component on the site.
+ */
 
 // ---------------------------------------------------------------------------
 // Cross-references
@@ -34,18 +47,18 @@ export { RichText };
  * The heart of the cross-linking system.
  *
  * A build says `{ kind: 'runeword', slug: 'spirit' }` and gets a correctly
- * coloured, correctly linked, correctly named reference — without the build
- * author writing any of that. This is what stops the same item being described
- * twelve different ways across twelve pages.
+ * coloured, correctly linked, correctly named reference in the reader's
+ * language — without the build author writing any of that.
  */
-export function ItemRefLink({
+export async function ItemRefLink({
   refItem,
   showKind = false,
 }: {
   refItem: ItemRef;
   showKind?: boolean;
 }) {
-  const resolved = resolveRef(refItem);
+  const { locale, t } = await getI18n();
+  const resolved = resolveRef(locale, refItem);
 
   // Refs to entities we have not catalogued yet render as plain coloured text
   // rather than a link to a 404.
@@ -68,37 +81,62 @@ export function ItemRefLink({
     >
       {resolved.name}
       {showKind && (
-        <span className="ml-1 text-xs text-ink-subtle">({resolved.kind})</span>
+        <span className="ml-1 text-xs text-ink-subtle">
+          ({refKindLabel(t, resolved.kind)})
+        </span>
       )}
     </Link>
   );
+}
+
+/** Ref kinds map onto the search-kind labels; the item-ish ones all collapse. */
+function refKindLabel(t: Dictionary, kind: ItemRef["kind"]): string {
+  switch (kind) {
+    case "rune":
+      return t.searchKinds.rune;
+    case "runeword":
+      return t.searchKinds.runeword;
+    default:
+      return t.searchKinds.item;
+  }
 }
 
 // ---------------------------------------------------------------------------
 // Badges
 // ---------------------------------------------------------------------------
 
-export function DifficultyBadge({ difficulty }: { difficulty: Difficulty }) {
+export async function DifficultyBadge({ difficulty }: { difficulty: Difficulty }) {
+  const { t } = await getI18n();
   return (
     <Badge tone="outline" className={difficultyColors[difficulty]}>
-      {difficultyLabels[difficulty]}
+      {difficultyLabels(t)[difficulty]}
     </Badge>
   );
 }
 
-export function ElementBadge({ element }: { element: Element }) {
+export async function ElementBadge({ element }: { element: Element }) {
+  const { t } = await getI18n();
   return (
     <Badge tone="outline" className={elementColors[element]}>
-      {elementLabels[element]}
+      {elementLabels(t)[element]}
     </Badge>
   );
 }
 
-export function AreaLevelBadge({ level, isEighty5 }: { level: number; isEighty5?: boolean }) {
+export async function AreaLevelBadge({
+  level,
+  isEighty5,
+}: {
+  level: number;
+  isEighty5?: boolean;
+}) {
+  const { t } = await getI18n();
   return (
     <Badge tone={isEighty5 ? "ember" : "neutral"}>
       <span className="font-mono">alvl {level}</span>
-      {isEighty5 && <span className="text-[10px] tracking-wide uppercase">top TC</span>}
+      {isEighty5 && (
+        <span className="text-[10px] tracking-wide uppercase">{t.farming.topTc}</span>
+      )}
     </Badge>
   );
 }
@@ -108,14 +146,13 @@ export function AreaLevelBadge({ level, isEighty5 }: { level: number; isEighty5?
  * assume verified is the baseline; flagging every verified claim would train
  * them to ignore the badge entirely.
  */
-export function ConfidenceNote({ confidence }: { confidence?: Confidence }) {
+export async function ConfidenceNote({ confidence }: { confidence?: Confidence }) {
   if (!confidence) return null;
-  const label = confidenceLabels[confidence];
+  const { t } = await getI18n();
+  const label = confidenceLabels(t)[confidence];
   if (!label) return null;
 
-  return (
-    <Badge tone={confidence === "unverified" ? "warning" : "outline"}>{label}</Badge>
-  );
+  return <Badge tone={confidence === "unverified" ? "warning" : "outline"}>{label}</Badge>;
 }
 
 // ---------------------------------------------------------------------------
@@ -123,13 +160,26 @@ export function ConfidenceNote({ confidence }: { confidence?: Confidence }) {
 // ---------------------------------------------------------------------------
 
 /** A rune rendered as an inline chip, in socket order. */
-export function RuneChip({ rune, index }: { rune: Rune | undefined; index?: number }) {
+export async function RuneChip({
+  rune,
+  index,
+}: {
+  rune: Rune | undefined;
+  index?: number;
+}) {
   if (!rune) return null;
+  const { locale, t } = await getI18n();
+  const href = resolveRef(locale, { kind: "rune", slug: rune.slug }).href;
+
   return (
     <Link
-      href={`/runes/${rune.slug}`}
+      href={href}
       className="group inline-flex items-center gap-1.5 rounded border border-border bg-surface-raised px-2 py-1 transition-colors hover:border-rarity-rune/50 hover:bg-surface-overlay"
-      title={`${rune.name} — required level ${rune.requiredLevel || "none"}`}
+      title={`${rune.name} — ${
+        rune.requiredLevel > 0
+          ? t.runes.requiredLevel.replace("{level}", String(rune.requiredLevel))
+          : t.runes.noLevelRequirement
+      }`}
     >
       {index !== undefined && (
         <span className="font-mono text-[10px] text-ink-subtle">{index + 1}</span>
@@ -171,7 +221,7 @@ export function RuneSequence({
 /** Visual socket count. Makes "exactly N sockets" impossible to misread. */
 export function SocketDisplay({ count, filled }: { count: number; filled?: number }) {
   return (
-    <span className="inline-flex items-center gap-1" role="img" aria-label={`${count} sockets`}>
+    <span className="inline-flex items-center gap-1">
       {Array.from({ length: count }, (_, i) => (
         <span
           key={i}
@@ -194,26 +244,36 @@ export function SocketDisplay({ count, filled }: { count: number; filled?: numbe
  * A product requirement, not a design flourish: attempting a runeword in the
  * wrong base type is the single most common and most expensive D2 mistake.
  */
-export function RunewordBaseRule({ runeword }: { runeword: Runeword }) {
+export async function RunewordBaseRule({ runeword }: { runeword: Runeword }) {
+  const { t } = await getI18n();
+
   return (
     <div className="rounded-lg border border-ember-dim/40 bg-ember-dim/10 p-4">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <div>
-          <p className="text-xs tracking-wide text-ink-subtle uppercase">Base required</p>
+          <p className="text-xs tracking-wide text-ink-subtle uppercase">
+            {t.runewords.baseRequired}
+          </p>
           <p className="mt-0.5 font-display text-lg text-ember-bright">
             {runeword.bases.display}
           </p>
         </div>
         <div className="ml-auto flex items-center gap-3">
           <div className="text-right">
-            <p className="text-xs tracking-wide text-ink-subtle uppercase">Sockets</p>
+            <p className="text-xs tracking-wide text-ink-subtle uppercase">
+              {t.runewords.socketsLabel}
+            </p>
             <p className="mt-1">
               <SocketDisplay count={runeword.sockets} />
             </p>
           </div>
           <div className="text-right">
-            <p className="text-xs tracking-wide text-ink-subtle uppercase">Level</p>
-            <p className="mt-0.5 font-display text-lg text-ink">{runeword.requiredLevel}</p>
+            <p className="text-xs tracking-wide text-ink-subtle uppercase">
+              {t.runewords.levelLabel}
+            </p>
+            <p className="mt-0.5 font-display text-lg text-ink">
+              {runeword.requiredLevel}
+            </p>
           </div>
         </div>
       </div>
@@ -265,18 +325,7 @@ export function StatLines({ stats }: { stats: StatLine[] }) {
 // Gear
 // ---------------------------------------------------------------------------
 
-export const gearSlotLabels: Record<GearSlot, string> = {
-  helm: "Helm",
-  amulet: "Amulet",
-  weapon: "Weapon",
-  offhand: "Off-hand",
-  body: "Body Armor",
-  gloves: "Gloves",
-  belt: "Belt",
-  boots: "Boots",
-  ring1: "Ring",
-  ring2: "Ring",
-};
+export { gearSlotLabels };
 
 /**
  * One gear recommendation, with its alternatives nested underneath.
@@ -285,17 +334,30 @@ export const gearSlotLabels: Record<GearSlot, string> = {
  * use if I don't have that" is the most common question a build page has to
  * answer, and burying it defeats the purpose.
  */
-export function GearPickView({ pick, depth = 0 }: { pick: GearPick; depth?: number }) {
-  const label = pick.ref ? <ItemRefLink refItem={pick.ref} /> : <span className="font-medium text-ink">{pick.label}</span>;
+export async function GearPickView({
+  pick,
+  depth = 0,
+}: {
+  pick: GearPick;
+  depth?: number;
+}) {
+  const { t } = await getI18n();
+  const label = pick.ref ? (
+    <ItemRefLink refItem={pick.ref} />
+  ) : (
+    <span className="font-medium text-ink">{pick.label}</span>
+  );
 
   return (
     <div className={cn(depth > 0 && "border-l border-border pl-4")}>
       <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
         {depth > 0 && (
-          <span className="text-xs tracking-wide text-ink-subtle uppercase">or</span>
+          <span className="text-xs tracking-wide text-ink-subtle uppercase">
+            {t.builds.orAlternative}
+          </span>
         )}
         {label}
-        {pick.tradeOnly && <Badge tone="warning">Trade only</Badge>}
+        {pick.tradeOnly && <Badge tone="warning">{t.builds.tradeOnly}</Badge>}
       </div>
 
       <p className="mt-1 text-sm leading-relaxed text-pretty text-ink-muted">
@@ -304,7 +366,7 @@ export function GearPickView({ pick, depth = 0 }: { pick: GearPick; depth?: numb
 
       {pick.sockets && (
         <p className="mt-1.5 text-sm text-ink-subtle">
-          <span className="text-ink-subtle">Sockets: </span>
+          <span className="text-ink-subtle">{t.builds.sockets} </span>
           <span className="text-ink-muted">
             <RichText>{pick.sockets}</RichText>
           </span>
@@ -313,7 +375,7 @@ export function GearPickView({ pick, depth = 0 }: { pick: GearPick; depth?: numb
 
       {pick.lookFor && pick.lookFor.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-1.5">
-          <span className="text-xs text-ink-subtle">Look for:</span>
+          <span className="text-xs text-ink-subtle">{t.builds.lookFor}</span>
           {pick.lookFor.map((affix) => (
             <Badge key={affix} tone="outline">
               {affix}
@@ -334,16 +396,10 @@ export function GearPickView({ pick, depth = 0 }: { pick: GearPick; depth?: numb
 }
 
 // ---------------------------------------------------------------------------
-// Callout helper
+// Callout helpers
 // ---------------------------------------------------------------------------
 
-export function InfoCallout({
-  title,
-  children,
-}: {
-  title?: string;
-  children: ReactNode;
-}) {
+export function InfoCallout({ title, children }: { title?: string; children: ReactNode }) {
   return (
     <Callout variant="info" title={title}>
       {children}

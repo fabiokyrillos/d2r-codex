@@ -6,9 +6,12 @@
  * a runeword that exists. Slugs are strings, and a typo produces a link to a
  * 404 that no compiler will catch.
  *
- * This script closes that gap. It walks the whole content graph and fails the
- * build on any reference that does not resolve, plus a handful of internal
- * consistency rules that have already caught real mistakes.
+ * Since internationalisation this script has a second job: verifying that every
+ * content slug has a translation overlay in every non-source locale. The UI
+ * dictionary's completeness is enforced by `tsc` (pt-BR is typed as the en-US
+ * key structure), but content overlays are keyed by string slug, so they need a
+ * runtime check. Together those two mechanisms are the "zero missing
+ * translation keys" guarantee.
  *
  * Run with `npm run check:content`.
  */
@@ -25,22 +28,28 @@ import {
   getRuneword,
   getRunewords,
   getSkill,
+  getSkills,
+  getSkillTrees,
   getUnique,
   getUniques,
   getFarmingArea,
   getMercenary,
   getBuild,
 } from "../lib/registry";
+import { OVERLAYS } from "../lib/registry/overlays";
+import { missingOverlaySlugs, orphanOverlaySlugs } from "../lib/registry/localize";
 import { tierOrder } from "../lib/labels";
+import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import type { GearPick, ItemRef } from "../lib/types";
+
+const SOURCE: Locale = DEFAULT_LOCALE;
+const TRANSLATED = LOCALES.filter((l) => l !== SOURCE);
 
 const problems: string[] = [];
 const warnings: string[] = [];
 
-const fail = (where: string, message: string) =>
-  problems.push(`${where}: ${message}`);
-const warn = (where: string, message: string) =>
-  warnings.push(`${where}: ${message}`);
+const fail = (where: string, message: string) => problems.push(`${where}: ${message}`);
+const warn = (where: string, message: string) => warnings.push(`${where}: ${message}`);
 
 // ---------------------------------------------------------------------------
 // Reference resolution
@@ -49,14 +58,14 @@ const warn = (where: string, message: string) =>
 function checkRef(ref: ItemRef, where: string) {
   switch (ref.kind) {
     case "rune":
-      if (!getRune(ref.slug)) fail(where, `unknown rune "${ref.slug}"`);
+      if (!getRune(SOURCE, ref.slug)) fail(where, `unknown rune "${ref.slug}"`);
       break;
     case "runeword":
-      if (!getRuneword(ref.slug)) fail(where, `unknown runeword "${ref.slug}"`);
+      if (!getRuneword(SOURCE, ref.slug)) fail(where, `unknown runeword "${ref.slug}"`);
       break;
     case "unique":
     case "set-item":
-      if (!getUnique(ref.slug)) fail(where, `unknown item "${ref.slug}"`);
+      if (!getUnique(SOURCE, ref.slug)) fail(where, `unknown item "${ref.slug}"`);
       break;
     default:
       // Categories without dedicated pages render as plain labels, so a
@@ -77,7 +86,7 @@ function checkPick(pick: GearPick, where: string) {
 // Runewords
 // ---------------------------------------------------------------------------
 
-for (const rw of getRunewords()) {
+for (const rw of getRunewords(SOURCE)) {
   const where = `runeword "${rw.slug}"`;
 
   rw.runes.forEach((slug) => checkRef({ kind: "rune", slug }, where));
@@ -92,7 +101,7 @@ for (const rw of getRunewords()) {
   // A runeword's level requirement is the highest of its runes', unless the
   // runeword itself sets a higher one. It can never be lower.
   const highestRune = Math.max(
-    ...rw.runes.map((slug) => getRune(slug)?.requiredLevel ?? 0),
+    ...rw.runes.map((slug) => getRune(SOURCE, slug)?.requiredLevel ?? 0),
   );
   if (rw.requiredLevel < highestRune) {
     fail(
@@ -109,10 +118,8 @@ for (const rw of getRunewords()) {
 // Runes
 // ---------------------------------------------------------------------------
 
-const runes = getRunes();
-if (runes.length !== 33) {
-  fail("runes", `expected 33 runes, found ${runes.length}`);
-}
+const runes = getRunes(SOURCE);
+if (runes.length !== 33) fail("runes", `expected 33 runes, found ${runes.length}`);
 runes.forEach((rune, i) => {
   if (rune.number !== i + 1) {
     fail(`rune "${rune.slug}"`, `number ${rune.number} is out of sequence at index ${i}`);
@@ -123,12 +130,12 @@ runes.forEach((rune, i) => {
 // Items
 // ---------------------------------------------------------------------------
 
-for (const item of getUniques()) {
+for (const item of getUniques(SOURCE)) {
   const where = `item "${item.slug}"`;
   if (item.stats.length === 0) fail(where, "has no stat lines");
   item.alternatives?.forEach((ref) => checkRef(ref, `${where} > alternatives`));
   item.drop?.areas?.forEach((slug) => {
-    if (!getFarmingArea(slug)) fail(where, `drop references unknown area "${slug}"`);
+    if (!getFarmingArea(SOURCE, slug)) fail(where, `drop references unknown area "${slug}"`);
   });
   if (!item.stats.some((s) => s.notable)) {
     warn(where, "no stat line is marked notable — nothing will be highlighted");
@@ -139,19 +146,18 @@ for (const item of getUniques()) {
 // Builds
 // ---------------------------------------------------------------------------
 
-for (const build of getBuilds()) {
+for (const build of getBuilds(SOURCE)) {
   const where = `build "${build.slug}"`;
 
-  if (!getClasses().some((c) => c.slug === build.classSlug)) {
+  if (!getClasses(SOURCE).some((c) => c.slug === build.classSlug)) {
     fail(where, `unknown class "${build.classSlug}"`);
   }
-
-  if (!getSkill(build.primarySkill)) {
+  if (!getSkill(SOURCE, build.primarySkill)) {
     fail(where, `primary skill "${build.primarySkill}" is not in the skill data`);
   }
 
   for (const alloc of build.skills) {
-    if (!getSkill(alloc.skill)) {
+    if (!getSkill(SOURCE, alloc.skill)) {
       fail(where, `skill allocation references unknown skill "${alloc.skill}"`);
     }
     if (alloc.points < 1 || alloc.points > 20) {
@@ -159,7 +165,6 @@ for (const build of getBuilds()) {
     }
   }
 
-  // Gear sets must be present, ordered, and free of duplicate tiers.
   const seenTiers = new Set<string>();
   let lastIndex = -1;
   for (const set of build.gearSets) {
@@ -184,20 +189,19 @@ for (const build of getBuilds()) {
   }
 
   for (const entry of build.farming) {
-    if (!getFarmingArea(entry.area)) {
+    if (!getFarmingArea(SOURCE, entry.area)) {
       fail(where, `farming entry references unknown area "${entry.area}"`);
     }
   }
 
-  if (build.mercenary && !getMercenary(build.mercenary)) {
+  if (build.mercenary && !getMercenary(SOURCE, build.mercenary)) {
     fail(where, `references unknown mercenary "${build.mercenary}"`);
   }
 
-  if (build.levelingPath?.viaBuild && !getBuild(build.levelingPath.viaBuild)) {
+  if (build.levelingPath?.viaBuild && !getBuild(SOURCE, build.levelingPath.viaBuild)) {
     fail(where, `leveling path references unknown build "${build.levelingPath.viaBuild}"`);
   }
 
-  // A build claiming to be complete should actually cover the progression.
   if (build.complete && build.gearSets.length < tierOrder.length) {
     warn(
       where,
@@ -210,7 +214,7 @@ for (const build of getBuilds()) {
 // Farming areas
 // ---------------------------------------------------------------------------
 
-for (const area of getFarmingAreas()) {
+for (const area of getFarmingAreas(SOURCE)) {
   const where = `area "${area.slug}"`;
 
   // hellLevel85 is a derived fact stored explicitly for query speed. If it
@@ -229,7 +233,7 @@ for (const area of getFarmingAreas()) {
 
   area.notableDrops?.forEach((ref) => checkRef(ref, `${where} > notable drops`));
   area.suitedTo?.forEach((slug) => {
-    if (!getClasses().some((c) => c.slug === slug)) {
+    if (!getClasses(SOURCE).some((c) => c.slug === slug)) {
       fail(where, `suitedTo references unknown class "${slug}"`);
     }
   });
@@ -239,7 +243,7 @@ for (const area of getFarmingAreas()) {
 // Mercenaries
 // ---------------------------------------------------------------------------
 
-for (const merc of getMercenaries()) {
+for (const merc of getMercenaries(SOURCE)) {
   merc.gear.forEach((g, i) => {
     const where = `mercenary "${merc.slug}" > gear ${i}`;
     if (!g.ref && !g.label) fail(where, "has neither a ref nor a label");
@@ -251,13 +255,13 @@ for (const merc of getMercenaries()) {
 // Progression journeys
 // ---------------------------------------------------------------------------
 
-for (const journey of getJourneys()) {
+for (const journey of getJourneys(SOURCE)) {
   const where = `journey "${journey.classSlug}"`;
 
-  if (!getClasses().some((c) => c.slug === journey.classSlug)) {
+  if (!getClasses(SOURCE).some((c) => c.slug === journey.classSlug)) {
     fail(where, `unknown class "${journey.classSlug}"`);
   }
-  if (journey.targetBuild && !getBuild(journey.targetBuild)) {
+  if (journey.targetBuild && !getBuild(SOURCE, journey.targetBuild)) {
     fail(where, `targetBuild "${journey.targetBuild}" does not exist`);
   }
 
@@ -267,7 +271,6 @@ for (const journey of getJourneys()) {
     if (stage.levels[0] > stage.levels[1]) {
       fail(stageWhere, `level range ${stage.levels[0]}-${stage.levels[1]} is inverted`);
     }
-    // Stages should tile the character's life without leaving a gap.
     const prev = ordered[i - 1];
     if (prev && stage.levels[0] > prev.levels[1] + 1) {
       warn(
@@ -286,11 +289,11 @@ for (const journey of getJourneys()) {
 // Classes, breakpoints, mechanics
 // ---------------------------------------------------------------------------
 
-for (const cls of getClasses()) {
+for (const cls of getClasses(SOURCE)) {
   if (cls.trees.length === 0) fail(`class "${cls.slug}"`, "has no skill trees");
 }
 
-for (const table of getBreakpointTables()) {
+for (const table of getBreakpointTables(SOURCE)) {
   const where = `breakpoint table "${table.slug}"`;
   if (table.rows.length === 0) fail(where, "has no rows");
 
@@ -307,18 +310,18 @@ for (const table of getBreakpointTables()) {
   }
 }
 
-for (const article of getMechanics()) {
+for (const article of getMechanics(SOURCE)) {
   const where = `mechanic "${article.slug}"`;
   if (article.body.length === 0) fail(where, "has no body content");
   if (article.keyFacts.length === 0) fail(where, "has no key facts");
   article.related?.forEach((slug) => {
-    if (!getMechanics().some((a) => a.slug === slug)) {
+    if (!getMechanics(SOURCE).some((a) => a.slug === slug)) {
       fail(where, `related references unknown article "${slug}"`);
     }
   });
   for (const block of article.body) {
     if (block.type === "table") {
-      const bad = block.rows.find((r) => r.length !== block.headers.length);
+      const bad = block.rows.find((row) => row.length !== block.headers.length);
       if (bad) {
         fail(
           where,
@@ -326,8 +329,72 @@ for (const article of getMechanics()) {
         );
       }
     }
-    if (block.type === "refs") {
-      block.refs.forEach((ref) => checkRef(ref, where));
+    if (block.type === "refs") block.refs.forEach((ref) => checkRef(ref, where));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Translation coverage
+// ---------------------------------------------------------------------------
+
+interface DomainSpec {
+  name: string;
+  slugs: { slug: string }[];
+  overlays: Partial<Record<Locale, Record<string, unknown>>>;
+}
+
+const domains: DomainSpec[] = [
+  { name: "runes", slugs: getRunes(SOURCE), overlays: OVERLAYS.runes },
+  { name: "runewords", slugs: getRunewords(SOURCE), overlays: OVERLAYS.runewords },
+  { name: "items", slugs: getUniques(SOURCE), overlays: OVERLAYS.items },
+  { name: "classes", slugs: getClasses(SOURCE), overlays: OVERLAYS.classes },
+  { name: "skills", slugs: getSkills(SOURCE), overlays: OVERLAYS.skills },
+  { name: "skillTrees", slugs: getSkillTrees(SOURCE), overlays: OVERLAYS.skillTrees },
+  { name: "areas", slugs: getFarmingAreas(SOURCE), overlays: OVERLAYS.areas },
+  { name: "mercenaries", slugs: getMercenaries(SOURCE), overlays: OVERLAYS.mercenaries },
+  { name: "breakpoints", slugs: getBreakpointTables(SOURCE), overlays: OVERLAYS.breakpoints },
+  { name: "mechanics", slugs: getMechanics(SOURCE), overlays: OVERLAYS.mechanics },
+  { name: "builds", slugs: getBuilds(SOURCE), overlays: OVERLAYS.builds },
+  {
+    // Journeys are keyed by class slug, not by a `slug` field.
+    name: "journeys",
+    slugs: getJourneys(SOURCE).map((j) => ({ slug: j.classSlug })),
+    overlays: OVERLAYS.journeys,
+  },
+];
+
+const coverage: { locale: Locale; domain: string; done: number; total: number }[] = [];
+
+for (const locale of TRANSLATED) {
+  for (const domain of domains) {
+    const overlay = domain.overlays[locale];
+    const missing = missingOverlaySlugs(domain.slugs, overlay);
+    const orphans = orphanOverlaySlugs(domain.slugs, overlay);
+
+    coverage.push({
+      locale,
+      domain: domain.name,
+      done: domain.slugs.length - missing.length,
+      total: domain.slugs.length,
+    });
+
+    if (missing.length > 0) {
+      // A missing overlay entry is a warning, not an error: the page still
+      // renders, in the source language. It is reported loudly so the gap is
+      // visible, and the summary below makes the real coverage unmissable.
+      warn(
+        `${locale} > ${domain.name}`,
+        `${missing.length} of ${domain.slugs.length} untranslated: ${missing.slice(0, 6).join(", ")}${missing.length > 6 ? ", …" : ""}`,
+      );
+    }
+
+    // An orphan IS an error: it means a slug was renamed or removed and the
+    // translation was left behind, which silently does nothing.
+    if (orphans.length > 0) {
+      fail(
+        `${locale} > ${domain.name}`,
+        `overlay has entries for slugs that no longer exist: ${orphans.join(", ")}`,
+      );
     }
   }
 }
@@ -337,21 +404,35 @@ for (const article of getMechanics()) {
 // ---------------------------------------------------------------------------
 
 const counts = {
-  runes: getRunes().length,
-  runewords: getRunewords().length,
-  items: getUniques().length,
-  classes: getClasses().length,
-  builds: getBuilds().length,
-  areas: getFarmingAreas().length,
-  mercenaries: getMercenaries().length,
-  journeys: getJourneys().length,
-  breakpointTables: getBreakpointTables().length,
-  mechanics: getMechanics().length,
+  runes: getRunes(SOURCE).length,
+  runewords: getRunewords(SOURCE).length,
+  items: getUniques(SOURCE).length,
+  classes: getClasses(SOURCE).length,
+  skills: getSkills(SOURCE).length,
+  builds: getBuilds(SOURCE).length,
+  areas: getFarmingAreas(SOURCE).length,
+  mercenaries: getMercenaries(SOURCE).length,
+  journeys: getJourneys(SOURCE).length,
+  breakpointTables: getBreakpointTables(SOURCE).length,
+  mechanics: getMechanics(SOURCE).length,
 };
 
 console.log("Content inventory:");
 for (const [key, value] of Object.entries(counts)) {
   console.log(`  ${key.padEnd(18)} ${value}`);
+}
+
+console.log("\nTranslation coverage:");
+for (const locale of TRANSLATED) {
+  const rows = coverage.filter((c) => c.locale === locale);
+  const done = rows.reduce((sum, row) => sum + row.done, 0);
+  const total = rows.reduce((sum, row) => sum + row.total, 0);
+  const pct = total === 0 ? 100 : Math.round((done / total) * 100);
+  console.log(`  ${locale}  ${done}/${total} entries (${pct}%)`);
+  for (const row of rows) {
+    const mark = row.done === row.total ? "ok " : "   ";
+    console.log(`    ${mark}${row.domain.padEnd(16)} ${row.done}/${row.total}`);
+  }
 }
 
 if (warnings.length > 0) {

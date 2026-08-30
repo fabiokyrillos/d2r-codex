@@ -1,15 +1,21 @@
 import type { ItemRef, ItemQuality, Slug } from "@/lib/types";
+import type { Locale } from "@/lib/i18n/config";
+import { routes } from "@/lib/routes";
 import { runes } from "@/content/runes/runes";
 import { runewords } from "@/content/runewords/runewords";
 import { uniques } from "@/content/items/uniques";
+import { OVERLAYS } from "./overlays";
 
 /**
  * Turning an `ItemRef` into something renderable.
  *
  * Every cross-reference in the site flows through here, which is what keeps the
  * "Spirit is described once" promise: a build says `{ kind: 'runeword', slug:
- * 'spirit' }` and the UI gets the name, the URL, the rarity colour and a
- * one-line summary without the build author writing any of them.
+ * 'spirit' }` and the UI gets the name, the locale-correct URL, the rarity
+ * colour and a one-line summary without the build author writing any of them.
+ *
+ * Names are invariant — "Spirit" is "Spirit" in both languages — so only the
+ * summary (used as the link tooltip) and the href vary by locale.
  */
 
 export interface ResolvedRef {
@@ -35,16 +41,39 @@ function titleCaseFromSlug(slug: string): string {
     .join(" ");
 }
 
-export function resolveRef(ref: ItemRef): ResolvedRef {
+/** The localized one-line summary for a ref, used as the link title. */
+function summaryFor(
+  locale: Locale,
+  kind: ItemRef["kind"],
+  slug: Slug,
+  fallback: string | undefined,
+): string | undefined {
+  if (locale === "en-us") return fallback;
+  switch (kind) {
+    case "rune":
+      return OVERLAYS.runes[locale]?.[slug]?.summary ?? fallback;
+    case "runeword":
+      return OVERLAYS.runewords[locale]?.[slug]?.summary ?? fallback;
+    case "unique":
+    case "set-item":
+      return OVERLAYS.items[locale]?.[slug]?.summary ?? fallback;
+    default:
+      return fallback;
+  }
+}
+
+export function resolveRef(locale: Locale, ref: ItemRef): ResolvedRef {
+  const r = routes(locale);
+
   switch (ref.kind) {
     case "rune": {
       const rune = runeMap.get(ref.slug);
       return {
         kind: ref.kind,
         slug: ref.slug,
-        name: rune ? `${rune.name} Rune` : titleCaseFromSlug(ref.slug),
-        href: `/runes/${ref.slug}`,
-        summary: rune?.summary,
+        name: rune ? rune.name : titleCaseFromSlug(ref.slug),
+        href: r.rune(ref.slug),
+        summary: summaryFor(locale, ref.kind, ref.slug, rune?.summary),
         quality: "rune",
         found: Boolean(rune),
       };
@@ -55,8 +84,8 @@ export function resolveRef(ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: rw?.name ?? titleCaseFromSlug(ref.slug),
-        href: `/runewords/${ref.slug}`,
-        summary: rw?.summary,
+        href: r.runeword(ref.slug),
+        summary: summaryFor(locale, ref.kind, ref.slug, rw?.summary),
         quality: "runeword",
         found: Boolean(rw),
       };
@@ -68,8 +97,8 @@ export function resolveRef(ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: item?.name ?? titleCaseFromSlug(ref.slug),
-        href: `/items/${ref.slug}`,
-        summary: item?.summary,
+        href: r.item(ref.slug),
+        summary: summaryFor(locale, ref.kind, ref.slug, item?.summary),
         quality: item?.quality ?? (ref.kind === "set-item" ? "set" : "unique"),
         found: Boolean(item),
       };
@@ -79,7 +108,7 @@ export function resolveRef(ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: titleCaseFromSlug(ref.slug),
-        href: `/items/sets/${ref.slug}`,
+        href: `${r.items()}/sets/${ref.slug}`,
         quality: "set",
         found: false,
       };
@@ -88,7 +117,7 @@ export function resolveRef(ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: titleCaseFromSlug(ref.slug),
-        href: `/bases/${ref.slug}`,
+        href: `${r.items()}/bases/${ref.slug}`,
         quality: "normal",
         found: false,
       };
@@ -97,7 +126,7 @@ export function resolveRef(ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: titleCaseFromSlug(ref.slug),
-        href: `/items/charms/${ref.slug}`,
+        href: `${r.items()}/charms/${ref.slug}`,
         quality: "unique",
         found: false,
       };
@@ -121,7 +150,7 @@ export function findDanglingRefs(refs: ItemRef[]): ItemRef[] {
       case "unique":
       case "set-item":
         return !uniqueMap.has(ref.slug);
-      // Categories without dedicated pages yet render as plain labels, so a
+      // Categories without dedicated pages render as plain labels, so a
       // missing entry is not an error.
       default:
         return false;
