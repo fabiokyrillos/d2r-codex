@@ -19,7 +19,7 @@ import { runes } from "@/content/runes/runes";
 import { runewords } from "@/content/runewords/runewords";
 import { uniques } from "@/content/items/uniques";
 import { classes } from "@/content/classes/classes";
-import { sorceressSkills, sorceressTrees } from "@/content/classes/sorceress/skills";
+import { allSkills, allSkillTrees } from "@/content/classes";
 import { builds } from "@/content/builds";
 import { farmingAreas } from "@/content/farming/areas";
 import { mercenaries } from "@/content/mercenaries/mercenaries";
@@ -61,8 +61,8 @@ const classIndex = indexBy(classes);
 const buildIndex = indexBy(builds);
 const areaIndex = indexBy(farmingAreas);
 const mercIndex = indexBy(mercenaries);
-const skillIndex = indexBy(sorceressSkills);
-const treeIndex = indexBy(sorceressTrees);
+const skillIndex = indexBy(allSkills);
+const treeIndex = indexBy(allSkillTrees);
 const breakpointIndex = indexBy(breakpointTables);
 const mechanicIndex = indexBy(mechanics);
 
@@ -77,8 +77,8 @@ export const getClasses = (): CharacterClass[] => [...classes];
 export const getBuilds = (): Build[] => [...builds];
 export const getFarmingAreas = (): FarmingArea[] => [...farmingAreas];
 export const getMercenaries = (): Mercenary[] => [...mercenaries];
-export const getSkills = (): Skill[] => [...sorceressSkills];
-export const getSkillTrees = (): SkillTree[] => [...sorceressTrees];
+export const getSkills = (): Skill[] => [...allSkills];
+export const getSkillTrees = (): SkillTree[] => [...allSkillTrees];
 export const getJourneys = (): ProgressionJourney[] => [...journeys];
 export const getBreakpointTables = (): BreakpointTable[] => [...breakpointTables];
 export const getMechanics = (): MechanicArticle[] => [...mechanics];
@@ -119,15 +119,15 @@ export const getBuildsForClass = (classSlug: Slug) =>
   builds.filter((b) => b.classSlug === classSlug);
 
 export const getSkillsForClass = (classSlug: Slug) =>
-  sorceressSkills.filter((s) => s.classSlug === classSlug);
+  allSkills.filter((s) => s.classSlug === classSlug);
 
 export const getTreesForClass = (classSlug: Slug) =>
-  sorceressTrees
+  allSkillTrees
     .filter((t) => t.classSlug === classSlug)
     .sort((a, b) => a.order - b.order);
 
 export const getSkillsInTree = (treeSlug: Slug) =>
-  sorceressSkills
+  allSkills
     .filter((s) => s.tree === treeSlug)
     .sort((a, b) => a.requiredLevel - b.requiredLevel || a.name.localeCompare(b.name));
 
