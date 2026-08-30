@@ -454,4 +454,250 @@ export const farmingAreas: FarmingArea[] = [
       "The chest contents do not care how much magic find you have — chest drops use a different mechanism than monster drops. Run it in cheap gear.",
     confidence: "verified",
   },
+  {
+    slug: "kurast-temples",
+    name: "Kurast Temples",
+    summary:
+      "Six small dungeons scattered through Kurast, all area level 85 in Hell, all a few steps from a waypoint.",
+    act: 3,
+    access:
+      "Kurast Bazaar, Upper Kurast and Kurast Causeway waypoints. Each has one or two temple entrances nearby.",
+    levels: { normal: 23, nightmare: 53, hell: 85 },
+    hellLevel85: true,
+    density: 3,
+    danger: 3,
+    runLength: "short",
+    commonImmunities: ["poison", "fire", "physical"],
+    targets: ["uniques", "sets", "runes", "bases", "charms", "jewels"],
+    notableDrops: [
+      { kind: "unique", slug: "harlequin-crest" },
+      { kind: "rune", slug: "ist" },
+      { kind: "rune", slug: "gul" },
+    ],
+    why: "Six separate area level 85 dungeons — Ruined Temple, Disused Fane, Forgotten Reliquary, Forgotten Temple, Ruined Fane and Disused Reliquary — clustered around three waypoints. Each is small and self-contained, so a circuit of several is fast, and every kill rolls from the top treasure classes.",
+    route: [
+      "Take the Kurast Bazaar waypoint and check for temple entrances nearby.",
+      "Move on to Upper Kurast and the Causeway, clearing each temple you find.",
+      "Each temple is a single small level. Clear it and move to the next.",
+      "Zealots and Fanatics inside frequently roll immunities — check a pack before committing to it.",
+    ],
+    suitedTo: ["paladin", "sorceress", "assassin", "amazon"],
+    recommendedDifficulties: ["hell"],
+    terrorZone: true,
+    notes:
+      "Consistently overlooked, because the names are forgettable and none of them contains a boss. On area level alone they are the equal of Chaos Sanctuary, and they are considerably safer.",
+    confidence: "verified",
+  },
+  {
+    slug: "secret-cow-level",
+    name: "The Secret Cow Level",
+    summary:
+      "Enormous density in one flat open map. The best experience per minute in the game outside a Baal run.",
+    act: 1,
+    access:
+      "Cube Wirt's Leg with a Tome of Town Portal in the Rogue Encampment, after killing that difficulty's act boss.",
+    levels: { normal: 28, nightmare: 64, hell: 81 },
+    hellLevel85: false,
+    density: 5,
+    danger: 4,
+    runLength: "medium",
+    commonImmunities: ["physical"],
+    bosses: [
+      {
+        name: "The Cow King",
+        kind: "super-unique",
+        notes:
+          "Killing him permanently closes the Cow Level for that character on that difficulty. There is no way to undo it.",
+      },
+    ],
+    targets: ["experience", "runes", "bases", "gems", "gold"],
+    why: "The highest monster density in the game, in a single flat map with no navigation cost. Hell Cows are level 81, which puts most useful bases and mid runes in reach, and the sheer number of kills makes it outstanding for experience through the 70s and 80s.",
+    route: [
+      "Kill the act boss of the difficulty you want to open it in.",
+      "Return to the Rogue Encampment and cube **Wirt's Leg** with a **Tome of Town Portal**. The leg comes from Wirt's corpse in Tristram.",
+      "A red portal opens, for that game only.",
+      "**Do not kill the Cow King.** Doing so permanently closes the Cow Level for that character on that difficulty.",
+      "Clear in a spiral outward from the portal. The map is flat and open, so movement skills pay off enormously.",
+    ],
+    suitedTo: ["sorceress", "paladin", "amazon", "assassin", "druid"],
+    poorlySuitedTo:
+      "Anything slow or fragile. Hell Cows hit hard and arrive in overwhelming numbers — the danger here is volume, not any individual monster.",
+    recommendedDifficulties: ["nightmare", "hell"],
+    terrorZone: true,
+    notes:
+      "One portal per game, so you need a fresh Wirt's Leg each time. Keep several in your stash if you plan to run it repeatedly.",
+    confidence: "verified",
+  },
+  {
+    slug: "river-of-flame",
+    name: "River of Flame",
+    summary:
+      "Area level 85 immediately next to a waypoint, and home to Hephasto and the Hellforge.",
+    act: 4,
+    access: "River of Flame waypoint. You arrive already inside it.",
+    levels: { normal: 27, nightmare: 57, hell: 85 },
+    hellLevel85: true,
+    density: 3,
+    danger: 4,
+    runLength: "short",
+    commonImmunities: ["fire", "physical"],
+    bosses: [
+      {
+        name: "Hephasto the Armorer",
+        kind: "super-unique",
+        notes:
+          "Guards the Hellforge. Always physical immune, and hits extremely hard in Hell.",
+        immunities: ["physical"],
+      },
+    ],
+    targets: ["uniques", "sets", "runes", "bases", "gems"],
+    why: "Area level 85 with zero travel from the waypoint, and it sits directly on the route to Chaos Sanctuary — so clearing it costs almost nothing on the way. Hephasto's Hellforge quest gives a guaranteed rune once per difficulty.",
+    route: [
+      "Take the River of Flame waypoint and clear outward toward the Chaos Sanctuary entrance.",
+      "Hephasto patrols near the Hellforge. He is **always physical immune** — this is fixed, not a random modifier.",
+      "Most runners clear the River on the way to Chaos Sanctuary rather than treating it as a run of its own.",
+    ],
+    suitedTo: ["sorceress", "paladin", "assassin"],
+    poorlySuitedTo:
+      "Purely physical builds cannot kill Hephasto at all, which blocks the Hellforge quest without a second damage source.",
+    recommendedDifficulties: ["hell"],
+    terrorZone: true,
+    confidence: "verified",
+  },
+  {
+    slug: "nihlathak",
+    name: "Nihlathak & the Halls of Vaught",
+    summary:
+      "A short run to a super unique in one of the highest-level Act 5 zones. Dangerous for a specific reason.",
+    act: 5,
+    access: "Halls of Pain waypoint → Halls of Vaught. Nihlathak is at the far end.",
+    levels: { normal: 36, nightmare: 64, hell: 84 },
+    hellLevel85: false,
+    density: 3,
+    danger: 5,
+    runLength: "short",
+    commonImmunities: ["poison", "physical", "fire"],
+    bosses: [
+      {
+        name: "Nihlathak",
+        kind: "super-unique",
+        notes:
+          "Casts Corpse Explosion relentlessly. On a corpse-heavy screen this is genuinely lethal, and it is the whole reason the run rates as dangerous.",
+      },
+    ],
+    targets: ["uniques", "sets", "runes", "charms"],
+    why: "Area level 84 in Hell — just short of the top tier, but close enough that most desirable items are in range. The waypoint-to-boss route is short and the run is predictable once you respect the Corpse Explosion.",
+    route: [
+      "Take the Halls of Pain waypoint.",
+      "The stairs down to the Halls of Vaught are usually close by.",
+      "Nihlathak stands at the far end of Vaught.",
+      "**Kill him from range, or clear the corpses first.** His Corpse Explosion scales with the corpses available — a room full of dead Vipers is a death sentence.",
+    ],
+    suitedTo: ["sorceress", "paladin", "assassin"],
+    recommendedDifficulties: ["hell"],
+    terrorZone: true,
+    notes:
+      "Killing Nihlathak also completes the Betrayal of Harrogath quest, which unlocks the red portal used for Pindleskin runs. Worth doing once per difficulty regardless.",
+    confidence: "verified",
+  },
+  {
+    slug: "stony-tomb",
+    name: "Stony Tomb",
+    summary:
+      "An area level 85 zone in Act 2, with a super unique, that almost nobody runs.",
+    act: 2,
+    access: "Dry Hills waypoint → back into the Rocky Waste → the Stony Tomb entrance.",
+    levels: { normal: 12, nightmare: 44, hell: 85 },
+    hellLevel85: true,
+    density: 3,
+    danger: 3,
+    runLength: "short",
+    commonImmunities: ["fire", "physical"],
+    bosses: [
+      {
+        name: "Creeping Feature",
+        kind: "super-unique",
+        notes: "A Sand Maggot super unique on the second level.",
+      },
+    ],
+    targets: ["uniques", "sets", "runes", "bases"],
+    why: "Both levels are area level 85 in Hell, which is easy to miss on an Act 2 zone. Small, quick, and it contains a super unique with a boosted drop table.",
+    route: [
+      "Take the Dry Hills waypoint and head back into the Rocky Waste.",
+      "The Stony Tomb entrance is somewhere in the Rocky Waste — its position is random, which is the run's main time cost.",
+      "Two small levels. Creeping Feature is on the second.",
+    ],
+    recommendedDifficulties: ["hell"],
+    terrorZone: true,
+    confidence: "verified",
+  },
+  {
+    slug: "maggot-lair",
+    name: "Maggot Lair",
+    summary:
+      "Area level 85 with good density, in a corridor layout that punishes melee badly.",
+    act: 2,
+    access: "Far Oasis waypoint → the Maggot Lair entrance.",
+    levels: { normal: 17, nightmare: 46, hell: 85 },
+    hellLevel85: true,
+    density: 4,
+    danger: 4,
+    runLength: "short",
+    commonImmunities: ["fire", "poison"],
+    bosses: [
+      {
+        name: "Coldworm the Burrower",
+        kind: "super-unique",
+        notes:
+          "Stationary, on the third level, surrounded by egg sacs that spawn maggots continuously.",
+      },
+    ],
+    targets: ["uniques", "sets", "runes", "bases"],
+    why: "Level 3 is area level 85 with strong density, and Coldworm sits in a fixed location so the run is predictable.",
+    route: [
+      "Take the Far Oasis waypoint and find the Maggot Lair entrance.",
+      "Three levels, but **only the third is area level 85** — the first two are not worth clearing.",
+      "The tunnels are one screen wide in places. Ranged and teleporting characters have a large advantage.",
+    ],
+    poorlySuitedTo:
+      "Melee builds. The corridors are too narrow to retreat through once maggots close in behind you.",
+    recommendedDifficulties: ["hell"],
+    terrorZone: true,
+    confidence: "verified",
+  },
+  {
+    slug: "arcane-sanctuary",
+    name: "Arcane Sanctuary",
+    summary:
+      "The Summoner, and the route to Tal Rasha's tombs. Narrow platforms that reward ranged builds.",
+    act: 2,
+    access: "Arcane Sanctuary waypoint. Four platform arms radiate from the centre.",
+    levels: { normal: 14, nightmare: 48, hell: 79 },
+    hellLevel85: false,
+    density: 2,
+    danger: 3,
+    runLength: "short",
+    commonImmunities: ["lightning", "magic"],
+    bosses: [
+      {
+        name: "The Summoner",
+        kind: "super-unique",
+        notes:
+          "Guards the Horadric journal that reveals which of Tal Rasha's tombs is the real one. A fast caster with low life.",
+      },
+    ],
+    targets: ["uniques", "sets", "runes", "gems"],
+    why: "A quick, low-risk run at a reasonable area level, and the mandatory route to Duriel. More useful inside a Nightmare progression loop than as a dedicated Hell farm.",
+    route: [
+      "Take the Arcane Sanctuary waypoint.",
+      "Four arms lead outward from the centre platform. The Summoner is at the end of one of them, chosen at random.",
+      "The platforms are narrow with no cover, so ranged builds have a large advantage and melee builds get funnelled.",
+    ],
+    suitedTo: ["sorceress", "amazon", "necromancer"],
+    poorlySuitedTo:
+      "Melee builds, and — unusually — magic-damage builds: the Ghosts here are frequently magic immune, which is one of very few places a Hammerdin meets a wall.",
+    recommendedDifficulties: ["nightmare", "hell"],
+    terrorZone: true,
+    confidence: "verified",
+  },
 ];
