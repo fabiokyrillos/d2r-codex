@@ -2128,4 +2128,267 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  tesladin: {
+    summary:
+      "Duas runewords Dream empilham uma aura de Holy Shock nível 30. Você entra num grupo e ele morre para um passivo.",
+    playstyle:
+      "Não existe botão de dano. Você corre para dentro de um grupo, segura Zeal pela metade física, e a aura de Holy Shock empilhada eletrocuta tudo dentro do raio, esteja você atacando ou não. A Conviction é a aura que você realmente tem selecionada, porque ela arranca a resistência a raio contra a qual a aura está lutando. A build inteira é um exercício de posicionamento: chegue perto, fique perto, e deixe o passivo trabalhar.",
+    strengths: [
+      "Dano que não custa ponto de skill nem botão — a aura roda esteja você atacando ou não",
+      "Raio mais físico, então um imune a raio ainda toma a metade do Zeal",
+      "Rápida contra densidade, o que é incomum para um Paladin de corpo a corpo",
+      "A Conviction quebra imunidade a raio nos monstros que de outra forma seriam parede",
+      "Bloqueio máximo e escudo erguido permanentemente",
+    ],
+    weaknesses: [
+      "**Duas runas Jah.** Isto não é uma build cara, é uma build caríssima, e não existe versão barata",
+      "A aura tem raio. Você precisa estar no meio do grupo, que é onde as coisas te matam",
+      "Nada antes do nível 65, porque é o requisito do Dream",
+      "Os seus melhores slots defensivos — elmo e escudo — estão os dois gastos em dano",
+      "Alvos únicos morrem devagar; a aura é dano em área e bosses não são áreas",
+    ],
+    flexPoints: [
+      "**Mais Zeal** depois que as quatro skills centrais estiverem prontas. Sobe a metade física, que é o que mata os imunes a raio que a Conviction não quebra.",
+      "**Fanaticism** vale considerar como segunda aura pela velocidade de ataque, mas você não pode rodar ela e a Conviction ao mesmo tempo — e a Conviction é o que faz a aura do Dream funcionar. A maioria dos Tesladins deixa quieto.",
+      "**Holy Freeze** além de um ponto se você estiver morrendo dentro dos grupos mais do que matando devagar.",
+      "**Increased Attack Speed não é publicado como tabela de breakpoint aqui**, pelo mesmo motivo dos outros Paladins de corpo a corpo. Importa menos nesta build do que em qualquer uma delas, porque a aura é o dano e ela não tem velocidade de ataque.",
+    ],
+    statPlan: {
+      strength: "O suficiente para um escudo de 3 sockets e um elmo de 3 sockets. Nenhum precisa ser pesado, e o Dream não é uma runeword pela qual você queira pagar imposto de Strength duas vezes.",
+      dexterity:
+        "O suficiente para bloqueio máximo **com o Holy Shield ativo**. Você fica no meio dos grupos, então esta é uma das builds em que o bloqueio de fato compensa o custo.",
+      vitality: "Todo o resto, e leve a sério — os seus dois slots defensivos estão ocupados por dano.",
+      energy: "Nenhum.",
+      notes: [
+        "**As duas bases de Dream devem ser as mais baratas que funcionem.** Os atributos da runeword não escalam com a base, então pagar Strength por um elmo ou escudo pesado não compra nada.",
+        "**Confira o bloqueio com o Holy Shield ativo.** A armadilha habitual de Paladin.",
+        "Vida importa mais aqui que em qualquer outro Paladin, porque o loop central da build é ficar dentro daquilo que está tentando te matar.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48":
+        "Dois Dreams já fornecem de 40 a 60% entre eles, então isto é quase de graça — e importa mais aqui que em outros lugares porque você luta cercado.",
+      "fhr-86":
+        "Alcançável com um cinto Verdungo's em cima dos dois Dreams. Vale pegar numa build que fica em alcance corpo a corpo de tudo.",
+      "fbr-32":
+        "A recuperação de bloqueio decide se você consegue agir enquanto um grupo te bate, que é o tempo inteiro.",
+    },
+    skillNotes: {
+      "resist-lightning":
+        "Uma sinergia do Holy Shock, e ainda sobe a sua resistência máxima a raio enquanto faz isso. Maximize primeiro — é o maior aumento de dano disponível e não custa nada além de pontos.",
+      salvation:
+        "A segunda sinergia do Holy Shock. Também é uma aura de resistência para a qual trocar, o que ocasionalmente importa.",
+      conviction:
+        "A sua aura selecionada. 30% de redução de resistência no nível 1 mais 5% por nível — é isso que empurra imunes a raio abaixo da linha para a aura do Dream conseguir feri-los.",
+      "holy-shield":
+        "Bloqueio e defesa. Você fica dentro dos grupos por desenho, então isto não é opcional.",
+      zeal:
+        "**Um ponto, e maximize por último, se é que vai.** Quatro pontos alcançam o teto de cinco golpes, mas nesta build o Zeal é um mecanismo de entrega de life steal e uma alternativa física, não o dano.",
+      "holy-freeze":
+        "No caminho até a Conviction, e uma aura genuinamente útil para trocar — desacelerar um grupo dentro do qual você está vale mais do que parece.",
+      "holy-shock":
+        "Um ponto. A aura vem do Dream, não daqui — mas o ponto é pré-requisito da Conviction de qualquer forma.",
+      vigor: "Velocidade de corrida, e pré-requisito da Salvation.",
+      redemption: "Vida e mana de cadáveres, que é a sua recuperação entre grupos.",
+    },
+    immunityPlan:
+      "Dois tipos de dano, e eles falham em lugares diferentes. A **aura de Holy Shock é raio**, e imunes a raio não tomam nada dela — que é por que a Conviction é a sua aura selecionada em vez de qualquer coisa mais empolgante. A Conviction reduz resistência em 30% no nível 1 mais 5% por nível, o bastante para quebrar imunidade a raio natural na maior parte do que você vai encontrar. Onde não basta, **o dano físico do Zeal ainda acerta**, e essa é a alternativa real: um Grief mais Crushing Blow mata imunes a raio devagar, mas de forma confiável. O problema genuíno é um monstro imune a raio e a físico ao mesmo tempo, o que é raro, e a resposta honesta ali é passar direto. O **Iron Maiden** merece menção específica: a aura não é refletida, mas o seu Zeal é, e um ataque de cinco golpes contra uma maldição de dano refletido te mata tão rápido nesta build quanto em qualquer outra.",
+    mercenaryNotes:
+      "Pegue **Might** pelo dano dele ou **Holy Freeze** pelo slow — Holy Freeze é a escolha comum, porque qualquer coisa desacelerada fica mais tempo dentro do seu raio de aura, o que é a mesma coisa que mais dano. Dê um **Insight** para a mana. O item que a maioria das fontes aponta para ele é um Reaper's Toll pelo proc de Decrepify, que baixa a resistência física e desacelera por cima; o site ainda não documenta esse item, então trate como um alvo nomeado e não como um link.",
+    farmingWhy: {
+      "chaos-sanctuary-hell":
+        "Densa e bem agrupada, que é exatamente o que uma aura com raio quer. Cuidado com o Iron Maiden — a sua metade de Zeal reflete, ainda que a aura não.",
+      "worldstone-keep-hell": "Nível de área 85 e muito densa. O melhor farm geral de Tesladin.",
+      "pit-hell": "Nível de área 85, trajeto curto, e os grupos vêm até você.",
+      "mausoleum-hell": "Nível de área 85 densa com quase nada imune a raio.",
+      "travincal-hell":
+        "O Council é imune a raio. A Conviction pode quebrar imunidade a raio natural, mas esta é a zona em que você deve verificar isso antes de contar com ela, e a sua metade de Zeal faz mais trabalho que o normal.",
+      "secret-cow-level-hell":
+        "Densidade enorme e nada imune a raio. Uma aura empilhada num rebanho de vacas é a coisa mais rápida que esta build faz.",
+    },
+    levelingPath: {
+      summary:
+        "Evolua e jogue como Zealot — mesma classe, mesma arma, mesmo plano de bloqueio, e o Zeal é o ataque que esta build usa de qualquer jeito. O Dream exige nível 65, então não existe versão desta build antes disso, e não há motivo para fazer respec até os dois Dreams estarem de fato no seu inventário. A conversão é um único respec grátis da Den of Evil.",
+      respecAt: "Nível 65+, e só quando os dois Dreams existirem",
+    },
+    selfFoundNotes:
+      "Realisticamente, não. Duas runas Jah em self-found é um projeto muito longo — Jah é uma das runas mais altas do jogo e a build precisa de duas, sem versão parcial que funcione. Quem joga self-found e quer este estilo deve ler esta página como destino, não como plano, jogar de Zealot enquanto isso, e converter se as runas aparecerem. Todo o resto de que a build precisa é comum.",
+    hardcoreNotes:
+      "Arriscada, e por um motivo estrutural em vez de corrigível. O dano da build exige que você fique dentro do grupo, e os dois slots que você normalmente usaria para sobreviver a isso — elmo e escudo — estão ocupados pelo Dream. Chains of Honor em vez de Enigma é quase obrigatório, Battle Orders deve estar ativo antes de cada grupo, e Holy Freeze no mercenário vale mais que o dano dele. Pese também a perda: este é um personagem de duas Jah, e Hardcore significa que você pode perder as duas.",
+    gearSets: {
+      starter: {
+        goal: "Não é um Tesladin. Evolua como outra coisa — o Dream exige nível 65.",
+        nextUpgrade:
+          "Nível 65 e duas runas Jah. Não há atalho nem versão parcial — leia a nota de self-found antes de se comprometer com esta build.",
+        notes:
+          "Jogue de Zealot. É a mesma classe, a mesma arma e o mesmo plano de bloqueio, e converte para esta build com um respec assim que os Dreams existirem.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer scepter de Paladin com +Combat Skills",
+            why: "Você está jogando de Zealot por enquanto. Scepters de vendedor são o dano mais barato disponível.",
+            lookFor: ["+2 Combat Skills", "+3 Zeal"],
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "Recuperação e velocidade de corrida por duas runas comuns." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+        },
+      },
+      nightmare: {
+        goal: "Ainda um Zealot. Guarde runas.",
+        nextUpgrade:
+          "Continue farmando a Countess e o Travincal. Tudo nesta build vem depois de duas runas Jah.",
+        picks: {
+          "weapon-0": { why: "Velocidade de ataque e uma carga de Berserk, barato." },
+          "offhand-0": {
+            why: "+50 em todas as resistências e skills. Vai ser substituído por um Dream, mas não tão cedo.",
+          },
+          "body-0": { why: "Fade e velocidade de ataque por três runas baratas." },
+          "ring1-0": { why: "Cannot Be Frozen, do qual uma build baseada em Zeal não abre mão." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "A resistência mais barata do jogo." }],
+      },
+      "early-hell": {
+        goal: "Limpar o Hell como Zealot enquanto as runas se acumulam.",
+        nextUpgrade:
+          "O primeiro Dream. Um não é a build, mas é o ponto em que você deixa de ser Zealot e passa a ser um Tesladin com metade do dano.",
+        notes:
+          "Seja honesto consigo. Se duas runas Jah não são um alvo realista para o seu jeito de jogar, a página do Zealot é a build em que você já está, e ela é boa.",
+        picks: {
+          "weapon-0": { why: "Crushing Blow para bosses enquanto você espera." },
+          "offhand-0": { why: "Resistências e skills." },
+          "body-0": { why: "Crushing Blow e redução de dano por três runas médias." },
+          "helm-0": { why: "Life steal e redução de dano." },
+          "boots-0": { why: "Crushing Blow e velocidade de corrida." },
+          "amulet-0": { why: "Skills e resistências." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "Segure 75%." }],
+      },
+      budget: {
+        goal: "O primeiro Dream. Metade da aura, e uma prévia da build.",
+        nextUpgrade: "A segunda Jah. É o projeto restante inteiro.",
+        picks: {
+          "helm-0": {
+            why: "Uma aura de Holy Shock nível 15 e 20-30% de Faster Hit Recovery. Sozinho não é uma build — é a primeira metade de uma.",
+            sockets:
+              "Io, Jah, Pul num elmo de 3 sockets. Use o elmo elite de 3 sockets mais leve que achar; a base não contribui em nada.",
+          },
+          "offhand-0": {
+            why: "Mantenha até o segundo Dream existir. As resistências são o que permite ficar dentro dos grupos.",
+          },
+          "weapon-0": {
+            why: "A metade física. Também mata os imunes a raio que a sua aura não consegue tocar.",
+            sockets: "Eth, Tir, Lo, Mal, Ral numa Phase Blade de 5 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Perfeitamente adequado enquanto as runas vão para os Dreams.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências, o que sobe as duas sinergias e a Conviction.",
+          },
+          "boots-0": { why: "Crushing Blow e velocidade de corrida." },
+          "belt-0": { why: "Redução de dano e life steal." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Paladin)",
+            why: "+3 skills de Paladin, o que levanta as duas sinergias e a Conviction de uma vez.",
+          },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Grand charms de skills de raio",
+            why: "Dano direto na aura, no slot que não tem nada melhor para fazer.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Os dois Dreams. A build finalmente existe.",
+        nextUpgrade: "Enigma, quando as suas resistências sobreviverem à perda do Chains of Honor.",
+        picks: {
+          "helm-0": {
+            why: "Holy Shock nível 15, metade do par.",
+            sockets: "Io, Jah, Pul no elmo de 3 sockets mais leve disponível.",
+          },
+          "offhand-0": {
+            why: "A segunda metade. Duas auras empilham para um Holy Shock nível 30 efetivo, e este é o momento em que a build começa a funcionar.",
+            sockets:
+              "Io, Jah, Pul num escudo de Paladin de 3 sockets — o escudo de classe soma as próprias resistências por cima.",
+          },
+          "weapon-0": {
+            why: "O dano físico, e a resposta contra imunes a raio que a Conviction não quebra.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências. Com os dois slots defensivos gastos em Dreams, é aqui que mora a sua sobrevivência.",
+          },
+          "body-0-alt0": {
+            why: "Teleport, ao custo das resistências. Pegue só quando os seus charms cobrirem o buraco.",
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque e vida num slot sem unique que valha a pena para esta build.",
+            lookFor: ["20% de Increased Attack Speed", "Vida", "Resistências"],
+          },
+          "belt-0": { why: "Redução de dano e life steal." },
+          "boots-0": { why: "Crushing Blow e velocidade de corrida." },
+          "amulet-0": { why: "+1 skills, 20% de velocidade de ataque e resistência a raio." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Grand charms de skills de raio com vida",
+            why: "O melhor dano restante, e vida de que você precisa muito.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders. Os seus slots defensivos são dano, então a vida importa." },
+          { why: "Mão secundária para a troca." },
+        ],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "O nível da aura é fixado pela runeword e não sobe com +skills, então todos os upgrades restantes vão para as sinergias, a Conviction, e sobreviver dentro do raio.",
+        picks: {
+          "helm-0": {
+            why: "Um roll de 30% de Faster Hit Recovery e 20 em todas as resistências.",
+            lookFor: ["30% de Faster Hit Recovery", "All Resistances +20"],
+          },
+          "offhand-0": {
+            why: "Num escudo de classe do Paladin, pelas resistências inatas que a build não tem de onde tirar.",
+            lookFor: ["30% de Faster Hit Recovery", "All Resistances +20", "base de escudo de Paladin"],
+          },
+          "weapon-0": {
+            why: "Um roll de 400 de dano numa Phase Blade etérea.",
+            lookFor: ["400 de dano", "40% de Increased Attack Speed"],
+          },
+          "body-0": {
+            why: "Teleport, quando os charms cobrirem as resistências que o Chains of Honor carregava.",
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood, 20% de Increased Attack Speed, +3 Combat Skills",
+            why: "Velocidade de ataque, life steal e skills num slot só.",
+            lookFor: ["20% de Increased Attack Speed", "+3 Combat Skills", "Life steal"],
+          },
+          "belt-0": { why: "15% de redução de dano num roll máximo." },
+          "boots-0": { why: "Crushing Blow." },
+          "amulet-0": {
+            why: "+2 em todas as skills e +30 em todas as resistências. Numa build que usa dois itens de dano nos slots defensivos, as resistências ganham.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
+          { label: "Grand charms de skills de raio com vida", why: "Dano e vida juntos." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
