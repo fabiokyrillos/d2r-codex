@@ -111,15 +111,41 @@ const uniquesFor = memoByLocale((locale) =>
 );
 
 const classesFor = memoByLocale((locale) =>
-  localize(baseClasses, locale, OVERLAYS.classes),
+  localize(baseClasses, locale, OVERLAYS.classes, (base, copy) => ({
+    ...base,
+    summary: copy.summary,
+    overview: copy.overview,
+    strengths: copy.strengths,
+    weaknesses: copy.weaknesses,
+    coreMechanics: copy.coreMechanics,
+    bestFor: copy.bestFor,
+    classItems: copy.classItems ?? base.classItems,
+    requiresDlc: copy.requiresDlc ?? base.requiresDlc,
+  })),
 );
 
 const skillsFor = memoByLocale((locale) =>
-  localize(allSkills, locale, OVERLAYS.skills),
+  localize(allSkills, locale, OVERLAYS.skills, (base, copy) => ({
+    ...base,
+    summary: copy.summary,
+    mechanics: copy.mechanics ?? base.mechanics,
+    manaCost: copy.manaCost ?? base.manaCost,
+    // Synergy *targets* are invariant slugs; only the human description of the
+    // bonus is translated, matched positionally against the source list.
+    synergies: base.synergies?.map((syn, i) => ({
+      ...syn,
+      bonus: copy.synergyBonuses?.[i] ?? syn.bonus,
+    })),
+  })),
 );
 
 const skillTreesFor = memoByLocale((locale) =>
-  localize(allSkillTrees, locale, OVERLAYS.skillTrees),
+  localize(allSkillTrees, locale, OVERLAYS.skillTrees, (base, copy) => ({
+    ...base,
+    name: copy.name,
+    summary: copy.summary,
+    theme: copy.theme,
+  })),
 );
 
 const areasFor = memoByLocale((locale) =>
@@ -163,11 +189,23 @@ const mercenariesFor = memoByLocale((locale) =>
 );
 
 const breakpointsFor = memoByLocale((locale) =>
-  localize(baseBreakpoints, locale, OVERLAYS.breakpoints),
+  localize(baseBreakpoints, locale, OVERLAYS.breakpoints, (base, copy) => ({
+    ...base,
+    name: copy.name,
+    summary: copy.summary,
+    variant: copy.variant ?? base.variant,
+    guidance: copy.guidance ?? base.guidance,
+  })),
 );
 
 const mechanicsFor = memoByLocale((locale) =>
-  localize(baseMechanics, locale, OVERLAYS.mechanics),
+  localize(baseMechanics, locale, OVERLAYS.mechanics, (base, copy) => ({
+    ...base,
+    name: copy.name,
+    summary: copy.summary,
+    keyFacts: copy.keyFacts,
+    body: copy.body,
+  })),
 );
 
 const buildsFor = memoByLocale((locale) => {
