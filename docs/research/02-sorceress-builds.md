@@ -9,6 +9,7 @@
 | --- | --- |
 | Lightning, Fire Ball Meteor, Frozen Orb, Nova | Shipped (lote 1) |
 | Enchant, Hydra, Meteorb, Frost Nova | Shipped (lote 2) |
+| Fire Wall | Shipped (lote 3) |
 | Melee Sorceress (Zeal + Werebear as variants) | Shipped (lote 3), merged as recommended |
 | Magic Find, self-wield Infinity, Hydra/Orb, Fireball | Documented as internal variants, as planned |
 | PvP, Blizzard/Frozen Orb | Not implemented, as planned |

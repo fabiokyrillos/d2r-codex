@@ -15,6 +15,7 @@ import { enchantSorceress } from "./enchant-sorceress";
 import { hydraSorceress } from "./hydra-sorceress";
 import { meteorbSorceress } from "./meteorb-sorceress";
 import { frostNovaSorceress } from "./frost-nova-sorceress";
+import { fireWallSorceress } from "./fire-wall-sorceress";
 import { meleeSorceress } from "./melee-sorceress";
 
 /**
@@ -24,4 +25,4 @@ import { meleeSorceress } from "./melee-sorceress";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, meleeSorceress];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress];

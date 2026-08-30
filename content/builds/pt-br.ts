@@ -5061,4 +5061,251 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "fire-wall-sorceress": {
+    summary:
+      "Negação de terreno em vez de dano. Você decide por onde o inimigo tem permissão de andar, e os Ubers andam por ali mesmo assim.",
+    playstyle:
+      "Coloque as paredes onde as coisas precisam passar, não onde elas estão. O Fire Wall causa dano ao longo do tempo em vez de no impacto, então ele recompensa ler a sala — um corredor, uma porta, o chão entre um boss e você. Contra algo que se move na sua direção independentemente do que esteja no caminho, que é a maioria dos bosses do jogo, ele é muito melhor do que a velocidade de limpeza sugere. Contra um grupo espalhado numa sala aberta, é uma das piores magias do jogo, e nenhuma quantidade de equipamento conserta isso.",
+    strengths: [
+      "**Genuinamente boa nos Ubers**, o que quase nenhuma build de Sorceress é — a Maxroll marca ela exatamente para isso",
+      "Dano ao longo do tempo ignora quanta vida o alvo tem, então bosses não são uma parede",
+      "Barata. Ela não precisa de nenhum item caro para fazer o que faz",
+      "Disponível no nível 18 atrás de uma cadeia curta de pré-requisitos",
+      "Empilhar várias paredes no mesmo ponto é uma opção de burst de verdade que a maioria das builds não tem",
+    ],
+    weaknesses: [
+      "**Ruim contra densidade em terreno aberto.** Se as coisas puderem contornar, elas vão contornar",
+      "Fogo é o elemento mais resistido no Hell e a Fire Mastery não quebra imunidade",
+      "O dano é atrasado, então ela recompensa previsão e pune reação",
+      "Build de conjuração mais mal avaliada da pesquisa — Maxroll B, DiabloBytes C",
+      "Um tipo de dano e nenhuma alternativa",
+    ],
+    flexPoints: [
+      "**O Meteor é o ponto flexível, e a maioria pega.** O Fire Wall sozinho não dá conta de um grupo espalhado, e o Meteor já está no caminho de pré-requisitos até a Fire Mastery. Maximizá-lo transforma a build em algo mais próximo de uma Fire Ball Meteor Sorceress que também nega terreno.",
+      "**Mais Frost Nova** se você prefere resolver o mesmo problema de forma defensiva — um grupo desacelerado passa mais tempo dentro da sua parede.",
+      "**Variante de magic find:** a build é barata o bastante para o orçamento de equipamento ir para magic find. Mesmo plano de skills.",
+      "**Não coloque pontos em Energy.** Warmth mais um mercenário com Insight cobrem o custo de empilhar paredes.",
+    ],
+    statPlan: {
+      strength: "Só o que o equipamento exigir.",
+      dexterity: "Nenhuma.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum.",
+      notes: [
+        "Nada de incomum aqui. A dificuldade da build está em onde você fica, não no que você gasta.",
+        "Uma troca com Call to Arms vale mais que qualquer Vitality que você comprasse com a mesma moeda.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-105":
+        "O alvo padrão da Sorceress. Ele determina com que rapidez você consegue empilhar várias paredes no mesmo ponto, que é o burst desta build.",
+      "fcr-63": "O alvo inicial, alcançável com um Spirit em sword e Magefist.",
+      "fhr-60":
+        "O alvo padrão de recuperação da Sorceress. Você normalmente está atrás da sua própria parede, mas nem sempre.",
+    },
+    skillNotes: {
+      "fire-wall":
+        "Nível 18. Dano ao longo do tempo em vez de no impacto — a skill inteira é escolher onde colocar.",
+      "fire-mastery":
+        "30% de dano no nível 1 e +7% por nível. Um multiplicador, não uma redução de resistência.",
+      inferno:
+        "Sinergia do Fire Wall e pré-requisito dele. Também um jato de curta distância genuinamente utilizável durante a evolução.",
+      meteor:
+        "Não é sinergia — é uma segunda magia, e a que cobre a fraqueza do Fire Wall contra coisas paradas em terreno aberto. Ele também é pré-requisito da Fire Mastery, então o primeiro ponto já está gasto.",
+      "fire-ball": "Pré-requisito do Meteor, e uma magia rápida para o que o Fire Wall não consegue encurralar.",
+      warmth: "Regeneração de mana desde o nível 1. Empilhar paredes é caro.",
+      teleport: "**Um ponto para sempre**, e é como você fica atrás de uma parede que acabou de colocar.",
+      "static-field":
+        "Tira 25% da vida atual do alvo — combina excepcionalmente bem com dano ao longo do tempo.",
+      "frozen-armor": "Defesa e congelamento em quem te ataca.",
+      "frost-nova":
+        "Desacelera um grupo para ele ficar mais tempo dentro da parede, que é o ponto não relacionado a fogo mais útil da lista.",
+    },
+    immunityPlan:
+      "Um elemento e nenhuma alternativa, a não ser que você tenha pegado o Meteor — que também é fogo, então ele não ajuda contra imunidade. **A Fire Mastery não quebra imunidade**: 30% de dano no nível 1 mais 7% por nível aumenta o seu dano, não a resistência deles, e fogo é o elemento mais resistido no Hell. As respostas são as mesmas três de toda build de fogo. **Um sunder charm Flame Rift** é a solução direta ao custo de 70 a 90 pontos da sua própria resistência a fogo. **Infinity no mercenário** resolve sem a penalidade e por um preço muito maior. **Escolher zonas** é de graça, e importa mais aqui do que em outros lugares porque a build já quer *formatos* específicos de mapa — a Stony Tomb e o Chaos Sanctuary te dão corredores e pouca imunidade a fogo ao mesmo tempo.",
+    mercenaryNotes:
+      "**Holy Freeze em vez de Might.** Qualquer coisa desacelerada passa mais tempo dentro da sua parede, e numa build de dano ao longo do tempo isso é um aumento direto de dano de um jeito que não é para as outras Sorceresses. Dê a ele um **Insight** pela mana que empilhar paredes custa, e um **Vampire Gaze** com **Treachery** para ele continuar segurando o terreno que você está queimando. Depois, um **Infinity** é a alternativa a um charm Flame Rift.",
+    farmingWhy: {
+      "uber-tristram-hell":
+        "O motivo de esta build existir. Dano ao longo do tempo ignora quanta vida um boss de nível 110 tem, e os Ubers vêm na sua direção através do que você tiver colocado. Mais lento que um Smiter, e muito mais possível que qualquer outra Sorceress.",
+      "chaos-sanctuary-hell":
+        "Corredores e bosses de Seal que vêm até você — o layout para o qual esta magia foi desenhada. Boa parte resiste a fogo, então leve o sunder charm.",
+      "mausoleum-hell": "Nível de área 85 denso com aproximações estreitas, e leve em imunidade a fogo.",
+      "stony-tomb-hell":
+        "Nível de área 85, corredores, e pouquíssima imunidade a fogo. Uma das poucas zonas onde o formato da magia e o formato do mapa concordam.",
+      "andariel-hell": "Ela vem direto na sua direção por uma sala curta. Empilhe paredes e recue.",
+      "pit-hell":
+        "Nível de área 85, mas salas abertas onde os monstros simplesmente contornam a parede. Este é o formato de mapa em que a build é pior.",
+    },
+    levelingPath: {
+      summary:
+        "Evolua com Fire Bolt e depois Fire Ball, os dois no caminho até o Meteor e a Fire Mastery. O Fire Wall chega no 18 mas é desconfortável durante a evolução — monstros em terreno aberto contornam a parede — então a maioria se apoia no Inferno, que é sinergia do Fire Wall e portanto não é desperdiçado, e troca quando o Meteor no 24 e a Fire Mastery no 30 dão à build a segunda opção e o multiplicador. **Nenhum respec é necessário.**",
+    },
+    selfFoundNotes:
+      "Genuinamente boa. Nada do que a build precisa é caro, o Fire Wall chega no 18 atrás de uma cadeia de duas skills, e a lista de melhores itens não contém nada que um personagem self-found não possa acabar encontrando. A ressalva honesta é a mesma de toda build de fogo: imunidade a fogo no Hell, com um Flame Rift como resposta realista e um Infinity como a resposta que não é.",
+    hardcoreNotes:
+      "Melhor do que a velocidade de limpeza sugere, por um motivo estrutural: você coloca o dano e fica em outro lugar. Uma parede numa porta significa que a luta acontece onde você escolheu, e não onde os monstros escolheram. Valem as ressalvas de sempre da classe — menor reserva de vida, sem bloqueio, 60% de Faster Hit Recovery como piso — e o perigo específico é terreno aberto, onde a magia não faz nada e você é só uma Sorceress sem plano de fuga. Pegue Chains of Honor em vez de Enigma e mantenha o Frost Nova numa tecla.",
+    gearSets: {
+      starter: {
+        goal: "Fire Wall no 18, e Fire Mastery no 30.",
+        nextUpgrade:
+          "Nível 30 pela Fire Mastery. Fire Bolt e Inferno te levam até lá, e o Inferno é sinergia.",
+        notes:
+          "O Fire Wall chega no 18 mas é desconfortável durante a evolução, porque monstros em terreno aberto contornam a parede. A maioria se apoia em Fire Bolt e Inferno até o Meteor no 24 dar uma segunda opção.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e até 35% de velocidade de conjuração no nível 25.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "Velocidade de conjuração e recuperação no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+          "gloves-0": { why: "+1 em Fire Skills e 20% de velocidade de conjuração." },
+        },
+      },
+      nightmare: {
+        goal: "Fire Mastery ativa e as duas magias fazendo trabalho.",
+        nextUpgrade:
+          "Resistências em 75%, um Insight para o mercenário, e um plano para imunes a fogo.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": {
+            why: "Um segundo Spirit — 70% de velocidade de conjuração entre os dois.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "body-0": { why: "+1 skills, velocidade de conjuração e resistências com 43 de Strength." },
+          "helm-0": { why: "+1 skills e magic find." },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "Resistências e dano convertido em mana." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "O caminho mais barato até 75%." }],
+      },
+      "early-hell": {
+        goal: "105% de velocidade de conjuração, resistências capadas, e uma resposta para imunidade a fogo.",
+        nextUpgrade:
+          "Eschuta's Temper, e um conjunto de chaves de Uber se foi para isso que você montou esta build.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": { why: "O segundo." },
+          "body-0": { why: "Resistências e velocidade de conjuração." },
+          "body-0-alt0": { why: "+2 skills e +65 em todas as resistências quando as runas aparecerem." },
+          "helm-0": { why: "+2 skills, vida, magic find e redução de dano." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": {
+            label: "Anel raro com 10% de Faster Cast Rate e resistências",
+            why: "A última velocidade de conjuração de que você precisa.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "Segure 75%." },
+          {
+            label: "Flame Rift (sunder charm de fogo)",
+            why: "A resposta direta contra imunidade a fogo, ao custo de 70 a 90 pontos da sua própria resistência a fogo.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Farm no Hell, e os mini-Ubers.",
+        nextUpgrade:
+          "Facets de fogo, e as resistências para sobreviver perto da sua própria parede.",
+        picks: {
+          "weapon-0": {
+            why: "Até +3 skills de Sorceress, 40% de velocidade de conjuração e +20% de dano de skills de fogo.",
+          },
+          "weapon-0-alt0": {
+            why: "Mantenha o Spirit enquanto resistência for o limite — o Eschuta's não tem nenhuma.",
+          },
+          "offhand-0": { why: "Velocidade de conjuração e skills." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "helm-0": { why: "+2 skills e magic find." },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "+1 skills e 20% de velocidade de conjuração." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro com 10% de Faster Cast Rate",
+            why: "Fecha o alvo de 105%.",
+            lookFor: ["10% de Faster Cast Rate", "Resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Flame Rift (sunder charm de fogo)",
+            why: "Carregue quando a zona exigir.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      optimized: {
+        goal: "Capaz nos Ubers, e confortável nas zonas que combinam com a magia.",
+        nextUpgrade: "Facets de fogo em todo socket. Há pouca coisa além disso.",
+        picks: {
+          "weapon-0": {
+            why: "+3 skills e +20% de dano de skills de fogo, com facets de fogo nos sockets.",
+            lookFor: ["+3 skills de Sorceress", "+20% de dano de skills de fogo", "3 sockets"],
+          },
+          "offhand-0": { why: "Velocidade de conjuração e skills." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "body-0-alt0": {
+            why: "Teleport com custo fixo de mana, o que importa numa build que se reposiciona o tempo todo.",
+          },
+          "helm-0": { why: "+2 skills, com um facet de fogo encaixado.", lookFor: ["2 sockets"] },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "+1 skills, 20% de velocidade de conjuração." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, resistências, vida",
+            why: "O slot em que um raro ganha.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de fogo com vida", why: "Dano e vida." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Escudo para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a corrigir.",
+        notes:
+          "A observação honesta: esta é a build de conjuração mais mal avaliada da pesquisa e a lista de melhores itens é quase idêntica à da Fire Ball Meteor Sorceress, que as duas fontes avaliam dois patamares acima. Monte pela questão dos Ubers e pelo jeito que ela joga, não porque o teto de equipamento seja diferente — não é.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de +3 skills e +20% de dano de fogo com três facets de fogo.",
+            lookFor: ["+3 skills de Sorceress", "+20% de dano de skills de fogo", "3 sockets"],
+          },
+          "offhand-0": {
+            why: "35% de velocidade de conjuração num Monarch.",
+            lookFor: ["35% de Faster Cast Rate"],
+          },
+          "body-0": { why: "Teleport e magic find por nível." },
+          "helm-0": { why: "+2 skills com um facet de fogo.", lookFor: ["2 sockets"] },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "+1 skills, 20% de velocidade de conjuração." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida",
+            why: "O último slot.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de fogo com vida", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Escudo para a troca." }],
+      },
+    },
+  },
 };
