@@ -36,15 +36,25 @@ export function dictionaryFor(locale: Locale): Dictionary {
  * Emitted on every page rather than only the home page: search engines need
  * per-URL hreflang to treat two language versions as translations rather than
  * as duplicate content.
+ *
+ * `x-default` points at the *unprefixed* path for the same page, which
+ * `proxy.ts` resolves per visitor from their cookie or `Accept-Language`. That
+ * is what x-default means — "we do not know which language this reader wants,
+ * let the server decide" — and it works for every page, not just the root,
+ * because the proxy prefixes any unprefixed path rather than only `/`.
  */
 export function alternatesFor(locale: Locale, path = "") {
   const clean = path.replace(/^\/+/, "").replace(/\/+$/, "");
   const suffix = clean ? `/${clean}` : "";
   return {
     canonical: `/${locale}${suffix}`,
-    languages: Object.fromEntries(
-      LOCALES.map((l) => [BCP47[l], `/${l}${suffix}`]),
-    ) as Record<string, string>,
+    languages: {
+      // Keys are BCP 47 tags; Next emits them as hreflang.
+      ...(Object.fromEntries(
+        LOCALES.map((l) => [BCP47[l], `/${l}${suffix}`]),
+      ) as Record<string, string>),
+      "x-default": suffix || "/",
+    },
   };
 }
 

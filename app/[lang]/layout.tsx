@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SITE_URL } from "@/lib/site-url";
-import { BCP47, LOCALES, OG_LOCALE, dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { alternatesFor, BCP47, dictionaryFor, fmt, isLocale, LOCALES, OG_LOCALE } from "@/lib/i18n";
 import { GAME_VERSION } from "@/lib/game-version";
 import "../globals.css";
 
@@ -58,18 +58,8 @@ export async function generateMetadata(
     },
     description: t.meta.defaultDescription,
     metadataBase: new URL(SITE_URL),
-    alternates: {
-      canonical: `/${lang}`,
-      languages: {
-        // Keys are BCP 47 tags; Next emits them as hreflang.
-        "en-US": "/en-us",
-        "pt-BR": "/pt-br",
-        // x-default points at the unprefixed root, which the proxy resolves
-        // per visitor. That is exactly what x-default is for: "we do not know
-        // which language this user wants, let the server decide".
-        "x-default": "/",
-      },
-    },
+    // Same helper every page uses, so the root cannot drift from its children.
+    alternates: alternatesFor(lang),
     openGraph: {
       type: "website",
       siteName: t.meta.siteName,

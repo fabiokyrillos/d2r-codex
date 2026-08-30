@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { SITE_URL } from "@/lib/site-url";
-import { BCP47, LOCALES, type Locale } from "@/lib/i18n/config";
+import { BCP47, DEFAULT_LOCALE, LOCALES, type Locale } from "@/lib/i18n/config";
 import { routes } from "@/lib/routes";
 import {
   getBuilds,
@@ -32,6 +32,12 @@ import {
  * arriving from a search engine is almost always trying to answer "what should
  * I do next" rather than look up a single stat line.
  */
+/** Removes the leading `/{locale}` so an x-default URL can be built from it. */
+function stripLocale(path: string): string {
+  const rest = path.replace(/^\/[a-z]{2}-[a-z]{2}/, "");
+  return rest || "/";
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
 
@@ -46,9 +52,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: number,
     changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] = "monthly",
   ) => {
-    const languages = Object.fromEntries(
-      LOCALES.map((l) => [BCP47[l], `${SITE_URL}${pathFor(l)}`]),
-    );
+    const languages: Record<string, string> = {
+      ...Object.fromEntries(
+        LOCALES.map((l) => [BCP47[l], `${SITE_URL}${pathFor(l)}`]),
+      ),
+      // The unprefixed URL, which the proxy resolves per visitor. Matches the
+      // x-default each page emits in its own <head>; a sitemap that disagreed
+      // with the page would be worse than one that stayed silent.
+      "x-default": `${SITE_URL}${stripLocale(pathFor(DEFAULT_LOCALE))}`,
+    };
 
     for (const locale of LOCALES) {
       entries.push({
