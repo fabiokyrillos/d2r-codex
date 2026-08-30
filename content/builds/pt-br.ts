@@ -4040,4 +4040,247 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "hydra-sorceress": {
+    summary:
+      "Torres de fogo que você posiciona e abandona. A Sorceress que mata coisas sem estar na sala.",
+    playstyle:
+      "Posicione hydras onde algo vai estar, e saia. Elas atiram sozinhas pela duração inteira, o que significa que você pode empilhar vários conjuntos num boss e teleportar para fora enquanto elas trabalham. Contra grupos isto é mais lento que qualquer outra Sorceress — as hydras precisam adquirir alvos — mas contra uma reserva de vida grande e única é um dos padrões de dano mais seguros do jogo, porque você nunca é a coisa que está sendo atacada.",
+    strengths: [
+      "Dano que continua depois de você ter saído. Nada mais no site faz isso",
+      "Genuinamente segura contra bosses: você posiciona, sai, eles morrem",
+      "Barata de equipar e fácil de alcançar o alvo de 105% de velocidade de conjuração",
+      "Excelente para farmar chaves, onde os alvos são super uniques isolados",
+      "Posicionar e esquecer combina com Hardcore melhor que qualquer outro padrão de Sorceress",
+    ],
+    weaknesses: [
+      "**Ruim contra densidade.** As hydras adquirem alvos devagar e não te seguem",
+      "Nada antes do nível 30, e uma cadeia longa de pré-requisitos para chegar lá",
+      "Imunidade a fogo é a mais comum no Hell e a Fire Mastery não a quebra",
+      "O teto de 18 hydras e a duração fixa de 250 frames significam que há um limite de quanto dá para empilhar",
+      "As duas fontes ranqueadas a colocam no meio da tabela, e o motivo é velocidade de limpeza",
+    ],
+    flexPoints: [
+      "**A divisão inicial.** A variante Starter do Maxroll coloca pontos iniciais numa skill de frio ou raio para você ter algo que funcione contra imunes a fogo, e depois faz respec completo para fogo quando um Sunder Charm ou Infinity existir. É isso que o inventário chamava de 'Hydra/Frozen Orb' — é uma variante de evolução desta build, não uma build separada.",
+      "**Fire Ball contra utilidade.** Maximizar Fire Ball te dá uma magia de limpeza de verdade e transforma a build em algo mais próximo de uma Fire Ball Meteor Sorceress com torres. Deixar em um ponto e gastar em outro lugar mantém a identidade da build mas deixa densidade genuinamente lenta. As duas são defensáveis; escolha pelo que você farma, bosses ou zonas.",
+      "**Variante de magic find:** a build é segura o bastante para que trocar dano por magic find custe tempo e não mortes. Mesmo plano de skills.",
+      "**Não coloque pontos em Energy.** Warmth mais um mercenário com Insight cobrem o custo de posicionar hydras.",
+    ],
+    statPlan: {
+      strength: "Só o que o seu equipamento exigir.",
+      dexterity: "Nenhuma. Teleport e distância são a defesa.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum.",
+      notes: [
+        "Esta build toma menos dano que qualquer outra Sorceress do site, porque as hydras são o que os monstros estão atacando. Vitality ainda importa, mas importa menos aqui que em qualquer outro lugar.",
+        "Posicionar três ou quatro hydras em sequência tem um custo de mana real. Warmth e um mercenário com Insight são a resposta, não Energy.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-105":
+        "O alvo padrão da Sorceress, e ele importa duas vezes aqui — é a velocidade com que você posiciona hydras e a velocidade com que teleporta para longe depois.",
+      "fcr-63": "O alvo inicial. Dois Spirits passam com conforto.",
+      "fhr-60":
+        "Menos crítico que em outras builds de Sorceress, porque normalmente você não é o alvo — mas ainda é o que te salva quando uma hydra puxa algo para cima de você.",
+    },
+    skillNotes: {
+      hydra:
+        "Nível 30. A duração é fixa em 250 frames independentemente do que você gastar — pontos compram dano, não permanência. Dezoito é o teto; a mais antiga some depois disso.",
+      "fire-mastery":
+        "30% de dano no nível 1 e +7% por nível. Multiplicador de dano, não redução de resistência.",
+      "fire-bolt":
+        "A sinergia de dano da Hydra, e o seu dano nos primeiros onze níveis. Nada aqui é desperdiçado.",
+      "fire-ball":
+        "Não é sinergia — é uma segunda magia. A Hydra sozinha é lenta demais para grupos, e o Fire Ball é o que preenche esse buraco. Maximize em quarto lugar ou deixe em um ponto se preferir Warmth e utilidade.",
+      inferno: "No caminho até o Fire Wall, que está no caminho até a Hydra.",
+      "fire-wall":
+        "Pré-requisito da Hydra, e uma magia de negação de corredor genuinamente útil por um ponto.",
+      meteor: "O outro pré-requisito da Hydra, e o da Fire Mastery.",
+      warmth: "Regeneração de mana desde o nível 1. Posicionar várias hydras de uma vez é caro.",
+      teleport: "**Um ponto para sempre**, e é como você sai depois de posicionar.",
+      "static-field":
+        "Tira 25% da vida atual do alvo — combina bem com uma build que já é paciente com bosses.",
+      "frozen-armor": "Defesa e congelamento em quem te ataca.",
+      "frost-nova": "Um botão de pânico para qualquer coisa que se aproxime enquanto as hydras trabalham.",
+    },
+    immunityPlan:
+      "Fogo é o elemento mais resistido do Hell e **a Fire Mastery não quebra imunidade** — ela dá 30% de dano no nível 1 mais 7% por nível. Como esta build não tem nenhum segundo tipo de dano, a resposta precisa vir de fora dela. **Um sunder charm Flame Rift** é a solução direta e é a que o próprio guia do Maxroll considera, ao custo de 70 a 90 pontos da sua própria resistência a fogo. **Infinity no mercenário** faz o mesmo sem a penalidade e por um preço muito maior. **A divisão inicial** — manter pontos iniciais numa skill de frio ou raio até um dos dois existir — é a resposta de graça durante a evolução, e é o que o item 'Hydra/Frozen Orb' do inventário de fato descreve. Escolher alvos também funciona melhor aqui que na maioria das builds: os bosses de chave e o Mephisto, que é onde esta build quer estar de qualquer forma, não são imunes a fogo.",
+    mercenaryNotes:
+      "**Ele importa mais aqui que na maioria das builds de Sorceress**, porque as hydras demoram a adquirir alvos e alguém precisa segurar a frente. Pegue **Might** pelo dano ou **Holy Freeze** para desacelerar o que as hydras estão atirando, dê um **Insight** pela mana que posicionar várias hydras custa, e um **Treachery** mais **Vampire Gaze** para mantê-lo vivo. Depois, um **Infinity** nele é a alternativa a carregar um Flame Rift.",
+    farmingWhy: {
+      "countess-hell":
+        "Um super unique único no fim de um trajeto curto — exatamente para o que torres servem. Runas por cima.",
+      "pindleskin-hell":
+        "Um alvo, monstro nível 86, a dez segundos de um portal. Posicione, recue, colete.",
+      "mephisto-hell":
+        "Ele não é imune a fogo, e o truque do fosso faz as hydras trabalharem enquanto nada consegue te alcançar.",
+      "andariel-hell": "Curta, perto de um waypoint, e um alvo único.",
+      "nihlathak-hell":
+        "Um boss de chave, e torres lidam com ele de fora do alcance do que o torna perigoso.",
+      "stony-tomb-hell":
+        "Nível de área 85 e leve em imunidade a fogo, ainda que a densidade combine menos com esta build que com uma de projétil.",
+    },
+    levelingPath: {
+      summary:
+        "A Hydra é uma skill de nível 30 atrás de uma cadeia incomumente longa: Fire Bolt até Fire Ball até Meteor, e Fire Bolt até Inferno até Fire Wall, antes de a Hydra abrir. A boa notícia é que o Fire Bolt também é a sinergia de dano da Hydra, então os pontos de evolução rendem duas vezes. Evolua como Fire Ball Sorceress e a transição não custa nada — **nenhum respec é necessário**, a menos que você tenha feito a divisão inicial de frio ou raio, e nesse caso o token grátis da Den of Evil cobre.",
+      respecAt: "Só se você fez a divisão inicial de frio ou raio",
+    },
+    selfFoundNotes:
+      "Muito amigável a self-found e melhor nisso do que o tier sugere. Ela não precisa de nenhum item caro para funcionar, mata os alvos únicos que mais dropam, e a lista inteira de equipamento abaixo do endgame é runeword da Countess e uniques comuns. Imunidade a fogo é a única coisa que self-found não resolve com facilidade — um Flame Rift é alvo realista, um Infinity não é — e a resposta enquanto isso é farmar os bosses que não são imunes.",
+    hardcoreNotes:
+      "Possivelmente a build de Sorceress mais segura do jogo. Você posiciona hydras e sai; os monstros atacam torres, não você; e contra um boss você nunca está na sala quando ele morre. A fraqueza da build — velocidade de limpeza baixa — custa tempo e não vidas. As ressalvas habituais da classe seguem valendo: a menor reserva de vida, sem bloqueio, e 60% de Faster Hit Recovery para os momentos em que algo passa por uma hydra e te encontra.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 pela cadeia de Fire Wall e Meteor.",
+        nextUpgrade: "Nível 30 pela Hydra e pela Fire Mastery juntas.",
+        notes:
+          "O Fire Bolt te carrega até o 12 e é a sinergia da Hydra, então nada cedo é desperdiçado. O Fire Ball a partir do 12 cobre o intervalo até o 30.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e até 35% de velocidade no nível 25.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "Velocidade de conjuração e recuperação no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+          "gloves-0": { why: "+1 em Fire Skills e 20% de velocidade." },
+        },
+      },
+      nightmare: {
+        goal: "Hydras posicionadas, Mephisto e os bosses de chave no farm.",
+        nextUpgrade:
+          "Resistências em 75%, um Insight para o mercenário, e um plano para imunes a fogo.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": {
+            why: "Um segundo Spirit — 70% de velocidade entre os dois.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "body-0": { why: "+1 skills, velocidade e resistências com 43 de Strength." },
+          "helm-0": { why: "+1 skills e magic find." },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "Resistências e dano convertido em mana." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "O caminho mais barato até 75%." }],
+      },
+      "early-hell": {
+        goal: "105% de velocidade de conjuração e uma resposta para imunidade a fogo.",
+        nextUpgrade:
+          "Death's Fathom é o elemento errado — o Eschuta's Temper é a arma de dano desta build.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": { why: "O segundo." },
+          "body-0": { why: "Resistências e velocidade de conjuração." },
+          "helm-0": { why: "+2 skills, vida, magic find e redução de dano." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": {
+            label: "Anel raro com 10% de Faster Cast Rate e resistências",
+            why: "A última velocidade de que você precisa.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "Segure 75%." },
+          {
+            label: "Flame Rift (Sunder Charm de fogo)",
+            why: "A resposta direta para imunidade a fogo, e a que o próprio guia do Maxroll considera. Custa 70 a 90 pontos da sua própria resistência a fogo.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Farm rápido de chaves e mortes de boss.",
+        nextUpgrade: "Facets de fogo em todo socket que você tiver.",
+        picks: {
+          "weapon-0": {
+            why: "Até +3 skills de Sorceress, 40% de velocidade e +20% de dano de skills de fogo. A arma de dano da build.",
+          },
+          "weapon-0-alt0": {
+            why: "Mantenha o Spirit enquanto resistência for a restrição — o Eschuta's não tem nenhuma.",
+          },
+          "offhand-0": { why: "Velocidade de conjuração e skills." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "helm-0": { why: "+2 skills e magic find." },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "+1 skills e 20% de velocidade." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro com 10% de Faster Cast Rate",
+            why: "Passa do alvo de 105.",
+            lookFor: ["10% de Faster Cast Rate", "Resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Flame Rift (Sunder Charm de fogo)", why: "Leve onde a zona exigir." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      optimized: {
+        goal: "Dano de fogo máximo em torres que não erram.",
+        nextUpgrade: "Sobra muito pouco. Esta build alcança o próprio teto cedo e barato.",
+        picks: {
+          "weapon-0": {
+            why: "+3 skills e +20% de dano de skills de fogo, com facets de fogo encaixados.",
+            lookFor: ["+3 skills de Sorceress", "+20% de dano de skills de fogo", "3 sockets"],
+          },
+          "offhand-0": { why: "Velocidade de conjuração e skills." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "body-0-alt0": { why: "Teleport com custo de mana fixo e magic find por nível." },
+          "helm-0": { why: "+2 skills, com um facet de fogo encaixado.", lookFor: ["2 sockets"] },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "+1 skills, 20% de velocidade." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, resistências, vida",
+            why: "O slot em que um raro ganha.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de fogo com vida", why: "Dano e vida." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "Esta build termina bem abaixo do topo do mercado, que é o motivo honesto de as duas fontes ranqueadas a colocarem no meio da tabela. Ela nunca vai limpar como uma Nova Sorceress. Ela também nunca vai precisar de um Infinity.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de +3 skills e +20% de dano de fogo com três facets de fogo.",
+            lookFor: ["+3 skills de Sorceress", "+20% de dano de skills de fogo", "3 sockets"],
+          },
+          "offhand-0": {
+            why: "35% de velocidade num Monarch.",
+            lookFor: ["35% de Faster Cast Rate"],
+          },
+          "body-0": { why: "Teleport e magic find por nível." },
+          "helm-0": { why: "+2 skills com um facet de fogo.", lookFor: ["2 sockets"] },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "belt-0": { why: "+1 skills, 20% de velocidade." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida",
+            why: "O último slot.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de fogo com vida", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
