@@ -1090,6 +1090,130 @@ export const runewords: Runeword[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "dream",
+    name: "Dream",
+    summary:
+      "A level 15 Holy Shock aura from an item. Wear two and the aura stacks to level 30, which is an entire build's damage.",
+    runes: ["io", "jah", "pul"],
+    sockets: 3,
+    requiredLevel: 65,
+    tier: "bis",
+    bases: {
+      categories: ["helm", "shield"],
+      display: "Any 3-socket Helm or Shield",
+      exclusions: [
+        "Helms and shields only — not body armour. Dragon is the one that goes in armour, and mixing the two up is the most common mistake here.",
+      ],
+    },
+    stats: [
+      { text: "Level 15 Holy Shock Aura When Equipped", notable: true },
+      { text: "+20-30% Faster Hit Recovery", variable: true, notable: true },
+      { text: "All Resistances +5-20", variable: true },
+      { text: "10% Chance to cast level 15 Confuse when struck" },
+      { text: "+150-220 Defense", variable: true },
+      { text: "+0.625 to Mana per Character Level" },
+      { text: "12-25% Better Chance of Getting Magic Items", variable: true },
+      { text: "In a helm: +10 Vitality, Increase Maximum Life 5%, +30% Enhanced Defense" },
+      { text: "In a shield: +10 Vitality, +50 to Life, +30% Enhanced Defense" },
+    ],
+    recommendedBases: [
+      "A helm and a shield, both of them. One Dream is a curiosity; two Dreams is the Tesladin, because the auras stack to an effective level 30.",
+      "For the shield, a Paladin class shield adds its own resistances on top. For the helm, any 3-socket elite helm with low requirements.",
+    ],
+    usedBy:
+      "Tesladins, who wear two of them and let a level 30 Holy Shock aura do the killing while they attack with Zeal. Also worn singly by aura-swapping Paladins who want lightning damage on tap.",
+    commonMistakes: [
+      "Making it in body armour. Dream does not accept armour; that is Dragon.",
+      "Making only one. The build is built on the two auras stacking, and a single Dream is not most of the way there.",
+      "Underestimating the cost. Two Dreams is two Jah runes, which is the real price of the build.",
+    ],
+    notes:
+      "The last two stat lines depend on which base you use — the game grants different bonuses in a helm than in a shield. Everything above them applies to both.",
+    confidence: "verified",
+  },
+  {
+    slug: "dragon",
+    name: "Dragon",
+    summary:
+      "A level 14 Holy Fire aura from body armour or a shield, plus Strength that scales with your level.",
+    runes: ["sur", "lo", "sol"],
+    sockets: 3,
+    requiredLevel: 61,
+    tier: "bis",
+    bases: {
+      categories: ["body-armor", "shield"],
+      display: "Any 3-socket Body Armor or Shield",
+      exclusions: [
+        "Body armour and shields — not helms. Dream is the helm one.",
+      ],
+    },
+    stats: [
+      { text: "Level 14 Holy Fire Aura When Equipped", notable: true },
+      { text: "+0.375 to Strength per Character Level", notable: true },
+      { text: "+360 Defense" },
+      { text: "+230 Defense vs. Missile" },
+      { text: "+3-5 to All Attributes", variable: true },
+      { text: "12% Chance to cast level 15 Hydra on striking" },
+      { text: "20% Chance to cast level 18 Venom when struck" },
+      { text: "In body armour: Increase Maximum Mana 5%, +5% Maximum Lightning Resist, Damage Reduced by 7" },
+      { text: "In a shield: +50 to Mana, +5% Maximum Lightning Resist, Damage Reduced by 7" },
+    ],
+    recommendedBases: [
+      "A low-requirement 3-socket body armour, because the Strength-per-level line means you do not want to be paying for the base twice.",
+      "A Paladin class shield if you are building a Dragon Paladin and want the innate resistances.",
+    ],
+    usedBy:
+      "Dragon Paladins, usually paired with a Hand of Justice weapon so that two Holy Fire auras stack. The Strength per level also quietly pays for heavier gear elsewhere.",
+    commonMistakes: [
+      "Expecting the aura to be enough on its own. A single level 14 Holy Fire does not kill anything in Hell — it is half of a pair.",
+      "Building it in a helm. Dragon does not accept helms.",
+    ],
+    notes:
+      "The last two stat lines depend on the base. Everything above them applies to both body armour and shields.",
+    confidence: "verified",
+  },
+  {
+    slug: "hand-of-justice",
+    name: "Hand of Justice",
+    summary:
+      "A level 16 Holy Fire aura on a weapon, with attack speed, life steal and -20% enemy fire resistance.",
+    runes: ["sur", "cham", "amn", "lo"],
+    sockets: 4,
+    requiredLevel: 67,
+    tier: "bis",
+    bases: {
+      categories: ["sword", "axe", "mace", "hammer", "scepter", "polearm", "spear"],
+      display: "Any 4-socket Weapon",
+      exclusions: [
+        "Any weapon type, which is unusually permissive — the constraint is finding a 4-socket base worth putting four high runes into.",
+      ],
+    },
+    stats: [
+      { text: "Level 16 Holy Fire Aura When Equipped", notable: true },
+      { text: "-20% to Enemy Fire Resistance", notable: true },
+      { text: "+33% Increased Attack Speed", notable: true },
+      { text: "+280-330% Enhanced Damage", variable: true },
+      { text: "Ignore Target's Defense" },
+      { text: "7% Life stolen per hit" },
+      { text: "20% Deadly Strike" },
+      { text: "Freezes Target +3" },
+      { text: "Hit Blinds Target +1" },
+      { text: "100% Chance to cast level 36 Blaze when you Level-Up" },
+      { text: "100% Chance to cast level 48 Meteor when you Die" },
+    ],
+    recommendedBases: [
+      "A Phase Blade for the speed and indestructibility, or a Berserker Axe for the damage the Enhanced Damage roll multiplies.",
+    ],
+    usedBy:
+      "Dragon Paladins, who pair it with a Dragon runeword so the two Holy Fire auras stack — and its -20% enemy fire resistance compounds with that directly. Also used by melee characters who simply want the attack speed and life steal.",
+    commonMistakes: [
+      "Treating the Meteor-on-death line as a feature. It fires when you die; it is flavour, not a plan.",
+      "Buying it for the aura alone without a second Holy Fire source. One aura is not a build.",
+    ],
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Reign of the Warlock
   // -------------------------------------------------------------------------

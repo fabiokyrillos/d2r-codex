@@ -428,4 +428,60 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     notes:
       "Runas e base vêm do anúncio da Blizzard. Estatísticas não publicadas e não verificadas. O nível mostrado é o mínimo implicado pela Ohm (nível 57).",
   },
+  dream: {
+    summary:
+      "Uma aura de Holy Shock nível 15 vinda de um item. Use dois e a aura empilha para o nível 30, que é o dano de uma build inteira.",
+    basesDisplay: "Qualquer Helm ou Shield de 3 sockets",
+    basesExclusions: [
+      "Só elmos e escudos — não armadura de corpo. O Dragon é o que vai em armadura, e confundir os dois é o erro mais comum aqui.",
+    ],
+    recommendedBases: [
+      "Um elmo e um escudo, os dois. Um Dream é curiosidade; dois Dreams é o Tesladin, porque as auras empilham para um nível 30 efetivo.",
+      "Para o escudo, um escudo de classe do Paladin soma as próprias resistências por cima. Para o elmo, qualquer elmo elite de 3 sockets com requisitos baixos.",
+    ],
+    usedBy:
+      "Tesladins, que usam dois e deixam uma aura de Holy Shock nível 30 matar enquanto eles atacam com Zeal. Também usado sozinho por Paladins de troca de aura que querem dano de raio à disposição.",
+    commonMistakes: [
+      "Fazer em armadura de corpo. O Dream não aceita armadura; isso é o Dragon.",
+      "Fazer só um. A build é construída sobre as duas auras empilhando, e um Dream sozinho não é quase lá.",
+      "Subestimar o custo. Dois Dreams são duas runas Jah, que é o preço real da build.",
+    ],
+    notes:
+      "As duas últimas linhas de atributo dependem da base usada — o jogo concede bônus diferentes num elmo e num escudo. Tudo acima delas vale para os dois.",
+  },
+  dragon: {
+    summary:
+      "Uma aura de Holy Fire nível 14 vinda de armadura de corpo ou escudo, mais Strength que escala com o seu nível.",
+    basesDisplay: "Qualquer Body Armor ou Shield de 3 sockets",
+    basesExclusions: ["Armadura de corpo e escudos — não elmos. O Dream é o dos elmos."],
+    recommendedBases: [
+      "Uma armadura de 3 sockets com requisito baixo, porque a linha de Strength por nível significa que você não quer pagar pela base duas vezes.",
+      "Um escudo de classe do Paladin se você está montando um Dragon Paladin e quer as resistências inatas.",
+    ],
+    usedBy:
+      "Dragon Paladins, normalmente junto com uma arma Hand of Justice para que duas auras de Holy Fire empilhem. A Strength por nível ainda paga discretamente por equipamento mais pesado nos outros slots.",
+    commonMistakes: [
+      "Esperar que a aura baste sozinha. Um Holy Fire nível 14 sozinho não mata nada no Hell — ele é metade de um par.",
+      "Montar num elmo. O Dragon não aceita elmos.",
+    ],
+    notes:
+      "As duas últimas linhas de atributo dependem da base. Tudo acima delas vale tanto para armadura de corpo quanto para escudo.",
+  },
+  "hand-of-justice": {
+    summary:
+      "Uma aura de Holy Fire nível 16 numa arma, com velocidade de ataque, life steal e -20% de resistência a fogo do inimigo.",
+    basesDisplay: "Qualquer arma de 4 sockets",
+    basesExclusions: [
+      "Qualquer tipo de arma, o que é incomumente permissivo — a restrição é achar uma base de 4 sockets que valha quatro runas altas.",
+    ],
+    recommendedBases: [
+      "Uma Phase Blade pela velocidade e pela indestrutibilidade, ou uma Berserker Axe pelo dano que o roll de Enhanced Damage multiplica.",
+    ],
+    usedBy:
+      "Dragon Paladins, que combinam com uma runeword Dragon para as duas auras de Holy Fire empilharem — e o -20% de resistência a fogo do inimigo soma diretamente com isso. Também usada por personagens de corpo a corpo que só querem a velocidade de ataque e o life steal.",
+    commonMistakes: [
+      "Tratar a linha de Meteor ao morrer como recurso. Ela dispara quando você morre; é sabor, não plano.",
+      "Comprar pela aura sem uma segunda fonte de Holy Fire. Uma aura não é uma build.",
+    ],
+  },
 };
