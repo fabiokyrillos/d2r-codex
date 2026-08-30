@@ -99,7 +99,14 @@ export default async function RunewordPage({ params }: Props) {
           </div>
         </Section>
 
-        <Section title="Statistics" description="As they appear on the finished item, including the individual rune contributions.">
+        <Section
+          title="Statistics"
+          description={
+            rw.confidence === "unverified"
+              ? "Not published by Blizzard and not yet confirmed in game. Left blank rather than guessed."
+              : "As they appear on the finished item, including the individual rune contributions."
+          }
+        >
           <Card>
             <StatLines stats={rw.stats} />
           </Card>
