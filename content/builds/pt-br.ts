@@ -3191,4 +3191,274 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "frozen-orb-sorceress": {
+    summary:
+      "Um projétil que solta gelo enquanto viaja, sob uma mastery que arranca resistência a frio. A build de farm mais perdoável do jogo.",
+    playstyle:
+      "Conjure na direção do problema e continue andando. O orb viaja para frente e joga estilhaços para os lados o caminho inteiro, então ele cobre um corredor largo sem você precisar mirar com precisão — e é por isso que é a build recomendada para quem acha a colocação no chão do Blizzard chata. Tudo que ele toca é congelado ou desacelerado, então a luta vai ficando mais lenta conforme acontece. A Cold Mastery trabalha em silêncio no fundo: ela arranca uma fatia grande da resistência a frio de tudo, e é por isso que o dano se sustenta no Hell.",
+    strengths: [
+      "Quase nenhuma mira necessária — o orb cobre um caminho largo sozinho",
+      "Congela e desacelera tudo que toca, o que é defesa além de dano",
+      "**A Cold Mastery reduz a resistência do inimigo em vez de aumentar o seu dano**, então builds de frio encontram menos paredes que as de fogo ou raio",
+      "Excelente em Terror Zones, onde a densidade combina com um projétil largo que viaja",
+      "Muito barata. Dois Spirits e um Vipermagi já é um personagem funcional no Hell",
+    ],
+    weaknesses: [
+      "**Nada antes do nível 30** — Frozen Orb e Cold Mastery abrem juntos",
+      "Imunes a frio existem e a Cold Mastery não os quebra, só reduz resistência do que não é imune",
+      "Dano de alvo único é modesto; bosses demoram",
+      "Vida baixa, sem bloqueio, e nenhuma camada defensiva além do Teleport e do congelamento",
+      "Os Ancient Tunnels, uma das melhores zonas de nível 85, são cheios de imunes a frio",
+    ],
+    flexPoints: [
+      "**Os pontos restantes vão para o Glacial Spike**, que é ao mesmo tempo uma terceira sinergia e o melhor botão de emergência da árvore de frio.",
+      "**A questão do Blizzard.** O Blizzard é a outra build de frio e tem página própria; ele troca a mira perdoável desta build por dano de alvo único maior e um cooldown para administrar. Não são variantes uma da outra e os planos de skill mal se sobrepõem.",
+      "**A divisão Meteorb** — Frozen Orb mais Meteor em vez de Frozen Orb mais as sinergias de frio — é uma build separada com página própria. Ela compra um segundo tipo de dano e paga com um orçamento de pontos bem mais apertado.",
+      "**Variante de magic find:** esta build tem o melhor perfil de magic find entre as starters, porque limpa rápido e quase não precisa de nada do equipamento. Troque charms de dano por magic find e use War Traveler e um Harlequin Crest. O plano de skills não muda.",
+    ],
+    statPlan: {
+      strength: "Só o que o equipamento pedir, que para esta build é muito pouco.",
+      dexterity: "Nenhuma. O Teleport e o congelamento são a defesa.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. O Warmth e um mercenário com Insight cobrem.",
+      notes: [
+        "Este é o plano de atributos mais barato de qualquer build do site: sem bloqueio, sem base pesada, sem requisito de arma.",
+        "Uma troca com Call to Arms vale mais vida que qualquer quantidade de Vitality que você comprasse com a moeda equivalente.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-105":
+        "O alvo padrão da Sorceress, e ele governa o Teleport além da conjuração — que numa build de farm é a maior parte do seu tempo.",
+      "fcr-63": "O alvo inicial, e uma sword Spirit mais Magefist quase chegam lá sozinhos.",
+      "fhr-60":
+        "O alvo padrão de recuperação da Sorceress. Ser interrompida é a forma principal de esta build morrer.",
+    },
+    skillNotes: {
+      "frozen-orb":
+        "Nível 30. A build inteira. Maximize primeiro e nada mais chega perto em valor por ponto.",
+      "cold-mastery":
+        "**Reduz a resistência a frio do inimigo em 20% no nível 1 e mais 5% por nível.** Não é multiplicador de dano — é o motivo de o seu dano ainda acertar no Hell.",
+      "ice-bolt":
+        "Sinergia do Frozen Orb, e o seu dano nos primeiros onze níveis. Nada gasto aqui é desperdiçado.",
+      "ice-blast":
+        "A segunda sinergia. Também é uma magia de alvo único utilizável enquanto você espera o nível 30.",
+      warmth: "Regeneração de mana desde o nível 1.",
+      teleport: "**Um ponto para sempre.** Mais pontos só cortam o custo de mana.",
+      "static-field":
+        "Tira 25% da vida atual do alvo, que é como uma build de frio lida com um boss que ela não consegue explodir.",
+      "frozen-armor": "Defesa e congelamento em quem te ataca.",
+      "frost-nova": "Um botão de pânico à queima-roupa que congela tudo ao seu redor.",
+      "glacial-spike":
+        "Congela um grupo inteiro por um instante. Um ponto é uma ferramenta defensiva de verdade num personagem sem bloqueio.",
+    },
+    immunityPlan:
+      "Builds de frio encontram menos paredes que as de fogo ou raio, e vale entender por quê. **A Cold Mastery reduz a resistência a frio do inimigo em 20% no nível 1 e mais 5% por nível**, enquanto as masteries de fogo e raio aumentam o seu próprio dano. Contra qualquer coisa que não seja de fato imune, isso significa que o seu dano continua acertando bem dentro do Hell sem um único item comprado para isso. **Mas ela não quebra imunidade verdadeira**: redução de resistência é aplicada com um quinto da eficácia contra um monstro já imune, então uma Cold Mastery maximizada vale cerca de −20% contra algo em 110%, o que está longe de bastar. As respostas contra imunes a frio de verdade são um sunder charm **Cold Rupture** ao custo de 70 a 90 pontos da sua própria resistência a frio, **o dano físico do seu mercenário**, ou **pular** — que numa build de farm costuma ser o certo. Os Ancient Tunnels são o único lugar em que essa escolha realmente custa caro, e a lista de farming acima está avaliada de acordo.",
+    mercenaryNotes:
+      "Mercenário do Ato 2 com **Might**, um **Insight** para a sua mana, e um **Vampire Gaze** para mantê-lo vivo. Diferente da Lightning Sorceress, esta build não precisa de um Infinity — a Cold Mastery já reduz a resistência a frio do inimigo, então o mercenário está ali pelo dano e pelos imunes a frio que você decidir não pular. **Treachery** na armadura dele é um upgrade barato cujo proc de Fade sobe muito as resistências dele.",
+    farmingWhy: {
+      "mephisto-hell":
+        "O motivo de a build existir. Um trajeto de vinte segundos, ele não é imune a frio, e a tabela de drop é uma das melhores do jogo.",
+      "pindleskin-hell":
+        "A dez segundos de um portal e monstro nível 86. Ele é imune a frio no Hell, então esta é uma run em que o seu mercenário ganha o salário — ou em que você leva um Cold Rupture.",
+      "andariel-hell": "Curta, perto de um waypoint, e ela morre rápido com alguns orbs.",
+      "countess-hell": "Runas, e um trajeto que o orb limpa sem você mirar em nada.",
+      "pit-hell":
+        "Nível de área 85, curta, e o caminho largo do orb combina com o layout. O melhor farm geral depois que você tiver magic find.",
+      "mausoleum-hell":
+        "Nível de área 85 densa e perto de um waypoint. Densidade é onde um projétil que viaja está no seu melhor.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 e uma das melhores zonas do jogo — mas muito imune a frio. Só vale com um charm Cold Rupture ou um mercenário que consiga carregar.",
+    },
+    levelingPath: {
+      summary:
+        "Frozen Orb e Cold Mastery chegam os dois no **nível 30**, então os primeiros trinta níveis são jogados como uma Sorceress de Ice Bolt e Ice Blast — e as duas são sinergias, então nada é desperdiçado. O Static Field a partir do nível 6 lida com qualquer coisa com vida demais, e o Teleport no 18 muda como você se move. **Nenhum respec é necessário**, o que junto com a Fire Ball Meteor Sorceress faz destas as duas partidas mais perdoáveis do site.",
+    },
+    selfFoundNotes:
+      "Junto com a Fire Ball Meteor, o melhor personagem de self-found do site. Tudo de que ela precisa abaixo do endgame é runeword da Countess ou compra de vendedor, ela não tem nenhum item que seja requisito duro, e a Cold Mastery significa que ela não precisa de um Infinity para continuar funcionando no Hell. Uma Frozen Orb Sorceress self-found farmando o Mephisto é como muita gente banca todos os outros personagens que tem.",
+    hardcoreNotes:
+      "Uma das casters mais seguras do jogo, e o motivo é o congelamento e não o dano. Tudo que o orb toca fica desacelerado, então grupos chegam devagar e em pedaços; Frost Nova e Glacial Spike te dão dois botões de pânico que param uma sala inteira. Pegue Chains of Honor em vez de Enigma, trate os 60% de Faster Hit Recovery como obrigatórios, e mantenha uma troca com Call to Arms. O perigo real é o mesmo de toda Sorceress — grupos imunes a frio que fecham a distância enquanto você não tem nada para desacelerá-los.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30. Até lá você é uma Sorceress de Ice Bolt, e tudo bem.",
+        nextUpgrade:
+          "Nível 30. Frozen Orb e Cold Mastery chegam juntos e o personagem muda por completo num nível só.",
+        notes:
+          "Evolua com Ice Bolt e Ice Blast. As duas são sinergias, então todo ponto gasto antes do 30 ainda está trabalhando no 90. O Static Field a partir do nível 6 lida com qualquer coisa com vida demais.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e até 35% de Faster Cast Rate no nível 25.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            label: "Qualquer staff ou orb com +Ice Bolt ou +Ice Blast",
+            why: "O estoque dos vendedores é renovado cada vez que você entra na cidade. Uma staff com +3 numa sinergia é dano grátis que continua pagando depois do nível 30.",
+            lookFor: ["+3 Ice Bolt", "+3 Ice Blast", "+2 Cold Skills"],
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "25% de Faster Cast Rate e 25% de Faster Hit Recovery no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills por duas runas comuns." },
+          "gloves-0": {
+            why: "Mana, e +1 em Cold Skills quando você achar um par. O Magefist é a alternativa se velocidade de conjuração importar mais.",
+          },
+        },
+      },
+      nightmare: {
+        goal: "Frozen Orb ativo, Mephisto no farm, resistências subindo.",
+        nextUpgrade: "Resistências em 75%, um Insight para o mercenário, e então simplesmente farme.",
+        picks: {
+          "weapon-0": { why: "Ainda o item de melhor custo-benefício disponível." },
+          "offhand-0": {
+            why: "Um segundo Spirit — +4 skills e 70% de Faster Cast Rate entre os dois.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "offhand-0-alt0": {
+            why: "+1 skills e 20% de velocidade sem precisar achar uma base de 4 sockets.",
+          },
+          "body-0": {
+            why: "+1 skills, 30% de velocidade e até +35 em todas as resistências com 43 de Strength.",
+          },
+          "helm-0": { why: "+1 skills e até 50% de magic find, que nesta build é o ponto." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "Resistências e dano convertido em mana." },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "O caminho mais barato até 75% antes do Hell." },
+        ],
+      },
+      "early-hell": {
+        goal: "105% de velocidade, resistências capadas, e Mephisto rodando em repetição.",
+        nextUpgrade:
+          "Nightwing's Veil ou Death's Fathom — os dois itens que transformam uma build barata numa build rápida.",
+        notes:
+          "É aqui que a build já está fazendo o trabalho dela. Tudo acima deste nível a deixa mais rápida; nada acima dele a torna possível.",
+        picks: {
+          "weapon-0": { why: "35% de velocidade e +2 skills." },
+          "offhand-0": { why: "O segundo." },
+          "body-0": { why: "Resistências e velocidade de conjuração juntas, barato." },
+          "body-0-alt0": {
+            why: "+3 numa magia aleatória e +10-15% de dano de skills de frio se o roll for Frozen Orb. Uma loteria, mas barata.",
+          },
+          "helm-0": { why: "+2 skills, vida, 50% de magic find e 10% de redução de dano." },
+          "amulet-0": { why: "+2 em todas as skills e +20-30 em todas as resistências." },
+          "ring1-0": {
+            label: "Anel raro com 10% de Faster Cast Rate e resistências",
+            why: "A última velocidade de que você precisa.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find, que é para o que esta build serve." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "Segure 75% nas quatro." }],
+      },
+      budget: {
+        goal: "Farm rápido de Mephisto e de Terror Zones com magic find de verdade.",
+        nextUpgrade:
+          "Nightwing's Veil, e Death's Fathom quando a restrição virar velocidade de limpeza em vez de magic find.",
+        picks: {
+          "weapon-0": {
+            why: "+3 skills de Sorceress, 30% de velocidade, +20 em todas as resistências e 50% de magic find. O orb clássico de magic find, e barato.",
+          },
+          "weapon-0-alt0": {
+            why: "A opção de dano: até +30% de dano de skills de frio. Bem mais caro, e vale a pena quando a velocidade de limpeza for a restrição.",
+          },
+          "offhand-0": { why: "35% de velocidade e +2 skills." },
+          "body-0": { why: "+2 skills, +65 em todas as resistências, 8% de redução de dano." },
+          "helm-0": { why: "+2 skills e 50% de magic find." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": { why: "Magic find, numa build cujo propósito inteiro é achar coisas." },
+          "ring2-0": {
+            label: "Anel raro com 10% de Faster Cast Rate",
+            why: "Passa dos 105%.",
+            lookFor: ["10% de Faster Cast Rate", "Resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find e dano." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress e resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de frio com vida", why: "Dano e vida juntos." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      optimized: {
+        goal: "Dano de frio empilhado, e a escolha entre achar mais e matar mais rápido.",
+        nextUpgrade:
+          "Facets de frio em todo socket, e um charm Cold Rupture se os Ancient Tunnels forem o que você quer farmar.",
+        picks: {
+          "weapon-0": {
+            why: "Até +30% de dano de skills de frio além dos +3 skills de Sorceress. O maior item de dano que esta build tem.",
+            lookFor: ["+30% de dano de skills de frio", "+3 skills de Sorceress", "sockets para facets de frio"],
+          },
+          "weapon-0-alt0": {
+            why: "Mantenha o Oculus enquanto magic find importar mais que velocidade de limpeza. Essa é uma escolha real e não uma escolha menor.",
+          },
+          "offhand-0": { why: "35% de velocidade e +2 skills." },
+          "helm-0": {
+            why: "+2 skills e até +15% de dano de skills de frio. O requisito de 192 de Strength é cortado pela metade pelo próprio Requirements -50% dele, então o custo real é 96.",
+            lookFor: ["+15% de dano de skills de frio", "2 sockets para facets de frio"],
+          },
+          "helm-0-alt0": {
+            why: "Mantenha o Shako pelo magic find e pela redução de dano se você está farmando em vez de empurrando.",
+          },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "body-0-alt0": {
+            why: "Teleport sem custo de mana que escala, mais magic find por nível.",
+          },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 skills, 20% de velocidade." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, resistências, vida",
+            why: "O slot em que um raro supera qualquer unique.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de frio com vida", why: "Dano e vida." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "A nota honesta no topo da escada: o teto desta build é mais baixo que o da Lightning ou da Nova, e ela chega a esse teto por uma fração do preço. Ela segue sendo um dos melhores personagens de magic find do jogo justamente porque nunca precisou dos itens caros para funcionar.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de +30% de dano de skills de frio, com facets de frio encaixados.",
+            lookFor: ["+30% de dano de skills de frio", "sockets"],
+          },
+          "offhand-0": {
+            why: "35% de velocidade num Monarch.",
+            lookFor: ["35% de Faster Cast Rate", "base Monarch"],
+          },
+          "helm-0": {
+            why: "+15% de dano de skills de frio com dois facets de frio dentro.",
+            lookFor: ["+15% de dano de skills de frio", "2 sockets"],
+          },
+          "body-0": { why: "Teleport, Strength e magic find por nível." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 skills, 20% de velocidade." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida, mana",
+            why: "O último slot a aperfeiçoar.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de frio com vida", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
