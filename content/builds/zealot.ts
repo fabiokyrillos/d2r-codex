@@ -541,7 +541,7 @@ export const zealot: Build = {
             {
               ref: { kind: "runeword", slug: "exile" },
               why: "Ethereal Paladin shield with a high all-resistances roll.",
-              lookFor: ["Level 16 Defiance", "ethereal base with 45 all resistances"],
+              lookFor: ["Level 16 Defiance", "Ethereal base", "45 all resistances"],
             },
           ],
         },

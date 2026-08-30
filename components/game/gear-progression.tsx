@@ -78,14 +78,20 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
               {set.slots.map((entry) => (
                 <div
                   key={entry.slot}
-                  className="grid gap-3 sm:grid-cols-[8rem_1fr] sm:gap-6"
+                  className="grid gap-3 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-6"
                 >
                   <div className="pt-0.5">
                     <span className="text-xs font-semibold tracking-wide text-ink-subtle uppercase">
                       {slots[entry.slot]}
                     </span>
                   </div>
-                  <div className="space-y-4 border-l border-border pl-4 sm:border-l-0 sm:pl-0">
+                  {/*
+                    min-w-0 stops a wide child from stretching the grid track.
+                    Without it, one over-long `lookFor` badge — which is
+                    whitespace-nowrap by design — widens the whole page rather
+                    than overflowing its own row.
+                  */}
+                  <div className="min-w-0 space-y-4 border-l border-border pl-4 sm:border-l-0 sm:pl-0">
                     {entry.picks.map((pick, i) => (
                       <GearPickView key={i} pick={pick} />
                     ))}

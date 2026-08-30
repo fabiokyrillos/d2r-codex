@@ -328,8 +328,7 @@ export const smiter: Build = {
           picks: [
             {
               ref: { kind: "unique", slug: "draculs-grasp" },
-              why: "**The item that makes Ubers possible.** Life Tap converts your damage into healing, which is the only sustain a Smiter has — life steal does not work with Smite.",
-              lookFor: ["Any roll. The Life Tap proc is fixed and is the entire reason to wear these."],
+              why: "**The item that makes Ubers possible.** Life Tap converts your damage into healing, which is the only sustain a Smiter has — life steal does not work with Smite. Any roll will do: the Life Tap proc is fixed, and it is the entire reason to wear these.",
             },
           ],
         },
@@ -608,7 +607,7 @@ export const smiter: Build = {
             {
               ref: { kind: "runeword", slug: "exile" },
               why: "A 16 Defiance roll in an ethereal Paladin shield that already carried +45 all resistances.",
-              lookFor: ["Level 16 Defiance", "260% Enhanced Defense", "ethereal base with 45 all res"],
+              lookFor: ["Level 16 Defiance", "260% Enhanced Defense", "Ethereal base"],
             },
           ],
         },

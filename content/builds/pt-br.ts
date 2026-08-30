@@ -1095,8 +1095,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             why: "As resistências importam mais no Hell que o bloqueio, e este escudo dá os dois.",
           },
           "gloves-0": {
-            why: "**O item que torna os Ubers possíveis.** Life Tap converte o seu dano em cura, que é a única sustentação que um Smiter tem — life steal não funciona com Smite.",
-            lookFor: ["Qualquer roll. O proc de Life Tap é fixo e é a razão inteira de usar essas luvas."],
+            why: "**O item que torna os Ubers possíveis.** Life Tap converte o seu dano em cura, que é a única sustentação que um Smiter tem — life steal não funciona com Smite. Qualquer roll serve: o proc de Life Tap é fixo, e é a razão inteira de usar essas luvas.",
           },
           "body-0": {
             why: "15% de Crushing Blow no slot de armadura, mais redução de dano, por três runas médias.",
@@ -1229,7 +1228,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "offhand-0": {
             why: "Um roll de Defiance 16 num escudo de Paladin etéreo que já vinha com +45 em todas as resistências.",
-            lookFor: ["Defiance nível 16", "260% de Enhanced Defense", "base etérea com 45 em todas as resistências"],
+            lookFor: ["Defiance nível 16", "260% de Enhanced Defense", "Base etérea"],
           },
           "body-0": { why: "Teleport." },
           "helm-0": {
@@ -1529,7 +1528,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "offhand-0": {
             why: "Escudo de Paladin etéreo com roll alto de resistências.",
-            lookFor: ["Defiance nível 16", "base etérea com 45 em todas as resistências"],
+            lookFor: ["Defiance nível 16", "Base etérea", "45 em todas as resistências"],
           },
           "body-0": {
             why: "Teleport. A esta altura mobilidade vale mais que o dano que o Fortitude daria.",
@@ -1843,6 +1842,287 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
           { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
           { label: "Grand charms de skills de raio com vida", why: "Dano e vida no mesmo slot." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
+  avenger: {
+    summary:
+      "Cada golpe causa dano físico, de fogo, de frio e de raio ao mesmo tempo, sob uma aura que arranca resistência. A build que a imunidade não consegue parar.",
+    playstyle:
+      "Rode Conviction, chegue perto do que estiver na sua frente e golpeie. O Vengeance converte uma parte do dano da sua arma em fogo, frio e raio simultaneamente, então todo ataque são quatro tipos de dano procurando aquele que o alvo não resiste. Não há checagem de imunidade para planejar nem troca a fazer. O que você planeja são os seus pontos de skill, porque esta build quer mais do que o jogo te dá.",
+    strengths: [
+      "Quatro tipos de dano em cada golpe — você quase nunca vai achar algo que resista a todos",
+      "A Conviction arranca resistência de tudo por perto, o que te torna um bom membro de party para personagens elementais",
+      "Barata de equipar. Um Kingslayer sozinho já dá +1 em Vengeance, e a build limpa o Hell sem uma única runa alta",
+      "Maximizar três skills de resistência dá, de brinde, resistências máximas incomumente altas",
+      "Sem sunder charm, sem Infinity, sem lista de compras contra imunidade",
+    ],
+    weaknesses: [
+      "**Faminta por pontos de skill.** O plano completo pede cerca de 113 pontos e um personagem nível 99 tem 110. Alguma coisa vai ficar de fora",
+      "Alvo único. O Vengeance atinge uma coisa por vez, então densidade é lenta",
+      "Nenhuma mobilidade própria. Sem Enigma esta build anda a pé por tudo",
+      "O dano chega tarde — as sinergias só compensam quando várias estão perto do máximo",
+      "Nenhum dos dois tier lists ranqueados que consultamos a inclui, o que é um sinal real sobre como ela se compara",
+    ],
+    flexPoints: [
+      "**Leia o orçamento de pontos antes de se comprometer.** Vengeance, as três skills de resistência e a Conviction todas maximizadas são 100 pontos, e as cadeias de pré-requisito custam cerca de 13 a mais. Um personagem nível 99 tem 110. Você vai terminar devendo alguma coisa, e é melhor escolher qual.",
+      "**A Conviction é o lugar habitual de ficar devendo**, e é o certo — cada ponto de +skills no seu equipamento sobe ela, então equipamento substitui pontos aqui de um jeito que não funciona para as sinergias.",
+      "**O Holy Shield é o outro candidato.** Um ponto mais +skills dá um bloqueio real, mas não máximo. Se você prefere bloqueio máximo aos últimos pontos de Conviction, é uma troca legítima e esta página não vai fingir o contrário.",
+      "**Salvation além de um ponto é armadilha.** É uma sinergia de 2% por nível contra os 10% das skills de resistência. Maximize as três primeiro, sempre.",
+      "**Increased Attack Speed não é publicado como tabela de breakpoint aqui.** Os limiares de frame do Vengeance dependem do modificador de velocidade da sua arma e de dados de animação que nenhuma fonte confiável publica. A Fanaticism não está disponível para você enquanto a Conviction estiver rodando, então velocidade de ataque precisa vir de equipamento — Highlord's Wrath, Kingslayer e luvas craftadas são onde ela mora.",
+    ],
+    statPlan: {
+      strength: "O que a sua arma e o seu escudo pedirem. Um Kingslayer numa Cryptic Sword e um Rhyme num escudo modesto pedem muito pouco; um Last Wish numa Berserker Axe pede 138.",
+      dexterity:
+        "O suficiente para o tanto de bloqueio que você decidiu comprar. Com o Holy Shield em um ponto, esse número é maior do que seria num Zealot, e isso faz parte do custo do compromisso acima.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. O Vengeance custa mana por golpe, e é para isso que serve o Insight do mercenário.",
+      notes: [
+        "**O Vengeance tem custo de mana real por ataque**, diferente do Zeal. Um Insight no mercenário não é opcional nesta build, é o plano de mana.",
+        "**Confira o bloqueio com o Holy Shield ativo** — a armadilha habitual de Paladin, e aqui importa mais porque você só tem um ponto nele.",
+        "As suas resistências máximas ficam incomumente altas porque três skills de resistência estão maximizadas como sinergia. Isso é sobrevivência de graça e vale saber antes de comprar equipamento de resistência a mais.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48": "Uma build de corpo a corpo com bloqueio modesto precisa se recuperar dos golpes que não parou.",
+      "fbr-32":
+        "Vale ter qualquer que seja a porcentagem de bloqueio que você escolheu, porque os frames de recuperação são o que permite agir entre golpes.",
+    },
+    skillNotes: {
+      vengeance:
+        "70% de dano no nível 1 e +6% por nível, além da conversão elemental. Maximize primeiro — todo o resto é multiplicador em cima dele.",
+      "resist-fire":
+        "Sinergia de fogo do Vengeance a 10% por nível, e ainda sobe a sua resistência máxima a fogo. O melhor investimento por ponto da build.",
+      "resist-lightning":
+        "Os mesmos 10% por nível, para a parte de raio. Vem antes do frio porque dano de raio no Hell é o que mata Paladins.",
+      "resist-cold":
+        "A terceira sinergia de 10% por nível. Também é pré-requisito do Resist Lightning, então o primeiro ponto já está pago.",
+      conviction:
+        "**É aqui que os pontos acabam.** 30% de redução de resistência no nível 1 mais 5% por nível. Coloque todo ponto que sobrar aqui e deixe o equipamento com +skills levar o resto do caminho.",
+      zeal: "Pré-requisito do Vengeance, e um segundo ataque genuinamente útil contra lixo.",
+      "holy-shield":
+        "Só um ponto, e isso é um compromisso real — veja os pontos flexíveis. O bloqueio vem principalmente da Dexterity e do escudo.",
+      vigor: "Velocidade de corrida, e pré-requisito da Salvation.",
+      salvation:
+        "A quarta sinergia do Vengeance, a 2% por nível — um quarto do que uma skill de resistência dá. Pegue um ponto pelo valor de pré-requisito e pela aura, e não invista mais até as três skills de resistência estarem maximizadas.",
+    },
+    immunityPlan:
+      "Este é o motivo inteiro de jogar a build, então vale ser preciso. **O Vengeance soma dano de fogo, frio e raio ao seu ataque físico simultaneamente** — ele não converte, ele soma, então um golpe carrega quatro tipos de dano de uma vez. Um monstro imune a um deles ainda toma os outros três. Imunidade quádrupla genuína não ocorre naturalmente. Em cima disso, **a Conviction reduz resistência a fogo, frio e raio em 30% no nível 1 mais 5% por nível**, o que raspa as resistências parciais que sobrarem. Você não precisa de sunder charm, nem de Infinity, nem de um segundo ataque. As duas coisas que *de fato* te param são o **Iron Maiden**, que reflete a parte física do seu dano e é um perigo real no Chaos Sanctuary, e monstros com resistência muito alta em vários elementos ao mesmo tempo, que a Conviction não consegue empurrar abaixo de zero o bastante.",
+    mercenaryNotes:
+      "**O Insight não é opcional.** O Vengeance custa mana em todo golpe, e diferente do Zeal você não pode ignorar isso — a Meditation de uma polearm com Insight é o plano de mana, e custa quatro runas comuns. Para a aura dele, pegue **Might** no Ato 2 do Nightmare pelo dano, ou **Holy Freeze** se preferir desacelerar grupos. Evite dar a ele algo que duplique o que você já faz; a sua Conviction já está quebrando resistência para os dois.",
+    farmingWhy: {
+      "chaos-sanctuary-hell":
+        "Densa, de nível alto, e cheia de imunidades misturadas que param outras builds e não fazem nada contra esta. Cuidado com o Iron Maiden dos Oblivion Knights — a parte física do Vengeance reflete.",
+      "travincal-hell":
+        "O Council é imune a fogo e a raio, o que para a maioria dos casters. Você tem frio e físico também, e Conviction por cima.",
+      "pit-hell":
+        "Nível de área 85 e trajeto curto. Mais lento que um Hammerdin aqui, mas nada lá dentro te para.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 com muita imunidade a frio, que é exatamente o tipo de zona para o qual esta build existe.",
+      "worldstone-keep-hell":
+        "Nível de área 85 e densa. Dano de alvo único torna isso mais lento do que é para um caster, mas todo grupo morre.",
+      "pindleskin-hell":
+        "Um alvo, a dez segundos de um portal. Exatamente o que uma build de alvo único quer.",
+    },
+    levelingPath: {
+      summary:
+        "Evolua como Zealot. O Zeal é pré-requisito do Vengeance, então o ponto não é desperdiçado, e o próprio Vengeance é fraco até várias sinergias estarem investidas — golpear com ele no nível 18 sem Conviction é pior que Zeal em todos os aspectos. Troque quando a Conviction estiver disponível no 30 e você tiver pontos suficientes para as sinergias significarem algo, o que na prática é em algum ponto do Nightmare.",
+      respecAt: "Nível 30 no mínimo; Nightmare na prática",
+    },
+    selfFoundNotes:
+      "Um dos Paladins mais fortes para self-found, e é daqui que vem a fama de a build ser barata. Kingslayer são quatro runas médias e já fornece +1 em Vengeance sozinho; Rhyme são duas das runas mais baratas do jogo; Treachery são três. Nada do dano vem de runas altas — vem de pontos de skill, que são de graça. Um Avenger self-found limpa o Hell sem um único item que valeria a pena trocar. O que ele não consegue resolver sozinho é o déficit de pontos de skill, porque isso precisa de equipamento com +skills.",
+    hardcoreNotes:
+      "Razoável no Hardcore, mas não é o Paladin mais seguro, e o motivo é o orçamento de pontos: você quase certamente não tem bloqueio máximo, porque o Holy Shield perdeu a disputa para as sinergias de dano. Compense com Chains of Honor em vez de Enigma, mantenha Battle Orders ativo, e trate o **Iron Maiden** como a coisa específica que te mata — a parte física do Vengeance reflete, e um ataque rápido contra uma maldição de dano refletido é letal. As resistências máximas altas que vêm de graça com as três sinergias maximizadas são uma vantagem genuína no Hardcore e compensam em parte o problema do bloqueio.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 sendo outra coisa. O Vengeance abre no 18, mas a Conviction não existe antes do 30.",
+        nextUpgrade: "Nível 30 pela Conviction. Nada nesta build funciona direito antes disso.",
+        notes:
+          "Evolua com Zeal. É pré-requisito do Vengeance, então o ponto não é desperdiçado, e é um ataque de evolução melhor do que o Vengeance até as sinergias existirem.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer scepter de Paladin com +Combat Skills",
+            why: "Scepters de vendedor carregam bônus de skill de classe, que sobem o Zeal e depois o Vengeance de graça.",
+            lookFor: ["+2 Combat Skills", "+3 Zeal", "Alta velocidade de ataque"],
+          },
+          "offhand-0": {
+            why: "Resistências por três runas da Countess, numa classe de escudo que soma a própria.",
+          },
+          "body-0": { why: "Recuperação e velocidade de corrida por duas runas comuns." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+        },
+      },
+      nightmare: {
+        goal: "Conviction rodando, sinergias iniciadas, resistências subindo.",
+        nextUpgrade:
+          "Maximize as três sinergias de resistência. Todo o dano da build vem depois delas.",
+        picks: {
+          "weapon-0": {
+            why: "A arma natural do Avenger: fornece **+1 em Vengeance** sozinha, mais 30% de velocidade de ataque e 33% de Crushing Blow.",
+            sockets: "Mal, Um, Gul, Fal numa Sword ou Axe de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Mais barata, e a velocidade de ataque é justamente o que falta nesta fase.",
+          },
+          "offhand-0": {
+            why: "Cannot Be Frozen, 25% de magic find, resistências e bloqueio, por duas das runas mais baratas do jogo. O escudo clássico de Avenger econômico.",
+          },
+          "offhand-0-alt0": { why: "Mais skills e muito mais resistência, quando cair." },
+          "body-0": {
+            why: "Fade ao ser atingido, mais velocidade de ataque. Três runas baratas e resolve dois problemas.",
+          },
+          "helm-0": { why: "Life steal e redução de dano." },
+          "boots-0": {
+            why: "Crushing Blow, Deadly Strike e Open Wounds — uma build física usa os três.",
+          },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "A resistência mais barata disponível." }],
+      },
+      "early-hell": {
+        goal: "Entrar no Hell e descobrir que imunidade não é o seu problema.",
+        nextUpgrade:
+          "+skills onde você conseguir. Nesta build cada +1 sobe Vengeance, três sinergias e a Conviction juntos.",
+        notes:
+          "É aqui que a build compensa. Entre num grupo de imunes misturados que pararia uma Sorceress e mate tudo com o mesmo botão.",
+        picks: {
+          "weapon-0": {
+            why: "Ainda a arma certa. O Crushing Blow dela cobre bosses enquanto o seu dano elemental cobre todo o resto.",
+          },
+          "offhand-0": { why: "+2 skills de Paladin, +2 Combat Skills e +50 em todas as resistências." },
+          "body-0": { why: "Crushing Blow, dano de frio e redução de dano por três runas médias." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências. Vale mais aqui que o dano bruto, porque +2 skills levanta a Conviction e as três sinergias de uma vez.",
+          },
+          "amulet-0": {
+            why: "+1 em todas as skills, 20% de velocidade de ataque e Deadly Strike. O +1 vale mais nesta build que em quase qualquer outra, porque sobe cinco skills separadas em que você investiu.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e Dexterity para o bloqueio." },
+          "belt-0": { why: "Redução de dano e life steal." },
+        },
+        charms: [
+          {
+            label: "Small charms de resistência e vida",
+            why: "Segure o cap enquanto a Conviction não estiver te ajudando.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Limpar o Hell com conforto, inclusive as zonas cheias de imunes que ninguém mais quer.",
+        nextUpgrade:
+          "Enigma pela mobilidade, ou Last Wish se você preferir uma aura de Might e Crushing Blow pesado.",
+        picks: {
+          "weapon-0": {
+            why: "O dano fixo dele alimenta a conversão elemental além do golpe físico, o que faz dele o maior upgrade isolado de dano disponível.",
+            sockets: "Eth, Tir, Lo, Mal, Ral numa Phase Blade de 5 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Mantenha se o Grief estiver fora de alcance. O +1 em Vengeance e o Crushing Blow ainda fazem trabalho real.",
+          },
+          "offhand-0": { why: "Skills, resistências e bloqueio." },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências — cinco skills investidas subindo de uma vez.",
+          },
+          "helm-0": { why: "Life steal e redução de dano, barato." },
+          "helm-0-alt0": { why: "+1 skills, resistências, redução de dano e sockets. O upgrade." },
+          "amulet-0": { why: "+1 skills e 20% de velocidade de ataque." },
+          "boots-0": { why: "Crushing Blow e Deadly Strike." },
+          "belt-0": { why: "Redução de dano e life steal." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills, o que nesta build são cinco skills de uma vez." },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Paladin)",
+            why: "+3 skills de Paladin — o maior aumento de skills disponível.",
+          },
+          { label: "Annihilus", why: "+1 em todas as skills e resistências." },
+          { label: "Small charms de resistência e vida", why: "O resto do inventário." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders. Uma build de corpo a corpo com bloqueio modesto quer a vida." },
+        ],
+      },
+      optimized: {
+        goal: "Limpezas rápidas em zonas que outras builds evitam.",
+        nextUpgrade: "Mais +skills. Cada ponto vale cinco pontos de skill para esta build.",
+        picks: {
+          "weapon-0": { why: "Dano fixo transformado em quatro tipos de dano." },
+          "weapon-0-alt0": {
+            why: "Uma aura de Might, 40-50% de Crushing Blow e Life Tap ao golpear. Você troca o dano fixo do Grief por sustentação e dano em boss — uma escolha real, não um upgrade.",
+          },
+          "offhand-0": { why: "+4 skills efetivos e +50 em todas as resistências." },
+          "offhand-0-alt0": {
+            why: "Life Tap e uma aura de Defiance, mais +2 em Offensive Auras, que sobe a Conviction.",
+          },
+          "body-0": {
+            why: "Teleport. Esta build não tem mobilidade própria e sente isso mais que a maioria.",
+            sockets: "Jah, Ith, Ber numa armadura de 3 sockets.",
+          },
+          "body-0-alt0": {
+            why: "Mantenha se resistência ou os +2 skills importarem mais para você que movimento.",
+          },
+          "helm-0": {
+            why: "+1 skills, resistências, redução de dano e até dois sockets para velocidade de ataque.",
+            lookFor: ["2 sockets", "30% em todas as resistências", "15% de redução de dano"],
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque é escassa nesta build porque a Fanaticism não está disponível enquanto a Conviction roda.",
+            lookFor: ["20% de Increased Attack Speed", "+2 Combat Skills", "Vida"],
+          },
+          "amulet-0": { why: "+1 skills, velocidade de ataque, Deadly Strike." },
+          "boots-0": { why: "Crushing Blow." },
+          "belt-0": { why: "Redução de dano." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Small charms de vida e resistência", why: "O inventário restante." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar, e a barra de skills ainda está três pontos curta.",
+        notes:
+          "Repare no que best in slot significa aqui. Todo item desta lista foi escolhido em parte por +skills, porque o teto da build é definido por pontos de skill e não por moeda. É o oposto de como a maioria das listas de endgame funciona, e vale entender antes de trocar por qualquer coisa.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de 400 de dano numa Phase Blade etérea.",
+            lookFor: ["400 de dano", "40% de Increased Attack Speed"],
+          },
+          "offhand-0": {
+            why: "+2 em Offensive Auras sobe a Conviction diretamente, que é exatamente a skill que você não conseguiu maximizar.",
+            lookFor: ["Defiance nível 16", "Base etérea", "45 em todas as resistências"],
+          },
+          "body-0": { why: "Teleport, e +0,75 de Strength por nível." },
+          "helm-0": {
+            why: "Dois sockets, resistências máximas, redução de dano máxima.",
+            lookFor: ["2 sockets", "30 em todas as resistências", "15% de redução de dano"],
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood, 20% de Increased Attack Speed, +3 Combat Skills",
+            why: "O único slot em que um craft supera qualquer unique para esta build.",
+            lookFor: ["20% de Increased Attack Speed", "+3 Combat Skills", "Vida"],
+          },
+          "amulet-0": {
+            why: "+1 em todas as skills, 20% de velocidade de ataque, e Deadly Strike valendo cerca de 34% no nível 90.",
+          },
+          "amulet-0-alt0": {
+            why: "+2 em todas as skills no lugar, se você preferir as skills à velocidade de ataque.",
+          },
+          "boots-0": { why: "Crushing Blow e Deadly Strike." },
+          "belt-0": { why: "15% de redução de dano num roll máximo." },
+          "ring1-0": { why: "Cannot Be Frozen, 20 de Dexterity." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
+          { label: "Small charms de vida e resistência", why: "O resto." },
         ],
         weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
       },
