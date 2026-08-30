@@ -3,6 +3,7 @@ import { Cinzel, Inter, JetBrains_Mono } from "next/font/google";
 
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
 /*
@@ -37,7 +38,21 @@ export const metadata: Metadata = {
   },
   description:
     "A progression-first Diablo II: Resurrected companion. Leveling walkthroughs, gear progression from level 1 to best-in-slot, farming routes, runewords and verified game mechanics.",
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    type: "website",
+    siteName: "D2 Codex",
+    url: SITE_URL,
+    title: "D2 Codex — Diablo II: Resurrected progression guide",
+    description:
+      "Every build documented at six gear tiers, so the page is useful whatever you currently own. Verified against Patch 3.3.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "D2 Codex — Diablo II: Resurrected progression guide",
+    description:
+      "Every build documented at six gear tiers, so the page is useful whatever you currently own.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
