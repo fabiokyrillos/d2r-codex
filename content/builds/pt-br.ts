@@ -3461,4 +3461,296 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "nova-sorceress": {
+    summary:
+      "Um anel de raio que se expande de onde você está, conjurado rápido o bastante para ser contínuo. A matadora de densidade mais rápida do jogo.",
+    playstyle:
+      "Teleporte para o meio do grupo e segure o botão. A Nova se expande a partir da sua posição, então não há mira nenhuma — a única habilidade é escolher onde cair. Na velocidade de conjuração cheia os anéis se sobrepõem e viram algo mais próximo de um campo contínuo que de uma sequência de magias. Você fica dentro de tudo que está matando, e é por isso que o Energy Shield entra na conversa e por que a build quer mais vida do que parece.",
+    strengths: [
+      "A velocidade de limpeza mais alta do site. Nada mata uma sala lotada mais rápido",
+      "Nenhuma mira — a magia é centrada em você",
+      "Infinity empunhado por você quebra imunidade a raio *e* libera o mercenário para o Insight",
+      "O Static Field lida com os alvos únicos em que a Nova é ruim",
+      "Teto enorme: o DiabloBytes a classifica como a melhor build do jogo",
+    ],
+    weaknesses: [
+      "**O setup padrão dela é um Infinity**, que é uma Ber, uma Mal, uma Ber e uma Ist. Não existe versão barata da build pronta",
+      "Você luta do centro do grupo, que é o lugar mais perigoso para estar",
+      "Dano de alvo único ruim — bosses são problema do Static Field, não da Nova",
+      "Usa a tabela de conjuração padrão, o que é fácil de errar depois de ler a página da Lightning",
+      "O Energy Shield transforma mana burn de incômodo em morte",
+    ],
+    flexPoints: [
+      "**O Energy Shield é a decisão real da build.** A dois de mana por ponto de dano, ele converte uma reserva grande de mana numa segunda barra de vida efetiva, o que combina com um personagem parado no meio de tudo. Também significa que mana burn te mata na hora e que uma reserva esvaziada te deixa com a sua vida real, minúscula. Pegue de propósito com investimento em Telekinesis por trás, ou não pegue e compre vida. Ficar em cima do muro é o pior dos dois.",
+      "**A híbrida com Hydra.** O Maxroll publica uma variante que adiciona Hydra pelo dano de fogo que a Nova não faz. Custa os pontos que iriam para uma sinergia e te dá uma resposta contra imunes a raio que não é o Infinity. Vale antes de o Infinity existir, menos depois.",
+      "**Variante de magic find:** mesmo plano de skills, troque charms e equipamento de dano por magic find. A velocidade de limpeza da build faz dela um dos melhores personagens de magic find mesmo com dano reduzido.",
+      "**Não coloque pontos em Energy**, nem para o Energy Shield. O escudo escala com a sua reserva de mana, e equipamento fornece muito mais mana por ponto gasto que o atributo.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento. Se você empunhar o Infinity, note que ele vai numa **polearm ou spear** — confira o requisito da base antes de gastar pontos, porque é mais alto do que um caster costuma pagar.",
+      dexterity: "Nenhuma. Esta build não tem bloqueio nem precisão de arma a satisfazer.",
+      vitality:
+        "Todo o resto, e importa mais aqui que em qualquer outra Sorceress porque você luta do meio.",
+      energy: "Nenhum. Equipamento dá mais mana por ponto que o atributo, mesmo com Energy Shield.",
+      notes: [
+        "**O Infinity é uma runeword de polearm ou spear.** Uma Sorceress consegue empunhar, mas o requisito de Strength é o custo real de fazer isso e deve ser planejado antes de gastar um ponto.",
+        "Vida é o atributo que importa. Uma troca com Call to Arms vale mais que qualquer coisa que você comprasse com a mesma moeda.",
+        "Se você pegar o Energy Shield, coloque pontos em Telekinesis em vez de Energy — ela melhora a taxa de conversão, que é o que de fato escala.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-105":
+        "**A tabela padrão da Sorceress se aplica aqui** — a Nova não é Lightning nem Chain Lightning. Em 105% os anéis se sobrepõem e viram algo contínuo, que é o ponto inteiro da build.",
+      "fcr-63":
+        "O mínimo para a build parecer ela mesma em vez de uma sequência de conjurações separadas.",
+      "fhr-60":
+        "Não é recomendado — é obrigatório. Você luta de dentro do grupo, e uma Sorceress que não consegue se recuperar de um golpe ali não se recupera de jeito nenhum.",
+    },
+    skillNotes: {
+      nova: "Nível 12. Expande a partir da sua posição, então a única decisão é onde ficar.",
+      "lightning-mastery":
+        "**50% de dano no nível 1 e +12% por nível.** Um multiplicador de dano, não uma redução de resistência — ela não quebra imunidade.",
+      "static-field":
+        "Sinergia da Nova além de ser a sua resposta contra bosses. Tira 25% da vida atual do alvo por conjuração, o que é o que permite a uma build péssima de alvo único conseguir matar coisas.",
+      "charged-bolt": "A outra sinergia, e o seu dano nos primeiros onze níveis.",
+      warmth:
+        "Regeneração de mana desde o nível 1, e importa mais aqui que em qualquer outra build se você pegar Energy Shield.",
+      telekinesis:
+        "Pré-requisito do Teleport, e melhora a taxa de mana por dano do Energy Shield. Vale mais que um ponto se você se comprometer com o escudo.",
+      teleport: "**Um ponto para sempre**, e é como você chega ao meio do grupo.",
+      "energy-shield":
+        "**Dois de mana por ponto de dano na base**, melhorado pela Telekinesis. Uma bifurcação real — leia os pontos flexíveis antes de se comprometer.",
+      "frozen-armor": "Defesa grátis e chance de congelar o que te alcançar.",
+      "frost-nova":
+        "Congela tudo ao seu redor. Numa build que vive no centro dos grupos, este é um botão de verdade.",
+      lightning:
+        "Um ponto para o raro alvo único que o Static Field não termina. Não invista mais — ele está numa tabela de conjuração diferente.",
+    },
+    immunityPlan:
+      "Uma resposta, e a build é construída em torno de possuí-la. **A Lightning Mastery não quebra imunidade** — é um multiplicador de dano de 50% mais 12% por nível, igual à da Lightning Sorceress. O que quebra é a **Conviction do Infinity**, e a escolha que define esta build é empunhar esse Infinity você mesma em vez de colocá-lo no mercenário: a aura é idêntica dos dois jeitos, e empunhar libera ele para carregar o Insight que paga a sua conta de mana. O **Griffon's Eye** soma outros -15-20% de resistência a raio do inimigo por cima, e **facets de raio** somam mais ainda. Antes de o Infinity existir, as respostas honestas são a variante **híbrida com Hydra** por um segundo tipo de dano, ou escolher zonas — o Secret Cow Level não tem nada imune a raio dentro dele. Um sunder charm **Crack of the Heavens** funciona, mas custa 70 a 90 pontos da sua própria resistência a raio, o que numa build parada no meio de grupos lightning enchanted é uma troca pior que o normal.",
+    mercenaryNotes:
+      "**Esta é a build em que o trabalho do mercenário se inverte.** Como você carrega o Infinity, ele não precisa — então dê a ele um **Insight**, cuja aura de Meditation é o que banca uma build que conjura continuamente. Pegue **Might** pelo dano dele, ou **Holy Freeze** para desacelerar o grupo dentro do qual você está, o que nesta build vale mais que o dano dele. Uma armadura **Treachery** e um **Vampire Gaze** o mantêm vivo; ele ainda vai morrer, porque está onde você está.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "Densidade enorme, nada imune a raio, e cada vaca anda para dentro de uma magia centrada em você. A coisa mais rápida que esta build faz.",
+      "worldstone-keep-hell":
+        "Nível de área 85 e muito densa. Com Infinity, é o melhor farm geral do jogo para esta build.",
+      "throne-of-destruction-hell":
+        "Cinco waves densas numa sala só, que é exatamente o formato que a Nova quer. O Static Field lida com o próprio Baal.",
+      "chaos-sanctuary-hell":
+        "Densa e de nível alto. O Static Field amolece os bosses dos Seals que a Nova não consegue explodir.",
+      "pit-hell": "Nível de área 85 e curta. Boa, ainda que a densidade seja menor do que a build gostaria.",
+      "travincal-hell":
+        "O Council é imune a raio, então esta é uma zona só com Infinity — e com ele é muito rápida, porque eles ficam amontoados.",
+    },
+    levelingPath: {
+      summary:
+        "Evolui como ela mesma. Charged Bolt desde o nível 1 e Static Field desde o 6 são as duas sinergias, a Nova chega no 12, e o Teleport no 18 dá a mobilidade sobre a qual a build é construída. A Lightning Mastery no 30 é quando o dano começa a compor. **Nenhum respec é necessário** — mas tenha clareza de que a build que você está evoluindo não é a build dos níveis finais desta página, que é definida por um item e não por uma skill.",
+    },
+    selfFoundNotes:
+      "Realisticamente, não. A build pronta é um Infinity, que são duas runas Ber entre quatro, e não existe versão do endgame que funcione sem a Conviction. O que *é* self-found são os primeiros oitenta níveis: a Nova no 12 com as sinergias de Charged Bolt e Static Field é um personagem genuinamente forte e muito barato, e a híbrida com Hydra a mantém viável no Hell contra imunes a raio. Trate esta página como destino. As páginas de Frozen Orb e Fire Ball Meteor descrevem builds que chegam ao próprio teto sem uma única runa alta.",
+    hardcoreNotes:
+      "A Sorceress mais perigosa do site, e os motivos são estruturais e não corrigíveis. Você luta do centro do grupo por desenho; empunhar o Infinity significa **nenhum escudo**, então sem bloqueio e sem resistência daquele slot; e a reserva de vida da Sorceress é a menor do jogo. Se você pegar o Energy Shield, **mana burn vira letal** em vez de irritante. No Hardcore, a recomendação honesta é colocar o Infinity no mercenário e manter um escudo Spirit — você perde o Insight e paga a mana de outro jeito, e mantém um slot defensivo. Chains of Honor em vez de Enigma, Battle Orders sempre, e 60% de Faster Hit Recovery como requisito duro.",
+    gearSets: {
+      starter: {
+        goal: "Charged Bolt até o 12, Nova dali em diante. Barato e genuinamente eficaz.",
+        nextUpgrade: "Nível 30 e a Lightning Mastery. A Nova fica estagnada até lá, e isso é esperado.",
+        notes:
+          "O Charged Bolt é sinergia, então os pontos de evolução não são desperdiçados. O Static Field a partir do nível 6 é ao mesmo tempo sinergia e a sua resposta contra qualquer coisa com vida demais.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e até 35% de Faster Cast Rate no nível 25.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "25% de Faster Cast Rate e 25% de Faster Hit Recovery no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+          "gloves-0": { why: "20% de Faster Cast Rate no nível 23." },
+        },
+      },
+      nightmare: {
+        goal: "Lightning Mastery ativa, dois Spirits, resistências subindo.",
+        nextUpgrade:
+          "Decida sobre o Energy Shield antes do Hell, porque isso muda que equipamento você quer.",
+        picks: {
+          "weapon-0": { why: "Ainda o melhor custo-benefício disponível." },
+          "offhand-0": {
+            why: "Um segundo Spirit — +4 skills e 70% de velocidade entre os dois.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "offhand-0-alt0": {
+            why: "+1 skills e 20% de velocidade, mais mana por morte, que aqui é genuinamente útil.",
+          },
+          "body-0": { why: "+1 skills, 30% de velocidade e até +35 em todas as resistências." },
+          "helm-0": { why: "+1 skills e magic find." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": {
+            why: "Resistências e dano convertido em mana — a segunda metade importa se você vai de Energy Shield.",
+          },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "O caminho mais barato até 75% antes do Hell." },
+        ],
+      },
+      "early-hell": {
+        goal: "105% de velocidade, 60% de recuperação, resistências capadas — e um plano para imunes a raio.",
+        nextUpgrade:
+          "Infinity. Até lá esta build limpa muito rápido tudo que não é imune a raio, e é impotente contra o que é.",
+        notes:
+          "A variante híbrida com Hydra existe justamente para este nível — uma fonte de dano de fogo cobre os imunes a raio enquanto você junta para o Infinity.",
+        picks: {
+          "weapon-0": { why: "35% de velocidade e +2 skills." },
+          "offhand-0": { why: "O segundo." },
+          "body-0": { why: "Resistências e velocidade de conjuração." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências — a escolha melhor numa build que fica no meio das coisas.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida, magic find e 10% de redução de dano. A vida e a redução de dano são o que você está comprando.",
+          },
+          "amulet-0": { why: "+2 em todas as skills e +20-30 em todas as resistências." },
+          "ring1-0": {
+            label: "Anel raro com 10% de Faster Cast Rate, resistências e vida",
+            why: "Velocidade mais os dois atributos de que esta build sempre está carente.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": {
+            why: "Faster Hit Recovery e Vitality — os dois valem mais para esta build que magic find nesta fase.",
+          },
+        },
+        charms: [
+          {
+            label: "Small charms de resistência e vida",
+            why: "Segure 75%, e prefira vida a dano onde puder.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Infinity nas suas próprias mãos, e o mercenário liberado para o Insight.",
+        nextUpgrade:
+          "Griffon's Eye e facets de raio — a pilha de resistência do inimigo que soma com a Conviction.",
+        picks: {
+          "weapon-0": {
+            why: "**Empunhado por você.** A aura de Conviction dele quebra imunidade a raio e funciona igual nas suas mãos ou nas do mercenário — mas usar você mesma libera ele para carregar o Insight, que é de onde vem a sua mana.",
+            sockets:
+              "Ber, Mal, Ber, Ist numa polearm ou spear de 4 sockets. Confira o requisito de Strength da base antes de gastar pontos de atributo.",
+          },
+          "weapon-0-alt0": {
+            why: "Enquanto o Infinity não existir, um Spirit mais a híbrida com Hydra é a resposta honesta de transição.",
+          },
+          "offhand-0": {
+            label: "Nenhum — o Infinity é de duas mãos",
+            why: "Empunhar o Infinity te custa o slot de escudo inteiro, o que é uma troca real: sem Spirit, sem bloqueio, sem resistência daquele slot. A Conviction compensa, mas planeje as resistências em outro lugar.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências. Sem escudo, é aqui que as suas resistências moram.",
+          },
+          "helm-0": { why: "+2 skills, vida e redução de dano." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": {
+            why: "+1 em todas as skills, 20% de velocidade e mana máxima aumentada — a última importa se você pegou Energy Shield.",
+          },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills e mana máxima aumentada." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, resistências, vida",
+            why: "Com o slot de escudo perdido, cada slot restante carrega resistência.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Faster Hit Recovery e Vitality." },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Sorceress)",
+            why: "+3 skills de Sorceress e +10-20 em todas as resistências, de que você precisa mais que o normal.",
+          },
+          { label: "Annihilus", why: "+1 em todas as skills e resistências." },
+          {
+            label: "Small charms de vida e resistência",
+            why: "Sem escudo, os charms carregam mais peso aqui que em qualquer outra Sorceress.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders. Numa build sem escudo parada no meio dos grupos, isto não é opcional.",
+          },
+          { why: "Mão secundária para a troca." },
+        ],
+      },
+      optimized: {
+        goal: "Conviction, Griffon's e facets empurrando a resistência do inimigo para o chão.",
+        nextUpgrade: "Facets de raio em todo socket, e um roll melhor de Griffon's.",
+        picks: {
+          "weapon-0": {
+            why: "Conviction, empunhado por você. O mercenário carrega o Insight.",
+            lookFor: ["-55% de resistência a raio do inimigo", "base de polearm com requisito baixo"],
+          },
+          "helm-0": {
+            why: "**-15-20% de resistência a raio do inimigo** em cima da redução da Conviction, mais +10-15% de dano de skills de raio e 25% de velocidade.",
+            lookFor: ["-20% de resistência a raio do inimigo", "+15% de dano de skills de raio", "1 socket"],
+          },
+          "helm-0-alt0": {
+            why: "Mantenha o Shako se você está morrendo em vez de matando devagar. Vida e redução de dano acima de dano.",
+          },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "body-0-alt0": {
+            why: "Teleport com custo de mana fixo e Strength por nível — a Strength é o que torna uma base de Infinity mais pesada acessível.",
+          },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 skills, 20% de velocidade, mana máxima." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills, mana máxima." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida",
+            why: "Ainda carregando resistência, porque o slot de escudo se foi de vez.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": {
+            why: "Magic find, quando a sobrevivência estiver resolvida. Sandstorm Trek se não estiver.",
+          },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Grand charms de skills de raio com vida",
+            why: "Dano e a vida de que esta build está sempre carente.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "Esta é a build de maior teto que o site documenta, e ela merece isso com um Infinity, um Griffon's Eye e um Enigma. A página da Frozen Orb alcança quase todo o próprio teto pelo preço de oito runas da Countess. As duas afirmações são verdadeiras, e a diferença entre elas é o motivo honesto para escolher uma.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de -55% de resistência a raio do inimigo na polearm de 4 sockets mais leve que você achar.",
+            lookFor: ["-55% de resistência a raio do inimigo", "base de Strength baixa"],
+          },
+          "helm-0": {
+            why: "Um roll de -20% e +15% com um facet de raio encaixado.",
+            lookFor: ["-20% de resistência a raio do inimigo", "+15% de dano de skills de raio"],
+          },
+          "body-0": { why: "Teleport, Strength para a base do Infinity, e magic find por nível." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 skills, 20% de velocidade, mana máxima." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida, mana",
+            why: "O último slot a aperfeiçoar, e ele ainda está carregando resistência.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida e mana"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
+          { label: "Grand charms de skills de raio com vida", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
