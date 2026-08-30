@@ -1565,4 +1565,287 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  fohdin: {
+    summary:
+      "Raio à distância com ondas mágicas que rasgam Undead e Demons, e uma aura que quebra imunidade a raio. O Paladin que luta de longe.",
+    playstyle:
+      "Você escolhe um alvo no alcance máximo, conjura, e o raio cai nele enquanto os Holy Bolts se espalham por tudo em volta. A Conviction fica ativa o tempo todo e arranca resistência de qualquer coisa no alcance, que é o que faz a metade de raio funcionar no Hell. Contra um grupo você mira no meio e deixa as ondas limparem; contra um elite único você trava o nome dele e segura o botão. É o Paladin com mais ações por minuto do site e o único que nunca precisa estar em alcance corpo a corpo.",
+    strengths: [
+      "Dois tipos de dano ao mesmo tempo — raio do bolt, mágico das ondas de Holy Bolt",
+      "A Conviction quebra imunidade a raio em monstros naturalmente imunes, então a própria parede da build praticamente some",
+      "À distância. A classe inteira de problemas que vem de ficar perto das coisas não se aplica",
+      "O Holy Shield ainda dá bloqueio máximo, então é uma build à distância que sobrevive a ser alcançada",
+      "Suporte de party: a Conviction ajuda todo personagem elemental perto de você",
+    ],
+    weaknesses: [
+      "Nada antes do nível 30. Fist of the Heavens e Conviction abrem no mesmo nível e a build não existe até lá",
+      "Muitas ações por minuto — não é uma build de segurar um botão",
+      "Imunidade a mágico enfraquece a metade do Holy Bolt, e alguns monstros resistem às duas metades",
+      "Precisa de 125% de Faster Cast Rate para ficar boa, o que é uma exigência real de equipamento",
+      "O dano é faminto por pontos de skill: o bolt, a sinergia, a aura e o escudo todos querem ser maximizados",
+    ],
+    flexPoints: [
+      "**A build é genuinamente faminta por pontos.** Quatro skills maximizadas mais as cadeias de pré-requisito até Conviction e Fist of the Heavens são quase um personagem inteiro. Espere terminar o Holy Shield lá pelos oitenta e poucos.",
+      "**Híbrida com Smite (\"Vindicator Templar\").** Coloque os pontos restantes em Fanaticism, carregue um Grief, e coloque Smite num segundo botão. Fist of the Heavens limpa a sala e o Smite mata o boss. Não custa nada estruturalmente, porque o Smite já é pré-requisito.",
+      "**Híbrida com Blessed Hammer (\"Tri-Brid\").** O Blessed Hammer já é pré-requisito; investir nele mais Concentration te dá uma resposta de dano mágico para os grupos em que a Conviction não ajuda. Combine com Heaven's Light e Gore Rider para uma opção de boss com Crushing Blow.",
+      "**Mais Resist Lightning** se você farma zonas cheias de inimigos de raio. Sobe a sua resistência máxima em vez da atual, que é a metade que a Conviction não consegue tirar de você.",
+    ],
+    statPlan: {
+      strength: "Só o que o seu equipamento pedir. Um Spirit num Monarch pede 156 e é o motivo habitual de o número não ser pequeno; um Herald of Zakarum pede bem menos.",
+      dexterity:
+        "O suficiente para bloqueio máximo **com o Holy Shield ativo**. Diferente dos Paladins de corpo a corpo, não há requisito de arma empurrando isso para cima, então o número é literalmente só o do bloqueio.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. Redemption mais um mercenário com Insight cobrem a mana de um caster tranquilamente.",
+      notes: [
+        "**Decida o escudo antes de gastar Strength.** Spirit num Monarch custa 156 de Strength; Spirit numa Sacred Targe custa uma fração disso ao preço de alguma defesa. O Herald of Zakarum fica entre os dois.",
+        "**Confira o bloqueio com o Holy Shield ligado.** A mesma armadilha que pega todo Paladin.",
+        "Faster Cast Rate vem inteiramente de equipamento. Nenhum ponto de atributo contribui.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-125":
+        "O alvo de endgame e o que faz a build parecer rápida. Heart of the Oak (40) mais dois Spirits (70) mais um anel de 20% já passam disso.",
+      "fcr-75":
+        "O mínimo para a build jogar de forma aceitável. Só dois Spirits te levam a 70, então é uma barra baixa depois que você os tiver.",
+      "fhr-48":
+        "Você luta à distância, mas é alcançado, e uma build de longo alcance presa em stun é uma build morta.",
+      "fbr-32":
+        "Vale ter se você se comprometeu com bloqueio máximo, e não vale nada se não se comprometeu.",
+    },
+    skillNotes: {
+      "fist-of-the-heavens":
+        "Nível 30. Seis ondas de Holy Bolt com um ponto e mais uma por nível, então cada ponto amplia a limpeza além de subir o dano.",
+      "holy-bolt":
+        "A sinergia de dano, e também é a metade de dano mágico do que você dispara. Maximize em segundo.",
+      conviction:
+        "A sua aura ativa. 30% de redução de resistência no nível 1 e mais 5% por nível — no 20 isso é 125%, e o equipamento empurra mais. É isso que quebra imunidade a raio.",
+      "holy-shield":
+        "Bloqueio e defesa. A mais flexível das quatro — se você estiver com poucos pontos, é esta que deve ficar sub-investida.",
+      sacrifice: "No caminho até o Holy Bolt.",
+      "blessed-hammer":
+        "Pré-requisito do Fist of the Heavens, e a semente da variante Tri-Brid.",
+      smite: "No caminho até o Holy Shield, e a semente da híbrida com Smite.",
+      "holy-freeze": "No caminho até a Conviction, e um slow útil se você precisar.",
+      sanctuary:
+        "No caminho até a Conviction. Também empurra Undead para trás, o que ocasionalmente é a coisa que te salva.",
+      fanaticism:
+        "Não para você — para o seu mercenário. Troque para ela quando encontrar algo que a Conviction não quebra e deixe ele matar.",
+      vigor: "Velocidade de corrida antes do Enigma.",
+      redemption:
+        "Vida e mana de cadáveres. Num caster sem life steal, é o plano de sustentação inteiro.",
+      "resist-lightning":
+        "Resistência máxima a raio, que importa justamente nas zonas que você quer farmar.",
+      salvation: "Uma aura de resistência de um ponto para os momentos em que a Conviction é a escolha errada.",
+    },
+    immunityPlan:
+      "Este é o Paladin com a melhor resposta a imunidade, e ela vem de duas direções ao mesmo tempo. **A Conviction reduz resistência em 30% no nível 1 e mais 5% por nível**, o que no nível 20 é 125% e mais com equipamento de +skills; isso basta para quebrar imunidade a raio natural nos monstros que você de fato vai encontrar. Onde não basta, as **ondas de Holy Bolt são dano mágico** e acertam mesmo assim, porque imunidade a raio e imunidade a mágico são coisas diferentes. A parede real é um monstro imune aos dois, e há poucos. A saída prática é o seu mercenário: coloque um ponto em Fanaticism, troque para ela, e deixe ele matar o que você não consegue. Vale saber que a Conviction tem um limite de quanto consegue empurrar um monstro abaixo de zero, então um monstro com resistência a raio muito alta continua efetivamente imune por mais +skills que você empilhe.",
+    mercenaryNotes:
+      "Pegue **Might** pelo dano dele, e dê um **Insight** imediatamente — a Meditation resolve de vez a mana de um Paladin caster e custa quatro runas comuns. Depois, **Infinity** na polearm dele é o upgrade que importa: a Conviction dele e a sua não somam, mas com ele carregando a aura você pode rodar **Fanaticism** e passar a velocidade de ataque e o dano para ele enquanto o efeito da Conviction continua valendo. Um **Reaper's Toll** é a versão mais barata da mesma ideia, via Decrepify.",
+    farmingWhy: {
+      "chaos-sanctuary-hell":
+        "Quase tudo aqui é Undead ou Demon, que é exatamente para o que as ondas de Holy Bolt servem. A melhor zona de FoHdin do jogo.",
+      "worldstone-keep-hell":
+        "Nível de área 85, densa e cheia de Demons. A Conviction dá conta dos imunes a raio que aparecerem.",
+      "pit-hell": "Nível de área 85 e trajeto curto, e a Conviction cobre os imunes a raio.",
+      "mausoleum-hell":
+        "Nível de área 85 e quase inteiramente Undead. O Holy Bolt está no seu melhor aqui.",
+      "travincal-hell":
+        "O Council é imune a raio, mas a Conviction quebra imunidade a raio natural — e eles são Demons, então a metade do Holy Bolt acerta de qualquer forma. Confira o seu nível de Conviction antes de contar com isso.",
+      "pindleskin-hell":
+        "Undead, a dez segundos de um portal, e morre com uma conjuração à distância.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 sem imunes a raio que preocupem. Confortável, ainda que menos recompensador que as zonas cheias de Undead.",
+    },
+    levelingPath: {
+      summary:
+        "Você não consegue evoluir como FoHdin. Fist of the Heavens e Conviction abrem os dois no nível 30, e a cadeia de pré-requisitos até a Conviction passa por cinco skills que você não usa para mais nada. Evolua como Blessed Hammer Paladin — Blessed Hammer e Holy Bolt são ambos pré-requisitos, então nada é desperdiçado — e use o respec grátis da Den of Evil no 30 ou depois para converter. O Nightmare é o lugar natural para fazer a troca.",
+      respecAt: "Nível 30 no mínimo, com mais conforto no Nightmare",
+    },
+    selfFoundNotes:
+      "Razoável para self-found, com uma dependência dura: dois Spirits. Cada um são quatro runas da Countess, então são farmáveis em vez de negociáveis, mas você precisa de oito runas e duas bases de 4 sockets. Depois disso a build funciona — Skin of the Vipermagi, Harlequin Crest e Mara's Kaleidoscope caem no Hell, e o Heart of the Oak é upgrade e não requisito. O breakpoint de 125% de Faster Cast Rate é a parte que realmente exige troca ou sorte.",
+    hardcoreNotes:
+      "Uma boa build de Hardcore com uma ressalva estrutural. Lutar à distância mais bloqueio máximo mais Holy Shield é uma combinação incomumente segura, e a Conviction permite matar as coisas antes de elas chegarem. A ressalva é o **buraco de evolução**: esta build não existe antes do nível 30, então um FoHdin de Hardcore passa os seus trinta níveis mais frágeis jogando outra coisa. Evolua como Blessed Hammer Paladin — os pontos são pré-requisitos de qualquer jeito — e trate a transição como o momento em que o personagem fica seguro, não como o momento em que fica forte.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30. Você ainda não é um FoHdin, e fingir que é desperdiça um personagem.",
+        nextUpgrade:
+          "Nível 30, e depois um segundo Spirit. Fist of the Heavens e Conviction chegam juntos e o personagem muda por completo.",
+        notes:
+          "Evolua com Zeal ou Blessed Hammer. O Blessed Hammer é a melhor escolha aqui porque já é pré-requisito — os pontos não são desperdiçados.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e até 35% de Faster Cast Rate no nível 25. Todo Paladin caster começa aqui.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": { why: "Resistências enquanto você evolui, por três runas da Countess." },
+          "body-0": { why: "25% de Faster Cast Rate no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+          "gloves-0": { why: "20% de Faster Cast Rate no nível 23." },
+        },
+      },
+      nightmare: {
+        goal: "Fist of the Heavens funcionando, 75% de Faster Cast Rate, resistências subindo.",
+        nextUpgrade:
+          "Conviction maximizada, e um Insight para o mercenário para a mana deixar de ser uma consideração.",
+        picks: {
+          "weapon-0": { why: "Ainda a arma de melhor custo-benefício do jogo para um Paladin caster." },
+          "offhand-0": {
+            why: "Um segundo Spirit num escudo. Dois Spirits são +4 skills e 70% de Faster Cast Rate, que é quase todo o caminho até o breakpoint que importa.",
+            sockets:
+              "Tal, Thul, Ort, Amn num escudo de 4 sockets. Uma Sacred Targe pede muito menos Strength que um Monarch.",
+          },
+          "offhand-0-alt0": {
+            why: "Mais resistências e skills, e zero Faster Cast Rate. Confira o seu breakpoint antes de trocar — esta é a forma clássica de um Paladin perder um frame sem perceber.",
+          },
+          "body-0": {
+            why: "+1 skills, 30% de Faster Cast Rate e até +35 em todas as resistências, com 43 de Strength. A armadura padrão de caster.",
+          },
+          "helm-0": { why: "+1 skills e magic find até um Shako aparecer." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "Resistências e dano convertido em mana numa build sem Energy." },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "O caminho mais barato até 75% antes do Hell." },
+        ],
+      },
+      "early-hell": {
+        goal: "Entrar no Hell com resistências capadas e uma Conviction que quebra imunidade a raio.",
+        nextUpgrade: "125% de Faster Cast Rate, e depois Enigma.",
+        notes:
+          "A Conviction é a diferença entre esta build funcionar no Hell e não funcionar. Maximize ela antes de se preocupar com qualquer upgrade de equipamento acima.",
+        picks: {
+          "weapon-0": { why: "Inalterado até o Heart of the Oak." },
+          "offhand-0": { why: "Segundo Spirit. 70% de Faster Cast Rate entre os dois." },
+          "body-0": { why: "Resistências e velocidade de conjuração juntas, barato." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências. O upgrade, quando as runas aparecerem.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida, mana, 50% de magic find e 10% de redução de dano, com 50 de Strength.",
+          },
+          "amulet-0": {
+            why: "+2 em todas as skills e +20-30 em todas as resistências. As duas metades importam aqui.",
+          },
+          "ring1-0": {
+            label: "Anel raro com 10% de Faster Cast Rate e resistências",
+            why: "A fonte mais barata de velocidade de conjuração que resta, e ainda carrega resistência de que você precisa.",
+            lookFor: ["10% de Faster Cast Rate", "Duas ou mais resistências", "Vida"],
+          },
+          "boots-0": {
+            why: "Faster Hit Recovery, Strength e Vitality. A Strength é o que paga por um Monarch, se você for por esse caminho.",
+          },
+        },
+        charms: [{ label: "Small charms de resistência", why: "Segure 75% nas quatro." }],
+      },
+      budget: {
+        goal: "Farmar o Hell de forma confiável com 125% de Faster Cast Rate.",
+        nextUpgrade:
+          "Enigma, e Infinity no mercenário se você pretende farmar zonas carregadas de raio.",
+        picks: {
+          "weapon-0": {
+            why: "+3 skills, 40% de Faster Cast Rate e até +40 em todas as resistências. O maior upgrade isolado que a build faz.",
+            sockets: "Ko, Vex, Pul, Thul num Flail de 4 sockets — a base mais barata que aceita.",
+          },
+          "weapon-0-alt0": {
+            why: "Mantenha o Spirit até o Heart of the Oak estar de fato em mãos. São 35% contra 40%, não um abismo.",
+          },
+          "offhand-0": { why: "35% de Faster Cast Rate e +2 skills." },
+          "body-0": { why: "+2 skills, +65 em todas as resistências, 8% de redução de dano." },
+          "helm-0": { why: "+2 skills e 50% de magic find." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": { why: "+1 em todas as skills e mana." },
+          "ring2-0": {
+            label: "Anel raro com 10% de Faster Cast Rate",
+            why: "Os últimos 10% que te levam por cima da linha dos 125%.",
+            lookFor: ["10% de Faster Cast Rate", "Resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find e dano enquanto você farma." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin e +10-20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Small charms de resistência", why: "O que segurar o cap." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders. Um caster sem life steal quer a vida." },
+        ],
+      },
+      optimized: {
+        goal: "Farm rápido e seguro no Hell, com magic find de verdade.",
+        nextUpgrade:
+          "Infinity no mercenário. Duas auras de Conviction não somam, mas a dele te libera para rodar Fanaticism em favor dele.",
+        picks: {
+          "weapon-0": { why: "+3 skills, 40% de Faster Cast Rate, resistências." },
+          "offhand-0": {
+            why: "35% de Faster Cast Rate. Base Monarch se você tiver a Strength, Sacred Targe se preferir gastar em outro lugar.",
+          },
+          "offhand-0-alt0": {
+            why: "Use só se conseguir segurar 125% de Faster Cast Rate sem o Spirit. A maioria dos conjuntos não consegue.",
+          },
+          "body-0": {
+            why: "Teleport. Muda quanto do jogo você consegue farmar mais do que qualquer upgrade de dano restante.",
+            sockets: "Jah, Ith, Ber numa armadura de 3 sockets.",
+          },
+          "helm-0": { why: "+2 skills, magic find, redução de dano." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 skills, 20% de Faster Cast Rate." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, resistências, vida",
+            why: "O slot em que um raro supera qualquer unique para esta build.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Grand charms de skills de raio",
+            why: "Dano direto numa build cujo golpe principal é raio.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "Acima de 125% de Faster Cast Rate não sobra nada para comprar além de dano e resistência. É neste ponto que a híbrida com Smite ou com Blessed Hammer passa a valer os pontos de skill restantes.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll máximo: +40 em todas as resistências junto com os +3 skills e 40% de velocidade de conjuração.",
+            lookFor: ["+40 em todas as resistências", "base Flail ou Mace"],
+          },
+          "offhand-0": {
+            why: "Um roll de 35% de Faster Cast Rate num Monarch.",
+            lookFor: ["35% de Faster Cast Rate", "base Monarch com 4 sockets"],
+          },
+          "body-0": { why: "Teleport." },
+          "helm-0": {
+            why: "Coloque um facet de raio para dano direto, ou uma runa Um para resistências.",
+            lookFor: ["2 sockets"],
+          },
+          "gloves-0": { why: "20% de Faster Cast Rate e +1 em skills de fogo." },
+          "belt-0": { why: "+1 skills, 20% de Faster Cast Rate." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida, mana",
+            why: "O último slot a aperfeiçoar.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find, ou Sandstorm Trek pelo Faster Hit Recovery." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
+          { label: "Grand charms de skills de raio com vida", why: "Dano e vida no mesmo slot." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
