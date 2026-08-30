@@ -3,7 +3,38 @@
 **Researched:** 2026-08-30
 **Baseline:** Diablo II: Resurrected, Patch 3.3 / Ladder Season 15 (see
 [`00-game-state.md`](00-game-state.md))
-**Status:** Research and planning only. No build content written from this pass.
+**Status:** Executed. All ten planned pages shipped, plus their dependencies.
+
+| Planned | Outcome |
+| --- | --- |
+| Lightning, Fire Ball Meteor, Frozen Orb, Nova | Shipped (lote 1) |
+| Enchant, Hydra, Meteorb, Frost Nova | Shipped (lote 2) |
+| Melee Sorceress (Zeal + Werebear as variants) | Shipped (lote 3), merged as recommended |
+| Magic Find, self-wield Infinity, Hydra/Orb, Fireball | Documented as internal variants, as planned |
+| PvP, Blizzard/Frozen Orb | Not implemented, as planned |
+| **Enchant promoted from batch 3** | Done — the ordering recommendation was accepted |
+| **Nova moved after the two cheap builds** | Done |
+
+**Gaps closed during implementation:** G2 (Demon Machine added), G5 (all six
+Sunder Charms named in the resistances article with their real penalty), G6
+(Throne of Destruction added). **G4 partially** — Energy Shield's base ratio of
+two mana per point of damage is documented on the Nova and Melee pages; the
+Telekinesis per-level figure is still unverified and is stated as such rather
+than guessed. **G3 stands**: Blizzard/Frozen Orb was excluded for want of a
+source, and nothing found since changes that.
+
+**Three errors this pass surfaced in already-shipped content**, all now covered
+by permanent checks in `check:content`:
+
+1. **Unspendable skill plans.** Lightning Mastery requires Thunder Storm and
+   Frozen Orb requires Blizzard; three builds allocated the skill without the
+   prerequisite. The plans rendered fine and could not be spent. Now checked.
+2. **Mechanics translation drift.** A locale overlay replaces a mechanics body
+   wholesale, so adding blocks to the source left pt-BR a block short with the
+   slug still counted as covered. Now checked block-for-block.
+3. **Gear affix overflow, twice.** `lookFor` renders as a nowrap badge; an
+   over-long entry widened the page at mobile widths. Now capped at 40
+   characters, and `Badge` truncates rather than stretching.
 
 > Same method as [`01-paladin-builds.md`](01-paladin-builds.md). This document
 > decides *which* Sorceress builds the site documents, at what granularity, and

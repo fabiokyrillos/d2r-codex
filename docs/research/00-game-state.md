@@ -217,7 +217,7 @@ Tracked so we don't accidentally write content on unverified ground:
 - [`01-paladin-builds.md`](01-paladin-builds.md) — Paladin build families:
   catalogue, deduplication, implementation order and blocking gaps. **Executed.**
 - [`02-sorceress-builds.md`](02-sorceress-builds.md) — Sorceress build families.
-  Awaiting approval before implementation.
+  **Executed.**
 
 ## Sources
 
