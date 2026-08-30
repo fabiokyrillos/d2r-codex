@@ -3758,4 +3758,286 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "enchant-sorceress": {
+    summary:
+      "Uma Sorceress cujo dano vem de uma crossbow. Bolts perfurantes carregando dano de fogo, e um buff que a party inteira quer.",
+    playstyle:
+      "Lance Enchant em si mesma e segure o botão de ataque. Cada bolt carrega o dano de fogo que o buff somou, e os 66% de Piercing Attack do Demon Machine mandam a maioria deles direto através do primeiro alvo para o que estiver atrás. A Chu-Ko-Nu é a crossbow mais rápida do jogo, então isso vira um fluxo em vez de uma sequência de tiros. Você é uma atacante física à distância que por acaso é Sorceress — o que significa que Attack Rating importa, Increased Attack Speed importa, e Faster Cast Rate só importa para o Teleport.",
+    strengths: [
+      "Dois tipos de dano em cada bolt — físico da arma, fogo do buff",
+      "Perfuração faz um tiro acertar uma fileira de inimigos, o que é enorme em áreas densas",
+      "**Uma build de suporte de verdade.** O Enchant pode ser lançado em outros jogadores e no seu mercenário, e dura minutos",
+      "Teleport mais um ataque à distância é uma combinação que quase nada mais no jogo tem",
+      "Dano físico faz da imunidade a fogo apenas metade de um problema",
+    ],
+    weaknesses: [
+      "**95 de Dexterity e 80 de Strength** para a crossbow, que é muito ponto de atributo para uma caster",
+      "A crossbow é de duas mãos, então **não há escudo** — sem Spirit, sem bloqueio, sem resistência daquele slot",
+      "Precisa de Attack Rating, com o que nenhuma outra build de Sorceress se importa",
+      "Increased Attack Speed importa e este site não publica tabela de IAS — veja os pontos flexíveis",
+      "O Demon Machine é a build. Sem ele, isto é um personagem diferente e bem pior",
+    ],
+    flexPoints: [
+      "**Os pontos restantes vão para o Fire Ball**, que te dá uma magia de verdade para os momentos em que um ataque à distância é a ferramenta errada, ou para mais Frozen Armor pela sobrevivência de que você precisa muito sem escudo.",
+      "**Variante Max Enchant:** todo ponto restante em Enchant e na sinergia dele, equipamento escolhido inteiramente por +skills. O buff que você lança na party também melhora, e é o motivo de fazer isso em grupo.",
+      "**Variante de magic find:** a build limpa rápido o bastante para que trocar dano por magic find custe menos que em outros lugares. Mesmo plano de skills; War Traveler, Harlequin Crest e charms de magic find.",
+      "**Increased Attack Speed não é publicado como tabela de breakpoint neste site**, pelo mesmo motivo das páginas de Paladin de corpo a corpo — os limiares dependem de velocidade de arma e de dados de animação que nenhuma fonte que consideramos confiável publica. O próprio modificador de velocidade −60 da Chu-Ko-Nu faz a maior parte do trabalho aqui; Highlord's Wrath e luvas craftadas fornecem o resto.",
+    ],
+    statPlan: {
+      strength: "**80**, para o Demon Machine. Nem um ponto a mais, a menos que a sua armadura peça.",
+      dexterity:
+        "**95**, para o Demon Machine — e esta é a maior diferença entre esta build e toda outra Sorceress do site. O +15-20 de Dexterity do Raven Frost cobre parte disso, o que vale planejar antes de gastar os pontos.",
+      vitality: "Todo o resto depois de os dois requisitos acima estarem atendidos.",
+      energy: "Nenhum. O Warmth é maximizado como sinergia, o que já resolve a mana.",
+      notes: [
+        "**Confira o que o seu equipamento fornece antes de gastar Dexterity.** Um Raven Frost rola +15-20, e são 15-20 pontos que você não precisa comprar.",
+        "**Attack Rating importa aqui e em nenhum outro lugar desta classe.** Os +632 do Demon Machine cobrem a maior parte; Raven Frost e Highlord's Wrath cobrem o resto. Se você está errando, é Attack Rating e não dano.",
+        "Não há decisão de bloqueio, porque não há escudo. Isso simplifica o plano e também é a principal fraqueza defensiva da build.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-60":
+        "**Obrigatório, não recomendado.** Você não tem escudo nem bloqueio, então a recuperação é a única coisa entre uma interrupção e uma morte.",
+      "fcr-63":
+        "Só o Teleport usa — o seu dano é um ataque, não uma conjuração. 63% basta para se reposicionar com conforto e há pouco motivo para comprar mais.",
+    },
+    skillNotes: {
+      enchant:
+        "Nível 18. Adiciona dano de fogo aos seus ataques e **33% a mais quando a arma é de longo alcance** — o parâmetro que faz esta build existir. Dura minutos, e pode ser lançado em aliados.",
+      "fire-mastery":
+        "30% de dano no nível 1 e +7% por nível, aplicado à metade de fogo de cada bolt. Ela aumenta o seu dano; não quebra imunidade a fogo.",
+      warmth:
+        "Sinergia do Enchant além de pré-requisito, e resolve a sua mana ao mesmo tempo. Não há motivo para segurar pontos aqui.",
+      "fire-ball":
+        "Pré-requisito do Enchant, e uma magia utilizável para a coisa rara que os seus bolts não alcançam.",
+      meteor: "Pré-requisito da Fire Mastery. Um ponto, e vale colocar numa tecla de qualquer forma.",
+      teleport:
+        "**Um ponto para sempre.** Teleport mais uma arma de longo alcance é a maior parte do motivo de esta build ser boa.",
+      "static-field":
+        "Tira 25% da vida atual do alvo — a sua resposta contra bosses que ignoram bolts.",
+      "frozen-armor":
+        "Defesa e chance de congelar o que fechar a distância. Você não tem escudo, então pegue.",
+      "frost-nova":
+        "Um botão de pânico à queima-roupa para quando algo te alcançar, o que numa build sem escudo é quando você está em apuros.",
+      "fire-wall":
+        "Uma segunda fonte de fogo barata para o corredor raro em que os bolts não bastam.",
+    },
+    immunityPlan:
+      "Dois tipos de dano em cada bolt fazem desta a build de fogo menos incomodada por imunidade do site. **Imunes a fogo ainda tomam a metade física**, que é substancial depois que o Fortitude entra — então onde uma Fire Ball Meteor Sorceress para de vez, esta build simplesmente fica mais lenta. **Imunes a físico ainda tomam a metade de fogo**, pelo mesmo motivo ao contrário. Só algo imune aos dois é parede de verdade, e há pouco disso. **A Fire Mastery não quebra imunidade a fogo** — é multiplicador de dano de 30% mais 7% por nível. Se a metade de fogo é o que você precisa de volta, um sunder charm **Flame Rift** resolve ao custo de 70 a 90 pontos da sua própria resistência a fogo, o que numa build sem escudo é um preço mais pesado que o normal. A recomendação honesta costuma ser aceitar a morte mais lenta e manter a resistência.",
+    mercenaryNotes:
+      "**Lance Enchant nele.** É o mesmo buff, dura minutos, e transforma um mercenário do Ato 2 numa segunda fonte de dano de verdade — é por isso que a build carrega a etiqueta de suporte. Pegue **Might** pelo dano físico que o Enchant então multiplica, dê um **Insight** se a sua mana ainda precisar de ajuda depois de maximizar o Warmth, e um **Vampire Gaze** ou **Treachery** para mantê-lo de pé. Ele importa mais aqui que em qualquer outra build de Sorceress, porque você não tem escudo e quer outra coisa para os monstros olharem.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "Bolts perfurantes numa fileira de vacas é a melhor expressão desta build. Nada lá é imune a fogo e a densidade é enorme.",
+      "stony-tomb-hell":
+        "Nível de área 85, perto de um waypoint, leve em imunidade a fogo, e os corredores alinham os alvos para a perfuração.",
+      "pit-hell":
+        "Nível de área 85 e curta. As salas abertas combinam com uma atacante à distância com Teleport.",
+      "mausoleum-hell": "Nível de área 85 densa com corredores, que é o que a perfuração quer.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 e cheia de imunes a frio, o que não afeta nenhuma das duas metades do seu dano.",
+      "chaos-sanctuary-hell":
+        "Densa e de nível alto, mas boa parte resiste a fogo e o Iron Maiden dos Oblivion Knights reflete a metade física do seu dano. Possível, não confortável.",
+    },
+    levelingPath: {
+      summary:
+        "Evolua como Fire Ball Sorceress. Fire Bolt e Fire Ball são os dois pré-requisitos no caminho do Enchant, então nada é desperdiçado, e o Warmth é uma sinergia que você maximizaria de qualquer jeito. O Enchant chega no 18, mas faz muito pouco até você ter uma arma que valha encantar — **a transição real é o Demon Machine no nível 49**, não um nível de skill. Planeje os 80 de Strength e os 95 de Dexterity antes de chegar lá, e confira primeiro o que os seus anéis conseguem fornecer.",
+      respecAt: "Opcional, quando o Demon Machine aparecer",
+    },
+    selfFoundNotes:
+      "Mais alcançável do que parece. O Demon Machine cai a partir de nível de área 57 e é raramente negociado porque só uma build o quer — então ele é um dos poucos itens que definem uma build que você tem mais chance de achar do que de comprar. Todo o resto é comum: Skin of the Vipermagi, Harlequin Crest, Raven Frost e Magefist caem no Hell. O Fortitude é a única peça cara e a build funciona sem ele. O obstáculo genuíno é que você precisa da crossbow antes de a build existir, e não há versão parcial.",
+    hardcoreNotes:
+      "Arriscada de um jeito específico e estrutural: **a crossbow é de duas mãos, então você não tem escudo nenhum.** Sem bloqueio, sem Spirit, e sem resistência daquele slot, numa classe com a menor reserva de vida do jogo. Todo o resto da build é seguro — você luta à distância e tem Teleport — mas quando algo te alcança não há nada entre isso e você. Pegue Chains of Honor em vez de Fortitude, Crown of Ages em vez de Harlequin Crest, trate os 60% de Faster Hit Recovery como piso duro, e mantenha o Frost Nova numa tecla. Note também o risco de **Iron Maiden** no Chaos Sanctuary: o seu dano físico reflete.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 18 pelo Enchant, e ao 49 pelo Demon Machine. Você é uma Fire Ball Sorceress até lá.",
+        nextUpgrade:
+          "Demon Machine no nível 49, e os 80 de Strength e 95 de Dexterity para segurá-lo. Planeje esses pontos antes de precisar deles.",
+        notes:
+          "Evolua como Fire Ball Sorceress — Fire Bolt e Fire Ball estão no caminho do Enchant de qualquer forma. A transição acontece quando a crossbow aparece, não num nível específico.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e velocidade de conjuração enquanto você evolui como caster. Você vai trocar por uma crossbow, então não invista demais.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": {
+            why: "Resistências enquanto você ainda tem slot de escudo. Aproveite — a crossbow tira isso de você.",
+          },
+          "body-0": { why: "Faster Hit Recovery e velocidade de corrida por duas runas comuns." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+        },
+      },
+      nightmare: {
+        goal: "Demon Machine em mãos e o Enchant fazendo o dano.",
+        nextUpgrade: "Fire Mastery no 30, e depois resistências em 75% antes do Hell.",
+        picks: {
+          "weapon-0": {
+            why: "**A build.** 66% de Piercing Attack na crossbow mais rápida do jogo, então cada bolt carrega o dano de fogo do Enchant por uma fileira de inimigos.",
+            lookFor: ["Qualquer roll — a perfuração e a velocidade base são fixas"],
+          },
+          "body-0": {
+            why: "+1 skills e até +35 em todas as resistências com 43 de Strength. Sem escudo, resistência precisa vir de algum lugar.",
+          },
+          "helm-0": { why: "+1 skills e magic find enquanto você farma." },
+          "gloves-0": {
+            why: "**+1 em Fire Skills**, que sobe o Enchant diretamente. A velocidade de conjuração aqui é acessória.",
+          },
+          "ring1-0": {
+            why: "Cannot Be Frozen, **+15-20 de Dexterity para o requisito da crossbow**, e +150-250 de Attack Rating. Três coisas de que esta build precisa especificamente, num anel só.",
+          },
+          "belt-0": { why: "Resistências e dano convertido em mana." },
+        },
+        charms: [
+          {
+            label: "Small charms de resistência e vida",
+            why: "Sem escudo, os charms carregam mais da sua resistência que o normal.",
+          },
+        ],
+      },
+      "early-hell": {
+        goal: "Fire Mastery maximizada, resistências capadas, Attack Rating suficiente.",
+        nextUpgrade: "Fortitude, que multiplica a metade física de cada bolt.",
+        picks: {
+          "weapon-0": { why: "Inalterado. Nada substitui." },
+          "body-0": { why: "Resistências, barato." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências. Numa build sem escudo, isso vale mais que o normal.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida, magic find e 10% de redução de dano. A vida e a redução são o que você está comprando.",
+          },
+          "gloves-0": { why: "+1 em Fire Skills." },
+          "amulet-0": {
+            why: "+1 em todas as skills, **20% de Increased Attack Speed** e Deadly Strike que escala com o nível. Todas as linhas dele funcionam nesta build, o que é incomum para um item de Sorceress.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen, Dexterity e Attack Rating." },
+          "boots-0": {
+            why: "Crushing Blow, Deadly Strike e Open Wounds — uma build de ataque físico usa os três, o que nenhuma outra Sorceress pode dizer.",
+          },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "Segure 75% sem um escudo para ajudar." },
+          {
+            label: "Flame Rift (Sunder Charm de fogo)",
+            why: "Só se a metade de fogo for o que está falhando. O seu dano físico ainda acerta imunes a fogo, então isto importa menos aqui que numa build de fogo pura.",
+          },
+        ],
+      },
+      budget: {
+        goal: "As duas metades do dano escalando juntas.",
+        nextUpgrade:
+          "+skills onde você achar. Cada ponto sobe o Enchant, e o Enchant está em cada bolt.",
+        picks: {
+          "weapon-0": { why: "Ainda a build." },
+          "body-0": {
+            why: "**+300% de Enhanced Damage**, aplicado à metade física de cada bolt. É o maior upgrade de dano que a build faz, e nenhuma outra Sorceress do site quer isso.",
+            sockets: "El, Sol, Dol, Lo numa armadura de 4 sockets.",
+          },
+          "body-0-alt0": {
+            why: "Troque o dano por +2 skills e +65 em todas as resistências. Numa build sem escudo, essa é uma escolha defensável e não uma escolha menor.",
+          },
+          "helm-0": { why: "+2 skills, vida, magic find, redução de dano." },
+          "gloves-0": {
+            label: "Luvas craftadas ou raras com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque é escassa nesta build e este é um dos poucos slots que fornece.",
+            lookFor: ["20% de Increased Attack Speed", "+2 Fire Skills (craftada)", "Resistências"],
+          },
+          "belt-0": { why: "+1 em todas as skills, o que sobe o Enchant." },
+          "amulet-0": { why: "+1 skills, 20% de velocidade de ataque, Deadly Strike." },
+          "ring1-0": { why: "Cannot Be Frozen, Dexterity, Attack Rating." },
+          "ring2-0": {
+            why: "+1 em todas as skills, ou um anel raro com Attack Rating e resistências se você estiver errando tiros.",
+          },
+          "boots-0": {
+            why: "Magic find e +Strength, o que compensa parte do requisito da crossbow.",
+          },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Sorceress)",
+            why: "+3 skills de Sorceress, o que sobe o Enchant três níveis.",
+          },
+          { label: "Annihilus", why: "+1 em todas as skills e resistências." },
+          {
+            label: "Grand charms de skills de fogo com vida",
+            why: "Dano e a vida de que uma build sem escudo precisa.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders. Sem escudo e com reserva de vida de Sorceress, isto não é opcional.",
+          },
+          { why: "Mão secundária para a troca — o único momento em que você recupera um slot de escudo." },
+        ],
+      },
+      optimized: {
+        goal: "Enchant máximo, e uma build que limpa o cow level numa passada.",
+        nextUpgrade: "Facets de fogo, e uma decisão entre o dano do Fortitude e a mobilidade do Enigma.",
+        picks: {
+          "weapon-0": { why: "Inalterado, permanentemente." },
+          "body-0": { why: "+300% de Enhanced Damage na metade física." },
+          "body-0-alt0": {
+            why: "Teleport com custo de mana fixo, +Strength por nível cobrindo o requisito da crossbow, e magic find. Uma alternativa real se mobilidade for o que te limita.",
+          },
+          "helm-0": {
+            why: "+2 skills e a sobrevivência de que uma build sem escudo está carente. Encaixe um facet de fogo.",
+            lookFor: ["2 sockets"],
+          },
+          "helm-0-alt0": {
+            why: "Mais resistências e redução de dano, menos skills. A escolha de Hardcore.",
+          },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, +2 Fire Skills",
+            why: "O único slot que dá velocidade de ataque e skills de fogo juntos.",
+            lookFor: ["20% de Increased Attack Speed", "+2 Fire Skills", "Resistências"],
+          },
+          "belt-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            why: "+2 em todas as skills e +30 em todas as resistências — as resistências importam mais depois que a sua velocidade de ataque estiver resolvida.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen, Dexterity, Attack Rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find e Strength." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de fogo com vida", why: "Dano e vida." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "Vale dizer uma vez no topo: tudo nesta lista foi escolhido por +skills, velocidade de ataque ou Attack Rating, e quase nada disso é o que uma lista de Sorceress normalmente contém. Esse é o resumo honesto da build — é um personagem físico à distância vestindo a árvore de skills de uma Sorceress.",
+        picks: {
+          "weapon-0": {
+            why: "Encaixe facets de fogo — ele aceita até cinco.",
+            lookFor: ["Sockets para facets de fogo"],
+          },
+          "body-0": { why: "+300% de Enhanced Damage e +200 de defesa." },
+          "helm-0": {
+            why: "+2 skills com um facet de fogo encaixado.",
+            lookFor: ["2 sockets"],
+          },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, +3 Fire Skills",
+            why: "O melhor roll possível no slot que mais importa para velocidade.",
+            lookFor: ["20% de Increased Attack Speed", "+3 Fire Skills", "Duas resistências"],
+          },
+          "belt-0": { why: "+1 em todas as skills." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen, 20 de Dexterity, 250 de Attack Rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find e Strength." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
+          { label: "Grand charms de skills de fogo com vida", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
