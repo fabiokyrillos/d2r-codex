@@ -23,12 +23,16 @@ export function Container({
 }: {
   children: ReactNode;
   className?: string;
-  size?: "default" | "wide" | "narrow";
+  size?: "default" | "wide" | "narrow" | "shell";
 }) {
   const widths = {
     narrow: "max-w-3xl",
     default: "max-w-5xl",
     wide: "max-w-7xl",
+    // For the app shell (header, footer) rather than prose. A nav bar aligns to
+    // the window, not to the reading column, and capping it at the prose width
+    // is what left the three-tier header 74px short of the room it needed.
+    shell: "max-w-[96rem]",
   };
   return (
     <div className={cn("mx-auto w-full px-5 sm:px-8", widths[size], className)}>

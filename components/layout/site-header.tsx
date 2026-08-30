@@ -17,6 +17,14 @@ import { buildSearchIndex } from "@/lib/search";
  * The mobile menu is still a native `<details>` element; the only client
  * components here are the search dialog and the language switcher, both of
  * which genuinely need interactivity.
+ *
+ * The breakpoints below are measured, not guessed. Laid out at their natural
+ * widths the pieces are: logo 186, primary nav 312, reference nav 524, and the
+ * search + switcher cluster 220, plus the row gaps. Each tier therefore appears
+ * at the width where it actually fits, rather than at whichever Tailwind
+ * breakpoint looked about right — the previous `md`/`xl` pair overflowed the
+ * row at 768–873px and at every width from 1280 up, which pushed the language
+ * switcher outside the container and gave the page a horizontal scrollbar.
  */
 export async function SiteHeader() {
   const { locale, t } = await getI18n();
@@ -47,7 +55,7 @@ export async function SiteHeader() {
         {t.nav.skipToContent}
       </a>
 
-      <Container size="wide">
+      <Container size="shell">
         <div className="flex h-14 items-center gap-4">
           <Link href={r.home()} className="group flex shrink-0 items-baseline gap-2">
             <span className="font-display text-lg tracking-wide text-ink transition-colors group-hover:text-ember-bright">
@@ -58,7 +66,7 @@ export async function SiteHeader() {
             </span>
           </Link>
 
-          <nav aria-label={t.nav.primary} className="hidden items-center gap-1 md:flex">
+          <nav aria-label={t.nav.primary} className="hidden items-center gap-1 min-[900px]:flex">
             {primary.map((item) => (
               <Link
                 key={item.href}
@@ -72,7 +80,7 @@ export async function SiteHeader() {
 
           <nav
             aria-label={t.nav.reference}
-            className="ml-auto hidden items-center gap-1 xl:flex"
+            className="ml-auto hidden items-center gap-1 min-[1400px]:flex"
           >
             {reference.map((item) => (
               <Link
@@ -85,7 +93,7 @@ export async function SiteHeader() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2 xl:ml-3">
+          <div className="ml-auto flex items-center gap-2 min-[1400px]:ml-3">
             <SearchDialog
               indexUrl={r.searchIndex()}
               entryCount={buildSearchIndex(locale).length}
@@ -100,7 +108,7 @@ export async function SiteHeader() {
           </div>
 
           {/* Native disclosure — no client component needed for a menu. */}
-          <details className="group relative xl:hidden">
+          <details className="group relative min-[1400px]:hidden">
             <summary className="flex cursor-pointer list-none items-center gap-2 rounded border border-border px-3 py-1.5 text-sm text-ink-muted marker:hidden hover:text-ink [&::-webkit-details-marker]:hidden">
               {t.nav.menu}
               <span aria-hidden className="text-xs transition-transform group-open:rotate-180">
