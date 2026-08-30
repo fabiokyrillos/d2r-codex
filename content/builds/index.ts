@@ -1,6 +1,7 @@
 import type { Build } from "@/lib/types";
 import { blizzardSorceress } from "./blizzard-sorceress";
 import { hammerdin } from "./hammerdin";
+import { smiter } from "./smiter";
 
 /**
  * Build registry.
@@ -9,4 +10,4 @@ import { hammerdin } from "./hammerdin";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter];

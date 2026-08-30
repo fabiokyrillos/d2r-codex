@@ -930,4 +930,333 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  smiter: {
+    summary:
+      "Um ataque que não pode errar nem ser bloqueado, matando bosses de nível 110 com Crushing Blow. O especialista em Ubers.",
+    playstyle:
+      "Você chega perto de uma coisa e segura um botão. Não há mira, não há Attack Rating para satisfazer e não há chance de errar — Smite sempre acerta e ainda atordoa. A habilidade da build não está na luta, está na preparação: levar Life Tap, capar as resistências contra a aura de Conviction do Uber Mephisto, e separar os três Ubers para você só enfrentar um de cada vez. Longe de bosses esta build é genuinamente ruim, e isso é proposital.",
+    strengths: [
+      "Smite nunca erra e não pode ser bloqueado, então não precisa de nenhum investimento em Attack Rating",
+      "Crushing Blow tira uma porcentagem da vida atual do alvo, o que escala para qualquer boss independentemente do tamanho da vida dele",
+      "Bloqueio máximo com Holy Shield, resistências altas e escudo sempre erguido — o Paladin mais resistente",
+      "Um conjunto funcional para Ubers é barato pelos padrões de endgame; as partes caras são opcionais",
+      "Farma o Hellfire Torch, que melhora todo outro personagem que você tiver",
+    ],
+    weaknesses: [
+      "Quase nenhum dano em área. Smite atinge um alvo e essa é a skill inteira",
+      "Life Steal, Mana Steal e Deadly Strike não fazem nada — boa parte do equipamento normal de corpo a corpo é desperdício",
+      "Precisa de Teleport do Enigma para se mover com alguma velocidade, ou anda a pé por tudo",
+      "Imunes a físico são uma parede absoluta, e não há alternativa elemental",
+      "Repetitiva por natureza. Um botão, um alvo, sem posicionamento",
+    ],
+    flexPoints: [
+      "**Tudo além das quatro skills maximizadas é opcional.** Um Smiter está plenamente funcional por volta do nível 85, e os pontos restantes são conforto, não capacidade.",
+      "**Mais Resist Lightning** é a melhor das opções restantes se o Uber Mephisto estiver te matando. Cada ponto sobe a sua resistência máxima a raio, que a Conviction não consegue tirar.",
+      "**Mais Vigor** se você joga sem Enigma. Velocidade de corrida é a diferença entre uma run de Ubers de quinze minutos e uma de nove.",
+      "**Increased Attack Speed não é publicado como tabela de breakpoint neste site.** Os limiares de frame do Smite dependem do modificador de velocidade da sua arma e dos dados de animação do próprio jogo, e nenhuma fonte que consideramos confiável publica isso. Fanaticism sozinho fornece de 10 a 40% e o Grief mais 30 a 40%, o que na prática resolve — mas preferimos dizer isso a imprimir um número que não conseguimos verificar.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento e nada além disso. Um escudo de Paladin pede muito pouco; normalmente é a arma que define o número.",
+      dexterity:
+        "O suficiente para bloqueio máximo **com o Holy Shield ativo**, mais o que a sua arma exigir. Um Grief numa Phase Blade pede 136 de Dexterity sozinho, o que para a maioria dos Smiters já passa do requisito de bloqueio.",
+      vitality: "Todo o resto. Não há uso concorrente.",
+      energy: "Nenhum. Smite custa quase nada e a Redemption cobre o resto.",
+      notes: [
+        "**Confira a sua porcentagem de bloqueio com o Holy Shield ligado, não desligado.** O Holy Shield fornece boa parte dela, e conferir com o buff desligado é a forma mais comum de um Paladin desperdiçar cinquenta pontos de atributo.",
+        "Decida a sua arma antes de gastar Dexterity. O requisito de 136 de Dexterity de uma Phase Blade muda o plano inteiro; uma Berserker Axe ou um scepter não.",
+        "Não coloque pontos em Energy. Os problemas de mana de um Smiter se resolvem com um ponto em Redemption e um Insight no mercenário.",
+      ],
+    },
+    breakpointWhy: {
+      "fbr-86":
+        "Bloquear é a sua mitigação de dano, e os frames de recuperação são o que determina se você consegue agir entre golpes bloqueados. Só o Exile já dá 30%, e o Stormshield mais 35%.",
+      "fhr-48":
+        "O alvo prático. O Uber Diablo bate forte o bastante para que a recuperação decida se você consegue tomar uma poção.",
+      "fhr-86":
+        "Alcançável com um cinto Verdungo's e um anel raro, mas normalmente ao custo de resistências de que você precisa mais.",
+    },
+    skillNotes: {
+      smite:
+        "Disponível no nível 1. O dano por nível importa muito menos que o Crushing Blow, mas a duração do atordoamento escala com ele e é isso que impede um boss de agir.",
+      fanaticism:
+        "A sua aura ativa. Velocidade de ataque e dano, e se aplica também ao seu mercenário. Disponível no nível 30.",
+      "holy-shield":
+        "Chance de bloqueio e um bônus grande de defesa, e é o que permite ficar de frente para um Uber em vez de ao lado dele.",
+      defiance:
+        "Sinergia direta da defesa do Holy Shield — 15% mais armadura por ponto. Maximize por último; é real, mas é o item menos urgente da lista.",
+      might: "No caminho até a Fanaticism.",
+      "blessed-aim": "No caminho até a Fanaticism.",
+      concentration:
+        "No caminho até a Fanaticism. Também é uma aura genuinamente útil quando você quer sobreviver em vez de matar.",
+      vigor: "Velocidade de corrida e stamina. Vale um ponto em qualquer personagem que ande a pé.",
+      redemption:
+        "Transforma cadáveres em vida e mana. Numa build sem life steal, é a sua recuperação entre lutas.",
+      "resist-lightning":
+        "Aumenta a resistência máxima a raio, que é justamente o que a aura de Conviction do Uber Mephisto está tentando tirar de você.",
+      salvation:
+        "Uma troca de um ponto para a entrada em Uber Tristram, onde toda resistência importa mais que qualquer aura de dano.",
+      charge: "Mobilidade gratuita antes do Enigma. Não é dano — é transporte.",
+    },
+    immunityPlan:
+      "Smite é dano físico puro, então imunidade a físico é uma parada total sem alternativa elemental. Isso importa muito menos do que parece: nenhum dos Ubers é imune a físico, e a build não é uma farmadora geral. Onde você encontrar imunes a físico, a resposta é o seu mercenário, ou um sunder charm Bone Break, ou simplesmente passar direto — você não é obrigado a matar nada que seja inconveniente. A aura permanente de Conviction do Uber Mephisto é o problema real de resistência, e ele funciona na direção oposta: ela arranca as **suas** resistências, e é por isso que 75% antes de entrar não é negociável.",
+    mercenaryNotes:
+      "Contrate o mercenário do Ato 2 no Nightmare com **Might** pelo dano, ou **Holy Freeze** se você quiser os Ubers desacelerados. Holy Freeze é a escolha mais segura e a maioria dos Smiters usa ela. Ele vai morrer em Uber Tristram de qualquer jeito — leve ouro para reviver e não monte uma arma cara para ele antes de resolver o seu próprio equipamento.",
+    farmingWhy: {
+      "uber-tristram-hell":
+        "O motivo de a build existir. Três bosses de nível 110, e a única fonte do Hellfire Torch.",
+      "countess-hell": "Key of Terror, e runas para o Exile no caminho.",
+      "arcane-sanctuary-hell": "O Summoner dropa a Key of Hate, e a run é curta.",
+      "nihlathak-hell":
+        "Key of Destruction. Perigoso para a build errada; um Smiter com bloqueio máximo não é a build errada.",
+      "pindleskin-hell":
+        "Dez segundos de um portal, e um alvo único — que é o único tipo de alvo em que um Smiter é bom.",
+      "travincal-hell":
+        "O Council são três alvos únicos bem agrupados. Mais lento que um Hammerdin aqui, mas perfeitamente viável.",
+    },
+    levelingPath: {
+      summary:
+        "Não evolua como Smiter. O Smite não tem dano em área e não tem nada em que investir antes do nível 30. Evolua como Zealot ou Hammerdin, e faça respec no 75 ou depois, quando já tiver a fonte de Life Tap que faz a build funcionar.",
+      respecAt: "Nível 75+, quando Dracul's Grasp ou Exile estiver em mãos",
+    },
+    selfFoundNotes:
+      "Mais amigável a self-found do que parece. Kingslayer são quatro runas médias, Herald of Zakarum cai no Hell, Gore Rider é comum, e Dracul's Grasp é o único requisito genuinamente raro. Exile e Grief são upgrades, não requisitos de entrada — um Smiter self-found com Kingslayer, Herald of Zakarum e Dracul's Grasp consegue matar os mini-Ubers. As chaves também são self-found por definição, já que só caem de três bosses específicos.",
+    hardcoreNotes:
+      "O Paladin mais amigável ao Hardcore, com uma ressalva que não é pequena. Bloqueio máximo, alta redução de dano e um escudo que nunca abaixa deixam o conteúdo comum do Hell quase seguro. Uber Tristram é a exceção: três bosses de nível 110 com uma aura de Conviction entre eles matam um personagem despreparado em segundos. Faça os três mini-Ubers muitas vezes antes de abrir o portal final, mantenha Battle Orders ativo, e aceite que o Torch pode não valer o personagem.",
+    gearSets: {
+      starter: {
+        goal: "Atravessar o Normal e o Nightmare com o Smite como reserva, não como ataque principal.",
+        nextUpgrade:
+          "O nível 30 é o começo real da build — a Fanaticism abre lá. Até então você é só um Paladin com escudo.",
+        notes:
+          "Não tente evoluir com o Smite. Ele não tem dano em área e não tem sinergias em que investir ainda. Evolua com Zeal ou Blessed Hammer e faça respec depois — a Den of Evil te dá um token grátis em toda dificuldade.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer scepter de Paladin com +Combat Skills",
+            why: "O dano do Smite mal importa ainda, mas um scepter que soma níveis de skill sobe Holy Shield e Smite juntos. Os vendedores repõem esses itens o tempo todo.",
+            lookFor: ["+2 Combat Skills", "+3 Smite", "+3 Holy Shield"],
+          },
+          "offhand-0": {
+            why: "Três runas da Countess para resistências quase no máximo, num escudo de Paladin que ainda soma a própria resistência por cima.",
+            sockets: "Ral, Ort, Tal num escudo de Paladin de 3 sockets.",
+          },
+          "body-0": {
+            why: "Faster Hit Recovery e velocidade de corrida por duas das runas mais comuns do jogo.",
+          },
+          "helm-0": { why: "+1 em Todas as Skills por duas runas." },
+        },
+      },
+      nightmare: {
+        goal: "Fanaticism em funcionamento, Holy Shield ativo, resistências caminhando para 75%.",
+        nextUpgrade: "Uma fonte de Life Tap. Enquanto você não tiver uma, o Uber Mephisto não é tentável.",
+        notes:
+          "A Fanaticism no 30 é quando a build começa a parecer ela mesma. Antes disso, Might é um substituto razoável.",
+        picks: {
+          "weapon-0": {
+            why: "33% de Crushing Blow é o atributo que de fato mata bosses, e este é o lugar mais barato para conseguir uma quantidade séria dele.",
+            sockets: "Mal, Um, Gul, Fal numa Sword ou Axe de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Mais barata, e o Zeal que ela concede te dá algo para limpar entre bosses.",
+          },
+          "offhand-0": {
+            why: "+2 skills de Paladin, +2 Combat Skills, 30% de chance de bloqueio e +50 em todas as resistências. O melhor custo-benefício de escudo que um Smiter pode usar antes do Exile.",
+          },
+          "body-0": {
+            why: "O proc de Fade sobe todas as resistências e corta o dano físico recebido, e custa três runas baratas.",
+          },
+          "helm-0": {
+            why: "15-20% de redução de dano. Life steal é desperdício no Smite, mas a redução de dano não é.",
+          },
+          "boots-0": {
+            why: "15% de Crushing Blow e 30% de velocidade de corrida. O Deadly Strike dele não faz nada para você — pegue pelo Crushing Blow.",
+          },
+          "ring1-0": {
+            why: "Cannot Be Frozen. Ficar congelado enquanto está preso numa animação de ataque é como personagens de corpo a corpo morrem.",
+          },
+        },
+        charms: [
+          {
+            label: "Small charms com resistências e vida",
+            why: "Resistência é a restrição daqui até o fim do jogo, e charms são o lugar mais barato para comprá-la.",
+          },
+        ],
+      },
+      "early-hell": {
+        goal: "Chegar ao Hell com 75% de resistências e um total real de Crushing Blow.",
+        nextUpgrade:
+          "As três chaves, e depois um Exile. Com Life Tap e 75% de resistências no lugar, os mini-Ubers ficam tentáveis.",
+        notes:
+          "Este é o nível em que a build vira aquilo para que ela existe. Tudo acima dele é sobre fazer o mesmo trabalho mais rápido e com mais segurança.",
+        picks: {
+          "weapon-0": {
+            why: "Ainda dando conta. Crushing Blow não liga para o dano da sua arma, e é por isso que isto se sustenta muito mais tempo do que parece.",
+          },
+          "offhand-0": {
+            why: "As resistências importam mais no Hell que o bloqueio, e este escudo dá os dois.",
+          },
+          "gloves-0": {
+            why: "**O item que torna os Ubers possíveis.** Life Tap converte o seu dano em cura, que é a única sustentação que um Smiter tem — life steal não funciona com Smite.",
+            lookFor: ["Qualquer roll. O proc de Life Tap é fixo e é a razão inteira de usar essas luvas."],
+          },
+          "body-0": {
+            why: "15% de Crushing Blow no slot de armadura, mais redução de dano, por três runas médias.",
+          },
+          "body-0-alt0": {
+            why: "+2 skills, +65 em todas as resistências e 8% de redução de dano. Melhor, e consideravelmente mais cara.",
+          },
+          "belt-0": {
+            why: "10-15% de redução de dano num slot de cinto, o que aqui vale mais que qualquer total de atributos.",
+          },
+          "amulet-0": {
+            why: "+2 em todas as skills e +20-30 em todas as resistências. As resistências são o motivo.",
+          },
+        },
+        charms: [
+          {
+            label: "Small charms de resistência e vida",
+            why: "Você está mirando em 75% nas quatro resistências antes de chegar perto do Uber Mephisto.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Matar os três mini-Ubers de forma confiável e começar a juntar órgãos.",
+        nextUpgrade: "Enigma. Não pelo dano — pela capacidade de alcançar a luta e de separar os Ubers.",
+        notes:
+          "Os mini-Ubers são individualmente bem mais fáceis que Uber Tristram. Limpe eles até ficar confortável antes de abrir o portal final.",
+        picks: {
+          "weapon-0": {
+            why: "O dano fixo do Grief se aplica ao Smite mesmo sem a ficha do personagem nunca mostrar. É a arma padrão de Smiter e não é nem perto.",
+            sockets: "Eth, Tir, Lo, Mal, Ral numa Phase Blade de 5 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "33% de Crushing Blow e +2-3 skills de Paladin, por uma fração do custo do Grief.",
+          },
+          "offhand-0": {
+            why: "15% de chance de Life Tap ao golpear, uma aura de Defiance e +2 em Offensive Auras. É uma segunda fonte de Life Tap e um escudo defensivo ao mesmo tempo.",
+            sockets:
+              "Vex, Ohm, Ist, Dol num escudo de Paladin de 4 sockets. Use uma base etérea — o Exile se repara sozinho.",
+          },
+          "offhand-0-alt0": {
+            why: "Se o Exile estiver fora de alcance. Aí você precisa do Dracul's Grasp para Life Tap, não como reserva mas como única fonte.",
+          },
+          "helm-0": {
+            why: "Redução de dano, barato. Um Guillaume's Face ou um elmo com socket de Crushing Blow é a alternativa, se você achar um.",
+          },
+          "body-0": {
+            why: "+2 skills, +65 em todas as resistências e 8% de redução de dano. Contra a Conviction do Uber Mephisto, são as resistências que te mantêm de pé.",
+          },
+          "gloves-0": {
+            why: "Mantenha mesmo com o Exile. Duas fontes de Life Tap significam que a maldição fica praticamente sempre ativa.",
+          },
+          "boots-0": { why: "Mais 15% de Crushing Blow." },
+          "ring1-0": { why: "Cannot Be Frozen, permanentemente." },
+          "ring2-0": {
+            why: "+1 em todas as skills. Um anel raro com resistências é uma alternativa legítima se você precisar do cap.",
+          },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Paladin)",
+            why: "+3 skills de Paladin e +10-20 em todas as resistências. Você está farmando ele — o primeiro que guardar deve ser o seu.",
+          },
+          { why: "+1 em todas as skills, +10-20 em todos os atributos, +10-20 em todas as resistências." },
+          {
+            label: "Small charms de resistência",
+            why: "O que for preciso para segurar 75% nas quatro enquanto a Conviction estiver em cima de você.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders antes de cada portal. É um aumento de vida de cerca de um terço e custa uma tecla.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Limpar Uber Tristram de forma consistente e rápida.",
+        nextUpgrade:
+          "Resistências máximas acima de 75%, via sockets no Crown of Ages e o roll do Exile. É o último upgrade relevante.",
+        picks: {
+          "weapon-0": { why: "Inalterado. Nada desloca." },
+          "offhand-0": { why: "Inalterado. Base etérea." },
+          "body-0": {
+            why: "Teleport. É como você separa os três Ubers, e separar eles é a maior parte da luta.",
+            sockets:
+              "Jah, Ith, Ber numa armadura de 3 sockets. O +0,75 de Strength por nível também paga pelo seu equipamento.",
+          },
+          "helm-0": {
+            why: "+1 skills, +20-30 em todas as resistências, 10-15% de redução de dano e até dois sockets. O melhor elmo de Smiter.",
+            lookFor: ["2 sockets", "30% em todas as resistências", "15% de redução de dano"],
+          },
+          "gloves-0": { why: "Life Tap. Continua obrigatório." },
+          "boots-0": { why: "Crushing Blow." },
+          "belt-0": {
+            why: "Redução de dano, que nesta luta importa mais que qualquer total de atributos.",
+          },
+          "amulet-0": {
+            why: "+1 em todas as skills e 20% de velocidade de ataque. O Deadly Strike dele não faz nada para o Smite — você está comprando as outras duas linhas.",
+          },
+          "amulet-0-alt0": {
+            why: "Use este sempre que as resistências forem a coisa entre você e a morte do boss.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": {
+            why: "+1 em todas as skills, ou um anel raro com resistências e Faster Hit Recovery.",
+          },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin." },
+          { why: "+1 em todas as skills e resistências." },
+          {
+            label: "Small charms de resistência e vida",
+            why: "Preencha o inventário restante com o que segurar as suas resistências no máximo.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders." },
+          {
+            why: "A mão secundária para a troca com Call to Arms. O +2 skills dele sobe o Battle Orders que você conjura.",
+          },
+        ],
+      },
+      bis: {
+        goal: "Nada mais a consertar. Uber Tristram quando quiser.",
+        notes:
+          "Não sobra upgrade de dano para perseguir, porque o Crushing Blow não tem teto contra o qual empurrar. Tudo neste nível é resistência, redução de dano e conforto.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de 400 de dano numa Phase Blade etérea.",
+            lookFor: ["400 de dano", "40% de Increased Attack Speed", "Phase Blade etérea"],
+          },
+          "offhand-0": {
+            why: "Um roll de Defiance 16 num escudo de Paladin etéreo que já vinha com +45 em todas as resistências.",
+            lookFor: ["Defiance nível 16", "260% de Enhanced Defense", "base etérea com 45 em todas as resistências"],
+          },
+          "body-0": { why: "Teleport." },
+          "helm-0": {
+            why: "Dois sockets, 30% em todas as resistências, 15% de redução de dano.",
+            lookFor: ["2 sockets", "30 em todas as resistências", "15% de redução de dano"],
+          },
+          "gloves-0": { why: "Life Tap." },
+          "boots-0": { why: "Crushing Blow." },
+          "belt-0": { why: "15% de redução de dano num roll máximo." },
+          "amulet-0": {
+            why: "+2 em todas as skills e +30 em todas as resistências. Neste nível o teto de resistência é a restrição real, não o total de skills.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen, 20 de Dexterity." },
+          "ring2-0": {
+            why: "+1 em todas as skills, ou um anel raro com resistências, Faster Hit Recovery e vida.",
+          },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
+          { why: "+1 em todas as skills, 20 em todos os atributos, 20 em todas as resistências." },
+          {
+            label: "Small charms de vida e resistência",
+            why: "O resto do inventário. Nada mais compete a esta altura.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
