@@ -237,15 +237,15 @@ export const sorceressSkills: Skill[] = [
     requiredLevel: 6,
     prerequisites: ["charged-bolt"],
     summary:
-      "Reduces the current life of everything nearby by a percentage. Ignores resistance entirely.",
-    manaCost: "Low",
+      "Removes 25% of the current life of everything nearby. Works on bosses, and scales with nothing.",
+    manaCost: "Low — 9 mana at all levels",
     mechanics: [
-      "Deals damage as a percentage of *current* life, so it never checks lightning resistance in the usual way.",
-      "In Nightmare and Hell it has a floor — it will not reduce a monster below roughly a third of its maximum life.",
-      "This is how a cold or fire Sorceress softens an immune monster for her mercenary.",
-      "Skill points only increase its radius, not its potency, so one point is enough for most builds.",
+      "Deals 25% of the target's **current** life, not maximum life. Repeated casts therefore have sharply diminishing effect.",
+      "It has a floor: it will not reduce a monster below **33% life in Nightmare** or **50% life in Hell**. There is no floor in Normal.",
+      "Skill points only increase its **radius**, never its potency. One point is enough for almost every build.",
+      "Sources disagree on whether enemy Lightning Resistance reduces it — see the mechanics page. Treat it as a softening tool for your mercenary, not as a reliable answer to immunity.",
     ],
-    confidence: "verified",
+    confidence: "community",
   },
   {
     slug: "telekinesis",

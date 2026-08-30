@@ -43,8 +43,8 @@ export const classes: CharacterClass[] = [
         body: "Teleport costs one skill point and one prerequisite (Telekinesis). Every Sorceress takes it. It is not optional, it is not a luxury, and it is the reason her clear speed beats classes with far more damage.",
       },
       {
-        title: "Static Field ignores resistance",
-        body: "Static Field reduces a monster's *current* life by a percentage rather than dealing elemental damage, so it works on anything. In Hell it is capped: it will not take a monster below a floor (commonly cited as one third of maximum life), so it softens targets rather than killing them.",
+        title: "Static Field softens, it does not kill",
+        body: "Static Field removes 25% of a monster's **current** life per cast — not maximum life — so its effect falls away quickly with repeated casts. It also has a hard floor: it will not reduce a monster below **33% life in Nightmare** or **50% in Hell**. It is a tool for softening a target so your mercenary can finish it, never a kill condition of its own.",
       },
       {
         title: "Two cast animations",

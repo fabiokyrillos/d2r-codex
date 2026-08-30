@@ -1,9 +1,11 @@
 import type {
+  BreakpointTable,
   Build,
   CharacterClass,
   FarmingArea,
   ItemRef,
   Mercenary,
+  MechanicArticle,
   ProgressionJourney,
   Rune,
   Runeword,
@@ -22,6 +24,8 @@ import { builds } from "@/content/builds";
 import { farmingAreas } from "@/content/farming/areas";
 import { mercenaries } from "@/content/mercenaries/mercenaries";
 import { journeys } from "@/content/progression";
+import { breakpointTables } from "@/content/breakpoints/breakpoints";
+import { mechanics } from "@/content/mechanics/mechanics";
 
 /**
  * The single data-access layer.
@@ -59,6 +63,8 @@ const areaIndex = indexBy(farmingAreas);
 const mercIndex = indexBy(mercenaries);
 const skillIndex = indexBy(sorceressSkills);
 const treeIndex = indexBy(sorceressTrees);
+const breakpointIndex = indexBy(breakpointTables);
+const mechanicIndex = indexBy(mechanics);
 
 // ---------------------------------------------------------------------------
 // Collections
@@ -74,6 +80,8 @@ export const getMercenaries = (): Mercenary[] => [...mercenaries];
 export const getSkills = (): Skill[] => [...sorceressSkills];
 export const getSkillTrees = (): SkillTree[] => [...sorceressTrees];
 export const getJourneys = (): ProgressionJourney[] => [...journeys];
+export const getBreakpointTables = (): BreakpointTable[] => [...breakpointTables];
+export const getMechanics = (): MechanicArticle[] => [...mechanics];
 
 // ---------------------------------------------------------------------------
 // Single lookups
@@ -88,9 +96,20 @@ export const getFarmingArea = (slug: Slug) => areaIndex.get(slug);
 export const getMercenary = (slug: Slug) => mercIndex.get(slug);
 export const getSkill = (slug: Slug) => skillIndex.get(slug);
 export const getSkillTree = (slug: Slug) => treeIndex.get(slug);
+export const getBreakpointTable = (slug: Slug) => breakpointIndex.get(slug);
+export const getMechanic = (slug: Slug) => mechanicIndex.get(slug);
 
 export const getJourney = (classSlug: Slug) =>
   journeys.find((j) => j.classSlug === classSlug);
+
+/**
+ * Breakpoint tables that apply to a class — either explicitly tagged with it,
+ * or shared tables that name the class in their title.
+ */
+export const getBreakpointsForClass = (classSlug: Slug, className: string) =>
+  breakpointTables.filter(
+    (t) => t.classSlug === classSlug || t.name.includes(className),
+  );
 
 // ---------------------------------------------------------------------------
 // Scoped queries

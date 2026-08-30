@@ -143,7 +143,7 @@ export const blizzardSorceress: Build = {
   ],
 
   immunityPlan:
-    "Cold Mastery does not break immunity — against a cold-immune monster it operates at one fifth effectiveness and cannot bring resistance below 100%. Your options, in order of practicality: skip the pack and teleport past it; let a Might-aura mercenary kill it with physical damage; use Static Field to strip its current life (Static ignores resistance entirely); carry a Cold Rupture sunder charm, which sets cold-immune monsters to 95% cold resistance and turns them into normal targets; or run an Infinity mercenary, whose Conviction aura breaks many but not all cold immunities. Early on, skipping is the correct answer far more often than players expect.",
+    "Cold Mastery does not break immunity — against a cold-immune monster it operates at one fifth effectiveness and cannot bring resistance below 100%. Your options, in order of practicality: skip the pack and teleport past it; let a Might-aura mercenary kill it with physical damage; use Static Field to strip its current life down toward the Hell floor of 50% so the mercenary finishes it faster; carry a Cold Rupture sunder charm, which sets cold-immune monsters to 95% cold resistance and turns them into ordinary targets; or run an Infinity mercenary, whose Conviction aura breaks many but not all cold immunities. Early on, skipping is the correct answer far more often than players expect.",
 
   mercenary: "act-2-desert-mercenary",
   mercenaryNotes:
