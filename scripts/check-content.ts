@@ -40,6 +40,7 @@ import { OVERLAYS } from "../lib/registry/overlays";
 import { missingOverlaySlugs, orphanOverlaySlugs } from "../lib/registry/localize";
 import { tierOrder } from "../lib/labels";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
+import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
 
 const SOURCE: Locale = DEFAULT_LOCALE;
@@ -433,6 +434,59 @@ for (const locale of TRANSLATED) {
     const mark = row.done === row.total ? "ok " : "   ";
     console.log(`    ${mark}${row.domain.padEnd(16)} ${row.done}/${row.total}`);
   }
+}
+
+// ---------------------------------------------------------------------------
+// UI dictionary divergence
+// ---------------------------------------------------------------------------
+
+/*
+ * Missing dictionary keys cannot happen — `Dictionary` is the widened type of
+ * the en-US object, so `tsc` rejects a translation that omits or renames one.
+ * What the type system cannot see is a key that was *copied* rather than
+ * translated.
+ *
+ * So this reports how many strings are byte-identical across locales. It is a
+ * statistic, not a failure: a large share of them legitimately match — quest
+ * names, difficulty names, stat lines, and the community loanwords that ADR
+ * 0003 keeps in English. A sudden jump when adding a locale is the signal
+ * worth chasing.
+ */
+function countStrings(
+  a: unknown,
+  b: unknown,
+  acc: { total: number; identical: number },
+): void {
+  if (typeof a === "string") {
+    acc.total++;
+    if (a === b) acc.identical++;
+    return;
+  }
+  if (Array.isArray(a)) {
+    a.forEach((v, i) => countStrings(v, (b as unknown[])?.[i], acc));
+    return;
+  }
+  if (a && typeof a === "object") {
+    for (const key of Object.keys(a as object)) {
+      countStrings(
+        (a as Record<string, unknown>)[key],
+        (b as Record<string, unknown>)?.[key],
+        acc,
+      );
+    }
+  }
+}
+
+console.log("\nUI dictionary:");
+for (const locale of TRANSLATED) {
+  const acc = { total: 0, identical: 0 };
+  countStrings(dictionaryFor(DEFAULT_LOCALE), dictionaryFor(locale), acc);
+  const translated = acc.total - acc.identical;
+  const pct = Math.round((translated / acc.total) * 100);
+  console.log(
+    `  ${locale}  ${acc.total} keys, ${translated} differ from ${DEFAULT_LOCALE} (${pct}%), ` +
+      `${acc.identical} identical (proper nouns and loanwords)`,
+  );
 }
 
 if (warnings.length > 0) {
