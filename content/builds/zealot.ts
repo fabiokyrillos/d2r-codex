@@ -109,7 +109,7 @@ export const zealot: Build = {
   flexPoints: [
     "**Defiance** is the best remaining sink. It is a 15%-per-level armour synergy for Holy Shield, so it compounds with a stat you are already investing in.",
     "**More Resist Lightning** if you intend to fight Uber Mephisto, whose Conviction aura is aimed squarely at your resistances.",
-    "**Holy Freeze** at one point is a legitimate alternative aura when you would rather slow a pack than kill it faster. It costs the prerequisite chain through Holy Fire, so decide before you spend.",
+    "**The Holy Freeze Zealot.** Published elsewhere as its own build, and documented here as a variant because that is what it is: the same skills, the same gear plan and the same playstyle, with Holy Freeze selected instead of Fanaticism. The version worth building does not spend points on it at all — a **Doom** runeword emanates a level 12 Holy Freeze aura from the weapon, which frees your selected aura for Fanaticism and gives you both at once. Slowing a pack is worth more than it sounds to a build that is locked into its attack animation, and the cold damage chips at physical immunes. One source we consulted still describes this build against Patch 2.4, so treat any specific numbers you find elsewhere with suspicion.",
     "**Increased Attack Speed is not published as a breakpoint table here.** Zeal's frame thresholds depend on the weapon's speed modifier and the game's animation data, and no source we treat as reliable publishes them. In practice Fanaticism plus a Grief covers it; we would rather say that than print an unverified number.",
   ],
   stats: {

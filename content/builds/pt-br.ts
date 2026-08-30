@@ -1280,7 +1280,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     flexPoints: [
       "**Defiance** é o melhor destino restante. É uma sinergia de 15% de armadura por nível do Holy Shield, então soma com um atributo em que você já investe.",
       "**Mais Resist Lightning** se você pretende enfrentar o Uber Mephisto, cuja aura de Conviction mira exatamente nas suas resistências.",
-      "**Holy Freeze** com um ponto é uma aura alternativa legítima quando você prefere desacelerar um grupo a matá-lo mais rápido. Custa a cadeia de pré-requisitos passando por Holy Fire, então decida antes de gastar.",
+      "**O Holy Freeze Zealot.** Publicado em outros lugares como build própria, e documentado aqui como variante porque é o que ele é: as mesmas skills, o mesmo plano de equipamento e o mesmo estilo, com Holy Freeze selecionada no lugar da Fanaticism. A versão que vale montar não gasta ponto nenhum nela — uma runeword **Doom** emana uma aura de Holy Freeze nível 12 a partir da arma, o que libera a sua aura selecionada para a Fanaticism e te dá as duas ao mesmo tempo. Desacelerar um grupo vale mais do que parece para uma build presa na própria animação de ataque, e o dano de frio belisca imunes a físico. Uma das fontes que consultamos ainda descreve esta build contra o Patch 2.4, então trate qualquer número específico que você achar por aí com desconfiança.",
       "**Increased Attack Speed não é publicado como tabela de breakpoint aqui.** Os limiares de frame do Zeal dependem do modificador de velocidade da arma e dos dados de animação do jogo, e nenhuma fonte que tratamos como confiável publica isso. Na prática, Fanaticism mais um Grief resolvem; preferimos dizer isso a imprimir um número não verificado.",
     ],
     statPlan: {
@@ -2386,6 +2386,261 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
           { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
           { label: "Grand charms de skills de raio com vida", why: "Dano e vida juntos." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
+  "holy-fire-paladin": {
+    summary:
+      "Uma aura de fogo que queima tudo perto de você enquanto ataca com Zeal. Divertida, barata de começar, e barrada pela imunidade mais comum do jogo.",
+    playstyle:
+      "Rode Holy Fire, entre num grupo e segure Zeal. A aura causa dano contínuo a tudo num raio ao seu redor e adiciona dano de fogo a cada golpe seu, então a build mata por proximidade tanto quanto por atacar. É rápida, tátil e barata de colocar de pé. Aí você chega ao Hell, encontra o primeiro grupo imune a fogo, e descobre que a aura que você está rodando é também o slot de aura de que você precisaria para a Conviction. Tudo acima do nível Dragon nesta página é sobre resolver isso.",
+    strengths: [
+      "Muito barata de começar. Holy Fire é uma skill de nível 6 e carrega um personagem pelo Normal sozinha",
+      "Dano de fogo mais dano físico do Zeal, então há duas coisas em que se apoiar",
+      "Rápida e física de jogar — a aura mata coisas que você nunca atacou",
+      "Excelente auto-sustentação via life steal na metade do Zeal",
+      "A variante Dragon é um dos poucos quebra-cabeças de equipamento genuinamente originais do jogo",
+    ],
+    weaknesses: [
+      "**Imunidade a fogo é a mais comum no Hell**, e é o seu tipo de dano",
+      "Você não pode rodar Holy Fire e Conviction ao mesmo tempo, então a versão padrão não tem quebra de imunidade",
+      "A solução — Dragon mais Hand of Justice — custa duas Sur, uma Cham, uma Lo e uma Sol",
+      "As duas fontes ranqueadas que consultamos a colocam por último ou quase entre as builds de Paladin",
+      "Ruim em Ubers: o Maxroll a coloca especificamente no tier D lá",
+    ],
+    flexPoints: [
+      "**A variante Dragon é a forma real da build.** O Dragon concede uma aura de Holy Fire nível 14 e o Hand of Justice uma nível 16 — as duas vindas do item. Quando a sua aura de dano vem do equipamento, a aura que você *seleciona* pode ser a Conviction, e o problema estrutural da build desaparece. Se você pretende ir por aí, invista em Conviction em vez de Holy Fire.",
+      "**Versão padrão:** maximize Holy Fire e rode ela. Barata, divertida pelo Nightmare, e bate numa parede no Hell que nenhuma quantidade de equipamento dentro desta variante resolve.",
+      "**Sacrifice** vale pontos depois que o núcleo estiver pronto — é a sinergia do Zeal, e o Zeal é o que mata os imunes a fogo.",
+      "**Omnidin, a variante de troca de auras.** Com Dragon, Dream, Doom e Exile você carrega Holy Fire, Holy Shock, Holy Freeze e Defiance ao mesmo tempo e seleciona a aura de que a party precisar. É um estilo de suporte de grupo e não uma build de dano, só uma fonte que consultamos documenta isso, e é por esse motivo que está documentada aqui em vez de ter página própria.",
+      "**Increased Attack Speed não é publicado como tabela de breakpoint aqui**, pelo mesmo motivo dos outros Paladins de corpo a corpo.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento. Se você vai para uma armadura Dragon, note que ela mesma dá +0,375 de Strength por nível, o que paga boa parte do que custa.",
+      dexterity: "O suficiente para o tanto de bloqueio que você comprou, com o Holy Shield ativo.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum.",
+      notes: [
+        "**A sua própria resistência máxima a fogo sobe como efeito colateral** de maximizar Resist Fire pela sinergia. Isso é sobrevivência real e é fácil esquecer que você tem.",
+        "**Confira o bloqueio com o Holy Shield ativo**, como em todo Paladin.",
+        "Cannot Be Frozen não é opcional em nenhuma build baseada em Zeal, porque ser congelado estica a animação de ataque na qual você fica preso.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48":
+        "Você luta cercado pelo grupo que a sua aura está queimando, então a recuperação decide se você consegue agir.",
+      "fbr-32": "Recuperação de bloqueio, numa build que está sempre em alcance corpo a corpo.",
+    },
+    skillNotes: {
+      "holy-fire":
+        "Disponível no nível 6, e é por isso que esta build carrega um personagem tão cedo. Raio 6 mais 1 por nível, então pontos ampliam a zona de morte além de aprofundá-la.",
+      "resist-fire":
+        "Sinergia do Holy Fire, e sobe a sua própria resistência máxima a fogo ao mesmo tempo. Os melhores pontos da build.",
+      salvation:
+        "A segunda sinergia. Também é uma aura de resistência para a qual vale trocar quando a aura que você roda não está ajudando.",
+      zeal:
+        "A metade física, e a sua resposta contra imunes a fogo. Quatro pontos alcançam o teto de cinco golpes; o resto é dano.",
+      "holy-shield":
+        "Um ponto mais equipamento. Você fica em alcance corpo a corpo de tudo, então considere mais se estiver morrendo.",
+      sacrifice: "Pré-requisito do Zeal, e a única sinergia do Zeal se você tiver pontos sobrando.",
+      conviction:
+        "**Um ponto, e importa mais do que o nível sugere** — mas só se o seu Holy Fire vier do equipamento. Leia a variante Dragon antes de decidir quanto investir aqui.",
+      fanaticism: "Para o mercenário, ou para os momentos em que você prefere golpear mais rápido a queimar.",
+      vigor: "Velocidade de corrida e pré-requisito da Salvation.",
+      redemption: "Vida e mana de cadáveres.",
+    },
+    immunityPlan:
+      "Este é o problema que define a build, então aqui vai a versão honesta. **Imunidade a fogo é a mais comum no Hell**, e fogo é o seu dano. Pior, a build padrão não consegue quebrá-la: o Holy Fire é a sua aura selecionada, e a Conviction teria que ocupar o mesmo slot. Existem três respostas reais. **Um Sunder Charm de fogo** quebra imunidade a fogo diretamente pelo preço de um slot de charm e de alguma redução de dano — a solução mais barata por larga margem. **A variante Dragon** move o Holy Fire para o seu equipamento para que a aura selecionada possa ser a Conviction; isso mais os -20% de resistência a fogo do inimigo do Hand of Justice é a solução completa, e também a cara. **O dano físico do Zeal** está sempre disponível e é o que de fato mata imunes a fogo em todos os níveis abaixo do Dragon — e é por isso que as listas de equipamento se apoiam em Crushing Blow muito mais do que uma build de fogo sugeriria.",
+    mercenaryNotes:
+      "**Might** pelo dano, ou **Holy Freeze** para manter os grupos dentro do seu raio de aura por mais tempo — a mesma lógica do Tesladin, e pelo mesmo motivo. Dê um **Insight** para a mana. Assim que você estiver rodando Conviction, não há necessidade de duplicá-la nele; coloque as runas na sobrevivência dele.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "Densidade enorme, nada imune a fogo, e tudo anda para dentro da sua aura. A melhor zona para esta build.",
+      "mausoleum-hell": "Nível de área 85 densa e majoritariamente Undead vulnerável a fogo.",
+      "pit-hell":
+        "Nível de área 85 e curta. Alguns imunes a fogo, que é para o que serve a metade do Zeal.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 e cheia de imunes a frio, o que não te afeta em nada.",
+      "chaos-sanctuary-hell":
+        "Densa, mas cheia de demônios resistentes a fogo e com Iron Maiden dos Oblivion Knights, que reflete o seu Zeal. Possível, não confortável.",
+      "travincal-hell":
+        "O Council é imune a fogo. Sem a Conviction da variante Dragon, esta simplesmente não é a sua zona.",
+    },
+    levelingPath: {
+      summary:
+        "Esta evolui como ela mesma, e é muito boa nisso. O Holy Fire está disponível no nível 6 e limpa telas inteiras pelo Normal sem equipamento nenhum; o Zeal chega no 12 e te dá um segundo tipo de dano. Nenhum respec é necessário até você se comprometer com a variante Dragon, quando os pontos que você afundou no próprio Holy Fire ficam melhor gastos em Conviction — o token grátis da Den of Evil cobre isso.",
+      respecAt: "Só ao converter para a variante Dragon",
+    },
+    selfFoundNotes:
+      "A build padrão é genuinamente amigável a self-found e um dos personagens iniciais mais fortes do jogo — o Holy Fire não precisa de nada além de pontos de skill. O Hell é onde ela para: um Sunder Charm de fogo é um alvo realista de self-found e é a solução a mirar, enquanto a variante Dragon precisa de duas Sur, uma Cham, uma Lo e uma Sol e não é um projeto de self-found. Planeje para o sunder charm, e trate o Dragon como um talvez distante.",
+    hardcoreNotes:
+      "Mais segura do que parece. Resistência a fogo pessoal alta cai de graça ao maximizar Resist Fire como sinergia, o life steal do Zeal te mantém cheio, e Holy Shield mais um escudo de Paladin dão bloqueio real. Os dois perigos são os mesmos de todo Zealot: **Iron Maiden**, que reflete a sua metade física, e o **travamento de animação**, que exige Cannot Be Frozen. A variante Dragon também é muita moeda carregada num personagem que pode morrer.",
+    gearSets: {
+      starter: {
+        goal: "Do nível 6 até o fim do Normal, com quase nada.",
+        nextUpgrade: "Zeal no 12, e depois simplesmente continue despejando pontos em Holy Fire e Resist Fire.",
+        notes:
+          "Esta é genuinamente uma das builds iniciais mais fortes do jogo. Holy Fire no nível 6 limpa telas inteiras no Normal sem equipamento nenhum. Aproveite — e leia a seção do Hell antes de planejar em cima disso.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer arma rápida de uma mão",
+            why: "O Holy Fire faz a matança nesta fase e não liga para o que você segura. Prefira velocidade a dano.",
+            lookFor: ["+2 Combat Skills", "Alta velocidade de ataque"],
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "Recuperação e velocidade de corrida." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+        },
+      },
+      nightmare: {
+        goal: "Empurrar Holy Fire e as sinergias, e começar a pensar no Hell.",
+        nextUpgrade:
+          "Decida agora se você vai bancar um Dragon e um Hand of Justice. A resposta muda o que você faz nos próximos trinta níveis.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque e uma carga de Berserk. O Berserk é uma saída de dano físico que você vai querer.",
+          },
+          "offhand-0": { why: "+2 skills de Paladin, +2 Combat Skills, +50 em todas as resistências." },
+          "body-0": { why: "Fade e velocidade de ataque por três runas baratas." },
+          "helm-0": { why: "Life steal e redução de dano." },
+          "ring1-0": { why: "Cannot Be Frozen. Inegociável numa build de Zeal." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "A resistência mais barata disponível." }],
+      },
+      "early-hell": {
+        goal: "Encontrar imunidade a fogo e ter o que fazer a respeito.",
+        nextUpgrade:
+          "Ou um Sunder Charm de fogo, ou o par Dragon e Hand of Justice. São as duas respostas reais e custam valores absurdamente diferentes.",
+        notes:
+          "Este é o nível em que o problema central da build aparece. Uma fonte publicada conta 102 monstros imunes a fogo no Hell, dos quais ela diz que cerca de um terço precisa de Conviction em vez de uma maldição para quebrar. Estando o número exato certo ou não, o formato está: imunidade a fogo está em todo lugar, e o Zeal sozinho é lento.",
+        picks: {
+          "weapon-0": {
+            why: "Crushing Blow e Open Wounds. Contra um imune a fogo, o seu dano físico é o plano inteiro, e este é o jeito mais barato de torná-lo sério.",
+          },
+          "offhand-0": { why: "Resistências, das quais você vai estar carente." },
+          "body-0": {
+            why: "Crushing Blow, dano de frio e redução de dano. O dano de frio é um terceiro tipo de dano contra imunes a fogo.",
+          },
+          "boots-0": {
+            why: "Crushing Blow, Deadly Strike e Open Wounds — todos ajudam a metade do seu dano que ainda funciona.",
+          },
+          "amulet-0": { why: "+1 skills e 20% de velocidade de ataque." },
+          "belt-0": { why: "Redução de dano e life steal." },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "Segure 75%." },
+          {
+            label: "Flame Rift (Sunder Charm de fogo)",
+            why: "A resposta direta para imunidade a fogo, ao custo de um slot de charm e de alguma redução de dano. Vale saber que isto existe antes de gastar uma fortuna na rota do Dragon.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Limpar o Hell com o Zeal fazendo mais trabalho que a aura.",
+        nextUpgrade:
+          "Um Dragon. É o ponto em que esta build deixa de ser um Zealot com uma aura simpática e vira a própria coisa.",
+        picks: {
+          "weapon-0": {
+            why: "A metade física vira a metade principal. O dano fixo do Grief é o que carrega este nível.",
+            sockets: "Eth, Tir, Lo, Mal, Ral numa Phase Blade de 5 sockets.",
+          },
+          "offhand-0": { why: "Skills e resistências." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "helm-0": { why: "Life steal e redução de dano." },
+          "boots-0": { why: "Crushing Blow." },
+          "belt-0": { why: "Redução de dano e life steal." },
+          "amulet-0": { why: "+1 skills, velocidade de ataque, Deadly Strike." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          { label: "Flame Rift (Sunder Charm de fogo)", why: "A resposta barata ao problema central da build." },
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      optimized: {
+        goal: "A variante Dragon. Holy Fire vindo do equipamento, Conviction selecionada.",
+        nextUpgrade:
+          "Conviction, investida de verdade. Com as auras no equipamento, cada ponto nela agora faz o que os pontos de Holy Fire faziam.",
+        notes:
+          "Faça respec aqui. Os pontos da build padrão em Holy Fire são majoritariamente desperdiçados quando a aura vem do Dragon e do Hand of Justice — coloque-os em Conviction e Zeal. Mantenha Resist Fire e Salvation; elas ainda dão sinergia às auras dos itens.",
+        picks: {
+          "body-0": {
+            why: "**O item-chave.** Uma aura de Holy Fire nível 14 vinda da armadura, o que libera o seu slot de aura selecionada para a Conviction. O +0,375 de Strength por nível ainda se paga.",
+            sockets: "Sur, Lo, Sol na armadura de 3 sockets mais leve que você achar.",
+          },
+          "weapon-0": {
+            why: "Uma segunda aura de Holy Fire no nível 16, e -20% de resistência a fogo do inimigo em cima da sua Conviction. As duas auras empilham, e agora você também tem quebra de imunidade.",
+            sockets: "Sur, Cham, Amn, Lo numa arma de 4 sockets. Uma Phase Blade pela velocidade, uma Berserker Axe pelo dano.",
+          },
+          "weapon-0-alt0": {
+            why: "Se o Hand of Justice estiver fora de alcance, mantenha o Grief e rode só a aura do Dragon. Você ganha a Conviction, mas com metade do dano de fogo.",
+          },
+          "offhand-0": {
+            why: "Skills e resistências. Com as duas auras de dano agora em outros slots, este volta a te manter vivo.",
+          },
+          "helm-0": {
+            why: "+1 skills, resistências, redução de dano e sockets.",
+            lookFor: ["2 sockets", "30% em todas as resistências"],
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque e vida.",
+            lookFor: ["20% de Increased Attack Speed", "Vida", "Resistências"],
+          },
+          "boots-0": { why: "Crushing Blow." },
+          "belt-0": { why: "Redução de dano." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Grand charms de skills de fogo com vida", why: "Dano direto na aura." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Duas auras de fogo empilhadas, Conviction selecionada, e um sunder de fogo de reserva.",
+        notes:
+          "Vale dizer com clareza no topo da escada: este é um personagem caro que as duas fontes ranqueadas que consultamos colocam abaixo de builds de Paladin que custam muito menos. Monte porque o quebra-cabeça de empilhar auras é divertido, não porque os números mandam.",
+        picks: {
+          "body-0": {
+            why: "A aura de Holy Fire e a Strength que paga pelo resto do seu equipamento.",
+            lookFor: ["+5 em todos os atributos", "base leve de 3 sockets"],
+          },
+          "weapon-0": {
+            why: "A segunda aura, a velocidade de ataque, o life steal e -20% de resistência a fogo do inimigo.",
+            lookFor: ["330% de Enhanced Damage", "base Phase Blade ou Berserker Axe"],
+          },
+          "offhand-0": { why: "Skills, resistências, bloqueio." },
+          "helm-0": {
+            why: "Dois sockets, resistências máximas, redução de dano máxima.",
+            lookFor: ["2 sockets", "30 em todas as resistências", "15% de redução de dano"],
+          },
+          "gloves-0": {
+            label: "Luvas craftadas de Blood, 20% de Increased Attack Speed",
+            why: "Velocidade de ataque, life steal e skills.",
+            lookFor: ["20% de Increased Attack Speed", "+3 Combat Skills"],
+          },
+          "boots-0": { why: "Crushing Blow e Deadly Strike." },
+          "belt-0": { why: "15% de redução de dano." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Paladin)", why: "+3 skills de Paladin, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Flame Rift (Sunder Charm de fogo)",
+            why: "Carregue para os monstros que nem a Conviction consegue empurrar para baixo.",
+          },
         ],
         weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
       },
