@@ -15,6 +15,7 @@ import { enchantSorceress } from "./enchant-sorceress";
 import { hydraSorceress } from "./hydra-sorceress";
 import { meteorbSorceress } from "./meteorb-sorceress";
 import { frostNovaSorceress } from "./frost-nova-sorceress";
+import { meleeSorceress } from "./melee-sorceress";
 
 /**
  * Build registry.
@@ -23,4 +24,4 @@ import { frostNovaSorceress } from "./frost-nova-sorceress";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, meleeSorceress];

@@ -4792,4 +4792,273 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "melee-sorceress": {
+    summary:
+      "Uma Sorceress que não conjura. O Dream fornece o dano, outra runeword fornece o ataque, e o Energy Shield a mantém de pé.",
+    playstyle:
+      "Entre e golpeie. O dano não é seu — vem da aura de Holy Shock das suas runewords Dream, que eletrocuta tudo por perto esteja você atacando ou não, e do dano físico que a arma fizer. Os seus pontos de skill compram sobrevivência, não dano: o Energy Shield converte golpes recebidos em mana, a Telekinesis torna essa conversão mais barata, e o Warmth reabastece a reserva. É uma build de novidade genuína, e tanto esta página quanto as fontes de onde ela vem dizem isso.",
+    strengths: [
+      "Completamente diferente de jogar de qualquer outra Sorceress do site",
+      "Energy Shield mais uma reserva grande de mana é uma camada defensiva real, não um truque",
+      "A aura de Holy Shock causa dano em tudo por perto sem apertar botão",
+      "Raio mais físico significa menos paredes duras que uma caster pura",
+      "Mantém o Teleport, que nenhum outro personagem de corpo a corpo do jogo tem de graça",
+    ],
+    weaknesses: [
+      "**Muito cara para o que é.** Dois Dreams são duas runas Jah, e a runeword de ataque vem por cima",
+      "**Fonte única.** Só uma das três fontes de build que consultamos documenta isso, no tier C",
+      "Mana burn é letal em vez de irritante, porque o Energy Shield é a sua vida",
+      "Os seus pontos de skill não compram dano nenhum — cada ponto dele vem do equipamento",
+      "Mais lenta que as especialistas em tudo, e custa mais que a maioria delas",
+    ],
+    flexPoints: [
+      "**Variante Zeal:** uma runeword **Passion** concede Zeal como Oskill. Mais rápida, acerta vários alvos adjacentes, e te mantém em forma normal — então você ainda conjura, bebe e teleporta livremente. É a mais flexível das duas.",
+      "**Variante Werebear:** uma runeword **Beast** concede Werebear como Oskill, e você luta em forma de urso. A forma é mais resistente e bate mais forte por golpe, mas você não consegue conjurar transformado — aplique Enchant e a sua armadura *antes* de transformar, e aceite que o Teleport fica indisponível até voltar.",
+      "**Pule o Enchant** se preferir empurrar mais as skills de apoio do Energy Shield. O dano da build é a aura do Dream de qualquer forma, e o Enchant é um bônus de dano de fogo e não um núcleo.",
+      "**Não coloque pontos em Energy.** O Energy Shield escala com a sua *reserva* de mana, e equipamento fornece muito mais mana por ponto que o atributo. Esta é a build em que esse erro é mais tentador e mais caro.",
+      "**Increased Attack Speed não é publicado como tabela de breakpoint neste site** — a mesma posição das páginas de Paladin de corpo a corpo. O Beast fornece 40% e o Passion fornece o dele; na prática isso resolve.",
+    ],
+    statPlan: {
+      strength: "O suficiente para a sua arma e armadura. O próprio Beast dá +25-40 de Strength, o que devolve parte do que a base dele custa.",
+      dexterity: "O suficiente para a arma. Não há plano de bloqueio aqui — o slot do escudo é um Dream.",
+      vitality: "Todo o resto, e ainda assim não vai ser muito. O Energy Shield faz o trabalho que a Vitality faz em outros lugares.",
+      energy: "**Nenhum**, apesar das aparências. Leia os pontos flexíveis — o escudo escala com a reserva, e equipamento dá mais reserva por ponto que o atributo.",
+      notes: [
+        "**O erro mais comum nesta build é investir em Energy.** Parece certo e não é: mana vinda de equipamento é muito mais barata por ponto, e a Telekinesis melhora a taxa de conversão de um jeito que a Energy nunca faz.",
+        "Os dois slots defensivos — elmo e escudo — são Dreams, então não há bloqueio nem resistência de nenhum dos dois. Todo o resto que você usa precisa compensar isso.",
+        "A variante Werebear não bebe poções do mesmo jeito nem conjura transformada. Planeje a ordem dos buffs antes de se transformar.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-60":
+        "**Obrigatório.** Você está em alcance corpo a corpo sem bloqueio, e o Dream fornece 20-30% disso por cópia — então dois Dreams já levam quase todo o caminho.",
+      "fcr-63":
+        "Só o Teleport e os seus buffs usam. Não há motivo para comprar mais do que o suficiente para se reposicionar.",
+    },
+    skillNotes: {
+      "energy-shield":
+        "**Dois de mana por ponto de dano na base**, melhorado pela Telekinesis. Num personagem com reserva de vida de Sorceress parado em alcance corpo a corpo, esta é a barra de vida da build.",
+      telekinesis:
+        "Melhora a taxa de mana por dano do Energy Shield, o que vale mais que qualquer quantidade de mana bruta. Maximize em segundo.",
+      warmth:
+        "Reabastece a reserva que o Energy Shield está gastando. Numa build cuja vida é mana, regeneração é cura.",
+      enchant:
+        "**A única skill de dano que vale pegar.** Ela adiciona dano de fogo aos seus ataques, dura minutos, e pode ser lançada antes de virar urso. Pule se preferir armaduras mais profundas.",
+      teleport:
+        "**Um ponto**, e é a maior vantagem isolada que esta build tem sobre qualquer outro personagem de corpo a corpo do jogo.",
+      "fire-ball": "Pré-requisito do Enchant.",
+      "chilling-armor":
+        "A armadura que vale rodar em corpo a corpo — ela dispara um projétil de volta em quem atira em você, e a defesa dela se aplica onde você de fato está.",
+      "static-field":
+        "Tira 25% da vida atual do alvo. A sua única resposta contra um boss com muita vida.",
+      "frost-nova":
+        "Congela tudo ao seu redor, o que numa build parada no meio vale o ponto.",
+    },
+    immunityPlan:
+      "Dois tipos de dano que falham em lugares diferentes. A **aura de Holy Shock é raio**, e um imune a raio não toma nada dela — sem Conviction disponível para uma Sorceress, não há como quebrar isso pelo seu próprio equipamento. O que ainda acerta é o **dano físico do seu ataque**, que com os 20% de Crushing Blow do Beast é mais substancial do que parece. Contra algo imune aos dois, a resposta honesta é passar direto. Um sunder charm **Crack of the Heavens** funciona, mas custa 70 a 90 pontos da sua própria resistência a raio, o que numa build parada dentro de grupos lightning enchanted e sem escudo é um dos piores lugares do jogo para fazer essa troca. O **Infinity** do seu mercenário é a solução limpa, e é uma Ber e uma Jah em cima de tudo que esta build já custa.",
+    mercenaryNotes:
+      "Pegue **Holy Freeze** em vez de Might. Você luta de dentro do grupo, e qualquer coisa desacelerada fica mais tempo dentro do seu raio de Holy Shock, o que vale mais que o dano pessoal dele. Dê um **Insight** — a Meditation dele reabastece a mana que é funcionalmente a sua barra de vida, o que o torna mais valioso nesta build que em qualquer caster. **Treachery** e um **Vampire Gaze** o mantêm vivo ao seu lado.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "Densidade enorme, nada imune a raio, e tudo anda para dentro de uma aura centrada em você. A melhor coisa que esta build faz.",
+      "worldstone-keep-hell":
+        "Nível de área 85 e densa — os grupos vêm até você, que é o que uma aura de raio quer.",
+      "mausoleum-hell": "Nível de área 85 densa com quase nada imune a raio.",
+      "pit-hell":
+        "Nível de área 85 e curta, ainda que as salas sejam mais abertas do que a aura gostaria.",
+      "uber-tristram-hell":
+        "Genuinamente viável, o que é incomum para uma Sorceress — Energy Shield mais um ataque físico mais o Crushing Blow do Beast é um kit de Uber de verdade. Mais lenta que um Smiter e muito mais cara.",
+      "chaos-sanctuary-hell":
+        "Densa, mas o Iron Maiden dos Oblivion Knights reflete a sua metade física — e num personagem cuja vida é uma reserva de mana, isso termina mal.",
+    },
+    levelingPath: {
+      summary:
+        "Não existe versão de evolução. O Dream exige nível 65, o Beast 63, e nenhuma das skills da build causa dano — um personagem nível 40 com Energy Shield maximizado não tem como matar nada. Evolua como **Frozen Orb** ou **Fire Ball Meteor** Sorceress, que são personagens fortes e não precisam de nada caro, e converta com um respec grátis da Den of Evil quando as runewords estiverem de fato no seu inventário. Não faça respec cedo.",
+      respecAt: "Nível 65+, e só quando os dois Dreams e uma runeword de ataque existirem",
+    },
+    selfFoundNotes:
+      "Não. Duas runas Jah mais um Beast (que contém uma Ber) ou um Passion não é projeto de self-found, e não existe versão parcial da build que funcione — um Dream é metade de uma aura e nenhuma runeword de ataque é nenhum ataque. Leia esta página como destino. Se o que atrai é o estilo e não o custo, a página do Tesladin descreve um Paladin fazendo a mesma coisa com melhor suporte de classe, e a do Zealot descreve isso sem nenhuma runa alta.",
+    hardcoreNotes:
+      "Arriscada, e o risco é incomum o bastante para valer detalhar. **O Energy Shield faz da sua vida uma reserva de mana**, então um monstro com mana burn não te incomoda — ele remove a sua barra de vida. Os dois slots defensivos são Dreams, então não há bloqueio nem resistência de nenhum. E a variante Werebear não conjura nem teleporta transformada, o que remove a opção de fuga que torna Sorceress sobrevivíveis. Se você jogar isso no Hardcore, pegue a **variante Zeal** e não a Werebear, mantenha Chains of Honor, e trate grupos com mana burn como motivo para sair da área e não como desafio.",
+    gearSets: {
+      starter: {
+        goal: "Não é esta build. O Dream exige nível 65 e o Beast 63.",
+        nextUpgrade:
+          "Nível 65 e duas runas Jah, mais um Beast ou um Passion. Leia a nota de self-found antes.",
+        notes:
+          "**Não existe versão inicial desta build.** Evolua como Frozen Orb ou Fire Ball Meteor Sorceress, que são bons personagens por direito próprio, e converta com um respec grátis da Den of Evil se as runas aparecerem.",
+        picks: {
+          "weapon-0": {
+            why: "Você está evoluindo como caster. Jogue uma das builds de frio ou fogo e volte depois.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": { why: "Resistências enquanto você evolui normalmente." },
+          "body-0": { why: "Velocidade de conjuração e recuperação no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+        },
+      },
+      nightmare: {
+        goal: "Ainda uma caster. Guarde runas.",
+        nextUpgrade:
+          "Runs de Countess e Travincal. Tudo nesta build vem depois de runas altas.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": { why: "Um segundo Spirit." },
+          "body-0": { why: "+1 skills e resistências com 43 de Strength." },
+          "helm-0": { why: "+1 skills e magic find enquanto você farma runas." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "A resistência mais barata disponível." }],
+      },
+      "early-hell": {
+        goal: "Farmar o Hell como caster enquanto as runas se acumulam.",
+        nextUpgrade: "O primeiro Dream, e uma decisão entre as variantes Zeal e Werebear.",
+        notes:
+          "Seja honesto consigo aqui, exatamente como na página do Tesladin. Se duas runas Jah mais um Beast ou Passion não é um alvo realista para o seu jeito de jogar, esta build é uma página para ler e não um plano para seguir.",
+        picks: {
+          "weapon-0": { why: "Velocidade de conjuração e skills." },
+          "offhand-0": { why: "O segundo." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências — e você vai querer depois também." },
+          "helm-0": { why: "+2 skills, vida e magic find." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": {
+            why: "+1 em todas as skills e **mana máxima aumentada** — a segunda metade é o que esta build está comprando.",
+          },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "Segure 75%." }],
+      },
+      budget: {
+        goal: "Um Dream e um ataque. Metade do dano, e uma prévia de verdade.",
+        nextUpgrade: "A segunda Jah. É o projeto restante, exatamente como na página do Tesladin.",
+        picks: {
+          "helm-0": {
+            why: "Uma aura de Holy Shock nível 15 e 20-30% de Faster Hit Recovery. Metade do dano da build, num slot.",
+            sockets: "Io, Jah, Pul no elmo de 3 sockets mais leve que você achar.",
+          },
+          "weapon-0": {
+            why: "**A variante Zeal.** Concede Zeal como Oskill — vários golpes rápidos, e você fica em forma normal, então ainda conjura e teleporta livremente. O mais barato dos dois ataques por larga margem.",
+            sockets: "Dol, Ort, Eld, Lem numa arma de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "**A variante Werebear.** Concede Werebear como Oskill mais uma aura de Fanaticism e 40% de velocidade de ataque. Mais resistente e batendo mais forte, mas você não conjura transformado.",
+          },
+          "offhand-0": {
+            why: "Mantenha até o segundo Dream existir — o +2 skills sobe Energy Shield e Telekinesis, que são a sua sobrevivência.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências. Com Dreams nos slots defensivos, é aqui que mora a sobrevivência.",
+          },
+          "belt-0": {
+            why: "+1 skills e **Increase Maximum Mana 5%** — mana é vida aqui.",
+          },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "+1 skills e mana máxima aumentada." },
+          "ring2-0": {
+            why: "Cannot Be Frozen, que qualquer build de corpo a corpo precisa — e a Dexterity ajuda no requisito da arma.",
+          },
+          "boots-0": { why: "Faster Hit Recovery, Strength e Vitality." },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Sorceress)",
+            why: "+3 skills de Sorceress, o que sobe Energy Shield e Telekinesis juntos.",
+          },
+          { label: "Annihilus", why: "+1 em todas as skills e resistências." },
+          {
+            label: "Small charms de vida e resistência",
+            why: "Com os dois slots defensivos gastos em dano, os charms carregam mais aqui que o normal.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders sobe **mana além de vida**, o que nesta build é um aumento direto da sua vida efetiva.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Os dois Dreams. Uma aura de Holy Shock nível 30 e um Energy Shield fundo o bastante para ficar dentro dela.",
+        nextUpgrade:
+          "Mana e resistências. Não sobra upgrade de dano — o nível da aura é fixado pela runeword.",
+        picks: {
+          "helm-0": {
+            why: "Metade da aura empilhada.",
+            sockets: "Io, Jah, Pul no elmo de 3 sockets mais leve disponível.",
+          },
+          "offhand-0": {
+            why: "A outra metade. Duas auras empilham para um Holy Shock nível 30 efetivo, que é o momento em que a build vira ela mesma.",
+            sockets: "Io, Jah, Pul num escudo de 3 sockets.",
+          },
+          "weapon-0": {
+            why: "**Variante Werebear.** Fanaticism, 40% de velocidade de ataque, 20% de Crushing Blow e a própria transformação.",
+          },
+          "weapon-0-alt0": {
+            why: "**Variante Zeal.** Mais barata, mais rápida, e mantém você conjurando e teleportando à vontade.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências. Sem escudo e sem bloqueio, isto não é opcional.",
+          },
+          "gloves-0": {
+            label: "Luvas craftadas com 20% de Increased Attack Speed e mana",
+            why: "Velocidade de ataque, e mana que funcionalmente é vida nesta build.",
+            lookFor: ["20% de Increased Attack Speed", "Mana", "Resistências"],
+          },
+          "belt-0": { why: "+1 skills e mana máxima aumentada." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "+1 skills e mana máxima." },
+          "ring2-0": { why: "Cannot Be Frozen." },
+          "boots-0": { why: "Recuperação e Vitality." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Small charms de vida e resistência",
+            why: "Os dois slots defensivos são dano; os charms compensam a diferença.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders — mana e vida juntos." },
+          { why: "Mão secundária para a troca." },
+        ],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "O resumo honesto, e é o mesmo a que a pesquisa chegou: isto custa mais que a Nova Sorceress e limpa menos que a Frozen Orb Sorceress. Monte porque uma Sorceress empunhando um machado é algo que você quer fazer, o que é um motivo perfeitamente bom — não porque os números apontem para cá.",
+        picks: {
+          "helm-0": {
+            why: "Um roll de 30% de Faster Hit Recovery e 20 em todas as resistências.",
+            lookFor: ["30% de Faster Hit Recovery", "All Resistances +20"],
+          },
+          "offhand-0": {
+            why: "O mesmo, num escudo.",
+            lookFor: ["30% de Faster Hit Recovery", "All Resistances +20"],
+          },
+          "weapon-0": {
+            why: "Um roll de 270% de Enhanced Damage numa Berserker Axe.",
+            lookFor: ["270% de Enhanced Damage", "+40 de Strength"],
+          },
+          "weapon-0-alt0": {
+            why: "A variante Zeal segue sendo um ponto final legítimo, não uma versão econômica.",
+          },
+          "body-0": { why: "+2 skills, +65 em todas as resistências, 8% de redução de dano." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, mana, resistências",
+            why: "O único slot em que um craft supera qualquer unique aqui.",
+            lookFor: ["20% de Increased Attack Speed", "Mana", "Duas resistências"],
+          },
+          "belt-0": { why: "+1 skills, mana máxima." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 skills, mana máxima." },
+          "ring2-0": { why: "Cannot Be Frozen, Dexterity para a arma." },
+          "boots-0": { why: "Recuperação e Vitality." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills, 20 atributos, 20 resistências." },
+          { label: "Small charms de vida e resistência", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
