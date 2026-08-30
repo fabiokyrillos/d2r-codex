@@ -4283,4 +4283,255 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "meteorb-sorceress": {
+    summary:
+      "Fogo e frio no mesmo personagem, então quase nada é imune aos dois. Nenhuma das metades bate tão forte quanto a de uma especialista.",
+    playstyle:
+      "Abra com o elemento que o grupo não está resistindo. O Frozen Orb é o botão que você segura — ele viaja, congela, e não precisa de mira; o Meteor é jogado no que está parado, e em qualquer coisa imune a frio. A build nunca é rápida, porque você está alternando em vez de se comprometer, e também nunca é parada. Se você já abandonou uma run porque tudo na sala resistia ao seu único elemento, esta é a build que conserta exatamente essa frustração.",
+    strengths: [
+      "Dois tipos de dano significam que quase nada no Hell é imune aos dois",
+      "O Frozen Orb congela tudo, o que é defesa além de dano",
+      "**A Cold Mastery reduz a resistência do inimigo**, então a metade de frio segue funcionando bem dentro do Hell sem equipamento comprado para isso",
+      "Genuinamente barata. Ela alcança o próprio teto sem uma única runa alta",
+      "A build mais perdoável do site para quem não quer planejar nada em torno de imunidade",
+    ],
+    weaknesses: [
+      "**Nenhuma das metades tem sinergia.** Uma especialista gasta 40 pontos em sinergias; esta build tem cerca de 18 para dividir",
+      "As duas skills-chave abrem no nível 30, e a cadeia de frio até o Frozen Orb tem quatro pré-requisitos",
+      "Mais lenta que qualquer uma das build-mãe naquilo para que a build-mãe existe",
+      "A Fire Mastery aumenta dano em vez de quebrar imunidade, então a metade de fogo ainda encontra paredes",
+      "As duas fontes ranqueadas a colocam no meio da tabela, e o motivo é exatamente a troca acima",
+    ],
+    flexPoints: [
+      "**Os pontos restantes são a decisão real da build.** Sobram cerca de dezoito depois das quatro skills maximizadas e dos pré-requisitos, e eles vão para as sinergias da metade que você de fato usa mais. **Ice Bolt e Ice Blast** sobem o Frozen Orb; **Fire Bolt** sobe o Meteor. Dividir igualmente é a única opção claramente pior que as alternativas.",
+      "**Prefira frio se você está farmando**, porque a Cold Mastery mantém a metade de frio relevante sem ajuda. Prefira fogo se você encontra imunes a frio especificamente — os Ancient Tunnels são o caso óbvio.",
+      "**Variante de magic find:** a build é barata o bastante para o orçamento de equipamento ir para magic find sem custar muito. Mesmo plano de skills.",
+      "**Não coloque pontos em Energy.** Warmth e um mercenário com Insight bastam.",
+    ],
+    statPlan: {
+      strength: "Só o que o equipamento pedir, que é muito pouco.",
+      dexterity: "Nenhuma.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum.",
+      notes: [
+        "Como nas duas builds das quais ela toma emprestado, não há decisão de bloqueio nem requisito de arma — este é um dos planos de atributo mais simples do site.",
+        "Uma troca com Call to Arms vale mais que qualquer Vitality que você comprasse com a mesma moeda.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-105":
+        "O alvo padrão da Sorceress. As duas magias desta build usam ele, e o Teleport também.",
+      "fcr-63": "O alvo inicial, alcançável com uma sword Spirit e o Magefist.",
+      "fhr-60": "O alvo padrão de recuperação da Sorceress.",
+    },
+    skillNotes: {
+      "frozen-orb":
+        "Nível 30. O seu botão padrão — ele viaja, congela, e não precisa de mira.",
+      "cold-mastery":
+        "**Reduz a resistência a frio do inimigo em 20% no nível 1 e 5% por nível.** É por isso que a metade de frio segue útil sem sinergias atrás dela, e por que ela deve ser maximizada antes da metade de fogo.",
+      meteor: "Nível 24. A resposta contra qualquer coisa imune a frio, e contra qualquer coisa parada.",
+      "fire-mastery":
+        "30% de dano no nível 1 e +7% por nível. Ela sobe a metade de fogo; não quebra imunidade a fogo.",
+      "fire-bolt":
+        "Sinergia do Meteor além de pré-requisito — é para cá que vão os pontos extras se você preferir fogo.",
+      "fire-ball":
+        "Pré-requisito do Meteor, e uma magia mais rápida que ele para coisas que se movem.",
+      "ice-bolt":
+        "Sinergia do Frozen Orb além do início da cadeia dele — o outro lugar para onde vão os pontos extras.",
+      "ice-blast": "A segunda sinergia do Frozen Orb, e o próximo elo da cadeia.",
+      "glacial-spike": "No caminho até o Blizzard, e um congelamento de emergência de verdade.",
+      blizzard: "Pré-requisito do Frozen Orb. Um ponto, obrigatório.",
+      warmth: "Regeneração de mana desde o nível 1.",
+      teleport: "**Um ponto para sempre.**",
+      "static-field":
+        "Tira 25% da vida atual do alvo — útil numa build cujo dano está dividido.",
+      "frozen-armor": "Defesa e congelamento em quem te ataca.",
+    },
+    immunityPlan:
+      "Esta é a build que existe para tornar imunidade um não-problema, e ela em grande parte consegue. **Quase nada no Hell é imune a fogo e a frio ao mesmo tempo**, então onde uma especialista encontra parede, esta build troca de botão. As duas metades falham de formas diferentes e vale saber como. **A Cold Mastery reduz a resistência a frio do inimigo** (20% no nível 1, +5% por nível), então a metade de frio segue funcionando contra monstros resistentes-mas-não-imunes sem nenhum equipamento comprado para isso. **A Fire Mastery aumenta o seu dano** (30%, +7% por nível), então a metade de fogo encara imunidade a fogo de frente sem nada para amolecer. Na prática isso significa que o Frozen Orb é o seu padrão e o Meteor é a sua resposta contra imunes a frio — e não o contrário. Sunder Charms existem para os dois elementos, mas esta build precisa deles menos que qualquer outra do site, e a penalidade de 70 a 90 pontos de resistência é uma troca ruim para um personagem que já tem uma segunda opção.",
+    mercenaryNotes:
+      "Mercenário do Ato 2 com **Might**, um **Insight** para mana, e um **Vampire Gaze** para mantê-lo vivo. Esta build precisa menos dele que a maioria — ela já tem resposta para quase tudo — então coloque runas na sobrevivência dele em vez de no dano. **Treachery** é a armadura barata e correta.",
+    farmingWhy: {
+      "mephisto-hell":
+        "Não é imune a nenhum dos dois elementos, a vinte segundos de um waypoint, e com uma excelente tabela de drop. A casa óbvia desta build.",
+      "pit-hell":
+        "Nível de área 85 e curta, e o que resiste a um elemento lá não resiste ao outro.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 e muito imune a frio — que é exatamente a zona para a qual uma build dividida existe. O Meteor lida com o que o Frozen Orb não consegue.",
+      "mausoleum-hell": "Nível de área 85 densa perto de um waypoint.",
+      "countess-hell": "Runas, curta, e nada lá para as duas metades.",
+      "andariel-hell":
+        "Curta e perto de um waypoint. Ela resiste a fogo, então esta é uma run de Frozen Orb.",
+    },
+    levelingPath: {
+      summary:
+        "Evolua com Fire Ball, que chega no 12 e é pré-requisito do Meteor de qualquer forma. O lado do frio é uma cadeia mais longa — Ice Bolt até Ice Blast até Glacial Spike até Blizzard antes de o Frozen Orb abrir no 30 — mas cada um deles é um ponto só, exceto os dois que são sinergias do Frozen Orb. O Meteor chega no 24, e as duas masteries no 30, então a build se monta ao longo dos níveis 24 a 30. **Nenhum respec é necessário.**",
+    },
+    selfFoundNotes:
+      "Excelente, e possivelmente a melhor escolha de self-found do site para quem não quer pensar em imunidade. Ela não precisa de nenhum item caro, as duas metades entram no nível 30, e a lista de best in slot dela é skills e resistências em vez de raridades específicas de elemento. A ressalva honesta é que ela é mais lenta que as especialistas em tudo — você troca velocidade de limpeza por nunca ser parada.",
+    hardcoreNotes:
+      "Uma boa escolha de Hardcore por um motivo incomum: ela nunca chega na situação em que não consegue matar o que está na frente e precisa ficar ali decidindo. O Frozen Orb congela, o Meteor é lançado à distância, e o Glacial Spike é um congelamento de emergência de verdade por um ponto. As ressalvas da classe valem — menor reserva de vida, sem bloqueio, 60% de Faster Hit Recovery como piso — mas o perfil de risco da própria build é baixo. Pegue Chains of Honor em vez de Enigma.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 pelas duas metades. Fire Ball e Ice Blast te levam lá.",
+        nextUpgrade:
+          "Nível 30. Frozen Orb, Cold Mastery e Fire Mastery chegam a poucos níveis uns dos outros.",
+        notes:
+          "**Prefira +all skills a equipamento de elemento em todos os níveis.** Numa build dividida, um item que sobe um elemento sobe metade do seu dano; um item que sobe todas as skills sobe tudo. Essa regra única explica a maior parte das escolhas de equipamento desta página.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills e até 35% de velocidade no nível 25 — e sobe as duas metades igualmente, o que importa numa build dividida.",
+            sockets: "Tal, Thul, Ort, Amn numa Crystal Sword de 4 sockets.",
+          },
+          "offhand-0": { why: "Resistências por três runas da Countess." },
+          "body-0": { why: "Velocidade de conjuração e recuperação no nível 17." },
+          "helm-0": { why: "+1 em Todas as Skills, o que aqui vale em dobro." },
+        },
+      },
+      nightmare: {
+        goal: "As duas metades ativas e nada no Nightmare te parando.",
+        nextUpgrade: "Decida qual metade você prefere, e gaste os pontos extras lá.",
+        picks: {
+          "weapon-0": { why: "+2 skills para as duas metades." },
+          "offhand-0": {
+            why: "Um segundo Spirit — +4 skills e 70% de velocidade entre os dois.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "body-0": { why: "+1 skills, velocidade e resistências com 43 de Strength." },
+          "helm-0": { why: "+1 skills e magic find." },
+          "gloves-0": {
+            why: "20% de velocidade. O +1 em Fire Skills só ajuda metade do seu dano, que é a troca que esta build sempre faz.",
+          },
+          "belt-0": { why: "Resistências e dano convertido em mana." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "O caminho mais barato até 75%." }],
+      },
+      "early-hell": {
+        goal: "105% de velocidade, resistências capadas, e Mephisto no farm.",
+        nextUpgrade: "+all skills onde você achar. Vale em dobro nesta build.",
+        picks: {
+          "weapon-0": { why: "+2 skills para as duas metades." },
+          "offhand-0": { why: "O segundo." },
+          "body-0": { why: "Resistências e velocidade de conjuração." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências. Numa build dividida o +2 vale mais que o normal.",
+          },
+          "helm-0": { why: "+2 skills para as duas metades, mais vida e magic find." },
+          "amulet-0": {
+            why: "+2 em todas as skills e resistências — exatamente o item que uma build dividida quer.",
+          },
+          "ring1-0": {
+            label: "Anel raro com 10% de Faster Cast Rate e resistências",
+            why: "A última velocidade de que você precisa.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [{ label: "Small charms de resistência e vida", why: "Segure 75%." }],
+      },
+      budget: {
+        goal: "Farmar o Hell sem nunca precisar checar o que resiste a você.",
+        nextUpgrade: "Não sobra muito acima disto. A build termina barata e fica lá.",
+        picks: {
+          "weapon-0": {
+            why: "**+3 em Todas as Skills**, o que numa build dividida sobe as duas metades — e +40 em todas as resistências por cima. A melhor arma que esta build pode segurar, e por uma margem maior que numa especialista.",
+            sockets: "Ko, Vex, Pul, Thul num Flail de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Mantenha o Spirit até o Heart of the Oak existir. Os dois dão skills às duas metades.",
+          },
+          "offhand-0": { why: "+2 skills e velocidade." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "helm-0": { why: "+2 skills e magic find." },
+          "gloves-0": { why: "20% de velocidade." },
+          "belt-0": { why: "**+1 em Todas as Skills** e 20% de velocidade — de novo, vale em dobro aqui." },
+          "amulet-0": { why: "+2 em todas as skills e +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro com 10% de Faster Cast Rate",
+            why: "Passa do alvo de 105.",
+            lookFor: ["10% de Faster Cast Rate", "Resistências", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Sorceress)",
+            why: "**+3 skills de Sorceress** — o maior aumento isolado às duas metades ao mesmo tempo.",
+          },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Small charms de resistência e vida", why: "Preencha o resto." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      optimized: {
+        goal: "As duas metades tão altas quanto uma build dividida leva.",
+        nextUpgrade: "Nada estrutural. A esta altura a build é o que ela vai ser.",
+        picks: {
+          "weapon-0": { why: "+3 em todas as skills e +40 em todas as resistências." },
+          "offhand-0": { why: "+2 skills e 35% de velocidade." },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "body-0-alt0": {
+            why: "Teleport com custo de mana fixo e magic find por nível, ao custo das resistências.",
+          },
+          "helm-0": { why: "+2 skills, vida, magic find, redução de dano." },
+          "gloves-0": { why: "20% de velocidade." },
+          "belt-0": { why: "+1 em todas as skills, 20% de velocidade." },
+          "amulet-0": { why: "+2 em todas as skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, resistências, vida",
+            why: "O slot em que um raro ganha.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Small charms de vida e resistência",
+            why: "Charms de skill são específicos de elemento, então charms gerais costumam servir melhor a esta build.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "**Os facets são o único lugar em que uma build dividida realmente perde.** Um facet de frio não faz nada pelo Meteor e um de fogo não faz nada pelo Frozen Orb, então metade de cada socket é desperdiçada. É por isso que esta lista busca +all skills e resistências onde uma especialista buscaria dano de elemento — e é um resumo compacto da build inteira.",
+        picks: {
+          "weapon-0": {
+            why: "Um roll de +40 em todas as resistências junto com +3 em todas as skills.",
+            lookFor: ["+40 em todas as resistências", "base Flail"],
+          },
+          "offhand-0": {
+            why: "35% de velocidade num Monarch.",
+            lookFor: ["35% de Faster Cast Rate"],
+          },
+          "body-0": { why: "Teleport e magic find por nível." },
+          "helm-0": {
+            why: "+2 skills, com uma runa Um encaixada por resistências em vez de um facet — facets são específicos de elemento e metade do seu seria desperdiçada.",
+            lookFor: ["2 sockets"],
+          },
+          "gloves-0": { why: "20% de velocidade." },
+          "belt-0": { why: "+1 em todas as skills." },
+          "amulet-0": { why: "+2 em todas as skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Anel raro: 10% de Faster Cast Rate, duas resistências, vida",
+            why: "O último slot.",
+            lookFor: ["10% de Faster Cast Rate", "Duas resistências em 20+", "Vida"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Sorceress)", why: "+3 skills de Sorceress, 20 em todas as resistências." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          { label: "Small charms de vida e resistência", why: "O resto do inventário." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária para a troca." }],
+      },
+    },
+  },
 };
