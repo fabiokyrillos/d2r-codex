@@ -217,4 +217,26 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "No nível 90 o roll de Deadly Strike vale cerca de 34%, e é por isso que o amuleto melhora quanto mais você joga com ele. Vale saber que Deadly Strike não faz absolutamente nada para um Smiter — para essa build o amuleto é só o +1 em skills e a velocidade de ataque.",
   },
+  "griffons-eye": {
+    summary:
+      "O elmo de raio. -15-20% de resistência a raio do inimigo e +10-15% de dano de skills de raio, num slot sem requisito de Strength.",
+    dropSummary:
+      "Nível de área 84+, o que na prática significa farmar zonas de nível 85 no Hell ou trocar.",
+    notes:
+      "A linha de resistência do inimigo é o motivo, não o dano de skill — ela soma com Conviction e com Lower Resist, e é aplicada antes de a imunidade ser checada. Um Diadem não tem requisito de Strength, o que torna este item incomumente fácil de usar para o que ele faz.",
+  },
+  "eschutas-temper": {
+    summary:
+      "+1-3 skills de Sorceress e 40% de Faster Cast Rate, com dano de fogo e de raio no mesmo orb.",
+    dropSummary: "Nível de área 80+. Incomum, e muito negociado porque duas famílias de build o querem.",
+    notes:
+      "Os rolls importam mais aqui que na maioria dos uniques: +1 contra +3 skills de Sorceress, e 10% contra 20% de dano de skill, é uma faixa larga. Ele não tem resistência nem magic find, então é uma arma de dano puro — um Spirit ou um Oculus costuma ser a escolha melhor para uso geral com orçamento apertado.",
+  },
+  "lidless-wall": {
+    summary:
+      "+1 em todas as skills e 20% de Faster Cast Rate num escudo barato, com mana por morte. A mão secundária econômica de caster.",
+    dropSummary: "Nível de área 49+. Comum, e disponível bem antes de um escudo Spirit ser realista.",
+    notes:
+      "Vale saber o que ele não é: um Spirit num escudo de 4 sockets dá +2 skills e 35% de Faster Cast Rate por quatro runas da Countess. O Lidless Wall só ganha quando você não acha uma base de 4 sockets, ou quando a mana por morte resolve um problema de verdade — o que numa build sem investimento em Energy às vezes acontece.",
+  },
 };

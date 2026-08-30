@@ -149,6 +149,37 @@ export const uniques: UniqueItem[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "griffons-eye",
+    name: "Griffon's Eye",
+    summary:
+      "The lightning helm. -15-20% enemy lightning resistance and +10-15% lightning skill damage, on a slot with no strength requirement.",
+    quality: "unique",
+    base: "Diadem",
+    category: "helm",
+    tier: "elite",
+    slots: ["helm"],
+    requiredLevel: 76,
+    maxSockets: 3,
+    stats: [
+      { text: "-15-20% to Enemy Lightning Resistance", variable: true, notable: true },
+      { text: "+10-15% to Lightning Skill Damage", variable: true, notable: true },
+      { text: "+25% Faster Cast Rate", notable: true },
+      { text: "+1 to All Skills" },
+      { text: "+100-200 Defense", variable: true },
+    ],
+    drop: {
+      summary: "Area level 84+, which in practice means Hell area level 85 farming or trading.",
+      minMonsterLevel: 84,
+      tradeability: "rare",
+      confidence: "verified",
+    },
+    notes:
+      "The enemy-resistance line is the reason, not the skill damage — it stacks with Conviction and with Lower Resist, and it applies before immunity is checked. A Diadem has no strength requirement, which makes this unusually easy to wear for what it does.",
+    alternatives: [{ kind: "unique", slug: "harlequin-crest" }],
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Weapons / orbs
   // -------------------------------------------------------------------------
@@ -292,6 +323,40 @@ export const uniques: UniqueItem[] = [
     notes:
       "The reason to use it is the Crushing Blow, which is what actually kills a boss — a percentage of current life, ignoring almost everything the boss has. Paired with Gore Rider it reaches 48% chance, which is the number Fist of the Heavens hybrids build around.",
     alternatives: [{ kind: "runeword", slug: "grief" }],
+    confidence: "verified",
+  },
+
+  {
+    slug: "eschutas-temper",
+    name: "Eschuta's Temper",
+    summary:
+      "+1-3 Sorceress skills and 40% Faster Cast Rate, with fire and lightning skill damage on the same orb.",
+    quality: "unique",
+    base: "Eldritch Orb",
+    category: "orb",
+    tier: "elite",
+    slots: ["weapon"],
+    requiredLevel: 72,
+    maxSockets: 3,
+    stats: [
+      { text: "+1-3 to Sorceress Skill Levels", variable: true, notable: true },
+      { text: "+40% Faster Cast Rate", notable: true },
+      { text: "+10-20% to Fire Skill Damage", variable: true, notable: true },
+      { text: "+10-20% to Lightning Skill Damage", variable: true, notable: true },
+      { text: "+20-30 to Energy", variable: true },
+    ],
+    drop: {
+      summary: "Area level 80+. Uncommon, and heavily traded because two build families want it.",
+      minMonsterLevel: 80,
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "The rolls matter more here than on most uniques: +1 versus +3 Sorceress skills, and 10% versus 20% skill damage, is a large spread. It has no resistances and no magic find, so it is a pure damage weapon — a Spirit or an Oculus is often the better all-round choice on a budget.",
+    alternatives: [
+      { kind: "unique", slug: "deaths-fathom" },
+      { kind: "unique", slug: "the-oculus" },
+    ],
     confidence: "verified",
   },
 
@@ -778,6 +843,40 @@ export const uniques: UniqueItem[] = [
     },
     notes:
       "No +skills and no Faster Cast Rate, so a caster gives up real damage and often an FCR breakpoint to wear it. It is a Hardcore and max-block choice, not a default.",
+    alternatives: [{ kind: "runeword", slug: "spirit" }],
+    confidence: "verified",
+  },
+
+  {
+    slug: "lidless-wall",
+    name: "Lidless Wall",
+    summary:
+      "+1 all skills and 20% Faster Cast Rate on a cheap shield, with mana on kill. The budget caster off-hand.",
+    quality: "unique",
+    base: "Grim Shield",
+    category: "shield",
+    tier: "exceptional",
+    slots: ["offhand"],
+    requiredLevel: 41,
+    requiredStrength: 58,
+    maxSockets: 2,
+    stats: [
+      { text: "+1 to All Skills", notable: true },
+      { text: "+20% Faster Cast Rate", notable: true },
+      { text: "+3-5 to Mana after each Kill", variable: true },
+      { text: "+80-130% Enhanced Defense", variable: true },
+      { text: "Increase Maximum Mana 10%" },
+      { text: "+10 to Energy" },
+      { text: "+1 to Light Radius" },
+    ],
+    drop: {
+      summary: "Area level 49+. Common, and available well before a Spirit shield is realistic.",
+      minMonsterLevel: 49,
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "Worth knowing what it is not: a Spirit in a 4-socket shield gives +2 skills and 35% Faster Cast Rate for four Countess runes. Lidless Wall wins only when you cannot find a 4-socket base, or when the mana-on-kill genuinely solves a problem — which on a build with no Energy investment it sometimes does.",
     alternatives: [{ kind: "runeword", slug: "spirit" }],
     confidence: "verified",
   },

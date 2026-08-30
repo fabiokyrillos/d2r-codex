@@ -437,6 +437,46 @@ for (const locale of TRANSLATED) {
 }
 
 // ---------------------------------------------------------------------------
+// Mechanics article structure parity
+// ---------------------------------------------------------------------------
+
+/*
+ * Mechanics bodies are typed `ContentBlock[]`, and a locale overlay replaces
+ * the whole array rather than merging into it. That means adding a block to
+ * the source article silently leaves every translation a block short — the
+ * page still renders, the slug is still "covered", and nothing complains.
+ *
+ * This check caught exactly that: four blocks were added to the resistances
+ * article and the pt-BR version kept rendering the old thirteen.
+ *
+ * Compared by block *type* as well as count, so a reordered body is caught too.
+ */
+console.log("\nMechanics article structure:");
+for (const locale of TRANSLATED) {
+  const source = getMechanics(DEFAULT_LOCALE);
+  const translated = getMechanics(locale);
+  let mismatches = 0;
+  for (const article of source) {
+    const other = translated.find((a) => a.slug === article.slug);
+    if (!other) continue; // already reported as missing coverage above
+    const sameLength = article.body.length === other.body.length;
+    const sameShape =
+      sameLength && article.body.every((b, i) => b.type === other.body[i].type);
+    if (!sameShape) {
+      mismatches++;
+      problems.push(
+        `${locale} > mechanics > ${article.slug}: body structure differs from ` +
+          `${DEFAULT_LOCALE} (${article.body.length} blocks vs ${other.body.length}). ` +
+          `A locale overlay replaces the whole body, so it must mirror the source block for block.`,
+      );
+    }
+  }
+  console.log(
+    `  ${locale}  ${source.length - mismatches}/${source.length} articles match the source structure`,
+  );
+}
+
+// ---------------------------------------------------------------------------
 // UI dictionary divergence
 // ---------------------------------------------------------------------------
 

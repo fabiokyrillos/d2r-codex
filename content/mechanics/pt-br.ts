@@ -203,6 +203,34 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
         ],
       },
       {
+        type: "heading",
+        text: "Os seis Sunder Charms, e o que eles te custam",
+      },
+      {
+        type: "paragraph",
+        text: "Existe um Sunder Charm por tipo de dano, e eles têm nome em vez de número. Cada um exige nível de personagem 75.",
+      },
+      {
+        type: "table",
+        caption:
+          "Nomes dos charms e a penalidade de cada um, vinda dos dados de item do jogo. A penalidade se aplica a você, permanentemente, enquanto o charm estiver no seu inventário.",
+        headers: ["Tipo de dano", "Charm", "O que custa a você"],
+        rows: [
+          ["Fogo", "Flame Rift", "-70 a -90% na sua própria resistência a fogo"],
+          ["Frio", "Cold Rupture", "-70 a -90% na sua própria resistência a frio"],
+          ["Raio", "Crack of the Heavens", "-70 a -90% na sua própria resistência a raio"],
+          ["Veneno", "Rotting Fissure", "-70 a -90% na sua própria resistência a veneno"],
+          ["Mágico", "Black Cleft", "-70 a -90% na sua própria resistência a mágico"],
+          ["Físico", "Bone Break", "-10 a -20% de redução de dano físico"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        title: "A penalidade é a decisão real",
+        text: "Um Sunder Charm não simplesmente quebra imunidade — ele troca a sua própria resistência pela capacidade de ferir alguma coisa. Carregar um Flame Rift significa andar pelo Hell com a resistência a fogo de 70 a 90 pontos abaixo de onde estava, numa dificuldade que já aplica -100. Faça essa conta antes de pegar um, não depois.",
+      },
+      {
         type: "callout",
         variant: "info",
         title: "O Patch 3.3 mudou como se obtêm Sunder Charms",

@@ -754,4 +754,50 @@ export const farmingAreas: FarmingArea[] = [
       "The three Ubers are monster level 110 — higher than anything else in the game, and well above the area's own level of 83. That gap is why gear that carries you through Hell is not automatically enough here. The Torch requires character level 75 to equip.",
     confidence: "verified",
   },
+  {
+    slug: "throne-of-destruction",
+    name: "Throne of Destruction",
+    summary:
+      "Five waves of monsters and then Baal. The best experience in the game, and the reason most characters reach level 90.",
+    act: 5,
+    access:
+      "Waypoint to the Worldstone Keep Level 2, take the stairs to Level 3, then into the Throne of Destruction. Baal himself is through the portal at the back, in the Worldstone Chamber.",
+    levels: { normal: 43, nightmare: 66, hell: 85 },
+    hellLevel85: true,
+    density: 5,
+    danger: 4,
+    runLength: "medium",
+    commonImmunities: ["cold", "lightning", "poison"],
+    bosses: [
+      {
+        name: "Baal",
+        kind: "act-boss",
+        hellLevel: 99,
+        notes:
+          "Monster level 99 in Hell — higher than any ordinary monster in the game, and higher than his own area level of 85. His Decrepify halves your damage and slows you, and his clone is a real threat rather than a nuisance.",
+      },
+      {
+        name: "The five waves",
+        kind: "event",
+        notes:
+          "Colenzo, Achmel, Bartuc, Ventar and Lister, each arriving with a pack. Lister's group is the dangerous one and the reason most runs end at wave four for undergeared characters.",
+      },
+    ],
+    targets: ["experience", "runes", "uniques", "sets"],
+    why: "The densest reliable experience in the game. Five waves of packed monsters at area level 85, one after another, in a room you never have to leave — and Baal at the end of it for the drop.",
+    route: [
+      "Waypoint to Worldstone Keep Level 2, find the stairs to Level 3, then the Throne.",
+      "Clear the throne room itself before starting the waves, or the first wave arrives on top of whatever was already there.",
+      "Fight each wave at the entrance rather than in the middle. The room is large and the waves spawn at the far end.",
+      "Baal is through the portal behind the throne. He is optional if you came for the experience.",
+    ],
+    suitedTo: ["sorceress", "paladin", "amazon", "necromancer"],
+    poorlySuitedTo:
+      "Slow single-target builds. The waves arrive on a timer and a build that kills one monster at a time spends the whole run behind.",
+    recommendedDifficulties: ["nightmare", "hell"],
+    terrorZone: true,
+    notes:
+      "The area level is 85 but **Baal is monster level 99**, which is the widest gap between a boss and its zone anywhere in the game. That is why he drops what he does, and why a character comfortable clearing the waves can still lose to him.",
+    confidence: "verified",
+  },
 ];

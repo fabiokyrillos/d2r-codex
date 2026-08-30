@@ -410,4 +410,33 @@ export const areasPtBr: Overlay<FarmingAreaCopy> = {
     notes:
       "Os três Ubers são monstros de nível 110 — mais alto que qualquer coisa no jogo, e bem acima do nível 83 da própria área. Essa diferença é o motivo de um equipamento que te carrega pelo Hell não ser automaticamente suficiente aqui. O Torch exige nível 75 para equipar.",
   },
+  "throne-of-destruction": {
+    summary:
+      "Cinco waves de monstros e depois o Baal. A melhor experiência do jogo, e o motivo de a maioria dos personagens chegar ao nível 90.",
+    access:
+      "Waypoint para o Worldstone Keep Level 2, suba as escadas para o Level 3, e então entre no Throne of Destruction. O próprio Baal fica pelo portal no fundo, na Worldstone Chamber.",
+    why: "A experiência confiável mais densa do jogo. Cinco waves de monstros agrupados em nível de área 85, uma atrás da outra, numa sala da qual você nunca precisa sair — e o Baal no fim dela pelo drop.",
+    route: [
+      "Waypoint para o Worldstone Keep Level 2, ache as escadas para o Level 3, e então o Throne.",
+      "Limpe a própria sala do trono antes de começar as waves, ou a primeira wave chega em cima do que já estava lá.",
+      "Lute cada wave na entrada em vez de no meio. A sala é grande e as waves aparecem no fundo.",
+      "O Baal está pelo portal atrás do trono. Ele é opcional se você veio pela experiência.",
+    ],
+    bosses: [
+      {
+        name: "Baal",
+        notes:
+          "Monstro nível 99 no Hell — mais alto que qualquer monstro comum do jogo, e mais alto que o próprio nível de área dele, que é 85. O Decrepify dele corta o seu dano pela metade e te desacelera, e o clone dele é uma ameaça real e não um incômodo.",
+      },
+      {
+        name: "As cinco waves",
+        notes:
+          "Colenzo, Achmel, Bartuc, Ventar e Lister, cada um chegando com um grupo. O grupo do Lister é o perigoso, e é o motivo de a maioria das runs terminar na wave quatro para personagens mal equipados.",
+      },
+    ],
+    poorlySuitedTo:
+      "Builds lentas de alvo único. As waves chegam num cronômetro, e uma build que mata um monstro por vez passa a run inteira atrasada.",
+    notes:
+      "O nível de área é 85, mas **o Baal é monstro nível 99**, que é a maior diferença entre um boss e a zona dele em todo o jogo. É por isso que ele dropa o que dropa, e por que um personagem confortável limpando as waves ainda pode perder para ele.",
+  },
 };
