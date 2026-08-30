@@ -212,6 +212,11 @@ Tracked so we don't accidentally write content on unverified ground:
 9. Whether the classic breakpoint tables (FCR/FHR/IAS) changed at all in 3.x.
 10. Whether Warlock has its own FCR/FHR breakpoint table (near-certain that it does).
 
+## Related research
+
+- [`01-paladin-builds.md`](01-paladin-builds.md) — Paladin build families:
+  catalogue, deduplication, implementation order and blocking gaps.
+
 ## Sources
 
 See [`../sources/README.md`](../sources/README.md) for the source registry and
