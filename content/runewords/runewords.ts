@@ -1,0 +1,676 @@
+import type { Runeword } from "@/lib/types";
+
+/**
+ * Runewords relevant to the guides currently on the site.
+ *
+ * Sources: D2Runewizard runeword database (cross-checked against The Arreat
+ * Summit for pre-1.11 runewords), Blizzard's Reign of the Warlock announcement
+ * for the expansion runewords. See `docs/research/02-runewords.md`.
+ *
+ * Stat lines are written as the finished item displays them, which means rune
+ * contributions are already folded in. That is what a player sees, and quoting
+ * the raw runeword-only lines has confused readers of other sites for years.
+ *
+ * This is deliberately not the full list of ~100 runewords. Accuracy over
+ * breadth: every entry here has been verified.
+ */
+export const runewords: Runeword[] = [
+  // -------------------------------------------------------------------------
+  // Leveling
+  // -------------------------------------------------------------------------
+  {
+    slug: "stealth",
+    name: "Stealth",
+    summary:
+      "The first runeword almost every character makes. Cheap, and its 25 FCR / 25 FRW / 25 FHR block carries you through all of Normal.",
+    runes: ["tal", "eth"],
+    sockets: 2,
+    requiredLevel: 17,
+    tier: "starter",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 2-socket Body Armor",
+      exclusions: [
+        "Body armor only — this does not work in helms or shields.",
+        "The base must be a plain (white or grey) item, never magic, rare, set or unique.",
+      ],
+    },
+    stats: [
+      { text: "+25% Faster Run/Walk", notable: true },
+      { text: "+25% Faster Cast Rate", notable: true },
+      { text: "+25% Faster Hit Recovery", notable: true },
+      { text: "+6 to Dexterity" },
+      { text: "Regenerate Mana 15%" },
+      { text: "+15 Maximum Stamina" },
+      { text: "Poison Resist +30%" },
+      { text: "Magic Damage Reduced by 3" },
+    ],
+    recommendedBases: [
+      "Breast Plate — only 30 Strength, and its low weight keeps you at Fast run speed.",
+      "Any light armor you can wear. Do not over-invest Strength for a heavier base.",
+    ],
+    usedBy:
+      "Every class, every build, on every fresh character. The single best value-per-rune item in the game.",
+    commonMistakes: [
+      "Making it in a 3-socket armor. The base must have exactly 2 sockets.",
+      "Socketing Eth before Tal. Rune order is Tal then Eth, left to right.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "leaf",
+    name: "Leaf",
+    summary:
+      "+3 Fire Skills in a two-rune staff. Turns a level 19 Fire Sorceress into a genuine killer.",
+    runes: ["tir", "ral"],
+    sockets: 2,
+    requiredLevel: 19,
+    tier: "starter",
+    bases: {
+      categories: ["staff"],
+      display: "Any 2-socket Staff",
+      exclusions: [
+        "Staves only — not wands, not orbs, not Sorceress orbs.",
+      ],
+    },
+    stats: [
+      { text: "+3 to Fire Skills", notable: true },
+      { text: "Adds 5-30 Fire Damage" },
+      { text: "+3 to Inferno (Sorceress only)" },
+      { text: "+3 to Fire Bolt (Sorceress only)" },
+      { text: "+3 to Warmth (Sorceress only)" },
+      { text: "+2 Defense per Character Level" },
+      { text: "Cold Resist +33%" },
+      { text: "+2 to Mana after each Kill" },
+    ],
+    recommendedBases: [
+      "Any cheap staff. Base staves with innate Sorceress skill bonuses stack on top, so a staff that already rolls +Fire Ball or +Warmth is a genuine upgrade.",
+    ],
+    usedBy:
+      "Fire Sorceresses through Normal. Also a cheap early wand-slot filler for any caster who wants the Warmth bonus.",
+    commonMistakes: [
+      "Buying a staff with sockets already present but the wrong count.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "ancients-pledge",
+    name: "Ancients' Pledge",
+    summary:
+      "Three common runes for near-max resistances. The cheapest answer to the Nightmare resistance penalty.",
+    runes: ["ral", "ort", "tal"],
+    sockets: 3,
+    requiredLevel: 21,
+    tier: "starter",
+    bases: {
+      categories: ["shield", "paladin-shield"],
+      display: "Any 3-socket Shield",
+      exclusions: ["Shields only — not body armor, not helms."],
+    },
+    stats: [
+      { text: "+50% Enhanced Defense" },
+      { text: "Cold Resist +43%", notable: true },
+      { text: "Fire Resist +48%", notable: true },
+      { text: "Lightning Resist +48%", notable: true },
+      { text: "Poison Resist +48%", notable: true },
+      { text: "10% Damage Taken Goes to Mana" },
+    ],
+    recommendedBases: [
+      "Any shield with a Strength requirement you already meet.",
+      "For a Paladin, a Paladin-only shield adds its innate resistance bonus on top.",
+    ],
+    usedBy:
+      "Any character entering Nightmare without a resistance plan. Often the difference between dying constantly and progressing.",
+    commonMistakes: [
+      "All three runes are Countess drops in Normal — do not trade for these.",
+    ],
+    notes:
+      "Resistance values shown are the totals on the finished shield, including the individual rune shield bonuses.",
+    confidence: "verified",
+  },
+  {
+    slug: "lore",
+    name: "Lore",
+    summary: "+1 to All Skills in a helm for two common runes.",
+    runes: ["ort", "sol"],
+    sockets: 2,
+    requiredLevel: 27,
+    tier: "starter",
+    bases: {
+      categories: ["helm", "barbarian-helm", "druid-pelt", "circlet"],
+      display: "Any 2-socket Helm",
+      exclusions: ["Helms only — not shields, despite both being 'armor'."],
+    },
+    stats: [
+      { text: "+1 to All Skills", notable: true },
+      { text: "+10 to Energy" },
+      { text: "Lightning Resist +30%" },
+      { text: "Damage Reduced by 7" },
+      { text: "+2 to Mana after each Kill" },
+      { text: "+2 to Light Radius" },
+    ],
+    recommendedBases: [
+      "Any light helm. Class-specific helms (Barbarian helms, Druid pelts) can roll their own +skills on top.",
+    ],
+    usedBy:
+      "Every class from the late 20s until a better helm appears. Holds up surprisingly deep into Nightmare.",
+    confidence: "verified",
+  },
+  {
+    slug: "steel",
+    name: "Steel",
+    summary: "A level 13 weapon runeword. Open Wounds and attack speed for two of the cheapest runes.",
+    runes: ["tir", "el"],
+    sockets: 2,
+    requiredLevel: 13,
+    tier: "starter",
+    bases: {
+      categories: ["sword", "axe", "mace"],
+      display: "Any 2-socket Sword, Axe or Mace",
+      exclusions: ["Not polearms, not spears, not hammers or scepters."],
+    },
+    stats: [
+      { text: "+25% Increased Attack Speed", notable: true },
+      { text: "+20% Enhanced Damage" },
+      { text: "+3 to Minimum Damage" },
+      { text: "+3 to Maximum Damage" },
+      { text: "+50 to Attack Rating" },
+      { text: "50% Chance of Open Wounds", notable: true },
+      { text: "+2 to Mana after each Kill" },
+      { text: "+1 to Light Radius" },
+    ],
+    usedBy: "Melee characters in early Normal, and early mercenary weapons.",
+    confidence: "verified",
+  },
+
+  // -------------------------------------------------------------------------
+  // Core progression
+  // -------------------------------------------------------------------------
+  {
+    slug: "spirit",
+    name: "Spirit",
+    summary:
+      "The most important budget runeword in the game. +2 skills and up to 35% Faster Cast Rate, from four Normal-difficulty runes.",
+    runes: ["tal", "thul", "ort", "amn"],
+    sockets: 4,
+    requiredLevel: 25,
+    tier: "starter",
+    bases: {
+      categories: ["sword", "shield", "paladin-shield"],
+      display: "Any 4-socket Sword, or any 4-socket Shield",
+      exclusions: [
+        "Swords and shields only. Not axes, not maces, not staves, not orbs.",
+        "A Crystal Sword is the standard sword base; a Monarch is the standard shield base.",
+      ],
+    },
+    stats: [
+      { text: "+2 to All Skills", notable: true },
+      { text: "+25-35% Faster Cast Rate", variable: true, notable: true },
+      { text: "+55% Faster Hit Recovery", notable: true },
+      { text: "+250 Defense vs. Missile" },
+      { text: "+22 to Vitality" },
+      { text: "+89-112 to Mana", variable: true },
+      { text: "Magic Absorb 3-8%", variable: true },
+      { text: "In swords: adds cold, lightning and poison damage, 7% Life Steal" },
+      { text: "In shields: +35% Cold, Lightning and Poison Resist, Attacker Takes Damage of 14" },
+    ],
+    recommendedBases: [
+      "Sword: a Crystal Sword. It reaches 4 sockets, has a trivial 43 Strength requirement, and is bought from Charsi or gambled cheaply.",
+      "Shield: a Monarch. It is the lowest-Strength shield (156) that can roll 4 sockets — still a real investment for a caster, so most characters run a Spirit sword first and add the shield later.",
+      "Broad Sword and Long Sword also reach 4 sockets and are lighter than a Crystal Sword.",
+    ],
+    usedBy:
+      "Practically every caster, and most non-casters as an off-hand. A Spirit sword at level 25 is the single largest power spike available to a fresh character.",
+    commonMistakes: [
+      "Trying it in a Sorceress Orb. Orbs are not swords — this does not work.",
+      "Buying a Crystal Sword that already has 3 or 5 sockets. It must be exactly 4.",
+      "Rolling it in an expensive base before you can meet the Strength requirement.",
+    ],
+    notes:
+      "The Faster Cast Rate roll is random between 25 and 35. Because the runes are cheap, players routinely make several Spirits and keep the best roll — 35% is what most FCR breakpoint plans assume.",
+    confidence: "verified",
+  },
+  {
+    slug: "insight",
+    name: "Insight",
+    summary:
+      "A Meditation aura on your mercenary. Solves caster mana permanently, and costs four common runes.",
+    runes: ["ral", "tir", "tal", "sol"],
+    sockets: 4,
+    requiredLevel: 27,
+    tier: "starter",
+    bases: {
+      categories: ["polearm", "staff", "bow", "crossbow"],
+      display: "Any 4-socket Polearm, Staff or Missile Weapon (bow/crossbow)",
+      exclusions: [
+        "Not spears. Polearms and spears are different item classes, and this is the single most common Insight mistake.",
+        "Not swords, axes or maces.",
+      ],
+    },
+    stats: [
+      { text: "Level 12-17 Meditation Aura When Equipped", variable: true, notable: true },
+      { text: "+35% Faster Cast Rate" },
+      { text: "+200-260% Enhanced Damage", variable: true },
+      { text: "+9 to Minimum Damage" },
+      { text: "180-250% Bonus to Attack Rating", variable: true },
+      { text: "Adds 5-30 Fire Damage" },
+      { text: "Adds 75 Poison Damage over 5 seconds" },
+      { text: "+1-6 to Critical Strike", variable: true },
+      { text: "+5 to all Attributes" },
+      { text: "+2 to Mana after each Kill" },
+      { text: "23% Better Chance of Getting Magic Items" },
+    ],
+    recommendedBases: [
+      "For an Act 2 mercenary: a Partizan or Bill (normal), a Great Poleaxe or Lochaber Axe (exceptional), or a Giant Thresher / Cryptic Axe (elite) — all polearms.",
+      "Ethereal bases give higher damage and the mercenary never breaks them, so an ethereal elite polearm is the endgame version.",
+      "A 4-socket staff version exists for a self-cast character, but the aura is the point, so the mercenary version is nearly always correct.",
+    ],
+    usedBy:
+      "Almost every caster's Act 2 mercenary. Meditation removes mana potions from the game for the rest of the character's life.",
+    commonMistakes: [
+      "Using a spear base (War Pike, Ghost Spear). Insight does not work in spears.",
+      "Giving it to an Act 1 or Act 5 mercenary — they cannot use polearms.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "rhyme",
+    name: "Rhyme",
+    summary:
+      "Two cheap runes for Cannot Be Frozen, all resistances, and magic find on a shield.",
+    runes: ["shael", "eth"],
+    sockets: 2,
+    requiredLevel: 29,
+    tier: "starter",
+    bases: {
+      categories: ["shield", "paladin-shield", "necromancer-head"],
+      display: "Any 2-socket Shield",
+    },
+    stats: [
+      { text: "+60% Faster Block Rate" },
+      { text: "Regenerate Mana 15%" },
+      { text: "All Resistances +25", notable: true },
+      { text: "Cannot Be Frozen", notable: true },
+      { text: "50% Extra Gold from Monsters" },
+      { text: "25% Better Chance of Getting Magic Items" },
+    ],
+    usedBy:
+      "Magic-find characters, and anyone who needs Cannot Be Frozen without spending a Cham rune.",
+    notes:
+      "Cannot Be Frozen matters more than the resistances for most builds — being chilled slows your cast rate and your movement.",
+    confidence: "verified",
+  },
+  {
+    slug: "smoke",
+    name: "Smoke",
+    summary: "+50 to all resistances in a body armor, for two mid-tier runes.",
+    runes: ["nef", "lum"],
+    sockets: 2,
+    requiredLevel: 37,
+    tier: "nightmare",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 2-socket Body Armor",
+    },
+    stats: [
+      { text: "All Resistances +50", notable: true },
+      { text: "+20% Faster Hit Recovery" },
+      { text: "+75% Enhanced Defense" },
+      { text: "+280 Defense vs. Missile" },
+      { text: "+10 to Energy" },
+      { text: "-1 to Light Radius" },
+      { text: "Level 6 Weaken (18/18 Charges)" },
+    ],
+    usedBy:
+      "Any character struggling with Hell resistances who does not yet have a better armor. The -1 light radius is genuinely annoying but rarely a dealbreaker.",
+    confidence: "verified",
+  },
+  {
+    slug: "lionheart",
+    name: "Lionheart",
+    summary: "Stats and +30 all resistances. The armor that fixes your Strength requirements.",
+    runes: ["hel", "lum", "fal"],
+    sockets: 3,
+    requiredLevel: 41,
+    tier: "nightmare",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 3-socket Body Armor",
+    },
+    stats: [
+      { text: "+25 to Strength", notable: true },
+      { text: "+15 to Dexterity" },
+      { text: "+20 to Vitality" },
+      { text: "+10 to Energy" },
+      { text: "+50 to Life" },
+      { text: "All Resistances +30", notable: true },
+      { text: "+20% Enhanced Damage" },
+      { text: "Requirements -15%" },
+    ],
+    usedBy:
+      "Melee characters through Nightmare and into Hell. The +25 Strength effectively refunds 25 stat points, which is why it beats Smoke for many builds despite lower resistances.",
+    confidence: "verified",
+  },
+  {
+    slug: "treachery",
+    name: "Treachery",
+    summary:
+      "45 IAS and a chance to self-cast Fade. The default mercenary armor for most of the game.",
+    runes: ["shael", "thul", "lem"],
+    sockets: 3,
+    requiredLevel: 43,
+    tier: "nightmare",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 3-socket Body Armor",
+    },
+    stats: [
+      { text: "25% Chance to cast level 15 Venom on striking" },
+      { text: "5% Chance to cast level 15 Fade when struck", notable: true },
+      { text: "+2 to Assassin Skill Levels" },
+      { text: "+45% Increased Attack Speed", notable: true },
+      { text: "+20% Faster Hit Recovery" },
+      { text: "Cold Resist +30%" },
+      { text: "50% Extra Gold from Monsters" },
+    ],
+    usedBy:
+      "Mercenaries, overwhelmingly. Fade gives the mercenary a large resistance and damage-reduction buff whenever it procs, which keeps an Act 2 merc alive in Hell far better than raw defense would.",
+    notes:
+      "The Fade proc is the whole point. Venom and the Assassin skills are irrelevant on a mercenary.",
+    confidence: "verified",
+  },
+  {
+    slug: "wealth",
+    name: "Wealth",
+    summary: "300% gold find and 100% magic find. A gold-farming armor, not a combat armor.",
+    runes: ["lem", "ko", "tir"],
+    sockets: 3,
+    requiredLevel: 43,
+    tier: "nightmare",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 3-socket Body Armor",
+    },
+    stats: [
+      { text: "300% Extra Gold from Monsters", notable: true },
+      { text: "100% Better Chance of Getting Magic Items", notable: true },
+      { text: "+10 to Dexterity" },
+      { text: "+2 to Mana after each Kill" },
+    ],
+    usedBy:
+      "Dedicated magic-find and gold-find characters. It gives no defensive value at all, so only wear it somewhere you cannot die.",
+    confidence: "verified",
+  },
+  {
+    slug: "memory",
+    name: "Memory",
+    summary: "+3 Sorceress skills and 33% Faster Cast Rate in a staff.",
+    runes: ["lum", "io", "sol", "eth"],
+    sockets: 4,
+    requiredLevel: 37,
+    tier: "nightmare",
+    bases: {
+      categories: ["staff"],
+      display: "Any 4-socket Staff",
+      exclusions: ["Staves only — not orbs, not wands."],
+    },
+    stats: [
+      { text: "+3 to Sorceress Skill Levels", notable: true },
+      { text: "+33% Faster Cast Rate", notable: true },
+      { text: "+3 to Energy Shield (Sorceress only)" },
+      { text: "+2 to Static Field (Sorceress only)" },
+      { text: "+9 to Minimum Damage" },
+      { text: "-25% Target Defense" },
+      { text: "+50% Enhanced Defense" },
+      { text: "+10 to Vitality" },
+      { text: "+10 to Energy" },
+      { text: "Increase Maximum Mana 20%" },
+      { text: "Magic Damage Reduced by 7" },
+    ],
+    usedBy:
+      "Sorceresses who want more raw +skills than a Spirit sword gives, and who can give up the shield slot. A staff base with innate Sorceress skills stacks on top.",
+    notes:
+      "Two-handed, so it costs you your shield. Most Sorceresses prefer Spirit sword plus a shield until they can afford an orb.",
+    confidence: "verified",
+  },
+
+  // -------------------------------------------------------------------------
+  // Endgame
+  // -------------------------------------------------------------------------
+  {
+    slug: "call-to-arms",
+    name: "Call to Arms",
+    summary:
+      "Battle Orders on any class. A permanent ~40% life increase, carried on your weapon swap.",
+    runes: ["amn", "ral", "mal", "ist", "ohm"],
+    sockets: 5,
+    requiredLevel: 57,
+    tier: "optimized",
+    bases: {
+      categories: [
+        "sword",
+        "axe",
+        "mace",
+        "hammer",
+        "scepter",
+        "polearm",
+        "spear",
+        "staff",
+        "wand",
+        "dagger",
+        "claw",
+      ],
+      display: "Any 5-socket Weapon",
+      exclusions: [
+        "Weapons only. Five sockets is the constraint — most weapon types cannot reach five.",
+      ],
+    },
+    stats: [
+      { text: "+1 to All Skills" },
+      { text: "+2-6 to Battle Command", variable: true, notable: true },
+      { text: "+1-6 to Battle Orders", variable: true, notable: true },
+      { text: "+1-4 to Battle Cry", variable: true },
+      { text: "+40% Increased Attack Speed" },
+      { text: "+250-290% Enhanced Damage", variable: true },
+      { text: "Adds 5-30 Fire Damage" },
+      { text: "7% Life stolen per hit" },
+      { text: "Prevent Monster Heal" },
+      { text: "Replenish Life +12" },
+      { text: "30% Better Chance of Getting Magic Items" },
+    ],
+    recommendedBases: [
+      "A Crystal Sword or Flail — cheap, low Strength, and can roll 5 sockets.",
+      "The base's stats do not matter. You never fight with it; you cast Battle Command twice and Battle Orders once, then swap back.",
+    ],
+    usedBy:
+      "Every class, in the weapon-swap slot. Battle Orders is a large life and mana multiplier that no other item provides.",
+    commonMistakes: [
+      "Making it in a good base. It is a buff stick — use the cheapest 5-socket weapon you can find.",
+      "Forgetting to cast Battle Command twice before Battle Orders. The second Battle Command boosts the Battle Orders that follows.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "heart-of-the-oak",
+    name: "Heart of the Oak",
+    summary:
+      "+3 skills, 40% Faster Cast Rate and up to +40 all resistances. The default endgame caster weapon.",
+    runes: ["ko", "vex", "pul", "thul"],
+    sockets: 4,
+    requiredLevel: 55,
+    tier: "optimized",
+    bases: {
+      categories: ["staff", "mace"],
+      display: "Any 4-socket Staff or Mace",
+      exclusions: [
+        "Maces specifically — not hammers, not scepters, not clubs that classify as another type.",
+        "Not swords, not orbs, not wands.",
+      ],
+    },
+    stats: [
+      { text: "+3 to All Skills", notable: true },
+      { text: "+40% Faster Cast Rate", notable: true },
+      { text: "All Resistances +30-40", variable: true, notable: true },
+      { text: "+75% Damage to Demons" },
+      { text: "+100 to Attack Rating against Demons" },
+      { text: "Adds 3-14 Cold Damage" },
+      { text: "7% Mana stolen per hit" },
+      { text: "+10 to Dexterity" },
+      { text: "Replenish Life +20" },
+      { text: "Increase Maximum Mana 15%" },
+      { text: "Level 4 Oak Sage (25/25 Charges)" },
+      { text: "Level 14 Raven (60/60 Charges)" },
+    ],
+    recommendedBases: [
+      "A Flail — one-handed, only 41 Strength, and reaches 4 sockets. This is the standard choice.",
+      "Avoid two-handed staff bases unless you have no use for a shield.",
+    ],
+    usedBy:
+      "Casters of every class once they can afford a Vex rune. The combination of +3 skills, 40 FCR and up to 40 all resistances is unmatched at its cost.",
+    confidence: "verified",
+  },
+  {
+    slug: "enigma",
+    name: "Enigma",
+    summary:
+      "Teleport on any class. The most transformative item in the game, and priced accordingly.",
+    runes: ["jah", "ith", "ber"],
+    sockets: 3,
+    requiredLevel: 65,
+    tier: "optimized",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 3-socket Body Armor",
+    },
+    stats: [
+      { text: "+1 to Teleport", notable: true },
+      { text: "+2 to All Skills", notable: true },
+      { text: "+45% Faster Run/Walk" },
+      { text: "+750-775 Defense", variable: true },
+      { text: "+0.75 to Strength per Character Level", notable: true },
+      { text: "Increase Maximum Life 5%" },
+      { text: "Damage Reduced by 8%" },
+      { text: "+14 Life after each Kill" },
+      { text: "15% Damage Taken Goes to Mana" },
+      { text: "+1% Better Chance of Getting Magic Items per Character Level" },
+    ],
+    recommendedBases: [
+      "A Mage Plate or Archon Plate — light, low Strength, and the +0.75 Strength per level makes almost any base wearable anyway.",
+      "Do not use a heavy base for the defense. The defense is irrelevant next to Teleport.",
+    ],
+    usedBy:
+      "Every class that is not a Sorceress. For a Sorceress it is still strong (+2 skills, huge Strength, magic find) but far less essential, because she already has Teleport.",
+    notes:
+      "The Strength bonus is why Enigma unlocks heavy gear on casters: at level 90 it grants 67 Strength, often enough to wear a Monarch shield with no stat investment.",
+    confidence: "verified",
+  },
+  {
+    slug: "chains-of-honor",
+    name: "Chains of Honor",
+    summary: "+2 skills and +65 all resistances. The safest endgame caster armor.",
+    runes: ["dol", "um", "ber", "ist"],
+    sockets: 4,
+    requiredLevel: 63,
+    tier: "optimized",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 4-socket Body Armor",
+    },
+    stats: [
+      { text: "+2 to All Skills", notable: true },
+      { text: "All Resistances +65", notable: true },
+      { text: "Damage Reduced by 8%", notable: true },
+      { text: "+70% Enhanced Defense" },
+      { text: "+20 to Strength" },
+      { text: "+200% Damage to Demons" },
+      { text: "+100% Damage to Undead" },
+      { text: "8% Life stolen per hit" },
+      { text: "Replenish Life +7" },
+      { text: "25% Better Chance of Getting Magic Items" },
+    ],
+    usedBy:
+      "Sorceresses and other casters who already have Teleport and would rather have resistances than an Enigma. In Hell, +65 all resistances frees up an enormous amount of gear budget elsewhere.",
+    confidence: "verified",
+  },
+  {
+    slug: "fortitude",
+    name: "Fortitude",
+    summary:
+      "+300% Enhanced Damage in a weapon, or +200% Enhanced Defense and big life in an armor.",
+    runes: ["el", "sol", "dol", "lo"],
+    sockets: 4,
+    requiredLevel: 59,
+    tier: "optimized",
+    bases: {
+      categories: [
+        "body-armor",
+        "sword",
+        "axe",
+        "mace",
+        "polearm",
+        "spear",
+        "bow",
+        "crossbow",
+      ],
+      display: "Any 4-socket Body Armor or Weapon",
+    },
+    stats: [
+      { text: "20% Chance to cast level 15 Chilling Armor when struck" },
+      { text: "+25% Faster Cast Rate" },
+      { text: "+1-1.5 to Life per Character Level", variable: true, notable: true },
+      { text: "All Resistances +25-30", variable: true },
+      { text: "12% Damage Taken Goes to Mana" },
+      { text: "In armor: +200% Enhanced Defense, Damage Reduced by 7, +5% Max Lightning Resist" },
+      { text: "In weapons: +300% Enhanced Damage, 20% Deadly Strike, Hit Causes Monster to Flee 25%" },
+    ],
+    recommendedBases: [
+      "Armor version: an Archon Plate for the low Strength requirement, or a heavier base if you want the defense to actually matter.",
+      "Weapon version: usually for a mercenary. Note the Hit Causes Monster to Flee, which is a real downside on a merc weapon.",
+    ],
+    usedBy:
+      "Physical-damage builds (weapon version) and almost any character wanting a large life pool (armor version). The armor is the more common choice.",
+    confidence: "verified",
+  },
+  {
+    slug: "infinity",
+    name: "Infinity",
+    summary:
+      "A Conviction aura that breaks lightning immunity. The single most build-defining runeword for elemental casters.",
+    runes: ["ber", "mal", "ber", "ist"],
+    sockets: 4,
+    requiredLevel: 63,
+    tier: "bis",
+    bases: {
+      categories: ["polearm", "spear"],
+      display: "Any 4-socket Polearm or Spear",
+      exclusions: [
+        "Polearms and spears only. Unlike Insight, spears DO work here — check the item class carefully.",
+      ],
+    },
+    stats: [
+      { text: "Level 12 Conviction Aura When Equipped", notable: true },
+      { text: "-45 to -55% to Enemy Lightning Resistance", variable: true, notable: true },
+      { text: "50% Chance to cast level 20 Chain Lightning when you Kill an Enemy" },
+      { text: "+35% Faster Run/Walk" },
+      { text: "40% Chance of Crushing Blow" },
+      { text: "Prevent Monster Heal" },
+      { text: "+0.5 to Vitality per Character Level" },
+      { text: "30% Better Chance of Getting Magic Items" },
+      { text: "Level 21 Cyclone Armor (30/30 Charges)" },
+      { text: "+255-325% Enhanced Damage", variable: true },
+    ],
+    recommendedBases: [
+      "An ethereal Giant Thresher or Cryptic Axe for an Act 2 mercenary. Ethereal is preferred: mercenaries do not break equipment.",
+      "A Great Poleaxe or Thresher if elite bases are out of reach.",
+    ],
+    usedBy:
+      "Lightning Sorceresses above all — Conviction plus the -lightning-resist line breaks Hell lightning immunity outright. Also transformative for Javazons and any physical build that wants the defense reduction.",
+    commonMistakes: [
+      "Assuming Conviction lowers all resistances equally. Conviction reduces fire, cold and lightning resistance; the extra -45-55% line applies only to lightning.",
+      "Putting it on an Act 1 or Act 5 mercenary. Only the Act 2 mercenary uses polearms and spears.",
+    ],
+    notes:
+      "Two Ber runes make this one of the most expensive items in the game. It is the classic 'the build works without it, but it is a different build with it' item.",
+    confidence: "verified",
+  },
+];

@@ -1,0 +1,223 @@
+import type {
+  BudgetLevel,
+  ClassSlug,
+  Confidence,
+  Difficulty,
+  Element,
+  Entity,
+  ModeScope,
+  PlayDifficulty,
+  ProgressionTier,
+  Rating,
+  Release,
+  Slug,
+} from "./core";
+import type { GearPick, GearSet, ItemRef } from "./item";
+
+// ---------------------------------------------------------------------------
+// Skill & stat planning
+// ---------------------------------------------------------------------------
+
+export const ALLOCATION_ROLES = [
+  "main",
+  "synergy",
+  "utility",
+  "prerequisite",
+  "flex",
+] as const;
+export type AllocationRole = (typeof ALLOCATION_ROLES)[number];
+
+export interface SkillAllocation {
+  skill: Slug;
+  /** Final point investment at level 99 with all quest skills. */
+  points: number;
+  role: AllocationRole;
+  /** Lower number = max this first. Shown as the "maxing order". */
+  order?: number;
+  note?: string;
+}
+
+export interface StatPlan {
+  strength: string;
+  dexterity: string;
+  vitality: string;
+  energy: string;
+  /** Explains the exceptions — this is where most stat advice goes wrong. */
+  notes: string[];
+}
+
+// ---------------------------------------------------------------------------
+// Breakpoint targets
+// ---------------------------------------------------------------------------
+
+export interface BreakpointTarget {
+  /** Which breakpoint table applies. */
+  stat: "fcr" | "fhr" | "fbr" | "ias";
+  /** The percentage to reach. */
+  value: number;
+  /** Frames at that value, for context. */
+  frames?: number;
+  /** Why this is the one to aim for on this build. */
+  why: string;
+  priority: "required" | "recommended" | "luxury";
+}
+
+// ---------------------------------------------------------------------------
+// Build ratings
+// ---------------------------------------------------------------------------
+
+export interface BuildRatings {
+  clearSpeed: Rating;
+  bossing: Rating;
+  survivability: Rating;
+  magicFind: Rating;
+  /** Ability to run Terror Zones at high player counts. */
+  terrorZones: Rating;
+  /** Uber Tristram / Pandemonium capability. */
+  ubers: Rating;
+  /** Solo self-found viability specifically. */
+  soloSelfFound: Rating;
+  /** How well it scales in 8-player games. */
+  players8: Rating;
+}
+
+// ---------------------------------------------------------------------------
+// Build
+// ---------------------------------------------------------------------------
+
+export interface Build extends Entity {
+  classSlug: ClassSlug;
+  /** Primary damage type — drives immunity planning. */
+  damageTypes: Element[];
+  /** The skill the build is named after. */
+  primarySkill: Slug;
+  playstyle: string;
+  strengths: string[];
+  weaknesses: string[];
+  difficulty: PlayDifficulty;
+  budget: BudgetLevel;
+  ratings: BuildRatings;
+
+  skills: SkillAllocation[];
+  /** What to do with points beyond the core allocation. */
+  flexPoints?: string[];
+  stats: StatPlan;
+  breakpoints: BreakpointTarget[];
+
+  /** Ordered progression, `starter` through `bis`. */
+  gearSets: GearSet[];
+  /** Slug of the recommended mercenary setup. */
+  mercenary?: Slug;
+  /** Extra mercenary commentary for this specific build. */
+  mercenaryNotes?: string;
+
+  /** Farming area slugs this build is genuinely good at, in priority order. */
+  farming: BuildFarmingEntry[];
+
+  /** How immunities are handled — the make-or-break question in Hell. */
+  immunityPlan?: string;
+
+  /** Considerations that only matter in hardcore. */
+  hardcoreNotes?: string;
+  /** Considerations for a fresh, untwinked character. */
+  selfFoundNotes?: string;
+
+  /** Leveling route: which build to play before this one comes online. */
+  levelingPath?: {
+    summary: string;
+    respecAt?: string;
+    /** Slug of a leveling build, if the site documents one. */
+    viaBuild?: Slug;
+  };
+
+  modes?: ModeScope;
+  release?: Release;
+  confidence?: Confidence;
+  /** Set false while a build page is still a stub. */
+  complete?: boolean;
+}
+
+export interface BuildFarmingEntry {
+  area: Slug;
+  difficulty: Difficulty;
+  /** Why this area suits this build. */
+  why: string;
+  /** Minimum gear tier before this is realistic. */
+  minTier: ProgressionTier;
+  rating: Rating;
+}
+
+// ---------------------------------------------------------------------------
+// Leveling / progression journey
+// ---------------------------------------------------------------------------
+
+export const ACTION_KINDS = [
+  "skill",
+  "stat",
+  "gear",
+  "runeword",
+  "quest",
+  "shop",
+  "gamble",
+  "mercenary",
+  "respec",
+  "farm",
+  "transition",
+  "warning",
+  "tip",
+] as const;
+export type ActionKind = (typeof ACTION_KINDS)[number];
+
+export interface ProgressionAction {
+  kind: ActionKind;
+  text: string;
+  /** Items mentioned, so the UI can link them automatically. */
+  refs?: ItemRef[];
+  /** Level this becomes relevant, when narrower than the stage band. */
+  atLevel?: number;
+  optional?: boolean;
+  modes?: ModeScope;
+}
+
+/**
+ * One chunk of a character's life. Stages are the unit of the leveling
+ * walkthrough: coarse enough to read, fine enough to act on.
+ *
+ * Deliberately not one page per level — 99 pages would be unusable, and the
+ * decisions that actually matter cluster at skill-unlock levels (1/6/12/18/
+ * 24/30), quest rewards, and difficulty transitions.
+ */
+export interface ProgressionStage extends Entity {
+  classSlug: ClassSlug;
+  /** Inclusive character level band. */
+  levels: [number, number];
+  difficulty: Difficulty;
+  /** Where in the game you should be, e.g. "Act 1 — Blood Moor to Tristram". */
+  location: string;
+  /** The one-line goal of this stage. */
+  goal: string;
+  /** What your character is actually doing to kill things right now. */
+  killingWith: string;
+  skillPoints: string[];
+  statPoints: string[];
+  actions: ProgressionAction[];
+  /** Gear worth actively hunting or buying during this stage. */
+  gearTargets?: GearPick[];
+  /** Concrete "you are ready to move on when…" test. */
+  exitCriteria?: string;
+  order: number;
+}
+
+/** The full class journey: an ordered set of stages plus framing. */
+export interface ProgressionJourney {
+  classSlug: ClassSlug;
+  /** Which build this journey levels into. */
+  targetBuild?: Slug;
+  summary: string;
+  /** Big-picture route description before the reader dives into stages. */
+  overview: string[];
+  stages: ProgressionStage[];
+  /** Respec planning across the whole journey. */
+  respecPlan?: { at: string; why: string }[];
+  confidence?: Confidence;
+}

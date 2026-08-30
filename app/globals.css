@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/*
+ * D2 Codex design tokens.
+ *
+ * The brief for this palette: evoke Diablo II without becoming an unreadable
+ * dark-fantasy pastiche. That means a desaturated warm-neutral base rather than
+ * pure black, one restrained ember accent used only for emphasis, and item
+ * rarity colours that are recognisably D2's but tuned up in lightness so they
+ * pass contrast checks on a dark background. The game's raw #6969FF magic blue
+ * is close to unreadable as body text; ours is not.
+ *
+ * This is a reference tool first. Information density and scannability beat
+ * atmosphere everywhere they conflict.
+ */
+
+@theme {
+  /* Surfaces — warm-tinted neutrals, never pure black */
+  --color-abyss: #0b0a09;
+  --color-surface: #131110;
+  --color-surface-raised: #1a1817;
+  --color-surface-overlay: #232020;
+  --color-border: #2e2a28;
+  --color-border-strong: #3d3835;
+
+  /* Text */
+  --color-ink: #ede9e4;
+  --color-ink-muted: #a8a09a;
+  --color-ink-subtle: #7a726c;
+
+  /* Ember accent — used sparingly, for emphasis only */
+  --color-ember: #d4713d;
+  --color-ember-bright: #f08c52;
+  --color-ember-dim: #8a4526;
+
+  /* Item rarity — D2's conventions, lightened for contrast on dark */
+  --color-rarity-normal: #d3cfca;
+  --color-rarity-magic: #8f8fff;
+  --color-rarity-rare: #e8e879;
+  --color-rarity-set: #3ee63e;
+  --color-rarity-unique: #d0b678;
+  --color-rarity-runeword: #d0b678;
+  --color-rarity-rune: #e08a3c;
+  --color-rarity-crafted: #f0a850;
+
+  /* Elements */
+  --color-el-fire: #e8703a;
+  --color-el-cold: #6bb6e8;
+  --color-el-lightning: #e8d04a;
+  --color-el-poison: #7bc043;
+  --color-el-magic: #a88fe8;
+  --color-el-physical: #c9bfb5;
+
+  /* Semantic */
+  --color-info: #6bb6e8;
+  --color-success: #6cc26c;
+  --color-warning: #e0a83c;
+  --color-danger: #e06a5a;
+
+  /* Difficulty */
+  --color-diff-normal: #8ba888;
+  --color-diff-nightmare: #d9a441;
+  --color-diff-hell: #d1594a;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cinzel), Georgia, serif;
+  --font-mono: var(--font-mono-stack), ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Anchor links land below the sticky header rather than under it. */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-abyss);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-ember-dim);
+    color: var(--color-ink);
+  }
+
+  /* A subtle ember focus ring, consistent everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  /*
+   * The one decorative flourish in the whole design: a faint radial warmth
+   * behind the page, so large dark areas do not read as flat black.
+   */
+  .bg-abyss-glow {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 113, 61, 0.07), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(107, 182, 232, 0.035), transparent);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
