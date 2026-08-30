@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui";
+import { SearchDialog } from "@/components/search/search-dialog";
+import { searchIndex } from "@/lib/search";
 
 /**
  * Primary navigation.
@@ -55,7 +57,7 @@ export function SiteHeader() {
 
           <nav
             aria-label="Reference"
-            className="ml-auto hidden items-center gap-1 lg:flex"
+            className="ml-auto hidden items-center gap-1 xl:flex"
           >
             {REFERENCE.map((item) => (
               <Link
@@ -68,8 +70,12 @@ export function SiteHeader() {
             ))}
           </nav>
 
+          <div className="ml-auto xl:ml-3">
+            <SearchDialog entryCount={searchIndex.length} />
+          </div>
+
           {/* Native disclosure — no client component needed for a menu. */}
-          <details className="group relative ml-auto lg:hidden">
+          <details className="group relative xl:hidden">
             <summary className="flex cursor-pointer list-none items-center gap-2 rounded border border-border px-3 py-1.5 text-sm text-ink-muted marker:hidden hover:text-ink [&::-webkit-details-marker]:hidden">
               Menu
               <span aria-hidden className="text-xs transition-transform group-open:rotate-180">

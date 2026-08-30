@@ -177,9 +177,24 @@ for any D2 material you consult.
 
 Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS v4
 
-Every content page is a server component and prerenders to static HTML. There is
-currently no client-side JavaScript on any content page — the mobile menu is a
-native `<details>` element, and the gear-tier navigation is anchor links.
+Every content page is a server component and prerenders to static HTML. The
+search dialog is the only client component in the codebase — the mobile menu is
+a native `<details>` element, and the gear-tier navigation is anchor links.
+
+### Search
+
+Global search (Ctrl/Cmd+K, or `/`) is built from the registry at build time and
+emitted as a single static `/search-index.json`. The dialog fetches it lazily on
+first open, so pages carry none of its weight.
+
+Inlining the index into every page's RSC payload cost about 46KB per route —
+nearly half the weight of a rune page, repeated across all 118 routes. Moving it
+to a lazily-fetched static file cut the rune page from 103KB to 58KB.
+
+The index carries nicknames alongside real names, because that is what people
+type: `shako`, `hoto`, `soj`, `hdin`, `alvl 85`. Mechanics articles also index
+their headings and callout titles, so searching `sunder` or `larzuk` finds the
+article that explains them.
 
 ---
 
