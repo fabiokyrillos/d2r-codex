@@ -959,6 +959,137 @@ export const runewords: Runeword[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "exile",
+    name: "Exile",
+    summary:
+      "A Paladin-only shield that carries a Defiance aura, +2 Offensive Auras and Life Tap on striking. The Smiter's sustain in one item.",
+    runes: ["vex", "ohm", "ist", "dol"],
+    sockets: 4,
+    requiredLevel: 57,
+    tier: "bis",
+    bases: {
+      categories: ["shield"],
+      display: "Any 4-socket Paladin shield",
+      exclusions: [
+        "Paladin class shields only — Auric Shields and their Normal/Exceptional equivalents. It cannot be made in a Monarch or any other ordinary shield.",
+      ],
+    },
+    stats: [
+      { text: "15% Chance to cast level 5 Life Tap on striking", notable: true },
+      {
+        text: "Level 13-16 Defiance Aura When Equipped",
+        variable: true,
+        notable: true,
+      },
+      { text: "+2 to Offensive Auras (Paladin Only)", notable: true },
+      { text: "+30% Faster Block Rate" },
+      { text: "Freezes Target +1" },
+      { text: "+220-260% Enhanced Defense", variable: true },
+      { text: "Replenish Life +7" },
+      { text: "+5% to Maximum Cold Resist" },
+      { text: "+5% to Maximum Fire Resist" },
+      { text: "25% Better Chance of Getting Magic Items" },
+      { text: "Repairs 1 durability in 25 seconds" },
+    ],
+    recommendedBases: [
+      "An **ethereal** Paladin shield. Exile repairs itself, so the usual reason to avoid ethereal bases does not apply — and ethereal adds 50% to the base defence.",
+      "A base that rolls +45 to all resistances is the one to hold out for. The shield type itself matters less than that roll.",
+    ],
+    usedBy:
+      "Smiters above all — the Life Tap proc is what keeps a Paladin alive through Uber Mephisto, and it needs no skill points. Also worn by Zealots and by aura-swapping Paladins who want Defiance on tap.",
+    commonMistakes: [
+      "Trying to make it in a Monarch. Exile is Paladin-only; the base has to be a class shield.",
+      "Avoiding ethereal bases out of habit. Here they are strictly better, because the runeword repairs itself.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "kingslayer",
+    name: "Kingslayer",
+    summary:
+      "Crushing Blow, Open Wounds and a free point in Vengeance on a mid-tier weapon. The cheapest real answer to a boss.",
+    runes: ["mal", "um", "gul", "fal"],
+    sockets: 4,
+    requiredLevel: 53,
+    tier: "budget",
+    bases: {
+      categories: ["sword", "axe"],
+      display: "Any 4-socket Sword or Axe",
+      exclusions: [
+        "Swords and axes only. Not maces, not scepters, not polearms — the same class restriction people get wrong with Grief.",
+      ],
+    },
+    stats: [
+      { text: "+30% Increased Attack Speed", notable: true },
+      { text: "+230-270% Enhanced Damage", variable: true, notable: true },
+      { text: "33% Chance of Crushing Blow", notable: true },
+      { text: "25% Chance of Open Wounds" },
+      { text: "-25% Target Defense" },
+      { text: "20% Bonus to Attack Rating" },
+      { text: "+1 to Vengeance" },
+      { text: "Prevent Monster Heal" },
+      { text: "+10 to Strength" },
+      { text: "40% Extra Gold from Monsters" },
+    ],
+    recommendedBases: [
+      "A Cryptic Sword or Berserker Axe for the damage, or a Phase Blade if you want the speed and indestructibility.",
+    ],
+    usedBy:
+      "Melee characters who cannot yet afford Grief. The +1 to Vengeance also makes it the natural first weapon for an Avenger, since it supplies the skill before any point investment.",
+    notes:
+      "Open Wounds reads 25% in the game's own data. Several community databases still list 50%, which appears to be a stale figure — see `docs/research/01-paladin-builds.md`.",
+    confidence: "verified",
+  },
+  {
+    slug: "last-wish",
+    name: "Last Wish",
+    summary:
+      "A Might aura, heavy Crushing Blow and Life Tap on striking, on a six-socket weapon that costs three Jah runes.",
+    runes: ["jah", "mal", "jah", "sur", "jah", "ber"],
+    sockets: 6,
+    requiredLevel: 65,
+    tier: "bis",
+    bases: {
+      categories: ["sword", "hammer", "axe"],
+      display: "Any 6-socket Sword, Hammer or Axe",
+      exclusions: [
+        "Swords, hammers and axes. Not polearms — which rules out most of the bases a mercenary would otherwise want.",
+      ],
+    },
+    stats: [
+      { text: "Level 17 Might Aura When Equipped", notable: true },
+      {
+        text: "40-50% Chance of Crushing Blow",
+        variable: true,
+        notable: true,
+      },
+      { text: "10% Chance to cast level 18 Life Tap on striking", notable: true },
+      { text: "6% Chance to cast level 11 Fade when struck", notable: true },
+      { text: "20% Chance to cast level 20 Charged Bolt on attack" },
+      { text: "+330-375% Enhanced Damage", variable: true },
+      { text: "Ignore Target's Defense" },
+      { text: "Prevent Monster Heal" },
+      { text: "Hit Blinds Target +1" },
+      {
+        text: "0.5% Better Chance of Getting Magic Items per Character Level",
+      },
+    ],
+    recommendedBases: [
+      "A Berserker Axe or Colossus Blade, for the damage the Enhanced Damage roll multiplies.",
+      "Most often built for a mercenary rather than the player, because the Might aura it emanates benefits whoever stands next to it.",
+    ],
+    usedBy:
+      "Physical melee characters and their mercenaries. The combination of a Might aura, Crushing Blow and a Life Tap proc means one item covers damage, boss damage and sustain at once.",
+    commonMistakes: [
+      "Three Jah runes is the real cost, not the six sockets. Budget for that before hunting a base.",
+      "Building it in a polearm. Last Wish does not accept polearms, which is the base most mercenary weapons use.",
+    ],
+    notes:
+      "Crushing Blow reads 40-50% in the game's own data. Several community databases still list 60-70%, which appears to be a stale figure — see `docs/research/01-paladin-builds.md`.",
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Reign of the Warlock
   // -------------------------------------------------------------------------

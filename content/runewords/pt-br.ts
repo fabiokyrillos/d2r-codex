@@ -291,6 +291,59 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     notes:
       "O +dano fixo é o ponto inteiro e é fácil de ler errado: ele não escala com +% de Dano Aumentado, o que paradoxalmente o torna *melhor* em armas rápidas de dano base baixo.",
   },
+  exile: {
+    summary:
+      "Um escudo exclusivo de Paladin que carrega aura de Defiance, +2 em Offensive Auras e Life Tap ao golpear. A sustentação do Smiter num item só.",
+    basesDisplay: "Qualquer escudo de Paladin de 4 sockets",
+    basesExclusions: [
+      "Só escudos de classe do Paladin — Auric Shields e seus equivalentes Normal e Exceptional. Não dá para fazer num Monarch nem em qualquer escudo comum.",
+    ],
+    recommendedBases: [
+      "Um escudo de Paladin **etéreo**. O Exile se repara sozinho, então o motivo habitual para evitar bases etéreas não se aplica — e etéreo soma 50% à defesa base.",
+      "Uma base que role +45 em todas as resistências é a que vale esperar. O tipo do escudo importa menos que esse roll.",
+    ],
+    usedBy:
+      "Smiters acima de tudo — o proc de Life Tap é o que mantém um Paladin vivo contra o Uber Mephisto, e não custa ponto de skill. Também usado por Zealots e por Paladins de troca de aura que querem Defiance à disposição.",
+    commonMistakes: [
+      "Tentar fazer num Monarch. Exile é exclusivo de Paladin; a base precisa ser um escudo de classe.",
+      "Evitar bases etéreas por hábito. Aqui elas são estritamente melhores, porque a runeword se repara sozinha.",
+    ],
+  },
+  kingslayer: {
+    summary:
+      "Crushing Blow, Open Wounds e um ponto grátis em Vengeance numa arma de meio de jogo. A resposta barata contra um boss.",
+    basesDisplay: "Qualquer Sword ou Axe de 4 sockets",
+    basesExclusions: [
+      "Só swords e axes. Não maces, não scepters, não polearms — a mesma restrição de classe que as pessoas erram com o Grief.",
+    ],
+    recommendedBases: [
+      "Uma Cryptic Sword ou Berserker Axe pelo dano, ou uma Phase Blade se você quiser a velocidade e a indestrutibilidade.",
+    ],
+    usedBy:
+      "Personagens de corpo a corpo que ainda não podem pagar um Grief. O +1 em Vengeance também faz dela a primeira arma natural de um Avenger, já que fornece a skill antes de qualquer investimento de pontos.",
+    notes:
+      "Open Wounds aparece como 25% nos dados do próprio jogo. Várias bases da comunidade ainda listam 50%, o que parece ser um número desatualizado — veja `docs/research/01-paladin-builds.md`.",
+  },
+  "last-wish": {
+    summary:
+      "Uma aura de Might, Crushing Blow pesado e Life Tap ao golpear, numa arma de seis sockets que custa três runas Jah.",
+    basesDisplay: "Qualquer Sword, Hammer ou Axe de 6 sockets",
+    basesExclusions: [
+      "Swords, hammers e axes. Não polearms — o que exclui a maioria das bases que um mercenário iria querer.",
+    ],
+    recommendedBases: [
+      "Uma Berserker Axe ou Colossus Blade, pelo dano que o roll de Enhanced Damage multiplica.",
+      "Feita com mais frequência para o mercenário do que para o jogador, porque a aura de Might que ela emana beneficia quem estiver ao lado.",
+    ],
+    usedBy:
+      "Personagens físicos de corpo a corpo e seus mercenários. A combinação de aura de Might, Crushing Blow e proc de Life Tap faz um item só cobrir dano, dano em boss e sustentação de uma vez.",
+    commonMistakes: [
+      "Três runas Jah é o custo real, não os seis sockets. Faça essa conta antes de caçar uma base.",
+      "Montar numa polearm. Last Wish não aceita polearms, que é justamente a base usada pela maioria das armas de mercenário.",
+    ],
+    notes:
+      "Crushing Blow aparece como 40-50% nos dados do próprio jogo. Várias bases da comunidade ainda listam 60-70%, o que parece ser um número desatualizado — veja `docs/research/01-paladin-builds.md`.",
+  },
   doom: {
     summary:
       "Uma aura de Holy Freeze mais -40 a -60% de resistência a frio do inimigo. Desacelera tudo e quebra resistência a frio ao mesmo tempo.",
