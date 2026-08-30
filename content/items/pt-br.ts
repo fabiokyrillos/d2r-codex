@@ -239,4 +239,12 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "Vale saber o que ele não é: um Spirit num escudo de 4 sockets dá +2 skills e 35% de Faster Cast Rate por quatro runas da Countess. O Lidless Wall só ganha quando você não acha uma base de 4 sockets, ou quando a mana por morte resolve um problema de verdade — o que numa build sem investimento em Energy às vezes acontece.",
   },
+  "demon-machine": {
+    summary:
+      "66% de Piercing Attack na crossbow mais rápida do jogo. O item que dá nome à Enchant Sorceress.",
+    dropSummary:
+      "Nível de área 57+. Incomum, e quase nunca negociado porque só uma build o quer.",
+    notes:
+      "A base Chu-Ko-Nu é a crossbow mais rápida do jogo — o modificador de velocidade dela é −60, mais que qualquer outra. Combinado com 66% de Piercing Attack, cada bolt carrega o dano elemental que você somou a ele através de vários alvos de uma vez, que é o mecanismo inteiro por trás da Enchant Sorceress. O requisito de 95 de Dexterity é o custo real, e não é pequeno para uma caster.",
+  },
 };

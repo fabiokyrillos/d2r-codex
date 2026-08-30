@@ -360,6 +360,41 @@ export const uniques: UniqueItem[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "demon-machine",
+    name: "Demon Machine",
+    summary:
+      "66% Piercing Attack on the fastest crossbow in the game. The item the Enchant Sorceress is named after.",
+    quality: "unique",
+    base: "Chu-Ko-Nu",
+    category: "crossbow",
+    tier: "exceptional",
+    slots: ["weapon"],
+    requiredLevel: 49,
+    requiredStrength: 80,
+    requiredDexterity: 95,
+    maxSockets: 5,
+    stats: [
+      { text: "66% Piercing Attack", notable: true },
+      { text: "Fires Explosive Arrows or Bolts (Level 6)", notable: true },
+      { text: "+123% Enhanced Damage" },
+      { text: "+66 to Maximum Damage" },
+      { text: "+632 to Attack Rating" },
+      { text: "+321 Defense" },
+      { text: "+36 to Mana" },
+    ],
+    drop: {
+      summary:
+        "Area level 57+. Uncommon, and almost never traded because only one build wants it.",
+      minMonsterLevel: 57,
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "The Chu-Ko-Nu base is the fastest crossbow in the game — its weapon speed modifier is −60, further than any other. Combined with 66% Piercing Attack, each bolt carries whatever elemental damage you have added onto it through several targets at once, which is the entire mechanism behind the Enchant Sorceress. The 95 Dexterity requirement is the real cost, and it is not small for a caster.",
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Body armor
   // -------------------------------------------------------------------------
