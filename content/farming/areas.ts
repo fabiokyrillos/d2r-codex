@@ -700,4 +700,58 @@ export const farmingAreas: FarmingArea[] = [
     terrorZone: true,
     confidence: "verified",
   },
+  {
+    slug: "uber-tristram",
+    name: "Uber Tristram",
+    summary:
+      "The Pandemonium Event. Three level 110 bosses at once, and the only source of the Hellfire Torch.",
+    act: 4,
+    access:
+      "Not a zone you walk to. Kill the three mini-Ubers to collect Diablo's Horn, Mephisto's Brain and Baal's Eye, then cube the three organs together in Harrogath to open the red portal.",
+    levels: { normal: 50, nightmare: 75, hell: 83 },
+    hellLevel85: false,
+    density: 3,
+    danger: 5,
+    runLength: "short",
+    commonImmunities: ["fire", "lightning", "poison"],
+    bosses: [
+      {
+        name: "Uber Mephisto",
+        kind: "event",
+        hellLevel: 110,
+        notes:
+          "Casts a permanent Conviction aura, which is why resistances collapse the moment you enter. He is the reason a Life Tap source is not optional.",
+      },
+      {
+        name: "Uber Baal",
+        kind: "event",
+        hellLevel: 110,
+        notes:
+          "Casts Decrepify, halving your damage and slowing you. The standard opening is to pull him away from the other two.",
+      },
+      {
+        name: "Uber Diablo",
+        kind: "event",
+        hellLevel: 110,
+        notes:
+          "The heaviest single hitter of the three, and the one that kills unprepared characters outright.",
+      },
+    ],
+    targets: ["charms"],
+    why: "The Hellfire Torch drops here and nowhere else. +3 to a random class's skills, +10-20 to all attributes and +10-20 to all resistances in a charm slot is the largest single upgrade most characters ever make.",
+    route: [
+      "Farm the three keys in Hell: Key of Terror from the Countess, Key of Hate from the Summoner, Key of Destruction from Nihlathak.",
+      "Cube three of one key type to open one mini-Uber portal. Each of the three portals leads to a different fight and drops one organ.",
+      "Cube Diablo's Horn, Mephisto's Brain and Baal's Eye together to open the portal to Uber Tristram.",
+      "Inside, the three Ubers spawn together. Almost every successful run separates them rather than fighting all three at once.",
+    ],
+    suitedTo: ["paladin", "assassin", "barbarian"],
+    poorlySuitedTo:
+      "Casters. All three Ubers have very high resistances, Uber Mephisto's Conviction aura strips yours, and the minions punish anything that has to stand still to deal damage. This is a physical-damage fight.",
+    recommendedDifficulties: ["hell"],
+    terrorZone: false,
+    notes:
+      "The three Ubers are monster level 110 — higher than anything else in the game, and well above the area's own level of 83. That gap is why gear that carries you through Hell is not automatically enough here. The Torch requires character level 75 to equip.",
+    confidence: "verified",
+  },
 ];

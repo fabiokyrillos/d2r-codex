@@ -376,4 +376,38 @@ export const areasPtBr: Overlay<FarmingAreaCopy> = {
     poorlySuitedTo:
       "Builds corpo a corpo e — de forma incomum — builds de dano mágico: os Ghosts aqui costumam ser imunes a mágico, um dos pouquíssimos lugares em que um Hammerdin encontra uma parede.",
   },
+  "uber-tristram": {
+    summary:
+      "O Pandemonium Event. Três bosses de nível 110 ao mesmo tempo, e a única fonte do Hellfire Torch.",
+    access:
+      "Não é uma zona onde você entra andando. Mate os três mini-Ubers para juntar Diablo's Horn, Mephisto's Brain e Baal's Eye, e então cube os três órgãos em Harrogath para abrir o portal vermelho.",
+    why: "O Hellfire Torch cai aqui e em nenhum outro lugar. +3 nas skills de uma classe aleatória, +10-20 em todos os atributos e +10-20 em todas as resistências num slot de charm é o maior upgrade isolado que a maioria dos personagens já faz.",
+    route: [
+      "Farme as três chaves no Hell: Key of Terror com a Countess, Key of Hate com o Summoner, Key of Destruction com o Nihlathak.",
+      "Cube três chaves do mesmo tipo para abrir um portal de mini-Uber. Cada um dos três portais leva a uma luta diferente e dropa um órgão.",
+      "Cube Diablo's Horn, Mephisto's Brain e Baal's Eye juntos para abrir o portal para Uber Tristram.",
+      "Lá dentro os três Ubers aparecem juntos. Quase toda run bem-sucedida separa eles em vez de encarar os três de uma vez.",
+    ],
+    bosses: [
+      {
+        name: "Uber Mephisto",
+        notes:
+          "Mantém uma aura de Conviction permanente, e é por isso que as resistências desabam no instante em que você entra. Ele é o motivo de uma fonte de Life Tap não ser opcional.",
+      },
+      {
+        name: "Uber Baal",
+        notes:
+          "Lança Decrepify, cortando seu dano pela metade e te desacelerando. A abertura padrão é puxar ele para longe dos outros dois.",
+      },
+      {
+        name: "Uber Diablo",
+        notes:
+          "O que bate mais forte dos três, e o que mata de imediato quem chega despreparado.",
+      },
+    ],
+    poorlySuitedTo:
+      "Casters. Os três Ubers têm resistências altíssimas, a aura de Conviction do Uber Mephisto arranca as suas, e os minions punem qualquer coisa que precise ficar parada para causar dano. Esta é uma luta de dano físico.",
+    notes:
+      "Os três Ubers são monstros de nível 110 — mais alto que qualquer coisa no jogo, e bem acima do nível 83 da própria área. Essa diferença é o motivo de um equipamento que te carrega pelo Hell não ser automaticamente suficiente aqui. O Torch exige nível 75 para equipar.",
+  },
 };
