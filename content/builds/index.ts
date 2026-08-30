@@ -7,6 +7,7 @@ import { fohdin } from "./fohdin";
 import { avenger } from "./avenger";
 import { tesladin } from "./tesladin";
 import { holyFirePaladin } from "./holy-fire-paladin";
+import { lightningSorceress } from "./lightning-sorceress";
 
 /**
  * Build registry.
@@ -15,4 +16,4 @@ import { holyFirePaladin } from "./holy-fire-paladin";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress];
