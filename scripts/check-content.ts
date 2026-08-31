@@ -42,6 +42,8 @@ import { tierOrder } from "../lib/labels";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
+import { SKILL_GRAPH } from "../content/classes/skill-graph";
+import { checkSkillGraph, MAX_HARD_POINTS } from "./skill-graph-rules";
 
 const SOURCE: Locale = DEFAULT_LOCALE;
 const TRANSLATED = LOCALES.filter((l) => l !== SOURCE);
@@ -484,45 +486,107 @@ for (const locale of LOCALES) {
 }
 
 // ---------------------------------------------------------------------------
-// Skill prerequisite chains
+// The skill graph
 // ---------------------------------------------------------------------------
 
 /*
- * A build that allocates a skill must also allocate everything that skill
- * requires. Nothing else catches this: the reference resolves (the skill
- * exists), the page renders, and the plan is simply not something a character
- * could actually spend points on.
+ * Everything here validates against `content/classes/skill-graph.ts`, which is
+ * GENERATED FROM THE GAME'S OWN TABLES — never against the authored
+ * `Skill.prerequisites` field.
  *
- * It found three real errors the first time it ran — Lightning Mastery needs
- * Thunder Storm, and Frozen Orb needs Blizzard, in three shipped builds.
+ * That distinction is the entire point of this section. The previous version
+ * of this check compared each build against the authored table, and 29 of
+ * those 60 authored prerequisite sets were wrong. A build written from a wrong
+ * table, checked against the same wrong table, passes. It reported 289/289
+ * while fourteen of eighteen builds published plans that could not be spent in
+ * game. A validator that shares its ground truth with the thing it validates
+ * cannot fail, and this one did not.
  *
- * Only checks the source locale: skill allocations are invariant data, so a
- * translation cannot introduce or fix one.
+ * So: the graph is the authority, the authored table is one of the things
+ * under test, and `checkSkillGraph` is exercised by planted-mutation tests in
+ * `scripts/check-content.test.ts` that prove each rule actually fires.
  */
-console.log("\nSkill prerequisites:");
+
+console.log("\nSkill graph (validated against the generated game-data graph):");
 {
-  const bySlug = new Map(getSkills(SOURCE).map((skill) => [skill.slug, skill]));
-  let checked = 0;
-  let broken = 0;
-  for (const build of getBuilds(SOURCE)) {
-    const allocated = new Set(
-      build.skills.filter((a) => a.points > 0).map((a) => a.skill),
+  const graphProblems = checkSkillGraph(SKILL_GRAPH, getSkills(SOURCE), getBuilds(SOURCE));
+  const counts = new Map<string, number>();
+  for (const problem of graphProblems) {
+    counts.set(problem.rule, (counts.get(problem.rule) ?? 0) + 1);
+    problems.push(problem.message);
+  }
+  const rules = [
+    "authored-drift",
+    "missing-prerequisite",
+    "cross-tree-edge",
+    "cycle",
+    "unknown-skill",
+    "over-budget",
+  ] as const;
+  for (const rule of rules) {
+    const n = counts.get(rule) ?? 0;
+    console.log(`  ${n === 0 ? "ok" : " x"} ${rule.padEnd(22)} ${n}`);
+  }
+
+  // The mandatory budget of every build, printed whether or not it passes —
+  // this is the number the hotfix exists to keep honest.
+  const graphBuilds = getBuilds(SOURCE).filter((b) => b.skills.some((a) => SKILL_GRAPH[a.skill]));
+  console.log(`\n  mandatory hard points (flex excluded, cap ${MAX_HARD_POINTS}):`);
+  for (const build of [...graphBuilds].sort((a, b) => a.slug.localeCompare(b.slug))) {
+    const core = build.skills.filter((a) => a.points > 0 && a.role !== "flex" && SKILL_GRAPH[a.skill]);
+    const spent = core.reduce((sum, a) => sum + a.points, 0);
+    const flex = build.skills
+      .filter((a) => a.role === "flex")
+      .reduce((sum, a) => sum + a.points, 0);
+    console.log(
+      `    ${build.slug.padEnd(28)} ${String(spent).padStart(3)}/${MAX_HARD_POINTS}` +
+        `${flex ? `  (+${flex} flex)` : ""}`,
     );
-    for (const allocation of build.skills) {
-      if (allocation.points <= 0) continue;
-      checked++;
-      for (const prerequisite of bySlug.get(allocation.skill)?.prerequisites ?? []) {
-        if (allocated.has(prerequisite)) continue;
-        broken++;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Build prose array parity
+// ---------------------------------------------------------------------------
+
+/*
+ * `strengths`, `weaknesses` and `flexPoints` are positional arrays, and a
+ * locale overlay replaces the whole array rather than merging into it. Add an
+ * entry to the source and the translation silently renders one fewer bullet,
+ * with the slug still counted as fully covered.
+ *
+ * Same defect as the mechanics-body drift this file already checks. It nearly
+ * shipped again during the skill-graph hotfix: one build's `flexPoints` went
+ * from one entry to two, and nothing but this check would have noticed the
+ * pt-BR side staying at one.
+ */
+console.log("\nBuild prose arrays:");
+for (const locale of TRANSLATED) {
+  const source = getBuilds(DEFAULT_LOCALE);
+  const translated = getBuilds(locale);
+  let mismatches = 0;
+  let compared = 0;
+  for (const build of source) {
+    const other = translated.find((b) => b.slug === build.slug);
+    if (!other) continue;
+    const fields = [
+      ["strengths", build.strengths, other.strengths],
+      ["weaknesses", build.weaknesses, other.weaknesses],
+      ["flexPoints", build.flexPoints, other.flexPoints],
+    ] as const;
+    for (const [name, a, b] of fields) {
+      if (!a && !b) continue;
+      compared++;
+      if ((a?.length ?? 0) !== (b?.length ?? 0)) {
+        mismatches++;
         problems.push(
-          `${build.slug}: allocates ${allocation.skill} but not its prerequisite ` +
-            `${prerequisite}. The plan cannot be spent as written.`,
+          `${build.slug}: ${locale} ${name} has ${b?.length ?? 0} entries, source has ${a?.length ?? 0}`,
         );
       }
     }
   }
   console.log(
-    `  ${checked - broken}/${checked} skill allocations have every prerequisite allocated`,
+    `  ${locale}  ${compared - mismatches}/${compared} build prose arrays match the source length`,
   );
 }
 
