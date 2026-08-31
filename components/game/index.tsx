@@ -27,6 +27,8 @@ import { Badge, Callout, cn } from "@/components/ui";
 import { RichText } from "./rich-text";
 
 export { RichText };
+export { SkillSigil } from "./skill-sigil";
+export { SkillTree } from "./skill-tree";
 
 /**
  * Domain components.
