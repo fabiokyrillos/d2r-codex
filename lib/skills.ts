@@ -4,7 +4,7 @@ import {
   TIER_LEVELS,
   type SkillGraphNode,
 } from "@/content/classes/skill-graph";
-import type { AllocationRole, Skill, SkillAllocation, Slug } from "@/lib/types";
+import type { AllocationRole, ClassSlug, Skill, SkillAllocation, Slug } from "@/lib/types";
 
 /**
  * Presentation helpers shared by the skill tree, the class page and the
@@ -17,6 +17,26 @@ import type { AllocationRole, Skill, SkillAllocation, Slug } from "@/lib/types";
 
 export { MAX_HARD_POINTS, SKILL_GRAPH, TIER_LEVELS };
 export type { SkillGraphNode };
+
+/**
+ * Classes whose skills have individual pages, and which therefore draw the
+ * interactive tree on their class and build pages.
+ *
+ * Derived, not listed. Five call sites have to agree — the route's static
+ * params, the class page, the build page, the sitemap and the search index —
+ * and the thing they actually depend on is whether a skill has a graph node:
+ * positions, unlock tiers and prerequisite edges are what a tree is drawn
+ * from, and `SkillPage` 404s without one. A hand-maintained list can disagree
+ * with the graph; this cannot. Extraction scope is the single gate, so adding
+ * a class to `generate-skill-graph.ts` lights up every surface at once.
+ */
+export const CLASSES_WITH_SKILL_PAGES: readonly ClassSlug[] = [
+  ...new Set(Object.values(SKILL_GRAPH).map((node) => node.classSlug)),
+].sort();
+
+export function hasSkillPages(classSlug: string): boolean {
+  return (CLASSES_WITH_SKILL_PAGES as readonly string[]).includes(classSlug);
+}
 
 /** How a skill is drawn in a build's tree. Derived, never authored. */
 export const TILE_STATES = [

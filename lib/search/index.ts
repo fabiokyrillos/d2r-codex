@@ -14,8 +14,7 @@ import {
 import { dictionaryFor, type Locale } from "@/lib/i18n";
 import { routes } from "@/lib/routes";
 
-/** Classes whose skills have individual pages. Mirrors the skill route. */
-const CLASSES_WITH_SKILL_PAGES = new Set(["paladin"]);
+import { hasSkillPages } from "@/lib/skills";
 import type { SearchEntry } from "./scoring";
 
 export * from "./scoring";
@@ -183,7 +182,7 @@ export function buildSearchIndex(locale: Locale): SearchEntry[] {
   for (const s of getSkills(locale)) {
     entries.push({
       n: s.name,
-      h: CLASSES_WITH_SKILL_PAGES.has(s.classSlug)
+      h: hasSkillPages(s.classSlug)
         ? r.skill(s.classSlug, s.slug)
         : r.classSkills(s.classSlug),
       k: "skill",

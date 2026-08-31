@@ -35,7 +35,7 @@ import {
   ratingLabels,
 } from "@/lib/labels";
 import { routes } from "@/lib/routes";
-import { MAX_HARD_POINTS } from "@/lib/skills";
+import { MAX_HARD_POINTS, hasSkillPages } from "@/lib/skills";
 import type { AllocationRole } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -111,7 +111,7 @@ export default async function BuildPage(
 
   // Same gate as the class page: the tree links to skill pages, which exist
   // for the Paladin only in this slice.
-  const hasSkillTree = build.classSlug === "paladin";
+  const hasSkillTree = hasSkillPages(build.classSlug);
   const trees = hasSkillTree
     ? (getClass(locale, build.classSlug)?.trees ?? [])
     : [];

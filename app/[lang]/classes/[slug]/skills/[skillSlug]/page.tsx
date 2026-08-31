@@ -24,7 +24,13 @@ import { getI18n } from "@/lib/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
 import { skillKindLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
-import { SKILL_GRAPH, damageAtLevel, dependents, progressionLevels } from "@/lib/skills";
+import {
+  CLASSES_WITH_SKILL_PAGES,
+  SKILL_GRAPH,
+  damageAtLevel,
+  dependents,
+  progressionLevels,
+} from "@/lib/skills";
 
 /**
  * One page per skill.
@@ -34,12 +40,10 @@ import { SKILL_GRAPH, damageAtLevel, dependents, progressionLevels } from "@/lib
  * chain in both directions, the damage table, and which documented builds
  * actually spend points here.
  *
- * Scoped to the Paladin in this slice. The tree on a class page renders only
- * where these pages exist, so no tile can link to a 404.
+ * Scoped to the classes whose skills are in the extracted graph. The tree on a
+ * class page renders only where these pages exist, so no tile can link to a
+ * 404.
  */
-
-/** Classes whose skills have pages. Kept explicit so the gate is visible. */
-const CLASSES_WITH_SKILL_PAGES = ["paladin"] as const;
 
 export function generateStaticParams() {
   return CLASSES_WITH_SKILL_PAGES.flatMap((slug) =>

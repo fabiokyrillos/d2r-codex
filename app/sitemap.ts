@@ -14,6 +14,7 @@ import {
   getRunewords,
   getUniques,
 } from "@/lib/registry";
+import { hasSkillPages } from "@/lib/skills";
 
 /**
  * The sitemap is generated from the registry rather than maintained by hand,
@@ -93,7 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Skill pages: supporting reference, so below builds (0.9) and classes (0.8).
   for (const skill of getSkills(DEFAULT_LOCALE)) {
-    if (skill.classSlug !== "paladin") continue;
+    if (!hasSkillPages(skill.classSlug)) continue;
     add((l) => routes(l).skill(skill.classSlug, skill.slug), 0.6);
   }
 

@@ -25,6 +25,7 @@ import {
   getSkillsInTree,
   getSkillTree,
 } from "@/lib/registry";
+import { hasSkillPages } from "@/lib/skills";
 import { fmt, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
@@ -74,8 +75,8 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
 
   // Only classes whose skills have pages get the tree: a tile links to the
   // full skill page, so drawing one for a class without those pages would
-  // manufacture dead links. The Paladin is the first.
-  const hasSkillPages = cls.slug === "paladin";
+  // manufacture dead links.
+  const showSkillTree = hasSkillPages(cls.slug);
 
   const releases = releaseLabels(t);
   const budgets = budgetLabels(t);
@@ -223,7 +224,7 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
 
         {trees.length > 0 && (
           <Section id="skills" title={t.classes.skillTrees}>
-            {hasSkillPages ? (
+            {showSkillTree ? (
               /*
                * The visual tree, one per skill page, each with its own docked
                * detail panel. Stacked rather than tabbed: tabs would need
