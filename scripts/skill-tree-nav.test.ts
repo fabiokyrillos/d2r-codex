@@ -3,7 +3,7 @@
  *
  * One Tab stop per tree is only an improvement over thirty if the arrows
  * genuinely reach everything. These tests replicate the component's movement
- * rules against the real Paladin grids and prove exactly that.
+ * rules against every real grid the site draws and prove exactly that.
  *
  * The rules live here in the same shape the component uses. That duplication
  * is deliberate and narrow: the component's copy is bound to React state and
@@ -11,7 +11,7 @@
  *
  * Run with `npm run test:nav`.
  */
-import { SKILL_GRAPH, TIER_LEVELS, layoutTree } from "../lib/skills";
+import { CLASSES_WITH_SKILL_PAGES, SKILL_GRAPH, TIER_LEVELS, layoutTree } from "../lib/skills";
 import { getClass, getSkillsForClass } from "../lib/registry";
 import { DEFAULT_LOCALE, LOCALES } from "../lib/i18n/config";
 
@@ -64,15 +64,29 @@ const firstCell = (g: Grid): Cell => {
 };
 
 // --- build the real grids --------------------------------------------------
-const paladin = getClass(DEFAULT_LOCALE, "paladin")!;
-const skills = getSkillsForClass(DEFAULT_LOCALE, "paladin");
+const classes = CLASSES_WITH_SKILL_PAGES.map((slug) => ({
+  slug,
+  cls: getClass(DEFAULT_LOCALE, slug)!,
+  skills: getSkillsForClass(DEFAULT_LOCALE, slug),
+}));
+
+// Keyed by tree slug alone, which is safe only while tree slugs are unique
+// across classes. Asserted rather than assumed: a collision would silently
+// drop a whole tree from every check below and still report green.
 const grids = new Map<string, Grid>();
-for (const tree of paladin.trees) {
-  grids.set(
-    tree,
-    layoutTree(skills, tree).map((row) => row.cells.map((c) => c?.skill.slug ?? null)),
-  );
+for (const { cls, skills } of classes) {
+  for (const tree of cls.trees) {
+    grids.set(
+      tree,
+      layoutTree(skills, tree).map((row) => row.cells.map((c) => c?.skill.slug ?? null)),
+    );
+  }
 }
+check(
+  `every tree slug is distinct, so all ${classes.length} classes are covered`,
+  grids.size === classes.reduce((n, c) => n + c.cls.trees.length, 0),
+  `${grids.size} grids`,
+);
 
 // ===========================================================================
 console.log("\nEvery skill is reachable by arrows alone");
@@ -109,7 +123,13 @@ for (const [tree, g] of grids) {
   const missing = filled.filter((s) => !seen.has(s));
   check(`${tree}: all ${filled.length} skills reachable from the Tab stop`, missing.length === 0, missing.join(", "));
 }
-check("all 30 Paladin skills reachable by arrows", reachedTotal === 30, `${reachedTotal}`);
+// 30 skills per class, and the arrows must reach every one of them.
+const expectedTotal = classes.length * 30;
+check(
+  `all ${expectedTotal} skills across ${classes.map((c) => c.cls.name).join(" and ")} reachable by arrows`,
+  reachedTotal === expectedTotal,
+  `${reachedTotal}`,
+);
 
 // ===========================================================================
 console.log("\nArrows respect the grid");
@@ -188,13 +208,15 @@ console.log("\nThe order is the same in both languages");
  * order cannot drift between locales. Checked rather than assumed, because a
  * localized page that reorders its grid would be a genuinely confusing bug.
  */
-for (const tree of paladin.trees) {
-  const orders = LOCALES.map((locale) =>
-    layoutTree(getSkillsForClass(locale, "paladin"), tree)
-      .flatMap((row) => row.cells.map((c) => c?.skill.slug ?? "-"))
-      .join(","),
-  );
-  check(`${tree}: identical cell order in ${LOCALES.join(" and ")}`, new Set(orders).size === 1);
+for (const { slug: classSlug, cls } of classes) {
+  for (const tree of cls.trees) {
+    const orders = LOCALES.map((locale) =>
+      layoutTree(getSkillsForClass(locale, classSlug), tree)
+        .flatMap((row) => row.cells.map((c) => c?.skill.slug ?? "-"))
+        .join(","),
+    );
+    check(`${tree}: identical cell order in ${LOCALES.join(" and ")}`, new Set(orders).size === 1);
+  }
 }
 
 // ===========================================================================
@@ -209,10 +231,13 @@ for (const [tree, g] of grids) {
     start.row === 0 || !g[0].some((s) => s !== null),
   );
 }
-check(
-  "three trees means three Tab stops on the class page",
-  paladin.trees.length === 3,
-);
+for (const { cls } of classes) {
+  check(
+    `${cls.name}: three trees means three Tab stops on the class page`,
+    cls.trees.length === 3,
+    cls.trees.join(", "),
+  );
+}
 
 // ===========================================================================
 console.log("\nRows carry their tier level");

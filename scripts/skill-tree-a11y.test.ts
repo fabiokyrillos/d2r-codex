@@ -13,8 +13,16 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { dictionaryFor } from "../lib/i18n";
-import { LOCALES } from "../lib/i18n/config";
-import { TILE_STATES, skillAriaLabel, type SkillAriaStrings, type TileState } from "../lib/skills";
+import { LOCALES, type Locale } from "../lib/i18n/config";
+import { getBuild, getSkill } from "../lib/registry";
+import {
+  SKILL_GRAPH,
+  TILE_STATES,
+  skillAriaLabel,
+  tileState,
+  type SkillAriaStrings,
+  type TileState,
+} from "../lib/skills";
 
 let passed = 0;
 const failures: string[] = [];
@@ -150,11 +158,29 @@ check(
 console.log("\nARIA as shipped");
 // ===========================================================================
 
+// One class page and one build page per class, in both locales. The class
+// pages carry no plan, so `inBuild` is false and no tile may mention points.
+// One class page and one build page per class, in both locales. The class
+// pages carry no plan, so no tile may mention points or obligation.
+//
+// The build pages name their build, so the expected wording is read off the
+// allocation rather than hard-coded: the tile that must read "optional" is
+// whichever one the build marks flex, in whichever language. Melee Sorceress
+// is the chosen Sorceress build because its optional Enchant carries a full
+// 20 points -- exactly the case where optional could be mistaken for maxed.
+/** Skill names are invariant across locales (ADR 0003), but read them from
+ *  the active locale anyway so this stays correct if that ever changes. */
+const nameOf = (locale: Locale, slug: string) => getSkill(locale, slug)?.name;
+
 const pages = [
-  ["class en-us", "en-us/classes/paladin.html", false],
-  ["class pt-br", "pt-br/classes/paladin.html", false],
-  ["build en-us", "en-us/builds/paladin/hammerdin.html", true],
-  ["build pt-br", "pt-br/builds/paladin/hammerdin.html", true],
+  ["paladin class en-us", "en-us/classes/paladin.html", null],
+  ["paladin class pt-br", "pt-br/classes/paladin.html", null],
+  ["paladin build en-us", "en-us/builds/paladin/hammerdin.html", "hammerdin"],
+  ["paladin build pt-br", "pt-br/builds/paladin/hammerdin.html", "hammerdin"],
+  ["sorceress class en-us", "en-us/classes/sorceress.html", null],
+  ["sorceress class pt-br", "pt-br/classes/sorceress.html", null],
+  ["sorceress build en-us", "en-us/builds/sorceress/melee-sorceress.html", "melee-sorceress"],
+  ["sorceress build pt-br", "pt-br/builds/sorceress/melee-sorceress.html", "melee-sorceress"],
 ] as const;
 
 const root = join(process.cwd(), ".next", "server", "app");
@@ -163,7 +189,9 @@ if (!existsSync(root)) {
   process.exit(1);
 }
 
-for (const [label, file, inBuild] of pages) {
+for (const [label, file, buildSlug] of pages) {
+  // A build page carries a plan and therefore points; a class page does not.
+  const locale = file.slice(0, 5) as Locale;
   const path = join(root, file);
   if (!existsSync(path)) {
     check(`${label}: prerendered HTML exists`, false, path);
@@ -235,14 +263,47 @@ for (const [label, file, inBuild] of pages) {
     .map((x) => x.replace(/&#x27;/g, "'").replace(/&amp;/g, "&"));
   check(`${label}: every tile has an accessible name`, labels.length === 30, `${labels.length}`);
 
-  if (inBuild) {
-    const rl = labels.find((l) => l.startsWith("Resist Lightning"));
-    check(`${label}: the flex tile reports its points and reads optional once`,
-      Boolean(rl && /\b20 (points|pontos)\b/.test(rl) && (rl.toLowerCase().match(/optional|opcional/g) ?? []).length === 1),
-      rl);
-    const bh = labels.find((l) => l.startsWith("Blessed Hammer"));
-    check(`${label}: the maxed tile reads maxed and mandatory`,
-      Boolean(bh && /(maxed and mandatory|maximizada e obrigatória)/.test(bh)), bh);
+  if (buildSlug !== null) {
+    const build = getBuild(locale, buildSlug)!;
+    const named = (slug: string) => {
+      const name = build.skills.find((a) => a.skill === slug) && nameOf(locale, slug);
+      return labels.find((l) => name && l.startsWith(name));
+    };
+
+    // The optional tile: whatever this build marks flex, largest first, so a
+    // 20-point optional allocation is preferred over a 1-point one.
+    const flexAlloc = [...build.skills]
+      .filter((a) => a.role === "flex" && a.points > 0)
+      .sort((a, b) => b.points - a.points)[0];
+    check(`${label}: the plan has an optional allocation to check`, Boolean(flexAlloc), buildSlug);
+    if (flexAlloc) {
+      const fl = named(flexAlloc.skill);
+      check(
+        `${label}: the optional tile reports its ${flexAlloc.points} points and reads optional once`,
+        Boolean(
+          fl &&
+            // Built without escapes on purpose: a backslash-b written into a
+            // template literal is a backspace character, not a word boundary,
+            // and the resulting regex silently never matches.
+            new RegExp(`(^|[^0-9])${flexAlloc.points} (points|pontos)`).test(fl) &&
+            (fl.toLowerCase().match(/optional|opcional/g) ?? []).length === 1,
+        ),
+        fl,
+      );
+    }
+
+    const maxedAlloc = build.skills.find(
+      (a) => tileState(a, SKILL_GRAPH[a.skill]?.maxLevel ?? 20) === "maxed",
+    );
+    check(`${label}: the plan has a maxed allocation to check`, Boolean(maxedAlloc), buildSlug);
+    if (maxedAlloc) {
+      const mx = named(maxedAlloc.skill);
+      check(
+        `${label}: the maxed tile reads maxed and mandatory`,
+        Boolean(mx && /(maxed and mandatory|maximizada e obrigatória)/.test(mx)),
+        mx,
+      );
+    }
   } else {
     check(`${label}: class-page tiles announce no points`,
       labels.every((l) => !/\b(points|pontos)\b/.test(l)),
@@ -262,6 +323,19 @@ for (const [label, file, inBuild] of pages) {
     return tail.some((x, i) => tail.indexOf(x) !== i) && w.length > 0;
   });
   check(`${label}: no accessible name repeats a word`, repeats.length === 0, repeats.slice(0, 2).join(" | "));
+
+  // Without JavaScript the tiles are inert, so the <noscript> list is the
+  // whole experience. Three trees of ten skills, each a real link.
+  const noscript = (html.match(/<noscript>[\s\S]*?<\/noscript>/g) ?? []).join("");
+  check(`${label}: three <noscript> fallbacks, one per tree`,
+    (html.match(/<noscript>/g) ?? []).length === 3,
+    `${(html.match(/<noscript>/g) ?? []).length}`);
+  const fallbackLinks = [...noscript.matchAll(/href="\/[a-z-]+\/[^"]*\/skills\/([a-z0-9-]+)"/g)];
+  check(`${label}: the no-JavaScript fallback links all 30 skills`,
+    fallbackLinks.length === 30, `${fallbackLinks.length}`);
+  check(`${label}: the fallback links 30 distinct skills`,
+    new Set(fallbackLinks.map((m) => m[1])).size === 30,
+    `${new Set(fallbackLinks.map((m) => m[1])).size}`);
 }
 
 // ===========================================================================

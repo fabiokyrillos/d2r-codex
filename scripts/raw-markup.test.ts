@@ -109,6 +109,9 @@ const semantic: [string, string, RegExp][] = [
   ["build page", "en-us/builds/paladin/hammerdin.html", /<strong[^>]*>/],
   ["build page pt-BR", "pt-br/builds/paladin/hammerdin.html", /<strong[^>]*>/],
   ["class page", "en-us/classes/paladin.html", /<strong[^>]*>/],
+  ["sorceress build page", "en-us/builds/sorceress/blizzard-sorceress.html", /<strong[^>]*>/],
+  ["sorceress build page pt-BR", "pt-br/builds/sorceress/blizzard-sorceress.html", /<strong[^>]*>/],
+  ["sorceress class page", "en-us/classes/sorceress.html", /<strong[^>]*>/],
   ["runeword with inline code", "en-us/runewords/beast.html", /<code[^>]*>/],
   ["runeword with inline code pt-BR", "pt-br/runewords/beast.html", /<code[^>]*>/],
 ];

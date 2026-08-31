@@ -18,8 +18,9 @@ import {
   progressionLevels,
   tileState,
   treeEdges,
+  CLASSES_WITH_SKILL_PAGES,
 } from "../lib/skills";
-import { getBuild, getClass, getSkillsForClass } from "../lib/registry";
+import { getBuild, getBuildsForClass, getClass, getSkillsForClass } from "../lib/registry";
 import { DEFAULT_LOCALE } from "../lib/i18n/config";
 import type { SkillAllocation } from "../lib/types";
 
@@ -41,16 +42,20 @@ const alloc = (
   role: SkillAllocation["role"],
 ): SkillAllocation => ({ skill, points, role });
 
-const paladin = getClass(DEFAULT_LOCALE, "paladin")!;
-const skills = getSkillsForClass(DEFAULT_LOCALE, "paladin");
+// Every class the graph covers, so a class added to the extraction is tested
+// the moment it appears rather than when someone remembers to list it here.
+for (const classSlug of CLASSES_WITH_SKILL_PAGES) {
+const cls = getClass(DEFAULT_LOCALE, classSlug)!;
+const skills = getSkillsForClass(DEFAULT_LOCALE, classSlug);
 
 // ===========================================================================
-console.log("\nLayout");
+console.log(`\nLayout - ${cls.name}`);
 // ===========================================================================
 
-check("the Paladin has three trees", paladin.trees.length === 3, paladin.trees.join(", "));
+check(`the ${cls.name} has three trees`, cls.trees.length === 3, cls.trees.join(", "));
+check(`the ${cls.name} has thirty skills`, skills.length === 30, `${skills.length}`);
 
-for (const tree of paladin.trees) {
+for (const tree of cls.trees) {
   const grid = layoutTree(skills, tree);
 
   check(`${tree}: six rows`, grid.length === 6, `${grid.length}`);
@@ -87,6 +92,38 @@ for (const tree of paladin.trees) {
     edges.every((e) => e.from.row < e.to.row),
     edges.filter((e) => e.from.row >= e.to.row).map((e) => `${e.from.slug}->${e.to.slug}`).join(", "),
   );
+
+  // Every prerequisite edge the graph declares must be one the renderer is
+  // handed, and no others. A dropped edge is an invisible connector; an extra
+  // one draws a dependency the game does not have.
+  const declared = skills
+    .filter((s) => SKILL_GRAPH[s.slug]?.tree === tree)
+    .flatMap((s) => SKILL_GRAPH[s.slug].prerequisites.map((pre) => `${pre}->${s.slug}`))
+    .sort();
+  const rendered = edges.map((e) => `${e.from.slug}->${e.to.slug}`).sort();
+  check(
+    `${tree}: renders exactly the declared prerequisite edges`,
+    declared.join("|") === rendered.join("|"),
+    `declared [${declared.join(", ")}] vs rendered [${rendered.join(", ")}]`,
+  );
+
+  // A connector between two cells in the same column, more than one row apart,
+  // passes straight through anything sitting between them.
+  const occupied = new Set(
+    grid.flatMap((r) => r.cells.map((c, i) => (c ? `${r.row}:${i + 1}` : ""))).filter(Boolean),
+  );
+  const crossing = edges.filter((e) => {
+    if (e.from.column !== e.to.column) return false;
+    for (let row = e.from.row + 1; row < e.to.row; row++) {
+      if (occupied.has(`${row}:${e.from.column}`)) return true;
+    }
+    return false;
+  });
+  check(
+    `${tree}: no connector passes through a tile`,
+    crossing.length === 0,
+    crossing.map((e) => `${e.from.slug}->${e.to.slug}`).join(", "),
+  );
 }
 
 // ===========================================================================
@@ -112,13 +149,12 @@ check("a 1-point flex allocation reads as optional",
 console.log("\nBuild integration");
 // ===========================================================================
 
-const paladinBuilds = ["hammerdin", "smiter", "zealot", "fohdin", "avenger", "tesladin", "holy-fire-paladin"];
-for (const slug of paladinBuilds) {
-  const build = getBuild(DEFAULT_LOCALE, slug);
-  if (!build) {
-    check(`${slug} exists`, false);
-    continue;
-  }
+// Read from the registry rather than listed, so a build is covered the day it
+// is written instead of the day someone remembers to extend an array.
+const classBuilds = getBuildsForClass(DEFAULT_LOCALE, classSlug);
+check(`${cls.name}: has documented builds`, classBuilds.length > 0, `${classBuilds.length}`);
+for (const build of classBuilds) {
+  const slug = build.slug;
   const mandatory = build.skills
     .filter((a) => a.role !== "flex" && a.points > 0)
     .reduce((sum, a) => sum + a.points, 0);
@@ -129,7 +165,7 @@ for (const slug of paladinBuilds) {
   );
 
   // Every allocated skill must land in a cell, or the tree silently omits it.
-  const placed = paladin.trees.flatMap((tree) =>
+  const placed = cls.trees.flatMap((tree) =>
     layoutTree(skills, tree, build.skills)
       .flatMap((r) => r.cells)
       .filter((c) => c !== null)
@@ -139,6 +175,36 @@ for (const slug of paladinBuilds) {
   const allocated = build.skills.filter((a) => a.points > 0).map((a) => a.skill);
   const missing = allocated.filter((s) => !placed.includes(s));
   check(`${slug}: every allocated skill appears on a tree`, missing.length === 0, missing.join(", "));
+
+  // Optional is optional: flex must sit outside the mandatory budget rather
+  // than inflate it, and must never render as mandatory.
+  const flex = build.skills.filter((a) => a.role === "flex" && a.points > 0);
+  if (flex.length > 0) {
+    const withFlex = build.skills
+      .filter((a) => a.points > 0)
+      .reduce((sum, a) => sum + a.points, 0);
+    check(
+      `${slug}: ${flex.length} optional allocation(s) stay outside the mandatory ${mandatory}`,
+      withFlex > mandatory,
+      `${withFlex} vs ${mandatory}`,
+    );
+    check(
+      `${slug}: every optional allocation renders as optional`,
+      flex.every((a) => tileState(a, SKILL_GRAPH[a.skill]?.maxLevel ?? 20) === "flex"),
+    );
+  }
+}
+
+// Masteries take no prerequisite. An earlier draft of the graph chained them
+// behind their tree's damage skills, which would put a mastery out of reach at
+// the level that actually unlocks it.
+for (const mastery of skills.filter((s) => s.slug.endsWith("-mastery"))) {
+  check(
+    `${mastery.name} takes no prerequisite`,
+    SKILL_GRAPH[mastery.slug].prerequisites.length === 0,
+    SKILL_GRAPH[mastery.slug].prerequisites.join(", "),
+  );
+}
 }
 
 // The Hammerdin's Uber variant is the case the brief calls out by name.
