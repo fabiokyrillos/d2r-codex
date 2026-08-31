@@ -19,8 +19,9 @@
  * -----------------
  * Only mechanical facts, which are not copyrightable:
  *
- *   from skills.json      reqlevel, reqskill1, reqskill2, charclass
- *   from skilldesc.json   SkillPage
+ *   from skills.json      charclass, reqlevel, reqskill1, reqskill2, maxlvl,
+ *                         EType, HitShift, EMin/EMax and their five level bands
+ *   from skilldesc.json   SkillPage, SkillRow, SkillColumn
  *
  * Deliberately NOT extracted: `str name`, `str long`, `str short` (Blizzard's
  * descriptive prose) and `IconCel` (an index into Blizzard's sprite sheets).
@@ -67,10 +68,17 @@ interface RawSkill {
   reqlevel: number;
   reqskill1?: string;
   reqskill2?: string;
+  maxlvl?: number;
+  EType?: string;
+  HitShift?: number;
+  EMin?: number; EMinLev1?: number; EMinLev2?: number; EMinLev3?: number; EMinLev4?: number; EMinLev5?: number;
+  EMax?: number; EMaxLev1?: number; EMaxLev2?: number; EMaxLev3?: number; EMaxLev4?: number; EMaxLev5?: number;
 }
 interface RawDesc {
   skilldesc: string | number;
   SkillPage?: number;
+  SkillRow?: number;
+  SkillColumn?: number;
 }
 
 const slugify = (name: string) =>
@@ -120,17 +128,21 @@ async function main() {
   }
 
   // --- page join -----------------------------------------------------------
-  const pageByDesc = new Map<string, number>();
-  for (const d of descs) if (d.SkillPage !== undefined) pageByDesc.set(String(d.skilldesc), d.SkillPage);
+  const cellByDesc = new Map<string, { page: number; row: number; column: number }>();
+  for (const d of descs) {
+    if (d.SkillPage === undefined || d.SkillRow === undefined || d.SkillColumn === undefined) continue;
+    cellByDesc.set(String(d.skilldesc), { page: d.SkillPage, row: d.SkillRow, column: d.SkillColumn });
+  }
 
   // --- tree slugs, derived from the site's own membership ------------------
   const authoredTree = new Map(allSkills.map((s) => [s.slug, s.tree]));
   const treeByClassPage = new Map<string, string>();
   for (const s of mine) {
     const slug = slugify(s.skill);
-    const page = pageByDesc.get(String(s.skilldesc));
+    const cell = cellByDesc.get(String(s.skilldesc));
+    const page = cell?.page;
     const tree = authoredTree.get(slug);
-    if (page === undefined) throw new Error(`no SkillPage for ${slug}`);
+    if (page === undefined) throw new Error(`no SkillPage/Row/Column for ${slug}`);
     if (!tree) throw new Error(`${slug} is in the game data but not in content/classes`);
     const key = `${classOf[s.charclass as "pal" | "sor"]}:${page}`;
     const seen = treeByClassPage.get(key);
@@ -141,30 +153,56 @@ async function main() {
   }
 
   // --- emit ----------------------------------------------------------------
+  /** D2 adds a different amount per level inside five bands. */
+  const bands = (s: RawSkill, k: "EMin" | "EMax") =>
+    [1, 2, 3, 4, 5].map((i) => (s[`${k}Lev${i}` as keyof RawSkill] as number | undefined) ?? 0);
+
   const rows = mine
     .map((s) => {
       const slug = slugify(s.skill);
-      const page = pageByDesc.get(String(s.skilldesc))!;
+      const cell = cellByDesc.get(String(s.skilldesc))!;
       const classSlug = classOf[s.charclass as "pal" | "sor"];
+      const hasDamage = s.EType !== undefined && s.EType !== "" && s.EMin !== undefined;
       return {
         slug,
         classSlug,
-        tree: treeByClassPage.get(`${classSlug}:${page}`)!,
-        page,
+        tree: treeByClassPage.get(`${classSlug}:${cell.page}`)!,
+        page: cell.page,
+        row: cell.row,
+        column: cell.column,
         requiredLevel: s.reqlevel,
+        maxLevel: s.maxlvl ?? 20,
         prerequisites: a.get(slug)!,
+        damage: hasDamage
+          ? {
+              element: s.EType!,
+              hitShift: s.HitShift ?? 8,
+              min: { base: s.EMin ?? 0, bands: bands(s, "EMin") },
+              max: { base: s.EMax ?? s.EMin ?? 0, bands: bands(s, s.EMax === undefined ? "EMin" : "EMax") },
+            }
+          : undefined,
       };
     })
     .sort((x, y) =>
       x.classSlug.localeCompare(y.classSlug) || x.page - y.page ||
-      x.requiredLevel - y.requiredLevel || x.slug.localeCompare(y.slug),
+      x.row - y.row || x.column - y.column,
     );
+
+  const dmg = (d: (typeof rows)[number]["damage"]) =>
+    d
+      ? `, damage: { element: "${d.element}", hitShift: ${d.hitShift}, ` +
+        `min: { base: ${d.min.base}, bands: [${d.min.bands.join(", ")}] }, ` +
+        `max: { base: ${d.max.base}, bands: [${d.max.bands.join(", ")}] } }`
+      : "";
 
   const body = rows
     .map(
       (r) =>
-        `  "${r.slug}": { classSlug: "${r.classSlug}", tree: "${r.tree}", page: ${r.page}, ` +
-        `requiredLevel: ${r.requiredLevel}, prerequisites: [${r.prerequisites.map((p) => `"${p}"`).join(", ")}] },`,
+        `  "${r.slug}": {\n` +
+        `    classSlug: "${r.classSlug}", tree: "${r.tree}", page: ${r.page}, row: ${r.row}, column: ${r.column},\n` +
+        `    requiredLevel: ${r.requiredLevel}, maxLevel: ${r.maxLevel},\n` +
+        `    prerequisites: [${r.prerequisites.map((p) => `"${p}"`).join(", ")}]${dmg(r.damage)},\n` +
+        `  },`,
     )
     .join("\n");
 
@@ -181,8 +219,9 @@ async function main() {
  * PROVENANCE
  *   Source      ${SOURCE_REPO}, \`json/skills.json\` and \`json/skilldesc.json\`
  *   Baseline    ${BASELINE}
- *   Fields      skills.json:    charclass, reqlevel, reqskill1, reqskill2
- *               skilldesc.json: SkillPage
+ *   Fields      skills.json:    charclass, reqlevel, reqskill1, reqskill2,
+ *                               maxlvl, EType, HitShift, EMin/EMax + bands
+ *               skilldesc.json: SkillPage, SkillRow, SkillColumn
  *   Extracted   ${rows.length} skills (${rows.filter((r) => r.classSlug === "paladin").length} Paladin, ${rows.filter((r) => r.classSlug === "sorceress").length} Sorceress)
  *
  * AGREEMENT
@@ -208,15 +247,41 @@ async function main() {
 
 import type { ClassSlug, Slug } from "@/lib/types";
 
+/**
+ * Damage that scales in five level bands rather than linearly: a different
+ * amount is added per level within levels 2-8, 9-16, 17-22, 23-28 and 29+.
+ * Modelling this as linear is the easiest way to publish a wrong number.
+ */
+export interface BandedScale {
+  readonly base: number;
+  readonly bands: readonly number[];
+}
+
 export interface SkillGraphNode {
   readonly classSlug: Extract<ClassSlug, "paladin" | "sorceress">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of \`tree\`. */
   readonly page: 1 | 2 | 3;
+  /** 1-based row. INVARIANT: TIER_LEVELS[row - 1] === requiredLevel. */
+  readonly row: 1 | 2 | 3 | 4 | 5 | 6;
+  /** 1-based column, left to right. */
+  readonly column: 1 | 2 | 3;
   readonly requiredLevel: number;
+  /** Hard-point cap. 20 for every Paladin and Sorceress skill. */
+  readonly maxLevel: number;
   /** Skills needing at least one point before this can be allocated. */
   readonly prerequisites: readonly Slug[];
+  /**
+   * Base elemental damage before synergies. Absent for skills that deal none.
+   * Final value = (base + banded per-level total) x 2^(hitShift - 8).
+   */
+  readonly damage?: {
+    readonly element: string;
+    readonly hitShift: number;
+    readonly min: BandedScale;
+    readonly max: BandedScale;
+  };
 }
 
 /** Keyed by skill slug. */
@@ -231,6 +296,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
   console.log(`wrote ${target}`);
   console.log(`  skills:    ${rows.length}`);
   console.log(`  agreement: ${agree}/${a.size} across the two extractions`);
+  console.log(`  damage:    ${rows.filter((r) => r.damage).length} skills carry base damage`);
   console.log(`  trees:     ${[...treeByClassPage.entries()].map(([k, v]) => `${k}=${v}`).join(", ")}`);
 }
 

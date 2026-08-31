@@ -32,7 +32,12 @@ import { SKILL_GRAPH, type SkillGraphNode } from "../content/classes/skill-graph
 import { getBuilds, getSkills } from "../lib/registry";
 import { DEFAULT_LOCALE } from "../lib/i18n/config";
 import type { Build, Skill, Slug } from "../lib/types";
-import { checkSkillGraph, requiredClosure, MAX_HARD_POINTS } from "./skill-graph-rules";
+import {
+  checkSkillGraph,
+  requiredClosure,
+  MAX_HARD_POINTS,
+  TIER_LEVELS,
+} from "./skill-graph-rules";
 
 type MutableGraph = Record<Slug, { -readonly [K in keyof SkillGraphNode]: SkillGraphNode[K] } & {
   prerequisites: Slug[];
@@ -65,10 +70,27 @@ const skill = (slug: Slug, prerequisites: Slug[] = []): Skill =>
 const build = (slug: string, skills: { skill: Slug; points: number; role: string }[]): Build =>
   ({ slug, classSlug: "paladin", skills }) as unknown as Build;
 
+/**
+ * Row is derived from the required level rather than passed in, so a fixture
+ * cannot accidentally violate the row/level invariant the checker enforces and
+ * fail a test for a reason the test is not about.
+ */
 const node = (
   over: Partial<SkillGraphNode> & { prerequisites: Slug[] },
-): SkillGraphNode =>
-  ({ classSlug: "paladin", tree: "combat-skills", page: 1, requiredLevel: 1, ...over }) as SkillGraphNode;
+): SkillGraphNode => {
+  const requiredLevel = over.requiredLevel ?? 1;
+  const row = TIER_LEVELS.indexOf(requiredLevel as (typeof TIER_LEVELS)[number]) + 1;
+  return {
+    classSlug: "paladin",
+    tree: "combat-skills",
+    page: 1,
+    column: 1,
+    maxLevel: 20,
+    ...over,
+    requiredLevel,
+    row: (over.row ?? row) as SkillGraphNode["row"],
+  } as SkillGraphNode;
+};
 
 // ===========================================================================
 console.log("\nFixtures — each rule in isolation");

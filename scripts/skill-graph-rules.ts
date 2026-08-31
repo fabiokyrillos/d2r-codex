@@ -9,10 +9,12 @@
  * Nothing here reads the real content. The caller supplies it.
  */
 import type { Build, Skill, Slug } from "../lib/types";
-import type { SkillGraphNode } from "../content/classes/skill-graph";
+import { MAX_HARD_POINTS, TIER_LEVELS, type SkillGraphNode } from "../content/classes/skill-graph";
 
 /** Hard skill points at level 99: 98 level-ups plus 12 from quests. */
-export const MAX_HARD_POINTS = 110;
+// Re-exported so the checker and its tests share one definition with the
+// generated graph rather than keeping a second copy in sync by hand.
+export { MAX_HARD_POINTS, TIER_LEVELS };
 
 export interface GraphProblem {
   rule:
@@ -21,7 +23,8 @@ export interface GraphProblem {
     | "cross-tree-edge"
     | "cycle"
     | "unknown-skill"
-    | "over-budget";
+    | "over-budget"
+    | "row-level-mismatch";
   message: string;
 }
 
@@ -71,6 +74,20 @@ export function checkSkillGraph(
             `(${graph[pre].classSlug} page ${graph[pre].page}) — prerequisites never cross trees`,
         });
       }
+    }
+  }
+
+  // -- the row/level invariant ---------------------------------------------
+  // A skill's row in the tree is not a layout choice: row N is always the
+  // level-N tier. Verified true for all 60 skills at extraction time, so a
+  // future regeneration that broke it would be a real change worth catching.
+  for (const [slug, node] of Object.entries(graph)) {
+    const expected = TIER_LEVELS[node.row - 1];
+    if (expected !== node.requiredLevel) {
+      found.push({
+        rule: "row-level-mismatch",
+        message: `graph: ${slug} sits in row ${node.row} (tier level ${expected}) but unlocks at ${node.requiredLevel}`,
+      });
     }
   }
 

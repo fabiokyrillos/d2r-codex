@@ -522,6 +522,7 @@ console.log("\nSkill graph (validated against the generated game-data graph):");
     "cycle",
     "unknown-skill",
     "over-budget",
+    "row-level-mismatch",
   ] as const;
   for (const rule of rules) {
     const n = counts.get(rule) ?? 0;
@@ -588,6 +589,68 @@ for (const locale of TRANSLATED) {
   console.log(
     `  ${locale}  ${compared - mismatches}/${compared} build prose arrays match the source length`,
   );
+}
+
+// ---------------------------------------------------------------------------
+// Untranslated gear-pick reasons
+// ---------------------------------------------------------------------------
+
+/*
+ * Gear picks are keyed by position inside their slot, so a pick the overlay
+ * never mentions falls back to English and renders inside an otherwise
+ * Portuguese page. Slug coverage cannot see this: the build is fully covered,
+ * and one line inside it is still in the wrong language.
+ *
+ * Found by reading a rendered page rather than by any check, which is why it
+ * is a check now.
+ *
+ * A warning rather than a failure, because a match is not always a defect: a
+ * reason that is nothing but verbatim game stat names — "Crushing Blow, Deadly
+ * Strike, Open Wounds" — is correctly identical in both locales under ADR
+ * 0003. The three that remain are exactly that, and should stay as they are.
+ */
+console.log("\nGear pick translation:");
+for (const locale of TRANSLATED) {
+  const source = getBuilds(DEFAULT_LOCALE);
+  const translated = getBuilds(locale);
+  let compared = 0;
+  const untranslated: string[] = [];
+  for (const build of source) {
+    const other = translated.find((b) => b.slug === build.slug);
+    if (!other) continue;
+    build.gearSets.forEach((set, gi) => {
+      set.slots.forEach((slot, si) => {
+        slot.picks.forEach((pick, pi) => {
+          const twin = other.gearSets[gi]?.slots[si]?.picks[pi];
+          const pairs: [string | undefined, string | undefined, string][] = [
+            [pick.why, twin?.why, `${slot.slot}#${pi}`],
+            ...(pick.alternatives ?? []).map(
+              (alt, ai): [string | undefined, string | undefined, string] => [
+                alt.why,
+                twin?.alternatives?.[ai]?.why,
+                `${slot.slot}#${pi} alt${ai}`,
+              ],
+            ),
+          ];
+          for (const [a, b, where] of pairs) {
+            if (!a) continue;
+            compared++;
+            // A short string can legitimately match (a stat name, a number).
+            // Only prose long enough to be a sentence is worth reporting.
+            if (b === a && a.length > 25) {
+              untranslated.push(`${build.slug} ${set.tier} ${where}`);
+            }
+          }
+        });
+      });
+    });
+  }
+  console.log(
+    `  ${locale}  ${compared - untranslated.length}/${compared} gear pick reasons differ from the source`,
+  );
+  for (const entry of untranslated) {
+    warnings.push(`${entry}: gear pick reason is identical to ${DEFAULT_LOCALE}, so it renders in English`);
+  }
 }
 
 // ---------------------------------------------------------------------------
