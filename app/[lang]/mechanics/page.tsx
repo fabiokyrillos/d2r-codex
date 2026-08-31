@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Badge, Callout, Container, LinkCard, PageHeader, Section } from "@/components/ui";
-import { ConfidenceNote } from "@/components/game";
+import { RichText, ConfidenceNote } from "@/components/game";
 import { getMechanics } from "@/lib/registry";
 import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
@@ -84,7 +84,9 @@ export default async function MechanicsPage() {
                             <span aria-hidden className="text-ember">
                               ·
                             </span>
-                            <span className="text-pretty">{fact}</span>
+                            <span className="text-pretty">
+                              <RichText>{fact}</RichText>
+                            </span>
                           </li>
                         ))}
                       </ul>

@@ -67,7 +67,12 @@ export function SkillTreeInteractive({
   /** Panel body per slug, rendered on the server. */
   panels: Record<string, ReactNode>;
   /** Prerequisite connectors, in grid coordinates. */
-  edges: { from: [number, number]; to: [number, number] }[];
+  edges: {
+    from: [number, number];
+    to: [number, number];
+    fromSlug: string;
+    toSlug: string;
+  }[];
   strings: SkillTreeStrings;
   legend?: ReactNode;
 }) {
@@ -236,28 +241,70 @@ export function SkillTreeInteractive({
           {strings.treeHint}
         </p>
 
-        <div className="relative">
+        <div className="sm:flex sm:items-stretch sm:gap-3">
+          {/* A level rail, so the row grouping is visible above `sm` too — the
+              mobile headers already carry it below. Aria-hidden because every
+              tile's accessible name already states its level, and repeating it
+              per row would say it twice. */}
+          <div
+            aria-hidden="true"
+            className="hidden shrink-0 sm:grid sm:grid-rows-[repeat(6,5.5rem)] sm:gap-2"
+          >
+            {rows.map((row) => (
+              <div
+                key={row.level}
+                className="flex w-9 items-center justify-end border-r border-border pr-2"
+              >
+                <span className="font-mono text-[0.6875rem] text-ink-subtle">{row.level}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="relative min-w-0 flex-1">
           {/* Prerequisite connectors. The grid has fixed row heights, so exact
               coordinates need no measurement and no client layout pass. */}
           {edges.length > 0 && (
+            /*
+             * `vectorEffect="non-scaling-stroke"` means strokeWidth is read in
+             * device pixels, not user units — so the original 0.02 drew a line
+             * two hundredths of a pixel wide, which is why the connectors were
+             * invisible.
+             *
+             * `border-strong` measured 1.71:1 against this background, under
+             * the 3:1 WCAG 1.4.11 asks of a graphic that carries meaning.
+             * `ink-subtle` is the dimmest token already in the system that
+             * clears it, at 4.19:1, and stays neutral enough to sit behind the
+             * tiles rather than compete with them.
+             */
             <svg
               className="pointer-events-none absolute inset-0 hidden h-full w-full sm:block"
               viewBox={`0 0 3 ${rows.length}`}
               preserveAspectRatio="none"
               aria-hidden="true"
             >
-              {edges.map((e, i) => (
-                <line
-                  key={i}
-                  x1={e.from[1] - 0.5}
-                  y1={e.from[0] - 0.5}
-                  x2={e.to[1] - 0.5}
-                  y2={e.to[0] - 0.5}
-                  className="stroke-border-strong"
-                  strokeWidth="0.02"
-                  vectorEffect="non-scaling-stroke"
-                />
-              ))}
+              {edges.map((e, i) => {
+                // An edge touching the selected skill is drawn heavier as well
+                // as brighter, so the relationship survives without colour.
+                const related =
+                  selected !== null && (e.fromSlug === selected || e.toSlug === selected);
+                return (
+                  <line
+                    key={i}
+                    x1={e.from[1] - 0.5}
+                    y1={e.from[0] - 0.5}
+                    x2={e.to[1] - 0.5}
+                    y2={e.to[0] - 0.5}
+                    className={
+                      related
+                        ? "stroke-ember motion-safe:transition-colors"
+                        : "stroke-ink-subtle motion-safe:transition-colors"
+                    }
+                    strokeWidth={related ? 3 : 2}
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                );
+              })}
             </svg>
           )}
 
@@ -349,6 +396,7 @@ export function SkillTreeInteractive({
                 })}
               </div>
             ))}
+          </div>
           </div>
         </div>
 

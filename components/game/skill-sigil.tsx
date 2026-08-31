@@ -13,6 +13,11 @@ import { cn } from "@/components/ui";
  *
  * Every path here is plain geometry authored for this project. Nothing is
  * traced from, or derived from, any game asset or third-party site.
+ *
+ * Stroke weights are deliberately heavy for the size: at 16-18px the first
+ * version read as a grey smudge rather than a shape. They stop short of
+ * filling the box, because the mark is meant to be scanned alongside the
+ * skill's name, not to become the thing you look at first.
  */
 
 const elementClass: Record<Element, string> = {
@@ -29,37 +34,37 @@ function shape(kind: SkillKind) {
   switch (kind) {
     case "attack":
       // Two crossed strokes — a strike.
-      return <path d="M5 5 L19 19 M19 5 L5 19" strokeWidth="2.5" strokeLinecap="round" />;
+      return <path d="M4.5 4.5 L19.5 19.5 M19.5 4.5 L4.5 19.5" strokeWidth="3.4" strokeLinecap="round" />;
     case "spell":
       // A four-pointed burst.
-      return <path d="M12 3 L14 10 L21 12 L14 14 L12 21 L10 14 L3 12 L10 10 Z" />;
+      return <path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z" />;
     case "aura":
       // Concentric rings — something emanating.
       return (
         <>
-          <circle cx="12" cy="12" r="3" />
-          <circle cx="12" cy="12" r="7.5" fill="none" strokeWidth="1.6" />
+          <circle cx="12" cy="12" r="3.6" />
+          <circle cx="12" cy="12" r="8.4" fill="none" strokeWidth="2.4" />
         </>
       );
     case "passive":
       // A solid core: always on, nothing to activate.
-      return <path d="M12 3 L20 7.5 L20 16.5 L12 21 L4 16.5 L4 7.5 Z" />;
+      return <path d="M12 2 L20.6 7 L20.6 17 L12 22 L3.4 17 L3.4 7 Z" />;
     case "summon":
       // Three marks: something else fights for you.
       return (
         <>
-          <circle cx="12" cy="6" r="2.6" />
-          <circle cx="6.5" cy="16" r="2.6" />
-          <circle cx="17.5" cy="16" r="2.6" />
+          <circle cx="12" cy="5.6" r="3.2" />
+          <circle cx="6" cy="16.4" r="3.2" />
+          <circle cx="18" cy="16.4" r="3.2" />
         </>
       );
     case "buff":
       // Stacked chevrons pointing up.
       return (
         <path
-          d="M5 13 L12 6 L19 13 M5 19 L12 12 L19 19"
+          d="M4 13.5 L12 5.5 L20 13.5 M4 20 L12 12 L20 20"
           fill="none"
-          strokeWidth="2.2"
+          strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -68,9 +73,9 @@ function shape(kind: SkillKind) {
       // A hook pulling downward.
       return (
         <path
-          d="M8 4 L8 14 A4 4 0 0 0 16 14 L16 10"
+          d="M7.5 3.5 L7.5 14 A4.5 4.5 0 0 0 16.5 14 L16.5 9.5"
           fill="none"
-          strokeWidth="2.2"
+          strokeWidth="3"
           strokeLinecap="round"
         />
       );
@@ -78,8 +83,8 @@ function shape(kind: SkillKind) {
       // A circle split into two halves.
       return (
         <>
-          <path d="M12 3 A9 9 0 0 1 12 21 Z" />
-          <circle cx="12" cy="12" r="9" fill="none" strokeWidth="1.6" />
+          <path d="M12 2.5 A9.5 9.5 0 0 1 12 21.5 Z" />
+          <circle cx="12" cy="12" r="9.5" fill="none" strokeWidth="2.4" />
         </>
       );
   }
@@ -89,7 +94,7 @@ export function SkillSigil({
   kind,
   element,
   className,
-  size = 20,
+  size = 22,
 }: {
   kind: SkillKind;
   element?: Element;

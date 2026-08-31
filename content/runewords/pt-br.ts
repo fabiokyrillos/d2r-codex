@@ -322,7 +322,7 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     usedBy:
       "Personagens de corpo a corpo que ainda não podem pagar um Grief. O +1 em Vengeance também faz dela a primeira arma natural de um Avenger, já que fornece a skill antes de qualquer investimento de pontos.",
     notes:
-      "Open Wounds aparece como 25% nos dados do próprio jogo. Várias bases da comunidade ainda listam 50%, o que parece ser um número desatualizado — veja `docs/research/01-paladin-builds.md`.",
+      "Open Wounds aparece como 25% nos dados do próprio jogo. Várias bases da comunidade ainda listam 50%, o que parece ser um número desatualizado.",
   },
   "last-wish": {
     summary:
@@ -342,7 +342,7 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "Montar numa polearm. Last Wish não aceita polearms, que é justamente a base usada pela maioria das armas de mercenário.",
     ],
     notes:
-      "Crushing Blow aparece como 40-50% nos dados do próprio jogo. Várias bases da comunidade ainda listam 60-70%, o que parece ser um número desatualizado — veja `docs/research/01-paladin-builds.md`.",
+      "Crushing Blow aparece como 40-50% nos dados do próprio jogo. Várias bases da comunidade ainda listam 60-70%, o que parece ser um número desatualizado.",
   },
   doom: {
     summary:

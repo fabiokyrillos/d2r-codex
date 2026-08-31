@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Badge } from "@/components/ui";
+import { RichText } from "@/components/game/rich-text";
 import { SkillSigil } from "@/components/game/skill-sigil";
 import {
   SkillTreeInteractive,
@@ -105,7 +106,7 @@ export async function SkillTree({
   const tileBody = (cell: SkillTile): ReactNode => (
     <span className="flex h-full flex-col justify-between gap-1">
       <span className="flex items-start gap-1.5">
-        <SkillSigil kind={cell.skill.kind} element={cell.skill.element} size={16} />
+        <SkillSigil kind={cell.skill.kind} element={cell.skill.element} size={18} />
         <span className="min-w-0 text-xs leading-tight font-medium text-ink">
           {cell.skill.name}
         </span>
@@ -157,7 +158,7 @@ export async function SkillTree({
         </div>
 
         <p className="text-sm leading-relaxed text-pretty text-ink-muted">
-          {cell.skill.summary}
+          <RichText>{cell.skill.summary}</RichText>
         </p>
 
         {showPoints && (
@@ -172,7 +173,9 @@ export async function SkillTree({
         )}
 
         {showPoints && cell.note && (
-          <p className="text-sm leading-relaxed text-pretty text-ink-muted">{cell.note}</p>
+          <p className="text-sm leading-relaxed text-pretty text-ink-muted">
+            <RichText>{cell.note}</RichText>
+          </p>
         )}
 
         <p className="text-xs text-ink-subtle">
@@ -229,6 +232,8 @@ export async function SkillTree({
   const edges = treeEdges(treeSlug).map((e) => ({
     from: [e.from.row, e.from.column] as [number, number],
     to: [e.to.row, e.to.column] as [number, number],
+    fromSlug: e.from.slug,
+    toSlug: e.to.slug,
   }));
 
   const inTree = skills.filter((s) => SKILL_GRAPH[s.slug]?.tree === treeSlug);
@@ -269,7 +274,9 @@ export async function SkillTree({
                 <Badge tone="outline">
                   {fmt(t.skills.unlocksValue, { level: node.requiredLevel })}
                 </Badge>
-                <span className="text-pretty text-ink-muted">{skill.summary}</span>
+                <span className="text-pretty text-ink-muted">
+                  <RichText>{skill.summary}</RichText>
+                </span>
               </li>
             );
           })}

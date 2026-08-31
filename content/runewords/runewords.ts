@@ -1038,7 +1038,7 @@ export const runewords: Runeword[] = [
     usedBy:
       "Melee characters who cannot yet afford Grief. The +1 to Vengeance also makes it the natural first weapon for an Avenger, since it supplies the skill before any point investment.",
     notes:
-      "Open Wounds reads 25% in the game's own data. Several community databases still list 50%, which appears to be a stale figure — see `docs/research/01-paladin-builds.md`.",
+      "Open Wounds reads 25% in the game's own data. Several community databases still list 50%, which appears to be a stale figure.",
     confidence: "verified",
   },
   {
@@ -1086,7 +1086,7 @@ export const runewords: Runeword[] = [
       "Building it in a polearm. Last Wish does not accept polearms, which is the base most mercenary weapons use.",
     ],
     notes:
-      "Crushing Blow reads 40-50% in the game's own data. Several community databases still list 60-70%, which appears to be a stale figure — see `docs/research/01-paladin-builds.md`.",
+      "Crushing Blow reads 40-50% in the game's own data. Several community databases still list 60-70%, which appears to be a stale figure.",
     confidence: "verified",
   },
 

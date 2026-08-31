@@ -267,7 +267,9 @@ export default async function BuildPage(
                     <span key="p" className="font-mono">
                       {alloc.points}
                     </span>,
-                    <span key="w">{alloc.note ?? roles[alloc.role]}</span>,
+                    <span key="w">
+                      <RichText>{alloc.note ?? roles[alloc.role]}</RichText>
+                    </span>,
                   ];
                 })}
               />
@@ -286,7 +288,9 @@ export default async function BuildPage(
                     <Badge key="r" tone="outline">
                       {roles[alloc.role]}
                     </Badge>,
-                    <span key="w">{alloc.note ?? skill?.summary ?? "—"}</span>,
+                    <span key="w">
+                      <RichText>{alloc.note ?? skill?.summary ?? "—"}</RichText>
+                    </span>,
                   ];
                 })}
               />
@@ -362,7 +366,9 @@ export default async function BuildPage(
               >
                 {priorityLabel(t, bp.priority)}
               </Badge>,
-              <span key="w">{bp.why}</span>,
+              <span key="w">
+                <RichText>{bp.why}</RichText>
+              </span>,
             ])}
           />
         </Section>
@@ -464,7 +470,7 @@ export default async function BuildPage(
                     </div>
                   </div>
                   <p className="mt-2 text-sm leading-relaxed text-pretty text-ink-muted">
-                    {entry.why}
+                    <RichText>{entry.why}</RichText>
                   </p>
                 </Card>
               );
@@ -477,7 +483,7 @@ export default async function BuildPage(
             <Card>
               <h3 className="font-display text-base text-ink">{t.builds.selfFound}</h3>
               <p className="mt-2 text-sm leading-relaxed text-pretty text-ink-muted">
-                {build.selfFoundNotes}
+                <RichText>{build.selfFoundNotes}</RichText>
               </p>
             </Card>
           )}
@@ -485,7 +491,7 @@ export default async function BuildPage(
             <Card>
               <h3 className="font-display text-base text-ink">{t.builds.hardcore}</h3>
               <p className="mt-2 text-sm leading-relaxed text-pretty text-ink-muted">
-                {build.hardcoreNotes}
+                <RichText>{build.hardcoreNotes}</RichText>
               </p>
             </Card>
           )}

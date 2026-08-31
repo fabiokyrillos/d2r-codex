@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { RichText } from "@/components/game";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -171,7 +172,9 @@ export default async function FarmingAreaPage(
                   <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded bg-surface-overlay font-mono text-xs text-ember">
                     {i + 1}
                   </span>
-                  <span className="text-pretty">{step}</span>
+                  <span className="text-pretty">
+                    <RichText>{step}</RichText>
+                  </span>
                 </li>
               ))}
             </ol>

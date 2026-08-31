@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RichText } from "@/components/game/rich-text";
 import type { ReactNode } from "react";
 
 /**
@@ -70,6 +71,19 @@ export function PageHeader({
       {meta && <div className="mt-5 flex flex-wrap items-center gap-2">{meta}</div>}
     </header>
   );
+}
+
+/**
+ * A raw string handed to one of these primitives is content, so it goes
+ * through the inline formatter; a ReactNode is the caller's own business and
+ * is left alone.
+ *
+ * This rule exists because the alternative — remembering to wrap at every call
+ * site — was not remembered, and 44 pages shipped with literal `**` in them.
+ * Putting it in the primitive makes the safe thing the default.
+ */
+function asContent(node: ReactNode): ReactNode {
+  return typeof node === "string" ? <RichText>{node}</RichText> : node;
 }
 
 export function Section({
@@ -225,7 +239,7 @@ export function Callout({
         </p>
       )}
       <div className="text-sm leading-relaxed text-pretty text-ink-muted [&_strong]:text-ink">
-        {children}
+        {asContent(children)}
       </div>
     </div>
   );
@@ -300,7 +314,7 @@ export function DataTable({
                       j === 0 ? "font-medium text-ink" : "text-ink-muted",
                     )}
                   >
-                    {cell}
+                    {asContent(cell)}
                   </td>
                 ))}
               </tr>
@@ -338,7 +352,9 @@ export function ProsCons({
           {pros.map((p) => (
             <li key={p} className="flex gap-2.5 text-sm leading-relaxed text-ink-muted">
               <span aria-hidden className="mt-1.5 size-1 shrink-0 rounded-full bg-success" />
-              <span className="text-pretty">{p}</span>
+              <span className="text-pretty">
+                <RichText>{p}</RichText>
+              </span>
             </li>
           ))}
         </ul>
@@ -351,7 +367,9 @@ export function ProsCons({
           {cons.map((c) => (
             <li key={c} className="flex gap-2.5 text-sm leading-relaxed text-ink-muted">
               <span aria-hidden className="mt-1.5 size-1 shrink-0 rounded-full bg-danger" />
-              <span className="text-pretty">{c}</span>
+              <span className="text-pretty">
+                <RichText>{c}</RichText>
+              </span>
             </li>
           ))}
         </ul>
@@ -415,7 +433,7 @@ export function BulletList({ items, marker = "ember" }: { items: ReactNode[]; ma
               marker === "ember" ? "bg-ember" : "bg-border-strong",
             )}
           />
-          <span className="text-pretty [&_strong]:text-ink">{item}</span>
+          <span className="text-pretty [&_strong]:text-ink">{asContent(item)}</span>
         </li>
       ))}
     </ul>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Card, Container, PageHeader, Section } from "@/components/ui";
-import { ConfidenceNote } from "@/components/game";
+import { RichText, ConfidenceNote } from "@/components/game";
 import { ContentBlocks } from "@/components/game/content-blocks";
 import { getMechanic, getMechanics } from "@/lib/registry";
 import { isLocale } from "@/lib/i18n";
@@ -71,7 +71,9 @@ export default async function MechanicPage(
             {article.keyFacts.map((fact) => (
               <li key={fact} className="flex gap-3 text-sm leading-relaxed text-ink-muted">
                 <span aria-hidden className="mt-2 size-1 shrink-0 rounded-full bg-ember" />
-                <span className="text-pretty">{fact}</span>
+                <span className="text-pretty">
+                  <RichText>{fact}</RichText>
+                </span>
               </li>
             ))}
           </ul>
