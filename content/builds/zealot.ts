@@ -102,7 +102,7 @@ export const zealot: Build = {
     },
     { skill: "resist-fire", points: 1, role: "utility" },
     { skill: "resist-cold", points: 1, role: "utility" },
-    { skill: "resist-lightning", points: 1, role: "utility", note: "Raises maximum lightning resistance." },
+    { skill: "resist-lightning", points: 1, role: "utility", note: "An aura to swap to for its lightning resistance. **One hard point gives no passive maximum resistance** — the passive half rounds down to zero — so it is worth the point for the aura, not for a background bonus." },
     { skill: "salvation", points: 1, role: "utility", note: "A one-point resistance aura to swap to in Uber Tristram." },
     { skill: "charge", points: 1, role: "utility", note: "Transport before Enigma." },
     {
@@ -121,7 +121,7 @@ export const zealot: Build = {
   ],
   flexPoints: [
     "**Defiance** is the best remaining sink. It is a 15%-per-level armour synergy for Holy Shield, so it compounds with a stat you are already investing in.",
-    "**More Resist Lightning** if you intend to fight Uber Mephisto, whose Conviction aura is aimed squarely at your resistances.",
+    "**More Resist Lightning** if you intend to fight Uber Mephisto, whose Conviction aura is aimed squarely at your resistances. It raises your maximum lightning resistance by 1% per hard point while it is the active aura, and half that — rounded down — while Fanaticism is. Gear +skills raise neither number, so this is one of the few places only hard points count.",
     "**The Holy Freeze Zealot.** Published elsewhere as its own build, and documented here as a variant because that is what it is: the same skills, the same gear plan and the same playstyle, with Holy Freeze selected instead of Fanaticism. The version worth building does not spend points on it at all — a **Doom** runeword emanates a level 12 Holy Freeze aura from the weapon, which frees your selected aura for Fanaticism and gives you both at once. Slowing a pack is worth more than it sounds to a build that is locked into its attack animation, and the cold damage chips at physical immunes. One source we consulted still describes this build against Patch 2.4, so treat any specific numbers you find elsewhere with suspicion.",
     "**Increased Attack Speed is not published as a breakpoint table here.** Zeal's frame thresholds depend on the weapon's speed modifier and the game's animation data, and no source we treat as reliable publishes them. In practice Fanaticism plus a Grief covers it; we would rather say that than print an unverified number.",
   ],

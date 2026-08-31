@@ -466,7 +466,8 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         killingWith:
           "Blessed Hammer. Só um punhado de monstros no jogo inteiro resiste a dano mágico.",
         skillPoints: [
-          "Termine o **Blessed Aim**, depois maximize **Resist Lightning** pela resistência máxima a raio.",
+          "Termine o **Blessed Aim**, depois coloque os pontos que sobrarem no **Holy Shield** por bloqueio e defesa.",
+          "**Resist Lightning** só vale maximizar se o Uber Tristram for o plano. Vinte pontos duros sobem a sua resistência máxima a raio em 10% enquanto a Concentration está rodando, ou 20% se você trocar para Resist Lightning e abrir mão dela. Fora daquela luta, os pontos rendem mais em outro lugar.",
           "Pontos sobrando vão para o **Holy Shield**, por mais bloqueio e defesa.",
         ],
         statPoints: [

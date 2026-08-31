@@ -338,7 +338,8 @@ export const paladinJourney: ProgressionJourney = {
       killingWith: "Blessed Hammer. Only a handful of monsters in the whole game resist magic damage.",
       order: 6,
       skillPoints: [
-        "Finish **Blessed Aim**, then max **Resist Lightning** for the maximum lightning resistance.",
+        "Finish **Blessed Aim**, then put spare points into **Holy Shield** for block and defence.",
+        "**Resist Lightning** is worth maxing only if Uber Tristram is the plan. Twenty hard points raise your maximum lightning resistance by 10% while Concentration is running, or 20% if you switch to Resist Lightning and give Concentration up. Outside that fight the points do more elsewhere.",
         "Spare points go into **Holy Shield** for more block and defence.",
       ],
       statPoints: ["**Vitality**, once Strength and Dexterity requirements are met exactly."],

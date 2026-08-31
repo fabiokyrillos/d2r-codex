@@ -952,7 +952,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "**Tudo além das quatro skills maximizadas é opcional.** Um Smiter está plenamente funcional por volta do nível 85, e os pontos restantes são conforto, não capacidade.",
-      "**Mais Resist Lightning** é a melhor das opções restantes se o Uber Mephisto estiver te matando. Ela sobe a sua resistência máxima a raio, que é a metade que a Conviction inimiga não consegue tirar — mas repare qual número você está comprando: metade do bônus, arredondada para baixo, enquanto a Conviction for a sua aura ativa, e o valor cheio só se você trocar para Resist Lightning e abrir mão da Conviction. Dez pontos duros são +5% passivos.",
+      "**Mais Resist Lightning** é a melhor das opções restantes se o Uber Mephisto estiver te matando — a Conviction dele arrasta a sua resistência para baixo, e um *teto* mais alto é o que te segura no topo dessa queda. Repare qual número você está comprando: um Smiter roda **Fanaticism**, então você fica com metade do bônus, arredondada para baixo. Dez pontos duros são +5% passivos; os +10% completos exigem Resist Lightning como aura ativa, o que custa a velocidade de ataque e o dano da Fanaticism naquela luta.",
       "**Mais Vigor** se você joga sem Enigma. Velocidade de corrida é a diferença entre uma run de Ubers de quinze minutos e uma de nove.",
       "**Increased Attack Speed não é publicado como tabela de breakpoint neste site.** Os limiares de frame do Smite dependem do modificador de velocidade da sua arma e dos dados de animação do próprio jogo, e nenhuma fonte que consideramos confiável publica isso. Fanaticism sozinho fornece de 10 a 40% e o Grief mais 30 a 40%, o que na prática resolve — mas preferimos dizer isso a imprimir um número que não conseguimos verificar.",
     ],
@@ -993,7 +993,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       redemption:
         "Transforma cadáveres em vida e mana. Numa build sem life steal, é a sua recuperação entre lutas.",
       "resist-lightning":
-        "Uma aura para a qual trocar pela resistência a raio. **Um ponto duro não compra resistência máxima passiva nenhuma** — o passivo é metade, arredondado para baixo — então este ponto é a aura em si, não um bônus de fundo.",
+        "Uma aura para a qual trocar pela resistência a raio. **Um ponto duro não compra resistência máxima passiva nenhuma** — o passivo é metade do valor da aura, arredondado para baixo — então este é a aura em si, não um bônus de fundo que você mantém enquanto a Fanaticism está rodando.",
       salvation:
         "Uma troca de um ponto para a entrada em Uber Tristram, onde toda resistência importa mais que qualquer aura de dano.",
       charge: "Mobilidade gratuita antes do Enigma. Não é dano — é transporte.",
@@ -1283,7 +1283,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "**Defiance** é o melhor destino restante. É uma sinergia de 15% de armadura por nível do Holy Shield, então soma com um atributo em que você já investe.",
-      "**Mais Resist Lightning** se você pretende enfrentar o Uber Mephisto, cuja aura de Conviction mira exatamente nas suas resistências.",
+      "**Mais Resist Lightning** se você pretende enfrentar o Uber Mephisto, cuja aura de Conviction mira exatamente nas suas resistências. Ela sobe a sua resistência máxima a raio em 1% por ponto duro enquanto for a aura ativa, e metade disso — arredondada para baixo — enquanto a Fanaticism for. +skills de equipamento não aumentam nenhum dos dois números, então este é um dos poucos lugares em que só o ponto duro conta.",
       "**O Holy Freeze Zealot.** Publicado em outros lugares como build própria, e documentado aqui como variante porque é o que ele é: as mesmas skills, o mesmo plano de equipamento e o mesmo estilo, com Holy Freeze selecionada no lugar da Fanaticism. A versão que vale montar não gasta ponto nenhum nela — uma runeword **Doom** emana uma aura de Holy Freeze nível 12 a partir da arma, o que libera a sua aura selecionada para a Fanaticism e te dá as duas ao mesmo tempo. Desacelerar um grupo vale mais do que parece para uma build presa na própria animação de ataque, e o dano de frio belisca imunes a físico. Uma das fontes que consultamos ainda descreve esta build contra o Patch 2.4, então trate qualquer número específico que você achar por aí com desconfiança.",
       "**Increased Attack Speed não é publicado como tabela de breakpoint aqui.** Os limiares de frame do Zeal dependem do modificador de velocidade da arma e dos dados de animação do jogo, e nenhuma fonte que tratamos como confiável publica isso. Na prática, Fanaticism mais um Grief resolvem; preferimos dizer isso a imprimir um número não verificado.",
     ],
@@ -1322,7 +1322,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       vigor: "Velocidade de corrida. Um ponto, útil para sempre.",
       redemption:
         "Cadáveres em vida e mana. Útil mesmo com life steal, porque funciona entre lutas, quando o roubo não funciona.",
-      "resist-lightning": "Aumenta a resistência máxima a raio.",
+      "resist-lightning": "Uma aura para trocar pela resistência a raio. **Um ponto duro não dá resistência máxima passiva** — a metade passiva arredonda para zero — então vale o ponto pela aura, não por um bônus de fundo.",
       salvation: "Uma aura de resistência de um ponto para trocar em Uber Tristram.",
       charge: "Transporte antes do Enigma.",
       "holy-bolt": "Pré-requisito do Blessed Hammer, no caminho até o Holy Shield.",
@@ -1594,7 +1594,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "**A build é genuinamente faminta por pontos.** Quatro skills maximizadas mais as cadeias de pré-requisito até Conviction e Fist of the Heavens são quase um personagem inteiro. Espere terminar o Holy Shield lá pelos oitenta e poucos.",
       "**Híbrida com Smite (\"Vindicator Templar\").** Coloque os pontos restantes em Fanaticism, carregue um Grief, e coloque Smite num segundo botão. Fist of the Heavens limpa a sala e o Smite mata o boss. Não custa nada estruturalmente, porque o Smite já é pré-requisito.",
       "**Híbrida com Blessed Hammer (\"Tri-Brid\").** O Blessed Hammer já é pré-requisito; investir nele mais Concentration te dá uma resposta de dano mágico para os grupos em que a Conviction não ajuda. Combine com Heaven's Light e Gore Rider para uma opção de boss com Crushing Blow.",
-      "**Mais Resist Lightning** se você farma zonas cheias de inimigos de raio. Sobe a sua resistência máxima em vez da atual, que é a metade que a Conviction não consegue tirar de você.",
+      "**Mais Resist Lightning** se você farma zonas cheias de inimigos de raio. Ela sobe a sua resistência máxima, que é a metade que uma Conviction inimiga não consegue tirar de você — mas repare qual número você está comprando: metade do bônus, arredondada para baixo, enquanto a Conviction for a sua aura ativa, e o valor cheio só se você trocar para Resist Lightning e abrir mão dela. Dez pontos duros são +5% passivos.",
     ],
     statPlan: {
       strength: "Só o que o seu equipamento pedir. Um Spirit num Monarch pede 156 e é o motivo habitual de o número não ser pequeno; um Herald of Zakarum pede bem menos.",
@@ -1640,7 +1640,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       redemption:
         "Vida e mana de cadáveres. Num caster sem life steal, é o plano de sustentação inteiro.",
       "resist-lightning":
-        "Resistência máxima a raio, que importa justamente nas zonas que você quer farmar.",
+        "Uma aura para a qual trocar pela resistência a raio. **Um ponto duro não compra resistência máxima passiva nenhuma** — o passivo é metade, arredondado para baixo — então este ponto é a aura em si, não um bônus de fundo.",
       salvation: "Uma aura de resistência de um ponto para os momentos em que a Conviction é a escolha errada.",
       "zeal": "Pré-requisito da Vengeance, no caminho até a Conversion e daí até o Fist of the Heavens.",
       "vengeance": "Pré-requisito da Conversion. O FoHdin nunca ataca com ela.",

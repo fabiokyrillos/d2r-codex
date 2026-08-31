@@ -116,7 +116,7 @@ export const smiter: Build = {
       skill: "resist-lightning",
       points: 1,
       role: "utility",
-      note: "Raises maximum lightning resistance, which is what Uber Mephisto's Conviction aura is trying to take from you.",
+      note: "An aura you can swap to for its lightning resistance. **One hard point buys no passive maximum resistance at all** — the passive is half the aura value, rounded down — so this is the aura itself, not a background bonus you keep while Fanaticism is running.",
     },
     {
       skill: "salvation",
@@ -146,7 +146,7 @@ export const smiter: Build = {
   ],
   flexPoints: [
     "**Everything beyond the four maxed skills is optional.** A Smiter is fully functional at around level 85, and the remaining points are comfort rather than capability.",
-    "**More Resist Lightning** is the best of the remaining options if Uber Mephisto is killing you. Each point raises your maximum lightning resistance, which Conviction cannot take away.",
+    "**More Resist Lightning** is the best of the remaining options if Uber Mephisto is killing you — his Conviction drags your resistance down, and a higher *cap* is what keeps you at the top of that fall. Note which number you are buying: a Smiter runs **Fanaticism**, so you keep half the bonus rounded down. Ten hard points is +5% passive; the full +10% needs Resist Lightning as the active aura, which costs you Fanaticism's attack speed and damage for that fight.",
     "**More Vigor** if you play without Enigma. Run speed is the difference between a fifteen-minute Uber run and a nine-minute one.",
     "**Increased Attack Speed is not given as a breakpoint table on this site.** The frame thresholds for Smite depend on your weapon's speed modifier and the game's own animation data, and no source we consider reliable publishes them. Fanaticism supplies 10-40% by itself and Grief another 30-40%, which in practice covers it — but we would rather say that than print a number we cannot verify.",
   ],
