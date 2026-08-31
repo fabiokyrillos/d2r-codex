@@ -671,6 +671,8 @@ export const ptBR: Dictionary = {
     buildsNone: "Nenhuma build documentada aloca esta skill.",
     noProgressionWeapon:
       "Esta skill causa dano sim — ele vem da sua arma, modificado pelo bônus de dano da própria skill, então não há tabela intrínseca à skill para publicar. Attack rating, o dano da arma e os seus outros modificadores é que decidem o número.",
+    noProgressionShield:
+      "O Smite causa dano sim. A base dele é o Smite Damage impresso no seu escudo, e não o dano da arma, e o Smite não usa Attack Rating: ele não tem como errar. Os modificadores de dano aplicáveis e o bônus da própria skill elevam o resultado a partir daí. Nada disso é dano elemental da própria skill, então não existe tabela elemental por nível para ela nos dados que este site extrai — o que a skill faz está descrito em {mechanics}.",
     noProgressionProportional:
       "Esta skill causa dano como uma proporção da vida atual do alvo, e não como um intervalo mínimo–máximo, então uma tabela por nível não diria nada. Os limites por dificuldade e a questão da resistência estão em {mechanics}.",
     noProgressionNone: "Esta skill não tem tabela de dano direto. Seus efeitos estão descritos em {mechanics}.",

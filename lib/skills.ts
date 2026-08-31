@@ -229,20 +229,29 @@ export function damageAtLevel(
  * pages — Zeal, Smite and Vengeance are the core attacks of three documented
  * builds and every one of them told the reader it dealt no direct damage.
  *
- * Four cases, and each gets its own sentence:
+ * Five cases, and each gets its own sentence:
  *
  *   table         the graph has a min/max range; tabulate it
  *   weapon        a weapon attack; the damage is the weapon's, scaled by the
- *                 skill's own bonus. Derived from `kind`, not authored: every
- *                 one of the six `attack` skills lacks a table and no
- *                 non-attack skill does, so the two sets coincide exactly and
- *                 `check:content` asserts that they still do.
+ *                 skill's own bonus. Derived from `kind`, not authored: the
+ *                 `attack` skills all lack a table and no non-attack skill
+ *                 does, so `attack` minus the authored exceptions is exactly
+ *                 this set and `check:content` asserts that it still is.
+ *   shield        Smite. Also `kind: "attack"`, which is why the derivation
+ *                 alone is not enough — its base damage is the shield's Smite
+ *                 Damage and it never rolls against Attack Rating, so the
+ *                 weapon sentence is wrong twice over on that one page, and
+ *                 the page's own mechanics said so while the damage section
+ *                 contradicted them.
  *   proportional  damage as a fraction of the target's life, so no range
  *                 exists to publish. Authored, because nothing in the extracted
  *                 columns distinguishes it from a skill with no damage at all.
  *   none          genuinely no direct damage — auras, buffs, passives.
+ *
+ * `damageModel` is checked before `kind`, so an authored exception always wins
+ * over the derivation rather than racing it.
  */
-export type DamagePresentation = "table" | "weapon" | "proportional" | "none";
+export type DamagePresentation = "table" | "weapon" | "shield" | "proportional" | "none";
 
 export function damagePresentation(
   skill: Pick<Skill, "kind" | "damageModel">,
@@ -250,6 +259,7 @@ export function damagePresentation(
 ): DamagePresentation {
   if (node.damage) return "table";
   if (skill.damageModel === "proportional") return "proportional";
+  if (skill.damageModel === "shield") return "shield";
   if (skill.kind === "attack") return "weapon";
   return "none";
 }

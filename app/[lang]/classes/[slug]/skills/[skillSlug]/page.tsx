@@ -273,9 +273,11 @@ export default async function SkillPage(
                 {fmt(
                   presentation === "weapon"
                     ? t.skills.noProgressionWeapon
-                    : presentation === "proportional"
-                      ? t.skills.noProgressionProportional
-                      : t.skills.noProgressionNone,
+                    : presentation === "shield"
+                      ? t.skills.noProgressionShield
+                      : presentation === "proportional"
+                        ? t.skills.noProgressionProportional
+                        : t.skills.noProgressionNone,
                   { mechanics: t.skills.mechanicsTitle },
                 )}
               </RichText>

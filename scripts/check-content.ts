@@ -740,6 +740,7 @@ console.log("\nDamage presentation:");
   const buckets: Record<DamagePresentation, string[]> = {
     table: [],
     weapon: [],
+    shield: [],
     proportional: [],
     none: [],
   };
@@ -763,12 +764,37 @@ console.log("\nDamage presentation:");
       `attack skills now carry an elemental table, so "weapon" no longer follows from kind: ${attacksWithTable.map((s) => s.slug).join(", ")}`,
     );
   }
-  const weaponSet = new Set(buckets.weapon);
+  /*
+   * `weapon` is derived from `kind === "attack"`, minus the attacks that author
+   * a `damageModel`. So the invariant is not "weapon == attacks" any more — it
+   * is that the two buckets *partition* the attacks, with nothing lost between
+   * them and nothing else let in. Smite is the whole reason: it is an attack
+   * whose damage is the shield's, so it has to leave `weapon` without leaving
+   * the set of things that must never be told they deal no damage.
+   */
+  const covered = new Set([...buckets.weapon, ...buckets.shield]);
   const attackSet = new Set(attacks.map((s) => s.slug));
-  if (weaponSet.size !== attackSet.size || [...attackSet].some((s) => !weaponSet.has(s))) {
-    fail("damage-presentation", `the weapon bucket and the attack skills have diverged`);
+  if (covered.size !== attackSet.size || [...attackSet].some((s) => !covered.has(s))) {
+    fail(
+      "damage-presentation",
+      `weapon + shield no longer covers exactly the attack skills: ` +
+        `weapon=[${buckets.weapon.join(", ")}] shield=[${buckets.shield.join(", ")}] ` +
+        `attacks=[${[...attackSet].join(", ")}]`,
+    );
   }
-  console.log(`  ok  weapon bucket == the ${attacks.length} attack skills`);
+  if (buckets.weapon.some((s) => buckets.shield.includes(s))) {
+    fail("damage-presentation", "a skill resolved to both weapon and shield");
+  }
+  if (buckets.shield.length !== 1 || buckets.shield[0] !== "smite") {
+    fail(
+      "damage-presentation",
+      `the shield bucket must be exactly Smite, not [${buckets.shield.join(", ")}]`,
+    );
+  }
+  console.log(
+    `  ok  weapon (${buckets.weapon.length}) + shield (${buckets.shield.length}) ` +
+      `== the ${attacks.length} attack skills`,
+  );
 }
 
 /*

@@ -13,8 +13,19 @@
  *
  * Requires `npm run build`. Run with `npm run test:page`.
  */
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { execSync } from "node:child_process";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  realpathSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { basename, dirname, join, resolve, sep } from "node:path";
 
 import { assertFreshBuild } from "./build-freshness";
 
@@ -77,6 +88,7 @@ console.log("\nEvery skill falls into exactly one damage presentation");
 const buckets: Record<DamagePresentation, string[]> = {
   table: [],
   weapon: [],
+  shield: [],
   proportional: [],
   none: [],
 };
@@ -91,12 +103,27 @@ for (const kind of Object.keys(buckets) as DamagePresentation[]) {
     `${buckets[kind].length} skills`,
   );
 }
+/*
+ * The six attacks split five/one. Smite is `kind: "attack"` like the rest, so
+ * `weapon` cannot simply be the attack set any more — but every attack must
+ * still land in one of the two, or a skill would fall through to a sentence
+ * that denies its damage.
+ */
+const ATTACKS = ["sacrifice", "smite", "zeal", "charge", "vengeance", "conversion"];
 check(
-  "the six weapon attacks are exactly the attack-kind skills",
-  buckets.weapon.length === 6 &&
-    ["sacrifice", "smite", "zeal", "charge", "vengeance", "conversion"].every((s) =>
-      buckets.weapon.includes(s),
-    ),
+  "weapon and shield together are exactly the six attack-kind skills",
+  new Set([...buckets.weapon, ...buckets.shield]).size === ATTACKS.length &&
+    ATTACKS.every((s) => buckets.weapon.includes(s) || buckets.shield.includes(s)),
+  `weapon=[${buckets.weapon.join(", ")}] shield=[${buckets.shield.join(", ")}]`,
+);
+check(
+  "Smite is the only shield attack",
+  buckets.shield.length === 1 && buckets.shield[0] === "smite",
+  buckets.shield.join(", "),
+);
+check(
+  "the other five attacks are still weapon attacks",
+  buckets.weapon.length === 5 && !buckets.weapon.includes("smite"),
   buckets.weapon.join(", "),
 );
 check(
@@ -108,6 +135,7 @@ check(
 for (const locale of LOCALES) {
   const t = dictionaryFor(locale).skills;
   const WEAPON = marker(t.noProgressionWeapon);
+  const SHIELD = marker(t.noProgressionShield);
   const PROPORTIONAL = marker(t.noProgressionProportional);
   const NONE = marker(t.noProgressionNone);
 
@@ -116,8 +144,8 @@ for (const locale of LOCALES) {
   // =========================================================================
 
   check(
-    `${locale}: the three messages are distinct`,
-    new Set([WEAPON, PROPORTIONAL, NONE]).size === 3,
+    `${locale}: the four messages are distinct`,
+    new Set([WEAPON, SHIELD, PROPORTIONAL, NONE]).size === 4,
   );
 
   const read = (slug: string): string | null => {
@@ -129,6 +157,7 @@ for (const locale of LOCALES) {
   // --- weapon attacks ------------------------------------------------------
   let weaponOk = 0;
   let weaponClaimsNoDamage = 0;
+  let weaponCarriesShield = 0;
   for (const slug of buckets.weapon) {
     const text = read(slug);
     if (text === null) {
@@ -137,6 +166,7 @@ for (const locale of LOCALES) {
     }
     if (text.includes(WEAPON)) weaponOk++;
     if (text.includes(NONE) || text.includes(PROPORTIONAL)) weaponClaimsNoDamage++;
+    if (text.includes(SHIELD)) weaponCarriesShield++;
   }
   check(
     `${locale}: all ${buckets.weapon.length} weapon attacks carry the weapon message`,
@@ -147,6 +177,11 @@ for (const locale of LOCALES) {
     `${locale}: no weapon attack carries the no-damage or proportional message`,
     weaponClaimsNoDamage === 0,
     `${weaponClaimsNoDamage} pages`,
+  );
+  check(
+    `${locale}: no other attack carries the shield message`,
+    weaponCarriesShield === 0,
+    `${weaponCarriesShield} pages`,
   );
 
   // --- the claim that must never appear on an attack page ------------------
@@ -160,7 +195,7 @@ for (const locale of LOCALES) {
     "pt-br": /não causa dano direto|não tem tabela de dano direto/i,
   };
   const offenders: string[] = [];
-  for (const slug of buckets.weapon) {
+  for (const slug of [...buckets.weapon, ...buckets.shield]) {
     const text = read(slug);
     if (text && forbidden[locale].test(text)) offenders.push(slug);
   }
@@ -179,6 +214,97 @@ for (const locale of LOCALES) {
     buckets.none[0],
   );
 
+  // --- Smite ---------------------------------------------------------------
+  /*
+   * The page used to say two things at once. "How it works" carried "Damage
+   * comes from the shield, not the weapon" and "it does not roll against attack
+   * rating at all", while "Damage by level" — reading the weapon branch off
+   * `kind` — said the damage came from the weapon and that attack rating decided
+   * the number. Both halves are on one page, so the reader met the contradiction
+   * without leaving it.
+   *
+   * These assert the wording, not just the branch: a correct bucket wired to the
+   * wrong string would still ship the old sentence.
+   */
+  const WEAPON_ORIGIN: Record<Locale, RegExp> = {
+    "en-us": /comes from your weapon/i,
+    "pt-br": /vem da sua arma/i,
+  };
+  /*
+   * Deliberately narrow. Smite's own mechanics bullet *mentions* attack rating
+   * in order to deny it — "it does not roll against attack rating at all" — so a
+   * blanket ban on the phrase would fail on the correct copy. What must not
+   * appear is the claim that attack rating decides anything.
+   */
+  const AR_DEPENDENCY: Record<Locale, RegExp> = {
+    "en-us": /attack rating[^.]*\bdecide/i,
+    "pt-br": /attack rating[^.]*\bdecidem/i,
+  };
+  /** The mechanics bullet the damage section has to agree with. */
+  const SHIELD_ORIGIN: Record<Locale, RegExp> = {
+    "en-us": /damage comes from the shield, not the weapon/i,
+    "pt-br": /o dano vem do escudo, não da arma/i,
+  };
+
+  const smite = read("smite");
+  check(`${locale}: Smite page exists`, smite !== null);
+  check(
+    `${locale}: Smite carries the shield message`,
+    Boolean(smite && smite.includes(SHIELD)),
+  );
+  check(
+    `${locale}: Smite carries none of the other three messages`,
+    Boolean(
+      smite &&
+        !smite.includes(WEAPON) &&
+        !smite.includes(PROPORTIONAL) &&
+        !smite.includes(NONE),
+    ),
+  );
+  check(
+    `${locale}: Smite never says the damage comes from the weapon`,
+    Boolean(smite && !WEAPON_ORIGIN[locale].test(smite)),
+  );
+  check(
+    `${locale}: Smite never claims attack rating decides the outcome`,
+    Boolean(smite && !AR_DEPENDENCY[locale].test(smite)),
+  );
+  check(
+    `${locale}: Smite still states where the damage does come from`,
+    Boolean(smite && SHIELD_ORIGIN[locale].test(smite)),
+  );
+  check(
+    `${locale}: "How it works" and "Damage by level" agree on Smite`,
+    Boolean(
+      smite &&
+        SHIELD_ORIGIN[locale].test(smite) &&
+        smite.includes(SHIELD) &&
+        !WEAPON_ORIGIN[locale].test(smite),
+    ),
+  );
+  check(
+    `${locale}: Smite points at its mechanics rather than inventing a formula`,
+    Boolean(smite && smite.includes(dictionaryFor(locale).skills.mechanicsTitle)),
+  );
+
+  /*
+   * Anti-vacuity, in both directions. The two patterns above are only worth
+   * anything if they can match: `WEAPON_ORIGIN` must fire on a genuine weapon
+   * attack, and `AR_DEPENDENCY` must fire on the sentence those pages carry.
+   * Otherwise "Smite does not match them" is true of any string at all.
+   */
+  const weaponSample = read(buckets.weapon[0]);
+  check(
+    `${locale}: the weapon-origin pattern does match a genuine weapon attack`,
+    Boolean(weaponSample && WEAPON_ORIGIN[locale].test(weaponSample)),
+    buckets.weapon[0],
+  );
+  check(
+    `${locale}: the attack-rating pattern does match a genuine weapon attack`,
+    Boolean(weaponSample && AR_DEPENDENCY[locale].test(weaponSample)),
+    buckets.weapon[0],
+  );
+
   // --- Static Field --------------------------------------------------------
   const staticField = read("static-field");
   check(`${locale}: Static Field page exists`, staticField !== null);
@@ -187,8 +313,13 @@ for (const locale of LOCALES) {
     Boolean(staticField && staticField.includes(PROPORTIONAL)),
   );
   check(
-    `${locale}: Static Field carries neither of the other two messages`,
-    Boolean(staticField && !staticField.includes(WEAPON) && !staticField.includes(NONE)),
+    `${locale}: Static Field carries none of the other three messages`,
+    Boolean(
+      staticField &&
+        !staticField.includes(WEAPON) &&
+        !staticField.includes(SHIELD) &&
+        !staticField.includes(NONE),
+    ),
   );
   check(
     `${locale}: Static Field still points at its verified mechanics`,
@@ -218,7 +349,13 @@ for (const locale of LOCALES) {
   let tableOk = 0;
   for (const slug of buckets.table) {
     const text = read(slug);
-    if (text && !text.includes(WEAPON) && !text.includes(PROPORTIONAL) && !text.includes(NONE))
+    if (
+      text &&
+      !text.includes(WEAPON) &&
+      !text.includes(SHIELD) &&
+      !text.includes(PROPORTIONAL) &&
+      !text.includes(NONE)
+    )
       tableOk++;
   }
   check(
@@ -226,6 +363,103 @@ for (const locale of LOCALES) {
     tableOk === buckets.table.length,
     `${tableOk}/${buckets.table.length}`,
   );
+}
+
+// ===========================================================================
+// Planted control: put the weapon sentence back on Smite, and prove this suite
+// stops it.
+// ===========================================================================
+/*
+ * The assertions above are only worth their runtime if they can fail. This is
+ * the regression they exist for — Smite reading the weapon branch off `kind` —
+ * reintroduced into a *copy* of the build and run through this same file as a
+ * whole process, which must exit non-zero and name the reason.
+ *
+ * `D2R_BUILD_ROOT` is what makes it possible without a second `next build` and
+ * without touching a tracked file: the corrupted pages live in a temporary
+ * directory outside the repository, and the repository is only ever read.
+ *
+ * `D2R_CONTROL` stops the child from re-entering this block, which would
+ * recurse without bound.
+ */
+if (process.env.D2R_CONTROL !== "1") {
+  console.log("\nControl: reintroducing the weapon copy on Smite must fail");
+
+  const repoRoot = resolve(__dirname, "..");
+  const gitStatus = () =>
+    execSync("git status --porcelain", { cwd: repoRoot, encoding: "utf8" }).trim();
+  // Snapshot rather than assert-clean: the claim is "this control changed
+  // nothing", which has to hold whether or not the tree was already dirty.
+  const before = gitStatus();
+
+  const tmpRoot = realpathSync(tmpdir());
+  const dir = mkdtempSync(join(tmpRoot, "d2r-smite-control-"));
+
+  try {
+    // Copy every page this suite reads, then corrupt exactly one per locale.
+    for (const locale of LOCALES) {
+      for (const s of skills) {
+        if (!SKILL_GRAPH[s.slug]) continue;
+        const from = pageFor(locale, s.classSlug, s.slug);
+        if (!existsSync(from)) continue;
+        const to = join(dir, locale, "classes", s.classSlug, "skills", `${s.slug}.html`);
+        mkdirSync(dirname(to), { recursive: true });
+        copyFileSync(from, to);
+      }
+      // The mutation: the weapon sentence, appended to Smite's page. `visible()`
+      // strips tags and decodes entities, so the dictionary string written raw
+      // is what the assertions will read back.
+      const smitePage = join(dir, locale, "classes", "paladin", "skills", "smite.html");
+      const weaponCopy = dictionaryFor(locale).skills.noProgressionWeapon;
+      const html = readFileSync(smitePage, "utf8");
+      writeFileSync(smitePage, `${html}<p>${weaponCopy}</p>`, "utf8");
+    }
+
+    const run = () => {
+      try {
+        execSync(`npx tsx ${JSON.stringify(__filename)}`, {
+          cwd: repoRoot,
+          stdio: "pipe",
+          env: { ...process.env, D2R_CONTROL: "1", D2R_BUILD_ROOT: dir },
+        });
+        return { code: 0, out: "" };
+      } catch (e) {
+        const err = e as { status?: number; stdout?: Buffer; stderr?: Buffer };
+        return {
+          code: err.status ?? 1,
+          out: `${err.stdout?.toString() ?? ""}${err.stderr?.toString() ?? ""}`,
+        };
+      }
+    };
+
+    const planted = run();
+    check("the suite exits non-zero with the weapon copy back on Smite", planted.code !== 0);
+    // Exit code alone proves nothing — a broken import is also non-zero.
+    check(
+      "...and it failed on the weapon-origin claim, not on a crash",
+      planted.out.includes("Smite never says the damage comes from the weapon"),
+      planted.out.split("\n").find((l) => l.includes("FAIL"))?.slice(0, 110) ?? "no FAIL line",
+    );
+    check(
+      "...and on the two sections contradicting each other",
+      planted.out.includes('"How it works" and "Damage by level" agree on Smite'),
+    );
+    check(
+      "...in both locales",
+      LOCALES.every((l) => planted.out.includes(`${l}: Smite never says the damage comes`)),
+    );
+  } finally {
+    // Only ever remove the directory this control created, and only after
+    // confirming it still resolves inside the OS temp root.
+    const resolved = realpathSync(dir);
+    const inTemp = resolved.startsWith(tmpRoot + sep);
+    const isOurs = basename(resolved).startsWith("d2r-smite-control-");
+    if (inTemp && isOurs) rmSync(resolved, { recursive: true, force: true });
+    check("the temporary directory was inside the OS temp root", inTemp, resolved);
+    check("the temporary directory was one this control created", isOurs, basename(resolved));
+    check("the temporary directory is gone", !existsSync(dir));
+    check("the control left the repository untouched", gitStatus() === before);
+  }
 }
 
 console.log(`\n${passed} checks passed.`);

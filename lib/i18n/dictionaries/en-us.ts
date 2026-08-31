@@ -684,6 +684,15 @@ export const enUS = {
      */
     noProgressionWeapon:
       "This skill does deal damage — it comes from your weapon, modified by the skill's own damage bonus, so there is no table intrinsic to the skill to publish. Attack rating, weapon damage and your other modifiers decide the number.",
+    /*
+     * Smite only. Deliberately not the weapon sentence: Smite's base damage is
+     * the shield's, and it never rolls against Attack Rating — the weapon
+     * wording was wrong on both counts, on the page whose own mechanics section
+     * already said so. No formula is given, because the multipliers that act on
+     * shield damage are not modelled here and half a formula is worse than none.
+     */
+    noProgressionShield:
+      "Smite does deal damage. Its base is the Smite Damage printed on your shield, not the weapon's damage, and Smite does not use Attack Rating: it cannot miss. Applicable damage modifiers and the skill's own bonus raise the result from there. None of that is elemental damage belonging to the skill itself, so there is no per-level elemental table for it in the data this site extracts — what the skill does is described under {mechanics}.",
     noProgressionProportional:
       "This skill deals damage as a proportion of the target's current life rather than as a minimum–maximum range, so a level table would say nothing. The difficulty floors and the resistance question are covered under {mechanics}.",
     noProgressionNone: "This skill has no direct damage table. Its effects are described under {mechanics}.",

@@ -65,6 +65,10 @@ export const paladinSkills: Skill[] = [
     kind: "attack",
     element: "physical",
     requiredLevel: 1,
+    // The one attack whose damage is not the weapon's. Without this the page
+    // read the weapon sentence off `kind` and contradicted its own mechanics
+    // bullet two sections below.
+    damageModel: "shield",
     summary:
       "A shield bash that always hits and always stuns. The only attack in the game that cannot miss.",
     mechanics: [

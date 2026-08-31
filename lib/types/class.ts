@@ -56,13 +56,21 @@ export interface Skill extends Entity {
   /**
    * Damage that the extracted elemental columns cannot express.
    *
-   * The graph carries a skill's *own* min–max elemental damage. Two shapes fall
-   * outside that and must not be reported as "no damage": a weapon attack,
-   * whose damage is the weapon's, and a proportional skill, whose damage is a
-   * fraction of the target's life. Weapon attacks are derived from
-   * `kind === "attack"`; `proportional` is the only case that needs authoring.
+   * The graph carries a skill's *own* min–max elemental damage. Three shapes
+   * fall outside that and must not be reported as "no damage":
+   *
+   *   weapon        the damage is the weapon's, scaled by the skill's bonus
+   *   shield        the damage is the shield's Smite Damage, and the skill
+   *                 does not roll against Attack Rating at all
+   *   proportional  the damage is a fraction of the target's life
+   *
+   * `weapon` is derived from `kind === "attack"` and needs no authoring. The
+   * other two do: nothing in the extracted columns distinguishes them from a
+   * skill with no damage, and nothing distinguishes a shield attack from a
+   * weapon attack — Smite is `kind: "attack"` like the other five, and reading
+   * its damage off the weapon is exactly the falsehood this field prevents.
    */
-  damageModel?: "proportional";
+  damageModel?: "proportional" | "shield";
   /** Mana cost at base, when it is decision-relevant. */
   manaCost?: string;
   /** Cast/attack behaviour notes that affect play. */
