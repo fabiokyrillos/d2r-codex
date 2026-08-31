@@ -80,7 +80,6 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "cold",
     requiredLevel: 6,
-    prerequisites: ["ice-bolt"],
     summary: "An expanding ring of cold centred on you. Good crowd control, poor damage.",
     confidence: "verified",
   },
@@ -110,7 +109,7 @@ export const sorceressSkills: Skill[] = [
     kind: "buff",
     element: "cold",
     requiredLevel: 12,
-    prerequisites: ["frozen-armor"],
+    prerequisites: ["frozen-armor", "ice-blast"],
     summary: "More defence than Frozen Armor; damages melee attackers instead of freezing them.",
     confidence: "verified",
   },
@@ -141,7 +140,7 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "cold",
     requiredLevel: 24,
-    prerequisites: ["glacial-spike"],
+    prerequisites: ["frost-nova", "glacial-spike"],
     summary:
       "A storm of ice shards over a wide area. The best magic-find farming skill in the game.",
     synergies: [
@@ -201,7 +200,6 @@ export const sorceressSkills: Skill[] = [
     kind: "passive",
     element: "cold",
     requiredLevel: 30,
-    prerequisites: ["frozen-orb"],
     summary:
       "Lowers enemy cold resistance. The largest damage multiplier available to any cold build.",
     mechanics: [
@@ -235,7 +233,6 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "lightning",
     requiredLevel: 6,
-    prerequisites: ["charged-bolt"],
     summary:
       "Removes 25% of the current life of everything nearby. Works on bosses, and scales with nothing.",
     manaCost: "Low — 9 mana at all levels",
@@ -255,7 +252,6 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "magic",
     requiredLevel: 6,
-    prerequisites: ["charged-bolt"],
     summary:
       "Picks up items and operates objects at range, and knocks back enemies. Also the Teleport prerequisite.",
     mechanics: [
@@ -289,7 +285,7 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "lightning",
     requiredLevel: 12,
-    prerequisites: ["static-field"],
+    prerequisites: ["charged-bolt"],
     summary: "A bolt that strikes instantly across the whole screen.",
     synergies: [{ skill: "charged-bolt", bonus: "+damage per level" }],
     synergyFor: ["chain-lightning", "nova", "thunder-storm"],
@@ -345,7 +341,7 @@ export const sorceressSkills: Skill[] = [
     kind: "buff",
     element: "lightning",
     requiredLevel: 24,
-    prerequisites: ["lightning"],
+    prerequisites: ["chain-lightning", "nova"],
     summary: "A timed buff that periodically strikes a random nearby enemy with lightning.",
     synergies: [{ skill: "lightning", bonus: "+damage per level" }],
     mechanics: [
@@ -361,7 +357,7 @@ export const sorceressSkills: Skill[] = [
     kind: "buff",
     element: "magic",
     requiredLevel: 24,
-    prerequisites: ["telekinesis"],
+    prerequisites: ["chain-lightning", "teleport"],
     summary: "Diverts a portion of incoming damage to mana instead of life.",
     mechanics: [
       "Powerful but demanding: it needs a large mana pool and mana-per-damage efficiency from skill levels to be worth the investment.",
@@ -377,7 +373,6 @@ export const sorceressSkills: Skill[] = [
     kind: "passive",
     element: "lightning",
     requiredLevel: 30,
-    prerequisites: ["thunder-storm"],
     summary: "Increases lightning damage. Unlike Cold Mastery, this raises damage rather than piercing resistance.",
     mechanics: [
       "This is an important asymmetry: Cold Mastery lowers enemy resistance, Lightning and Fire Mastery increase your damage. They are not equivalent, and they interact very differently with immunities.",
@@ -423,7 +418,6 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "fire",
     requiredLevel: 6,
-    prerequisites: ["fire-bolt"],
     summary: "A short-range stream of flame. Rarely used past early Normal.",
     synergyFor: ["blaze", "fire-wall"],
     confidence: "verified",
@@ -467,7 +461,7 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "fire",
     requiredLevel: 18,
-    prerequisites: ["inferno"],
+    prerequisites: ["blaze"],
     summary: "A burning wall on the ground. High damage to anything forced to stand in it.",
     synergies: [{ skill: "inferno", bonus: "+damage per level" }],
     confidence: "verified",
@@ -480,7 +474,7 @@ export const sorceressSkills: Skill[] = [
     kind: "buff",
     element: "fire",
     requiredLevel: 18,
-    prerequisites: ["warmth", "fire-ball"],
+    prerequisites: ["fire-ball", "warmth"],
     summary:
       "Adds fire damage to a target's attacks. Castable on other players and on your mercenary.",
     mechanics: [
@@ -497,7 +491,7 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "fire",
     requiredLevel: 24,
-    prerequisites: ["fire-ball"],
+    prerequisites: ["fire-ball", "fire-wall"],
     summary:
       "Calls down a meteor that deals impact damage and leaves a burning patch. High damage, delayed.",
     synergies: [
@@ -517,7 +511,7 @@ export const sorceressSkills: Skill[] = [
     kind: "summon",
     element: "fire",
     requiredLevel: 30,
-    prerequisites: ["fire-wall", "meteor"],
+    prerequisites: ["enchant"],
     summary: "Summons a three-headed fire turret that attacks independently for a duration.",
     synergies: [{ skill: "fire-bolt", bonus: "+damage per level" }],
     mechanics: [
@@ -533,7 +527,6 @@ export const sorceressSkills: Skill[] = [
     kind: "passive",
     element: "fire",
     requiredLevel: 30,
-    prerequisites: ["meteor"],
     summary: "Increases fire damage. Like Lightning Mastery, this raises damage rather than piercing resistance.",
     confidence: "verified",
   },

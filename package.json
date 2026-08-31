@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "check:content": "tsx scripts/check-content.ts",
+    "gen:skill-graph": "tsx scripts/generate-skill-graph.ts",
     "check": "npm run check:content && npm run lint && npm run typecheck"
   },
   "dependencies": {
