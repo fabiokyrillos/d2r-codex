@@ -56,6 +56,11 @@ export type TileState = (typeof TILE_STATES)[number];
  * The five states the brief asks for, plus the three that fall out of the
  * existing `AllocationRole`. Ordered: a maxed skill reads as maxed whatever
  * its role, and an optional skill must never read as mandatory.
+ *
+ * `one-point` is the residue — one point in a skill whose role is the build's
+ * own, not a prerequisite, a synergy, a convenience or an option. Every other
+ * role keeps its own state at one point, so the label attached to `one-point`
+ * describes a judgement about the role and never about the quantity.
  */
 export function tileState(allocation: SkillAllocation | undefined, maxLevel: number): TileState {
   if (!allocation || allocation.points <= 0) return "unused";
@@ -64,6 +69,12 @@ export function tileState(allocation: SkillAllocation | undefined, maxLevel: num
   if (allocation.points === 1) {
     if (allocation.role === "prerequisite") return "prerequisite";
     if (allocation.role === "synergy") return "synergy";
+    // Utility keeps its own state here. It used to fall through, which made a
+    // single point of Teleport or Warmth indistinguishable from a point spent
+    // on the build's core — and once `one-point` is labelled "Mandatory", that
+    // fall-through would call four utility picks per build mandatory on the
+    // strength of the number 1 alone.
+    if (allocation.role === "utility") return "utility";
     return "one-point";
   }
   if (allocation.role === "synergy") return "synergy";

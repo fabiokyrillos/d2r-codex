@@ -623,7 +623,7 @@ export const ptBR: Dictionary = {
     noPoints: "não usada",
     stateMaxed: "Maximizada",
     stateInvested: "Investida",
-    stateOnePoint: "Um ponto",
+    stateOnePoint: "Obrigatória",
     statePrerequisite: "Pré-requisito",
     stateSynergy: "Sinergia",
     stateUtility: "Utilidade",

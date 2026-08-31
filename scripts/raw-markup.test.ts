@@ -127,6 +127,25 @@ const BAD_PLURALS = ["1 pts", "1 points", "1 pontos", "1 ponto s"];
     );
   }
 
+  // The state label used to restate the count it sits beside, so a one-point
+  // tile read "One point / 1 point" and its fallback "1 point . One point".
+  // Swept site-wide because the tile, the panel and the fallback each compose
+  // the pair differently.
+  const REDUNDANT = [
+    "One point 1 point",
+    "1 point \u00b7 One point",
+    "Um ponto 1 ponto",
+    "1 ponto \u00b7 Um ponto",
+  ];
+  for (const bad of REDUNDANT) {
+    const found = htmlFiles.filter((f) => visibleText(readFileSync(f, "utf8")).includes(bad));
+    check(
+      `no "${bad}" on any of the ${htmlFiles.length} pages`,
+      found.length === 0,
+      `${found.length} pages, e.g. ${found.slice(0, 3).join(" | ")}`,
+    );
+  }
+
   // The positive half: the singular has to actually appear, or the checks
   // above would pass on a site that stopped rendering point counts at all.
   const singular = { "en-us": "1 point", "pt-br": "1 ponto" } as const;

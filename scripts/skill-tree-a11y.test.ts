@@ -15,6 +15,15 @@ import { join } from "node:path";
 import { dictionaryFor, formatPoints, plural } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { getBuild, getSkill } from "../lib/registry";
+
+/** Visible text only: the RSC payload legitimately carries source strings. */
+const visible = (html: string) =>
+  html
+    .replace(/<script[\s\S]*?<\/script>/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#x27;/g, "'")
+    .replace(/&middot;/g, "\u00b7")
+    .replace(/\s+/g, " ");
 import {
   SKILL_GRAPH,
   TILE_STATES,
@@ -425,6 +434,120 @@ for (const [label, file, buildSlug] of pages) {
   // The defect itself, on every page this suite reads.
   for (const bad of ["1 pts", "1 points", "1 pontos"]) {
     check(`${label}: no "${bad}" anywhere in the HTML`, !html.includes(bad));
+  }
+
+  // A single point does not make a tile mandatory. Every role that has its own
+  // state must still show that state's label at one point, or "Mandatory" has
+  // silently become a synonym for the number 1.
+  if (buildSlug !== null) {
+    const t = dictionaryFor(locale).skills;
+    const build = getBuild(locale, buildSlug)!;
+    const fallback = visible(noscript);
+    const oneOf = (role: string) =>
+      build.skills.find((a) => a.role === role && a.points === 1);
+    for (const [role, want] of [
+      ["utility", t.stateUtility],
+      ["prerequisite", t.statePrerequisite],
+      ["flex", t.stateFlex],
+    ] as const) {
+      const alloc = oneOf(role);
+      if (!alloc) continue;
+      check(
+        `${label}: a one-point ${role} still reads "${want}", not "${t.stateOnePoint}"`,
+        fallback.includes(`${EXPECTED[locale][1]} · ${want}`),
+        fallback.slice(0, 0) || `${alloc.skill}`,
+      );
+    }
+    check(
+      `${label}: "${t.stateOnePoint}" is not applied to a one-point ${"utility"}`,
+      !build.skills.some(
+        (a) =>
+          a.points === 1 &&
+          a.role !== "main" &&
+          fallback.includes(`${nameOf(locale, a.skill)}`) &&
+          tileState(a, SKILL_GRAPH[a.skill]?.maxLevel ?? 20) === "one-point",
+      ),
+    );
+  }
+}
+
+// ===========================================================================
+console.log("\nThe one-point state names a role, not a quantity");
+// ===========================================================================
+
+/*
+ * The tile prints the state beside the count, so a state label that restates
+ * the count reads "One point · 1 point". `stateOnePoint` is now "Mandatory",
+ * which is only honest while the state means what it says: one point in the
+ * build's own skill, every other role having kept its own state.
+ *
+ * Exactly one allocation in the repository reaches it — Cold Mastery on the
+ * Blizzard Sorceress, which a Blizzard Sorceress genuinely cannot skip.
+ */
+for (const locale of LOCALES) {
+  const t = dictionaryFor(locale).skills;
+  const labelsOfStates = TILE_STATES.map((st) => ({
+    st,
+    text: {
+      maxed: t.stateMaxed,
+      invested: t.stateInvested,
+      "one-point": t.stateOnePoint,
+      prerequisite: t.statePrerequisite,
+      synergy: t.stateSynergy,
+      utility: t.stateUtility,
+      flex: t.stateFlex,
+      unused: t.stateUnused,
+    }[st],
+  }));
+  check(
+    `${locale}: every state label is distinct, so "${t.stateOnePoint}" can only come from one-point`,
+    new Set(labelsOfStates.map((x) => x.text)).size === TILE_STATES.length,
+    labelsOfStates.map((x) => x.text).join(" | "),
+  );
+  check(
+    `${locale}: the state label no longer restates the count`,
+    !new RegExp(`^(one point|um ponto)$`, "i").test(t.stateOnePoint),
+    t.stateOnePoint,
+  );
+}
+
+{
+  const target = { build: "blizzard-sorceress", cls: "sorceress", skill: "cold-mastery" };
+  for (const locale of LOCALES) {
+    const t = dictionaryFor(locale).skills;
+    const file = join(root, locale, "builds", target.cls, `${target.build}.html`);
+    if (!existsSync(file)) {
+      check(`${locale}: ${target.build} is prerendered`, false, file);
+      continue;
+    }
+    const html = readFileSync(file, "utf8");
+    const fallback = visible((html.match(/<noscript>[\s\S]*?<\/noscript>/g) ?? []).join(""));
+    const text = visible(html);
+    const one = EXPECTED[locale][1];
+
+    check(
+      `${locale}: Cold Mastery's tile pairs "${t.stateOnePoint}" with "${one}"`,
+      text.includes(`${t.stateOnePoint} ${one}`),
+    );
+    check(
+      `${locale}: and the fallback reads "${one} · ${t.stateOnePoint}"`,
+      fallback.includes(`${one} · ${t.stateOnePoint}`),
+    );
+    const label = [...html.matchAll(/aria-label="([^"]+)"/g)]
+      .map((m) => m[1].replace(/&#x27;/g, "'"))
+      .find((l) => l.startsWith(nameOf(locale, target.skill) ?? "\u0000"));
+    // The accessible name already said "mandatory"; this change must not touch it.
+    check(
+      `${locale}: the accessible name still reads "${one}, ${t.classOnePoint}"`,
+      Boolean(label?.includes(`${one}, ${t.classOnePoint}`)),
+      label,
+    );
+    for (const stale of ["One point", "Um ponto"]) {
+      check(
+        `${locale}: no "${stale} ${one}" and no "${one} · ${stale}"`,
+        !text.includes(`${stale} ${one}`) && !text.includes(`${one} · ${stale}`),
+      );
+    }
   }
 }
 

@@ -625,7 +625,9 @@ export const enUS = {
     // ---- states ----
     stateMaxed: "Maxed",
     stateInvested: "Invested",
-    stateOnePoint: "One point",
+    // Not "One point": the tile prints the count beside it, so that read
+    // "One point / 1 point". This says what the point is, not how many.
+    stateOnePoint: "Mandatory",
     statePrerequisite: "Prerequisite",
     stateSynergy: "Synergy",
     stateUtility: "Utility",

@@ -22,7 +22,7 @@ import {
 } from "../lib/skills";
 import { getBuild, getBuildsForClass, getClass, getSkillsForClass } from "../lib/registry";
 import { DEFAULT_LOCALE } from "../lib/i18n/config";
-import type { SkillAllocation } from "../lib/types";
+import { ALLOCATION_ROLES, type SkillAllocation } from "../lib/types";
 
 let passed = 0;
 const failures: string[] = [];
@@ -132,11 +132,31 @@ console.log("\nTile state");
 
 check("20 points reads as maxed", tileState(alloc("x", 20, "main"), 20) === "maxed");
 check("mid investment reads as invested", tileState(alloc("x", 12, "main"), 20) === "invested");
-check("one utility point reads as one-point", tileState(alloc("x", 1, "utility"), 20) === "one-point");
-check("a prerequisite reads as prerequisite", tileState(alloc("x", 1, "prerequisite"), 20) === "prerequisite");
-check("a synergy reads as synergy", tileState(alloc("x", 1, "synergy"), 20) === "synergy");
 check("an absent allocation reads as unused", tileState(undefined, 20) === "unused");
 check("zero points reads as unused", tileState(alloc("x", 0, "main"), 20) === "unused");
+
+// One point does not decide the state; the role does. `one-point` is only the
+// residue — a point in the build's own skill — because its label reads
+// "Mandatory", and calling four utility picks mandatory on the strength of the
+// number 1 would be a judgement about quantity rather than about the plan.
+for (const role of ALLOCATION_ROLES) {
+  const expected =
+    role === "flex" ? "flex"
+    : role === "prerequisite" ? "prerequisite"
+    : role === "synergy" ? "synergy"
+    : role === "utility" ? "utility"
+    : "one-point";
+  check(
+    `one point with role "${role}" reads as ${expected}`,
+    tileState(alloc("x", 1, role), 20) === expected,
+    tileState(alloc("x", 1, role), 20),
+  );
+}
+check(
+  "only the build's own skill reaches the one-point state",
+  ALLOCATION_ROLES.filter((r) => tileState(alloc("x", 1, r), 20) === "one-point").join(",") ===
+    "main",
+);
 
 // The rule that matters most: an optional allocation must never look
 // mandatory, whatever its size.
