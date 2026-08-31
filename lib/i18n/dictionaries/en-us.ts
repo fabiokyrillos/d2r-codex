@@ -666,7 +666,18 @@ export const enUS = {
     buildsTitle: "Builds using this skill",
     buildsBody: "How much each documented build invests.",
     buildsNone: "No documented build allocates this skill.",
-    noProgression: "This skill deals no direct damage, so there is no damage table to publish.",
+    /*
+     * Three messages, because "no damage table" has three different causes and
+     * one sentence covering all of them was false for seven skills. The
+     * extracted columns carry a skill's *own* elemental damage; a weapon attack
+     * has none because its damage is the weapon's, and Static Field has none
+     * because its damage is a proportion rather than a range.
+     */
+    noProgressionWeapon:
+      "This skill does deal damage — it comes from your weapon, modified by the skill's own damage bonus, so there is no table intrinsic to the skill to publish. Attack rating, weapon damage and your other modifiers decide the number.",
+    noProgressionProportional:
+      "This skill deals damage as a proportion of the target's current life rather than as a minimum–maximum range, so a level table would say nothing. The difficulty floors and the resistance question are covered under {mechanics}.",
+    noProgressionNone: "This skill has no direct damage table. Its effects are described under {mechanics}.",
     backToTree: "← All {class} skills",
   },
   breakpoints: {

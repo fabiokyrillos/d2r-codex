@@ -195,6 +195,39 @@ export function damageAtLevel(
 }
 
 /**
+ * How a skill's damage can honestly be presented.
+ *
+ * The graph carries elemental min/max columns. A skill with none of them is not
+ * a skill that deals no damage, and saying so shipped a falsehood on fourteen
+ * pages — Zeal, Smite and Vengeance are the core attacks of three documented
+ * builds and every one of them told the reader it dealt no direct damage.
+ *
+ * Four cases, and each gets its own sentence:
+ *
+ *   table         the graph has a min/max range; tabulate it
+ *   weapon        a weapon attack; the damage is the weapon's, scaled by the
+ *                 skill's own bonus. Derived from `kind`, not authored: every
+ *                 one of the six `attack` skills lacks a table and no
+ *                 non-attack skill does, so the two sets coincide exactly and
+ *                 `check:content` asserts that they still do.
+ *   proportional  damage as a fraction of the target's life, so no range
+ *                 exists to publish. Authored, because nothing in the extracted
+ *                 columns distinguishes it from a skill with no damage at all.
+ *   none          genuinely no direct damage — auras, buffs, passives.
+ */
+export type DamagePresentation = "table" | "weapon" | "proportional" | "none";
+
+export function damagePresentation(
+  skill: Pick<Skill, "kind" | "damageModel">,
+  node: Pick<SkillGraphNode, "damage">,
+): DamagePresentation {
+  if (node.damage) return "table";
+  if (skill.damageModel === "proportional") return "proportional";
+  if (skill.kind === "attack") return "weapon";
+  return "none";
+}
+
+/**
  * The levels worth tabulating. Not every level — a 20-row table for every
  * skill is data nobody reads. The first level, the cap, and any level a build
  * actually recommends.

@@ -28,6 +28,7 @@ import {
   CLASSES_WITH_SKILL_PAGES,
   SKILL_GRAPH,
   damageAtLevel,
+  damagePresentation,
   dependents,
   progressionLevels,
 } from "@/lib/skills";
@@ -88,6 +89,7 @@ export default async function SkillPage(
   const unlocks = dependents(skillSlug).map(byslug).filter((s) => s !== undefined);
   const feeds = (skill.synergyFor ?? []).map(byslug).filter((s) => s !== undefined);
   const builds = getBuildsUsingSkill(locale, skillSlug);
+  const presentation = damagePresentation(skill, node);
 
   // Only tabulate levels that decide something: the first, the cap, and any
   // level a documented build actually recommends.
@@ -235,7 +237,7 @@ export default async function SkillPage(
         )}
 
         <Section title={t.skills.progressionTitle} description={t.skills.progressionBody}>
-          {node.damage ? (
+          {presentation === "table" ? (
             <DataTable
               headers={[t.skills.colLevel, t.skills.colDamage]}
               rows={levels.map((level) => {
@@ -251,7 +253,18 @@ export default async function SkillPage(
               })}
             />
           ) : (
-            <p className="text-sm text-ink-muted">{t.skills.noProgression}</p>
+            <p className="text-sm leading-relaxed text-pretty text-ink-muted">
+              <RichText>
+                {fmt(
+                  presentation === "weapon"
+                    ? t.skills.noProgressionWeapon
+                    : presentation === "proportional"
+                      ? t.skills.noProgressionProportional
+                      : t.skills.noProgressionNone,
+                  { mechanics: t.skills.mechanicsTitle },
+                )}
+              </RichText>
+            </p>
           )}
         </Section>
 

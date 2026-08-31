@@ -43,6 +43,7 @@ import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
+import { damagePresentation, type DamagePresentation } from "../lib/skills";
 import { checkSkillGraph, MAX_HARD_POINTS } from "./skill-graph-rules";
 import { exitCodeFor, isUntranslatedProse } from "./content-rules";
 
@@ -655,6 +656,52 @@ for (const locale of TRANSLATED) {
 // ---------------------------------------------------------------------------
 // Skill mechanics array parity
 // ---------------------------------------------------------------------------
+
+/*
+ * How every skill's damage is presented.
+ *
+ * `damagePresentation` derives "weapon" from `kind === "attack"`. That is only
+ * sound while the two sets coincide: an attack skill that gained an elemental
+ * table, or a non-attack skill that lost one, would silently move into the
+ * wrong sentence. So the derivation is asserted rather than assumed, and every
+ * bucket is required to be non-empty — a rule that classifies nothing proves
+ * nothing.
+ */
+console.log("\nDamage presentation:");
+{
+  const buckets: Record<DamagePresentation, string[]> = {
+    table: [],
+    weapon: [],
+    proportional: [],
+    none: [],
+  };
+  for (const skill of getSkills(DEFAULT_LOCALE)) {
+    const node = SKILL_GRAPH[skill.slug];
+    if (!node) continue;
+    buckets[damagePresentation(skill, node)].push(skill.slug);
+  }
+  for (const [kind, slugs] of Object.entries(buckets)) {
+    console.log(`  ${kind.padEnd(13)} ${String(slugs.length).padStart(2)}`);
+    if (slugs.length === 0) {
+      fail("damage-presentation", `no skill resolves to "${kind}"; the rule classifies nothing`);
+    }
+  }
+  // The derivation, stated as the invariant it depends on.
+  const attacks = getSkills(DEFAULT_LOCALE).filter((s) => s.kind === "attack");
+  const attacksWithTable = attacks.filter((s) => SKILL_GRAPH[s.slug]?.damage);
+  if (attacksWithTable.length > 0) {
+    fail(
+      "damage-presentation",
+      `attack skills now carry an elemental table, so "weapon" no longer follows from kind: ${attacksWithTable.map((s) => s.slug).join(", ")}`,
+    );
+  }
+  const weaponSet = new Set(buckets.weapon);
+  const attackSet = new Set(attacks.map((s) => s.slug));
+  if (weaponSet.size !== attackSet.size || [...attackSet].some((s) => !weaponSet.has(s))) {
+    fail("damage-presentation", `the weapon bucket and the attack skills have diverged`);
+  }
+  console.log(`  ok  weapon bucket == the ${attacks.length} attack skills`);
+}
 
 /*
  * `Skill.mechanics` is another positional array replaced wholesale by a locale

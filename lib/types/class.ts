@@ -43,6 +43,16 @@ export interface Skill extends Entity {
   synergies?: SkillSynergy[];
   /** Skills that gain a bonus *from* this one. Authored, not derived. */
   synergyFor?: Slug[];
+  /**
+   * Damage that the extracted elemental columns cannot express.
+   *
+   * The graph carries a skill's *own* min–max elemental damage. Two shapes fall
+   * outside that and must not be reported as "no damage": a weapon attack,
+   * whose damage is the weapon's, and a proportional skill, whose damage is a
+   * fraction of the target's life. Weapon attacks are derived from
+   * `kind === "attack"`; `proportional` is the only case that needs authoring.
+   */
+  damageModel?: "proportional";
   /** Mana cost at base, when it is decision-relevant. */
   manaCost?: string;
   /** Cast/attack behaviour notes that affect play. */

@@ -233,6 +233,9 @@ export const sorceressSkills: Skill[] = [
     kind: "spell",
     element: "lightning",
     requiredLevel: 6,
+    // Its damage is a proportion of current life, so the elemental min/max
+    // columns are empty for it and a level table would be meaningless.
+    damageModel: "proportional",
     summary:
       "Removes 25% of the current life of everything nearby. Works on bosses, and scales with nothing.",
     manaCost: "Low — 9 mana at all levels",

@@ -660,7 +660,11 @@ export const ptBR: Dictionary = {
     buildsTitle: "Builds que usam esta skill",
     buildsBody: "Quanto cada build documentada investe.",
     buildsNone: "Nenhuma build documentada aloca esta skill.",
-    noProgression: "Esta skill não causa dano direto, então não há tabela de dano para publicar.",
+    noProgressionWeapon:
+      "Esta skill causa dano sim — ele vem da sua arma, modificado pelo bônus de dano da própria skill, então não há tabela intrínseca à skill para publicar. Attack rating, o dano da arma e os seus outros modificadores é que decidem o número.",
+    noProgressionProportional:
+      "Esta skill causa dano como uma proporção da vida atual do alvo, e não como um intervalo mínimo–máximo, então uma tabela por nível não diria nada. Os limites por dificuldade e a questão da resistência estão em {mechanics}.",
+    noProgressionNone: "Esta skill não tem tabela de dano direto. Seus efeitos estão descritos em {mechanics}.",
     backToTree: "← Todas as skills de {class}",
   },
   breakpoints: {
