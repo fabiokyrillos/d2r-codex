@@ -1,9 +1,13 @@
 # Spec 0001 — The skills experience for Paladin and Sorceress
 
-**Status:** Proposed. Nothing implemented.
 **Written:** 2026-08-30
 **Baseline:** D2R Patch 3.3 / Ladder Season 15 (see [`../research/00-game-state.md`](../research/00-game-state.md))
 **Scope:** Paladin and Sorceress only — 60 skills, 6 trees, 2 locales.
+**Status:** Proposed — **except §0, whose blocking defect is fixed.** That
+hotfix landed before any visual work: the graph is generated from game data,
+all eighteen build plans close under it, and the validator has
+planted-mutation tests. Phase 0's remaining item (skill `position` data) is
+unstarted, as are phases 1–5.
 
 > This document decides *what* the skills experience is and *how* it is built,
 > down to the data model and the interaction states. It does not write code.
@@ -67,6 +71,13 @@ structural graph that was guessed.
 **Phase 0 below is therefore blocking.** No visual work should start on top of
 a graph that is half wrong, because the tree's whole job is to *draw that
 graph*.
+
+> **Resolved.** The prerequisite half of Phase 0 shipped as a standalone
+> hotfix. 29 edges corrected, all 18 plans rebalanced under a 110-point
+> ceiling, Avenger and Hammerdin audited rather than patched, and six rules
+> proven to fire by planted mutation. The table below is kept as the record of
+> what was wrong; `npm run check:content` now prints the live mandatory budget
+> for every build. Skill `position` data is still outstanding.
 
 | Build | Points allocated | Missing prerequisite points |
 | --- | --- | --- |

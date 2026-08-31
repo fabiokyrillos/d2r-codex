@@ -12,6 +12,7 @@ of it.
 | Source | Used for |
 | --- | --- |
 | `levels.txt` (via the [blizzhackers/d2data](https://github.com/blizzhackers/d2data) JSON extraction) | Area levels per difficulty, monster levels |
+| `skills.txt` / `skilldesc.txt` (same extraction) | **The skill graph**: unlock levels, prerequisite edges, tree membership. Also skill parameters, mana formulas and per-level damage bands. |
 
 **Critical detail:** `levels.txt` contains two parallel sets of monster-level
 columns.
@@ -28,6 +29,46 @@ is worth farming. Every area level on this site comes from the `Ex` columns.
 The same extraction confirmed the dataset is current: it contains a
 `ColossalSummit` level at monster level 87, the arena added by *Reign of the
 Warlock*.
+
+### The skill graph, and why it is generated rather than authored
+
+`content/classes/skill-graph.ts` is written by `npm run gen:skill-graph`, never
+by hand. Our skill prerequisites *were* hand-authored, and 29 of 60 were wrong
+— eight of them following the pattern "the skill drawn directly above it in the
+tree", which is what you infer from a picture rather than what the game
+enforces. Fourteen of eighteen build pages published skill plans that could not
+be spent as a result.
+
+| | |
+| --- | --- |
+| **Source** | `json/skills.json` and `json/skilldesc.json` |
+| **Baseline** | D2R Patch 3.3 / Ladder Season 15 extraction |
+| **Fields taken** | `charclass`, `reqlevel`, `reqskill1`, `reqskill2`, `SkillPage` |
+| **Normalization** | Filter to `pal`/`sor`; slugify the identifier; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
+| **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **60 of 60** skills |
+
+**What that agreement does and does not show.** These are two snapshots of
+different game versions from one extraction project, not two independent
+publishers. Their agreement shows the values are not an artifact of a single
+extraction pass, and that the prerequisite graph did not change between Lord of
+Destruction and D2R. It is not corroboration by an unrelated party, and it says
+nothing about patches after the baseline.
+
+### Facts versus protected content
+
+The repository carries an MIT licence, but its contents are extracted from
+Blizzard's game files and Blizzard owns the underlying data — a repository
+owner cannot license someone else's data. The site's line:
+
+| Thing | Treatment |
+| --- | --- |
+| **Mechanical facts** — unlock levels, prerequisite edges, tree coordinates, parameter values | Used freely. Facts about a system are not copyrightable. |
+| **The game's descriptive prose** — the `str name` / `str long` string tables | **Never extracted, never shipped.** All prose on this site is written here. |
+| **Artwork** — `IconCel` sprite-sheet indices | **Never extracted, never shipped.** The site draws its own marks. |
+
+`localestrings-*.json` covers eng, deu, esp, fra, ita, pol, chi and kor — and no
+Portuguese. That independently confirms ADR 0003: no official pt-BR string
+table is available to us, so game proper nouns stay in English in both locales.
 
 ## Tier 2 — Blizzard official
 
