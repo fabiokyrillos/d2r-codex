@@ -22,6 +22,8 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, dirname, relative, resolve, sep } from "node:path";
 
+import { assertFreshBuild } from "./build-freshness";
+
 let passed = 0;
 const failures: string[] = [];
 const check = (name: string, ok: boolean, detail = "") => {
@@ -166,6 +168,26 @@ check("no Client Component reaches a server-only module", violations.length === 
 // ---------------------------------------------------------------------------
 // 2. The chunks that were actually written
 // ---------------------------------------------------------------------------
+
+/*
+ * Freshness, on the same contract as every other `check:built` gate.
+ *
+ * This half judges the chunks `next build` wrote, so a stale build makes it
+ * judge the previous one — the exact failure `assertFreshBuild` was added for,
+ * and the reason six of the seven gates already call it. This was the seventh.
+ * Standalone, `npm run test:client` could pass against yesterday's bundle: the
+ * static walk above would still catch a bad import, but the chunk scan would be
+ * reporting on a build that no longer exists.
+ *
+ * Deliberately *after* the module-graph walk. That half reads source, needs no
+ * build at all, and its verdict stands whether or not `.next` is current — so
+ * it gets to print its findings before this can exit.
+ *
+ * Skipped when `D2R_CHUNK_DIR` points elsewhere, matching how `D2R_BUILD_ROOT`
+ * is treated: an override exists so a planted control can aim a gate at a
+ * deliberately corrupted copy, where staleness is the point rather than a bug.
+ */
+if (!process.env.D2R_CHUNK_DIR) assertFreshBuild();
 
 const chunkDir = process.env.D2R_CHUNK_DIR ?? join(repo, ".next", "static", "chunks");
 if (!existsSync(chunkDir)) {
