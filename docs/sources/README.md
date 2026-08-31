@@ -105,11 +105,27 @@ computed.
 **Recorded gaps.** Of the 69 edges, **17 carry an authored magnitude** and 52 do
 not. The identity of all 69 is sourced; the missing magnitudes are a gap in this
 repository's prose, not a claim about the game, and a page shows the source and
-what it improves without inventing a number. Three references in the formulas
-are deliberately *not* treated as synergies, because the game does not label
-them as such: Energy Shield reads Telekinesis to lower its mana ratio, Hydra
-reads Fire Bolt to know what to summon, and Concentration's boost to Blessed
-Hammer applies only while the aura runs.
+what it improves without inventing a number.
+
+**What is excluded, and what only looks excluded.** The rule drops individual
+*references*, not skills, and the difference matters because one pair of skills
+can appear in two columns meaning two different things.
+
+| Reference | Column | Governed by | Outcome |
+| --- | --- | --- | --- |
+| Energy Shield → Telekinesis | `calc2` | par5, *"Mana consumed per HP damage (in sixteenths)"* | No edge. A mana ratio, and Energy Shield receives no synergy anywhere. |
+| Hydra → Fire Bolt, Fire Ball | `sumsk2calc`, `sumsk3calc` | nothing | These references dropped — the columns choose which missile to summon. |
+| Hydra → Fire Bolt, Fire Ball | `EDmgSymPerCalc` | par8, *"Damage synergy"* | **Both edges kept.** Hydra genuinely receives a damage synergy from each. |
+
+So Hydra is not an exception to the graph: `hydra ← fire-bolt` and
+`hydra ← fire-ball` are two of the 69. Only its summon columns are ignored.
+
+Concentration is not excluded either — it is never a `skill()` reference in the
+extracted rows at all. Its boost to Blessed Hammer arrives through the aura
+state, and the only trace of it is `*Param1 Description` on Blessed Hammer,
+*"Damage % from Concentration (in 8ths)"*: a parameter description with no skill
+reference for it to govern. There is nothing for the rule to reject, because an
+aura that never appears in a formula is never a candidate.
 
 ### Facts versus protected content
 

@@ -26,12 +26,17 @@
  *   Hammer's `(skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8` with
  *   `*Param8 Description` reading "Damage synergy".
  *
- *   References governed by any other parameter are deliberately excluded, and
- *   they are real mechanics rather than oversights: Energy Shield reads
- *   Telekinesis to lower its mana ratio, Hydra reads Fire Bolt to know what to
- *   summon, and Concentration's boost to Blessed Hammer applies only while the
- *   aura runs. None of the three is a synergy and the game does not call them
- *   one.
+ *   Exclusion is per reference, not per skill. Energy Shield reads Telekinesis
+ *   under a parameter that sets its mana ratio, and Hydra reads Fire Bolt and
+ *   Fire Ball in its summon columns to choose which missile to cast; those
+ *   references carry no synergy parameter and produce no edge. Hydra does still
+ *   receive a damage synergy from both, declared separately in
+ *   `EDmgSymPerCalc` — the exclusion covers the summon columns only.
+ *
+ *   Concentration is not excluded: it never appears as a `skill()` reference
+ *   at all. Its boost to Blessed Hammer arrives through the aura state, leaving
+ *   only a parameter description behind, so there is no reference for the rule
+ *   to weigh.
  *   Extracted   60 skills (30 Paladin, 30 Sorceress)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces

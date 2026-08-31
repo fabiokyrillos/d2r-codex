@@ -124,14 +124,29 @@ const slugify = (name: string) =>
  *
  * So the rule is not a guess and not community consensus: an edge exists when
  * the referenced skill's contribution is governed by a parameter the game calls
- * a synergy. That deliberately excludes references that are something else —
- * Energy Shield reads Telekinesis to lower its mana ratio, and Hydra reads Fire
- * Bolt to know what to summon. Both are real mechanics; neither is a synergy,
- * and the game does not label them as one.
+ * a synergy.
  *
- * It also excludes Concentration's boost to Blessed Hammer, whose parameter is
- * described as "Damage % from Concentration" rather than a synergy — it applies
- * only while the aura runs, which is a different mechanic with a different name.
+ * Exclusion is per *reference*, not per skill — a distinction worth stating,
+ * because the same pair of skills can appear in two columns meaning two things:
+ *
+ *   Energy Shield reads Telekinesis in `calc2`, under par5, "Mana consumed per
+ *   HP damage (in sixteenths)". That is a mana ratio. No edge, and Energy
+ *   Shield receives no synergy anywhere else either.
+ *
+ *   Hydra reads Fire Bolt and Fire Ball in `sumsk2calc`/`sumsk3calc` with no
+ *   parameter at all: those columns choose which missile to summon, and those
+ *   two references are dropped. Hydra does still *receive* a damage synergy
+ *   from both, because `EDmgSymPerCalc` references them again under par8,
+ *   "Damage synergy". Both edges are in the graph. Only the summon columns are
+ *   excluded.
+ *
+ * Concentration is a different case again, and is not excluded at all: it never
+ * appears as a `skill()` reference anywhere in the extracted rows. Its boost
+ * reaches Blessed Hammer through the aura state, and the only trace of it in
+ * Blessed Hammer's row is `*Param1 Description`, "Damage % from Concentration
+ * (in 8ths)" — a parameter description with no skill reference for it to
+ * govern. There is nothing here for the rule to reject; an aura that does not
+ * express itself as a formula reference is simply never a candidate.
  */
 const SYNERGY_KINDS: Record<string, string> = {
   damage: "damage",
@@ -418,12 +433,17 @@ async function main() {
  *   Hammer's \`(skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8\` with
  *   \`*Param8 Description\` reading "Damage synergy".
  *
- *   References governed by any other parameter are deliberately excluded, and
- *   they are real mechanics rather than oversights: Energy Shield reads
- *   Telekinesis to lower its mana ratio, Hydra reads Fire Bolt to know what to
- *   summon, and Concentration's boost to Blessed Hammer applies only while the
- *   aura runs. None of the three is a synergy and the game does not call them
- *   one.
+ *   Exclusion is per reference, not per skill. Energy Shield reads Telekinesis
+ *   under a parameter that sets its mana ratio, and Hydra reads Fire Bolt and
+ *   Fire Ball in its summon columns to choose which missile to cast; those
+ *   references carry no synergy parameter and produce no edge. Hydra does still
+ *   receive a damage synergy from both, declared separately in
+ *   \`EDmgSymPerCalc\` — the exclusion covers the summon columns only.
+ *
+ *   Concentration is not excluded: it never appears as a \`skill()\` reference
+ *   at all. Its boost to Blessed Hammer arrives through the aura state, leaving
+ *   only a parameter description behind, so there is no reference for the rule
+ *   to weigh.
  *   Extracted   ${rows.length} skills (${rows.filter((r) => r.classSlug === "paladin").length} Paladin, ${rows.filter((r) => r.classSlug === "sorceress").length} Sorceress)
  *
  *   The commit is pinned, not \`master\`. Re-running the generator reproduces
