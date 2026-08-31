@@ -13,6 +13,9 @@ import {
 } from "@/lib/registry";
 import { dictionaryFor, type Locale } from "@/lib/i18n";
 import { routes } from "@/lib/routes";
+
+/** Classes whose skills have individual pages. Mirrors the skill route. */
+const CLASSES_WITH_SKILL_PAGES = new Set(["paladin"]);
 import type { SearchEntry } from "./scoring";
 
 export * from "./scoring";
@@ -175,12 +178,14 @@ export function buildSearchIndex(locale: Locale): SearchEntry[] {
     });
   }
 
-  // Skills link to their class page rather than getting their own route —
-  // the class page renders each tree with its skills inline.
+  // Skills with their own page link to it; the rest still point at their
+  // class page's tree section, which is where they are documented.
   for (const s of getSkills(locale)) {
     entries.push({
       n: s.name,
-      h: r.classSkills(s.classSlug),
+      h: CLASSES_WITH_SKILL_PAGES.has(s.classSlug)
+        ? r.skill(s.classSlug, s.slug)
+        : r.classSkills(s.classSlug),
       k: "skill",
       d: s.summary,
       t: `${s.classSlug} ${s.tree} ${s.kind} level nivel ${s.requiredLevel} ${s.element ?? ""}`.toLowerCase(),

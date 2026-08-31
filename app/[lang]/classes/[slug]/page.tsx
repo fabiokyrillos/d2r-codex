@@ -15,7 +15,7 @@ import {
   Section,
   StatGrid,
 } from "@/components/ui";
-import { ConfidenceNote, ElementBadge, RichText } from "@/components/game";
+import { ConfidenceNote, ElementBadge, RichText, SkillTree } from "@/components/game";
 import {
   getBreakpointsForClass,
   getBuildsForClass,
@@ -71,6 +71,11 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
   const trees = cls.trees
     .map((tree) => getSkillTree(locale, tree))
     .filter((tree) => tree !== undefined);
+
+  // Only classes whose skills have pages get the tree: a tile links to the
+  // full skill page, so drawing one for a class without those pages would
+  // manufacture dead links. The Paladin is the first.
+  const hasSkillPages = cls.slug === "paladin";
 
   const releases = releaseLabels(t);
   const budgets = budgetLabels(t);
@@ -218,44 +223,59 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
 
         {trees.length > 0 && (
           <Section id="skills" title={t.classes.skillTrees}>
-            <div className="space-y-4">
-              {trees.map((tree) => {
-                const skills = getSkillsInTree(locale, tree.slug);
-                return (
-                  <Card key={tree.slug}>
-                    <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <h3 className="font-display text-lg text-ink">{tree.name}</h3>
-                      <span className="text-xs text-ink-subtle">
-                        {skills.length > 0
-                          ? fmt(t.classes.skillsCount, { count: skills.length })
-                          : t.classes.treeNotDocumented}
-                      </span>
-                    </div>
-                    <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
-                      {tree.theme}
-                    </p>
+            {hasSkillPages ? (
+              /*
+               * The visual tree, one per skill page, each with its own docked
+               * detail panel. Stacked rather than tabbed: tabs would need
+               * JavaScript to switch, and every tree stays readable without it.
+               */
+              <div className="space-y-10">
+                {trees.map((tree) => (
+                  <div key={tree.slug} id={tree.slug} className="scroll-mt-24">
+                    <SkillTree classSlug={cls.slug} treeSlug={tree.slug} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {trees.map((tree) => {
+                  const skills = getSkillsInTree(locale, tree.slug);
+                  return (
+                    <Card key={tree.slug}>
+                      <div className="flex flex-wrap items-baseline justify-between gap-2">
+                        <h3 className="font-display text-lg text-ink">{tree.name}</h3>
+                        <span className="text-xs text-ink-subtle">
+                          {skills.length > 0
+                            ? fmt(t.classes.skillsCount, { count: skills.length })
+                            : t.classes.treeNotDocumented}
+                        </span>
+                      </div>
+                      <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
+                        {tree.theme}
+                      </p>
 
-                    {skills.length > 0 && (
-                      <ul className="mt-4 space-y-2 border-t border-border pt-3">
-                        {skills.map((skill) => (
-                          <li key={skill.slug} className="flex gap-3 text-sm">
-                            <span className="w-8 shrink-0 font-mono text-xs text-ink-subtle">
-                              {skill.requiredLevel}
-                            </span>
-                            <span className="shrink-0 font-medium text-ink">
-                              {skill.name}
-                            </span>
-                            <span className="text-pretty text-ink-muted">
-                              {skill.summary}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </Card>
-                );
-              })}
-            </div>
+                      {skills.length > 0 && (
+                        <ul className="mt-4 space-y-2 border-t border-border pt-3">
+                          {skills.map((skill) => (
+                            <li key={skill.slug} className="flex gap-3 text-sm">
+                              <span className="w-8 shrink-0 font-mono text-xs text-ink-subtle">
+                                {skill.requiredLevel}
+                              </span>
+                              <span className="shrink-0 font-medium text-ink">
+                                {skill.name}
+                              </span>
+                              <span className="text-pretty text-ink-muted">
+                                {skill.summary}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </Section>
         )}
 

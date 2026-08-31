@@ -14,6 +14,7 @@ import {
   Rating,
   Section,
 } from "@/components/ui";
+import { SkillTree } from "@/components/game";
 import { ConfidenceNote, DifficultyBadge, ElementBadge, RichText } from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
 import {
@@ -34,6 +35,7 @@ import {
   ratingLabels,
 } from "@/lib/labels";
 import { routes } from "@/lib/routes";
+import { MAX_HARD_POINTS } from "@/lib/skills";
 import type { AllocationRole } from "@/lib/types";
 
 export function generateStaticParams() {
@@ -97,6 +99,22 @@ export default async function BuildPage(
     .filter((s) => s.points >= 20)
     .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
   const onePoints = build.skills.filter((s) => s.points < 20);
+
+  // Flex allocations are optional by definition, so they are shown on the tree
+  // but excluded from the mandatory budget the legend reports.
+  const mandatoryPoints = build.skills
+    .filter((a) => a.role !== "flex" && a.points > 0)
+    .reduce((sum, a) => sum + a.points, 0);
+  const flexPointsSpent = build.skills
+    .filter((a) => a.role === "flex")
+    .reduce((sum, a) => sum + a.points, 0);
+
+  // Same gate as the class page: the tree links to skill pages, which exist
+  // for the Paladin only in this slice.
+  const hasSkillTree = build.classSlug === "paladin";
+  const trees = hasSkillTree
+    ? (getClass(locale, build.classSlug)?.trees ?? [])
+    : [];
 
   const rate = (value: number) => fmt(t.common.outOfFive, { value });
 
@@ -196,7 +214,43 @@ export default async function BuildPage(
         )}
 
         <Section id="skills" title={t.builds.skills} description={t.builds.skillsDescription}>
-          <div className="space-y-5">
+          <div className="space-y-8">
+            {hasSkillTree && (
+              /*
+               * The same tree the class page draws, with this build's hard
+               * points on it. Hard points only: no gear, no +skills, and no
+               * "effective level" — that number would need a +skills total we
+               * cannot source, and a number we cannot defend is worse than none.
+               */
+              <div className="space-y-10">
+                {trees.map((tree) => (
+                  <SkillTree
+                    key={tree}
+                    classSlug={build.classSlug}
+                    treeSlug={tree}
+                    allocations={build.skills}
+                  />
+                ))}
+
+                <div className="rounded border border-border bg-surface-raised p-4">
+                  <h3 className="text-sm font-semibold text-ink">{t.skills.legendTitle}</h3>
+                  <p className="mt-1 text-sm text-ink-muted">{t.skills.legendHardPoints}</p>
+                  <p className="mt-2 font-mono text-sm text-ink">
+                    {fmt(t.skills.legendMandatory, {
+                      points: mandatoryPoints,
+                      cap: MAX_HARD_POINTS,
+                    })}
+                    {flexPointsSpent > 0 && (
+                      <span className="text-ink-subtle">
+                        {" "}
+                        {fmt(t.skills.legendFlex, { points: flexPointsSpent })}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div>
               <h3 className="mb-2 text-sm font-semibold text-ink">{t.builds.maxInOrder}</h3>
               <DataTable

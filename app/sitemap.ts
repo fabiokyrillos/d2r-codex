@@ -6,6 +6,7 @@ import { routes } from "@/lib/routes";
 import {
   getBuilds,
   getClasses,
+  getSkills,
   getFarmingAreas,
   getJourneys,
   getMechanics,
@@ -88,6 +89,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   add((l) => routes(l).classes(), 0.8, "weekly");
   for (const c of getClasses("en-us")) {
     add((l) => routes(l).class(c.slug), 0.8);
+  }
+
+  // Skill pages: supporting reference, so below builds (0.9) and classes (0.8).
+  for (const skill of getSkills(DEFAULT_LOCALE)) {
+    if (skill.classSlug !== "paladin") continue;
+    add((l) => routes(l).skill(skill.classSlug, skill.slug), 0.6);
   }
 
   add((l) => routes(l).farming(), 0.8, "weekly");
