@@ -27,13 +27,35 @@ Then open <http://localhost:3000>.
 | `npm run dev` | Development server (Turbopack) |
 | `npm run build` | Production build; prerenders every content page |
 | `npm run start` | Serve the production build |
-| `npm run check` | Content integrity + lint + typecheck |
-| `npm run check:content` | Validates every cross-reference in the content graph |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | `tsc --noEmit` |
+| `npm run check` | **Fast gate.** Content integrity, graph, tree, navigation, hygiene, lint, typecheck. No build needed. |
+| `npm run check:built` | Gates that read prerendered HTML. Needs a current build. |
+| `npm run verify` | **Full pre-publication gate.** Builds, then runs both of the above and the SITE_URL check. |
+| `npm run predeploy` | `verify`, plus SITE_URL in strict production mode. |
+| `npm run check:site-url` | What canonical, hreflang, Open Graph and the sitemap will point at |
+| `npm run gen:skill-graph` | Regenerates the skill graph from the pinned game-data commit |
 
-Run `npm run check` before committing. It catches the class of error TypeScript
-cannot: a build pointing at a runeword slug that does not exist.
+### Two tiers, and why
+
+`npm run check` is what you run while working. It needs no build, so it is
+fast, and it covers everything that can be decided from the source: content
+references, the skill graph, the tree layout and its keyboard model, diff
+hygiene, types and lint.
+
+`npm run check:built` is different in kind. Those gates read the HTML in
+`.next/server/app` and judge what the site actually *says* — that no attack
+skill claims to deal no damage, that both synergy directions agree, that tile
+labels reach 4.5:1, that no corpus prose reached the client bundle. They are the
+only checks that can catch a correct function wired to the wrong prop.
+
+That power is also the trap. They used to check only that `.next` existed, and
+`check` did not build — so editing a dictionary and re-running the suite
+validated the *previous* build and reported green. Every one of them now calls
+`assertFreshBuild`, which compares the build against the sources that produce it
+and refuses to run against an older one, naming the file that moved.
+
+**Use `npm run verify` before publishing.** It builds first, so the HTML the
+gates read is the HTML the change produced. `check` deliberately does not build
+— that would make the fast gate slow and create a loop between the two.
 
 ---
 

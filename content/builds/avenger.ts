@@ -121,7 +121,7 @@ export const avenger: Build = {
       role: "prerequisite",
       note: "**Sanctuary requires Holy Freeze and Thorns.** One point, and the only reason to take it.",
     },
-  
+
   ],
   flexPoints: [
     "**The budget is tight but it closes.** Vengeance, the three resistance skills and Conviction all maxed is 100 points, and the prerequisite chains cost exactly seven more. That leaves three points at level 99 — and level 99 is not where most characters stop, so in practice you are choosing which synergy finishes last.",

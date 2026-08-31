@@ -106,7 +106,7 @@ export const frostNovaSorceress: Build = {
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever**, and it is how you get into the middle." },
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life — your only real answer to a boss." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a freeze on attackers, stacking with the freeze you are already applying." },
-  
+
   ],
   flexPoints: [
     "**There are no flex points, and that is the honest answer.** The finished plan is 108 of 110. If you are below level 99 — and you are — the decision is which synergy to leave unfinished, not where to spend spare points. Glacial Spike is the usual answer, because its one-point emergency freeze is most of its value.",

@@ -137,7 +137,7 @@ export const tesladin: Build = {
       role: "prerequisite",
       note: "Holy Shield's other prerequisite. Doubles as cheap mobility before Enigma.",
     },
-  
+
   ],
   flexPoints: [
     "**More Zeal** once the four core skills are done. It raises the physical half, which is what kills lightning immunes that Conviction cannot break.",

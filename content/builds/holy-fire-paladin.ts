@@ -150,7 +150,7 @@ export const holyFirePaladin: Build = {
       role: "prerequisite",
       note: "Holy Shield's other prerequisite, and usable mobility on the way.",
     },
-  
+
   ],
   flexPoints: [
     "**The Dragon variant is the build's real form.** Dragon grants a level 14 Holy Fire aura and Hand of Justice a level 16 one — both from the item. Once your damage aura comes from gear, the aura you *select* can be Conviction, and the build's structural problem disappears. If you intend to go there, invest in Conviction rather than Holy Fire.",

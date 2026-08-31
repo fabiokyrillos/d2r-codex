@@ -103,7 +103,7 @@ export const hydraSorceress: Build = {
       role: "prerequisite",
       note: "**Hydra's prerequisite is Enchant** — not Fire Wall or Meteor. One point opens the whole build.",
     },
-  
+
   ],
   flexPoints: [
     "**The starter split.** Maxroll's Starter variant puts early points into a cold or lightning skill so you have something that works against fire immunes, then respecs fully into fire once a Sunder Charm or Infinity exists. This is what the inventory called 'Hydra/Frozen Orb' — it is a levelling variant of this build, not a separate one.",

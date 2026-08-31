@@ -110,7 +110,7 @@ export const hammerdin: Build = {
       role: "prerequisite",
       note: "**Holy Shield requires Blessed Hammer and Charge.** Charge in turn requires Smite, so the pair costs two points, not one.",
     },
-  
+
   ],
   flexPoints: [
     "One point in **Fanaticism** is worth taking once prerequisites allow — it costs almost nothing and is a strong party aura.",

@@ -100,7 +100,7 @@ export const frozenOrbSorceress: Build = {
       role: "prerequisite",
       note: "**Frozen Orb's prerequisite**, so this point is mandatory. It is also a whole other build — see the Blizzard Sorceress page if the ground-placement playstyle appeals more than the travelling orb.",
     },
-  
+
   ],
   flexPoints: [
     "**Remaining points go to Glacial Spike**, which is both a third synergy and the best emergency button the cold tree has.",

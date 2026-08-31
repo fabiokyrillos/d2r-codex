@@ -26,6 +26,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { assertFreshBuild } from "./build-freshness";
+
 import { trapTarget } from "../lib/focus-trap";
 import { LOCALES } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
@@ -118,11 +120,7 @@ check("the sheet and its scrim are both hidden above lg", (sheetBlock.match(/lg:
 // ===========================================================================
 console.log("\nWhat ships before JavaScript runs");
 // ===========================================================================
-const root = process.env.D2R_BUILD_ROOT ?? join(process.cwd(), ".next", "server", "app");
-if (!existsSync(root)) {
-  console.error(`  ${root} is missing — run \`npm run build\` first.`);
-  process.exit(1);
-}
+const root = assertFreshBuild();
 
 for (const locale of LOCALES) {
   const t = dictionaryFor(locale).skills;

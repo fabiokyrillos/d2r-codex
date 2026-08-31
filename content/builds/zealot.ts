@@ -117,7 +117,7 @@ export const zealot: Build = {
       role: "prerequisite",
       note: "**Holy Shield requires Blessed Hammer and Charge**, so this point is mandatory even though you never cast it.",
     },
-  
+
   ],
   flexPoints: [
     "**Defiance** is the best remaining sink. It is a 15%-per-level armour synergy for Holy Shield, so it compounds with a stat you are already investing in.",

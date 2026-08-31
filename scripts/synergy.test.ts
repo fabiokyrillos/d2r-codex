@@ -15,6 +15,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { assertFreshBuild } from "./build-freshness";
+
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
@@ -216,11 +218,7 @@ console.log("\nThe reverse index is exactly the transpose");
 // ===========================================================================
 console.log("\nAs rendered");
 // ===========================================================================
-const root = process.env.D2R_BUILD_ROOT ?? join(process.cwd(), ".next", "server", "app");
-if (!existsSync(root)) {
-  console.error(`  ${root} is missing — run \`npm run build\` first.`);
-  process.exit(1);
-}
+const root = assertFreshBuild();
 
 const visible = (html: string) =>
   html

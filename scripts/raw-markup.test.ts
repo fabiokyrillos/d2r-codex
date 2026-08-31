@@ -18,6 +18,8 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
+import { assertFreshBuild } from "./build-freshness";
+
 let passed = 0;
 const failures: string[] = [];
 const check = (name: string, ok: boolean, detail = "") => {
@@ -30,11 +32,7 @@ const check = (name: string, ok: boolean, detail = "") => {
   }
 };
 
-const root = join(process.cwd(), ".next", "server", "app");
-if (!existsSync(root)) {
-  console.error("  .next/server/app is missing — run `npm run build` first.");
-  process.exit(1);
-}
+const root = assertFreshBuild();
 
 const htmlFiles: string[] = [];
 (function walk(dir: string) {

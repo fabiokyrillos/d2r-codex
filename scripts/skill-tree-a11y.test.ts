@@ -12,6 +12,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { assertFreshBuild } from "./build-freshness";
+
 import { dictionaryFor, formatPoints, plural } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { getBuild, getSkill } from "../lib/registry";
@@ -246,11 +248,7 @@ const pages = [
   ["sorceress build pt-br", "pt-br/builds/sorceress/melee-sorceress.html", "melee-sorceress"],
 ] as const;
 
-const root = join(process.cwd(), ".next", "server", "app");
-if (!existsSync(root)) {
-  console.error("  .next/server/app is missing — run `npm run build` first.");
-  process.exit(1);
-}
+const root = assertFreshBuild();
 
 for (const [label, file, buildSlug] of pages) {
   // A build page carries a plan and therefore points; a class page does not.

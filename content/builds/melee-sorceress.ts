@@ -125,7 +125,7 @@ export const meleeSorceress: Build = {
       role: "prerequisite",
       note: "**Shiver Armor requires Frozen Armor and Ice Blast.**",
     },
-  
+
   ],
   flexPoints: [
     "**Zeal variant:** a **Passion** runeword grants Zeal as an Oskill. Faster, hits several adjacent targets, and keeps you in normal form — so you can still cast, drink and teleport freely. This is the more flexible of the two.",

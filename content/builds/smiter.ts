@@ -142,7 +142,7 @@ export const smiter: Build = {
       role: "prerequisite",
       note: "**Holy Shield requires Blessed Hammer and Charge.** One point each; the Smiter never casts either.",
     },
-  
+
   ],
   flexPoints: [
     "**Everything beyond the four maxed skills is optional.** A Smiter is fully functional at around level 85, and the remaining points are comfort rather than capability.",

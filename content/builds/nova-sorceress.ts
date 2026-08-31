@@ -114,7 +114,7 @@ export const novaSorceress: Build = {
       role: "prerequisite",
       note: "**Thunder Storm and Energy Shield both require Chain Lightning.** One point covers both.",
     },
-  
+
   ],
   flexPoints: [
     "**Energy Shield is the build's real decision.** At two mana per point of damage it converts a large mana pool into an effective second health bar, which suits a character standing in the middle of everything. It also means mana burn kills you outright and a drained pool leaves you with your actual, tiny life total. Take it deliberately with Telekinesis investment behind it, or skip it entirely and buy life instead. Half-committing is the worst of both.",

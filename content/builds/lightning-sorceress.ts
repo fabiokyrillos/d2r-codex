@@ -105,7 +105,7 @@ export const lightningSorceress: Build = {
       note: "A passive strike on a timer. **Lightning Mastery does not require it** — take it for what it does, or not at all.",
     },
     { skill: "energy-shield", points: 1, role: "flex", note: "Optional and genuinely divisive — see the flex points before spending here." },
-  
+
   ],
   flexPoints: [
     "**Everything past the four maxed skills goes to Charged Bolt or Nova**, both of which are synergies. Charged Bolt first.",

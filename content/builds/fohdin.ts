@@ -143,7 +143,7 @@ export const fohdin: Build = {
       role: "prerequisite",
       note: "Holy Shield's prerequisite, together with Blessed Hammer.",
     },
-  
+
   ],
   flexPoints: [
     "**The build is genuinely point-hungry.** Four maxed skills plus the prerequisite chains to Conviction and Fist of the Heavens is most of a character. Expect to be finishing Holy Shield somewhere in the high eighties.",

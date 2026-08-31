@@ -16,6 +16,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { assertFreshBuild } from "./build-freshness";
+
 import { dictionaryFor } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { getSkills } from "../lib/registry";
@@ -40,11 +42,7 @@ const check = (name: string, ok: boolean, detail = "") => {
  * this test fails — without editing a tracked file and without a second
  * `next build`. Unset, it is the build in the working directory.
  */
-const root = process.env.D2R_BUILD_ROOT ?? join(process.cwd(), ".next", "server", "app");
-if (!existsSync(root)) {
-  console.error(`  ${root} is missing — run \`npm run build\` first.`);
-  process.exit(1);
-}
+const root = assertFreshBuild();
 
 /** Visible text only: the RSC payload legitimately carries every source string. */
 const visible = (html: string) =>

@@ -121,7 +121,7 @@ export const meteorbSorceress: Build = {
       role: "prerequisite",
       note: "**Meteor requires Fire Ball and Fire Wall.** Three points of chain for one skill you never cast — the real cost of the fire half of this build.",
     },
-  
+
   ],
   flexPoints: [
     "**The remaining points are the build's real decision.** Roughly eighteen are left after the four maxed skills and the prerequisites, and they go into synergies for whichever half you actually use more. **Ice Bolt and Ice Blast** raise Frozen Orb; **Fire Bolt** raises Meteor. Splitting them evenly is the one option that is clearly worse than the alternatives.",

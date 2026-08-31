@@ -98,7 +98,7 @@ export const fireWallSorceress: Build = {
       role: "prerequisite",
       note: "**Fire Wall's prerequisite is Blaze**, and Blaze's is Inferno — which you are maxing as a synergy anyway.",
     },
-  
+
   ],
   flexPoints: [
     "**Meteor is the flex, and most players take it.** Fire Wall alone cannot handle a scattered pack. It is not free — Meteor requires Fire Ball and Fire Wall, and you already have both — but maxing it turns the build into something closer to a Fire Ball Meteor Sorceress that also denies ground.",

@@ -90,7 +90,7 @@ export const enchantSorceress: Build = {
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life — your answer to bosses that shrug off bolts." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a chance to freeze whatever closes the distance. You have no shield, so take it." },
     { skill: "frost-nova", points: 1, role: "utility", note: "A point-blank panic button for when something reaches you, which on a build with no shield is when you are in trouble." },
-  
+
   ],
   flexPoints: [
     "**Remaining points go to Fire Ball**, which gives you a real spell for the moments a ranged attack is the wrong tool, or to more Frozen Armor for survivability you badly need without a shield.",

@@ -83,7 +83,7 @@ export const blizzardSorceress: Build = {
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1. Costs nothing." },
     { skill: "frost-nova", points: 1, role: "prerequisite" },
     { skill: "frozen-orb", points: 1, role: "utility", note: "Not a prerequisite for anything here — Cold Mastery requires nothing. Take the point because a travelling orb covers what Blizzard's ground placement cannot." },
-  
+
   ],
   flexPoints: [
     "Every point after the four maxed skills goes into Cold Mastery.",

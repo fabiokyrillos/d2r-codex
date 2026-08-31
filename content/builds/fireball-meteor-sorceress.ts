@@ -105,7 +105,7 @@ export const fireballMeteorSorceress: Build = {
       role: "prerequisite",
       note: "**Meteor requires Fire Ball and Fire Wall.** Fire Wall is the half most guides omit, and it costs a three-point chain from Inferno.",
     },
-  
+
   ],
   flexPoints: [
     "**Remaining points go to Inferno**, which is Fire Ball's other synergy, or to more Frost Nova if survival is the problem rather than damage.",
