@@ -595,7 +595,7 @@ export const enUS = {
   skills: {
     // ---- tree ----
     treeLabel: "{tree} skill tree",
-    treeHint: "Select a skill to see its details. Arrow keys move between skills.",
+    treeHint: "Use arrow keys to navigate skills. Enter opens the details panel.",
     rowLabel: "Level {level}",
     emptyCell: "No skill",
     panelHeading: "Skill details",
@@ -606,8 +606,10 @@ export const enUS = {
     tileAria: "{skill}, level {level}, {tree}",
     // Two keys rather than one, because "1 points" is what a screen reader
     // would otherwise read out on every single-point skill.
-    tileAriaPointsOne: "{skill}, level {level}, {tree}, 1 point, {state}",
-    tileAriaPoints: "{skill}, level {level}, {tree}, {points} points, {state}",
+    tileAriaPointsOne: "{skill}, level {level}, {tree}, 1 point, {state}, {duty}",
+    tileAriaPoints: "{skill}, level {level}, {tree}, {points} points, {state}, {duty}",
+    dutyMandatory: "mandatory",
+    dutyOptional: "optional",
     points: "{points} pts",
     noPoints: "not used",
     // ---- states ----

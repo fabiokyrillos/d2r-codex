@@ -40,10 +40,13 @@ const stateStyle: Record<TileState, string> = {
   maxed: "border-2 border-ember",
   invested: "border border-ember-dim",
   "one-point": "border border-border-strong",
-  prerequisite: "border border-border-strong border-dashed",
+  prerequisite: "border border-dashed border-border-strong",
   synergy: "border border-info",
   utility: "border border-border-strong",
-  flex: "border border-dashed border-warning",
+  // Optional is the one distinction that must never rest on colour: dashed
+  // like a prerequisite, but twice the weight, so the two differ by width as
+  // well as by hue and by the label printed on the tile.
+  flex: "border-2 border-dashed border-warning",
   unused: "border border-border opacity-55",
 };
 
@@ -87,21 +90,28 @@ export async function SkillTree({
           {cell.skill.name}
         </span>
       </span>
-      <span className="flex items-center justify-between gap-1.5 text-[0.6875rem] text-ink-subtle">
-        <span>{kinds[cell.skill.kind]}</span>
+      <span className="flex items-baseline justify-between gap-1.5 text-[0.6875rem] text-ink-subtle">
+        {/* On a build tree the state replaces the skill type: both together
+            overflow the tile once the labels are in Portuguese, and between
+            the two it is the state a reader came for. The type is still on the
+            panel, the skill page, and the tile's accessible name. */}
+        <span className="min-w-0 truncate">
+          {showPoints && cell.state !== "unused"
+            ? stateLabels[cell.state]
+            : kinds[cell.skill.kind]}
+        </span>
         {showPoints && (
           <span
-            className={cell.points > 0 ? "font-mono text-ink" : "font-mono text-ink-subtle"}
+            className={
+              cell.points > 0
+                ? "shrink-0 font-mono text-ink"
+                : "shrink-0 font-mono text-ink-subtle"
+            }
           >
             {cell.points > 0 ? fmt(t.skills.points, { points: cell.points }) : "—"}
           </span>
         )}
       </span>
-      {showPoints && cell.state !== "unused" && (
-        <span className="text-[0.625rem] tracking-wide text-ink-muted uppercase">
-          {stateLabels[cell.state]}
-        </span>
-      )}
     </span>
   );
 
@@ -181,6 +191,9 @@ export async function SkillTree({
               tree: tree.name,
               points: cell.points,
               state: stateLabels[cell.state],
+              // Whether the point is part of the build or an optional extra
+              // is the thing a listener most needs and can least infer.
+              duty: cell.role === "flex" ? t.skills.dutyOptional : t.skills.dutyMandatory,
             })
           : base,
         tile: (

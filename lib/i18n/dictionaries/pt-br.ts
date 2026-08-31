@@ -601,7 +601,7 @@ export const ptBR: Dictionary = {
 
   skills: {
     treeLabel: "Árvore de skills — {tree}",
-    treeHint: "Selecione uma skill para ver os detalhes. As setas do teclado navegam entre elas.",
+    treeHint: "Use as setas para navegar pelas skills. Enter abre o painel de detalhes.",
     rowLabel: "Nível {level}",
     emptyCell: "Sem skill",
     panelHeading: "Detalhes da skill",
@@ -609,8 +609,10 @@ export const ptBR: Dictionary = {
     closePanel: "Fechar detalhes",
     fullPage: "Ver a página completa da skill",
     tileAria: "{skill}, nível {level}, {tree}",
-    tileAriaPointsOne: "{skill}, nível {level}, {tree}, 1 ponto, {state}",
-    tileAriaPoints: "{skill}, nível {level}, {tree}, {points} pontos, {state}",
+    tileAriaPointsOne: "{skill}, nível {level}, {tree}, 1 ponto, {state}, {duty}",
+    tileAriaPoints: "{skill}, nível {level}, {tree}, {points} pontos, {state}, {duty}",
+    dutyMandatory: "obrigatória",
+    dutyOptional: "opcional",
     points: "{points} pts",
     noPoints: "não usada",
     stateMaxed: "Maximizada",
