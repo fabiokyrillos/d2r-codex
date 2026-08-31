@@ -7,12 +7,22 @@
  * requires before it can be allocated.
  *
  * PROVENANCE
- *   Source      blizzhackers/d2data, `json/skills.json` and `json/skilldesc.json`
+ *   Repository  blizzhackers/d2data
+ *   Commit      fc469993502d0498809b9fc1af140ee2a9eb8902
+ *               2026-08-21 — "Updated for patch 3.3.93847"
+ *   Verified    2026-08-31
+ *   Paths       json/skills.json, json/skilldesc.json, json/base/skills.json
  *   Baseline    D2R Patch 3.3 / Ladder Season 15 extraction
+ *   Regenerate  npm run gen:skill-graph
  *   Fields      skills.json:    charclass, reqlevel, reqskill1, reqskill2,
  *                               maxlvl, EType, HitShift, EMin/EMax + bands
  *               skilldesc.json: SkillPage, SkillRow, SkillColumn
  *   Extracted   60 skills (30 Paladin, 30 Sorceress)
+ *
+ *   The commit is pinned, not `master`. Re-running the generator reproduces
+ *   this file exactly, or fails; it never silently follows the source forward.
+ *   Moving to a newer extraction means bumping SOURCE_SHA on purpose and
+ *   reading the diff as a game change.
  *
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —

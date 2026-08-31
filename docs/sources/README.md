@@ -41,11 +41,25 @@ be spent as a result.
 
 | | |
 | --- | --- |
-| **Source** | `json/skills.json` and `json/skilldesc.json` |
+| **Repository** | [blizzhackers/d2data](https://github.com/blizzhackers/d2data) |
+| **Commit** | `fc469993502d0498809b9fc1af140ee2a9eb8902` — 2026-08-21, *"Updated for patch 3.3.93847"* |
+| **Verified** | 2026-08-31 |
+| **Paths** | `json/skills.json`, `json/skilldesc.json`, `json/base/skills.json` |
 | **Baseline** | D2R Patch 3.3 / Ladder Season 15 extraction |
-| **Fields taken** | `charclass`, `reqlevel`, `reqskill1`, `reqskill2`, `SkillPage` |
+| **Regenerate** | `npm run gen:skill-graph` |
+| **Fields taken** | `charclass`, `reqlevel`, `reqskill1`, `reqskill2`, `SkillPage`, and the `calc`/`Param` columns for synergies |
 | **Normalization** | Filter to `pal`/`sor`; slugify the identifier; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
 | **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **60 of 60** skills |
+
+**Why a commit and not `master`.** A moving ref means the generator is not a
+function of anything written down: re-running it later can rewrite the graph
+from a source nobody chose, while the header keeps claiming a baseline that no
+longer produced it. Pinned, `npm run gen:skill-graph` either reproduces the
+committed file exactly or fails. Moving to a newer extraction is a deliberate
+act — bump `SOURCE_SHA`, regenerate, and read the diff as a game change with
+the patch notes that justify it. The generator refuses to run if the pinned
+commit is unreachable or if a column it parses has disappeared, rather than
+emitting a graph with rows silently missing.
 
 **What that agreement does and does not show.** These are two snapshots of
 different game versions from one extraction project, not two independent

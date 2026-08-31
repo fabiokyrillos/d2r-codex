@@ -57,9 +57,36 @@ import { join } from "node:path";
 
 import { allSkills } from "../content/classes";
 
-const RAW = "https://raw.githubusercontent.com/blizzhackers/d2data/master/json";
 const SOURCE_REPO = "blizzhackers/d2data";
+
+/**
+ * The exact commit the shipped graph was extracted from.
+ *
+ * Pinned, not `master`. A moving ref means the generator is not a function of
+ * anything recorded here: re-running it a month later can rewrite the graph
+ * from a source nobody chose, and the provenance header would keep claiming a
+ * baseline that no longer produced it. With a SHA, `npm run gen:skill-graph`
+ * either reproduces the committed file byte for byte or fails loudly.
+ *
+ * Updating this is a deliberate act. Bump the SHA, re-run the generator, and
+ * read the diff — a changed prerequisite or unlock level is a game change and
+ * belongs in its own commit with the patch notes that justify it. Never bump it
+ * to "latest" as a side effect of touching this file.
+ */
+const SOURCE_SHA = "fc469993502d0498809b9fc1af140ee2a9eb8902";
+const SOURCE_DATE = "2026-08-21";
+const SOURCE_MESSAGE = "Updated for patch 3.3.93847";
+/** Verified against the pinned commit on 2026-08-31. */
+const VERIFIED = "2026-08-31";
 const BASELINE = "D2R Patch 3.3 / Ladder Season 15 extraction";
+
+const RAW = `https://raw.githubusercontent.com/${SOURCE_REPO}/${SOURCE_SHA}/json`;
+
+const PATHS = {
+  current: "skills.json",
+  base: "base/skills.json",
+  descs: "skilldesc.json",
+} as const;
 
 interface RawSkill {
   skill: string;
@@ -86,10 +113,59 @@ const slugify = (name: string) =>
 
 const asArray = <T,>(j: unknown): T[] => (Array.isArray(j) ? j : Object.values(j as object)) as T[];
 
-async function getJson<T>(path: string): Promise<T[]> {
-  const res = await fetch(`${RAW}/${path}`);
-  if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
-  return asArray<T>(await res.json());
+/**
+ * Fetches one pinned file and refuses anything that is not the shape we parse.
+ *
+ * A pin is only worth having if its disappearance is loud. A deleted repo, a
+ * rewritten history or a restructured file must stop the generator with a
+ * message that says which assumption broke — not yield an empty array that
+ * quietly regenerates a graph with sixty skills missing.
+ */
+async function getJson<T>(path: string, requiredFields: readonly string[]): Promise<T[]> {
+  let res: Response;
+  try {
+    res = await fetch(`${RAW}/${path}`);
+  } catch (cause) {
+    throw new Error(
+      `${path}: could not be fetched from ${SOURCE_REPO}@${SOURCE_SHA.slice(0, 12)}. ` +
+        `The pinned commit may be gone, or the network is unavailable.`,
+      { cause },
+    );
+  }
+  if (!res.ok) {
+    throw new Error(
+      `${path}: HTTP ${res.status} from ${SOURCE_REPO}@${SOURCE_SHA.slice(0, 12)}. ` +
+        `If this is a 404, the pinned commit or the file layout has changed; ` +
+        `re-pin SOURCE_SHA deliberately and review the resulting diff.`,
+    );
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = await res.json();
+  } catch (cause) {
+    throw new Error(`${path}: not valid JSON at the pinned commit`, { cause });
+  }
+
+  const rows = asArray<T>(parsed);
+  if (rows.length === 0) {
+    throw new Error(`${path}: parsed to zero rows at the pinned commit`);
+  }
+  // The columns this script reads, checked against the union of keys across
+  // every row rather than against the first one. The export omits empty cells,
+  // so row 0 ("Attack", a skill belonging to no class) legitimately has no
+  // `charclass` — absence there is sparseness, not a schema change. A column
+  // that appears on *no* row is the real signal that the format moved.
+  const present = new Set<string>();
+  for (const row of rows) for (const key of Object.keys(row as object)) present.add(key);
+  const missing = requiredFields.filter((f) => !present.has(f));
+  if (missing.length > 0) {
+    throw new Error(
+      `${path}: the pinned source no longer carries [${missing.join(", ")}]. ` +
+        `The upstream format changed; update the parser before re-pinning.`,
+    );
+  }
+  return rows;
 }
 
 /** Prerequisite sets keyed by slug, for one extraction. */
@@ -107,9 +183,9 @@ function prereqSets(skills: RawSkill[]): Map<string, string[]> {
 
 async function main() {
   const [current, base, descs] = await Promise.all([
-    getJson<RawSkill>("skills.json"),
-    getJson<RawSkill>("base/skills.json"),
-    getJson<RawDesc>("skilldesc.json"),
+    getJson<RawSkill>(PATHS.current, ["skill", "charclass", "reqlevel", "maxlvl", "skilldesc"]),
+    getJson<RawSkill>(PATHS.base, ["skill", "charclass", "reqlevel"]),
+    getJson<RawDesc>(PATHS.descs, ["skilldesc", "SkillPage", "SkillRow", "SkillColumn"]),
   ]);
 
   const classOf = { pal: "paladin", sor: "sorceress" } as const;
@@ -217,12 +293,22 @@ async function main() {
  * requires before it can be allocated.
  *
  * PROVENANCE
- *   Source      ${SOURCE_REPO}, \`json/skills.json\` and \`json/skilldesc.json\`
+ *   Repository  ${SOURCE_REPO}
+ *   Commit      ${SOURCE_SHA}
+ *               ${SOURCE_DATE} — "${SOURCE_MESSAGE}"
+ *   Verified    ${VERIFIED}
+ *   Paths       json/${PATHS.current}, json/${PATHS.descs}, json/${PATHS.base}
  *   Baseline    ${BASELINE}
+ *   Regenerate  npm run gen:skill-graph
  *   Fields      skills.json:    charclass, reqlevel, reqskill1, reqskill2,
  *                               maxlvl, EType, HitShift, EMin/EMax + bands
  *               skilldesc.json: SkillPage, SkillRow, SkillColumn
  *   Extracted   ${rows.length} skills (${rows.filter((r) => r.classSlug === "paladin").length} Paladin, ${rows.filter((r) => r.classSlug === "sorceress").length} Sorceress)
+ *
+ *   The commit is pinned, not \`master\`. Re-running the generator reproduces
+ *   this file exactly, or fails; it never silently follows the source forward.
+ *   Moving to a newer extraction means bumping SOURCE_SHA on purpose and
+ *   reading the diff as a game change.
  *
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —
