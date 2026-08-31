@@ -97,6 +97,50 @@ for (const [name] of MARKERS) {
 }
 
 // ===========================================================================
+console.log("\nPoint counts are pluralised on every page");
+// ===========================================================================
+
+/*
+ * "1 pts" was a shared-component defect: one template, three call sites, every
+ * class and both locales. The wording is centralised now, so the check is a
+ * sweep of the whole prerendered site rather than a spot check of the pages
+ * that happened to be looked at.
+ *
+ * "1 pontos" is the pt-BR half of the same bug, and would be what a naive
+ * `{points} pontos` template produces.
+ */
+const BAD_PLURALS = ["1 pts", "1 points", "1 pontos", "1 ponto s"];
+{
+  const hits: Record<string, string[]> = {};
+  for (const file of htmlFiles) {
+    const text = visibleText(readFileSync(file, "utf8"));
+    for (const bad of BAD_PLURALS) {
+      if (text.includes(bad)) (hits[bad] ??= []).push(file.slice(root.length + 1));
+    }
+  }
+  for (const bad of BAD_PLURALS) {
+    const found = hits[bad] ?? [];
+    check(
+      `no "${bad}" on any of the ${htmlFiles.length} pages`,
+      found.length === 0,
+      `${found.length} pages, e.g. ${found.slice(0, 3).join(" | ")}`,
+    );
+  }
+
+  // The positive half: the singular has to actually appear, or the checks
+  // above would pass on a site that stopped rendering point counts at all.
+  const singular = { "en-us": "1 point", "pt-br": "1 ponto" } as const;
+  for (const [locale, want] of Object.entries(singular)) {
+    const pages = htmlFiles.filter(
+      (f) =>
+        f.startsWith(join(root, locale)) &&
+        visibleText(readFileSync(f, "utf8")).includes(want),
+    );
+    check(`"${want}" is rendered somewhere in ${locale}`, pages.length > 0, `${pages.length} pages`);
+  }
+}
+
+// ===========================================================================
 console.log("\nEmphasis survives as semantic elements");
 // ===========================================================================
 

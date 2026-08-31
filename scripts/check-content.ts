@@ -44,6 +44,7 @@ import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import { checkSkillGraph, MAX_HARD_POINTS } from "./skill-graph-rules";
+import { exitCodeFor, isUntranslatedProse } from "./content-rules";
 
 const SOURCE: Locale = DEFAULT_LOCALE;
 const TRANSLATED = LOCALES.filter((l) => l !== SOURCE);
@@ -635,9 +636,7 @@ for (const locale of TRANSLATED) {
           for (const [a, b, where] of pairs) {
             if (!a) continue;
             compared++;
-            // A short string can legitimately match (a stat name, a number).
-            // Only prose long enough to be a sentence is worth reporting.
-            if (b === a && a.length > 25) {
+            if (isUntranslatedProse(a, b)) {
               untranslated.push(`${build.slug} ${set.tier} ${where}`);
             }
           }
@@ -779,14 +778,19 @@ for (const locale of TRANSLATED) {
 }
 
 if (warnings.length > 0) {
-  console.log(`\n${warnings.length} warning(s):`);
-  warnings.forEach((w) => console.log(`  ! ${w}`));
+  console.error(`\n${warnings.length} warning(s):`);
+  warnings.forEach((w) => console.error(`  ! ${w}`));
 }
 
 if (problems.length > 0) {
   console.error(`\n${problems.length} problem(s):`);
   problems.forEach((p) => console.error(`  x ${p}`));
-  process.exit(1);
 }
+
+// Warnings fail too. A warning that prints and exits 0 is a defect the gate
+// has agreed to keep shipping — which is how an English gear reason survived
+// a green board for two slices.
+const code = exitCodeFor(problems, warnings);
+if (code !== 0) process.exit(code);
 
 console.log("\nAll content references resolve. No integrity problems found.");

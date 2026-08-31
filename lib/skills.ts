@@ -4,6 +4,7 @@ import {
   TIER_LEVELS,
   type SkillGraphNode,
 } from "@/content/classes/skill-graph";
+import { formatPoints, type Plural } from "@/lib/i18n";
 import type { AllocationRole, ClassSlug, Skill, SkillAllocation, Slug } from "@/lib/types";
 
 /**
@@ -210,8 +211,14 @@ export function progressionLevels(node: SkillGraphNode, recommended: number[]): 
 export interface SkillAriaStrings {
   noBuild: string;
   build: string;
-  buildOne: string;
   buildUnused: string;
+  /**
+   * Both wordings of a point count. There used to be a second template here
+   * (`buildOne`) whose only job was to say "1 point" instead of "1 points" —
+   * a fix for one surface while the tile and the tables kept shipping the bug.
+   * The count is worded once, by `formatPoints`, and dropped into `{points}`.
+   */
+  points: Plural;
   classification: Record<TileState, string>;
 }
 
@@ -226,10 +233,10 @@ export function skillAriaLabel(
       .replace("{skill}", tile.name)
       .replace("{level}", String(tile.level))
       .replace("{tree}", tile.tree)
-      .replace("{points}", String(tile.points))
+      .replace("{points}", formatPoints(strings.points, tile.points))
       .replace("{classification}", strings.classification[tile.state]);
 
   if (!inBuild) return fill(strings.noBuild);
   if (tile.points <= 0) return fill(strings.buildUnused);
-  return fill(tile.points === 1 ? strings.buildOne : strings.build);
+  return fill(strings.build);
 }

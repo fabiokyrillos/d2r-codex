@@ -10,12 +10,11 @@ import {
   type TreeTile,
 } from "@/components/game/skill-tree-interactive";
 import { getSkillsForClass, getSkillTree } from "@/lib/registry";
-import { fmt } from "@/lib/i18n";
+import { fmt, formatPoints } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { elementLabels, skillKindLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 import {
-  SKILL_GRAPH,
   layoutTree,
   skillAriaLabel,
   treeEdges,
@@ -86,8 +85,8 @@ export async function SkillTree({
   const ariaStrings = {
     noBuild: t.skills.ariaNoBuild,
     build: t.skills.ariaBuild,
-    buildOne: t.skills.ariaBuildOne,
     buildUnused: t.skills.ariaBuildUnused,
+    points: t.skills.points,
     classification: {
       maxed: t.skills.classMaxed,
       invested: t.skills.classInvested,
@@ -129,7 +128,7 @@ export async function SkillTree({
                 : "shrink-0 font-mono text-ink-subtle"
             }
           >
-            {cell.points > 0 ? fmt(t.skills.points, { points: cell.points }) : "—"}
+            {cell.points > 0 ? formatPoints(t.skills.points, cell.points) : "—"}
           </span>
         )}
       </span>
@@ -164,7 +163,7 @@ export async function SkillTree({
         {showPoints && (
           <p className="text-sm text-ink">
             <span className="font-mono">
-              {cell.points > 0 ? fmt(t.skills.points, { points: cell.points }) : t.skills.noPoints}
+              {cell.points > 0 ? formatPoints(t.skills.points, cell.points) : t.skills.noPoints}
             </span>
             {cell.state !== "unused" && (
               <span className="text-ink-subtle"> · {stateLabels[cell.state]}</span>
@@ -236,8 +235,6 @@ export async function SkillTree({
     toSlug: e.to.slug,
   }));
 
-  const inTree = skills.filter((s) => SKILL_GRAPH[s.slug]?.tree === treeSlug);
-
   return (
     <section aria-label={fmt(t.skills.treeLabel, { tree: tree.name })}>
       <div className="mb-3">
@@ -258,28 +255,42 @@ export async function SkillTree({
         }}
       />
 
-      {/* The readable version when the tiles cannot respond. */}
+      {/*
+        The readable version when the tiles cannot respond. Built from the
+        grid rather than the skill list so it follows the same reading order,
+        and so a build page's fallback carries the plan: without the points a
+        reader with no JavaScript got the tree's contents but not the advice,
+        which is the only reason the tree is on a build page at all.
+      */}
       <noscript>
         <ul className="mt-4 space-y-2 border-t border-border pt-3">
-          {inTree.map((skill) => {
-            const node = SKILL_GRAPH[skill.slug];
-            return (
-              <li key={skill.slug} className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
-                <Link
-                  href={r.skill(classSlug, skill.slug)}
-                  className="font-medium text-ember hover:text-ember-bright"
-                >
-                  {skill.name}
-                </Link>
-                <Badge tone="outline">
-                  {fmt(t.skills.unlocksValue, { level: node.requiredLevel })}
-                </Badge>
-                <span className="text-pretty text-ink-muted">
-                  <RichText>{skill.summary}</RichText>
-                </span>
-              </li>
-            );
-          })}
+          {grid.flatMap((row) =>
+            row.cells
+              .filter((cell) => cell !== null)
+              .map((cell) => (
+                <li key={cell.skill.slug} className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
+                  <Link
+                    href={r.skill(classSlug, cell.skill.slug)}
+                    className="font-medium text-ember hover:text-ember-bright"
+                  >
+                    {cell.skill.name}
+                  </Link>
+                  <Badge tone="outline">
+                    {fmt(t.skills.unlocksValue, { level: cell.node.requiredLevel })}
+                  </Badge>
+                  {showPoints && (
+                    <Badge tone={cell.points > 0 ? "ember" : "neutral"}>
+                      {cell.points > 0
+                        ? `${formatPoints(t.skills.points, cell.points)} · ${stateLabels[cell.state]}`
+                        : t.skills.noPoints}
+                    </Badge>
+                  )}
+                  <span className="text-pretty text-ink-muted">
+                    <RichText>{cell.skill.summary}</RichText>
+                  </span>
+                </li>
+              )),
+          )}
         </ul>
       </noscript>
     </section>

@@ -61,10 +61,8 @@ export function alternatesFor(locale: Locale, path = "") {
 /**
  * Interpolates `{placeholder}` tokens.
  *
- * Deliberately minimal: no pluralisation engine, no ICU MessageFormat. The two
- * places that genuinely need a plural (build counts) use explicit singular and
- * plural keys, which is honest about the fact that Portuguese and English
- * happen to agree on the rule here and would not for every language.
+ * Deliberately minimal: no ICU MessageFormat. Where a count decides the
+ * wording, the dictionary carries both forms and `plural()` picks one.
  */
 export function fmt(
   template: string,
@@ -73,4 +71,39 @@ export function fmt(
   return template.replace(/\{(\w+)\}/g, (match, key: string) =>
     key in values ? String(values[key]) : match,
   );
+}
+
+/** A string whose wording depends on a count. Both forms are required. */
+export interface Plural {
+  readonly one: string;
+  readonly other: string;
+}
+
+/**
+ * Picks the singular or plural form.
+ *
+ * `count === 1` rather than `Intl.PluralRules`, and the difference is not
+ * pedantry: CLDR classifies zero as *singular* in Portuguese (`one: i = 0..1`),
+ * so `Intl.PluralRules("pt-BR").select(0)` returns `"one"` and would render
+ * "0 ponto". Brazilian usage — and this product's copy — is "0 pontos". The
+ * rule below produces the right string in both languages the site ships.
+ *
+ * A language whose plural rule this does not fit (Polish, Russian, Arabic)
+ * would need a real rules engine, and the `Plural` shape would have to grow
+ * more forms. That is a deliberate future cost, not an oversight.
+ */
+export function plural(forms: Plural, count: number): string {
+  return count === 1 ? forms.one : forms.other;
+}
+
+/**
+ * A count of hard skill points, as text: "1 point", "20 points", "0 pontos".
+ *
+ * The single place a point count becomes a string. Every surface that shows
+ * one — tile, panel, table, budget line, skill page, the no-JavaScript
+ * fallback and the accessible name — goes through here, because "1 pts"
+ * shipped from three separate call sites each doing its own interpolation.
+ */
+export function formatPoints(forms: Plural, count: number): string {
+  return fmt(plural(forms, count), { points: count });
 }

@@ -607,9 +607,9 @@ export const enUS = {
     // no word the template already said gets repeated: an earlier version
     // announced "20 points, Optional, optional".
     ariaNoBuild: "{skill}, level {level}, {tree}.",
-    ariaBuild: "{skill}, level {level}, {tree}, {points} points, {classification}.",
-    // Separate key because "1 points" is what a screen reader reads otherwise.
-    ariaBuildOne: "{skill}, level {level}, {tree}, 1 point, {classification}.",
+    // `{points}` arrives already worded by `formatPoints`, so there is one
+    // build template rather than a second key existing only to say "1 point".
+    ariaBuild: "{skill}, level {level}, {tree}, {points}, {classification}.",
     ariaBuildUnused: "{skill}, level {level}, {tree}, {classification}.",
     classMaxed: "maxed and mandatory",
     classInvested: "mandatory",
@@ -619,7 +619,8 @@ export const enUS = {
     classUtility: "mandatory",
     classFlex: "optional",
     classUnused: "not used",
-    points: "{points} pts",
+    // The one point-count string. Read through `formatPoints`, never `fmt`.
+    points: { one: "{points} point", other: "{points} points" },
     noPoints: "not used",
     // ---- states ----
     stateMaxed: "Maxed",
@@ -634,7 +635,7 @@ export const enUS = {
     legendTitle: "Reading this tree",
     legendHardPoints: "Hard points only. Gear that grants +skills is not counted.",
     legendMandatory: "{points} of {cap} mandatory hard points",
-    legendFlex: "plus {points} optional",
+    legendFlex: { one: "plus {points} optional", other: "plus {points} optional" },
     // ---- skill page ----
     eyebrow: "Skill",
     atAGlance: "At a glance",
@@ -644,7 +645,6 @@ export const enUS = {
     unlocks: "Unlocks at",
     unlocksValue: "Level {level}",
     cap: "Hard cap",
-    capValue: "{level} points",
     type: "Type",
     element: "Element",
     manaCost: "Mana cost",

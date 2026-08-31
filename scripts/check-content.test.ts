@@ -38,6 +38,9 @@ import {
   MAX_HARD_POINTS,
   TIER_LEVELS,
 } from "./skill-graph-rules";
+import { MIN_PROSE_LENGTH, exitCodeFor, isUntranslatedProse } from "./content-rules";
+import { getBuilds as getLocalisedBuilds } from "../lib/registry";
+import { LOCALES } from "../lib/i18n/config";
 
 type MutableGraph = Record<Slug, { -readonly [K in keyof SkillGraphNode]: SkillGraphNode[K] } & {
   prerequisites: Slug[];
@@ -403,6 +406,71 @@ console.log("\nEnd-to-end control: a whole process, and no tracked file touched"
     after === before ? "" : `before=${before.split("\n").length} after=${after.split("\n").length} entries`,
   );
 }
+
+// ===========================================================================
+console.log("\nUntranslated prose detection");
+// ===========================================================================
+
+{
+  const long = "Crushing Blow, Deadly Strike and Open Wounds, all on one boot.";
+  check("identical prose is reported", isUntranslatedProse(long, long));
+  check(
+    "translated prose is not",
+    !isUntranslatedProse(long, "Crushing Blow, Deadly Strike e Open Wounds numa bota."),
+  );
+  // Affix names and stat lines are identical in both locales by ADR 0003.
+  check("a short identical string is not reported", !isUntranslatedProse("Magic find.", "Magic find."));
+  check(
+    "the boundary is exclusive",
+    !isUntranslatedProse("x".repeat(MIN_PROSE_LENGTH), "x".repeat(MIN_PROSE_LENGTH)) &&
+      isUntranslatedProse("x".repeat(MIN_PROSE_LENGTH + 1), "x".repeat(MIN_PROSE_LENGTH + 1)),
+  );
+  check("a missing source is not reported", !isUntranslatedProse(undefined, "algo"));
+  check("a missing translation is not reported", !isUntranslatedProse(long, undefined));
+}
+
+// The rule against the real content, so this fails here as well as in the
+// checker if a gear pick ever falls back to English again.
+for (const locale of LOCALES.filter((l) => l !== DEFAULT_LOCALE)) {
+  const source = getLocalisedBuilds(DEFAULT_LOCALE);
+  const translated = getLocalisedBuilds(locale);
+  const offenders: string[] = [];
+  for (const build of source) {
+    const twin = translated.find((b) => b.slug === build.slug);
+    build.gearSets.forEach((set) => {
+      const other = twin?.gearSets.find((g) => g.tier === set.tier);
+      set.slots.forEach((slot) => {
+        const otherSlot = other?.slots.find((x) => x.slot === slot.slot);
+        slot.picks.forEach((pick, i) => {
+          if (isUntranslatedProse(pick.why, otherSlot?.picks?.[i]?.why)) {
+            offenders.push(`${build.slug} ${set.tier} ${slot.slot}#${i}`);
+          }
+          (pick.alternatives ?? []).forEach((alt, ai) => {
+            const twinAlt = otherSlot?.picks?.[i]?.alternatives?.[ai]?.why;
+            if (isUntranslatedProse(alt.why, twinAlt)) {
+              offenders.push(`${build.slug} ${set.tier} ${slot.slot}#${i} alt${ai}`);
+            }
+          });
+        });
+      });
+    });
+  }
+  check(
+    `${locale}: no gear pick reason falls back to ${DEFAULT_LOCALE}`,
+    offenders.length === 0,
+    offenders.slice(0, 4).join(", "),
+  );
+}
+
+// ===========================================================================
+console.log("\nThe gate's verdict");
+// ===========================================================================
+
+check("a clean run exits 0", exitCodeFor([], []) === 0);
+check("problems fail", exitCodeFor(["x"], []) === 1);
+// The rule this slice exists to add: a known warning is not a silent success.
+check("warnings alone fail", exitCodeFor([], ["w"]) === 1);
+check("both fail", exitCodeFor(["x"], ["w"]) === 1);
 
 // ===========================================================================
 console.log(

@@ -19,7 +19,7 @@ import {
   getSkillsForClass,
   getSkillTree,
 } from "@/lib/registry";
-import { fmt, isLocale } from "@/lib/i18n";
+import { fmt, formatPoints, isLocale } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
 import { skillKindLabels } from "@/lib/labels";
@@ -134,7 +134,7 @@ export default async function SkillPage(
             rows={[
               [t.skills.tree, tree?.name ?? "—"],
               [t.skills.unlocks, fmt(t.skills.unlocksValue, { level: node.requiredLevel })],
-              [t.skills.cap, fmt(t.skills.capValue, { level: node.maxLevel })],
+              [t.skills.cap, formatPoints(t.skills.points, node.maxLevel)],
               [t.skills.type, kinds[skill.kind]],
               ...(skill.element
                 ? [[t.skills.element, <ElementBadge key="el" element={skill.element} />]]
@@ -268,7 +268,7 @@ export default async function SkillPage(
                   {build.name}
                 </Link>,
                 <span key="p" className="font-mono">
-                  {fmt(t.skills.points, { points: allocation.points })}
+                  {formatPoints(t.skills.points, allocation.points)}
                 </span>,
               ])}
             />

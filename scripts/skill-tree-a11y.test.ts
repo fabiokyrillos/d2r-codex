@@ -12,7 +12,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { dictionaryFor } from "../lib/i18n";
+import { dictionaryFor, formatPoints, plural } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { getBuild, getSkill } from "../lib/registry";
 import {
@@ -41,8 +41,8 @@ const stringsFor = (locale: (typeof LOCALES)[number]): SkillAriaStrings => {
   return {
     noBuild: t.ariaNoBuild,
     build: t.ariaBuild,
-    buildOne: t.ariaBuildOne,
     buildUnused: t.ariaBuildUnused,
+    points: t.points,
     classification: {
       maxed: t.classMaxed,
       invested: t.classInvested,
@@ -55,6 +55,49 @@ const stringsFor = (locale: (typeof LOCALES)[number]): SkillAriaStrings => {
     },
   };
 };
+
+// ===========================================================================
+console.log("\nPoint counts are pluralised");
+// ===========================================================================
+
+/*
+ * "1 pts" shipped on tiles, panels and tables because three call sites each
+ * interpolated a count into one template. The wording now comes from one
+ * function, so these cases pin the wording itself rather than any one surface.
+ */
+const EXPECTED: Record<string, Record<number, string>> = {
+  "en-us": { 0: "0 points", 1: "1 point", 2: "2 points", 20: "20 points" },
+  "pt-br": { 0: "0 pontos", 1: "1 ponto", 2: "2 pontos", 20: "20 pontos" },
+};
+
+for (const locale of LOCALES) {
+  const forms = dictionaryFor(locale).skills.points;
+  for (const [count, want] of Object.entries(EXPECTED[locale])) {
+    const got = formatPoints(forms, Number(count));
+    check(`${locale}: ${count} reads "${want}"`, got === want, got);
+  }
+  // Zero is the case CLDR and usage disagree on in Portuguese: the library
+  // rule would say "0 ponto". Pinned so a future switch to Intl.PluralRules
+  // cannot quietly change it.
+  check(
+    `${locale}: zero takes the plural form`,
+    formatPoints(forms, 0) === fmtOther(forms, 0),
+    formatPoints(forms, 0),
+  );
+  check(
+    `${locale}: only 1 takes the singular`,
+    [0, 2, 3, 11, 20, 110].every((n) => plural(forms, n) === forms.other) &&
+      plural(forms, 1) === forms.one,
+  );
+  check(
+    `${locale}: no count leaves an unfilled placeholder`,
+    [0, 1, 2, 20, 110].every((n) => !/\{[a-z]+\}/i.test(formatPoints(forms, n))),
+  );
+}
+
+function fmtOther(forms: { one: string; other: string }, n: number): string {
+  return forms.other.replace("{points}", String(n));
+}
 
 // ===========================================================================
 console.log("\nAccessible name composition");
@@ -114,8 +157,19 @@ for (const locale of LOCALES) {
 
   check(
     `${locale}: one point reads "1 point", never "1 points"`,
-    !/\b1 (points|pontos)\b/.test(skillAriaLabel(tile("prerequisite", 1), s, true)),
+    skillAriaLabel(tile("prerequisite", 1), s, true).includes(EXPECTED[locale][1]) &&
+      !/1 (points|pontos)/.test(skillAriaLabel(tile("prerequisite", 1), s, true)),
     skillAriaLabel(tile("prerequisite", 1), s, true),
+  );
+  check(
+    `${locale}: twenty points reads "${EXPECTED[locale][20]}"`,
+    skillAriaLabel(tile("maxed", 20), s, true).includes(EXPECTED[locale][20]),
+    skillAriaLabel(tile("maxed", 20), s, true),
+  );
+  check(
+    `${locale}: two points reads "${EXPECTED[locale][2]}"`,
+    skillAriaLabel(tile("invested", 2), s, true).includes(EXPECTED[locale][2]),
+    skillAriaLabel(tile("invested", 2), s, true),
   );
 
   check(
@@ -292,6 +346,24 @@ for (const [label, file, buildSlug] of pages) {
       );
     }
 
+    // Pluralisation as shipped. A one-point allocation is the case that was
+    // wrong on every surface, so it is checked in the HTML rather than only
+    // against the pure composer.
+    const onePoint = build.skills.find((a) => a.points === 1);
+    check(`${locale}: the plan has a one-point allocation to check`, Boolean(onePoint), buildSlug);
+    if (onePoint) {
+      const label = labels.find((l) => l.startsWith(nameOf(locale, onePoint.skill) ?? "\u0000"));
+      check(
+        `${label ? "" : "(missing) "}${locale}: the one-point tile is announced "${EXPECTED[locale][1]}"`,
+        Boolean(label?.includes(EXPECTED[locale][1])),
+        label,
+      );
+      check(
+        `${locale}: the one-point tile face reads "${EXPECTED[locale][1]}"`,
+        html.includes(EXPECTED[locale][1]),
+      );
+    }
+
     const maxedAlloc = build.skills.find(
       (a) => tileState(a, SKILL_GRAPH[a.skill]?.maxLevel ?? 20) === "maxed",
     );
@@ -336,6 +408,24 @@ for (const [label, file, buildSlug] of pages) {
   check(`${label}: the fallback links 30 distinct skills`,
     new Set(fallbackLinks.map((m) => m[1])).size === 30,
     `${new Set(fallbackLinks.map((m) => m[1])).size}`);
+
+  // On a build page the fallback is the whole experience, so it has to carry
+  // the plan and not just the tree's contents.
+  if (buildSlug !== null) {
+    const build = getBuild(locale, buildSlug)!;
+    const worded = noscript.includes(EXPECTED[locale][20]) || noscript.includes(EXPECTED[locale][1]);
+    check(`${label}: the no-JavaScript fallback states the hard points`, worded);
+    const maxed = build.skills.find((a) => a.points === 20);
+    check(
+      `${label}: and names a maxed skill's ${EXPECTED[locale][20]}`,
+      Boolean(maxed) && noscript.includes(EXPECTED[locale][20]),
+    );
+  }
+
+  // The defect itself, on every page this suite reads.
+  for (const bad of ["1 pts", "1 points", "1 pontos"]) {
+    check(`${label}: no "${bad}" anywhere in the HTML`, !html.includes(bad));
+  }
 }
 
 // ===========================================================================

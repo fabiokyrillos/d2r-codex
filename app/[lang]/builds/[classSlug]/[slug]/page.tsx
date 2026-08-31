@@ -25,7 +25,7 @@ import {
   getMercenary,
   getSkill,
 } from "@/lib/registry";
-import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, formatPoints, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import {
@@ -243,7 +243,7 @@ export default async function BuildPage(
                     {flexPointsSpent > 0 && (
                       <span className="text-ink-subtle">
                         {" "}
-                        {fmt(t.skills.legendFlex, { points: flexPointsSpent })}
+                        {formatPoints(t.skills.legendFlex, flexPointsSpent)}
                       </span>
                     )}
                   </p>

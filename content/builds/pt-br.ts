@@ -1466,7 +1466,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             why: "Troque o dano por +65 em todas as resistências e 8% de redução de dano. A escolha certa no Hardcore.",
           },
           "helm-0": { why: "Life steal e redução de dano, barato." },
-          "boots-0": { why: "Crushing Blow, Deadly Strike, Open Wounds." },
+          "boots-0": { why: "Crushing Blow, Deadly Strike e Open Wounds — as três numa bota só." },
           "belt-0": { why: "Redução de dano e life steal." },
           "amulet-0": { why: "Skills, velocidade de ataque, Deadly Strike." },
           "ring1-0": { why: "Cannot Be Frozen." },
