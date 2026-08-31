@@ -395,15 +395,24 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   "resist-fire": {
     summary: "Aumenta a resistência a fogo, e o teto máximo dela.",
     mechanics: [
-      "O aumento da resistência máxima é a parte valiosa: ele eleva o próprio teto de 75%.",
+      "O aumento da resistência máxima é a parte valiosa: ele eleva o próprio teto de 75%, em direção ao limite de 95% do jogo.",
+      "**Ele vale dois valores diferentes.** Com a aura ativa você ganha +1% de resistência máxima a fogo por ponto duro. Com ela desligada você mantém metade, arredondada para baixo. Vinte pontos duros são +20% ativa, +10% passiva.",
+      "Os dois números leem o nível *base* da skill, então +skills de equipamento não aumentam nenhum dos dois. Este é um dos poucos lugares em que só o ponto duro conta.",
     ],
   },
-  "resist-cold": { summary: "Aumenta a resistência a frio e o máximo dela." },
+  "resist-cold": {
+    summary: "Aumenta a resistência a frio e o máximo dela.",
+    mechanics: [
+      "Mesma regra de dois níveis das outras duas auras de resistência: +1% de resistência máxima a frio por ponto duro enquanto ela roda, metade disso arredondada para baixo enquanto não roda, e +skills de equipamento não aumentam nenhum dos dois.",
+    ],
+  },
   defiance: { summary: "Aumenta a defesa sua e do seu grupo." },
   "resist-lightning": {
     summary: "Aumenta a resistência a raio e o máximo dela.",
     mechanics: [
-      "Frequentemente maximizada por último num Hammerdin, especificamente pela resistência máxima a raio, que é o que torna a Conviction do Uber Mephisto sobrevivível.",
+      "**+1% de resistência máxima a raio por ponto duro enquanto a aura está ativa, e metade disso — arredondada para baixo — enquanto não está.** Vinte pontos duros são +20% ativa ou +10% passiva, contra o limite de 95% do jogo.",
+      "Os dois números leem o nível *base*, então +skills de equipamento não aumentam nenhum. Um único ponto vale +1% ativa e absolutamente nada passiva, porque metade de um arredonda para zero.",
+      "Às vezes maximizada num Hammerdin para o Uber Tristram. Leia os dois números antes de comprometer vinte pontos: manter a Concentration ativa significa que você está comprando a metade passiva.",
     ],
   },
   cleansing: {

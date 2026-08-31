@@ -44,7 +44,7 @@ export const avenger: Build = {
     "Four damage types on every swing — you will almost never meet something that resists all of them",
     "Conviction strips resistance from everything nearby, which makes you a strong party member for elemental characters",
     "Cheap to gear. A Kingslayer supplies +1 Vengeance on its own, and the build clears Hell without a single high rune",
-    "Maxing three resistance skills gives you unusually high maximum resistances as a side effect",
+    "Maxing three resistance skills raises all three of your maximum resistances by 10% passively — real survivability, bought with points you were spending anyway",
     "No sunder charm, no Infinity, no immunity shopping list",
   ],
   weaknesses: [
@@ -80,7 +80,7 @@ export const avenger: Build = {
       points: 20,
       role: "synergy",
       order: 2,
-      note: "A 10%-per-level fire synergy for Vengeance, and it raises your maximum fire resistance while you do it. The best point-for-point investment in the build.",
+      note: "A 10%-per-level fire synergy for Vengeance, and it carries +10% maximum fire resistance passively at 20 hard points — +20% if you ever run it instead of Conviction. The best point-for-point investment in the build.",
     },
     {
       skill: "resist-lightning",
@@ -140,7 +140,7 @@ export const avenger: Build = {
     notes: [
       "**Vengeance has a real mana cost per attack**, unlike Zeal. An Insight on the mercenary is not optional on this build, it is the mana plan.",
       "**Check block with Holy Shield active** — the usual Paladin trap, and it matters more here because you only have one point in it.",
-      "Your maximum resistances are unusually high because three resistance skills are maxed as synergies. That is free survivability and it is worth knowing before you over-buy resistance gear.",
+      "**All three maximum resistances sit at 85% instead of 75%**, because the three Resist auras are maxed as Vengeance synergies and each grants half its maximum-resistance bonus passively. You only get the full +20% on whichever one is the active aura, and yours is Conviction — so read it as a permanent +10% across the board. Worth knowing before you over-buy resistance gear.",
     ],
   },
   breakpoints: [

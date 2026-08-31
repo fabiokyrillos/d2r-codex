@@ -591,6 +591,38 @@ for (const locale of TRANSLATED) {
 }
 
 // ---------------------------------------------------------------------------
+// Skill mechanics array parity
+// ---------------------------------------------------------------------------
+
+/*
+ * `Skill.mechanics` is another positional array replaced wholesale by a locale
+ * overlay. Correcting the Resist auras' maximum-resistance rule added two
+ * bullets to three skills; without this, a pt-BR overlay left at one bullet
+ * would have rendered the old, wrong explanation with nothing complaining.
+ */
+console.log("\nSkill mechanics arrays:");
+for (const locale of TRANSLATED) {
+  const source = getSkills(DEFAULT_LOCALE);
+  const translated = getSkills(locale);
+  let mismatches = 0;
+  for (const skill of source) {
+    const other = translated.find((s) => s.slug === skill.slug);
+    if (!other) continue;
+    const a = skill.mechanics?.length ?? 0;
+    const b = other.mechanics?.length ?? 0;
+    if (a !== b) {
+      mismatches++;
+      problems.push(
+        `${skill.slug}: ${locale} has ${b} mechanics bullets, source has ${a}`,
+      );
+    }
+  }
+  console.log(
+    `  ${locale}  ${source.length - mismatches}/${source.length} skills match the source bullet count`,
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Mechanics article structure parity
 // ---------------------------------------------------------------------------
 

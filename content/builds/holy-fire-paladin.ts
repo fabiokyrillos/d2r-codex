@@ -81,7 +81,7 @@ export const holyFirePaladin: Build = {
       points: 20,
       role: "synergy",
       order: 2,
-      note: "A Holy Fire synergy, and it raises your own maximum fire resistance at the same time. The best points in the build.",
+      note: "A Holy Fire synergy, and at 20 hard points it also carries **+10% maximum fire resistance passively** — the full +20% only if Resist Fire is the aura you are running, which it is not. The best points in the build.",
     },
     {
       skill: "salvation",
@@ -165,7 +165,7 @@ export const holyFirePaladin: Build = {
     vitality: "Everything else.",
     energy: "None.",
     notes: [
-      "**Your own maximum fire resistance goes up as a side effect** of maxing Resist Fire for the synergy. That is real survivability and it is easy to forget you have it.",
+      "**Your own maximum fire resistance goes up as a side effect** of maxing Resist Fire for the synergy — by 10%, to an 85% cap, because a Paladin keeps half the bonus passively and you are running Holy Fire rather than Resist Fire. Real survivability, and easy to forget you have it.",
       "**Check block with Holy Shield running**, as with every Paladin.",
       "Cannot Be Frozen is not optional on any Zeal-based build, because being chilled stretches the attack animation you are locked into.",
     ],

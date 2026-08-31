@@ -64,14 +64,14 @@ export const tesladin: Build = {
       points: 20,
       role: "synergy",
       order: 1,
-      note: "A Holy Shock synergy, and it raises your maximum lightning resistance while it does it. Max it first — it is the largest damage increase available and it costs nothing but points.",
+      note: "A Holy Shock synergy, and at 20 hard points it also carries **+10% maximum lightning resistance passively** — the full +20% would need it as your active aura, and yours is Conviction. Max it first: it is the largest damage increase available and it costs nothing but points.",
     },
     {
       skill: "salvation",
       points: 20,
       role: "synergy",
       order: 2,
-      note: "The second Holy Shock synergy. It is also a resistance aura you can swap to, which occasionally matters.",
+      note: "The second Holy Shock synergy. It is also a resistance aura you can swap to, which occasionally matters — though unlike the three Resist auras it raises *current* resistance only, with no maximum-resistance component and nothing passive.",
     },
     {
       skill: "conviction",

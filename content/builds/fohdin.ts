@@ -111,7 +111,7 @@ export const fohdin: Build = {
     { skill: "redemption", points: 1, role: "utility", note: "Life and mana from corpses. On a caster with no life steal this is the whole sustain plan." },
     { skill: "resist-fire", points: 1, role: "utility" },
     { skill: "resist-cold", points: 1, role: "utility" },
-    { skill: "resist-lightning", points: 1, role: "utility", note: "Maximum lightning resistance, which matters in exactly the zones you want to farm." },
+    { skill: "resist-lightning", points: 1, role: "utility", note: "An aura you can swap to for its lightning resistance. **One hard point buys no passive maximum resistance at all** — the passive is half, rounded down — so this point is the aura itself, not a background bonus." },
     { skill: "salvation", points: 1, role: "utility", note: "A one-point resistance aura for the moments Conviction is the wrong choice." },
     {
       skill: "zeal",
@@ -149,7 +149,7 @@ export const fohdin: Build = {
     "**The build is genuinely point-hungry.** Four maxed skills plus the prerequisite chains to Conviction and Fist of the Heavens is most of a character. Expect to be finishing Holy Shield somewhere in the high eighties.",
     "**Smite hybrid (\"Vindicator Templar\").** Put your remaining points into Fanaticism, carry a Grief, and bind Smite as a second button. Fist of the Heavens clears the room and Smite kills the boss. It costs you nothing structurally because Smite is already a prerequisite.",
     "**Blessed Hammer hybrid (\"Tri-Brid\").** Blessed Hammer is already a prerequisite; investing in it plus Concentration gives you a magic-damage answer for the packs Conviction cannot help with. Pair with Heaven's Light and Gore Rider for a Crushing Blow bossing option.",
-    "**More Resist Lightning** if you farm zones full of lightning enemies. It raises your maximum resistance rather than your current one, which is the half Conviction cannot take from you.",
+    "**More Resist Lightning** if you farm zones full of lightning enemies. It raises your maximum resistance, which is the half an enemy Conviction cannot take from you — but note which number you are buying: half the bonus, rounded down, while Conviction is your active aura, and the full amount only if you switch to Resist Lightning and give Conviction up. Ten hard points is +5% passive.",
   ],
   stats: {
     strength: "Only what your gear needs. A Spirit Monarch asks 156 and is the usual reason the number is not tiny; a Herald of Zakarum asks far less.",

@@ -371,7 +371,9 @@ export const paladinSkills: Skill[] = [
     requiredLevel: 1,
     summary: "Raises fire resistance, and the maximum fire resistance cap.",
     mechanics: [
-      "The maximum-resistance increase is the valuable part — it raises the 75% cap itself.",
+      "The maximum-resistance increase is the valuable part — it raises the 75% cap itself, toward the game's 95% ceiling.",
+      "**It is worth two different amounts.** With the aura running you get +1% maximum fire resistance per hard point. With it switched off you keep half, rounded down. Twenty hard points is +20% active, +10% passive.",
+      "Both figures read the skill's *base* level, so +skills from gear raise neither. This is one of the few places where hard points are the only thing that counts.",
     ],
     confidence: "verified",
   },
@@ -384,6 +386,9 @@ export const paladinSkills: Skill[] = [
     element: "cold",
     requiredLevel: 6,
     summary: "Raises cold resistance and its maximum.",
+    mechanics: [
+      "Same two-tier rule as the other two Resist auras: +1% maximum cold resistance per hard point while it runs, half of that rounded down while it does not, and gear +skills raise neither.",
+    ],
     confidence: "verified",
   },
   {
@@ -407,7 +412,9 @@ export const paladinSkills: Skill[] = [
     requiredLevel: 12,
     summary: "Raises lightning resistance and its maximum.",
     mechanics: [
-      "Frequently maxed last on a Hammerdin specifically for the maximum lightning resistance, which is what makes Uber Mephisto's Conviction survivable.",
+      "**+1% maximum lightning resistance per hard point while the aura is running, and half that — rounded down — while it is not.** Twenty hard points is +20% active or +10% passive, against the game's 95% ceiling.",
+      "Both figures read *base* level, so gear +skills raise neither. A single point is worth +1% active and nothing at all passively, because half of one rounds down to zero.",
+      "Sometimes maxed on a Hammerdin for Uber Tristram. Read the two numbers before committing twenty points: keeping Concentration running means you are buying the passive half.",
     ],
     confidence: "verified",
   },

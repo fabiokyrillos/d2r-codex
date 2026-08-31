@@ -542,7 +542,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "Um ponto em **Fanaticism** vale a pena assim que os pré-requisitos permitirem — custa quase nada e é uma aura forte de grupo.",
-      "**Salvation** é uma troca útil de um ponto para o Uber Tristram e outros conteúdos hostis a resistência.",
+      "**Salvation** é uma troca útil de um ponto para o Uber Tristram e outros conteúdos hostis a resistência. Repare que ela aumenta apenas a resistência *atual* — diferente das três auras de Resist, não tem componente nenhum de resistência máxima.",
+      "**A variante de 20 pontos em Resist Lightning, e o que ela realmente compra.** O Uber Mephisto roda Conviction, que arrasta a sua resistência a raio para baixo; um *teto* mais alto é o que te segura no topo dessa queda. Vinte pontos duros sobem o teto em 20% enquanto Resist Lightning é a aura ativa, ou em 10% enquanto não é. Um Hammerdin mantém a **Concentration** ativa — é o multiplicador de dano em que a build inteira se apoia — então o valor honesto desta variante é **+10% passivo, sempre ligado, de 75% para 85%**. Trocar a aura pelos +20% completos significa enfrentar os Ubers com hammers sem buff, que costuma ser a troca pior.",
+      "**Por que é variante de Uber e não o plano de PvM.** Vinte pontos são 18% do personagem. Fora do Uber Tristram nada pune ter teto de 85% em vez de 75%, e esses pontos rendem mais no Holy Shield ou como auras de um ponto. Pegue se o Uber Tristram for o objetivo deste personagem; ignore caso contrário.",
       "Pontos extras além das cinco skills maximizadas vão para **Holy Shield**, por mais defesa e bloqueio, ou para **Redemption**, por sustentação mais rápida.",
     ],
     statPlan: {
@@ -576,7 +578,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       concentration:
         "Sua aura ativa. Multiplica o dano do hammer diretamente — não é sinergia, precisa estar rodando.",
       "blessed-aim": "+14% de dano mágico por nível. Você nunca vai ativar esta aura.",
-      "resist-lightning": "**A variante para Uber Tristram, não a build principal.** Cada ponto duro é +1% de resistência máxima a raio, e o jogo lê o nível *base* aqui, então +skills de equipamento não fazem nada. Vinte pontos movem o teto de 75% para 95%, que é o que torna a Conviction do Uber Mephisto sobrevivível. Fora do Uber Tristram, esses vinte pontos rendem mais em outro lugar.",
+      "resist-lightning": "**A variante para Uber Tristram, não a build principal — e ela vale dois valores diferentes.** Com a aura rodando, vinte pontos duros dão +20% de resistência máxima a raio, levando o teto de 75% para 95%. Mas um Hammerdin roda **Concentration**, e só uma aura fica ativa por vez, então na prática você fica com a metade passiva: **+10%, teto de 85%**. Os dois números leem o nível *base*, então +skills de equipamento não aumentam nenhum. Veja os pontos flexíveis abaixo para quando cada um se aplica.",
       "holy-shield":
         "Um ponto fixo. +skills sobe bem além disso, e é o que mantém o seu bloqueio no máximo.",
       redemption:
@@ -950,7 +952,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "**Tudo além das quatro skills maximizadas é opcional.** Um Smiter está plenamente funcional por volta do nível 85, e os pontos restantes são conforto, não capacidade.",
-      "**Mais Resist Lightning** é a melhor das opções restantes se o Uber Mephisto estiver te matando. Cada ponto sobe a sua resistência máxima a raio, que a Conviction não consegue tirar.",
+      "**Mais Resist Lightning** é a melhor das opções restantes se o Uber Mephisto estiver te matando. Ela sobe a sua resistência máxima a raio, que é a metade que a Conviction inimiga não consegue tirar — mas repare qual número você está comprando: metade do bônus, arredondada para baixo, enquanto a Conviction for a sua aura ativa, e o valor cheio só se você trocar para Resist Lightning e abrir mão da Conviction. Dez pontos duros são +5% passivos.",
       "**Mais Vigor** se você joga sem Enigma. Velocidade de corrida é a diferença entre uma run de Ubers de quinze minutos e uma de nove.",
       "**Increased Attack Speed não é publicado como tabela de breakpoint neste site.** Os limiares de frame do Smite dependem do modificador de velocidade da sua arma e dos dados de animação do próprio jogo, e nenhuma fonte que consideramos confiável publica isso. Fanaticism sozinho fornece de 10 a 40% e o Grief mais 30 a 40%, o que na prática resolve — mas preferimos dizer isso a imprimir um número que não conseguimos verificar.",
     ],
@@ -991,7 +993,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       redemption:
         "Transforma cadáveres em vida e mana. Numa build sem life steal, é a sua recuperação entre lutas.",
       "resist-lightning":
-        "Aumenta a resistência máxima a raio, que é justamente o que a aura de Conviction do Uber Mephisto está tentando tirar de você.",
+        "Uma aura para a qual trocar pela resistência a raio. **Um ponto duro não compra resistência máxima passiva nenhuma** — o passivo é metade, arredondado para baixo — então este ponto é a aura em si, não um bônus de fundo.",
       salvation:
         "Uma troca de um ponto para a entrada em Uber Tristram, onde toda resistência importa mais que qualquer aura de dano.",
       charge: "Mobilidade gratuita antes do Enigma. Não é dano — é transporte.",
@@ -1868,7 +1870,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Quatro tipos de dano em cada golpe — você quase nunca vai achar algo que resista a todos",
       "A Conviction arranca resistência de tudo por perto, o que te torna um bom membro de party para personagens elementais",
       "Barata de equipar. Um Kingslayer sozinho já dá +1 em Vengeance, e a build limpa o Hell sem uma única runa alta",
-      "Maximizar três skills de resistência dá, de brinde, resistências máximas incomumente altas",
+      "Maximizar três skills de resistência sobe as suas três resistências máximas em 10% passivamente — sobrevivência de verdade, comprada com pontos que você já ia gastar",
       "Sem sunder charm, sem Infinity, sem lista de compras contra imunidade",
     ],
     weaknesses: [
@@ -1895,7 +1897,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       notes: [
         "**O Vengeance tem custo de mana real por ataque**, diferente do Zeal. Um Insight no mercenário não é opcional nesta build, é o plano de mana.",
         "**Confira o bloqueio com o Holy Shield ativo** — a armadilha habitual de Paladin, e aqui importa mais porque você só tem um ponto nele.",
-        "As suas resistências máximas ficam incomumente altas porque três skills de resistência estão maximizadas como sinergia. Isso é sobrevivência de graça e vale saber antes de comprar equipamento de resistência a mais.",
+        "**As suas três resistências máximas ficam em 85% em vez de 75%**, porque as três auras de Resist estão maximizadas como sinergias do Vengeance e cada uma concede metade do bônus de resistência máxima passivamente. Você só recebe os +20% completos naquela que for a aura ativa, e a sua é a Conviction — então leia como +10% permanentes em tudo. Vale saber antes de comprar equipamento de resistência a mais.",
       ],
     },
     breakpointWhy: {
@@ -1907,7 +1909,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       vengeance:
         "70% de dano no nível 1 e +6% por nível, além da conversão elemental. Maximize primeiro — todo o resto é multiplicador em cima dele.",
       "resist-fire":
-        "Sinergia de fogo do Vengeance a 10% por nível, e ainda sobe a sua resistência máxima a fogo. O melhor investimento por ponto da build.",
+        "Sinergia de fogo do Vengeance a 10% por nível, e carrega +10% de resistência máxima a fogo passivamente com 20 pontos duros — +20% se você algum dia rodá-la no lugar da Conviction. O melhor investimento por ponto da build.",
       "resist-lightning":
         "Os mesmos 10% por nível, para a parte de raio. Vem antes do frio porque dano de raio no Hell é o que mata Paladins.",
       "resist-cold":
@@ -1945,7 +1947,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     selfFoundNotes:
       "Um dos Paladins mais fortes para self-found, e é daqui que vem a fama de a build ser barata. Kingslayer são quatro runas médias e já fornece +1 em Vengeance sozinho; Rhyme são duas das runas mais baratas do jogo; Treachery são três. Nada do dano vem de runas altas — vem de pontos de skill, que são de graça. Um Avenger self-found limpa o Hell sem um único item que valeria a pena trocar. O que ele não consegue resolver sozinho é o déficit de pontos de skill, porque isso precisa de equipamento com +skills.",
     hardcoreNotes:
-      "Razoável no Hardcore, mas não é o Paladin mais seguro, e o motivo é o orçamento de pontos: você quase certamente não tem bloqueio máximo, porque o Holy Shield perdeu a disputa para as sinergias de dano. Compense com Chains of Honor em vez de Enigma, mantenha Battle Orders ativo, e trate o **Iron Maiden** como a coisa específica que te mata — a parte física do Vengeance reflete, e um ataque rápido contra uma maldição de dano refletido é letal. As resistências máximas altas que vêm de graça com as três sinergias maximizadas são uma vantagem genuína no Hardcore e compensam em parte o problema do bloqueio.",
+      "Razoável no Hardcore, mas não é o Paladin mais seguro, e o motivo é o orçamento de pontos: você quase certamente não tem bloqueio máximo, porque o Holy Shield perdeu a disputa para as sinergias de dano. Compense com Chains of Honor em vez de Enigma, mantenha Battle Orders ativo, e trate o **Iron Maiden** como a coisa específica que te mata — a parte física do Vengeance reflete, e um ataque rápido contra uma maldição de dano refletido é letal. Os +10% passivos em cada resistência máxima, que vêm junto com as três sinergias maximizadas, são uma vantagem genuína no Hardcore e compensam em parte o problema do bloqueio.",
     gearSets: {
       starter: {
         goal: "Chegar ao nível 30 sendo outra coisa. O Vengeance abre no 18, mas a Conviction não existe antes do 30.",
@@ -2186,9 +2188,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     skillNotes: {
       "resist-lightning":
-        "Uma sinergia do Holy Shock, e ainda sobe a sua resistência máxima a raio enquanto faz isso. Maximize primeiro — é o maior aumento de dano disponível e não custa nada além de pontos.",
+        "Uma sinergia do Holy Shock, e com 20 pontos duros carrega também **+10% de resistência máxima a raio passivamente** — os +20% completos exigiriam ela como aura ativa, e a sua é a Conviction. Maximize primeiro: é o maior aumento de dano disponível e não custa nada além de pontos.",
       salvation:
-        "A segunda sinergia do Holy Shock. Também é uma aura de resistência para a qual trocar, o que ocasionalmente importa.",
+        "A segunda sinergia do Holy Shock. Também é uma aura de resistência para a qual trocar, o que ocasionalmente importa — embora, diferente das três auras de Resist, ela suba apenas a resistência *atual*, sem componente de resistência máxima e sem nada passivo.",
       conviction:
         "A sua aura selecionada. 30% de redução de resistência no nível 1 mais 5% por nível — é isso que empurra imunes a raio abaixo da linha para a aura do Dream conseguir feri-los.",
       "holy-shield":
@@ -2439,7 +2441,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       vitality: "Todo o resto.",
       energy: "Nenhum.",
       notes: [
-        "**A sua própria resistência máxima a fogo sobe como efeito colateral** de maximizar Resist Fire pela sinergia. Isso é sobrevivência real e é fácil esquecer que você tem.",
+        "**A sua própria resistência máxima a fogo sobe como efeito colateral** de maximizar Resist Fire pela sinergia — em 10%, para um teto de 85%, porque o Paladin mantém metade do bônus passivamente e você está rodando Holy Fire, não Resist Fire. Sobrevivência real, e é fácil esquecer que você tem.",
         "**Confira o bloqueio com o Holy Shield ativo**, como em todo Paladin.",
         "Cannot Be Frozen não é opcional em nenhuma build baseada em Zeal, porque ser congelado estica a animação de ataque na qual você fica preso.",
       ],
@@ -2453,9 +2455,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "holy-fire":
         "Disponível no nível 6, e é por isso que esta build carrega um personagem tão cedo. Raio 6 mais 1 por nível, então pontos ampliam a zona de morte além de aprofundá-la.",
       "resist-fire":
-        "Sinergia do Holy Fire, e sobe a sua própria resistência máxima a fogo ao mesmo tempo. Os melhores pontos da build.",
+        "Sinergia do Holy Fire, e com 20 pontos duros carrega também **+10% de resistência máxima a fogo passivamente** — os +20% completos só se Resist Fire for a aura que você está rodando, o que não é o caso. Os melhores pontos da build.",
       salvation:
-        "A segunda sinergia. Também é uma aura de resistência para a qual vale trocar quando a aura que você roda não está ajudando.",
+        "A segunda sinergia. Também é uma aura de resistência para a qual vale trocar quando a aura que você roda não está ajudando — embora ela suba apenas a resistência *atual*, sem componente de resistência máxima.",
       zeal:
         "A metade física, e a sua resposta contra imunes a fogo. Quatro pontos alcançam o teto de cinco golpes; o resto é dano.",
       "holy-shield":

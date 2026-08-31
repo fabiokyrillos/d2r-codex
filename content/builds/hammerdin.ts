@@ -84,7 +84,7 @@ export const hammerdin: Build = {
       points: 20,
       role: "flex",
       order: 5,
-      note: "**The Uber Tristram variant, not the core build.** Every hard point is +1% maximum lightning resistance, and the game reads *base* level here, so +skills from gear do nothing. Twenty points move the cap from 75% to 95%, which is what makes Uber Mephisto's Conviction survivable. Outside Uber Tristram these twenty points are better spent elsewhere.",
+      note: "**The Uber Tristram variant, not the core build — and it is worth two different amounts.** Running the aura, twenty hard points give +20% maximum lightning resistance, taking the cap from 75% to 95%. But a Hammerdin runs **Concentration**, and only one aura is active at a time, so in practice you keep the passive half: **+10%, to an 85% cap**. Both numbers read *base* level, so gear +skills raise neither. See the flex points below for when each applies.",
     },
     {
       skill: "holy-shield",
@@ -114,7 +114,9 @@ export const hammerdin: Build = {
   ],
   flexPoints: [
     "One point in **Fanaticism** is worth taking once prerequisites allow — it costs almost nothing and is a strong party aura.",
-    "**Salvation** is a useful one-point swap for Uber Tristram and other resistance-hostile content.",
+    "**Salvation** is a useful one-point swap for Uber Tristram and other resistance-hostile content. Note it raises *current* resistance only — unlike the three Resist auras it has no maximum-resistance component at all.",
+    "**The 20-point Resist Lightning variant, and what it actually buys.** Uber Mephisto runs Conviction, which drags your lightning resistance down; a higher *cap* is what keeps you at the top of that fall. Twenty hard points raise the cap by 20% while Resist Lightning is the active aura, or by 10% while it is not. A Hammerdin keeps **Concentration** active — it is the damage multiplier the whole build rests on — so the honest value of this variant is **+10% passive, always on, 75% to 85%**. Swapping the aura for the full +20% means fighting the Ubers with unbuffed hammers, which is usually the worse trade.",
+    "**Why it is an Uber variant and not the PvM plan.** Twenty points is 18% of the character. Outside Uber Tristram nothing punishes an 85% lightning cap rather than 75%, and those points do more in Holy Shield or as one-point auras. Take it if Uber Tristram is what this character is for; skip it otherwise.",
     "Extra points beyond the five maxed skills go into **Holy Shield** for more defence and block, or **Redemption** for faster sustain.",
   ],
 
