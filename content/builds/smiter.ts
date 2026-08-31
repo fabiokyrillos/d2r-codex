@@ -103,15 +103,15 @@ export const smiter: Build = {
       note: "Run speed and stamina. Worth one point on any character that walks anywhere.",
     },
     { skill: "cleansing", points: 1, role: "prerequisite" },
-    { skill: "meditation", points: 1, role: "prerequisite" },
+    { skill: "meditation", points: 1, role: "utility", note: "Mana regeneration for the party. Not a prerequisite for anything here — take it because it is useful." },
     {
       skill: "redemption",
       points: 1,
       role: "utility",
       note: "Turns corpses into life and mana. On a build with no life steal this is your between-fight recovery.",
     },
-    { skill: "resist-fire", points: 1, role: "prerequisite" },
-    { skill: "resist-cold", points: 1, role: "prerequisite" },
+    { skill: "resist-fire", points: 1, role: "utility" },
+    { skill: "resist-cold", points: 1, role: "utility" },
     {
       skill: "resist-lightning",
       points: 1,
@@ -130,6 +130,19 @@ export const smiter: Build = {
       role: "utility",
       note: "Free mobility before Enigma. Not damage — transport.",
     },
+    {
+      skill: "holy-bolt",
+      points: 1,
+      role: "prerequisite",
+      note: "Blessed Hammer's prerequisite, and therefore on the path to Holy Shield.",
+    },
+    {
+      skill: "blessed-hammer",
+      points: 1,
+      role: "prerequisite",
+      note: "**Holy Shield requires Blessed Hammer and Charge.** One point each; the Smiter never casts either.",
+    },
+  
   ],
   flexPoints: [
     "**Everything beyond the four maxed skills is optional.** A Smiter is fully functional at around level 85, and the remaining points are comfort rather than capability.",

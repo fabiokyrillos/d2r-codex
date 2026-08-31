@@ -9,15 +9,15 @@ import type { Build } from "@/lib/types";
  *
  * There is one structural fact that makes the page worth writing. **Frost Nova
  * is a level 6 skill**, but Cold Mastery — the thing that keeps its damage
- * relevant in Hell — sits at the end of the longest prerequisite chain in the
- * class: Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Frozen Orb, then Cold
- * Mastery at level 30. The elegant part is that three of those links are also
- * Frost Nova's own damage synergies, so the chain pays for itself. The awkward
- * part is that the finished build needs almost every point a character has:
+ * relevant in Hell — is a level 30 skill. Cold Mastery itself requires no
+ * prerequisite at all; what gates the build is character level, not a chain.
+ * The points still nearly all go somewhere, because Ice Bolt, Ice Blast and
+ * Glacial Spike are Frost Nova's damage synergies and Blizzard and Frozen Orb
+ * are two more:
  *
  * - Frost Nova 20 and Cold Mastery 20 = 40
  * - Ice Bolt, Ice Blast and Glacial Spike maxed as synergies = 60
- * - Blizzard and Frozen Orb as prerequisites = 2
+ * - Blizzard and Frozen Orb, two more synergies at one point each = 2
  * - Teleport, Warmth, Static Field and defensive utility = 6
  *
  * That is 108 of the 110 a level 99 character has. There is no slack at all.
@@ -41,7 +41,7 @@ export const frostNovaSorceress: Build = {
     "No aiming at all — the spell is centred on you",
     "Cold Mastery reduces enemy resistance rather than raising your damage, so the build ages well without expensive gear",
     "Very cheap. It reaches its ceiling without a single high rune, unlike the lightning Nova",
-    "Every synergy is also a prerequisite on the way to Cold Mastery, so no point is wasted",
+    "Five of its six damage synergies sit in the same tree, so the levelling points and the endgame points are the same points",
   ],
   weaknesses: [
     "**No slack in the skill plan at all** — the finished build is 108 of your 110 points",
@@ -99,14 +99,14 @@ export const frostNovaSorceress: Build = {
       order: 5,
       note: "The third synergy, the third link, and a genuine emergency freeze in its own right.",
     },
-    { skill: "blizzard", points: 1, role: "prerequisite", note: "On the way to Frozen Orb. One point." },
-    { skill: "frozen-orb", points: 1, role: "prerequisite", note: "Cold Mastery's prerequisite, and a serviceable ranged option for the things you would rather not walk into." },
+    { skill: "blizzard", points: 1, role: "synergy", note: "**A Frost Nova synergy**, not a prerequisite for Cold Mastery — which requires nothing at all." },
+    { skill: "frozen-orb", points: 1, role: "synergy", note: "**The other Frost Nova synergy.** Also a serviceable ranged option for packs you would rather not stand inside." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1." },
-    { skill: "charged-bolt", points: 1, role: "prerequisite" },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever**, and it is how you get into the middle." },
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life — your only real answer to a boss." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a freeze on attackers, stacking with the freeze you are already applying." },
+  
   ],
   flexPoints: [
     "**There are no flex points, and that is the honest answer.** The finished plan is 108 of 110. If you are below level 99 — and you are — the decision is which synergy to leave unfinished, not where to spend spare points. Glacial Spike is the usual answer, because its one-point emergency freeze is most of its value.",
@@ -568,7 +568,7 @@ export const frostNovaSorceress: Build = {
 
   levelingPath: {
     summary:
-      "Awkward, and worth understanding before you commit. Frost Nova is available at **level 6** but stays weak until Cold Mastery at 30, and Cold Mastery sits behind the longest prerequisite chain in the class — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Frozen Orb. The saving grace is that three of those links are Frost Nova's own synergies, so none of it is wasted. Level with Ice Blast and Glacial Spike, which you are maxing anyway, and switch to Frost Nova as your main button at 30. **No respec is required.**",
+      "Awkward, and worth understanding before you commit. Frost Nova is available at **level 6** but stays weak until Cold Mastery, and Cold Mastery is a level 30 skill. It requires nothing else — the wait is character level, not a prerequisite chain — so the honest framing is that you spend twenty-four levels playing a skill that is not yet good. The saving grace is that everything you level with is a Frost Nova synergy: Ice Bolt, Ice Blast and Glacial Spike are all maxed in the finished build. Switch to Frost Nova as your main button at 30. **No respec is required.**",
   },
 
   confidence: "verified",

@@ -79,11 +79,11 @@ export const blizzardSorceress: Build = {
     { skill: "teleport", points: 1, role: "utility", note: "One point. Never more." },
     { skill: "telekinesis", points: 1, role: "prerequisite", note: "Teleport prerequisite. Also picks up potions at range." },
     { skill: "static-field", points: 1, role: "utility", note: "Softens cold immunes for your mercenary. Ignores resistance." },
-    { skill: "charged-bolt", points: 1, role: "prerequisite", note: "Static Field and Telekinesis prerequisite." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Free defence and it freezes melee attackers." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1. Costs nothing." },
     { skill: "frost-nova", points: 1, role: "prerequisite" },
-    { skill: "frozen-orb", points: 1, role: "prerequisite", note: "Cold Mastery prerequisite. Useful in its own right while levelling." },
+    { skill: "frozen-orb", points: 1, role: "utility", note: "Not a prerequisite for anything here — Cold Mastery requires nothing. Take the point because a travelling orb covers what Blizzard's ground placement cannot." },
+  
   ],
   flexPoints: [
     "Every point after the four maxed skills goes into Cold Mastery.",

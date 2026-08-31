@@ -82,9 +82,9 @@ export const hammerdin: Build = {
     {
       skill: "resist-lightning",
       points: 20,
-      role: "utility",
+      role: "flex",
       order: 5,
-      note: "Max last, for the maximum lightning resistance. This is what makes Uber Mephisto's Conviction survivable.",
+      note: "**The Uber Tristram variant, not the core build.** Every hard point is +1% maximum lightning resistance, and the game reads *base* level here, so +skills from gear do nothing. Twenty points move the cap from 75% to 95%, which is what makes Uber Mephisto's Conviction survivable. Outside Uber Tristram these twenty points are better spent elsewhere.",
     },
     {
       skill: "holy-shield",
@@ -98,16 +98,19 @@ export const hammerdin: Build = {
       role: "utility",
       note: "Switch to it after a pack to refill life and mana from corpses. Replaces most potion use.",
     },
-    { skill: "cleansing", points: 1, role: "prerequisite", note: "Redemption prerequisite, and a genuine curse-duration swap." },
-    { skill: "meditation", points: 1, role: "prerequisite", note: "Redemption prerequisite." },
-    { skill: "prayer", points: 1, role: "prerequisite" },
+    { skill: "cleansing", points: 1, role: "prerequisite", note: "Vigor's prerequisite, together with Defiance, and a genuine curse-duration swap." },
+    { skill: "prayer", points: 1, role: "prerequisite", note: "Cleansing's prerequisite, and therefore on the path to Vigor." },
     { skill: "defiance", points: 1, role: "prerequisite", note: "Vigor prerequisite." },
     { skill: "might", points: 1, role: "prerequisite", note: "Blessed Aim prerequisite, and a usable early aura." },
-    { skill: "smite", points: 1, role: "prerequisite", note: "Holy Shield prerequisite. Also never misses, which is occasionally useful." },
-    { skill: "sacrifice", points: 1, role: "prerequisite" },
+    { skill: "smite", points: 1, role: "prerequisite", note: "Charge's prerequisite, and therefore Holy Shield's. Also never misses." },
     { skill: "holy-bolt", points: 1, role: "prerequisite", note: "Blessed Hammer prerequisite. Heals other players." },
-    { skill: "resist-fire", points: 1, role: "prerequisite" },
-    { skill: "resist-cold", points: 1, role: "prerequisite" },
+    {
+      skill: "charge",
+      points: 1,
+      role: "prerequisite",
+      note: "**Holy Shield requires Blessed Hammer and Charge.** Charge in turn requires Smite, so the pair costs two points, not one.",
+    },
+  
   ],
   flexPoints: [
     "One point in **Fanaticism** is worth taking once prerequisites allow — it costs almost nothing and is a strong party aura.",

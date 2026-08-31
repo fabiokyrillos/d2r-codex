@@ -15,9 +15,16 @@ import type { Build } from "@/lib/types";
  * data includes Salvation.)
  *
  * So a fully realised Avenger wants Vengeance 20, all three resistance skills
- * at 20, and Conviction at 20 — 100 points — plus roughly 13 more for the
- * prerequisite chains to Vengeance, Conviction, Holy Shield and Salvation.
- * That is **113 points against the 110 a level 99 character has**.
+ * at 20, and Conviction at 20 — 100 points — plus seven for the prerequisite
+ * chains: Sacrifice and Zeal to reach Vengeance, and Might, Holy Fire, Holy
+ * Freeze, Thorns and Sanctuary to reach Conviction. That is 107 of the 110 a
+ * level 99 character has.
+ *
+ * What it cannot afford is Holy Shield. The game requires Blessed Hammer and
+ * Charge for it, and Charge requires Smite — a five-point detour into a tree
+ * this build otherwise never opens. An earlier version of this page listed
+ * Holy Shield at one point, which was only possible because our prerequisite
+ * data was wrong.
  *
  * The build is therefore cheap in currency and expensive in levels. Both
  * sources were describing something true; neither said which resource it was
@@ -91,37 +98,34 @@ export const avenger: Build = {
     },
     {
       skill: "conviction",
-      points: 17,
+      points: 20,
       role: "main",
       order: 5,
       note: "**This is where the points run out.** 30% resistance reduction at level 1 plus 5% per level. Put every point you have left here and let +skills gear carry it the rest of the way.",
     },
     { skill: "sacrifice", points: 1, role: "prerequisite" },
     { skill: "zeal", points: 1, role: "prerequisite", note: "Vengeance's prerequisite, and a genuinely useful second attack for trash." },
-    { skill: "smite", points: 1, role: "prerequisite" },
-    {
-      skill: "holy-shield",
-      points: 1,
-      role: "utility",
-      note: "One point only, and this is a real compromise — see the flex points. The block comes mostly from Dexterity and your shield.",
-    },
     { skill: "might", points: 1, role: "prerequisite" },
     { skill: "holy-fire", points: 1, role: "prerequisite" },
     { skill: "holy-freeze", points: 1, role: "prerequisite" },
-    { skill: "holy-shock", points: 1, role: "prerequisite" },
     { skill: "sanctuary", points: 1, role: "prerequisite" },
-    { skill: "prayer", points: 1, role: "prerequisite" },
-    { skill: "defiance", points: 1, role: "prerequisite" },
-    { skill: "vigor", points: 1, role: "utility", note: "Run speed, and a prerequisite for Salvation." },
     {
       skill: "salvation",
       points: 1,
       role: "synergy",
       note: "Vengeance's fourth synergy, at 2% per level — a quarter of what a resistance skill gives. Take one point for the prerequisite value and the aura, and do not invest further until the three resistance skills are maxed.",
     },
+    {
+      skill: "thorns",
+      points: 1,
+      role: "prerequisite",
+      note: "**Sanctuary requires Holy Freeze and Thorns.** One point, and the only reason to take it.",
+    },
+  
   ],
   flexPoints: [
-    "**Read the point budget before you commit.** Vengeance, the three resistance skills and Conviction all maxed is 100 points, and the prerequisite chains cost about 13 more. A level 99 character has 110. You will finish something short, and it is better to choose which.",
+    "**The budget is tight but it closes.** Vengeance, the three resistance skills and Conviction all maxed is 100 points, and the prerequisite chains cost exactly seven more. That leaves three points at level 99 — and level 99 is not where most characters stop, so in practice you are choosing which synergy finishes last.",
+    "**Holy Shield costs five points, not one.** It requires Blessed Hammer and Charge, and Charge requires Smite. If you want maximum block you are buying a five-point chain through the Combat tree and taking it out of a resistance synergy — a real trade, not a rounding error.",
     "**Conviction is the usual place to come up short**, and it is the right one — every point of +skills on your gear raises it, so gear substitutes for points here in a way it does not for the synergies.",
     "**Holy Shield is the other candidate.** One point plus +skills gives a real but not maximum block. If you would rather have maximum block than the last few points of Conviction, that is a legitimate trade and this page is not going to pretend otherwise.",
     "**Salvation past one point is a trap.** It is a 2%-per-level synergy against the resistance skills' 10%. Max those three first, every time.",

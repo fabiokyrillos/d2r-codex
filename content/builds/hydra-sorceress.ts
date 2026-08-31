@@ -14,8 +14,11 @@ import type { Build } from "@/lib/types";
  *   new one would exceed that.
  * - Its damage synergy is Fire Bolt, which the site's own skill data records.
  * - Fire Mastery requires level 30 and gives 30% damage plus 7% per level.
- * - Hydra's prerequisites are Fire Wall and Meteor, which is an unusually long
- *   chain and the reason the levelling section matters here.
+ * - **Hydra's prerequisite is Enchant**, and Enchant's are Fire Ball and
+ *   Warmth. Not Fire Wall and not Meteor: an earlier version of this page said
+ *   so, and it cost three points in a plan that never needed them.
+ * - Its damage synergies are Fire Bolt and Fire Ball at 3% per level each,
+ *   which is why Fire Ball is maxed here rather than taken at one point.
  *
  * Both ranked sources place it at B. Maxroll's Starter variant specs into cold
  * or lightning early for immunity coverage before respeccing fully into fire —
@@ -41,7 +44,7 @@ export const hydraSorceress: Build = {
   ],
   weaknesses: [
     "**Poor at density.** Hydras acquire targets slowly and do not follow you",
-    "Nothing before level 30, and a long prerequisite chain to get there",
+    "Nothing before level 30 — the wait is character level, not a chain",
     "Fire immunity is the most common in Hell and Fire Mastery does not break it",
     "The 18-hydra cap and fixed 250-frame duration mean there is a ceiling on how much you can stack",
     "Both ranked sources place it mid-table, and the reason is clear speed",
@@ -84,21 +87,23 @@ export const hydraSorceress: Build = {
     {
       skill: "fire-ball",
       points: 20,
-      role: "flex",
+      role: "synergy",
       order: 4,
-      note: "Not a synergy — a second spell. Hydra alone is too slow for packs, and Fire Ball is what fills that gap. Max it fourth or leave it at one point if you would rather have Warmth and utility.",
+      note: "Doing two jobs: **+3% Hydra damage per level**, and Enchant's prerequisite, which is what Hydra actually needs.",
     },
-    { skill: "inferno", points: 1, role: "prerequisite", note: "On the way to Fire Wall, which is on the way to Hydra." },
-    { skill: "fire-wall", points: 1, role: "prerequisite", note: "Hydra's prerequisite, and a genuinely useful corridor-denial spell for one point." },
-    { skill: "meteor", points: 1, role: "prerequisite", note: "Hydra's other prerequisite, and Fire Mastery's." },
-    { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1. Placing several hydras at once is expensive." },
-    { skill: "charged-bolt", points: 1, role: "prerequisite" },
+    { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration, and Enchant's other prerequisite." },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever**, and it is how you leave after placing." },
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life — it stacks well with a build that is already patient about bosses." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a freeze on attackers." },
-    { skill: "ice-bolt", points: 1, role: "prerequisite" },
     { skill: "frost-nova", points: 1, role: "utility", note: "A panic button for anything that closes on you while the hydras are working." },
+    {
+      skill: "enchant",
+      points: 1,
+      role: "prerequisite",
+      note: "**Hydra's prerequisite is Enchant** — not Fire Wall or Meteor. One point opens the whole build.",
+    },
+  
   ],
   flexPoints: [
     "**The starter split.** Maxroll's Starter variant puts early points into a cold or lightning skill so you have something that works against fire immunes, then respecs fully into fire once a Sunder Charm or Infinity exists. This is what the inventory called 'Hydra/Frozen Orb' — it is a levelling variant of this build, not a separate one.",

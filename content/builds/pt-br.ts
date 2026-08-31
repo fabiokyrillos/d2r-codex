@@ -68,10 +68,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       teleport: "Um ponto. Nunca mais que isso.",
       telekinesis: "Pré-requisito do Teleport. Também pega poções à distância.",
       "static-field": "Amolece imunes a frio para o seu mercenário. Ignora resistência.",
-      "charged-bolt": "Pré-requisito de Static Field e Telekinesis.",
       "frozen-armor": "Defesa de graça, e congela quem ataca corpo a corpo.",
       warmth: "Regeneração de mana desde o nível 1. Não custa nada.",
-      "frozen-orb": "Pré-requisito da Cold Mastery. Útil por si só durante a evolução.",
+      "frozen-orb": "Não é pré-requisito de nada aqui — a Cold Mastery não exige nada. Pegue o ponto porque um orbe viajante cobre o que a colocação no chão do Blizzard não alcança.",
     },
     immunityPlan:
       "A Cold Mastery não quebra imunidade — contra um monstro imune a frio ela opera com um quinto da eficácia e não consegue levar a resistência abaixo de 100%. Suas opções, em ordem de praticidade: pule o grupo e teleporte para longe; deixe um mercenário com aura Might matá-lo com dano físico; use Static Field para reduzir a vida atual dele em direção ao piso de 50% do Hell, para o mercenário terminar mais rápido; carregue um Cold Rupture sunder charm, que coloca monstros imunes a frio em 95% de resistência a frio e os transforma em alvos comuns; ou rode um mercenário com Infinity, cuja aura Conviction quebra muitas imunidades a frio, mas não todas. No começo, pular é a resposta certa com muito mais frequência do que os jogadores imaginam.",
@@ -577,18 +576,18 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       concentration:
         "Sua aura ativa. Multiplica o dano do hammer diretamente — não é sinergia, precisa estar rodando.",
       "blessed-aim": "+14% de dano mágico por nível. Você nunca vai ativar esta aura.",
-      "resist-lightning":
-        "Maximize por último, pela resistência máxima a raio. É o que torna a Conviction do Uber Mephisto sobrevivível.",
+      "resist-lightning": "**A variante para Uber Tristram, não a build principal.** Cada ponto duro é +1% de resistência máxima a raio, e o jogo lê o nível *base* aqui, então +skills de equipamento não fazem nada. Vinte pontos movem o teto de 75% para 95%, que é o que torna a Conviction do Uber Mephisto sobrevivível. Fora do Uber Tristram, esses vinte pontos rendem mais em outro lugar.",
       "holy-shield":
         "Um ponto fixo. +skills sobe bem além disso, e é o que mantém o seu bloqueio no máximo.",
       redemption:
         "Troque para ela depois de um grupo para reabastecer vida e mana com os cadáveres. Substitui a maior parte do uso de poções.",
-      cleansing: "Pré-requisito do Redemption, e uma troca real de duração de maldições.",
-      meditation: "Pré-requisito do Redemption.",
+      cleansing: "Pré-requisito do Vigor, junto com a Defiance, e uma troca de verdade contra duração de maldições.",
       defiance: "Pré-requisito do Vigor.",
       might: "Pré-requisito do Blessed Aim, e uma aura utilizável no começo.",
-      smite: "Pré-requisito do Holy Shield. Também nunca erra, o que ocasionalmente é útil.",
+      smite: "Pré-requisito do Charge e, portanto, do Holy Shield. Também nunca erra.",
       "holy-bolt": "Pré-requisito do Blessed Hammer. Cura outros jogadores.",
+      "charge": "**O Holy Shield exige Blessed Hammer e Charge.** O Charge, por sua vez, exige Smite, então o par custa dois pontos, não um.",
+      "prayer": "Pré-requisito do Cleansing e, portanto, do caminho até o Vigor.",
     },
     immunityPlan:
       "Esta é a vantagem que define a build: o Blessed Hammer causa dano mágico, e apenas um número pequeno de monstros nos Atos 2 e 3 é imune a mágico. Na prática, ou você deixa o mercenário lidar com eles, ou passa direto. Não há Sunder Charm para caçar, Infinity para juntar, nem zona que você precise evitar. A troca é que você também não consegue aumentar o seu dano reduzindo resistência inimiga — a Conviction não faz nada por dano mágico — então o seu dano vem inteiramente de +skills e da Concentration.",
@@ -996,6 +995,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       salvation:
         "Uma troca de um ponto para a entrada em Uber Tristram, onde toda resistência importa mais que qualquer aura de dano.",
       charge: "Mobilidade gratuita antes do Enigma. Não é dano — é transporte.",
+      "holy-bolt": "Pré-requisito do Blessed Hammer e, portanto, do caminho até o Holy Shield.",
+      "blessed-hammer": "**O Holy Shield exige Blessed Hammer e Charge.** Um ponto em cada; o Smiter nunca conjura nenhum dos dois.",
+      "meditation": "Regeneração de mana para o grupo. Não é pré-requisito de nada aqui — pegue porque é útil.",
     },
     immunityPlan:
       "Smite é dano físico puro, então imunidade a físico é uma parada total sem alternativa elemental. Isso importa muito menos do que parece: nenhum dos Ubers é imune a físico, e a build não é uma farmadora geral. Onde você encontrar imunes a físico, a resposta é o seu mercenário, ou um sunder charm Bone Break, ou simplesmente passar direto — você não é obrigado a matar nada que seja inconveniente. A aura permanente de Conviction do Uber Mephisto é o problema real de resistência, e ele funciona na direção oposta: ela arranca as **suas** resistências, e é por isso que 75% antes de entrar não é negociável.",
@@ -1321,6 +1323,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "resist-lightning": "Aumenta a resistência máxima a raio.",
       salvation: "Uma aura de resistência de um ponto para trocar em Uber Tristram.",
       charge: "Transporte antes do Enigma.",
+      "holy-bolt": "Pré-requisito do Blessed Hammer, no caminho até o Holy Shield.",
+      "blessed-hammer": "**O Holy Shield exige Blessed Hammer e Charge**, então este ponto é obrigatório mesmo que você nunca conjure.",
+      "meditation": "Regeneração de mana. Uma aura útil, não um pré-requisito.",
     },
     immunityPlan:
       "O Zeal é dano físico puro, então imunidade a físico é a única parede real da build — e no Hell ela é comum. Existem três respostas honestas e você deve escolher uma em vez de torcer. **Um sunder charm Bone Break** quebra imunidade a físico diretamente, ao custo de um slot de charm e de alguma redução de dano. **O seu mercenário** com uma arma elemental mata o que você não consegue tocar. **Uma fonte secundária de dano** — a carga de Berserk do Passion, o dano de frio do Duress, ou o +1 em Vengeance de um Kingslayer — te dá algo para golpear que não é físico. Passar direto também é legítimo; você não é obrigado a matar tudo. O outro perigo não é imunidade: **o Iron Maiden dos Oblivion Knights no Chaos Sanctuary reflete o seu dano físico**, e um ataque de cinco golpes contra uma maldição de dano refletido mata Zealots na hora.",
@@ -1635,6 +1640,13 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "resist-lightning":
         "Resistência máxima a raio, que importa justamente nas zonas que você quer farmar.",
       salvation: "Uma aura de resistência de um ponto para os momentos em que a Conviction é a escolha errada.",
+      "zeal": "Pré-requisito da Vengeance, no caminho até a Conversion e daí até o Fist of the Heavens.",
+      "vengeance": "Pré-requisito da Conversion. O FoHdin nunca ataca com ela.",
+      "conversion": "**O Fist of the Heavens exige Blessed Hammer e Conversion.** Este é o ponto que a maioria dos guias de FoHdin esquece.",
+      "thorns": "**O Sanctuary exige Holy Freeze e Thorns**, e o Sanctuary abre a Conviction.",
+      "charge": "Pré-requisito do Holy Shield, junto com o Blessed Hammer.",
+      "holy-shock": "**Sinergia de dano do Fist of the Heavens, +7% por nível.** Um ponto aqui porque os pontos da build estão comprometidos em outro lugar — maximizá-la é a alternativa documentada abaixo.",
+      "meditation": "Regeneração de mana. Uma aura útil, não um pré-requisito.",
     },
     immunityPlan:
       "Este é o Paladin com a melhor resposta a imunidade, e ela vem de duas direções ao mesmo tempo. **A Conviction reduz resistência em 30% no nível 1 e mais 5% por nível**, o que no nível 20 é 125% e mais com equipamento de +skills; isso basta para quebrar imunidade a raio natural nos monstros que você de fato vai encontrar. Onde não basta, as **ondas de Holy Bolt são dano mágico** e acertam mesmo assim, porque imunidade a raio e imunidade a mágico são coisas diferentes. A parede real é um monstro imune aos dois, e há poucos. A saída prática é o seu mercenário: coloque um ponto em Fanaticism, troque para ela, e deixe ele matar o que você não consegue. Vale saber que a Conviction tem um limite de quanto consegue empurrar um monstro abaixo de zero, então um monstro com resistência a raio muito alta continua efetivamente imune por mais +skills que você empilhe.",
@@ -1867,7 +1879,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Nenhum dos dois tier lists ranqueados que consultamos a inclui, o que é um sinal real sobre como ela se compara",
     ],
     flexPoints: [
-      "**Leia o orçamento de pontos antes de se comprometer.** Vengeance, as três skills de resistência e a Conviction todas maximizadas são 100 pontos, e as cadeias de pré-requisito custam cerca de 13 a mais. Um personagem nível 99 tem 110. Você vai terminar devendo alguma coisa, e é melhor escolher qual.",
+      "**O orçamento é apertado mas fecha.** Vengeance, as três skills de resistência e a Conviction todas maximizadas são 100 pontos, e as cadeias de pré-requisito custam exatamente sete a mais. Sobram três pontos no nível 99 — e o nível 99 não é onde a maioria dos personagens para, então na prática você está escolhendo qual sinergia termina por último.",
+      "**O Holy Shield custa cinco pontos, não um.** Ele exige Blessed Hammer e Charge, e o Charge exige Smite. Se você quer bloqueio máximo, está comprando uma cadeia de cinco pontos pela árvore de Combat e tirando de uma sinergia de resistência — uma troca de verdade, não um arredondamento.",
       "**A Conviction é o lugar habitual de ficar devendo**, e é o certo — cada ponto de +skills no seu equipamento sobe ela, então equipamento substitui pontos aqui de um jeito que não funciona para as sinergias.",
       "**O Holy Shield é o outro candidato.** Um ponto mais +skills dá um bloqueio real, mas não máximo. Se você prefere bloqueio máximo aos últimos pontos de Conviction, é uma troca legítima e esta página não vai fingir o contrário.",
       "**Salvation além de um ponto é armadilha.** É uma sinergia de 2% por nível contra os 10% das skills de resistência. Maximize as três primeiro, sempre.",
@@ -1902,11 +1915,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       conviction:
         "**É aqui que os pontos acabam.** 30% de redução de resistência no nível 1 mais 5% por nível. Coloque todo ponto que sobrar aqui e deixe o equipamento com +skills levar o resto do caminho.",
       zeal: "Pré-requisito do Vengeance, e um segundo ataque genuinamente útil contra lixo.",
-      "holy-shield":
-        "Só um ponto, e isso é um compromisso real — veja os pontos flexíveis. O bloqueio vem principalmente da Dexterity e do escudo.",
-      vigor: "Velocidade de corrida, e pré-requisito da Salvation.",
       salvation:
         "A quarta sinergia do Vengeance, a 2% por nível — um quarto do que uma skill de resistência dá. Pegue um ponto pelo valor de pré-requisito e pela aura, e não invista mais até as três skills de resistência estarem maximizadas.",
+      "thorns": "**O Sanctuary exige Holy Freeze e Thorns.** Um ponto, e é a única razão para pegar.",
     },
     immunityPlan:
       "Este é o motivo inteiro de jogar a build, então vale ser preciso. **O Vengeance soma dano de fogo, frio e raio ao seu ataque físico simultaneamente** — ele não converte, ele soma, então um golpe carrega quatro tipos de dano de uma vez. Um monstro imune a um deles ainda toma os outros três. Imunidade quádrupla genuína não ocorre naturalmente. Em cima disso, **a Conviction reduz resistência a fogo, frio e raio em 30% no nível 1 mais 5% por nível**, o que raspa as resistências parciais que sobrarem. Você não precisa de sunder charm, nem de Infinity, nem de um segundo ataque. As duas coisas que *de fato* te param são o **Iron Maiden**, que reflete a parte física do seu dano e é um perigo real no Chaos Sanctuary, e monstros com resistência muito alta em vários elementos ao mesmo tempo, que a Conviction não consegue empurrar abaixo de zero o bastante.",
@@ -2188,8 +2199,13 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "No caminho até a Conviction, e uma aura genuinamente útil para trocar — desacelerar um grupo dentro do qual você está vale mais do que parece.",
       "holy-shock":
         "Um ponto. A aura vem do Dream, não daqui — mas o ponto é pré-requisito da Conviction de qualquer forma.",
-      vigor: "Velocidade de corrida, e pré-requisito da Salvation.",
+      vigor: "Velocidade de corrida. **A Salvation não exige nada** — este ponto compra movimento, não acesso.",
       redemption: "Vida e mana de cadáveres, que é a sua recuperação entre grupos.",
+      "thorns": "**O Sanctuary exige Holy Freeze e Thorns.** Um ponto, só para abrir o caminho até a Conviction.",
+      "holy-bolt": "Pré-requisito do Blessed Hammer, no caminho até o Holy Shield.",
+      "blessed-hammer": "Pré-requisito do Holy Shield, junto com o Charge.",
+      "charge": "O outro pré-requisito do Holy Shield. Serve também como mobilidade barata antes do Enigma.",
+      "meditation": "Regeneração de mana. Uma aura útil, não um pré-requisito.",
     },
     immunityPlan:
       "Dois tipos de dano, e eles falham em lugares diferentes. A **aura de Holy Shock é raio**, e imunes a raio não tomam nada dela — que é por que a Conviction é a sua aura selecionada em vez de qualquer coisa mais empolgante. A Conviction reduz resistência em 30% no nível 1 mais 5% por nível, o bastante para quebrar imunidade a raio natural na maior parte do que você vai encontrar. Onde não basta, **o dano físico do Zeal ainda acerta**, e essa é a alternativa real: um Grief mais Crushing Blow mata imunes a raio devagar, mas de forma confiável. O problema genuíno é um monstro imune a raio e a físico ao mesmo tempo, o que é raro, e a resposta honesta ali é passar direto. O **Iron Maiden** merece menção específica: a aura não é refletida, mas o seu Zeal é, e um ataque de cinco golpes contra uma maldição de dano refletido te mata tão rápido nesta build quanto em qualquer outra.",
@@ -2448,8 +2464,14 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       conviction:
         "**Um ponto, e importa mais do que o nível sugere** — mas só se o seu Holy Fire vier do equipamento. Leia a variante Dragon antes de decidir quanto investir aqui.",
       fanaticism: "Para o mercenário, ou para os momentos em que você prefere golpear mais rápido a queimar.",
-      vigor: "Velocidade de corrida e pré-requisito da Salvation.",
+      vigor: "Velocidade de corrida. **A Salvation não exige nada** — este ponto compra movimento, não acesso.",
       redemption: "Vida e mana de cadáveres.",
+      "thorns": "**O Sanctuary exige Holy Freeze e Thorns**, e é o Sanctuary que abre a Conviction.",
+      "holy-bolt": "Pré-requisito do Blessed Hammer, no caminho até o Holy Shield.",
+      "blessed-hammer": "Pré-requisito do Holy Shield, junto com o Charge.",
+      "charge": "O outro pré-requisito do Holy Shield, e mobilidade utilizável no caminho.",
+      "holy-shock": "Uma aura de troca de um ponto. É sinergia do Fist of the Heavens, que esta build não usa.",
+      "meditation": "Regeneração de mana. Uma aura útil, não um pré-requisito.",
     },
     immunityPlan:
       "Este é o problema que define a build, então aqui vai a versão honesta. **Imunidade a fogo é a mais comum no Hell**, e fogo é o seu dano. Pior, a build padrão não consegue quebrá-la: o Holy Fire é a sua aura selecionada, e a Conviction teria que ocupar o mesmo slot. Existem três respostas reais. **Um Sunder Charm de fogo** quebra imunidade a fogo diretamente pelo preço de um slot de charm e de alguma redução de dano — a solução mais barata por larga margem. **A variante Dragon** move o Holy Fire para o seu equipamento para que a aura selecionada possa ser a Conviction; isso mais os -20% de resistência a fogo do inimigo do Hand of Justice é a solução completa, e também a cara. **O dano físico do Zeal** está sempre disponível e é o que de fato mata imunes a fogo em todos os níveis abaixo do Dragon — e é por isso que as listas de equipamento se apoiam em Crushing Blow muito mais do que uma build de fogo sugeriria.",
@@ -2706,9 +2728,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       teleport: "**Um ponto é tudo de que você precisa, para sempre.** Mais pontos só reduzem o custo de mana.",
       warmth: "Regeneração de mana desde o nível 1. Um ponto se paga imediatamente.",
       "frozen-armor": "Defesa e chance de congelar quem te ataca. Um buff defensivo de graça.",
-      nova: "Um botão de pânico aceitável à queima-roupa.",
-      "thunder-storm":
-        "**Pré-requisito da Lightning Mastery**, então este ponto não é opcional. Também é um passivo grátis que acerta um inimigo próximo aleatório num cronômetro, o que ocasionalmente te salva de algo fora da tela.",
+      nova: "**+5% de dano do Lightning por nível.** Um ponto é tudo que o orçamento permite, mas é sinergia, não pré-requisito.",
+      "thunder-storm": "Um raio passivo em intervalo fixo. **A Lightning Mastery não exige ele** — pegue pelo que ele faz, ou não pegue.",
       "energy-shield":
         "Opcional e genuinamente controverso — leia os pontos flexíveis antes de gastar aqui.",
     },
@@ -2978,10 +2999,12 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       teleport: "**Um ponto para sempre.** Mais pontos só cortam o custo de mana.",
       "static-field":
         "Tira 25% da vida atual do alvo. A resposta contra qualquer coisa com uma reserva de vida que você não consegue mastigar.",
-      "charged-bolt": "Pré-requisito do Static Field.",
       "frozen-armor": "Defesa grátis e chance de congelar o que te acerta.",
       "frost-nova":
         "Um botão de pânico à queima-roupa que também congela. Seguro barato num personagem sem bloqueio.",
+      "inferno": "Pré-requisito do Blaze. Um ponto no caminho que o Meteor realmente exige.",
+      "blaze": "Pré-requisito do Fire Wall.",
+      "fire-wall": "**O Meteor exige Fire Ball e Fire Wall.** O Fire Wall é a metade que a maioria dos guias omite, e ele custa uma cadeia de três pontos a partir do Inferno.",
     },
     immunityPlan:
       "Fogo é o elemento mais resistido do Hell, e **a Fire Mastery não ajuda** — ela dá 30% de dano no nível 1 e +7% por nível, aumentando a sua saída em vez de baixar a resistência deles. Existem três respostas honestas e você deve escolher uma antes do Ato 3, não durante. **Um sunder charm Flame Rift** quebra imunidade a fogo diretamente e custa de 70 a 90 pontos da sua própria resistência a fogo, o que numa dificuldade que já aplica −100 é um preço sério. **Infinity no mercenário** quebra muitas imunidades a fogo via Conviction sem penalidade para você, e custa uma Ber e uma Jah. **Escolher zonas** é legítimo e de graça: Stony Tomb, Ancient Tunnels e Mephisto são todos leves em imunidade a fogo, e a lista de farming acima está ordenada de acordo. O **Static Field** não é resposta para imunidade, mas é resposta para boss — ele tira um quarto da vida atual independentemente do que o alvo resiste.",
@@ -3528,8 +3551,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "Congela tudo ao seu redor. Numa build que vive no centro dos grupos, este é um botão de verdade.",
       lightning:
         "Um ponto para o raro alvo único que o Static Field não termina. Não invista mais — ele está numa tabela de conjuração diferente.",
-      "thunder-storm":
-        "**Pré-requisito da Lightning Mastery.** Você vai gastar este ponto querendo o passivo ou não — e o passivo é genuinamente útil numa build que fica parada.",
+      "thunder-storm": "Um raio passivo em intervalo fixo. Um ponto — não é sinergia do Nova e a Lightning Mastery não exige ele.",
+      "chain-lightning": "**Thunder Storm e Energy Shield exigem os dois o Chain Lightning.** Um ponto cobre ambos.",
     },
     immunityPlan:
       "Uma resposta, e a build é construída em torno de possuí-la. **A Lightning Mastery não quebra imunidade** — é um multiplicador de dano de 50% mais 12% por nível, igual à da Lightning Sorceress. O que quebra é a **Conviction do Infinity**, e a escolha que define esta build é empunhar esse Infinity você mesma em vez de colocá-lo no mercenário: a aura é idêntica dos dois jeitos, e empunhar libera ele para carregar o Insight que paga a sua conta de mana. O **Griffon's Eye** soma outros -15-20% de resistência a raio do inimigo por cima, e **facets de raio** somam mais ainda. Antes de o Infinity existir, as respostas honestas são a variante **híbrida com Hydra** por um segundo tipo de dano, ou escolher zonas — o Secret Cow Level não tem nada imune a raio dentro dele. Um sunder charm **Crack of the Heavens** funciona, mas custa 70 a 90 pontos da sua própria resistência a raio, o que numa build parada no meio de grupos lightning enchanted é uma troca pior que o normal.",
@@ -3808,9 +3831,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "30% de dano no nível 1 e +7% por nível, aplicado à metade de fogo de cada bolt. Ela aumenta o seu dano; não quebra imunidade a fogo.",
       warmth:
         "Sinergia do Enchant além de pré-requisito, e resolve a sua mana ao mesmo tempo. Não há motivo para segurar pontos aqui.",
-      "fire-ball":
-        "Pré-requisito do Enchant, e uma magia utilizável para a coisa rara que os seus bolts não alcançam.",
-      meteor: "Pré-requisito da Fire Mastery. Um ponto, e vale colocar numa tecla de qualquer forma.",
+      "fire-ball": "**O Enchant exige Fire Ball e Warmth.** Um ponto, e você nunca vai conjurar.",
       teleport:
         "**Um ponto para sempre.** Teleport mais uma arma de longo alcance é a maior parte do motivo de esta build ser boa.",
       "static-field":
@@ -3819,8 +3840,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "Defesa e chance de congelar o que fechar a distância. Você não tem escudo, então pegue.",
       "frost-nova":
         "Um botão de pânico à queima-roupa para quando algo te alcançar, o que numa build sem escudo é quando você está em apuros.",
-      "fire-wall":
-        "Uma segunda fonte de fogo barata para o corredor raro em que os bolts não bastam.",
+      "fire-bolt": "Pré-requisito do Fire Ball.",
     },
     immunityPlan:
       "Dois tipos de dano em cada bolt fazem desta a build de fogo menos incomodada por imunidade do site. **Imunes a fogo ainda tomam a metade física**, que é substancial depois que o Fortitude entra — então onde uma Fire Ball Meteor Sorceress para de vez, esta build simplesmente fica mais lenta. **Imunes a físico ainda tomam a metade de fogo**, pelo mesmo motivo ao contrário. Só algo imune aos dois é parede de verdade, e há pouco disso. **A Fire Mastery não quebra imunidade a fogo** — é multiplicador de dano de 30% mais 7% por nível. Se a metade de fogo é o que você precisa de volta, um sunder charm **Flame Rift** resolve ao custo de 70 a 90 pontos da sua própria resistência a fogo, o que numa build sem escudo é um preço mais pesado que o normal. A recomendação honesta costuma ser aceitar a morte mais lenta e manter a resistência.",
@@ -4054,7 +4074,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     weaknesses: [
       "**Ruim contra densidade.** As hydras adquirem alvos devagar e não te seguem",
-      "Nada antes do nível 30, e uma cadeia longa de pré-requisitos para chegar lá",
+      "Nada antes do nível 30 — a espera é nível de personagem, não uma cadeia",
       "Imunidade a fogo é a mais comum no Hell e a Fire Mastery não a quebra",
       "O teto de 18 hydras e a duração fixa de 250 frames significam que há um limite de quanto dá para empilhar",
       "As duas fontes ranqueadas a colocam no meio da tabela, e o motivo é velocidade de limpeza",
@@ -4089,18 +4109,14 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "30% de dano no nível 1 e +7% por nível. Multiplicador de dano, não redução de resistência.",
       "fire-bolt":
         "A sinergia de dano da Hydra, e o seu dano nos primeiros onze níveis. Nada aqui é desperdiçado.",
-      "fire-ball":
-        "Não é sinergia — é uma segunda magia. A Hydra sozinha é lenta demais para grupos, e o Fire Ball é o que preenche esse buraco. Maximize em quarto lugar ou deixe em um ponto se preferir Warmth e utilidade.",
-      inferno: "No caminho até o Fire Wall, que está no caminho até a Hydra.",
-      "fire-wall":
-        "Pré-requisito da Hydra, e uma magia de negação de corredor genuinamente útil por um ponto.",
-      meteor: "O outro pré-requisito da Hydra, e o da Fire Mastery.",
-      warmth: "Regeneração de mana desde o nível 1. Posicionar várias hydras de uma vez é caro.",
+      "fire-ball": "Fazendo dois trabalhos: **+3% de dano do Hydra por nível**, e pré-requisito do Enchant, que é o que o Hydra realmente precisa.",
+      warmth: "Regeneração de mana, e o outro pré-requisito do Enchant.",
       teleport: "**Um ponto para sempre**, e é como você sai depois de posicionar.",
       "static-field":
         "Tira 25% da vida atual do alvo — combina bem com uma build que já é paciente com bosses.",
       "frozen-armor": "Defesa e congelamento em quem te ataca.",
       "frost-nova": "Um botão de pânico para qualquer coisa que se aproxime enquanto as hydras trabalham.",
+      "enchant": "**O pré-requisito do Hydra é o Enchant** — não Fire Wall nem Meteor. Um ponto abre a build inteira.",
     },
     immunityPlan:
       "Fogo é o elemento mais resistido do Hell e **a Fire Mastery não quebra imunidade** — ela dá 30% de dano no nível 1 mais 7% por nível. Como esta build não tem nenhum segundo tipo de dano, a resposta precisa vir de fora dela. **Um sunder charm Flame Rift** é a solução direta e é a que o próprio guia do Maxroll considera, ao custo de 70 a 90 pontos da sua própria resistência a fogo. **Infinity no mercenário** faz o mesmo sem a penalidade e por um preço muito maior. **A divisão inicial** — manter pontos iniciais numa skill de frio ou raio até um dos dois existir — é a resposta de graça durante a evolução, e é o que o item 'Hydra/Frozen Orb' do inventário de fato descreve. Escolher alvos também funciona melhor aqui que na maioria das builds: os bosses de chave e o Mephisto, que é onde esta build quer estar de qualquer forma, não são imunes a fogo.",
@@ -4346,6 +4362,10 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "static-field":
         "Tira 25% da vida atual do alvo — útil numa build cujo dano está dividido.",
       "frozen-armor": "Defesa e congelamento em quem te ataca.",
+      "frost-nova": "**O Blizzard exige Frost Nova e Glacial Spike.** Um ponto.",
+      "inferno": "Pré-requisito do Blaze, na cadeia que o Meteor exige.",
+      "blaze": "Pré-requisito do Fire Wall.",
+      "fire-wall": "**O Meteor exige Fire Ball e Fire Wall.** Três pontos de cadeia por uma skill que você nunca conjura — o custo real da metade de fogo desta build.",
     },
     immunityPlan:
       "Esta é a build que existe para tornar imunidade um não-problema, e ela em grande parte consegue. **Quase nada no Hell é imune a fogo e a frio ao mesmo tempo**, então onde uma especialista encontra parede, esta build troca de botão. As duas metades falham de formas diferentes e vale saber como. **A Cold Mastery reduz a resistência a frio do inimigo** (20% no nível 1, +5% por nível), então a metade de frio segue funcionando contra monstros resistentes-mas-não-imunes sem nenhum equipamento comprado para isso. **A Fire Mastery aumenta o seu dano** (30%, +7% por nível), então a metade de fogo encara imunidade a fogo de frente sem nada para amolecer. Na prática isso significa que o Frozen Orb é o seu padrão e o Meteor é a sua resposta contra imunes a frio — e não o contrário. Sunder Charms existem para os dois elementos, mas esta build precisa deles menos que qualquer outra do site, e a penalidade de 70 a 90 pontos de resistência é uma troca ruim para um personagem que já tem uma segunda opção.",
@@ -4544,7 +4564,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Nenhuma mira — a magia é centrada em você",
       "A Cold Mastery reduz a resistência do inimigo em vez de aumentar o seu dano, então a build envelhece bem sem equipamento caro",
       "Muito barata. Ela alcança o próprio teto sem uma única runa alta, diferente da Nova de raio",
-      "Toda sinergia também é pré-requisito no caminho da Cold Mastery, então nenhum ponto é desperdiçado",
+      "Cinco das seis sinergias de dano dela ficam na mesma árvore, então os pontos da evolução e os do endgame são os mesmos pontos",
     ],
     weaknesses: [
       "**Nenhuma folga no plano de skills** — a build pronta são 108 dos seus 110 pontos",
@@ -4586,9 +4606,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "ice-blast": "A segunda sinergia, e o segundo elo.",
       "glacial-spike":
         "A terceira sinergia, o terceiro elo, e um congelamento de emergência de verdade por si só.",
-      blizzard: "No caminho até o Frozen Orb. Um ponto.",
-      "frozen-orb":
-        "Pré-requisito da Cold Mastery, e uma opção à distância aceitável para as coisas dentro das quais você preferiria não entrar.",
+      blizzard: "**Uma sinergia do Frost Nova**, não um pré-requisito da Cold Mastery — que não exige absolutamente nada.",
+      "frozen-orb": "**A outra sinergia do Frost Nova.** Também uma opção à distância aceitável para os grupos dentro dos quais você preferiria não ficar.",
       warmth: "Regeneração de mana desde o nível 1.",
       teleport: "**Um ponto para sempre**, e é como você chega ao meio.",
       "static-field": "Tira 25% da vida atual do alvo — a sua única resposta real contra um boss.",
@@ -4615,7 +4634,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     levelingPath: {
       summary:
-        "Estranho, e vale entender antes de se comprometer. O Frost Nova está disponível no **nível 6** mas fica fraco até a Cold Mastery no 30, e a Cold Mastery está atrás da cadeia de pré-requisitos mais longa da classe — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Frozen Orb. A salvação é que três desses elos são as próprias sinergias do Frost Nova, então nada é desperdiçado. Evolua com Ice Blast e Glacial Spike, que você vai maximizar de qualquer forma, e troque para o Frost Nova como botão principal no 30. **Nenhum respec é necessário.**",
+        "Estranho, e vale entender antes de se comprometer. O Frost Nova está disponível no **nível 6** mas fica fraco até a Cold Mastery, e a Cold Mastery é uma skill de nível 30. Ela não exige mais nada — a espera é nível de personagem, não uma cadeia de pré-requisitos — então a leitura honesta é que você passa vinte e quatro níveis jogando com uma skill que ainda não é boa. A salvação é que tudo com que você evolui é sinergia do Frost Nova: Ice Bolt, Ice Blast e Glacial Spike são todas maximizadas na build pronta. Troque para o Frost Nova como botão principal no 30. **Nenhum respec é necessário.**",
     },
     selfFoundNotes:
       "Boa, e melhor do que o tier sugere para quem joga self-found. Ela não precisa de nada caro — dois Spirits, um Vipermagi e um Shako já é um personagem funcional no Hell — e a Cold Mastery significa que ela não precisa de um Infinity para seguir relevante. A fraqueza em self-found é a mesma que a geral: imunes a frio, sem segundo tipo de dano e sem forma barata de contornar.",
@@ -4846,13 +4865,17 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "**A única skill de dano que vale pegar.** Ela adiciona dano de fogo aos seus ataques, dura minutos, e pode ser lançada antes de virar urso. Pule se preferir armaduras mais profundas.",
       teleport:
         "**Um ponto**, e é a maior vantagem isolada que esta build tem sobre qualquer outro personagem de corpo a corpo do jogo.",
-      "fire-ball": "Pré-requisito do Enchant.",
+      "fire-ball": "Só é necessário para a opção de Enchant abaixo, que exige ele.",
       "chilling-armor":
         "A armadura que vale rodar em corpo a corpo — ela dispara um projétil de volta em quem atira em você, e a defesa dela se aplica onde você de fato está.",
       "static-field":
         "Tira 25% da vida atual do alvo. A sua única resposta contra um boss com muita vida.",
       "frost-nova":
         "Congela tudo ao seu redor, o que numa build parada no meio vale o ponto.",
+      "lightning": "Pré-requisito do Chain Lightning.",
+      "chain-lightning": "**O Energy Shield exige Chain Lightning e Teleport.** Dois pontos na árvore de raio numa build que não conjura nenhum dos dois.",
+      "ice-blast": "**O Shiver Armor exige Frozen Armor e Ice Blast.**",
+      "fire-bolt": "Só é necessário se você pegar a opção de Enchant abaixo — é pré-requisito do Fire Ball.",
     },
     immunityPlan:
       "Dois tipos de dano que falham em lugares diferentes. A **aura de Holy Shock é raio**, e um imune a raio não toma nada dela — sem Conviction disponível para uma Sorceress, não há como quebrar isso pelo seu próprio equipamento. O que ainda acerta é o **dano físico do seu ataque**, que com os 20% de Crushing Blow do Beast é mais substancial do que parece. Contra algo imune aos dois, a resposta honesta é passar direto. Um sunder charm **Crack of the Heavens** funciona, mas custa 70 a 90 pontos da sua própria resistência a raio, o que numa build parada dentro de grupos lightning enchanted e sem escudo é um dos piores lugares do jogo para fazer essa troca. O **Infinity** do seu mercenário é a solução limpa, e é uma Ber e uma Jah em cima de tudo que esta build já custa.",
@@ -5081,7 +5104,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Um tipo de dano e nenhuma alternativa",
     ],
     flexPoints: [
-      "**O Meteor é o ponto flexível, e a maioria pega.** O Fire Wall sozinho não dá conta de um grupo espalhado, e o Meteor já está no caminho de pré-requisitos até a Fire Mastery. Maximizá-lo transforma a build em algo mais próximo de uma Fire Ball Meteor Sorceress que também nega terreno.",
+      "**O Meteor é o ponto flexível, e a maioria pega.** O Fire Wall sozinho não dá conta de um grupo espalhado. Ele não é de graça — o Meteor exige Fire Ball e Fire Wall, e você já tem os dois — mas maximizá-lo transforma a build em algo mais próximo de uma Fire Ball Meteor Sorceress que também nega terreno.",
       "**Mais Frost Nova** se você prefere resolver o mesmo problema de forma defensiva — um grupo desacelerado passa mais tempo dentro da sua parede.",
       "**Variante de magic find:** a build é barata o bastante para o orçamento de equipamento ir para magic find. Mesmo plano de skills.",
       "**Não coloque pontos em Energy.** Warmth mais um mercenário com Insight cobrem o custo de empilhar paredes.",
@@ -5109,10 +5132,10 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "fire-mastery":
         "30% de dano no nível 1 e +7% por nível. Um multiplicador, não uma redução de resistência.",
       inferno:
-        "Sinergia do Fire Wall e pré-requisito dele. Também um jato de curta distância genuinamente utilizável durante a evolução.",
+        "Sinergia do Fire Wall, e a raiz da cadeia de duas skills que o destrava pelo Blaze. Também um jato de curta distância genuinamente utilizável durante a evolução.",
       meteor:
-        "Não é sinergia — é uma segunda magia, e a que cobre a fraqueza do Fire Wall contra coisas paradas em terreno aberto. Ele também é pré-requisito da Fire Mastery, então o primeiro ponto já está gasto.",
-      "fire-ball": "Pré-requisito do Meteor, e uma magia rápida para o que o Fire Wall não consegue encurralar.",
+        "Não é sinergia — é uma segunda magia, e a que cobre a fraqueza do Fire Wall contra coisas paradas em terreno aberto. **A Fire Mastery não exige nada**, então, diferente da maioria das builds de fogo, você não é obrigado a passar pelo Meteor para chegar nela.",
+      "fire-ball": "Uma opção rápida de alvo único, e pré-requisito do Meteor se você pegar o ponto flexível abaixo.",
       warmth: "Regeneração de mana desde o nível 1. Empilhar paredes é caro.",
       teleport: "**Um ponto para sempre**, e é como você fica atrás de uma parede que acabou de colocar.",
       "static-field":
@@ -5120,6 +5143,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "frozen-armor": "Defesa e congelamento em quem te ataca.",
       "frost-nova":
         "Desacelera um grupo para ele ficar mais tempo dentro da parede, que é o ponto não relacionado a fogo mais útil da lista.",
+      "blaze": "**O pré-requisito do Fire Wall é o Blaze**, e o do Blaze é o Inferno — que você já está maximizando como sinergia.",
+      "fire-bolt": "A magia que te carrega até o nível 24, e pré-requisito do Fire Ball.",
     },
     immunityPlan:
       "Um elemento e nenhuma alternativa, a não ser que você tenha pegado o Meteor — que também é fogo, então ele não ajuda contra imunidade. **A Fire Mastery não quebra imunidade**: 30% de dano no nível 1 mais 7% por nível aumenta o seu dano, não a resistência deles, e fogo é o elemento mais resistido no Hell. As respostas são as mesmas três de toda build de fogo. **Um sunder charm Flame Rift** é a solução direta ao custo de 70 a 90 pontos da sua própria resistência a fogo. **Infinity no mercenário** resolve sem a penalidade e por um preço muito maior. **Escolher zonas** é de graça, e importa mais aqui do que em outros lugares porque a build já quer *formatos* específicos de mapa — a Stony Tomb e o Chaos Sanctuary te dão corredores e pouca imunidade a fogo ao mesmo tempo.",

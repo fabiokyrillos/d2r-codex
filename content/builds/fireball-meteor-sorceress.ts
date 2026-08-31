@@ -90,10 +90,22 @@ export const fireballMeteorSorceress: Build = {
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever.** More points only cut the mana cost." },
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life. The answer to anything with a health pool you cannot chew through." },
-    { skill: "charged-bolt", points: 1, role: "prerequisite", note: "Static Field's prerequisite." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Free defence and a chance to freeze whatever hits you." },
-    { skill: "ice-bolt", points: 1, role: "prerequisite" },
     { skill: "frost-nova", points: 1, role: "utility", note: "A point-blank panic button that also chills. Cheap insurance on a character with no block." },
+    {
+      skill: "inferno",
+      points: 1,
+      role: "prerequisite",
+      note: "Blaze's prerequisite. One point on the path Meteor actually needs.",
+    },
+    { skill: "blaze", points: 1, role: "prerequisite", note: "Fire Wall's prerequisite." },
+    {
+      skill: "fire-wall",
+      points: 1,
+      role: "prerequisite",
+      note: "**Meteor requires Fire Ball and Fire Wall.** Fire Wall is the half most guides omit, and it costs a three-point chain from Inferno.",
+    },
+  
   ],
   flexPoints: [
     "**Remaining points go to Inferno**, which is Fire Ball's other synergy, or to more Frost Nova if survival is the problem rather than damage.",

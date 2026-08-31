@@ -12,8 +12,8 @@ import type { Build } from "@/lib/types";
  * Verified at Tier 1 (`skills.json`):
  * - Fire Wall requires level 18, is `EType = fire`, and has two damage
  *   synergies. The site's own skill data records Inferno as one of them.
- * - Its prerequisite is Inferno, which is behind Fire Bolt — a short chain
- *   compared to Hydra's.
+ * - **Its prerequisite is Blaze**, and Blaze's is Inferno. Inferno is also one
+ *   of its two damage synergies, so that chain is not a tax.
  * - Fire Mastery requires level 30 and gives 30% damage plus 7% per level.
  *
  * Uses the standard Sorceress cast table.
@@ -75,28 +75,33 @@ export const fireWallSorceress: Build = {
       points: 20,
       role: "synergy",
       order: 3,
-      note: "Fire Wall's synergy and its prerequisite. Also a genuinely usable point-blank stream while levelling.",
+      note: "Fire Wall's synergy, and the root of the two-skill chain that unlocks it through Blaze. Also a genuinely usable point-blank stream while levelling.",
     },
     {
       skill: "meteor",
       points: 20,
       role: "flex",
       order: 4,
-      note: "Not a synergy — a second spell, and the one that covers Fire Wall's weakness against things standing still in the open. It is also Fire Mastery's prerequisite, so the first point is already spent.",
+      note: "Not a synergy — a second spell, and the one that covers Fire Wall's weakness against things standing still in the open. **Fire Mastery requires nothing**, so unlike most fire builds you are not forced through Meteor to reach it.",
     },
-    { skill: "fire-bolt", points: 1, role: "prerequisite" },
-    { skill: "fire-ball", points: 1, role: "prerequisite", note: "Meteor's prerequisite, and a fast spell for things Fire Wall cannot corner." },
+    { skill: "fire-bolt", points: 1, role: "utility", note: "The spell that carries you to level 24, and Fire Ball's prerequisite." },
+    { skill: "fire-ball", points: 1, role: "utility", note: "A fast single-target option, and Meteor's prerequisite if you take the flex below." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1. Stacking walls is expensive." },
-    { skill: "charged-bolt", points: 1, role: "prerequisite" },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever**, and it is how you get behind a wall you just placed." },
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life — it pairs unusually well with damage over time." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a freeze on attackers." },
-    { skill: "ice-bolt", points: 1, role: "prerequisite" },
     { skill: "frost-nova", points: 1, role: "utility", note: "Chills a pack so it stays in the wall longer, which is the single most useful non-fire point on the list." },
+    {
+      skill: "blaze",
+      points: 1,
+      role: "prerequisite",
+      note: "**Fire Wall's prerequisite is Blaze**, and Blaze's is Inferno — which you are maxing as a synergy anyway.",
+    },
+  
   ],
   flexPoints: [
-    "**Meteor is the flex, and most players take it.** Fire Wall alone cannot handle a scattered pack, and Meteor is already on the prerequisite path to Fire Mastery. Maxing it turns the build into something closer to a Fire Ball Meteor Sorceress that also denies ground.",
+    "**Meteor is the flex, and most players take it.** Fire Wall alone cannot handle a scattered pack. It is not free — Meteor requires Fire Ball and Fire Wall, and you already have both — but maxing it turns the build into something closer to a Fire Ball Meteor Sorceress that also denies ground.",
     "**More Frost Nova** if you would rather solve the same problem defensively — a chilled pack walks through your wall for longer.",
     "**Magic find variant:** the build is cheap enough that the gear budget can go to magic find. Same skill plan.",
     "**Do not put points in Energy.** Warmth plus an Insight mercenary covers the cost of stacking walls.",

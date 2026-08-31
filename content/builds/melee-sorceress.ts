@@ -94,8 +94,8 @@ export const meleeSorceress: Build = {
     },
     { skill: "charged-bolt", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point**, and it is the single biggest advantage this build has over any other melee character in the game." },
-    { skill: "fire-bolt", points: 1, role: "prerequisite" },
-    { skill: "fire-ball", points: 1, role: "prerequisite", note: "Enchant's prerequisite." },
+    { skill: "fire-bolt", points: 1, role: "flex", note: "Only needed if you take the Enchant option below — it is Fire Ball's prerequisite." },
+    { skill: "fire-ball", points: 1, role: "flex", note: "Only needed for the Enchant option below, which requires it." },
     { skill: "frozen-armor", points: 1, role: "prerequisite" },
     { skill: "shiver-armor", points: 1, role: "prerequisite" },
     {
@@ -107,6 +107,25 @@ export const meleeSorceress: Build = {
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life. Your only answer to a boss with a large health pool." },
     { skill: "ice-bolt", points: 1, role: "prerequisite" },
     { skill: "frost-nova", points: 1, role: "utility", note: "Chills everything around you, which on a build standing in the middle is worth its point." },
+    {
+      skill: "lightning",
+      points: 1,
+      role: "prerequisite",
+      note: "Chain Lightning's prerequisite.",
+    },
+    {
+      skill: "chain-lightning",
+      points: 1,
+      role: "prerequisite",
+      note: "**Energy Shield requires Chain Lightning and Teleport.** Two points of lightning tree on a build that casts neither.",
+    },
+    {
+      skill: "ice-blast",
+      points: 1,
+      role: "prerequisite",
+      note: "**Shiver Armor requires Frozen Armor and Ice Blast.**",
+    },
+  
   ],
   flexPoints: [
     "**Zeal variant:** a **Passion** runeword grants Zeal as an Oskill. Faster, hits several adjacent targets, and keeps you in normal form — so you can still cast, drink and teleport freely. This is the more flexible of the two.",

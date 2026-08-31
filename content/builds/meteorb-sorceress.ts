@@ -98,11 +98,30 @@ export const meteorbSorceress: Build = {
     { skill: "glacial-spike", points: 1, role: "prerequisite", note: "On the way to Blizzard, and a genuine emergency freeze." },
     { skill: "blizzard", points: 1, role: "prerequisite", note: "Frozen Orb's prerequisite. One point, mandatory." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1." },
-    { skill: "charged-bolt", points: 1, role: "prerequisite" },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever.**" },
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life — useful on a build whose damage is split." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a freeze on attackers." },
+    {
+      skill: "frost-nova",
+      points: 1,
+      role: "prerequisite",
+      note: "**Blizzard requires Frost Nova and Glacial Spike.** One point.",
+    },
+    {
+      skill: "inferno",
+      points: 1,
+      role: "prerequisite",
+      note: "Blaze's prerequisite, on the chain Meteor needs.",
+    },
+    { skill: "blaze", points: 1, role: "prerequisite", note: "Fire Wall's prerequisite." },
+    {
+      skill: "fire-wall",
+      points: 1,
+      role: "prerequisite",
+      note: "**Meteor requires Fire Ball and Fire Wall.** Three points of chain for one skill you never cast — the real cost of the fire half of this build.",
+    },
+  
   ],
   flexPoints: [
     "**The remaining points are the build's real decision.** Roughly eighteen are left after the four maxed skills and the prerequisites, and they go into synergies for whichever half you actually use more. **Ice Bolt and Ice Blast** raise Frozen Orb; **Fire Bolt** raises Meteor. Splitting them evenly is the one option that is clearly worse than the alternatives.",

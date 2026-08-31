@@ -101,14 +101,20 @@ export const novaSorceress: Build = {
     },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Free defence and a chance to freeze whatever reaches you." },
     { skill: "frost-nova", points: 1, role: "utility", note: "Chills everything around you. On a build that lives at the centre of packs, this is a real button." },
-    { skill: "ice-bolt", points: 1, role: "prerequisite" },
     {
       skill: "thunder-storm",
       points: 1,
-      role: "prerequisite",
-      note: "**Lightning Mastery's prerequisite.** You are spending this point whether you want the passive or not — and the passive is genuinely useful on a build that stands still.",
+      role: "utility",
+      note: "A passive lightning strike on a timer. One point — it is not a Nova synergy and Lightning Mastery does not require it.",
     },
     { skill: "lightning", points: 1, role: "utility", note: "One point for the rare single target Static Field cannot finish. Do not invest further — it is on a different cast table." },
+    {
+      skill: "chain-lightning",
+      points: 1,
+      role: "prerequisite",
+      note: "**Thunder Storm and Energy Shield both require Chain Lightning.** One point covers both.",
+    },
+  
   ],
   flexPoints: [
     "**Energy Shield is the build's real decision.** At two mana per point of damage it converts a large mana pool into an effective second health bar, which suits a character standing in the middle of everything. It also means mana burn kills you outright and a drained pool leaves you with your actual, tiny life total. Take it deliberately with Telekinesis investment behind it, or skip it entirely and buy life instead. Half-committing is the worst of both.",

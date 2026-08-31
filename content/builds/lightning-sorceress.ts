@@ -97,14 +97,15 @@ export const lightningSorceress: Build = {
     { skill: "teleport", points: 1, role: "utility", note: "**One point is all you ever need.** More points only reduce the mana cost." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1. One point pays for itself immediately." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a chance to freeze attackers. A free defensive buff." },
-    { skill: "nova", points: 1, role: "prerequisite", note: "A serviceable panic button at point-blank range." },
+    { skill: "nova", points: 1, role: "synergy", note: "**+5% Lightning damage per level.** One point is all the budget allows, but it is a synergy, not a prerequisite." },
     {
       skill: "thunder-storm",
       points: 1,
-      role: "prerequisite",
-      note: "**Lightning Mastery's prerequisite**, so this point is not optional. It is also a free passive that strikes a random nearby enemy on a timer, which occasionally saves you from something offscreen.",
+      role: "utility",
+      note: "A passive strike on a timer. **Lightning Mastery does not require it** — take it for what it does, or not at all.",
     },
     { skill: "energy-shield", points: 1, role: "flex", note: "Optional and genuinely divisive — see the flex points before spending here." },
+  
   ],
   flexPoints: [
     "**Everything past the four maxed skills goes to Charged Bolt or Nova**, both of which are synergies. Charged Bolt first.",
