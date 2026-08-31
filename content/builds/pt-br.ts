@@ -775,11 +775,13 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             ],
           },
           "belt-0": { why: "+1 skills e 20% de Faster Cast Rate." },
+          "belt-1": { why: "Troca as skills e a velocidade de conjuração por redução de dano físico." },
           "belt-0-alt0": {
             why: "Troque o skill e o cast rate por redução de dano físico.",
           },
           "gloves-0": { why: "20% de Faster Cast Rate." },
           "boots-0": { why: "Faster Hit Recovery e Strength." },
+          "boots-1": { why: "Até 50% de magic find numa configuração voltada a magic find." },
           "boots-0-alt0": {
             why: "Até 50% de magic find num conjunto voltado para isso.",
           },
@@ -830,7 +832,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "body-0": { why: "Teleport. Inegociável neste nível." },
           "helm-0": { why: "+2 skills, vida, magic find, redução de dano." },
-          "helm-0-alt0": {
+          "helm-1": {
             why: "+1 skills, 30% de Faster Hit Recovery, até 15% de redução de dano e dois sockets. A escolha de Hardcore.",
           },
           "amulet-0": { why: "+2 skills e resistências." },
