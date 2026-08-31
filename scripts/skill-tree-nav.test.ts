@@ -2,20 +2,34 @@
  * Keyboard navigation over the skill grid.
  *
  * One Tab stop per tree is only an improvement over thirty if the arrows
- * genuinely reach everything. These tests replicate the component's movement
- * rules against every real grid the site draws and prove exactly that.
+ * genuinely reach everything. These tests run every real grid the site draws
+ * through the movement functions the component itself calls.
  *
- * The rules live here in the same shape the component uses. That duplication
- * is deliberate and narrow: the component's copy is bound to React state and
- * DOM focus, and the part worth testing is the pure grid walk.
+ * They used to be a copy. The rules were reimplemented here "mirroring
+ * skill-tree-interactive.tsx", so a green run proved the duplicate was
+ * self-consistent and nothing more — the component could drift and this would
+ * still pass. Home and End had no duplicate at all and were never covered.
+ * The functions now live in `lib/skill-tree-nav`, imported by both.
  *
  * Run with `npm run test:nav`.
  */
 import { CLASSES_WITH_SKILL_PAGES, SKILL_GRAPH, TIER_LEVELS, layoutTree } from "../lib/skills";
 import { getClass, getSkillsForClass } from "../lib/registry";
 import { DEFAULT_LOCALE, LOCALES } from "../lib/i18n/config";
+import {
+  COLUMNS,
+  at,
+  edgeCell,
+  firstCell,
+  nextHorizontal,
+  nextVertical,
+  type Cell,
+} from "../lib/skill-tree-nav";
 
-const COLUMNS = 3;
+type Grid = (string | null)[][];
+
+/** Typed lookup; the shared `at` is deliberately agnostic about cell contents. */
+const slugAt = (g: Grid, r: number, c: number) => (at(g, r, c) as string | null) ?? null;
 
 let passed = 0;
 const failures: string[] = [];
@@ -27,40 +41,6 @@ const check = (name: string, ok: boolean, detail = "") => {
     failures.push(`${name}${detail ? ` — ${detail}` : ""}`);
     console.log(`  FAIL ${name}${detail ? ` — ${detail}` : ""}`);
   }
-};
-
-interface Cell {
-  row: number;
-  col: number;
-}
-type Grid = (string | null)[][];
-
-// --- the movement rules, mirroring skill-tree-interactive.tsx --------------
-const at = (g: Grid, r: number, c: number) => g[r]?.[c] ?? null;
-
-const nextHorizontal = (g: Grid, from: Cell, dir: 1 | -1): Cell | null => {
-  for (let c = from.col + dir; c >= 0 && c < COLUMNS; c += dir) {
-    if (at(g, from.row, c)) return { row: from.row, col: c };
-  }
-  for (let r = from.row + dir; r >= 0 && r < g.length; r += dir) {
-    for (const c of dir > 0 ? [0, 1, 2] : [2, 1, 0]) if (at(g, r, c)) return { row: r, col: c };
-  }
-  return null;
-};
-
-const nextVertical = (g: Grid, from: Cell, dir: 1 | -1): Cell | null => {
-  for (let r = from.row + dir; r >= 0 && r < g.length; r += dir) {
-    for (const c of [from.col, from.col - 1, from.col + 1, from.col - 2, from.col + 2]) {
-      if (c < 0 || c >= COLUMNS) continue;
-      if (at(g, r, c)) return { row: r, col: c };
-    }
-  }
-  return null;
-};
-
-const firstCell = (g: Grid): Cell => {
-  for (let r = 0; r < g.length; r++) for (let c = 0; c < COLUMNS; c++) if (at(g, r, c)) return { row: r, col: c };
-  return { row: 0, col: 0 };
 };
 
 // --- build the real grids --------------------------------------------------
@@ -105,7 +85,7 @@ for (const [tree, g] of grids) {
   const visited = new Set<string>([key(start)]);
   while (queue.length) {
     const cur = queue.shift()!;
-    const slug = at(g, cur.row, cur.col);
+    const slug = slugAt(g, cur.row, cur.col);
     if (slug) seen.add(slug);
     for (const next of [
       nextHorizontal(g, cur, 1),
@@ -251,6 +231,56 @@ for (const [tree, g] of grids) {
     ),
   );
 }
+
+// ===========================================================================
+console.log("\nHome and End");
+// ===========================================================================
+/*
+ * Never covered before, because the duplicated rules in this file had no copy
+ * of `edgeCell` to test. Both keys are bound in the component's `onKeyDown`, so
+ * they were shipped untested.
+ */
+for (const [tree, g] of grids) {
+  const filled: Cell[] = [];
+  g.forEach((row, r) => row.forEach((s, c) => s && filled.push({ row: r, col: c })));
+  const home = edgeCell(g, false);
+  const end = edgeCell(g, true);
+
+  check(`${tree}: Home lands on a real skill`, Boolean(home && slugAt(g, home.row, home.col)));
+  check(`${tree}: End lands on a real skill`, Boolean(end && slugAt(g, end.row, end.col)));
+  check(
+    `${tree}: Home is the first cell in reading order`,
+    JSON.stringify(home) === JSON.stringify(filled[0]),
+    JSON.stringify(home),
+  );
+  check(
+    `${tree}: End is the last cell in reading order`,
+    JSON.stringify(end) === JSON.stringify(filled[filled.length - 1]),
+    JSON.stringify(end),
+  );
+  check(
+    `${tree}: Home agrees with the Tab stop`,
+    JSON.stringify(home) === JSON.stringify(firstCell(g)),
+  );
+  check(`${tree}: Home and End differ`, JSON.stringify(home) !== JSON.stringify(end));
+  // From anywhere in the grid, both keys reach the same two cells.
+  const fromEverywhere = filled.every(
+    () =>
+      JSON.stringify(edgeCell(g, false)) === JSON.stringify(home) &&
+      JSON.stringify(edgeCell(g, true)) === JSON.stringify(end),
+  );
+  check(`${tree}: both are absolute, not relative to the current cell`, fromEverywhere);
+}
+
+// An empty grid must not pretend to have an edge.
+check(
+  "Home and End return nothing on an empty grid",
+  edgeCell([[null, null, null]], false) === null && edgeCell([[null, null, null]], true) === null,
+);
+check(
+  "COLUMNS is the width the grids are actually built at",
+  [...grids.values()].every((g) => g.every((row) => row.length === COLUMNS)),
+);
 
 // ===========================================================================
 console.log(

@@ -2,6 +2,16 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
+import {
+  edgeCell,
+  firstCell,
+  nextHorizontal,
+  nextVertical,
+  type Cell,
+  type Grid,
+} from "@/lib/skill-tree-nav";
+import { trapTarget } from "@/lib/focus-trap";
+
 /**
  * The only interactive part of the skill tree.
  *
@@ -49,12 +59,6 @@ export interface SkillTreeStrings {
 
 const OPEN_DELAY = 120;
 const CLOSE_DELAY = 200;
-const COLUMNS = 3;
-
-interface Cell {
-  row: number;
-  col: number;
-}
 
 export function SkillTreeInteractive({
   rows,
@@ -86,16 +90,15 @@ export function SkillTreeInteractive({
   const lastTrigger = useRef<HTMLButtonElement | null>(null);
   const suppressFocusOpen = useRef(false);
 
+  /**
+   * The occupancy grid the movement functions work on. They live in
+   * `lib/skill-tree-nav` so that `test:nav` can exercise this exact code
+   * instead of a copy of it.
+   */
+  const grid: Grid = rows.map((r) => r.cells);
   const at = (row: number, col: number): TreeTile | null => rows[row]?.cells[col] ?? null;
 
-  /** The first filled cell, so the tree always has exactly one Tab stop. */
-  const firstCell = (): Cell => {
-    for (let r = 0; r < rows.length; r++) {
-      for (let c = 0; c < COLUMNS; c++) if (rows[r].cells[c]) return { row: r, col: c };
-    }
-    return { row: 0, col: 0 };
-  };
-  const [focusCell, setFocusCell] = useState<Cell>(firstCell);
+  const [focusCell, setFocusCell] = useState<Cell>(() => firstCell(grid));
 
   const clearTimer = () => {
     if (timer.current) clearTimeout(timer.current);
@@ -147,45 +150,67 @@ export function SkillTreeInteractive({
   }, [selected, close]);
 
   /**
-   * Grid-aware movement.
+   * The bottom sheet is modal; the docked desktop panel is not.
    *
-   * The first version walked a flattened list of filled cells, so ArrowDown
-   * moved "three tiles onward" rather than one row down — and since rows hold
-   * one, two or three skills, that landed two rows away as often as not. These
-   * walk the real grid: empty cells are skipped rather than entered, and
-   * horizontal movement continues into the neighbouring row at a row edge so
-   * that every skill stays reachable by arrows alone.
+   * They are different things wearing the same content. The desktop panel is a
+   * sibling column that covers nothing, so the page behind it stays usable and
+   * it is a `region`. The sheet is an overlay with a scrim that swallows every
+   * pointer event, and it used to declare `aria-modal="false"` while doing so —
+   * telling assistive technology the page behind was still available when a
+   * sighted mouse user could not reach it, and leaving Tab free to wander into
+   * content hidden behind the scrim.
+   *
+   * So it is now modal in the way it already behaved: focus moves in, Tab and
+   * Shift+Tab cycle within, and focus returns to the tile on close.
    */
-  const nextHorizontal = (from: Cell, dir: 1 | -1): Cell | null => {
-    for (let c = from.col + dir; c >= 0 && c < COLUMNS; c += dir) {
-      if (at(from.row, c)) return { row: from.row, col: c };
-    }
-    for (let r = from.row + dir; r >= 0 && r < rows.length; r += dir) {
-      const scan = dir > 0 ? [0, 1, 2] : [2, 1, 0];
-      for (const c of scan) if (at(r, c)) return { row: r, col: c };
-    }
-    return null;
-  };
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const focusablesIn = (root: HTMLElement) =>
+    [
+      ...root.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      ),
+    ].filter((el) => el.offsetParent !== null || el === document.activeElement);
 
-  const nextVertical = (from: Cell, dir: 1 | -1): Cell | null => {
-    for (let r = from.row + dir; r >= 0 && r < rows.length; r += dir) {
-      // Same column first, then the nearest column in that row, so vertical
-      // movement stays vertical wherever the grid allows it.
-      for (const c of [from.col, from.col - 1, from.col + 1, from.col - 2, from.col + 2]) {
-        if (c < 0 || c >= COLUMNS) continue;
-        if (at(r, c)) return { row: r, col: c };
-      }
-    }
-    return null;
-  };
+  useEffect(() => {
+    if (!sheetOpen || !selected) return;
+    const sheet = sheetRef.current;
+    if (!sheet) return;
 
-  const edgeCell = (last: boolean): Cell => {
-    const rowOrder = last ? [...rows.keys()].reverse() : [...rows.keys()];
-    for (const r of rowOrder) {
-      for (const c of last ? [2, 1, 0] : [0, 1, 2]) if (at(r, c)) return { row: r, col: c };
-    }
-    return focusCell;
-  };
+    /*
+     * Above `lg` the sheet is `display: none` and the docked panel is what the
+     * reader sees. `display: none` also takes the sheet out of the
+     * accessibility tree, so `aria-modal` says nothing there — but the effect
+     * would still run, and a trap installed over a hidden dialog would swallow
+     * Tab for a desktop keyboard user.
+     *
+     * Checked rather than inferred. It already worked, because a hidden element
+     * has no laid-out focusables and an empty trap declines to trap — but that
+     * is a coincidence of two other decisions, and it would break silently if
+     * either changed.
+     */
+    if (sheet.getClientRects().length === 0) return;
+
+    // Initial focus inside the sheet, on its close control: the first thing a
+    // screen-reader user needs is the way out, and it is a stable target
+    // whatever the panel body happens to contain.
+    const first = focusablesIn(sheet)[0];
+    first?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const items = focusablesIn(sheet);
+      const target = trapTarget(
+        items.length,
+        items.indexOf(document.activeElement as HTMLElement),
+        e.shiftKey,
+      );
+      if (target === null) return;
+      e.preventDefault();
+      items[target].focus();
+    };
+    document.addEventListener("keydown", onKey, true);
+    return () => document.removeEventListener("keydown", onKey, true);
+  }, [sheetOpen, selected]);
 
   const focusOn = (cell: Cell | null) => {
     if (!cell) return;
@@ -199,27 +224,27 @@ export function SkillTreeInteractive({
     switch (e.key) {
       case "ArrowRight":
         e.preventDefault();
-        focusOn(nextHorizontal(cell, 1));
+        focusOn(nextHorizontal(grid, cell, 1));
         break;
       case "ArrowLeft":
         e.preventDefault();
-        focusOn(nextHorizontal(cell, -1));
+        focusOn(nextHorizontal(grid, cell, -1));
         break;
       case "ArrowDown":
         e.preventDefault();
-        focusOn(nextVertical(cell, 1));
+        focusOn(nextVertical(grid, cell, 1));
         break;
       case "ArrowUp":
         e.preventDefault();
-        focusOn(nextVertical(cell, -1));
+        focusOn(nextVertical(grid, cell, -1));
         break;
       case "Home":
         e.preventDefault();
-        focusOn(edgeCell(false));
+        focusOn(edgeCell(grid, false));
         break;
       case "End":
         e.preventDefault();
-        focusOn(edgeCell(true));
+        focusOn(edgeCell(grid, true));
         break;
       case "Enter":
       case " ":
@@ -442,8 +467,9 @@ export function SkillTreeInteractive({
             aria-hidden="true"
           />
           <div
+            ref={sheetRef}
             role="dialog"
-            aria-modal="false"
+            aria-modal="true"
             aria-label={strings.panelHeading}
             className="fixed inset-x-0 bottom-0 z-50 flex max-h-[70vh] flex-col rounded-t-xl border-t border-border bg-surface-raised lg:hidden"
           >
