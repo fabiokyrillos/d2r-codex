@@ -3968,7 +3968,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "belt-0": { why: "+1 em todas as skills, o que sobe o Enchant." },
           "amulet-0": { why: "+1 skills, 20% de velocidade de ataque, Deadly Strike." },
-          "ring1-0": { why: "Cannot Be Frozen, Dexterity, Attack Rating." },
+          "ring1-0": { why: "Cannot Be Frozen, mais Dexterity e Attack Rating." },
           "ring2-0": {
             why: "+1 em todas as skills, ou um anel raro com Attack Rating e resistências se você estiver errando tiros.",
           },
@@ -4019,7 +4019,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "amulet-0": {
             why: "+2 em todas as skills e +30 em todas as resistências — as resistências importam mais depois que a sua velocidade de ataque estiver resolvida.",
           },
-          "ring1-0": { why: "Cannot Be Frozen, Dexterity, Attack Rating." },
+          "ring1-0": { why: "Cannot Be Frozen, Dexterity e Attack Rating num anel só." },
           "ring2-0": { why: "+1 em todas as skills." },
           "boots-0": { why: "Magic find e Strength." },
         },
