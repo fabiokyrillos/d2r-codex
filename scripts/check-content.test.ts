@@ -13,16 +13,20 @@
  *   2. Against the REAL content, deliberately corrupted in memory, so the rule
  *      is proven to fire on the shapes the site actually ships.
  *
- * Then one end-to-end control test edits a real file on disk, proves
- * `npm run check:content` exits non-zero, restores the file, and verifies the
- * restore was byte-identical. `finally` runs the restore even if an assertion
- * throws, and the byte comparison is what makes "restored" a checked claim
- * rather than an assumption.
+ * Then an end-to-end control proves a COMPLETE PROCESS exits non-zero because
+ * of a planted mutation — an in-process function call cannot show that the
+ * wiring from content to exit code works. It does that without editing any
+ * tracked file: the mutation is injected into the validator, and the runner
+ * lives in a directory this test creates under the OS temp root. Nothing in
+ * the repository is written, so there is no restore step to get wrong and no
+ * window in which an interrupted run leaves a modified source behind.
  *
  * Run with `npm run test:graph`.
  */
 import { execSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { basename, join, resolve, sep } from "node:path";
 
 import { SKILL_GRAPH, type SkillGraphNode } from "../content/classes/skill-graph";
 import { getBuilds, getSkills } from "../lib/registry";
@@ -278,37 +282,104 @@ const realBuilds = getBuilds(DEFAULT_LOCALE);
 }
 
 // ===========================================================================
-console.log("\nEnd-to-end control: mutate a real file on disk, then restore");
+console.log("\nEnd-to-end control: a whole process, and no tracked file touched");
 // ===========================================================================
 
+/*
+ * An earlier version of this test edited content/classes/paladin/skills.ts in
+ * place and restored it in a `finally`. That is not good enough: a Ctrl-C, a
+ * killed terminal or a crashed runner between the write and the restore leaves
+ * a tracked source file modified, and the next person inherits a mutation that
+ * looks like an intentional edit.
+ *
+ * So nothing on disk is edited. The mutation is injected into the validator
+ * instead, and a runner script written into a temporary directory outside the
+ * repository proves that a complete process — not just an in-process function
+ * call — exits non-zero because of it. The repository is only ever read.
+ */
 {
-  const file = "content/classes/paladin/skills.ts";
-  const original = readFileSync(file, "utf8");
-  // Holy Shield requires Blessed Hammer and Charge. Drop Charge.
-  const from = `    prerequisites: ["blessed-hammer", "charge"],`;
-  const to = `    prerequisites: ["blessed-hammer"],`;
+  const root = resolve(__dirname, "..");
+  const gitStatus = () =>
+    execSync("git status --porcelain", { cwd: root, encoding: "utf8" }).trim();
+  // Snapshot rather than assert-clean: the assertion is "this test changed
+  // nothing", which must hold whether or not the tree was already dirty.
+  const before = gitStatus();
 
-  const runCheck = () => {
+  // realpath matters on macOS, where os.tmpdir() is a symlink into /private.
+  const tmpRoot = realpathSync(tmpdir());
+  const dir = mkdtempSync(join(tmpRoot, "d2r-graph-control-"));
+
+  // The runner imports the repo by absolute path and runs with cwd at the repo
+  // root, so tsconfig path aliases still resolve. PLANT=1 corrupts the authored
+  // prerequisites in memory only.
+  const runner = join(dir, "control.ts");
+  const abs = (p: string) => JSON.stringify(join(root, p).split("\\").join("/"));
+  writeFileSync(
+    runner,
+    [
+      `import { checkSkillGraph } from ${abs("scripts/skill-graph-rules.ts")};`,
+      `import { SKILL_GRAPH } from ${abs("content/classes/skill-graph.ts")};`,
+      `import { getSkills, getBuilds } from ${abs("lib/registry/index.ts")};`,
+      ``,
+      `const plant = process.env.PLANT === "1";`,
+      `// Holy Shield requires Blessed Hammer and Charge. Drop Charge.`,
+      `const skills = getSkills("en-us").map((s) =>`,
+      `  plant && s.slug === "holy-shield" ? { ...s, prerequisites: ["blessed-hammer"] } : s,`,
+      `);`,
+      `const problems = checkSkillGraph(SKILL_GRAPH, skills, getBuilds("en-us"));`,
+      `for (const p of problems) console.error(p.rule + ": " + p.message);`,
+      `process.exit(problems.length > 0 ? 1 : 0);`,
+    ].join("\n"),
+    "utf8",
+  );
+
+  const run = (plant: boolean) => {
     try {
-      execSync("npm run check:content", { stdio: "pipe" });
-      return 0;
-    } catch (err) {
-      return (err as { status?: number }).status ?? 1;
+      execSync(`npx tsx ${JSON.stringify(runner)}`, {
+        cwd: root,
+        stdio: "pipe",
+        env: { ...process.env, PLANT: plant ? "1" : "0" },
+      });
+      return { code: 0, err: "" };
+    } catch (e) {
+      const err = e as { status?: number; stderr?: Buffer };
+      return { code: err.status ?? 1, err: err.stderr?.toString() ?? "" };
     }
   };
 
   try {
-    check("the mutation anchor exists in the real file", original.includes(from));
-    check("check:content passes before the mutation", runCheck() === 0);
+    check("a full process over the real content exits 0", run(false).code === 0);
 
-    writeFileSync(file, original.replace(from, to), "utf8");
-    check("check:content FAILS with the planted mutation", runCheck() !== 0);
+    // Exit code alone is not proof: a broken import would also be non-zero.
+    // Require the process to name the rule it tripped.
+    const planted = run(true);
+    check("the same process exits non-zero with the mutation injected", planted.code !== 0);
+    check(
+      "...and it failed for the planted reason, not a crash",
+      planted.err.includes("authored-drift") && planted.err.includes("holy-shield"),
+      planted.err.split("\n")[0]?.slice(0, 120),
+    );
+
+    check("...and passes again once the mutation is removed", run(false).code === 0);
   } finally {
-    writeFileSync(file, original, "utf8");
+    // Only ever delete the directory this test created, and only after
+    // confirming it still resolves inside the OS temp root.
+    const resolved = realpathSync(dir);
+    const inTemp = resolved.startsWith(tmpRoot + sep);
+    const isOurs = basename(resolved).startsWith("d2r-graph-control-");
+    if (inTemp && isOurs) rmSync(resolved, { recursive: true, force: true });
+    check("the temporary directory was inside the OS temp root", inTemp, resolved);
+    check("the temporary directory was one this test created", isOurs, basename(resolved));
+    check("the temporary directory is gone", !existsSync(dir));
   }
 
-  check("the file was restored byte-for-byte", readFileSync(file, "utf8") === original);
-  check("check:content passes again after the restore", runCheck() === 0);
+  // The point of the whole refactor: the repository is untouched.
+  const after = gitStatus();
+  check(
+    "the run changed nothing git can see",
+    after === before,
+    after === before ? "" : `before=${before.split("\n").length} after=${after.split("\n").length} entries`,
+  );
 }
 
 // ===========================================================================
