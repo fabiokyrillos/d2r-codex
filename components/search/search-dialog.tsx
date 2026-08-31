@@ -4,7 +4,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { searchEntries, type SearchEntry, type SearchKind } from "@/lib/search";
+// From `scoring` directly, never from the `@/lib/search` barrel. The barrel
+// also exports `buildSearchIndex`, which imports the whole registry and through
+// it every content module — and "use client" pulls a file's entire import graph
+// into the browser bundle whether or not the symbols are used. That barrel
+// import put the full corpus, both locales, into a 1.1 MB chunk on every page,
+// while the comment below correctly said the index is fetched on demand.
+import { searchEntries, type SearchEntry, type SearchKind } from "@/lib/search/scoring";
 
 /**
  * Global search.
