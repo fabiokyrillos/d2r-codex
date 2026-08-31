@@ -111,6 +111,83 @@ interface RawDesc {
 const slugify = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+/**
+ * Synergies, read out of the game's own formulas.
+ *
+ * A skill's calc columns are expressions. Where one references another skill's
+ * base level, `skill('Vigor'.blvl)`, that contribution is scaled by a `parN`,
+ * and the matching `*ParamN Description` says what the parameter is for. The
+ * game labels the synergy parameters itself:
+ *
+ *   Blessed Hammer  EDmgSymPerCalc  "(skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8"
+ *                   *Param8 Description  "Damage synergy"
+ *
+ * So the rule is not a guess and not community consensus: an edge exists when
+ * the referenced skill's contribution is governed by a parameter the game calls
+ * a synergy. That deliberately excludes references that are something else —
+ * Energy Shield reads Telekinesis to lower its mana ratio, and Hydra reads Fire
+ * Bolt to know what to summon. Both are real mechanics; neither is a synergy,
+ * and the game does not label them as one.
+ *
+ * It also excludes Concentration's boost to Blessed Hammer, whose parameter is
+ * described as "Damage % from Concentration" rather than a synergy — it applies
+ * only while the aura runs, which is a different mechanic with a different name.
+ */
+const SYNERGY_KINDS: Record<string, string> = {
+  damage: "damage",
+  armor: "armor",
+  healing: "healing",
+  "buff duration": "duration",
+  "freeze length": "freeze",
+};
+
+const SKILL_REF = /skill\('([^']+)'\.blvl\)/g;
+const PAR_REF = /par(\d+)/g;
+
+function synergiesFor(row: RawSkill & Record<string, unknown>): { from: string; kinds: string[] }[] {
+  const me = row.skill;
+  const found = new Map<string, Set<string>>();
+
+  // Every string field, not a chosen list: synergies are expressed in
+  // EDmgSymPerCalc, ELenSymPerCalc, auralencalc and the numbered calcN columns,
+  // and it is the parameter's description — not the column's name — that says
+  // whether a reference is a synergy.
+  for (const value of Object.values(row)) {
+    if (typeof value !== "string" || !value.includes("skill(")) continue;
+
+    const refs = [...value.matchAll(SKILL_REF)].map((m) => m[1]).filter((n) => n !== me);
+    if (refs.length === 0) continue;
+
+    // Every parameter this expression uses, and the kinds among them that the
+    // game describes as a synergy.
+    const kinds: string[] = [];
+    for (const m of value.matchAll(PAR_REF)) {
+      const described = row[`*Param${m[1]} Description`];
+      if (typeof described !== "string" || !/synerg/i.test(described)) continue;
+      const label = described.replace(/\s*synergy\s*/i, "").trim().toLowerCase();
+      const kind = SYNERGY_KINDS[label];
+      if (!kind) {
+        throw new Error(
+          `${me}: unknown synergy kind "${described}". Add it to SYNERGY_KINDS deliberately ` +
+            `— an unrecognised kind must not be silently dropped or mislabelled as damage.`,
+        );
+      }
+      kinds.push(kind);
+    }
+    if (kinds.length === 0) continue;
+
+    for (const ref of refs) {
+      const slug = slugify(ref);
+      if (!found.has(slug)) found.set(slug, new Set());
+      for (const k of kinds) found.get(slug)!.add(k);
+    }
+  }
+
+  return [...found]
+    .map(([from, kinds]) => ({ from, kinds: [...kinds].sort() }))
+    .sort((x, y) => x.from.localeCompare(y.from));
+}
+
 const asArray = <T,>(j: unknown): T[] => (Array.isArray(j) ? j : Object.values(j as object)) as T[];
 
 /**
@@ -249,6 +326,7 @@ async function main() {
         requiredLevel: s.reqlevel,
         maxLevel: s.maxlvl ?? 20,
         prerequisites: a.get(slug)!,
+        synergies: synergiesFor(s as RawSkill & Record<string, unknown>),
         damage: hasDamage
           ? {
               element: s.EType!,
@@ -264,6 +342,31 @@ async function main() {
       x.row - y.row || x.column - y.column,
     );
 
+  /*
+   * Every extracted synergy must point at a skill of the same class that we
+   * actually publish. A cross-class or unknown target means the slugifier and
+   * the game's naming have diverged, and shipping it would render a dead name.
+   */
+  {
+    const byslug = new Map(rows.map((r) => [r.slug, r]));
+    for (const r of rows) {
+      for (const syn of r.synergies) {
+        const target = byslug.get(syn.from);
+        if (!target) {
+          throw new Error(`${r.slug}: synergy source "${syn.from}" is not an extracted skill`);
+        }
+        if (target.classSlug !== r.classSlug) {
+          throw new Error(
+            `${r.slug} (${r.classSlug}) takes a synergy from ${syn.from} (${target.classSlug})`,
+          );
+        }
+      }
+    }
+    if (rows.every((r) => r.synergies.length === 0)) {
+      throw new Error("no synergies were extracted at all; the calc columns must have moved");
+    }
+  }
+
   const dmg = (d: (typeof rows)[number]["damage"]) =>
     d
       ? `, damage: { element: "${d.element}", hitShift: ${d.hitShift}, ` +
@@ -277,7 +380,10 @@ async function main() {
         `  "${r.slug}": {\n` +
         `    classSlug: "${r.classSlug}", tree: "${r.tree}", page: ${r.page}, row: ${r.row}, column: ${r.column},\n` +
         `    requiredLevel: ${r.requiredLevel}, maxLevel: ${r.maxLevel},\n` +
-        `    prerequisites: [${r.prerequisites.map((p) => `"${p}"`).join(", ")}]${dmg(r.damage)},\n` +
+        `    prerequisites: [${r.prerequisites.map((p) => `"${p}"`).join(", ")}],\n` +
+        `    synergies: [${r.synergies
+          .map((s) => `{ from: "${s.from}", kinds: [${s.kinds.map((k) => `"${k}"`).join(", ")}] }`)
+          .join(", ")}]${dmg(r.damage)},\n` +
         `  },`,
     )
     .join("\n");
@@ -301,8 +407,23 @@ async function main() {
  *   Baseline    ${BASELINE}
  *   Regenerate  npm run gen:skill-graph
  *   Fields      skills.json:    charclass, reqlevel, reqskill1, reqskill2,
- *                               maxlvl, EType, HitShift, EMin/EMax + bands
+ *                               maxlvl, EType, HitShift, EMin/EMax + bands,
+ *                               and the calc/Param columns that carry synergies
  *               skilldesc.json: SkillPage, SkillRow, SkillColumn
+ *
+ * SYNERGIES
+ *   Extracted, not authored. An edge exists where a skill's calc expression
+ *   references another skill's base level and that contribution is scaled by a
+ *   parameter the game itself describes as a synergy — for example Blessed
+ *   Hammer's \`(skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8\` with
+ *   \`*Param8 Description\` reading "Damage synergy".
+ *
+ *   References governed by any other parameter are deliberately excluded, and
+ *   they are real mechanics rather than oversights: Energy Shield reads
+ *   Telekinesis to lower its mana ratio, Hydra reads Fire Bolt to know what to
+ *   summon, and Concentration's boost to Blessed Hammer applies only while the
+ *   aura runs. None of the three is a synergy and the game does not call them
+ *   one.
  *   Extracted   ${rows.length} skills (${rows.filter((r) => r.classSlug === "paladin").length} Paladin, ${rows.filter((r) => r.classSlug === "sorceress").length} Sorceress)
  *
  *   The commit is pinned, not \`master\`. Re-running the generator reproduces
@@ -359,6 +480,15 @@ export interface SkillGraphNode {
   /** Skills needing at least one point before this can be allocated. */
   readonly prerequisites: readonly Slug[];
   /**
+   * Skills this one *receives* a synergy bonus from — the only authored
+   * direction. \`synergyReceivers\` in lib/skills.ts derives the reverse.
+   *
+   * \`kinds\` is what the bonus improves, as the game's own parameter labels
+   * name it: damage, armor, healing, duration, freeze. A skill can receive two
+   * kinds from one source, which is why this is a list.
+   */
+  readonly synergies: readonly { readonly from: Slug; readonly kinds: readonly string[] }[];
+  /**
    * Base elemental damage before synergies. Absent for skills that deal none.
    * Final value = (base + banded per-level total) x 2^(hitShift - 8).
    */
@@ -383,6 +513,10 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
   console.log(`  skills:    ${rows.length}`);
   console.log(`  agreement: ${agree}/${a.size} across the two extractions`);
   console.log(`  damage:    ${rows.filter((r) => r.damage).length} skills carry base damage`);
+  const edges = rows.reduce((n, r) => n + r.synergies.length, 0);
+  console.log(
+    `  synergies: ${edges} edges across ${rows.filter((r) => r.synergies.length).length} receivers`,
+  );
   console.log(`  trees:     ${[...treeByClassPage.entries()].map(([k, v]) => `${k}=${v}`).join(", ")}`);
 }
 

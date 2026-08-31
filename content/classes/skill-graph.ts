@@ -15,8 +15,23 @@
  *   Baseline    D2R Patch 3.3 / Ladder Season 15 extraction
  *   Regenerate  npm run gen:skill-graph
  *   Fields      skills.json:    charclass, reqlevel, reqskill1, reqskill2,
- *                               maxlvl, EType, HitShift, EMin/EMax + bands
+ *                               maxlvl, EType, HitShift, EMin/EMax + bands,
+ *                               and the calc/Param columns that carry synergies
  *               skilldesc.json: SkillPage, SkillRow, SkillColumn
+ *
+ * SYNERGIES
+ *   Extracted, not authored. An edge exists where a skill's calc expression
+ *   references another skill's base level and that contribution is scaled by a
+ *   parameter the game itself describes as a synergy — for example Blessed
+ *   Hammer's `(skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8` with
+ *   `*Param8 Description` reading "Damage synergy".
+ *
+ *   References governed by any other parameter are deliberately excluded, and
+ *   they are real mechanics rather than oversights: Energy Shield reads
+ *   Telekinesis to lower its mana ratio, Hydra reads Fire Bolt to know what to
+ *   summon, and Concentration's boost to Blessed Hammer applies only while the
+ *   aura runs. None of the three is a synergy and the game does not call them
+ *   one.
  *   Extracted   60 skills (30 Paladin, 30 Sorceress)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces
@@ -73,6 +88,15 @@ export interface SkillGraphNode {
   /** Skills needing at least one point before this can be allocated. */
   readonly prerequisites: readonly Slug[];
   /**
+   * Skills this one *receives* a synergy bonus from — the only authored
+   * direction. `synergyReceivers` in lib/skills.ts derives the reverse.
+   *
+   * `kinds` is what the bonus improves, as the game's own parameter labels
+   * name it: damage, armor, healing, duration, freeze. A skill can receive two
+   * kinds from one source, which is why this is a list.
+   */
+  readonly synergies: readonly { readonly from: Slug; readonly kinds: readonly string[] }[];
+  /**
    * Base elemental damage before synergies. Absent for skills that deal none.
    * Final value = (base + banded per-level total) x 2^(hitShift - 8).
    */
@@ -90,301 +114,361 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 1, column: 1,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
+    synergies: [{ from: "fanaticism", kinds: ["damage"] }, { from: "redemption", kinds: ["damage"] }],
   },
   "smite": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 1, column: 3,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "holy-bolt": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 2, column: 2,
     requiredLevel: 6, maxLevel: 20,
-    prerequisites: [], damage: { element: "mag", hitShift: 8, min: { base: 8, bands: [8, 10, 13, 16, 20] }, max: { base: 16, bands: [8, 11, 15, 18, 23] } },
+    prerequisites: [],
+    synergies: [{ from: "fist-of-the-heavens", kinds: ["damage"] }, { from: "prayer", kinds: ["healing"] }], damage: { element: "mag", hitShift: 8, min: { base: 8, bands: [8, 10, 13, 16, 20] }, max: { base: 16, bands: [8, 11, 15, 18, 23] } },
   },
   "zeal": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 3, column: 1,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["sacrifice"],
+    synergies: [{ from: "sacrifice", kinds: ["damage"] }],
   },
   "charge": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["smite"],
+    synergies: [{ from: "might", kinds: ["damage"] }, { from: "vigor", kinds: ["damage"] }],
   },
   "vengeance": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 4, column: 1,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["zeal"],
+    synergies: [{ from: "resist-cold", kinds: ["damage"] }, { from: "resist-fire", kinds: ["damage"] }, { from: "resist-lightning", kinds: ["damage"] }, { from: "salvation", kinds: ["damage"] }],
   },
   "blessed-hammer": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
-    prerequisites: ["holy-bolt"], damage: { element: "mag", hitShift: 8, min: { base: 12, bands: [8, 10, 12, 13, 14] }, max: { base: 16, bands: [8, 10, 12, 13, 14] } },
+    prerequisites: ["holy-bolt"],
+    synergies: [{ from: "blessed-aim", kinds: ["damage"] }, { from: "vigor", kinds: ["damage"] }], damage: { element: "mag", hitShift: 8, min: { base: 12, bands: [8, 10, 12, 13, 14] }, max: { base: 16, bands: [8, 10, 12, 13, 14] } },
   },
   "conversion": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 5, column: 1,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["vengeance"],
+    synergies: [],
   },
   "holy-shield": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 5, column: 3,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["blessed-hammer", "charge"],
+    synergies: [{ from: "defiance", kinds: ["armor"] }],
   },
   "fist-of-the-heavens": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
-    prerequisites: ["blessed-hammer", "conversion"], damage: { element: "ltng", hitShift: 8, min: { base: 150, bands: [15, 30, 45, 55, 65] }, max: { base: 200, bands: [15, 30, 45, 55, 65] } },
+    prerequisites: ["blessed-hammer", "conversion"],
+    synergies: [{ from: "holy-shock", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 150, bands: [15, 30, 45, 55, 65] }, max: { base: 200, bands: [15, 30, 45, 55, 65] } },
   },
   "might": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 1, column: 1,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "holy-fire": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 2, column: 2,
     requiredLevel: 6, maxLevel: 20,
-    prerequisites: ["might"], damage: { element: "fire", hitShift: 7, min: { base: 2, bands: [1, 4, 6, 7, 8] }, max: { base: 6, bands: [2, 5, 7, 8, 9] } },
+    prerequisites: ["might"],
+    synergies: [{ from: "resist-fire", kinds: ["damage"] }, { from: "salvation", kinds: ["damage"] }], damage: { element: "fire", hitShift: 7, min: { base: 2, bands: [1, 4, 6, 7, 8] }, max: { base: 6, bands: [2, 5, 7, 8, 9] } },
   },
   "thorns": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 2, column: 3,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "blessed-aim": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 3, column: 1,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["might"],
+    synergies: [],
   },
   "concentration": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 4, column: 1,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["blessed-aim"],
+    synergies: [],
   },
   "holy-freeze": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
-    prerequisites: ["holy-fire"], damage: { element: "cold", hitShift: 8, min: { base: 2, bands: [1, 2, 3, 4, 5] }, max: { base: 3, bands: [1, 2, 3, 4, 5] } },
+    prerequisites: ["holy-fire"],
+    synergies: [{ from: "resist-cold", kinds: ["damage"] }, { from: "salvation", kinds: ["damage"] }], damage: { element: "cold", hitShift: 8, min: { base: 2, bands: [1, 2, 3, 4, 5] }, max: { base: 3, bands: [1, 2, 3, 4, 5] } },
   },
   "holy-shock": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 5, column: 2,
     requiredLevel: 24, maxLevel: 20,
-    prerequisites: ["holy-freeze"], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 10, bands: [6, 8, 10, 12, 15] } },
+    prerequisites: ["holy-freeze"],
+    synergies: [{ from: "resist-lightning", kinds: ["damage"] }, { from: "salvation", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 10, bands: [6, 8, 10, 12, 15] } },
   },
   "sanctuary": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 5, column: 3,
     requiredLevel: 24, maxLevel: 20,
-    prerequisites: ["holy-freeze", "thorns"], damage: { element: "mag", hitShift: 8, min: { base: 8, bands: [4, 4, 5, 5, 6] }, max: { base: 16, bands: [4, 5, 6, 6, 7] } },
+    prerequisites: ["holy-freeze", "thorns"],
+    synergies: [{ from: "cleansing", kinds: ["damage"] }], damage: { element: "mag", hitShift: 8, min: { base: 8, bands: [4, 4, 5, 5, 6] }, max: { base: 16, bands: [4, 5, 6, 6, 7] } },
   },
   "fanaticism": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 6, column: 1,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["concentration"],
+    synergies: [],
   },
   "conviction": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 6, column: 3,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["sanctuary"],
+    synergies: [],
   },
   "prayer": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 1, column: 1,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "resist-fire": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 1, column: 3,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "defiance": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 2, column: 2,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "resist-cold": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 2, column: 3,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "cleansing": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 3, column: 1,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["prayer"],
+    synergies: [],
   },
   "resist-lightning": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "vigor": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["cleansing", "defiance"],
+    synergies: [],
   },
   "meditation": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 5, column: 1,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["cleansing"],
+    synergies: [],
   },
   "redemption": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["vigor"],
+    synergies: [],
   },
   "salvation": {
     classSlug: "paladin", tree: "defensive-auras", page: 3, row: 6, column: 3,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "fire-bolt": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 1, column: 2,
     requiredLevel: 1, maxLevel: 20,
-    prerequisites: [], damage: { element: "fire", hitShift: 7, min: { base: 6, bands: [3, 4, 8, 18, 54] }, max: { base: 12, bands: [3, 6, 10, 20, 56] } },
+    prerequisites: [],
+    synergies: [{ from: "fire-ball", kinds: ["damage"] }, { from: "meteor", kinds: ["damage"] }], damage: { element: "fire", hitShift: 7, min: { base: 6, bands: [3, 4, 8, 18, 54] }, max: { base: 12, bands: [3, 6, 10, 20, 56] } },
   },
   "warmth": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 1, column: 3,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "inferno": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 2, column: 1,
     requiredLevel: 6, maxLevel: 20,
-    prerequisites: [], damage: { element: "fire", hitShift: 3, min: { base: 36, bands: [24, 30, 34, 38, 42] }, max: { base: 72, bands: [25, 31, 35, 39, 43] } },
+    prerequisites: [],
+    synergies: [{ from: "warmth", kinds: ["damage"] }], damage: { element: "fire", hitShift: 3, min: { base: 36, bands: [24, 30, 34, 38, 42] }, max: { base: 72, bands: [25, 31, 35, 39, 43] } },
   },
   "blaze": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 3, column: 1,
     requiredLevel: 12, maxLevel: 20,
-    prerequisites: ["inferno"], damage: { element: "fire", hitShift: 4, min: { base: 4, bands: [3, 5, 7, 9, 11] }, max: { base: 8, bands: [3, 6, 8, 10, 12] } },
+    prerequisites: ["inferno"],
+    synergies: [{ from: "warmth", kinds: ["damage"] }], damage: { element: "fire", hitShift: 4, min: { base: 4, bands: [3, 5, 7, 9, 11] }, max: { base: 8, bands: [3, 6, 8, 10, 12] } },
   },
   "fire-ball": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 3, column: 2,
     requiredLevel: 12, maxLevel: 20,
-    prerequisites: ["fire-bolt"], damage: { element: "fire", hitShift: 7, min: { base: 12, bands: [13, 23, 28, 33, 38] }, max: { base: 28, bands: [15, 25, 30, 35, 40] } },
+    prerequisites: ["fire-bolt"],
+    synergies: [{ from: "fire-bolt", kinds: ["damage"] }, { from: "meteor", kinds: ["damage"] }], damage: { element: "fire", hitShift: 7, min: { base: 12, bands: [13, 23, 28, 33, 38] }, max: { base: 28, bands: [15, 25, 30, 35, 40] } },
   },
   "fire-wall": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 4, column: 1,
     requiredLevel: 18, maxLevel: 20,
-    prerequisites: ["blaze"], damage: { element: "fire", hitShift: 4, min: { base: 15, bands: [9, 14, 21, 21, 21] }, max: { base: 20, bands: [9, 14, 21, 21, 21] } },
+    prerequisites: ["blaze"],
+    synergies: [{ from: "inferno", kinds: ["damage"] }, { from: "warmth", kinds: ["damage"] }], damage: { element: "fire", hitShift: 4, min: { base: 15, bands: [9, 14, 21, 21, 21] }, max: { base: 20, bands: [9, 14, 21, 21, 21] } },
   },
   "enchant": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 4, column: 3,
     requiredLevel: 18, maxLevel: 20,
-    prerequisites: ["fire-ball", "warmth"], damage: { element: "fire", hitShift: 7, min: { base: 16, bands: [3, 7, 11, 15, 19] }, max: { base: 20, bands: [5, 9, 13, 17, 21] } },
+    prerequisites: ["fire-ball", "warmth"],
+    synergies: [{ from: "warmth", kinds: ["damage"] }], damage: { element: "fire", hitShift: 7, min: { base: 16, bands: [3, 7, 11, 15, 19] }, max: { base: 20, bands: [5, 9, 13, 17, 21] } },
   },
   "meteor": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 5, column: 2,
     requiredLevel: 24, maxLevel: 20,
-    prerequisites: ["fire-ball", "fire-wall"], damage: { element: "fire", hitShift: 8, min: { base: 80, bands: [23, 39, 79, 81, 83] }, max: { base: 100, bands: [25, 41, 81, 83, 85] } },
+    prerequisites: ["fire-ball", "fire-wall"],
+    synergies: [{ from: "fire-ball", kinds: ["damage"] }, { from: "fire-bolt", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 80, bands: [23, 39, 79, 81, 83] }, max: { base: 100, bands: [25, 41, 81, 83, 85] } },
   },
   "fire-mastery": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "hydra": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 6, column: 3,
     requiredLevel: 30, maxLevel: 20,
-    prerequisites: ["enchant"], damage: { element: "fire", hitShift: 7, min: { base: 28, bands: [11, 15, 19, 23, 27] }, max: { base: 39, bands: [13, 17, 21, 25, 29] } },
+    prerequisites: ["enchant"],
+    synergies: [{ from: "fire-ball", kinds: ["damage"] }, { from: "fire-bolt", kinds: ["damage"] }], damage: { element: "fire", hitShift: 7, min: { base: 28, bands: [11, 15, 19, 23, 27] }, max: { base: 39, bands: [13, 17, 21, 25, 29] } },
   },
   "charged-bolt": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 1, column: 2,
     requiredLevel: 1, maxLevel: 20,
-    prerequisites: [], damage: { element: "ltng", hitShift: 7, min: { base: 4, bands: [1, 1, 2, 3, 4] }, max: { base: 8, bands: [1, 1, 2, 3, 4] } },
+    prerequisites: [],
+    synergies: [{ from: "lightning", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 7, min: { base: 4, bands: [1, 1, 2, 3, 4] }, max: { base: 8, bands: [1, 1, 2, 3, 4] } },
   },
   "static-field": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 2, column: 1,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "telekinesis": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 2, column: 3,
     requiredLevel: 6, maxLevel: 20,
-    prerequisites: [], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [1, 1, 1, 1, 1] }, max: { base: 2, bands: [1, 1, 1, 1, 1] } },
+    prerequisites: [],
+    synergies: [], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [1, 1, 1, 1, 1] }, max: { base: 2, bands: [1, 1, 1, 1, 1] } },
   },
   "nova": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 3, column: 1,
     requiredLevel: 12, maxLevel: 20,
-    prerequisites: ["static-field"], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [6, 7, 8, 9, 10] }, max: { base: 20, bands: [8, 9, 10, 11, 12] } },
+    prerequisites: ["static-field"],
+    synergies: [{ from: "static-field", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [6, 7, 8, 9, 10] }, max: { base: 20, bands: [8, 9, 10, 11, 12] } },
   },
   "lightning": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 3, column: 2,
     requiredLevel: 12, maxLevel: 20,
-    prerequisites: ["charged-bolt"], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [8, 12, 20, 28, 36] } },
+    prerequisites: ["charged-bolt"],
+    synergies: [{ from: "chain-lightning", kinds: ["damage"] }, { from: "charged-bolt", kinds: ["damage"] }, { from: "nova", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [8, 12, 20, 28, 36] } },
   },
   "chain-lightning": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
-    prerequisites: ["lightning"], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [11, 13, 15, 15, 15] } },
+    prerequisites: ["lightning"],
+    synergies: [{ from: "charged-bolt", kinds: ["damage"] }, { from: "lightning", kinds: ["damage"] }, { from: "nova", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [11, 13, 15, 15, 15] } },
   },
   "teleport": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 4, column: 3,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["telekinesis"],
+    synergies: [],
   },
   "thunder-storm": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 5, column: 1,
     requiredLevel: 24, maxLevel: 20,
-    prerequisites: ["chain-lightning", "nova"], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [10, 10, 11, 11, 11] }, max: { base: 100, bands: [10, 10, 11, 11, 11] } },
+    prerequisites: ["chain-lightning", "nova"],
+    synergies: [{ from: "static-field", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [10, 10, 11, 11, 11] }, max: { base: 100, bands: [10, 10, 11, 11, 11] } },
   },
   "energy-shield": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 5, column: 3,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["chain-lightning", "teleport"],
+    synergies: [],
   },
   "lightning-mastery": {
     classSlug: "sorceress", tree: "lightning-spells", page: 2, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
   "ice-bolt": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 1, column: 2,
     requiredLevel: 1, maxLevel: 20,
-    prerequisites: [], damage: { element: "cold", hitShift: 7, min: { base: 6, bands: [2, 4, 6, 8, 10] }, max: { base: 10, bands: [3, 5, 7, 9, 11] } },
+    prerequisites: [],
+    synergies: [{ from: "blizzard", kinds: ["damage"] }, { from: "frost-nova", kinds: ["damage"] }, { from: "frozen-orb", kinds: ["damage"] }, { from: "glacial-spike", kinds: ["damage"] }, { from: "ice-blast", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 6, bands: [2, 4, 6, 8, 10] }, max: { base: 10, bands: [3, 5, 7, 9, 11] } },
   },
   "frozen-armor": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 1, column: 3,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
+    synergies: [{ from: "chilling-armor", kinds: ["duration", "freeze"] }, { from: "shiver-armor", kinds: ["duration", "freeze"] }],
   },
   "frost-nova": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 2, column: 1,
     requiredLevel: 6, maxLevel: 20,
-    prerequisites: [], damage: { element: "cold", hitShift: 7, min: { base: 4, bands: [6, 8, 10, 12, 14] }, max: { base: 8, bands: [7, 9, 11, 13, 15] } },
+    prerequisites: [],
+    synergies: [{ from: "blizzard", kinds: ["damage"] }, { from: "frozen-orb", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 4, bands: [6, 8, 10, 12, 14] }, max: { base: 8, bands: [7, 9, 11, 13, 15] } },
   },
   "ice-blast": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 2, column: 2,
     requiredLevel: 6, maxLevel: 20,
-    prerequisites: ["ice-bolt"], damage: { element: "cold", hitShift: 7, min: { base: 16, bands: [14, 28, 42, 56, 70] }, max: { base: 24, bands: [15, 29, 43, 57, 71] } },
+    prerequisites: ["ice-bolt"],
+    synergies: [{ from: "blizzard", kinds: ["damage"] }, { from: "frozen-orb", kinds: ["damage"] }, { from: "glacial-spike", kinds: ["freeze"] }, { from: "ice-bolt", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 16, bands: [14, 28, 42, 56, 70] }, max: { base: 24, bands: [15, 29, 43, 57, 71] } },
   },
   "shiver-armor": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
-    prerequisites: ["frozen-armor", "ice-blast"], damage: { element: "cold", hitShift: 7, min: { base: 12, bands: [6, 8, 10, 12, 14] }, max: { base: 16, bands: [7, 9, 11, 13, 15] } },
+    prerequisites: ["frozen-armor", "ice-blast"],
+    synergies: [{ from: "chilling-armor", kinds: ["damage", "duration"] }, { from: "frozen-armor", kinds: ["damage", "duration"] }], damage: { element: "cold", hitShift: 7, min: { base: 12, bands: [6, 8, 10, 12, 14] }, max: { base: 16, bands: [7, 9, 11, 13, 15] } },
   },
   "glacial-spike": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
-    prerequisites: ["ice-blast"], damage: { element: "cold", hitShift: 7, min: { base: 32, bands: [14, 26, 28, 30, 32] }, max: { base: 48, bands: [15, 27, 29, 31, 33] } },
+    prerequisites: ["ice-blast"],
+    synergies: [{ from: "blizzard", kinds: ["freeze"] }, { from: "frozen-orb", kinds: ["damage"] }, { from: "ice-blast", kinds: ["damage"] }, { from: "ice-bolt", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 32, bands: [14, 26, 28, 30, 32] }, max: { base: 48, bands: [15, 27, 29, 31, 33] } },
   },
   "blizzard": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 5, column: 1,
     requiredLevel: 24, maxLevel: 20,
-    prerequisites: ["frost-nova", "glacial-spike"], damage: { element: "cold", hitShift: 8, min: { base: 45, bands: [15, 30, 45, 55, 65] }, max: { base: 75, bands: [16, 31, 46, 56, 66] } },
+    prerequisites: ["frost-nova", "glacial-spike"],
+    synergies: [{ from: "glacial-spike", kinds: ["damage"] }, { from: "ice-blast", kinds: ["damage"] }, { from: "ice-bolt", kinds: ["damage"] }], damage: { element: "cold", hitShift: 8, min: { base: 45, bands: [15, 30, 45, 55, 65] }, max: { base: 75, bands: [16, 31, 46, 56, 66] } },
   },
   "chilling-armor": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 5, column: 3,
     requiredLevel: 24, maxLevel: 20,
-    prerequisites: ["shiver-armor"], damage: { element: "cold", hitShift: 7, min: { base: 16, bands: [8, 10, 12, 14, 16] }, max: { base: 20, bands: [9, 11, 13, 15, 17] } },
+    prerequisites: ["shiver-armor"],
+    synergies: [{ from: "frozen-armor", kinds: ["damage", "duration"] }, { from: "shiver-armor", kinds: ["damage", "duration"] }], damage: { element: "cold", hitShift: 7, min: { base: 16, bands: [8, 10, 12, 14, 16] }, max: { base: 20, bands: [9, 11, 13, 15, 17] } },
   },
   "frozen-orb": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 6, column: 1,
     requiredLevel: 30, maxLevel: 20,
-    prerequisites: ["blizzard"], damage: { element: "cold", hitShift: 7, min: { base: 80, bands: [20, 24, 28, 29, 30] }, max: { base: 90, bands: [21, 25, 29, 30, 31] } },
+    prerequisites: ["blizzard"],
+    synergies: [{ from: "ice-bolt", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 80, bands: [20, 24, 28, 29, 30] }, max: { base: 90, bands: [21, 25, 29, 30, 31] } },
   },
   "cold-mastery": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: [],
+    synergies: [],
   },
 };
 

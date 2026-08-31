@@ -51,7 +51,6 @@ export const sorceressSkills: Skill[] = [
     element: "cold",
     requiredLevel: 1,
     summary: "A single freezing bolt. Weak on its own, but a Blizzard synergy worth 20 points.",
-    synergyFor: ["blizzard", "frozen-orb", "ice-blast", "glacial-spike"],
     mechanics: [
       "On a Blizzard build you will max this and never cast it — it exists purely as a +5% per level synergy.",
     ],
@@ -94,7 +93,6 @@ export const sorceressSkills: Skill[] = [
     prerequisites: ["ice-bolt"],
     summary: "A stronger single-target bolt that fully freezes. Blizzard synergy and a usable filler.",
     synergies: [{ skill: "ice-bolt", bonus: "+damage per level" }],
-    synergyFor: ["blizzard", "frozen-orb", "glacial-spike"],
     mechanics: [
       "Unlike most cold skills it *freezes* rather than chills, which stops a dangerous monster outright.",
       "Worth casting during Blizzard's cooldown against single targets.",
@@ -125,7 +123,6 @@ export const sorceressSkills: Skill[] = [
     summary:
       "An exploding ice projectile that freezes a small area. The Blizzard build's crowd control and its second-largest synergy.",
     synergies: [{ skill: "ice-bolt", bonus: "+damage per level" }],
-    synergyFor: ["blizzard"],
     mechanics: [
       "Freezes everything in the blast radius, which is why a Blizzard Sorceress rarely gets hit.",
       "This is what you cast while Blizzard is on cooldown.",
@@ -182,10 +179,7 @@ export const sorceressSkills: Skill[] = [
     prerequisites: ["blizzard"],
     summary:
       "A slow-travelling orb that sprays ice bolts in all directions. Excellent area coverage, no cooldown.",
-    synergies: [
-      { skill: "ice-bolt", bonus: "+damage per level" },
-      { skill: "ice-blast", bonus: "+damage per level" },
-    ],
+    synergies: [{ skill: "ice-bolt", bonus: "+damage per level" }],
     mechanics: [
       "No cooldown, unlike Blizzard, so it fits a more aggressive playstyle.",
       "Damage is spread across many small bolts, which makes it weaker on single targets and stronger on packs.",
@@ -222,7 +216,6 @@ export const sorceressSkills: Skill[] = [
     element: "lightning",
     requiredLevel: 1,
     summary: "A spray of short-range bolts. Strong at point-blank range, weak at distance.",
-    synergyFor: ["nova", "lightning", "chain-lightning"],
     confidence: "verified",
   },
   {
@@ -274,10 +267,6 @@ export const sorceressSkills: Skill[] = [
     requiredLevel: 12,
     prerequisites: ["static-field"],
     summary: "An expanding ring of lightning centred on you. The core of the Nova build.",
-    synergies: [
-      { skill: "charged-bolt", bonus: "+damage per level" },
-      { skill: "lightning", bonus: "+damage per level" },
-    ],
     confidence: "verified",
   },
   {
@@ -291,7 +280,6 @@ export const sorceressSkills: Skill[] = [
     prerequisites: ["charged-bolt"],
     summary: "A bolt that strikes instantly across the whole screen.",
     synergies: [{ skill: "charged-bolt", bonus: "+damage per level" }],
-    synergyFor: ["chain-lightning", "nova", "thunder-storm"],
     mechanics: [
       "Uses the slower Lightning cast animation, not the standard Sorceress one. Plan Faster Cast Rate against the lightning breakpoint table.",
     ],
@@ -346,7 +334,6 @@ export const sorceressSkills: Skill[] = [
     requiredLevel: 24,
     prerequisites: ["chain-lightning", "nova"],
     summary: "A timed buff that periodically strikes a random nearby enemy with lightning.",
-    synergies: [{ skill: "lightning", bonus: "+damage per level" }],
     mechanics: [
       "Stacks with a cold armor and with Energy Shield — they are not mutually exclusive.",
     ],
@@ -395,7 +382,6 @@ export const sorceressSkills: Skill[] = [
     element: "fire",
     requiredLevel: 1,
     summary: "A single fire projectile. The Sorceress's default level 1 attack and a Fire Ball synergy.",
-    synergyFor: ["fire-ball", "meteor", "hydra"],
     confidence: "verified",
   },
   {
@@ -422,7 +408,6 @@ export const sorceressSkills: Skill[] = [
     element: "fire",
     requiredLevel: 6,
     summary: "A short-range stream of flame. Rarely used past early Normal.",
-    synergyFor: ["blaze", "fire-wall"],
     confidence: "verified",
   },
   {
@@ -435,7 +420,6 @@ export const sorceressSkills: Skill[] = [
     requiredLevel: 12,
     prerequisites: ["inferno"],
     summary: "Leaves a trail of fire behind you as you move.",
-    synergies: [{ skill: "inferno", bonus: "+damage per level" }],
     confidence: "verified",
   },
   {
@@ -450,7 +434,6 @@ export const sorceressSkills: Skill[] = [
     summary:
       "An exploding fire projectile. The Fire Sorceress's workhorse from level 12 to the end of the game.",
     synergies: [{ skill: "fire-bolt", bonus: "+damage per level" }],
-    synergyFor: ["meteor"],
     mechanics: [
       "No cooldown and good area damage, which makes it the most practical fire skill for general clearing.",
     ],

@@ -23,8 +23,16 @@ export const SKILL_KINDS = [
 ] as const;
 export type SkillKind = (typeof SKILL_KINDS)[number];
 
+/**
+ * The magnitude of one synergy, in prose.
+ *
+ * The *identity* of a synergy is not authored — it comes from the generated
+ * graph, which reads the game's own formulas. This carries only the number a
+ * reader wants next to it, and `check:content` rejects an entry whose `skill`
+ * is not a synergy the graph recognises.
+ */
 export interface SkillSynergy {
-  /** Slug of the skill that provides the bonus. */
+  /** Slug of the skill that provides the bonus. Must exist in the graph. */
   skill: Slug;
   /** Human description of the bonus, e.g. "+8% damage per level". */
   bonus: string;
@@ -40,9 +48,11 @@ export interface Skill extends Entity {
   /** Skills that must have at least 1 point before this can be taken. */
   prerequisites?: Slug[];
   element?: Element;
+  /**
+   * Magnitudes only. Which skills feed this one comes from the graph; the
+   * reverse direction is derived by `synergyReceivers` and is never authored.
+   */
   synergies?: SkillSynergy[];
-  /** Skills that gain a bonus *from* this one. Authored, not derived. */
-  synergyFor?: Slug[];
   /**
    * Damage that the extracted elemental columns cannot express.
    *

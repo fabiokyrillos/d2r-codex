@@ -22,7 +22,7 @@ import {
 import { fmt, formatPoints, isLocale } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
-import { skillKindLabels } from "@/lib/labels";
+import { skillKindLabels, synergyKinds } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 import {
   CLASSES_WITH_SKILL_PAGES,
@@ -31,6 +31,7 @@ import {
   damagePresentation,
   dependents,
   progressionLevels,
+  synergyReceivers,
 } from "@/lib/skills";
 
 /**
@@ -87,7 +88,22 @@ export default async function SkillPage(
 
   const prerequisites = node.prerequisites.map(byslug).filter((s) => s !== undefined);
   const unlocks = dependents(skillSlug).map(byslug).filter((s) => s !== undefined);
-  const feeds = (skill.synergyFor ?? []).map(byslug).filter((s) => s !== undefined);
+
+  /*
+   * Both synergy directions come from the graph, which reads the game's own
+   * formulas. Authored content supplies only the magnitude, looked up by
+   * source slug — so a page can never claim an edge the game does not have,
+   * and the two directions cannot disagree with each other.
+   */
+  const bonusFor = new Map((skill.synergies ?? []).map((s) => [s.skill, s.bonus]));
+  const receives = node.synergies.flatMap((s) => {
+    const from = byslug(s.from);
+    return from ? [{ skill: from, kinds: s.kinds, bonus: bonusFor.get(s.from) }] : [];
+  });
+  const feeds = synergyReceivers(skillSlug).flatMap((rec) => {
+    const to = byslug(rec.slug);
+    return to ? [{ skill: to, kinds: rec.kinds }] : [];
+  });
   const builds = getBuildsUsingSkill(locale, skillSlug);
   const presentation = damagePresentation(skill, node);
 
@@ -192,43 +208,42 @@ export default async function SkillPage(
           </Section>
         )}
 
-        {skill.synergies && skill.synergies.length > 0 && (
-          <Section title={t.skills.synergiesTitle}>
+        {receives.length > 0 && (
+          <Section title={t.skills.synergiesTitle} description={t.skills.synergiesBody}>
             <ul className="space-y-2">
-              {skill.synergies.map((syn) => {
-                const from = byslug(syn.skill);
-                return (
-                  <li key={syn.skill} className="flex flex-wrap items-baseline gap-x-2 text-sm">
-                    {from ? (
-                      <Link
-                        href={r.skill(slug, from.slug)}
-                        className="font-medium text-ember hover:text-ember-bright"
-                      >
-                        {from.name}
-                      </Link>
-                    ) : (
-                      <span className="font-medium text-ink">{syn.skill}</span>
-                    )}
-                    <span className="text-pretty text-ink-muted">{syn.bonus}</span>
-                  </li>
-                );
-              })}
+              {receives.map((syn) => (
+                <li key={syn.skill.slug} className="flex flex-wrap items-baseline gap-x-2 text-sm">
+                  {/* Always a link: every source is a skill of this class that
+                      the graph knows, so there is no dead-name case to fall
+                      back to. A slug that did not resolve would fail
+                      `check:content` rather than render as bare text. */}
+                  <Link
+                    href={r.skill(slug, syn.skill.slug)}
+                    className="font-medium text-ember hover:text-ember-bright"
+                  >
+                    {syn.skill.name}
+                  </Link>
+                  <span className="text-ink-muted">{synergyKinds(syn.kinds, t)}</span>
+                  {syn.bonus && <span className="text-pretty text-ink-muted">{syn.bonus}</span>}
+                </li>
+              ))}
             </ul>
-            <p className="mt-3 text-xs text-ink-subtle">{t.skills.synergiesNote}</p>
+            <p className="mt-3 text-xs text-ink-muted">{t.skills.synergiesNote}</p>
           </Section>
         )}
 
         {feeds.length > 0 && (
-          <Section title={t.skills.feedsTitle}>
+          <Section title={t.skills.feedsTitle} description={t.skills.feedsBody}>
             <ul className="flex flex-wrap gap-2">
               {feeds.map((f) => (
-                <li key={f.slug}>
+                <li key={f.skill.slug}>
                   <Link
-                    href={r.skill(slug, f.slug)}
+                    href={r.skill(slug, f.skill.slug)}
                     className="inline-flex items-center gap-1.5 rounded border border-border bg-surface-raised px-2.5 py-1 text-sm text-ink hover:border-ember"
                   >
-                    <SkillSigil kind={f.kind} element={f.element} size={14} />
-                    {f.name}
+                    <SkillSigil kind={f.skill.kind} element={f.skill.element} size={14} />
+                    {f.skill.name}
+                    <span className="text-xs text-ink-muted">{synergyKinds(f.kinds, t)}</span>
                   </Link>
                 </li>
               ))}

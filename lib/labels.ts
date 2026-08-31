@@ -105,6 +105,29 @@ export const skillKindLabels = (t: Dictionary): Record<SkillKind, string> => ({
   shapeshift: t.skillKinds.shapeshift,
 });
 
+/**
+ * What a synergy improves, as the generated graph records it.
+ *
+ * Worth naming rather than assuming: Holy Bolt receives a *healing* synergy
+ * from Prayer and a *damage* synergy from Fist of the Heavens, and listing both
+ * under one silent heading would tell a reader Prayer raises Holy Bolt's damage.
+ */
+export const synergyKindLabels = (t: Dictionary): Record<string, string> => ({
+  damage: t.skills.synergyKindDamage,
+  armor: t.skills.synergyKindArmor,
+  healing: t.skills.synergyKindHealing,
+  duration: t.skills.synergyKindDuration,
+  freeze: t.skills.synergyKindFreeze,
+});
+
+/** "damage", or "buff duration and damage" — never an untranslated slug. */
+export const synergyKinds = (kinds: readonly string[], t: Dictionary): string => {
+  const labels = synergyKindLabels(t);
+  const named = kinds.map((k) => labels[k] ?? k);
+  if (named.length <= 1) return named[0] ?? "";
+  return `${named.slice(0, -1).join(", ")} ${t.skills.synergyKindJoin} ${named.at(-1)}`;
+};
+
 export const elementLabels = (t: Dictionary): Record<Element, string> => ({
   physical: t.elements.physical,
   magic: t.elements.magic,

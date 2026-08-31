@@ -43,8 +43,13 @@ import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
-import { damagePresentation, type DamagePresentation } from "../lib/skills";
-import { checkSkillGraph, MAX_HARD_POINTS } from "./skill-graph-rules";
+import {
+  damagePresentation,
+  synergyEdges,
+  synergyReceivers,
+  type DamagePresentation,
+} from "../lib/skills";
+import { checkSkillGraph, checkSynergies, MAX_HARD_POINTS } from "./skill-graph-rules";
 import { exitCodeFor, isUntranslatedProse } from "./content-rules";
 
 const SOURCE: Locale = DEFAULT_LOCALE;
@@ -656,6 +661,69 @@ for (const locale of TRANSLATED) {
 // ---------------------------------------------------------------------------
 // Skill mechanics array parity
 // ---------------------------------------------------------------------------
+
+/*
+ * Synergies — both directions, against the generated graph.
+ *
+ * `reverseFor` is the app's own `synergyReceivers`, not a reimplementation, so
+ * the rule proves the thing the pages actually render rather than a parallel
+ * model that happens to agree with it.
+ */
+console.log("\nSynergies (validated against the generated game-data graph):");
+{
+  const authored = getSkills(DEFAULT_LOCALE).map((s) => ({ slug: s.slug, synergies: s.synergies }));
+  const found = checkSynergies(SKILL_GRAPH, authored, synergyReceivers);
+  const rules = [
+    "synergy-unknown-skill",
+    "synergy-cross-class",
+    "synergy-self",
+    "synergy-reverse-drift",
+    "authored-synergy-drift",
+  ] as const;
+  for (const rule of rules) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : "!!"}   ${rule.padEnd(24)} ${hits.length}`);
+    for (const h of hits) fail(rule, h.detail);
+  }
+  const edges = synergyEdges();
+  console.log(`  ${edges.length} edges across ${new Set(edges.map((e) => e.to)).size} receivers`);
+  // A rule set that sees no edges proves nothing.
+  if (edges.length === 0) fail("synergy", "the graph carries no synergy edges at all");
+  const annotated = authored.reduce((n, s) => n + (s.synergies?.length ?? 0), 0);
+  console.log(`  ${annotated} of them carry an authored magnitude`);
+
+  /*
+   * `synergyBonuses` is a positional overlay onto `synergies`. A stale extra
+   * entry renders as nothing at all, so removing seven contradicted synergies
+   * left seven silent orphans behind — invisible to every check the site had.
+   */
+  for (const locale of TRANSLATED) {
+    const source = getSkills(DEFAULT_LOCALE);
+    const translated = getSkills(locale);
+    let mismatches = 0;
+    for (const skill of source) {
+      const other = translated.find((s) => s.slug === skill.slug);
+      if (!other) continue;
+      const a = skill.synergies?.length ?? 0;
+      const b = other.synergies?.length ?? 0;
+      if (a !== b) {
+        mismatches++;
+        fail(`${skill.slug}`, `${locale} has ${b} synergy bonuses, source has ${a}`);
+      }
+      for (let i = 0; i < Math.min(a, b); i++) {
+        if (skill.synergies![i].skill !== other.synergies![i].skill) {
+          fail(
+            `${skill.slug}`,
+            `${locale} synergy ${i} annotates "${other.synergies![i].skill}", source annotates "${skill.synergies![i].skill}"`,
+          );
+        }
+      }
+    }
+    console.log(
+      `  ${locale}  ${source.length - mismatches}/${source.length} skills match the source synergy count`,
+    );
+  }
+}
 
 /*
  * How every skill's damage is presented.

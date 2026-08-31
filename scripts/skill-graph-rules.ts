@@ -177,3 +177,108 @@ export function checkSkillGraph(
   return found;
 }
 
+/**
+ * Synergy integrity.
+ *
+ * The graph owns both directions: `node.synergies` is what a skill receives,
+ * and the reverse index is computed from it. Authored content may only supply a
+ * magnitude for an edge the graph already has.
+ *
+ * Every rule here exists because its absence shipped something. Ten of the
+ * thirty-four authored edges disagreed with their own reverse, and eight of the
+ * twenty-five authored identities were contradicted by the game's formulas —
+ * Holy Shield was said to take a synergy from Smite when the game gives it one
+ * from Defiance, and Thunder Storm was said to take one from Lightning when the
+ * game gives it one from Static Field.
+ */
+export interface SynergyProblem {
+  rule:
+    | "synergy-unknown-skill"
+    | "synergy-cross-class"
+    | "synergy-self"
+    | "synergy-reverse-drift"
+    | "authored-synergy-drift";
+  detail: string;
+}
+
+export function checkSynergies(
+  graph: Record<string, { classSlug: string; synergies: readonly { from: string; kinds: readonly string[] }[] }>,
+  authored: readonly { slug: string; synergies?: readonly { skill: string; bonus: string }[] }[],
+  /** The reverse index the site actually renders, as the app computes it. */
+  reverseFor: (slug: string) => readonly { slug: string }[],
+): SynergyProblem[] {
+  const problems: SynergyProblem[] = [];
+  const add = (rule: SynergyProblem["rule"], detail: string) => problems.push({ rule, detail });
+
+  for (const [slug, node] of Object.entries(graph)) {
+    for (const syn of node.synergies) {
+      const target = graph[syn.from];
+      if (!target) {
+        add("synergy-unknown-skill", `${slug} receives a synergy from unknown skill "${syn.from}"`);
+        continue;
+      }
+      if (syn.from === slug) {
+        add("synergy-self", `${slug} lists itself as its own synergy source`);
+      }
+      if (target.classSlug !== node.classSlug) {
+        add(
+          "synergy-cross-class",
+          `${slug} (${node.classSlug}) receives a synergy from ${syn.from} (${target.classSlug})`,
+        );
+      }
+      if (syn.kinds.length === 0) {
+        add("synergy-unknown-skill", `${slug} <- ${syn.from} carries no synergy kind`);
+      }
+    }
+  }
+
+  /*
+   * The reverse index the pages render must be exactly the transpose of the
+   * graph. A "Skills this feeds" entry with no matching "Synergies received" on
+   * the other page is the defect this whole rule set exists to prevent.
+   */
+  const expected = new Map<string, Set<string>>();
+  for (const [slug, node] of Object.entries(graph)) {
+    for (const syn of node.synergies) {
+      if (!expected.has(syn.from)) expected.set(syn.from, new Set());
+      expected.get(syn.from)!.add(slug);
+    }
+  }
+  for (const slug of Object.keys(graph)) {
+    const want = expected.get(slug) ?? new Set<string>();
+    const got = new Set(reverseFor(slug).map((r) => r.slug));
+    for (const s of want) {
+      if (!got.has(s)) {
+        add("synergy-reverse-drift", `${slug} feeds ${s} in the graph, but the reverse index omits it`);
+      }
+    }
+    for (const s of got) {
+      if (!want.has(s)) {
+        add(
+          "synergy-reverse-drift",
+          `the reverse index says ${slug} feeds ${s}, but the graph has no such edge`,
+        );
+      }
+    }
+  }
+
+  // Authored magnitudes may only annotate an edge the graph recognises.
+  for (const skill of authored) {
+    for (const syn of skill.synergies ?? []) {
+      const node = graph[skill.slug];
+      if (!node) {
+        add("authored-synergy-drift", `authored synergy on unknown skill "${skill.slug}"`);
+        continue;
+      }
+      if (!node.synergies.some((s) => s.from === syn.skill)) {
+        add(
+          "authored-synergy-drift",
+          `${skill.slug} authors a synergy from "${syn.skill}", which the game's formulas do not give it`,
+        );
+      }
+    }
+  }
+
+  return problems;
+}
+

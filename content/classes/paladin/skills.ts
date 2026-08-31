@@ -55,7 +55,6 @@ export const paladinSkills: Skill[] = [
     element: "physical",
     requiredLevel: 1,
     summary: "A heavy attack that damages you as well as the target.",
-    synergyFor: ["zeal", "vengeance"],
     confidence: "verified",
   },
   {
@@ -73,7 +72,6 @@ export const paladinSkills: Skill[] = [
       "It stuns, which is why it is the standard tool for Uber Tristram: a Smiter locks down Uber bosses that would otherwise kill anything.",
       "Damage comes from the shield, not the weapon.",
     ],
-    synergyFor: ["holy-shield"],
     confidence: "verified",
   },
   {
@@ -86,7 +84,6 @@ export const paladinSkills: Skill[] = [
     requiredLevel: 6,
     summary:
       "A magic bolt that damages undead and heals players. Blessed Hammer's prerequisite.",
-    synergyFor: ["blessed-hammer", "fist-of-the-heavens"],
     mechanics: [
       "Damages undead only, but heals allied players it passes through — a genuinely useful party skill.",
     ],
@@ -179,7 +176,6 @@ export const paladinSkills: Skill[] = [
     prerequisites: ["blessed-hammer", "charge"],
     summary:
       "A timed buff granting large defence and block chance. Every Paladin build takes it.",
-    synergies: [{ skill: "smite", bonus: "+damage per level" }],
     mechanics: [
       "The block bonus is what lets a Paladin reach and hold maximum block, which is the class's main survivability advantage.",
       "One hard point is usually enough — +skills gear pushes its effective level well past that.",
@@ -196,7 +192,6 @@ export const paladinSkills: Skill[] = [
     requiredLevel: 30,
     prerequisites: ["blessed-hammer", "conversion"],
     summary: "A lightning bolt plus radiating holy bolts. Lightning and magic damage together.",
-    synergies: [{ skill: "holy-bolt", bonus: "+damage per level" }],
     confidence: "verified",
   },
 
@@ -212,7 +207,6 @@ export const paladinSkills: Skill[] = [
     element: "physical",
     requiredLevel: 1,
     summary: "Increases physical damage for you and your party.",
-    synergyFor: ["blessed-aim", "concentration", "fanaticism"],
     confidence: "verified",
   },
   {
@@ -249,7 +243,6 @@ export const paladinSkills: Skill[] = [
     prerequisites: ["might"],
     summary:
       "Increases attack rating. On a Hammerdin it is maxed purely as a synergy and never activated.",
-    synergyFor: ["blessed-hammer"],
     mechanics: [
       "This is the clearest example of the aura system's quirk: a maxed aura contributes its synergy bonus whether or not it is the active aura.",
     ],
@@ -358,7 +351,6 @@ export const paladinSkills: Skill[] = [
     kind: "aura",
     requiredLevel: 1,
     summary: "Regenerates life for you and your party.",
-    synergyFor: ["cleansing", "meditation", "redemption"],
     confidence: "verified",
   },
   {
@@ -399,7 +391,6 @@ export const paladinSkills: Skill[] = [
     kind: "aura",
     requiredLevel: 6,
     summary: "Increases defence for you and your party.",
-    synergyFor: ["holy-shield", "vigor"],
     confidence: "verified",
   },
   {
@@ -427,7 +418,6 @@ export const paladinSkills: Skill[] = [
     requiredLevel: 12,
     prerequisites: ["prayer"],
     summary: "Reduces the duration of curses and poison on you and your party.",
-    synergies: [{ skill: "prayer", bonus: "+effect per level" }],
     confidence: "verified",
   },
   {
@@ -440,7 +430,6 @@ export const paladinSkills: Skill[] = [
     prerequisites: ["cleansing", "defiance"],
     summary:
       "Increases movement speed and stamina recovery. Also a Blessed Hammer synergy.",
-    synergyFor: ["blessed-hammer"],
     mechanics: [
       "Doubles as one of Blessed Hammer's two synergies at +14% magic damage per level, so a Hammerdin maxes it regardless of whether the movement speed is wanted.",
     ],

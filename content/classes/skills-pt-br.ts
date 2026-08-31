@@ -117,7 +117,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "Sem cooldown, diferente do Blizzard, então combina com um estilo mais agressivo.",
       "O dano se espalha em muitos projéteis pequenos, o que a torna mais fraca em alvo único e mais forte em grupos.",
     ],
-    synergyBonuses: ["+dano por nível", "+dano por nível"],
+    synergyBonuses: ["+dano por nível"],
   },
   "cold-mastery": {
     summary:
@@ -159,7 +159,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   nova: {
     summary:
       "Um anel de raio que se expande a partir de você. O centro da build de Nova.",
-    synergyBonuses: ["+dano por nível", "+dano por nível"],
+
   },
   lightning: {
     summary: "Um raio que atinge instantaneamente por toda a tela.",
@@ -191,7 +191,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "Acumula com uma cold armor e com o Energy Shield — não são mutuamente exclusivos.",
     ],
-    synergyBonuses: ["+dano por nível"],
+
   },
   "energy-shield": {
     summary: "Desvia parte do dano recebido para a mana em vez da vida.",
@@ -227,7 +227,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   blaze: {
     summary: "Deixa um rastro de fogo atrás de você enquanto se move.",
-    synergyBonuses: ["+dano por nível"],
+
   },
   "fire-ball": {
     summary:
@@ -329,12 +329,12 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "O bônus de bloqueio é o que permite ao Paladin alcançar e manter o bloqueio máximo, que é a principal vantagem de sobrevivência da classe.",
       "Um ponto costuma bastar — equipamento com +skills eleva bem o nível efetivo.",
     ],
-    synergyBonuses: ["+dano por nível"],
+
   },
   "fist-of-the-heavens": {
     summary:
       "Um raio somado a holy bolts que se espalham. Dano de raio e mágico juntos.",
-    synergyBonuses: ["+dano por nível"],
+
   },
 
   // -------------------------------------------------------------------------
@@ -417,7 +417,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   cleansing: {
     summary: "Reduz a duração de maldições e veneno em você e no seu grupo.",
-    synergyBonuses: ["+efeito por nível"],
+
   },
   vigor: {
     summary:

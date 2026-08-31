@@ -160,11 +160,38 @@ export function treeEdges(treeSlug: Slug): SkillEdge[] {
   return edges;
 }
 
-/** Which skills gain a bonus *from* this one, read off the graph. */
+/** Which skills require this one as a prerequisite, read off the graph. */
 export function dependents(slug: Slug): Slug[] {
   return Object.entries(SKILL_GRAPH)
     .filter(([, node]) => node.prerequisites.includes(slug))
     .map(([s]) => s);
+}
+
+/**
+ * The reverse of `node.synergies`: which skills receive a bonus *from* this one.
+ *
+ * Derived, never authored. Both directions used to be written by hand, in
+ * `synergies` and `synergyFor`, and ten of the thirty-four edges disagreed —
+ * Might's page said it fed Blessed Aim while Blessed Aim's page listed no
+ * synergies at all. Two hand-maintained lists describing one edge will drift,
+ * and the reader has no way to tell which half is wrong. There is now one
+ * direction in the data and one function for the other.
+ */
+export function synergyReceivers(slug: Slug): { slug: Slug; kinds: readonly string[] }[] {
+  return Object.entries(SKILL_GRAPH)
+    .flatMap(([receiver, node]) =>
+      node.synergies
+        .filter((s) => s.from === slug)
+        .map((s) => ({ slug: receiver, kinds: s.kinds })),
+    )
+    .sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
+/** Every canonical synergy edge, as `from -> to` pairs. For the validator. */
+export function synergyEdges(): { from: Slug; to: Slug; kinds: readonly string[] }[] {
+  return Object.entries(SKILL_GRAPH).flatMap(([to, node]) =>
+    node.synergies.map((s) => ({ from: s.from, to, kinds: s.kinds })),
+  );
 }
 
 /**

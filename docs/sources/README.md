@@ -68,6 +68,49 @@ extraction pass, and that the prerequisite graph did not change between Lord of
 Destruction and D2R. It is not corroboration by an unrelated party, and it says
 nothing about patches after the baseline.
 
+### Synergies, and the eight claims that were removed
+
+Synergies were authored in **two** hand-maintained directions — `synergies` on
+the receiver and `synergyFor` on the source — and the two disagreed on ten of
+thirty-four edges. Checking the identities against the game's own formulas found
+that eight of the twenty-five authored edges were wrong outright.
+
+The formulas settle it without interpretation. A skill's calc columns are
+expressions; where one reads another skill's base level the contribution is
+scaled by a `parN`, and the matching `*ParamN Description` says what that
+parameter is. The game labels the synergy parameters itself:
+
+```
+Blessed Hammer  EDmgSymPerCalc       (skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8
+                *Param8 Description  "Damage synergy"
+```
+
+So an edge exists when the contribution is governed by a parameter the game
+calls a synergy — **69 edges across 34 receivers**. Both directions now come
+from that one extraction; `synergyFor` is gone and the reverse index is
+computed.
+
+**Removed, because the formulas contradict them:**
+
+| Claimed | What the game actually gives |
+| --- | --- |
+| Holy Shield ← Smite | Holy Shield ← Defiance (`"Armor synergy"`) |
+| Fist of the Heavens ← Holy Bolt | Fist of the Heavens ← Holy Shock; the Holy Bolt edge runs the other way |
+| Cleansing ← Prayer | Cleansing receives no synergy; Prayer feeds Holy Bolt's *healing* |
+| Frozen Orb ← Ice Blast | Frozen Orb ← Ice Bolt only |
+| Nova ← Charged Bolt, Lightning | Nova ← Static Field |
+| Thunder Storm ← Lightning | Thunder Storm ← Static Field |
+| Blaze ← Inferno | Blaze ← Warmth |
+
+**Recorded gaps.** Of the 69 edges, **17 carry an authored magnitude** and 52 do
+not. The identity of all 69 is sourced; the missing magnitudes are a gap in this
+repository's prose, not a claim about the game, and a page shows the source and
+what it improves without inventing a number. Three references in the formulas
+are deliberately *not* treated as synergies, because the game does not label
+them as such: Energy Shield reads Telekinesis to lower its mana ratio, Hydra
+reads Fire Bolt to know what to summon, and Concentration's boost to Blessed
+Hammer applies only while the aura runs.
+
 ### Facts versus protected content
 
 The repository carries an MIT licence, but its contents are extracted from
