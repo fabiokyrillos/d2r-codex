@@ -9,6 +9,7 @@ import type {
   PlayDifficulty,
   ProgressionTier,
   Release,
+  SkillKind,
 } from "@/lib/types";
 import type { Dictionary } from "@/lib/i18n";
 import type { SearchKind } from "@/lib/search";
@@ -91,6 +92,17 @@ export const difficultyLabels = (t: Dictionary): Record<Difficulty, string> => (
   normal: t.difficulty.normal,
   nightmare: t.difficulty.nightmare,
   hell: t.difficulty.hell,
+});
+
+export const skillKindLabels = (t: Dictionary): Record<SkillKind, string> => ({
+  attack: t.skillKinds.attack,
+  spell: t.skillKinds.spell,
+  passive: t.skillKinds.passive,
+  aura: t.skillKinds.aura,
+  summon: t.skillKinds.summon,
+  curse: t.skillKinds.curse,
+  buff: t.skillKinds.buff,
+  shapeshift: t.skillKinds.shapeshift,
 });
 
 export const elementLabels = (t: Dictionary): Record<Element, string> => ({

@@ -10,6 +10,7 @@ import type {
   Rune,
   Runeword,
   Skill,
+  SkillAllocation,
   SkillTree,
   Slug,
   UniqueItem,
@@ -393,6 +394,21 @@ export const getTreesForClass = (locale: Locale, classSlug: Slug) =>
   skillTreesFor(locale)
     .filter((t) => t.classSlug === classSlug)
     .sort((a, b) => a.order - b.order);
+
+/**
+ * Builds that allocate a skill, with the points they spend, so a skill page can
+ * link back without any authoring. Ordered by investment, heaviest first.
+ */
+export const getBuildsUsingSkill = (locale: Locale, skillSlug: Slug) =>
+  buildsFor(locale)
+    .map((build) => ({
+      build,
+      allocation: build.skills.find((a) => a.skill === skillSlug),
+    }))
+    .filter((entry): entry is { build: Build; allocation: SkillAllocation } =>
+      entry.allocation !== undefined && entry.allocation.points > 0,
+    )
+    .sort((a, b) => b.allocation.points - a.allocation.points);
 
 export const getSkillsInTree = (locale: Locale, treeSlug: Slug) =>
   skillsFor(locale)

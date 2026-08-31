@@ -22,6 +22,14 @@ export function routes(locale: Locale) {
     classes: () => `${base}/classes`,
     class: (slug: Slug) => `${base}/classes/${slug}`,
     classSkills: (slug: Slug) => `${base}/classes/${slug}#skills`,
+    /**
+     * Nested under the class page's own `[slug]` segment. Next 16 throws E912
+     * ("Ambiguous app routes") when two paths normalize to the same structure
+     * with different param names, so this cannot introduce `[classSlug]` here.
+     */
+    skill: (classSlug: Slug, skillSlug: Slug) =>
+      `${base}/classes/${classSlug}/skills/${skillSlug}`,
+    skillTree: (classSlug: Slug, treeSlug: Slug) => `${base}/classes/${classSlug}#${treeSlug}`,
 
     builds: () => `${base}/builds`,
     build: (classSlug: Slug, slug: Slug) => `${base}/builds/${classSlug}/${slug}`,
