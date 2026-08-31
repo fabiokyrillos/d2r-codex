@@ -112,7 +112,7 @@ export function SkillSigil({
       stroke="currentColor"
       className={cn(
         "shrink-0",
-        element ? elementClass[element] : "text-ink-subtle",
+        element ? elementClass[element] : "text-ink-muted",
         className,
       )}
     >

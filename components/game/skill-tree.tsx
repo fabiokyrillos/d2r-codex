@@ -48,7 +48,13 @@ const stateStyle: Record<TileState, string> = {
   // like a prerequisite, but twice the weight, so the two differ by width as
   // well as by hue and by the label printed on the tile.
   flex: "border-2 border-dashed border-warning",
-  unused: "border border-border opacity-55",
+  // `opacity-55` dimmed the whole tile body, including its text, to 3.03:1 —
+  // below AA, and an unused tile is a live button rather than a disabled one,
+  // so no incidental-text exemption applies. 80% is the most dimming the text
+  // survives on both the resting and the selected background, and the tile
+  // still recedes: it has the faintest border, a type label instead of a state,
+  // and an em dash where a point count would be.
+  unused: "border border-border opacity-80",
 };
 
 export async function SkillTree({
@@ -110,7 +116,7 @@ export async function SkillTree({
           {cell.skill.name}
         </span>
       </span>
-      <span className="flex items-baseline justify-between gap-1.5 text-[0.6875rem] text-ink-subtle">
+      <span className="flex items-baseline justify-between gap-1.5 text-[0.6875rem] text-ink-muted">
         {/* On a build tree the state replaces the skill type: both together
             overflow the tile once the labels are in Portuguese, and between
             the two it is the state a reader came for. The type is still on the
@@ -125,7 +131,7 @@ export async function SkillTree({
             className={
               cell.points > 0
                 ? "shrink-0 font-mono text-ink"
-                : "shrink-0 font-mono text-ink-subtle"
+                : "shrink-0 font-mono text-ink-muted"
             }
           >
             {cell.points > 0 ? formatPoints(t.skills.points, cell.points) : "—"}
@@ -149,7 +155,7 @@ export async function SkillTree({
               {cell.skill.name}
             </h4>
           </div>
-          <p className="mt-1 text-xs text-ink-subtle">
+          <p className="mt-1 text-xs text-ink-muted">
             {tree.name} · {fmt(t.skills.unlocksValue, { level: node.requiredLevel })} ·{" "}
             {kinds[cell.skill.kind]}
             {cell.skill.element ? ` · ${elements[cell.skill.element]}` : ""}
@@ -166,7 +172,7 @@ export async function SkillTree({
               {cell.points > 0 ? formatPoints(t.skills.points, cell.points) : t.skills.noPoints}
             </span>
             {cell.state !== "unused" && (
-              <span className="text-ink-subtle"> · {stateLabels[cell.state]}</span>
+              <span className="text-ink-muted"> · {stateLabels[cell.state]}</span>
             )}
           </p>
         )}
@@ -177,7 +183,7 @@ export async function SkillTree({
           </p>
         )}
 
-        <p className="text-xs text-ink-subtle">
+        <p className="text-xs text-ink-muted">
           <span className="font-medium text-ink-muted">{t.skills.prerequisitesTitle}: </span>
           {prerequisites.length > 0
             ? prerequisites.map((s) => s.name).join(", ")

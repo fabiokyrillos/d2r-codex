@@ -237,7 +237,7 @@ export function SkillTreeInteractive({
       <div>
         {/* Visible, not screen-reader-only: a keyboard user who can see the
             page still has to be told that arrows are how this moves. */}
-        <p id={hintId} className="mb-2 text-xs text-ink-subtle">
+        <p id={hintId} className="mb-2 text-xs text-ink-muted">
           {strings.treeHint}
         </p>
 
@@ -255,7 +255,7 @@ export function SkillTreeInteractive({
                 key={row.level}
                 className="flex w-9 items-center justify-end border-r border-border pr-2"
               >
-                <span className="font-mono text-[0.6875rem] text-ink-subtle">{row.level}</span>
+                <span className="font-mono text-[0.6875rem] text-ink-muted">{row.level}</span>
               </div>
             ))}
           </div>
@@ -325,7 +325,7 @@ export function SkillTreeInteractive({
                     rows read as rows on their own. */}
                 <p
                   aria-hidden="true"
-                  className="mt-2 border-b border-border pb-1 text-[0.6875rem] font-semibold tracking-widest text-ink-subtle uppercase first:mt-0 sm:hidden"
+                  className="mt-2 border-b border-border pb-1 text-[0.6875rem] font-semibold tracking-widest text-ink-muted uppercase first:mt-0 sm:hidden"
                 >
                   {row.rowLabel}
                 </p>
@@ -424,7 +424,7 @@ export function SkillTreeInteractive({
           {selected ? (
             panels[selected]
           ) : (
-            <p className="text-sm leading-relaxed text-pretty text-ink-subtle">
+            <p className="text-sm leading-relaxed text-pretty text-ink-muted">
               {strings.panelEmpty}
             </p>
           )}
@@ -450,7 +450,7 @@ export function SkillTreeInteractive({
             {/* The close control sits in a fixed header the body scrolls
                 under, so long Portuguese copy cannot push it out of reach. */}
             <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3">
-              <span className="text-xs font-semibold tracking-widest text-ink-subtle uppercase">
+              <span className="text-xs font-semibold tracking-widest text-ink-muted uppercase">
                 {strings.panelHeading}
               </span>
               <button
