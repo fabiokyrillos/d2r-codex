@@ -303,11 +303,14 @@ export function SkillTreeInteractive({
                         data-row={rowIndex}
                         data-col={col}
                         aria-label={cell.ariaLabel}
+                        // `aria-expanded` is the only selection signal, and it
+                        // means exactly one thing: this skill's details are the
+                        // ones currently in the panel. Deliberately no
+                        // `aria-current` -- that is for the current page, step
+                        // or date, not a detail pane -- and no `aria-selected`,
+                        // which would be a second name for the same state.
                         aria-expanded={isSelected}
                         aria-controls={panelId}
-                        // Selection is a state of the tile, not only of the
-                        // panel it opens, so it is announced on the tile too.
-                        {...(isSelected ? { "aria-current": true as const } : {})}
                         tabIndex={isTabStop ? 0 : -1}
                         onFocus={() => {
                           setFocusCell({ row: rowIndex, col });

@@ -174,3 +174,42 @@ export function progressionLevels(node: SkillGraphNode, recommended: number[]): 
   }
   return [...set].sort((a, b) => a - b);
 }
+
+/**
+ * The accessible name of a tile.
+ *
+ * Pure and exported, because this is the one string a screen-reader user
+ * actually receives and it is easier to get subtly wrong than anything else
+ * here — an earlier version ended "20 points, Optional, optional", saying the
+ * same thing twice because a state label and a separate duty word overlapped.
+ *
+ * One composition: name, unlock level, tree, then hard points and a single
+ * classification phrase. On a class page, where no build context exists,
+ * neither points nor obligation are mentioned at all rather than invented.
+ */
+export interface SkillAriaStrings {
+  noBuild: string;
+  build: string;
+  buildOne: string;
+  buildUnused: string;
+  classification: Record<TileState, string>;
+}
+
+export function skillAriaLabel(
+  tile: { name: string; level: number; tree: string; points: number; state: TileState },
+  strings: SkillAriaStrings,
+  /** False on a class page: there is no plan, so there are no points to report. */
+  inBuild: boolean,
+): string {
+  const fill = (template: string) =>
+    template
+      .replace("{skill}", tile.name)
+      .replace("{level}", String(tile.level))
+      .replace("{tree}", tile.tree)
+      .replace("{points}", String(tile.points))
+      .replace("{classification}", strings.classification[tile.state]);
+
+  if (!inBuild) return fill(strings.noBuild);
+  if (tile.points <= 0) return fill(strings.buildUnused);
+  return fill(tile.points === 1 ? strings.buildOne : strings.build);
+}

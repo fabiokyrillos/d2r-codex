@@ -16,6 +16,7 @@ import { routes } from "@/lib/routes";
 import {
   SKILL_GRAPH,
   layoutTree,
+  skillAriaLabel,
   treeEdges,
   type SkillTile,
   type TileState,
@@ -77,6 +78,25 @@ export async function SkillTree({
     utility: t.skills.stateUtility,
     flex: t.skills.stateFlex,
     unused: t.skills.stateUnused,
+  };
+
+  // Composed once per tree; `skillAriaLabel` is pure so the exact wording is
+  // testable without rendering anything.
+  const ariaStrings = {
+    noBuild: t.skills.ariaNoBuild,
+    build: t.skills.ariaBuild,
+    buildOne: t.skills.ariaBuildOne,
+    buildUnused: t.skills.ariaBuildUnused,
+    classification: {
+      maxed: t.skills.classMaxed,
+      invested: t.skills.classInvested,
+      "one-point": t.skills.classOnePoint,
+      prerequisite: t.skills.classPrerequisite,
+      synergy: t.skills.classSynergy,
+      utility: t.skills.classUtility,
+      flex: t.skills.classFlex,
+      unused: t.skills.classUnused,
+    },
   };
 
   const grid = layoutTree(skills, treeSlug, allocations);
@@ -177,25 +197,19 @@ export async function SkillTree({
     rowLabel: fmt(t.skills.rowLabel, { level: row.level }),
     cells: row.cells.map((cell): TreeTile | null => {
       if (!cell) return null;
-      const base = fmt(t.skills.tileAria, {
-        skill: cell.skill.name,
-        level: cell.node.requiredLevel,
-        tree: tree.name,
-      });
       return {
         slug: cell.skill.slug,
-        ariaLabel: showPoints
-          ? fmt(cell.points === 1 ? t.skills.tileAriaPointsOne : t.skills.tileAriaPoints, {
-              skill: cell.skill.name,
-              level: cell.node.requiredLevel,
-              tree: tree.name,
-              points: cell.points,
-              state: stateLabels[cell.state],
-              // Whether the point is part of the build or an optional extra
-              // is the thing a listener most needs and can least infer.
-              duty: cell.role === "flex" ? t.skills.dutyOptional : t.skills.dutyMandatory,
-            })
-          : base,
+        ariaLabel: skillAriaLabel(
+          {
+            name: cell.skill.name,
+            level: cell.node.requiredLevel,
+            tree: tree.name,
+            points: cell.points,
+            state: cell.state,
+          },
+          ariaStrings,
+          showPoints,
+        ),
         tile: (
           <span className={`block h-full rounded-sm ${stateStyle[cell.state]} p-1.5`}>
             {tileBody(cell)}

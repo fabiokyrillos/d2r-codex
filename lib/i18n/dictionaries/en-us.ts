@@ -603,13 +603,22 @@ export const enUS = {
     closePanel: "Close details",
     fullPage: "View full skill page",
     // ---- tile ----
-    tileAria: "{skill}, level {level}, {tree}",
-    // Two keys rather than one, because "1 points" is what a screen reader
-    // would otherwise read out on every single-point skill.
-    tileAriaPointsOne: "{skill}, level {level}, {tree}, 1 point, {state}, {duty}",
-    tileAriaPoints: "{skill}, level {level}, {tree}, {points} points, {state}, {duty}",
-    dutyMandatory: "mandatory",
-    dutyOptional: "optional",
+    // One composition, four shapes. The classification is a single phrase, so
+    // no word the template already said gets repeated: an earlier version
+    // announced "20 points, Optional, optional".
+    ariaNoBuild: "{skill}, level {level}, {tree}.",
+    ariaBuild: "{skill}, level {level}, {tree}, {points} points, {classification}.",
+    // Separate key because "1 points" is what a screen reader reads otherwise.
+    ariaBuildOne: "{skill}, level {level}, {tree}, 1 point, {classification}.",
+    ariaBuildUnused: "{skill}, level {level}, {tree}, {classification}.",
+    classMaxed: "maxed and mandatory",
+    classInvested: "mandatory",
+    classOnePoint: "mandatory",
+    classPrerequisite: "prerequisite",
+    classSynergy: "synergy, mandatory",
+    classUtility: "mandatory",
+    classFlex: "optional",
+    classUnused: "not used",
     points: "{points} pts",
     noPoints: "not used",
     // ---- states ----
