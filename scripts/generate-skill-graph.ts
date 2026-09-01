@@ -100,6 +100,7 @@ interface RawSkill {
   HitShift?: number;
   EMin?: number; EMinLev1?: number; EMinLev2?: number; EMinLev3?: number; EMinLev4?: number; EMinLev5?: number;
   EMax?: number; EMaxLev1?: number; EMaxLev2?: number; EMaxLev3?: number; EMaxLev4?: number; EMaxLev5?: number;
+  ELen?: number; ELevLen1?: number; ELevLen2?: number; ELevLen3?: number;
 }
 interface RawDesc {
   skilldesc: string | number;
@@ -325,6 +326,43 @@ async function main() {
   const bands = (s: RawSkill, k: "EMin" | "EMax") =>
     [1, 2, 3, 4, 5].map((i) => (s[`${k}Lev${i}` as keyof RawSkill] as number | undefined) ?? 0);
 
+  /*
+   * Elemental duration, taken only where it decides the damage.
+   *
+   * `ELen` means two different things depending on the element. For poison it
+   * is the window the damage is spread across, and the published number is
+   * meaningless without it -- Poison Javelin's columns are damage per frame and
+   * floor to zero on their own. For cold it is a freeze or chill length, and the
+   * damage lands at once; multiplying by it would invent a number the game
+   * never produces. So poison gets a duration and nothing else does.
+   *
+   * `ELevLen1..3` are three per-level bands whose boundaries this script has
+   * not verified. Every poison skill in the game happens to repeat one value
+   * across all three, which makes the duration plainly linear and the
+   * boundaries irrelevant. That is luck, not a guarantee, so a poison skill
+   * with non-uniform bands stops the generator rather than being flattened into
+   * a linear scale that would be wrong from level 9 on.
+   */
+  const duration = (s: RawSkill) => {
+    if (s.EType !== "pois") return undefined;
+    const base = s.ELen ?? 0;
+    if (base === 0) {
+      throw new Error(
+        `${s.skill}: poison damage with no ELen. Poison columns are per-frame, so ` +
+          `without a duration the published damage would be zero.`,
+      );
+    }
+    const perLevel = [s.ELevLen1 ?? 0, s.ELevLen2 ?? 0, s.ELevLen3 ?? 0];
+    if (new Set(perLevel).size > 1) {
+      throw new Error(
+        `${s.skill}: poison duration grows in uneven bands [${perLevel.join(", ")}]. ` +
+          `The band boundaries are unverified, so this cannot be emitted as a linear ` +
+          `scale. Establish them deliberately before re-pinning.`,
+      );
+    }
+    return { base, perLevel: perLevel[0] };
+  };
+
   const rows = mine
     .map((s) => {
       const slug = slugify(s.skill);
@@ -348,6 +386,7 @@ async function main() {
               hitShift: s.HitShift ?? 8,
               min: { base: s.EMin ?? 0, bands: bands(s, "EMin") },
               max: { base: s.EMax ?? s.EMin ?? 0, bands: bands(s, s.EMax === undefined ? "EMin" : "EMax") },
+              duration: duration(s),
             }
           : undefined,
       };
@@ -386,7 +425,11 @@ async function main() {
     d
       ? `, damage: { element: "${d.element}", hitShift: ${d.hitShift}, ` +
         `min: { base: ${d.min.base}, bands: [${d.min.bands.join(", ")}] }, ` +
-        `max: { base: ${d.max.base}, bands: [${d.max.bands.join(", ")}] } }`
+        `max: { base: ${d.max.base}, bands: [${d.max.bands.join(", ")}] }` +
+        (d.duration
+          ? `, duration: { base: ${d.duration.base}, perLevel: ${d.duration.perLevel} }, overTime: true`
+          : "") +
+        ` }`
       : "";
 
   const body = rows
@@ -517,6 +560,28 @@ export interface SkillGraphNode {
     readonly hitShift: number;
     readonly min: BandedScale;
     readonly max: BandedScale;
+    /**
+     * Poison only, and load-bearing.
+     *
+     * Poison's EMin/EMax are damage **per frame**, and the columns are tiny:
+     * Poison Javelin's 32 at HitShift 0 is 32/256 of a point per frame. Read as
+     * an instant range the way every other element is, it floors to zero and
+     * the page publishes "0-0" for a skill that deals thousands.
+     *
+     * The real number is per-frame damage times the duration, so the duration
+     * has to travel with the damage rather than be reconstructed later.
+     * \`frames\` is in D2's 25-per-second frames.
+     */
+    readonly duration?: {
+      readonly base: number;
+      readonly perLevel: number;
+    };
+    /**
+     * True when \`duration\` is the window the damage is spread across rather
+     * than a status length. Poison spreads; cold's ELen is a freeze length and
+     * its damage lands at once, so multiplying it would be a fabrication.
+     */
+    readonly overTime?: boolean;
   };
 }
 

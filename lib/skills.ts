@@ -206,6 +206,7 @@ export function damageAtLevel(
   level: number,
 ): { min: number; max: number } | undefined {
   if (!node.damage) return undefined;
+  const frames = durationAtLevel(node, level)?.frames;
   const scale = (base: number, bands: readonly number[]) => {
     let total = base;
     for (let l = 2; l <= level; l++) {
@@ -213,12 +214,40 @@ export function damageAtLevel(
       total += bands[band] ?? 0;
     }
     // HitShift is a power-of-two divisor expressed as an exponent around 8.
-    return Math.floor(total * Math.pow(2, node.damage!.hitShift - 8));
+    const perHit = total * Math.pow(2, node.damage!.hitShift - 8);
+    /*
+     * For an over-time element that quantity is damage per *frame*, not the
+     * whole hit. Poison Javelin's 32 at HitShift 0 is 32/256 of a point per
+     * frame; flooring it on its own publishes 0 for a skill that deals 25 at
+     * level 1 and thousands at 20. Multiplying by the duration first is what
+     * makes the number the one the game shows.
+     */
+    return Math.floor(frames === undefined ? perHit : perHit * frames);
   };
   return {
     min: scale(node.damage.min.base, node.damage.min.bands),
     max: scale(node.damage.max.base, node.damage.max.bands),
   };
+}
+
+/** D2 runs at 25 frames per second, and every duration column is in frames. */
+export const FRAMES_PER_SECOND = 25;
+
+/**
+ * How long an over-time skill's damage is spread across, at a given level.
+ *
+ * Returns nothing for a skill whose duration is a status length rather than a
+ * damage window — cold's freeze length is not something to multiply damage by,
+ * and the graph only records `overTime` where it is.
+ */
+export function durationAtLevel(
+  node: Pick<SkillGraphNode, "damage">,
+  level: number,
+): { frames: number; seconds: number } | undefined {
+  const d = node.damage?.duration;
+  if (!d || !node.damage?.overTime) return undefined;
+  const frames = d.base + d.perLevel * (level - 1);
+  return { frames, seconds: frames / FRAMES_PER_SECOND };
 }
 
 /**

@@ -709,7 +709,8 @@ export const enUS = {
     damageElementOnly:
       "The table is the whole of this skill's damage. It carries none of your weapon's damage, so a monster immune to this element takes nothing from it.",
     damageOverTime:
-      "Damage is dealt over {seconds} seconds at skill level {level}, not on impact. The table is the total across that time.",
+      "Poison is dealt over time rather than on impact. The table gives the total across the duration beside it, and the duration grows with the skill.",
+    seconds: "{seconds}s",
     colDuration: "Duration",
     backToTree: "← All {class} skills",
   },

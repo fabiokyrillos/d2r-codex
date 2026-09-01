@@ -110,6 +110,28 @@ export interface SkillGraphNode {
     readonly hitShift: number;
     readonly min: BandedScale;
     readonly max: BandedScale;
+    /**
+     * Poison only, and load-bearing.
+     *
+     * Poison's EMin/EMax are damage **per frame**, and the columns are tiny:
+     * Poison Javelin's 32 at HitShift 0 is 32/256 of a point per frame. Read as
+     * an instant range the way every other element is, it floors to zero and
+     * the page publishes "0-0" for a skill that deals thousands.
+     *
+     * The real number is per-frame damage times the duration, so the duration
+     * has to travel with the damage rather than be reconstructed later.
+     * `frames` is in D2's 25-per-second frames.
+     */
+    readonly duration?: {
+      readonly base: number;
+      readonly perLevel: number;
+    };
+    /**
+     * True when `duration` is the window the damage is spread across rather
+     * than a status length. Poison spreads; cold's ELen is a freeze length and
+     * its damage lands at once, so multiplying it would be a fabrication.
+     */
+    readonly overTime?: boolean;
   };
 }
 

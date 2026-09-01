@@ -683,7 +683,8 @@ export const ptBR: Dictionary = {
     damageElementOnly:
       "A tabela é todo o dano desta skill. Ela não carrega nada do dano da sua arma, então um monstro imune a este elemento não recebe nada dela.",
     damageOverTime:
-      "O dano acontece ao longo de {seconds} segundos no nível {level} da skill, e não no impacto. A tabela é o total nesse período.",
+      "O veneno acontece ao longo do tempo, e não no impacto. A tabela dá o total durante a duração ao lado, e a duração cresce com a skill.",
+    seconds: "{seconds}s",
     colDuration: "Duração",
     backToTree: "← Todas as skills de {class}",
   },

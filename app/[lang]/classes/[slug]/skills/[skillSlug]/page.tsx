@@ -30,6 +30,7 @@ import {
   damageAtLevel,
   damagePresentation,
   dependents,
+  durationAtLevel,
   progressionLevels,
   synergyReceivers,
 } from "@/lib/skills";
@@ -255,9 +256,14 @@ export default async function SkillPage(
           {node.damage ? (
             <>
               <DataTable
-                headers={[t.skills.colLevel, t.skills.colDamage]}
+                headers={
+                  node.damage.overTime
+                    ? [t.skills.colLevel, t.skills.colDamage, t.skills.colDuration]
+                    : [t.skills.colLevel, t.skills.colDamage]
+                }
                 rows={levels.map((level) => {
                   const d = damageAtLevel(node, level);
+                  const window = durationAtLevel(node, level);
                   return [
                     <span key="l" className="font-mono">
                       {level}
@@ -265,9 +271,23 @@ export default async function SkillPage(
                     <span key="d" className="font-mono">
                       {d ? `${d.min}–${d.max}` : "—"}
                     </span>,
+                    // Poison's damage means nothing without the window it lands
+                    // across, and the window grows with the skill.
+                    ...(window
+                      ? [
+                          <span key="t" className="font-mono">
+                            {fmt(t.skills.seconds, { seconds: String(window.seconds) })}
+                          </span>,
+                        ]
+                      : []),
                   ];
                 })}
               />
+              {node.damage.overTime && (
+                <p className="mt-3 text-sm leading-relaxed text-pretty text-ink-muted">
+                  <RichText>{t.skills.damageOverTime}</RichText>
+                </p>
+              )}
               {/*
                * The weapon sentence belongs *with* the table, not instead of
                * it. An attack that adds an element, one that converts the
