@@ -17,6 +17,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { assertFreshBuild } from "./build-freshness";
+import { CLASSES_WITH_SKILL_PAGES } from "../lib/skills";
 
 import { LOCALES } from "../lib/i18n/config";
 import { TILE_STATES, type TileState } from "../lib/skills";
@@ -158,10 +159,13 @@ console.log("\nAs rendered, in both locales");
 // ===========================================================================
 const root = assertFreshBuild();
 for (const locale of LOCALES) {
-  for (const [label, file] of [
-    ["class page", join(root, locale, "classes", "paladin.html")],
+  const targets: [string, string][] = [
+    ...CLASSES_WITH_SKILL_PAGES.map(
+      (cls) => [`${cls} class page`, join(root, locale, "classes", `${cls}.html`)] as [string, string],
+    ),
     ["build page", join(root, locale, "builds", "paladin", "hammerdin.html")],
-  ] as [string, string][]) {
+  ];
+  for (const [label, file] of targets) {
     if (!existsSync(file)) {
       check(`${locale} ${label} exists`, false, file);
       continue;

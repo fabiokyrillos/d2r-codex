@@ -173,6 +173,16 @@ const semantic: [string, string, RegExp][] = [
   ["sorceress build page", "en-us/builds/sorceress/blizzard-sorceress.html", /<strong[^>]*>/],
   ["sorceress build page pt-BR", "pt-br/builds/sorceress/blizzard-sorceress.html", /<strong[^>]*>/],
   ["sorceress class page", "en-us/classes/sorceress.html", /<strong[^>]*>/],
+  /*
+   * Class pages only for the Amazon. This half asserts that a page whose source
+   * uses emphasis still renders it, so it is meaningful only where the source
+   * has some — and the Amazon's skill prose happens to use none. Adding markers
+   * to content in order to satisfy a test would invert what the test is for.
+   * Her sixty skill pages are covered by the sweep above, which reads every
+   * prerendered page for markers that leaked as literal text.
+   */
+  ["amazon class page", "en-us/classes/amazon.html", /<strong[^>]*>/],
+  ["amazon class page pt-BR", "pt-br/classes/amazon.html", /<strong[^>]*>/],
   ["runeword with inline code", "en-us/runewords/beast.html", /<code[^>]*>/],
   ["runeword with inline code pt-BR", "pt-br/runewords/beast.html", /<code[^>]*>/],
 ];

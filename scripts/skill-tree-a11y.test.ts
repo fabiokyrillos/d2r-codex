@@ -27,6 +27,7 @@ const visible = (html: string) =>
     .replace(/&middot;/g, "\u00b7")
     .replace(/\s+/g, " ");
 import {
+  CLASSES_WITH_SKILL_PAGES,
   SKILL_GRAPH,
   TILE_STATES,
   skillAriaLabel,
@@ -237,16 +238,25 @@ console.log("\nARIA as shipped");
  *  the active locale anyway so this stays correct if that ever changes. */
 const nameOf = (locale: Locale, slug: string) => getSkill(locale, slug)?.name;
 
-const pages = [
-  ["paladin class en-us", "en-us/classes/paladin.html", null],
-  ["paladin class pt-br", "pt-br/classes/paladin.html", null],
+/*
+ * Class pages are derived, so a class entering the graph is covered here the
+ * same day rather than the day someone remembers this array. Build pages stay
+ * listed: each is chosen for a case -- Melee Sorceress for its twenty-point
+ * flex allocation, where "optional" could be misread as "maxed" -- and a
+ * derived list would lose that.
+ */
+const pages: readonly (readonly [string, string, string | null])[] = [
+  ...CLASSES_WITH_SKILL_PAGES.flatMap((cls) =>
+    LOCALES.map(
+      (locale) =>
+        [`${cls} class ${locale}`, `${locale}/classes/${cls}.html`, null] as const,
+    ),
+  ),
   ["paladin build en-us", "en-us/builds/paladin/hammerdin.html", "hammerdin"],
   ["paladin build pt-br", "pt-br/builds/paladin/hammerdin.html", "hammerdin"],
-  ["sorceress class en-us", "en-us/classes/sorceress.html", null],
-  ["sorceress class pt-br", "pt-br/classes/sorceress.html", null],
   ["sorceress build en-us", "en-us/builds/sorceress/melee-sorceress.html", "melee-sorceress"],
   ["sorceress build pt-br", "pt-br/builds/sorceress/melee-sorceress.html", "melee-sorceress"],
-] as const;
+];
 
 const root = assertFreshBuild();
 

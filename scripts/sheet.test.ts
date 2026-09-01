@@ -27,6 +27,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { assertFreshBuild } from "./build-freshness";
+import { CLASSES_WITH_SKILL_PAGES } from "../lib/skills";
 
 import { trapTarget } from "../lib/focus-trap";
 import { LOCALES } from "../lib/i18n/config";
@@ -124,10 +125,18 @@ const root = assertFreshBuild();
 
 for (const locale of LOCALES) {
   const t = dictionaryFor(locale).skills;
-  for (const [label, file] of [
-    ["class page", join(root, locale, "classes", "paladin.html")],
+  /*
+   * Class pages come from the graph, so a class added later cannot ship without
+   * this gate having read it. The build page stays named: it is the sheet on a
+   * page that carries a plan, and any one build proves that.
+   */
+  const targets: [string, string][] = [
+    ...CLASSES_WITH_SKILL_PAGES.map(
+      (cls) => [`${cls} class page`, join(root, locale, "classes", `${cls}.html`)] as [string, string],
+    ),
     ["build page", join(root, locale, "builds", "paladin", "hammerdin.html")],
-  ] as [string, string][]) {
+  ];
+  for (const [label, file] of targets) {
     if (!existsSync(file)) {
       check(`${locale} ${label} exists`, false, file);
       continue;
