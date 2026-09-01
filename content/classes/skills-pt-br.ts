@@ -9,6 +9,24 @@ import type { Overlay, SkillCopy, SkillTreeCopy } from "@/lib/types/copy";
  */
 
 export const skillTreesPtBr: Overlay<SkillTreeCopy> = {
+  "javelin-and-spear": {
+    name: "Javelin and Spear",
+    summary: "Raio arremessado e corpo a corpo, mais a resposta física da classe para ele.",
+    theme:
+      "Lightning Fury limpa grupos mais rápido que quase tudo no jogo e Charged Strike apaga chefes, mas nenhuma das duas encosta num imune a raio. Jab fica na barra exatamente por isso.",
+  },
+  "passive-and-magic": {
+    name: "Passive and Magic",
+    summary: "Porcentagens sempre ativas que toda build de Amazon quer.",
+    theme:
+      "Seis destas dez skills são porcentagens passivas, e valem tanto com arco quanto com lança. É a árvore que torna a Amazon difícil de matar e a razão de os dois chamarizes dela segurarem tão bem.",
+  },
+  "bow-and-crossbow": {
+    name: "Bow and Crossbow",
+    summary: "Arquearia física, e um ramo por elemento.",
+    theme:
+      "Strafe e Multiple Shot são dano de arma puro; as flechas elementais somam um elemento por cima. O ramo escolhido decide o que dá para farmar, porque uma build de arco não tem aura para quebrar imunidade.",
+  },
   "cold-spells": {
     name: "Cold Spells",
     summary: "Congelamento, lentidão e a melhor skill de dano para magic find do jogo.",
@@ -443,5 +461,243 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   salvation: {
     summary: "Aumenta a resistência a fogo, frio e raio sua e do seu grupo.",
+  },
+  // ---------------------------------------------------------------------------
+  // Amazon
+  // ---------------------------------------------------------------------------
+  jab: {
+    summary:
+      "Três estocadas rápidas com spear ou javelin. A resposta da Amazon de javelin à imunidade a raio.",
+    mechanics: [
+      "A animação vai até o fim — depois que começa, as três estocadas acontecem.",
+      "Toda build de javelin guarda um ponto aqui, porque Charged Strike e Lightning Strike não causam dano físico nenhum.",
+    ],
+  },
+  "power-strike": {
+    summary: "Um golpe corpo a corpo que soma dano de raio ao dano da própria arma.",
+    mechanics: [
+      "Raramente usada como ataque depois dos primeiros níveis. É maximizada porque alimenta as outras quatro skills de raio de javelin.",
+    ],
+    synergyBonuses: [
+      "+14% de dano por nível",
+      "+14% de dano por nível",
+      "+14% de dano por nível",
+    ],
+  },
+  "poison-javelin": {
+    summary:
+      "Um javelin arremessado que deixa uma linha de veneno. O dano acontece ao longo da duração, e não no impacto.",
+    mechanics: [
+      "A nuvem segue o trajeto do javelin, então ela é arremessada atravessando um grupo, e não contra um alvo só.",
+      "Veneno impede o monstro de regenerar enquanto durar, e em nível alto isso é quase um minuto.",
+    ],
+    synergyBonuses: ["+12% de dano por nível"],
+  },
+  impale: {
+    summary: "Uma estocada lenta e ininterrompível, com bônus alto de dano e lentidão no alvo.",
+    mechanics: [
+      "Gasta durabilidade da arma quando acerta, e por isso se usa em alvo único em vez de repetir sem parar.",
+      "Não pode ser interrompida depois de iniciada, o que a torna uma abertura confiável contra chefe.",
+    ],
+  },
+  "lightning-bolt": {
+    summary:
+      "Arremessa um javelin cujo dano físico é convertido inteiramente em raio, mais o raio próprio da skill.",
+    mechanics: [
+      "O raio perfura, então ele se alinha bem contra uma fileira de monstros.",
+    ],
+    synergyBonuses: [
+      "+3% de dano por nível",
+      "+3% de dano por nível",
+      "+3% de dano por nível",
+      "+3% de dano por nível",
+    ],
+  },
+  "charged-strike": {
+    summary:
+      "Libera raios carregados da ponta da lança. A skill de alvo único mais forte que a Amazon tem.",
+    mechanics: [
+      "A quantidade de raios cresce com o nível da skill, e todos podem acertar um único alvo à queima-roupa. É daí que vem o dano em chefe.",
+      "Os raios não carregam nada do dano físico da arma: um imune a raio não recebe nada desta skill.",
+    ],
+    synergyBonuses: [
+      "+14% de dano por nível",
+      "+14% de dano por nível",
+      "+14% de dano por nível",
+    ],
+  },
+  "plague-javelin": {
+    summary:
+      "Um javelin arremessado que deixa veneno pelo caminho e estoura numa nuvem onde para.",
+    mechanics: [
+      "Duração menor que a do Poison Javelin, mas com muito mais dano concentrado nela.",
+      "A área é o que faz dela uma skill de Cow Level: a nuvem cobre mais chão que qualquer outro ataque de javelin.",
+    ],
+    synergyBonuses: ["+14% de dano por nível"],
+  },
+  fend: {
+    summary: "Ataca todos os inimigos adjacentes numa sequência, um alvo a mais por nível de skill.",
+    mechanics: [
+      "A sequência inteira é uma animação só. Levar dano no meio dela pode te prender ali, e esse é o principal risco da build.",
+    ],
+  },
+  "lightning-strike": {
+    summary:
+      "Um golpe corpo a corpo que inicia uma corrente de raio, saltando entre inimigos próximos.",
+    mechanics: [
+      "A corrente pode voltar num alvo que já acertou, e por isso ela supera a Lightning Fury contra grupos espalhados.",
+      "Assim como a Charged Strike, não carrega dano de arma.",
+    ],
+    synergyBonuses: [
+      "+11% de dano por nível",
+      "+11% de dano por nível",
+      "+11% de dano por nível",
+    ],
+  },
+  "lightning-fury": {
+    summary:
+      "Um javelin arremessado que se divide em raios buscando todos os inimigos por perto. A assinatura da classe.",
+    mechanics: [
+      "O próprio javelin perfura, e cada alvo atravessado libera outra rajada de raios. Pierce é o que transforma isto de bom em absurdo.",
+      "A quantidade de raios cresce com o nível da skill, então ela escala com +skills mais que quase qualquer coisa no jogo.",
+    ],
+    synergyBonuses: [
+      "+1% de dano por nível",
+      "+1% de dano por nível",
+      "+1% de dano por nível",
+      "+1% de dano por nível",
+    ],
+  },
+  "inner-sight": {
+    summary: "Ilumina os inimigos próximos e reduz a defesa deles.",
+    mechanics: [
+      "Pega-se sobretudo como o ponto único que libera Slow Missiles e, por ela, Decoy e Valkyrie.",
+    ],
+  },
+  "critical-strike": {
+    summary: "Chance de dobrar o dano físico. Sempre ativa, com qualquer arma.",
+    mechanics: [
+      "Acumula com Deadly Strike do equipamento como duas rolagens separadas, e não como uma chance maior.",
+      "Não vale nada para Charged Strike nem Lightning Strike, que não causam dano físico.",
+    ],
+  },
+  dodge: {
+    summary: "Chance de desviar por completo de um ataque corpo a corpo parada ou atacando.",
+    mechanics: [
+      "Desviar anula o ataque por completo: isto não é redução de dano.",
+      "Dodge, Avoid e Evade cobrem três situações diferentes e não se sobrepõem.",
+    ],
+  },
+  "slow-missiles": {
+    summary: "Desacelera os projéteis inimigos, tornando grupos à distância bem menos perigosos.",
+    mechanics: [
+      "Um dos botões defensivos mais fortes do jogo contra os atiradores do Hell, e custa um ponto.",
+    ],
+  },
+  avoid: {
+    summary: "Chance de desviar de um ataque à distância ou mágico parada ou atacando.",
+  },
+  penetrate: {
+    summary: "Aumenta o attack rating. Sempre ativa, e também aumenta o da Valkyrie.",
+    mechanics: [
+      "Pontos fixos aqui alimentam o attack rating da própria Valkyrie, e essa é uma razão real para colocar mais de um.",
+    ],
+  },
+  decoy: {
+    summary:
+      "Cria uma cópia da Amazon que os inimigos atacam no seu lugar. Também alimenta a vida da Valkyrie.",
+    mechanics: [
+      "Ela não anda nem ataca. A função dela é ser alvejada em algum lugar onde você não está.",
+      "Pontos fixos aqui aumentam a vida da Valkyrie, então nunca é ponto perdido numa build que a invoca.",
+    ],
+  },
+  evade: {
+    summary: "Chance de desviar de qualquer ataque enquanto anda ou corre.",
+    mechanics: [
+      "É a que cobre você em movimento, situação em que Dodge e Avoid não fazem nada.",
+    ],
+  },
+  valkyrie: {
+    summary: "Invoca uma guerreira que luta ao seu lado e absorve golpes destinados a você.",
+    mechanics: [
+      "Ela herda os seus níveis de Dodge, Avoid, Evade e Critical Strike, e Penetrate aumenta o attack rating dela.",
+      "Invoque de novo quando ela morrer; não há cooldown que valha planejamento.",
+    ],
+    synergyBonuses: ["+20% de vida por nível"],
+  },
+  pierce: {
+    summary:
+      "Chance de o projétil atravessar o alvo e seguir adiante. O multiplicador por trás da Lightning Fury.",
+    mechanics: [
+      "Cada inimigo que um javelin de Lightning Fury atravessa libera outra rajada de raios, então isto multiplica a skill em vez de somar a ela.",
+      "Pierce do equipamento acumula com a skill, e por isso as builds indicam uma chance a alcançar em vez de um número de pontos a gastar.",
+    ],
+  },
+  "magic-arrow": {
+    summary:
+      "Converte parte do dano físico da flecha em mágico, e não consome flechas para disparar.",
+    mechanics: [
+      "Dano mágico quase não é resistido por nada, então ela continua útil muito depois de o dano parar de escalar.",
+      "Ela cria a própria flecha, e por isso nunca esvazia a aljava.",
+    ],
+  },
+  "fire-arrow": {
+    summary: "Soma dano de fogo ao disparo e converte parte do dano físico dele em fogo.",
+    synergyBonuses: ["+12% de dano por nível"],
+  },
+  "cold-arrow": {
+    summary:
+      "Soma dano de frio e um chill, e converte parte do dano físico do disparo em frio.",
+    synergyBonuses: ["+12% de dano por nível"],
+  },
+  "multiple-shot": {
+    summary: "Dispara um leque de flechas em cone. A limpeza física mais ampla da Amazon.",
+    mechanics: [
+      "Cada flecha carrega três quartos do dano do arco, e não o dano inteiro.",
+      "Só as duas flechas centrais aplicam efeitos de acerto, como knockback ou roubo de vida.",
+    ],
+  },
+  "exploding-arrow": {
+    summary: "Uma flecha que explode no impacto, causando dano em tudo ao redor do alvo.",
+    mechanics: [
+      "Combinada com Pierce, um disparo através de um grupo denso dispara uma cadeia de explosões.",
+      "Dano de fogo fixo vindo do equipamento aumenta a explosão, não só a flecha.",
+    ],
+    synergyBonuses: ["+14% de dano por nível"],
+  },
+  "ice-arrow": {
+    summary: "Soma dano de frio e congela o alvo de verdade, em vez de apenas desacelerá-lo.",
+    synergyBonuses: ["+8% de dano por nível", "+5% de duração do congelamento por nível"],
+  },
+  "guided-arrow": {
+    summary:
+      "Uma flecha que persegue o alvo e não pode errar. A resposta de alvo único da Amazon de arco.",
+    mechanics: [
+      "Ela persegue, então acerta fazendo curva e atravessando multidão: é isso que faz dela uma skill de chefe.",
+    ],
+    synergyBonuses: ["+12% de dano por nível"],
+  },
+  strafe: {
+    summary: "Dispara em vários alvos numa rajada, um tiro a mais por nível de skill até um teto.",
+    mechanics: [
+      "Os alvos são escolhidos aleatoriamente dentro do alcance, então ela é mais forte quando tudo já está à sua frente.",
+      "Você fica travada na animação durante a duração dela.",
+    ],
+    synergyBonuses: ["+10% de dano por nível", "+5% de dano por nível"],
+  },
+  "immolation-arrow": {
+    summary: "Uma flecha que explode e deixa uma mancha de fogo queimando no chão.",
+    mechanics: [
+      "O fogo no chão é o ponto: ele transforma um corredor num lugar por onde os monstros não passam.",
+    ],
+    synergyBonuses: ["+10% de dano por nível"],
+  },
+  "freezing-arrow": {
+    summary: "Uma flecha que estoura numa área de frio, congelando tudo que alcança.",
+    mechanics: [
+      "Congelar um grupo é tão bom quanto matá-lo enquanto durar, e por isso essa build passa a sensação de segura.",
+      "A duração do congelamento dela não cresce com o próprio nível: só Ice Arrow a estende.",
+    ],
+    synergyBonuses: ["+12% de dano por nível", "+5% de duração do congelamento por nível"],
   },
 };

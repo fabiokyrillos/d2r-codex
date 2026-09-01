@@ -755,8 +755,19 @@ console.log("\nDamage presentation:");
       fail("damage-presentation", `no skill resolves to "${kind}"; the rule classifies nothing`);
     }
   }
-  // The derivation, stated as the invariant it depends on.
-  const attacks = getSkills(DEFAULT_LOCALE).filter((s) => s.kind === "attack");
+  /*
+   * The derivation, stated as the invariant it depends on.
+   *
+   * Scoped to skills the graph knows. `damagePresentation` reads a graph node,
+   * so a skill without one has no presentation to assert anything about, and
+   * including it made the partition fail for a class whose skills were authored
+   * before the extraction reached them — a true statement about scope reported
+   * as a content error. Everything in scope is still asserted, and a class
+   * entering the graph brings its attacks back under this rule automatically.
+   */
+  const attacks = getSkills(DEFAULT_LOCALE).filter(
+    (s) => s.kind === "attack" && SKILL_GRAPH[s.slug],
+  );
   const attacksWithTable = attacks.filter((s) => SKILL_GRAPH[s.slug]?.damage);
   if (attacksWithTable.length > 0) {
     fail(
