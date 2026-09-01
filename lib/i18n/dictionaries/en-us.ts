@@ -667,6 +667,7 @@ export const enUS = {
     synergyKindHealing: "healing",
     synergyKindDuration: "duration",
     synergyKindFreeze: "freeze length",
+    synergyKindHp: "life",
     synergyKindJoin: "and",
     progressionTitle: "Damage by level",
     progressionBody: "Base damage before synergies, before Mastery, and before any +skills. Hard points only.",

@@ -175,12 +175,20 @@ console.log("\nPlanted mutations against the real content");
     rulesHit(checkSynergies(dropped, [], synergyReceivers), "synergy-reverse-drift") >= 1,
   );
 
-  // Anti-vacuity: the graph must actually carry edges.
+  /*
+   * Anti-vacuity: the graph must actually carry edges, and every class in it
+   * must have some. Pinned to a count of 69 across two classes before, which
+   * made a third class a test failure rather than a test subject — the count
+   * proved nothing the "every class" check does not prove better.
+   */
   const edges = synergyEdges();
-  check("the real graph carries synergy edges", edges.length === 69, `${edges.length}`);
+  const classesInGraph = new Set(Object.values(SKILL_GRAPH).map((n) => n.classSlug));
+  const classesWithEdges = new Set(edges.map((e) => SKILL_GRAPH[e.to].classSlug));
+  check("the real graph carries synergy edges", edges.length > 0, `${edges.length}`);
   check(
-    "they span more than one class",
-    new Set(edges.map((e) => SKILL_GRAPH[e.to].classSlug)).size === 2,
+    "every class in the graph has synergy edges",
+    classesWithEdges.size === classesInGraph.size,
+    `edges in [${[...classesWithEdges].sort().join(", ")}] of [${[...classesInGraph].sort().join(", ")}]`,
   );
   check(
     "Blessed Hammer receives from Vigor and Blessed Aim, and nothing else",

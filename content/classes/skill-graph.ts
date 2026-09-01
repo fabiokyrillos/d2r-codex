@@ -2,8 +2,8 @@
  * GENERATED FILE — do not edit by hand.
  * Regenerate with `npm run gen:skill-graph` (see scripts/generate-skill-graph.ts).
  *
- * The canonical skill graph for the Paladin and the Sorceress: which tree a
- * skill belongs to, what character level unlocks it, and which skills the game
+ * The canonical skill graph for every class in scope: which tree a skill
+ * belongs to, what character level unlocks it, and which skills the game
  * requires before it can be allocated.
  *
  * PROVENANCE
@@ -37,7 +37,14 @@
  *   at all. Its boost to Blessed Hammer arrives through the aura state, leaving
  *   only a parameter description behind, so there is no reference for the rule
  *   to weigh.
- *   Extracted   60 skills (30 Paladin, 30 Sorceress)
+ *
+ *   Two Amazon cases follow the same rule to the same conclusion. Multiple Shot
+ *   reads Guided Arrow under a parameter the game calls "Damage % per level"
+ *   rather than a synergy, and the Valkyrie reads Dodge, Avoid, Evade and
+ *   Critical Strike under no parameter at all -- those columns set the summon's
+ *   own skill levels. Neither produces an edge. The Valkyrie's one real synergy
+ *   is Decoy, under a parameter the game itself labels "HP % synergy".
+ *   Extracted   90 skills (30 paladin, 30 sorceress, 30 amazon)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces
  *   this file exactly, or fails; it never silently follows the source forward.
@@ -47,7 +54,7 @@
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —
  *   the current D2R tables and the pre-D2R Lord of Destruction tables under
- *   `json/base/` — for 60 of 60 skills.
+ *   `json/base/` — for 90 of 90 skills.
  *
  *   These are two snapshots of different game versions from one extraction
  *   project, not two independent publishers. Their agreement shows the values
@@ -78,7 +85,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "paladin" | "sorceress">;
+  readonly classSlug: Extract<ClassSlug, "paladin" | "sorceress" | "amazon">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of `tree`. */
@@ -137,6 +144,186 @@ export interface SkillGraphNode {
 
 /** Keyed by skill slug. */
 export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
+  "magic-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "fire-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "exploding-arrow", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 1, bands: [2, 3, 6, 12, 24] }, max: { base: 4, bands: [2, 3, 7, 14, 27] } },
+  },
+  "cold-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "ice-arrow", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 6, bands: [4, 5, 8, 16, 42] }, max: { base: 8, bands: [4, 5, 9, 17, 44] } },
+  },
+  "multiple-shot": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["magic-arrow"],
+    synergies: [],
+  },
+  "exploding-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["fire-arrow", "multiple-shot"],
+    synergies: [{ from: "fire-arrow", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 5, bands: [6, 12, 14, 16, 20] }, max: { base: 13, bands: [7, 13, 15, 18, 23] } },
+  },
+  "ice-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["cold-arrow"],
+    synergies: [{ from: "cold-arrow", kinds: ["damage"] }, { from: "freezing-arrow", kinds: ["freeze"] }], damage: { element: "cold", hitShift: 8, min: { base: 6, bands: [6, 12, 18, 26, 36] }, max: { base: 10, bands: [6, 13, 19, 27, 38] } },
+  },
+  "guided-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["cold-arrow", "multiple-shot"],
+    synergies: [{ from: "multiple-shot", kinds: ["damage"] }],
+  },
+  "strafe": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["guided-arrow"],
+    synergies: [{ from: "guided-arrow", kinds: ["damage"] }, { from: "multiple-shot", kinds: ["damage"] }],
+  },
+  "immolation-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["exploding-arrow"],
+    synergies: [{ from: "exploding-arrow", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 12, bands: [12, 23, 34, 36, 38] }, max: { base: 23, bands: [12, 23, 34, 36, 38] } },
+  },
+  "freezing-arrow": {
+    classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["ice-arrow"],
+    synergies: [{ from: "cold-arrow", kinds: ["damage"] }, { from: "ice-arrow", kinds: ["freeze"] }], damage: { element: "cold", hitShift: 8, min: { base: 40, bands: [10, 15, 20, 22, 24] }, max: { base: 50, bands: [10, 15, 20, 22, 24] } },
+  },
+  "inner-sight": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "critical-strike": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "dodge": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "slow-missiles": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["inner-sight"],
+    synergies: [],
+  },
+  "avoid": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 3, column: 2,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["dodge"],
+    synergies: [],
+  },
+  "penetrate": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 4, column: 3,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["critical-strike"],
+    synergies: [],
+  },
+  "decoy": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["slow-missiles"],
+    synergies: [],
+  },
+  "evade": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["avoid"],
+    synergies: [],
+  },
+  "valkyrie": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["decoy", "evade"],
+    synergies: [{ from: "decoy", kinds: ["hp"] }],
+  },
+  "pierce": {
+    classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 6, column: 3,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["penetrate"],
+    synergies: [],
+  },
+  "jab": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "power-strike": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["jab"],
+    synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 16, bands: [18, 36, 54, 72, 90] } },
+  },
+  "poison-javelin": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "plague-javelin", kinds: ["damage"] }], damage: { element: "pois", hitShift: 0, min: { base: 32, bands: [16, 32, 48, 64, 96] }, max: { base: 48, bands: [16, 36, 52, 68, 100] }, duration: { base: 200, perLevel: 50 }, overTime: true },
+  },
+  "impale": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["jab"],
+    synergies: [],
+  },
+  "lightning-bolt": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["poison-javelin"],
+    synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-fury", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [12, 18, 28, 48, 88] } },
+  },
+  "charged-strike": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["lightning-bolt", "power-strike"],
+    synergies: [{ from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 30, bands: [12, 16, 20, 24, 28] } },
+  },
+  "plague-javelin": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 4, column: 3,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["lightning-bolt"],
+    synergies: [{ from: "poison-javelin", kinds: ["damage"] }], damage: { element: "pois", hitShift: 3, min: { base: 12, bands: [8, 16, 26, 55, 80] }, max: { base: 18, bands: [8, 16, 26, 55, 80] }, duration: { base: 75, perLevel: 5 }, overTime: true },
+  },
+  "fend": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["impale"],
+    synergies: [],
+  },
+  "lightning-strike": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["charged-strike"],
+    synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 25, bands: [10, 15, 20, 25, 30] } },
+  },
+  "lightning-fury": {
+    classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 6, column: 3,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["plague-javelin"],
+    synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [20, 30, 40, 50, 50] } },
+  },
   "sacrifice": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 1, column: 1,
     requiredLevel: 1, maxLevel: 20,

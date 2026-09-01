@@ -88,7 +88,13 @@ export const amazonSkills: Skill[] = [
     element: "lightning",
     requiredLevel: 6,
     prerequisites: ["jab"],
+    damageModel: "weapon-plus-element",
     summary: "A melee strike that adds lightning damage to the weapon's own.",
+    synergies: [
+      { skill: "charged-strike", bonus: "+14% damage per level" },
+      { skill: "lightning-bolt", bonus: "+14% damage per level" },
+      { skill: "lightning-strike", bonus: "+14% damage per level" },
+    ],
     mechanics: [
       "Rarely used as an attack past the early levels. It is maxed because it feeds all four of the other lightning javelin skills.",
     ],
@@ -102,8 +108,10 @@ export const amazonSkills: Skill[] = [
     kind: "attack",
     element: "poison",
     requiredLevel: 6,
+    damageModel: "weapon-plus-element",
     summary:
       "A thrown javelin that trails a line of poison. Damage lands over its duration, not on impact.",
+    synergies: [{ skill: "plague-javelin", bonus: "+12% damage per level" }],
     mechanics: [
       "The cloud follows the javelin's path, so it is thrown across a group rather than at one target.",
       "Poison stops a monster regenerating for as long as it is applied — which at high levels is most of a minute.",
@@ -135,8 +143,15 @@ export const amazonSkills: Skill[] = [
     element: "lightning",
     requiredLevel: 12,
     prerequisites: ["poison-javelin"],
+    damageModel: "weapon-converted-to-element",
     summary:
       "Throws a javelin whose physical damage is converted entirely to lightning, plus lightning of its own.",
+    synergies: [
+      { skill: "charged-strike", bonus: "+3% damage per level" },
+      { skill: "lightning-fury", bonus: "+3% damage per level" },
+      { skill: "lightning-strike", bonus: "+3% damage per level" },
+      { skill: "power-strike", bonus: "+3% damage per level" },
+    ],
     mechanics: [
       "The bolt pierces, so it lines up well against a column of monsters.",
     ],
@@ -151,8 +166,14 @@ export const amazonSkills: Skill[] = [
     element: "lightning",
     requiredLevel: 18,
     prerequisites: ["lightning-bolt", "power-strike"],
+    damageModel: "element-only-attack",
     summary:
       "Releases charged bolts from the spear tip. The strongest single-target skill the Amazon has.",
+    synergies: [
+      { skill: "lightning-bolt", bonus: "+14% damage per level" },
+      { skill: "lightning-strike", bonus: "+14% damage per level" },
+      { skill: "power-strike", bonus: "+14% damage per level" },
+    ],
     mechanics: [
       "The bolt count rises with skill level, and all of them can land on one target at point-blank range. That is where the boss damage comes from.",
       "The bolts carry none of the weapon's physical damage — a lightning immune takes nothing from this skill.",
@@ -168,8 +189,10 @@ export const amazonSkills: Skill[] = [
     element: "poison",
     requiredLevel: 18,
     prerequisites: ["lightning-bolt"],
+    damageModel: "weapon-plus-element",
     summary:
       "A thrown javelin that leaves poison along its path and bursts into a cloud where it stops.",
+    synergies: [{ skill: "poison-javelin", bonus: "+14% damage per level" }],
     mechanics: [
       "Shorter duration than Poison Javelin but far more damage packed into it.",
       "Its area is what makes it a Cow Level skill — the cloud covers more ground than any other javelin attack.",
@@ -200,8 +223,14 @@ export const amazonSkills: Skill[] = [
     element: "lightning",
     requiredLevel: 30,
     prerequisites: ["charged-strike"],
+    damageModel: "element-only-attack",
     summary:
       "A melee strike that starts a lightning chain, jumping between nearby enemies.",
+    synergies: [
+      { skill: "charged-strike", bonus: "+11% damage per level" },
+      { skill: "lightning-bolt", bonus: "+11% damage per level" },
+      { skill: "power-strike", bonus: "+11% damage per level" },
+    ],
     mechanics: [
       "The chain can double back onto a target it already hit, which is why it out-damages Lightning Fury on spread-out packs.",
       "Like Charged Strike, it carries no weapon damage.",
@@ -217,8 +246,15 @@ export const amazonSkills: Skill[] = [
     element: "lightning",
     requiredLevel: 30,
     prerequisites: ["plague-javelin"],
+    damageModel: "weapon-plus-element",
     summary:
       "A thrown javelin that splits into lightning bolts seeking every enemy nearby. The class's signature.",
+    synergies: [
+      { skill: "charged-strike", bonus: "+1% damage per level" },
+      { skill: "lightning-bolt", bonus: "+1% damage per level" },
+      { skill: "lightning-strike", bonus: "+1% damage per level" },
+      { skill: "power-strike", bonus: "+1% damage per level" },
+    ],
     mechanics: [
       "The javelin itself pierces, and every target it passes through releases another burst of bolts. Pierce is what turns this from good to absurd.",
       "The bolt count rises with skill level, so this scales with +skills harder than almost anything else in the game.",
@@ -350,6 +386,7 @@ export const amazonSkills: Skill[] = [
     requiredLevel: 30,
     prerequisites: ["decoy", "evade"],
     summary: "Summons a warrior who fights beside you and takes hits meant for you.",
+    synergies: [{ skill: "decoy", bonus: "+20% life per level" }],
     mechanics: [
       "She inherits your Dodge, Avoid, Evade and Critical Strike levels, and Penetrate raises her attack rating.",
       "Re-summon her when she dies; there is no cooldown worth planning around.",
@@ -400,7 +437,9 @@ export const amazonSkills: Skill[] = [
     kind: "attack",
     element: "fire",
     requiredLevel: 1,
+    damageModel: "weapon-converted-to-element",
     summary: "Adds fire damage to the shot and converts part of its physical damage to fire.",
+    synergies: [{ skill: "exploding-arrow", bonus: "+12% damage per level" }],
     confidence: "verified",
   },
   {
@@ -411,7 +450,9 @@ export const amazonSkills: Skill[] = [
     kind: "attack",
     element: "cold",
     requiredLevel: 6,
+    damageModel: "weapon-converted-to-element",
     summary: "Adds cold damage and a chill, and converts part of the shot's physical damage to cold.",
+    synergies: [{ skill: "ice-arrow", bonus: "+12% damage per level" }],
     confidence: "verified",
   },
   {
@@ -439,7 +480,9 @@ export const amazonSkills: Skill[] = [
     element: "fire",
     requiredLevel: 12,
     prerequisites: ["fire-arrow", "multiple-shot"],
+    damageModel: "weapon-plus-element",
     summary: "An arrow that explodes on impact, damaging everything around the target.",
+    synergies: [{ skill: "fire-arrow", bonus: "+14% damage per level" }],
     mechanics: [
       "Combined with Pierce, one shot through a packed group sets off a chain of explosions.",
       "Flat fire damage from gear raises the explosion, not just the arrow.",
@@ -455,7 +498,12 @@ export const amazonSkills: Skill[] = [
     element: "cold",
     requiredLevel: 18,
     prerequisites: ["cold-arrow"],
+    damageModel: "weapon-plus-element",
     summary: "Adds cold damage and freezes the target solid rather than merely chilling it.",
+    synergies: [
+      { skill: "cold-arrow", bonus: "+8% damage per level" },
+      { skill: "freezing-arrow", bonus: "+5% freeze length per level" },
+    ],
     confidence: "verified",
   },
   {
@@ -468,6 +516,7 @@ export const amazonSkills: Skill[] = [
     requiredLevel: 18,
     prerequisites: ["cold-arrow", "multiple-shot"],
     summary: "An arrow that tracks its target and cannot miss. The bow Amazon's single-target answer.",
+    synergies: [{ skill: "multiple-shot", bonus: "+12% damage per level" }],
     mechanics: [
       "It seeks, so it hits around corners and through a crowd — which is what makes it a boss skill.",
     ],
@@ -483,6 +532,10 @@ export const amazonSkills: Skill[] = [
     requiredLevel: 24,
     prerequisites: ["guided-arrow"],
     summary: "Fires at several targets in one burst, one more shot per skill level up to a cap.",
+    synergies: [
+      { skill: "guided-arrow", bonus: "+10% damage per level" },
+      { skill: "multiple-shot", bonus: "+5% damage per level" },
+    ],
     mechanics: [
       "Targets are picked at random within range, so it is strongest when everything is already in front of you.",
       "You are locked in the animation for its duration.",
@@ -498,7 +551,9 @@ export const amazonSkills: Skill[] = [
     element: "fire",
     requiredLevel: 24,
     prerequisites: ["exploding-arrow"],
+    damageModel: "weapon-plus-element",
     summary: "An arrow that explodes and leaves a patch of fire burning on the ground.",
+    synergies: [{ skill: "exploding-arrow", bonus: "+10% damage per level" }],
     mechanics: [
       "The ground fire is the point — it turns a corridor into a place monsters cannot cross.",
     ],
@@ -513,7 +568,12 @@ export const amazonSkills: Skill[] = [
     element: "cold",
     requiredLevel: 30,
     prerequisites: ["ice-arrow"],
+    damageModel: "weapon-plus-element",
     summary: "An arrow that bursts into an area of cold, freezing everything it catches.",
+    synergies: [
+      { skill: "cold-arrow", bonus: "+12% damage per level" },
+      { skill: "ice-arrow", bonus: "+5% freeze length per level" },
+    ],
     mechanics: [
       "Freezing a pack is as good as killing it for as long as it lasts, which is why this build reads as safe.",
       "Its freeze length does not grow with its own level — only Ice Arrow extends it.",

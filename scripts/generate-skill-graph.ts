@@ -60,6 +60,17 @@ import { allSkills } from "../content/classes";
 const SOURCE_REPO = "blizzhackers/d2data";
 
 /**
+ * The classes in scope, keyed by the game's `charclass` code.
+ *
+ * This is the single gate on the whole skills experience. `lib/skills.ts`
+ * derives CLASSES_WITH_SKILL_PAGES from whichever classes appear in the graph,
+ * so adding a code here and regenerating lights up the individual skill pages,
+ * the tree on the class page, the tree on every build page, the sitemap entries
+ * and the search index at once -- there is no second list to keep in step.
+ */
+const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon" } as const;
+
+/**
  * The exact commit the shipped graph was extracted from.
  *
  * Pinned, not `master`. A moving ref means the generator is not a function of
@@ -113,6 +124,31 @@ const slugify = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 /**
+ * Skills whose public identity is not their identifier in the game's tables.
+ *
+ * The extraction uses the `skill` column as an identifier and slugifies it,
+ * which has been the same as the public name for every skill so far. The Amazon
+ * breaks that: her decoy is `Dopplezon` in skills.txt and **Decoy** everywhere a
+ * player ever sees it -- in the game's own UI, in every database and in every
+ * guide. Slugifying the identifier would publish `/classes/amazon/skills/
+ * dopplezon`, a URL naming something no reader has heard of.
+ *
+ * So the mapping is explicit, tiny, and one-directional. The internal
+ * identifier stays the join key against the raw rows -- prerequisites and
+ * synergy expressions still reference `Dopplezon`, and they resolve through
+ * this table like everything else -- while nothing public carries it. Adding an
+ * entry is a deliberate act with a reason; the generator does not guess, and
+ * `skill-page.test.ts` asserts no override's identifier reaches a page, a URL
+ * or the sitemap.
+ */
+const SLUG_OVERRIDES: Record<string, string> = {
+  Dopplezon: "decoy",
+};
+
+/** The single place a game identifier becomes a published slug. */
+const slugFor = (name: string) => SLUG_OVERRIDES[name] ?? slugify(name);
+
+/**
  * Synergies, read out of the game's own formulas.
  *
  * A skill's calc columns are expressions. Where one references another skill's
@@ -155,6 +191,11 @@ const SYNERGY_KINDS: Record<string, string> = {
   healing: "healing",
   "buff duration": "duration",
   "freeze length": "freeze",
+  // The Valkyrie's life scales with hard points in Decoy. First non-damage,
+  // non-duration synergy in the extraction, and the reason this table throws on
+  // an unknown label rather than defaulting: silently calling it "damage" would
+  // have put a life bonus in a damage sentence.
+  "hp %": "hp",
 };
 
 const SKILL_REF = /skill\('([^']+)'\.blvl\)/g;
@@ -193,7 +234,7 @@ function synergiesFor(row: RawSkill & Record<string, unknown>): { from: string; 
     if (kinds.length === 0) continue;
 
     for (const ref of refs) {
-      const slug = slugify(ref);
+      const slug = slugFor(ref);
       if (!found.has(slug)) found.set(slug, new Set());
       for (const k of kinds) found.get(slug)!.add(k);
     }
@@ -265,10 +306,10 @@ async function getJson<T>(path: string, requiredFields: readonly string[]): Prom
 function prereqSets(skills: RawSkill[]): Map<string, string[]> {
   const out = new Map<string, string[]>();
   for (const s of skills) {
-    if (s.charclass !== "pal" && s.charclass !== "sor") continue;
+    if (!(s.charclass !== undefined && s.charclass in classOf)) continue;
     out.set(
-      slugify(s.skill),
-      [s.reqskill1, s.reqskill2].filter((x): x is string => Boolean(x)).map(slugify).sort(),
+      slugFor(s.skill),
+      [s.reqskill1, s.reqskill2].filter((x): x is string => Boolean(x)).map(slugFor).sort(),
     );
   }
   return out;
@@ -281,9 +322,11 @@ async function main() {
     getJson<RawDesc>(PATHS.descs, ["skilldesc", "SkillPage", "SkillRow", "SkillColumn"]),
   ]);
 
-  const classOf = { pal: "paladin", sor: "sorceress" } as const;
-  const mine = current.filter((s) => s.charclass === "pal" || s.charclass === "sor");
-  if (mine.length !== 60) throw new Error(`expected 60 skills, got ${mine.length}`);
+  const mine = current.filter((s) => s.charclass !== undefined && s.charclass in classOf);
+  const expected = Object.keys(classOf).length * 30;
+  if (mine.length !== expected) {
+    throw new Error(`expected ${expected} skills across ${Object.keys(classOf).length} classes, got ${mine.length}`);
+  }
 
   // --- agreement check across the two extractions --------------------------
   const a = prereqSets(current);
@@ -307,13 +350,13 @@ async function main() {
   const authoredTree = new Map(allSkills.map((s) => [s.slug, s.tree]));
   const treeByClassPage = new Map<string, string>();
   for (const s of mine) {
-    const slug = slugify(s.skill);
+    const slug = slugFor(s.skill);
     const cell = cellByDesc.get(String(s.skilldesc));
     const page = cell?.page;
     const tree = authoredTree.get(slug);
     if (page === undefined) throw new Error(`no SkillPage/Row/Column for ${slug}`);
     if (!tree) throw new Error(`${slug} is in the game data but not in content/classes`);
-    const key = `${classOf[s.charclass as "pal" | "sor"]}:${page}`;
+    const key = `${classOf[s.charclass as keyof typeof classOf]}:${page}`;
     const seen = treeByClassPage.get(key);
     if (seen && seen !== tree) {
       throw new Error(`page ${key} maps to two authored trees: ${seen} and ${tree}`);
@@ -365,9 +408,9 @@ async function main() {
 
   const rows = mine
     .map((s) => {
-      const slug = slugify(s.skill);
+      const slug = slugFor(s.skill);
       const cell = cellByDesc.get(String(s.skilldesc))!;
-      const classSlug = classOf[s.charclass as "pal" | "sor"];
+      const classSlug = classOf[s.charclass as keyof typeof classOf];
       const hasDamage = s.EType !== undefined && s.EType !== "" && s.EMin !== undefined;
       return {
         slug,
@@ -452,8 +495,8 @@ async function main() {
  * GENERATED FILE — do not edit by hand.
  * Regenerate with \`npm run gen:skill-graph\` (see scripts/generate-skill-graph.ts).
  *
- * The canonical skill graph for the Paladin and the Sorceress: which tree a
- * skill belongs to, what character level unlocks it, and which skills the game
+ * The canonical skill graph for every class in scope: which tree a skill
+ * belongs to, what character level unlocks it, and which skills the game
  * requires before it can be allocated.
  *
  * PROVENANCE
@@ -487,7 +530,16 @@ async function main() {
  *   at all. Its boost to Blessed Hammer arrives through the aura state, leaving
  *   only a parameter description behind, so there is no reference for the rule
  *   to weigh.
- *   Extracted   ${rows.length} skills (${rows.filter((r) => r.classSlug === "paladin").length} Paladin, ${rows.filter((r) => r.classSlug === "sorceress").length} Sorceress)
+ *
+ *   Two Amazon cases follow the same rule to the same conclusion. Multiple Shot
+ *   reads Guided Arrow under a parameter the game calls "Damage % per level"
+ *   rather than a synergy, and the Valkyrie reads Dodge, Avoid, Evade and
+ *   Critical Strike under no parameter at all -- those columns set the summon's
+ *   own skill levels. Neither produces an edge. The Valkyrie's one real synergy
+ *   is Decoy, under a parameter the game itself labels "HP % synergy".
+ *   Extracted   ${rows.length} skills (${Object.values(classOf)
+    .map((c) => `${rows.filter((r) => r.classSlug === c).length} ${c}`)
+    .join(", ")})
  *
  *   The commit is pinned, not \`master\`. Re-running the generator reproduces
  *   this file exactly, or fails; it never silently follows the source forward.
@@ -528,7 +580,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "paladin" | "sorceress">;
+  readonly classSlug: Extract<ClassSlug, "paladin" | "sorceress" | "amazon">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of \`tree\`. */

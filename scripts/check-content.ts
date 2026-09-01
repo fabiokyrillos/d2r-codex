@@ -832,7 +832,7 @@ console.log("\nDamage presentation:");
     );
   }
   console.log(
-    `  ok  weapon (${buckets.weapon.length}) + shield (${buckets.shield.length}) ` +
+    `  ok  ${attackBuckets.map((b) => `${b} (${buckets[b].length})`).join(" + ")} ` +
       `== the ${attacks.length} attack skills`,
   );
 }

@@ -118,6 +118,7 @@ export const synergyKindLabels = (t: Dictionary): Record<string, string> => ({
   healing: t.skills.synergyKindHealing,
   duration: t.skills.synergyKindDuration,
   freeze: t.skills.synergyKindFreeze,
+  hp: t.skills.synergyKindHp,
 });
 
 /** "damage", or "buff duration and damage" — never an untranslated slug. */

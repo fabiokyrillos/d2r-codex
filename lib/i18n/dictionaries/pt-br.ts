@@ -661,6 +661,7 @@ export const ptBR: Dictionary = {
     synergyKindHealing: "cura",
     synergyKindDuration: "duração",
     synergyKindFreeze: "tempo de congelamento",
+    synergyKindHp: "vida",
     synergyKindJoin: "e",
     progressionTitle: "Dano por nível",
     progressionBody: "Dano base antes das sinergias, antes da Mastery e antes de qualquer +skills. Somente pontos duros.",
