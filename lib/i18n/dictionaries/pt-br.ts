@@ -676,6 +676,15 @@ export const ptBR: Dictionary = {
     noProgressionProportional:
       "Esta skill causa dano como uma proporção da vida atual do alvo, e não como um intervalo mínimo–máximo, então uma tabela por nível não diria nada. Os limites por dificuldade e a questão da resistência estão em {mechanics}.",
     noProgressionNone: "Esta skill não tem tabela de dano direto. Seus efeitos estão descritos em {mechanics}.",
+    damageWithWeapon:
+      "A tabela é o dano elemental da própria skill. O dano da sua arma também acontece, no mesmo golpe.",
+    damageConverted:
+      "A tabela é o dano elemental da própria skill. O dano da arma também é carregado, mas uma parte dele é convertida neste elemento em vez de somada a ele.",
+    damageElementOnly:
+      "A tabela é todo o dano desta skill. Ela não carrega nada do dano da sua arma, então um monstro imune a este elemento não recebe nada dela.",
+    damageOverTime:
+      "O dano acontece ao longo de {seconds} segundos no nível {level} da skill, e não no impacto. A tabela é o total nesse período.",
+    colDuration: "Duração",
     backToTree: "← Todas as skills de {class}",
   },
   breakpoints: {

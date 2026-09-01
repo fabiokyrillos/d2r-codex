@@ -38,6 +38,11 @@ import {
   MAX_HARD_POINTS,
   TIER_LEVELS,
 } from "./skill-graph-rules";
+import {
+  ELEMENTAL_ATTACK_MODELS,
+  damagePresentation,
+  unclassifiedElementalAttacks,
+} from "../lib/skills";
 import { MIN_PROSE_LENGTH, exitCodeFor, isUntranslatedProse } from "./content-rules";
 import { getBuilds as getLocalisedBuilds } from "../lib/registry";
 import { LOCALES } from "../lib/i18n/config";
@@ -464,6 +469,80 @@ for (const locale of LOCALES.filter((l) => l !== DEFAULT_LOCALE)) {
 
 // ===========================================================================
 console.log("\nThe gate's verdict");
+// ===========================================================================
+
+// ===========================================================================
+console.log("\nDamage models — an elemental attack must say how the weapon figures");
+// ===========================================================================
+{
+  const table = { damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [] }, max: { base: 30, bands: [] } } };
+  const noTable = {};
+  const skill = (slug: string, kind: Skill["kind"], model?: Skill["damageModel"]) =>
+    ({ slug, kind, damageModel: model }) as Pick<Skill, "slug" | "kind" | "damageModel">;
+
+  // The defect: an attack the graph tabulates, with no model authored. Left
+  // alone it resolves to "table" and its page prints a range while saying
+  // nothing about the weapon.
+  check(
+    "an unclassified elemental attack is reported",
+    unclassifiedElementalAttacks([skill("charged-strike", "attack")], { "charged-strike": table })
+      .length === 1,
+  );
+  for (const model of ELEMENTAL_ATTACK_MODELS) {
+    check(
+      `...and is cleared by authoring "${model}"`,
+      unclassifiedElementalAttacks([skill("x", "attack", model)], { x: table }).length === 0,
+    );
+  }
+  // The rule must not widen into skills it has nothing to say about.
+  check(
+    "a spell with a table is not asked for a model",
+    unclassifiedElementalAttacks([skill("blizzard", "spell")], { blizzard: table }).length === 0,
+  );
+  check(
+    "a plain weapon attack is not asked for a model",
+    unclassifiedElementalAttacks([skill("zeal", "attack")], { zeal: noTable }).length === 0,
+  );
+
+  // An authored model must outrank the table, or every one of them would be
+  // shadowed by the `node.damage` branch that used to run first.
+  for (const model of ELEMENTAL_ATTACK_MODELS) {
+    check(
+      `"${model}" survives a skill that also has a table`,
+      damagePresentation({ kind: "attack", damageModel: model }, table) === model,
+    );
+  }
+  check(
+    "shield still outranks a table, as Smite relies on",
+    damagePresentation({ kind: "attack", damageModel: "shield" }, table) === "shield",
+  );
+  check(
+    "an attack with no model and no table is still a weapon attack",
+    damagePresentation({ kind: "attack" }, noTable) === "weapon",
+  );
+
+  // The real content, corrupted in memory: strip one model and the rule fires.
+  const real = getSkills(DEFAULT_LOCALE);
+  const classified = real.filter(
+    (s) => s.damageModel && (ELEMENTAL_ATTACK_MODELS as readonly string[]).includes(s.damageModel),
+  );
+  check(
+    "the shipped content is fully classified",
+    unclassifiedElementalAttacks(real, SKILL_GRAPH).length === 0,
+  );
+  if (classified.length > 0) {
+    const stripped = real.map((s) =>
+      s.slug === classified[0].slug ? { ...s, damageModel: undefined } : s,
+    );
+    check(
+      `stripping ${classified[0].slug}'s model is caught in the real content`,
+      unclassifiedElementalAttacks(stripped, SKILL_GRAPH).length === 1,
+    );
+  } else {
+    console.log("  --   no elemental attack models shipped yet; in-memory mutation deferred");
+  }
+}
+
 // ===========================================================================
 
 check("a clean run exits 0", exitCodeFor([], []) === 0);

@@ -44,7 +44,9 @@ import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import {
+  ELEMENTAL_ATTACK_MODELS,
   damagePresentation,
+  unclassifiedElementalAttacks,
   synergyEdges,
   synergyReceivers,
   type DamagePresentation,
@@ -728,18 +730,28 @@ console.log("\nSynergies (validated against the generated game-data graph):");
 /*
  * How every skill's damage is presented.
  *
- * `damagePresentation` derives "weapon" from `kind === "attack"`. That is only
- * sound while the two sets coincide: an attack skill that gained an elemental
- * table, or a non-attack skill that lost one, would silently move into the
- * wrong sentence. So the derivation is asserted rather than assumed, and every
- * bucket is required to be non-empty — a rule that classifies nothing proves
- * nothing.
+ * Two things are asserted here, and they pull in opposite directions.
+ *
+ * The cheap half: no bucket may be empty, because a rule that classifies
+ * nothing proves nothing.
+ *
+ * The half that matters: an attack whose damage the graph tabulates must name
+ * its model rather than fall through to a derivation. Attacks used to be
+ * separable from tables — every attack lacked one and every table belonged to
+ * a spell — and a single sentence could serve them all. The Amazon ends that.
+ * Power Strike adds lightning to a full weapon hit; Lightning Bolt converts the
+ * weapon's damage into lightning; Charged Strike carries no weapon damage at
+ * all. The extracted columns are identical in all three cases, so the model is
+ * authored per skill and this refuses the ones that are not.
  */
 console.log("\nDamage presentation:");
 {
   const buckets: Record<DamagePresentation, string[]> = {
     table: [],
     weapon: [],
+    "weapon-plus-element": [],
+    "weapon-converted-to-element": [],
+    "element-only-attack": [],
     shield: [],
     proportional: [],
     none: [],
@@ -750,8 +762,11 @@ console.log("\nDamage presentation:");
     buckets[damagePresentation(skill, node)].push(skill.slug);
   }
   for (const [kind, slugs] of Object.entries(buckets)) {
-    console.log(`  ${kind.padEnd(13)} ${String(slugs.length).padStart(2)}`);
-    if (slugs.length === 0) {
+    console.log(`  ${kind.padEnd(28)} ${String(slugs.length).padStart(2)}`);
+    // The three elemental-attack models only become reachable once a class that
+    // needs them is in the graph, so an empty one is a scope fact rather than a
+    // broken rule. Every other bucket must classify something.
+    if (slugs.length === 0 && !(ELEMENTAL_ATTACK_MODELS as readonly string[]).includes(kind)) {
       fail("damage-presentation", `no skill resolves to "${kind}"; the rule classifies nothing`);
     }
   }
@@ -768,38 +783,52 @@ console.log("\nDamage presentation:");
   const attacks = getSkills(DEFAULT_LOCALE).filter(
     (s) => s.kind === "attack" && SKILL_GRAPH[s.slug],
   );
-  const attacksWithTable = attacks.filter((s) => SKILL_GRAPH[s.slug]?.damage);
-  if (attacksWithTable.length > 0) {
-    fail(
-      "damage-presentation",
-      `attack skills now carry an elemental table, so "weapon" no longer follows from kind: ${attacksWithTable.map((s) => s.slug).join(", ")}`,
-    );
-  }
   /*
-   * `weapon` is derived from `kind === "attack"`, minus the attacks that author
-   * a `damageModel`. So the invariant is not "weapon == attacks" any more — it
-   * is that the two buckets *partition* the attacks, with nothing lost between
-   * them and nothing else let in. Smite is the whole reason: it is an attack
-   * whose damage is the shield's, so it has to leave `weapon` without leaving
-   * the set of things that must never be told they deal no damage.
+   * The attack models must *partition* the attacks: nothing lost between them,
+   * nothing else let in. An attack that escaped all five would land in `table`
+   * or `none` and be told, on its own page, that it deals no damage — which is
+   * the failure this whole section exists to prevent.
    */
-  const covered = new Set([...buckets.weapon, ...buckets.shield]);
+  const attackBuckets = [
+    "weapon",
+    "shield",
+    ...ELEMENTAL_ATTACK_MODELS,
+  ] as const;
+  const covered = attackBuckets.flatMap((b) => buckets[b]);
+  const coveredSet = new Set(covered);
   const attackSet = new Set(attacks.map((s) => s.slug));
-  if (covered.size !== attackSet.size || [...attackSet].some((s) => !covered.has(s))) {
+  if (coveredSet.size !== attackSet.size || [...attackSet].some((s) => !coveredSet.has(s))) {
     fail(
       "damage-presentation",
-      `weapon + shield no longer covers exactly the attack skills: ` +
-        `weapon=[${buckets.weapon.join(", ")}] shield=[${buckets.shield.join(", ")}] ` +
-        `attacks=[${[...attackSet].join(", ")}]`,
+      `the attack models no longer cover exactly the attack skills: ` +
+        attackBuckets.map((b) => `${b}=[${buckets[b].join(", ")}]`).join(" ") +
+        ` attacks=[${[...attackSet].join(", ")}]`,
     );
   }
-  if (buckets.weapon.some((s) => buckets.shield.includes(s))) {
-    fail("damage-presentation", "a skill resolved to both weapon and shield");
+  if (covered.length !== coveredSet.size) {
+    fail("damage-presentation", "a skill resolved to more than one attack model");
   }
   if (buckets.shield.length !== 1 || buckets.shield[0] !== "smite") {
     fail(
       "damage-presentation",
       `the shield bucket must be exactly Smite, not [${buckets.shield.join(", ")}]`,
+    );
+  }
+  /*
+   * An attack whose damage the graph tabulates must say how that number relates
+   * to the weapon. There is no derivation that gets this right: Power Strike
+   * adds its lightning to a full weapon hit, Lightning Bolt converts the
+   * weapon's damage into lightning, and Charged Strike carries no weapon damage
+   * at all — three different answers behind identical columns. Falling through
+   * to "table" prints the range and says nothing, which is the quiet version of
+   * being wrong.
+   */
+  const unclassified = unclassifiedElementalAttacks(getSkills(DEFAULT_LOCALE), SKILL_GRAPH);
+  if (unclassified.length > 0) {
+    fail(
+      "damage-presentation",
+      `these attacks have an elemental table but no damageModel, so their pages ` +
+        `would print a range without saying whether the weapon lands too: ${unclassified.join(", ")}`,
     );
   }
   console.log(

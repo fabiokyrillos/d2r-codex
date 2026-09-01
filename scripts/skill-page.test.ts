@@ -33,7 +33,11 @@ import { dictionaryFor } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { getSkills } from "../lib/registry";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
-import { damagePresentation, type DamagePresentation } from "../lib/skills";
+import {
+  ELEMENTAL_ATTACK_MODELS,
+  damagePresentation,
+  type DamagePresentation,
+} from "../lib/skills";
 
 let passed = 0;
 const failures: string[] = [];
@@ -88,6 +92,9 @@ console.log("\nEvery skill falls into exactly one damage presentation");
 const buckets: Record<DamagePresentation, string[]> = {
   table: [],
   weapon: [],
+  "weapon-plus-element": [],
+  "weapon-converted-to-element": [],
+  "element-only-attack": [],
   shield: [],
   proportional: [],
   none: [],
@@ -97,6 +104,9 @@ for (const s of skills) {
   if (node) buckets[damagePresentation(s, node)].push(s.slug);
 }
 for (const kind of Object.keys(buckets) as DamagePresentation[]) {
+  // The three elemental-attack models are only reachable once a class that
+  // needs them is extracted; an empty one is scope, not a broken rule.
+  if ((ELEMENTAL_ATTACK_MODELS as readonly string[]).includes(kind)) continue;
   check(
     `the "${kind}" bucket is not empty`,
     buckets[kind].length > 0,
@@ -104,27 +114,33 @@ for (const kind of Object.keys(buckets) as DamagePresentation[]) {
   );
 }
 /*
- * The six attacks split five/one. Smite is `kind: "attack"` like the rest, so
- * `weapon` cannot simply be the attack set any more — but every attack must
- * still land in one of the two, or a skill would fall through to a sentence
- * that denies its damage.
+ * Every attack must land in one of the five attack models. Derived from the
+ * content rather than listed: the previous version named six Paladin and
+ * Sorceress slugs, which meant the assertion silently stopped covering the
+ * attacks of any class added afterwards.
  */
-const ATTACKS = ["sacrifice", "smite", "zeal", "charge", "vengeance", "conversion"];
+const attackSlugs = skills
+  .filter((s) => s.kind === "attack" && SKILL_GRAPH[s.slug])
+  .map((s) => s.slug);
+const attackModelled = [
+  ...buckets.weapon,
+  ...buckets.shield,
+  ...ELEMENTAL_ATTACK_MODELS.flatMap((m) => buckets[m]),
+];
 check(
-  "weapon and shield together are exactly the six attack-kind skills",
-  new Set([...buckets.weapon, ...buckets.shield]).size === ATTACKS.length &&
-    ATTACKS.every((s) => buckets.weapon.includes(s) || buckets.shield.includes(s)),
-  `weapon=[${buckets.weapon.join(", ")}] shield=[${buckets.shield.join(", ")}]`,
+  "the attack models cover exactly the attack skills",
+  new Set(attackModelled).size === new Set(attackSlugs).size &&
+    attackSlugs.every((s) => attackModelled.includes(s)),
+  `modelled=[${attackModelled.join(", ")}] attacks=[${attackSlugs.join(", ")}]`,
+);
+check(
+  "no attack resolves to two models",
+  attackModelled.length === new Set(attackModelled).size,
 );
 check(
   "Smite is the only shield attack",
   buckets.shield.length === 1 && buckets.shield[0] === "smite",
   buckets.shield.join(", "),
-);
-check(
-  "the other five attacks are still weapon attacks",
-  buckets.weapon.length === 5 && !buckets.weapon.includes("smite"),
-  buckets.weapon.join(", "),
 );
 check(
   "Static Field is the proportional skill",

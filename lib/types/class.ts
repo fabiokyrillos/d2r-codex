@@ -54,23 +54,43 @@ export interface Skill extends Entity {
    */
   synergies?: SkillSynergy[];
   /**
-   * Damage that the extracted elemental columns cannot express.
+   * How this skill's damage is actually composed, where the extracted columns
+   * cannot say on their own.
    *
-   * The graph carries a skill's *own* min–max elemental damage. Three shapes
-   * fall outside that and must not be reported as "no damage":
+   * The graph carries a skill's *own* min–max elemental damage. What it never
+   * carries is the relationship between that number and the weapon, and that
+   * relationship is not one thing:
    *
-   *   weapon        the damage is the weapon's, scaled by the skill's bonus
-   *   shield        the damage is the shield's Smite Damage, and the skill
-   *                 does not roll against Attack Rating at all
-   *   proportional  the damage is a fraction of the target's life
+   *   proportional                  a fraction of the target's life, so there
+   *                                 is no range to publish (Static Field)
+   *   shield                        the base is the shield's Smite Damage and
+   *                                 the skill does not roll Attack Rating
+   *   weapon-plus-element           the weapon's full damage lands, and the
+   *                                 tabulated elemental damage lands with it
+   *   weapon-converted-to-element   the weapon's damage is carried, and a share
+   *                                 of it is turned into this element rather
+   *                                 than added alongside
+   *   element-only-attack           an attack that carries no weapon damage at
+   *                                 all; the table is the whole of it
    *
-   * `weapon` is derived from `kind === "attack"` and needs no authoring. The
-   * other two do: nothing in the extracted columns distinguishes them from a
-   * skill with no damage, and nothing distinguishes a shield attack from a
-   * weapon attack — Smite is `kind: "attack"` like the other five, and reading
-   * its damage off the weapon is exactly the falsehood this field prevents.
+   * Plain weapon attacks need no entry — `kind === "attack"` with no elemental
+   * table is unambiguous. Everything else is authored, never derived, and
+   * `check:content` refuses an attack whose damage the graph tabulates but
+   * which names no model here.
+   *
+   * That refusal is the point. A rule of the shape "an attack with a table adds
+   * its element to the weapon" would be right for Power Strike and Fire Arrow
+   * and wrong for Charged Strike and Lightning Strike, which carry none of the
+   * weapon's damage — which is precisely why every javelin build keeps Jab on
+   * the bar for lightning immunes. One derivation cannot tell those apart, so
+   * none is attempted.
    */
-  damageModel?: "proportional" | "shield";
+  damageModel?:
+    | "proportional"
+    | "shield"
+    | "weapon-plus-element"
+    | "weapon-converted-to-element"
+    | "element-only-attack";
   /** Mana cost at base, when it is decision-relevant. */
   manaCost?: string;
   /** Cast/attack behaviour notes that affect play. */

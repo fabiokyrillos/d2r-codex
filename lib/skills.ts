@@ -251,17 +251,52 @@ export function damageAtLevel(
  * `damageModel` is checked before `kind`, so an authored exception always wins
  * over the derivation rather than racing it.
  */
-export type DamagePresentation = "table" | "weapon" | "shield" | "proportional" | "none";
+export type DamagePresentation =
+  | "table"
+  | "weapon"
+  | "weapon-plus-element"
+  | "weapon-converted-to-element"
+  | "element-only-attack"
+  | "shield"
+  | "proportional"
+  | "none";
+
+/** The models an attack whose damage the graph tabulates is allowed to claim. */
+export const ELEMENTAL_ATTACK_MODELS = [
+  "weapon-plus-element",
+  "weapon-converted-to-element",
+  "element-only-attack",
+] as const;
 
 export function damagePresentation(
   skill: Pick<Skill, "kind" | "damageModel">,
   node: Pick<SkillGraphNode, "damage">,
 ): DamagePresentation {
+  // Authored first, unconditionally. This used to sit behind `node.damage`,
+  // which was harmless while the only two models belonged to skills with no
+  // table — and would have silently outranked every model that does have one.
+  if (skill.damageModel) return skill.damageModel;
   if (node.damage) return "table";
-  if (skill.damageModel === "proportional") return "proportional";
-  if (skill.damageModel === "shield") return "shield";
   if (skill.kind === "attack") return "weapon";
   return "none";
+}
+
+/**
+ * Attack skills whose damage the graph tabulates but which name no model.
+ *
+ * Exported and pure so `check-content.test.ts` can plant a mutation against a
+ * fabricated graph. Without this rule such a skill falls through to `"table"`
+ * and its page prints an elemental range with no statement about the weapon at
+ * all — true as far as it goes, and silent about the half a reader is asking
+ * about.
+ */
+export function unclassifiedElementalAttacks(
+  skills: readonly Pick<Skill, "slug" | "kind" | "damageModel">[],
+  graph: Record<string, Pick<SkillGraphNode, "damage">>,
+): string[] {
+  return skills
+    .filter((s) => s.kind === "attack" && graph[s.slug]?.damage && !s.damageModel)
+    .map((s) => s.slug);
 }
 
 /**

@@ -696,6 +696,21 @@ export const enUS = {
     noProgressionProportional:
       "This skill deals damage as a proportion of the target's current life rather than as a minimum–maximum range, so a level table would say nothing. The difficulty floors and the resistance question are covered under {mechanics}.",
     noProgressionNone: "This skill has no direct damage table. Its effects are described under {mechanics}.",
+    /*
+     * Printed *under* the table, not instead of it. These three skills all have
+     * a real elemental range and a real relationship to the weapon, and showing
+     * the range while saying nothing about the weapon is how a page ends up
+     * technically true and practically misleading.
+     */
+    damageWithWeapon:
+      "The table is the skill's own elemental damage. Your weapon's damage lands as well, on the same hit.",
+    damageConverted:
+      "The table is the skill's own elemental damage. The weapon's damage is carried too, but a share of it is converted to this element rather than added to it.",
+    damageElementOnly:
+      "The table is the whole of this skill's damage. It carries none of your weapon's damage, so a monster immune to this element takes nothing from it.",
+    damageOverTime:
+      "Damage is dealt over {seconds} seconds at skill level {level}, not on impact. The table is the total across that time.",
+    colDuration: "Duration",
     backToTree: "← All {class} skills",
   },
   breakpoints: {

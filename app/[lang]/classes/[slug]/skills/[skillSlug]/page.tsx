@@ -252,21 +252,41 @@ export default async function SkillPage(
         )}
 
         <Section title={t.skills.progressionTitle} description={t.skills.progressionBody}>
-          {presentation === "table" ? (
-            <DataTable
-              headers={[t.skills.colLevel, t.skills.colDamage]}
-              rows={levels.map((level) => {
-                const d = damageAtLevel(node, level);
-                return [
-                  <span key="l" className="font-mono">
-                    {level}
-                  </span>,
-                  <span key="d" className="font-mono">
-                    {d ? `${d.min}–${d.max}` : "—"}
-                  </span>,
-                ];
-              })}
-            />
+          {node.damage ? (
+            <>
+              <DataTable
+                headers={[t.skills.colLevel, t.skills.colDamage]}
+                rows={levels.map((level) => {
+                  const d = damageAtLevel(node, level);
+                  return [
+                    <span key="l" className="font-mono">
+                      {level}
+                    </span>,
+                    <span key="d" className="font-mono">
+                      {d ? `${d.min}–${d.max}` : "—"}
+                    </span>,
+                  ];
+                })}
+              />
+              {/*
+               * The weapon sentence belongs *with* the table, not instead of
+               * it. An attack that adds an element, one that converts the
+               * weapon's damage into it, and one that carries no weapon damage
+               * at all produce identical tables and completely different
+               * answers to "what do I actually hit for".
+               */}
+              {presentation !== "table" && (
+                <p className="mt-3 text-sm leading-relaxed text-pretty text-ink-muted">
+                  <RichText>
+                    {presentation === "weapon-plus-element"
+                      ? t.skills.damageWithWeapon
+                      : presentation === "weapon-converted-to-element"
+                        ? t.skills.damageConverted
+                        : t.skills.damageElementOnly}
+                  </RichText>
+                </p>
+              )}
+            </>
           ) : (
             <p className="text-sm leading-relaxed text-pretty text-ink-muted">
               <RichText>
