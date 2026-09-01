@@ -16,6 +16,31 @@ import { MAX_HARD_POINTS, TIER_LEVELS, type SkillGraphNode } from "../content/cl
 // generated graph rather than keeping a second copy in sync by hand.
 export { MAX_HARD_POINTS, TIER_LEVELS };
 
+/**
+ * Skills whose public identity is not their identifier in the game's tables.
+ *
+ * The extraction uses the `skill` column as an identifier and slugifies it,
+ * which has been the same as the public name for every skill so far. The Amazon
+ * breaks that: her decoy is `Dopplezon` in skills.txt and **Decoy** everywhere a
+ * player ever sees it -- in the game's own UI, in every database and in every
+ * guide. Slugifying the identifier would publish `/classes/amazon/skills/
+ * dopplezon`, a URL naming something no reader has heard of.
+ *
+ * So the mapping is explicit, tiny, and one-directional. The internal
+ * identifier stays the join key against the raw rows -- prerequisites and
+ * synergy expressions still reference `Dopplezon`, and they resolve through
+ * this table like everything else -- while nothing public carries it. Adding an
+ * entry is a deliberate act with a reason; the generator does not guess, and
+ * `skill-page.test.ts` asserts no override's identifier reaches a page, a URL
+ * or the sitemap.
+ */
+export const SLUG_OVERRIDES: Record<string, string> = {
+  Dopplezon: "decoy",
+};
+
+/** The single place a game identifier becomes a published slug. */
+
+
 export interface GraphProblem {
   rule:
     | "authored-drift"
@@ -24,7 +49,9 @@ export interface GraphProblem {
     | "cycle"
     | "unknown-skill"
     | "over-budget"
-    | "row-level-mismatch";
+    | "row-level-mismatch"
+    | "orphan-skill"
+    | "orphan-node";
   message: string;
 }
 
@@ -114,6 +141,48 @@ export function checkSkillGraph(
       state.set(slug, "done");
     };
     for (const slug of known) visit(slug, []);
+  }
+
+  /*
+   * -- every skill in an extracted class is in the graph, and vice versa ----
+   *
+   * `authored-drift` below skips a skill with no node, because a class the
+   * extraction has not reached yet legitimately has none. That skip is also a
+   * hole: once a class IS extracted, a mistyped slug gives its skill no node,
+   * and the skill quietly stops being drawn in the tree, stops getting a page
+   * and stops being checked for anything — while every gate still reports
+   * green, because the skip swallows it.
+   *
+   * So scope is decided per class, from the graph itself, and inside a class in
+   * scope the correspondence has to be exactly one to one in both directions.
+   */
+  {
+    // Widened deliberately: the graph's node type names only the classes
+    // extracted so far, while `skill.classSlug` is every class the site has.
+    // Comparing them as strings is the question being asked.
+    const extracted = new Set<string>(Object.values(graph).map((n) => n.classSlug));
+    const authored = new Map<string, string>();
+    for (const skill of skills) {
+      if (!extracted.has(skill.classSlug)) continue;
+      authored.set(skill.slug, skill.classSlug);
+      if (!graph[skill.slug]) {
+        found.push({
+          rule: "orphan-skill",
+          message: `${skill.slug}: authored for ${skill.classSlug}, which is extracted, but has ` +
+            `no graph node. Check the slug — it will not be drawn, will not get a page, and ` +
+            `nothing else will notice.`,
+        });
+      }
+    }
+    for (const [slug, node] of Object.entries(graph)) {
+      if (!authored.has(slug)) {
+        found.push({
+          rule: "orphan-node",
+          message: `${slug}: in the graph for ${node.classSlug}, but no skill is authored for it. ` +
+            `The tree has a cell nothing fills.`,
+        });
+      }
+    }
   }
 
   // -- the authored table must not drift from the graph --------------------

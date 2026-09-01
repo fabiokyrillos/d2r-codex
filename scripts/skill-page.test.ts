@@ -20,6 +20,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  readdirSync,
   realpathSync,
   rmSync,
   writeFileSync,
@@ -28,6 +29,7 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve, sep } from "node:path";
 
 import { assertFreshBuild } from "./build-freshness";
+import { SLUG_OVERRIDES } from "./skill-graph-rules";
 
 import { dictionaryFor } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
@@ -148,6 +150,38 @@ check(
   buckets.proportional.join(", "),
 );
 
+// ===========================================================================
+console.log("\nNo overridden game identifier reaches any built artifact");
+// ===========================================================================
+/*
+ * Read from the same table the generator uses, so this cannot drift out of
+ * step with it. The per-page checks below cover the skill pages; this sweeps
+ * everything else the build writes — the sitemap, both search indexes, every
+ * class and build page, and the RSC payloads — because a URL is assembled in
+ * more places than one.
+ */
+{
+  const identifiers = Object.keys(SLUG_OVERRIDES);
+  check("there is an override table to enforce", identifiers.length > 0);
+  const walk = (dir: string): string[] =>
+    readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+      e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
+    );
+  const artifacts = walk(root).filter((f) =>
+    /\.(html|json|rsc|xml|meta|segments|body)$/.test(f),
+  );
+  check("there are built artifacts to sweep", artifacts.length > 100, `${artifacts.length}`);
+  for (const identifier of identifiers) {
+    const needle = identifier.toLowerCase();
+    const hits = artifacts.filter((f) => readFileSync(f, "utf8").toLowerCase().includes(needle));
+    check(
+      `"${identifier}" appears in no built artifact`,
+      hits.length === 0,
+      hits.slice(0, 3).map((h) => h.slice(root.length + 1)).join(", "),
+    );
+  }
+}
+
 for (const locale of LOCALES) {
   const t = dictionaryFor(locale).skills;
   const WEAPON = marker(t.noProgressionWeapon);
@@ -169,6 +203,60 @@ for (const locale of LOCALES) {
     const path = pageFor(locale, skill.classSlug, slug);
     return existsSync(path) ? visible(readFileSync(path, "utf8")) : null;
   };
+
+  // =========================================================================
+  // Poison publishes a total over a window, never a per-frame zero
+  // =========================================================================
+  /*
+   * The columns for these two are damage per frame in 256ths. Read like any
+   * other element they floor to nothing, and the page announces that a skill
+   * dealing thousands is harmless. This asserts the rendered page, not the
+   * function -- damage.test.ts covers the arithmetic; what can still go wrong
+   * here is the table being wired to the wrong call.
+   */
+  for (const slug of ["poison-javelin", "plague-javelin"]) {
+    const text = read(slug);
+    if (text === null) {
+      check(`${locale} ${slug}: page exists`, false, "not built");
+      continue;
+    }
+    check(`${locale} ${slug}: no 0-0 damage row`, !/\b0[–-]0\b/.test(text), "prints 0–0");
+    // The level 1 and level 20 figures, so a silently halved or squared table
+    // cannot pass by merely being non-zero.
+    const expected = slug === "poison-javelin" ? ["25–37", "2659–2946"] : ["28–42", "1593–1625"];
+    for (const range of expected) {
+      check(`${locale} ${slug}: publishes ${range}`, text.includes(range));
+    }
+    check(
+      `${locale} ${slug}: says the damage is spread over time`,
+      text.includes(marker(t.damageOverTime)),
+    );
+    check(`${locale} ${slug}: shows a duration`, /\d+(\.\d+)?s/.test(text));
+  }
+
+  // =========================================================================
+  // No game-internal identifier reaches a reader
+  // =========================================================================
+  /*
+   * The Amazon's decoy is `Dopplezon` in the game's tables. The generator maps
+   * it to `decoy` at the one point an identifier becomes a slug; this proves
+   * the mapping held all the way to the page, the URL and the canonical tag.
+   * A single missed call site would put an unrecognisable word in a URL.
+   */
+  {
+    const decoyPath = pageFor(locale, "amazon", "decoy");
+    check(`${locale}: the decoy page is at /skills/decoy`, existsSync(decoyPath));
+    check(
+      `${locale}: no page is at /skills/dopplezon`,
+      !existsSync(pageFor(locale, "amazon", "dopplezon")),
+    );
+    if (existsSync(decoyPath)) {
+      // The raw HTML, not the visible text: canonical, hreflang and every href
+      // live in attributes.
+      const raw = readFileSync(decoyPath, "utf8");
+      check(`${locale}: the decoy page mentions no game identifier`, !/dopplezon/i.test(raw));
+    }
+  }
 
   // --- weapon attacks ------------------------------------------------------
   let weaponOk = 0;

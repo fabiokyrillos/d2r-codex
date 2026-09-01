@@ -532,6 +532,8 @@ console.log("\nSkill graph (validated against the generated game-data graph):");
     "unknown-skill",
     "over-budget",
     "row-level-mismatch",
+    "orphan-skill",
+    "orphan-node",
   ] as const;
   for (const rule of rules) {
     const n = counts.get(rule) ?? 0;

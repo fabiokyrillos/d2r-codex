@@ -68,6 +68,10 @@ function check(name: string, condition: boolean, detail = "") {
 const rulesFired = (problems: ReturnType<typeof checkSkillGraph>) =>
   new Set(problems.map((p) => p.rule));
 
+/** How many times one rule fired, for the checks that count occurrences. */
+const rulesHit = (problems: ReturnType<typeof checkSkillGraph>, rule: string) =>
+  problems.filter((p) => p.rule === rule).length;
+
 const cloneGraph = (): MutableGraph =>
   JSON.parse(JSON.stringify(SKILL_GRAPH)) as MutableGraph;
 
@@ -470,6 +474,68 @@ for (const locale of LOCALES.filter((l) => l !== DEFAULT_LOCALE)) {
 // ===========================================================================
 console.log("\nThe gate's verdict");
 // ===========================================================================
+
+// ===========================================================================
+console.log("\nSkill and node must correspond, once a class is extracted");
+// ===========================================================================
+{
+  const nodeFor = (classSlug: string): SkillGraphNode =>
+    ({
+      classSlug,
+      tree: "t",
+      page: 1,
+      row: 1,
+      column: 1,
+      requiredLevel: 1,
+      maxLevel: 20,
+      prerequisites: [],
+      synergies: [],
+    }) as unknown as SkillGraphNode;
+  const skillFor = (slug: string, classSlug: string) =>
+    ({ slug, classSlug, tree: "t", kind: "spell", name: slug, summary: "" }) as unknown as Skill;
+
+  const graph = { a: nodeFor("amazon") };
+  check(
+    "a matched pair is clean",
+    rulesHit(checkSkillGraph(graph, [skillFor("a", "amazon")], []), "orphan-skill") === 0,
+  );
+  check(
+    "a skill of an extracted class with no node is reported",
+    rulesHit(
+      checkSkillGraph(graph, [skillFor("a", "amazon"), skillFor("typo", "amazon")], []),
+      "orphan-skill",
+    ) === 1,
+  );
+  check(
+    "a node with no authored skill is reported",
+    rulesHit(checkSkillGraph(graph, [], []), "orphan-node") === 1,
+  );
+  // The skip this rule closes must stay open for classes that are genuinely
+  // not extracted yet, or authoring a class before its extraction would fail.
+  check(
+    "a skill of a class outside the graph is not reported",
+    rulesHit(
+      checkSkillGraph(graph, [skillFor("a", "amazon"), skillFor("b", "druid")], []),
+      "orphan-skill",
+    ) === 0,
+  );
+
+  // The real content, corrupted in memory.
+  const realSkills = getSkills(DEFAULT_LOCALE);
+  check(
+    "the shipped content has no orphan on either side",
+    rulesHit(checkSkillGraph(SKILL_GRAPH, realSkills, []), "orphan-skill") === 0 &&
+      rulesHit(checkSkillGraph(SKILL_GRAPH, realSkills, []), "orphan-node") === 0,
+  );
+  const mistyped = realSkills.map((s) =>
+    s.slug === "decoy" ? ({ ...s, slug: "dopplezon" } as Skill) : s,
+  );
+  check(
+    "renaming Decoy to its game identifier is caught, not swallowed",
+    rulesHit(checkSkillGraph(SKILL_GRAPH, mistyped, []), "orphan-skill") === 1 &&
+      rulesHit(checkSkillGraph(SKILL_GRAPH, mistyped, []), "orphan-node") === 1,
+  );
+}
 
 // ===========================================================================
 console.log("\nDamage models — an elemental attack must say how the weapon figures");

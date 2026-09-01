@@ -56,6 +56,7 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { allSkills } from "../content/classes";
+import { SLUG_OVERRIDES } from "./skill-graph-rules";
 
 const SOURCE_REPO = "blizzhackers/d2data";
 
@@ -122,28 +123,6 @@ interface RawDesc {
 
 const slugify = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-/**
- * Skills whose public identity is not their identifier in the game's tables.
- *
- * The extraction uses the `skill` column as an identifier and slugifies it,
- * which has been the same as the public name for every skill so far. The Amazon
- * breaks that: her decoy is `Dopplezon` in skills.txt and **Decoy** everywhere a
- * player ever sees it -- in the game's own UI, in every database and in every
- * guide. Slugifying the identifier would publish `/classes/amazon/skills/
- * dopplezon`, a URL naming something no reader has heard of.
- *
- * So the mapping is explicit, tiny, and one-directional. The internal
- * identifier stays the join key against the raw rows -- prerequisites and
- * synergy expressions still reference `Dopplezon`, and they resolve through
- * this table like everything else -- while nothing public carries it. Adding an
- * entry is a deliberate act with a reason; the generator does not guess, and
- * `skill-page.test.ts` asserts no override's identifier reaches a page, a URL
- * or the sitemap.
- */
-const SLUG_OVERRIDES: Record<string, string> = {
-  Dopplezon: "decoy",
-};
 
 /** The single place a game identifier becomes a published slug. */
 const slugFor = (name: string) => SLUG_OVERRIDES[name] ?? slugify(name);
