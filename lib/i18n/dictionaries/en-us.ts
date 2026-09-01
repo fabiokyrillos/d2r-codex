@@ -145,7 +145,7 @@ export const enUS = {
     levelingGuide: "Leveling guide",
     coverageTitle: "Coverage",
     coverageBody:
-      "The Sorceress and Paladin are fully documented — skills, complete leveling journeys and endgame builds with six-tier gear progression. The other six classes currently have overview pages. Depth is being added one class at a time rather than publishing six shallow guides at once.",
+      "The Sorceress and Paladin are fully documented — skills, complete leveling journeys and endgame builds with six-tier gear progression. The Amazon has her three skill trees and a page for every one of her thirty skills; her builds and leveling journey are still to come. The remaining five classes have overview pages. Depth is added one class at a time rather than publishing shallow guides for all of them at once.",
     coverageLink: "See the reference implementation →",
 
     dlcCalloutTitle: "Paid expansion required",
