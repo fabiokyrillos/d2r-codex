@@ -140,6 +140,24 @@ export interface SkillGraphNode {
      */
     readonly overTime?: boolean;
   };
+  /**
+   * Published quantities other than damage: a chance, a projectile count, an
+   * attack-rating bonus. Empty for most skills.
+   *
+   * `labelKey` names a UI dictionary entry rather than carrying text, so sixty
+   * skills do not turn into sixty hand-translated strings for a dozen distinct
+   * words. `range` is a chance whose minimum and maximum the game states and
+   * whose curve between them it does not: the Amazon's five passives carry no
+   * calc column at all, so anything printed per level would be invented.
+   */
+  readonly effects?: readonly {
+    readonly labelKey: string;
+    readonly unit: "percent" | "count";
+    readonly shape:
+      | { readonly kind: "linear"; readonly base: number; readonly perLevel: number; readonly cap?: number }
+      | { readonly kind: "step"; readonly base: number; readonly per: number }
+      | { readonly kind: "range"; readonly min: number; readonly max: number };
+  }[];
 }
 
 /** Keyed by skill slug. */
@@ -167,6 +185,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 6, maxLevel: 20,
     prerequisites: ["magic-arrow"],
     synergies: [],
+    effects: [{ labelKey: "effectArrows", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1, cap: 24 } }],
   },
   "exploding-arrow": {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 3, column: 3,
@@ -191,6 +210,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["guided-arrow"],
     synergies: [{ from: "guided-arrow", kinds: ["damage"] }, { from: "multiple-shot", kinds: ["damage"] }],
+    effects: [{ labelKey: "effectShots", unit: "count", shape: { kind: "linear", base: 4, perLevel: 1, cap: 10 } }],
   },
   "immolation-arrow": {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 5, column: 3,
@@ -215,12 +235,14 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
     synergies: [],
+    effects: [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: 5, max: 80 } }],
   },
   "dodge": {
     classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 2, column: 2,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
     synergies: [],
+    effects: [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: 10, max: 65 } }],
   },
   "slow-missiles": {
     classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 3, column: 1,
@@ -233,12 +255,14 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["dodge"],
     synergies: [],
+    effects: [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: 15, max: 75 } }],
   },
   "penetrate": {
     classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 4, column: 3,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["critical-strike"],
     synergies: [],
+    effects: [{ labelKey: "effectAttackRating", unit: "percent", shape: { kind: "linear", base: 35, perLevel: 10 } }],
   },
   "decoy": {
     classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 5, column: 1,
@@ -251,6 +275,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["avoid"],
     synergies: [],
+    effects: [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: 10, max: 65 } }],
   },
   "valkyrie": {
     classSlug: "amazon", tree: "passive-and-magic", page: 2, row: 6, column: 1,
@@ -263,6 +288,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["penetrate"],
     synergies: [],
+    effects: [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: 10, max: 100 } }],
   },
   "jab": {
     classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 1, column: 1,
@@ -299,6 +325,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["lightning-bolt", "power-strike"],
     synergies: [{ from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 30, bands: [12, 16, 20, 24, 28] } },
+    effects: [{ labelKey: "effectBolts", unit: "count", shape: { kind: "step", base: 3, per: 5 } }],
   },
   "plague-javelin": {
     classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 4, column: 3,
@@ -317,12 +344,14 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["charged-strike"],
     synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 25, bands: [10, 15, 20, 25, 30] } },
+    effects: [{ labelKey: "effectJumps", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1 } }],
   },
   "lightning-fury": {
     classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 6, column: 3,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["plague-javelin"],
     synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [20, 30, 40, 50, 50] } },
+    effects: [{ labelKey: "effectBolts", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1 } }],
   },
   "sacrifice": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 1, column: 1,

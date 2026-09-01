@@ -22,7 +22,7 @@ import {
 import { fmt, formatPoints, isLocale } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
-import { skillKindLabels, synergyKinds } from "@/lib/labels";
+import { effectLabels, skillKindLabels, synergyKinds } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 import {
   CLASSES_WITH_SKILL_PAGES,
@@ -31,6 +31,8 @@ import {
   damagePresentation,
   dependents,
   durationAtLevel,
+  effectAtLevel,
+  splitEffects,
   progressionLevels,
   synergyReceivers,
 } from "@/lib/skills";
@@ -107,6 +109,7 @@ export default async function SkillPage(
   });
   const builds = getBuildsUsingSkill(locale, skillSlug);
   const presentation = damagePresentation(skill, node);
+  const { scaling, ranges } = splitEffects(node);
 
   // Only tabulate levels that decide something: the first, the cap, and any
   // level a documented build actually recommends.
@@ -249,6 +252,63 @@ export default async function SkillPage(
                 </li>
               ))}
             </ul>
+          </Section>
+        )}
+
+        {(scaling.length > 0 || ranges.length > 0) && (
+          <Section title={t.skills.effectsTitle} description={t.skills.effectsBody}>
+            {scaling.length > 0 && (
+              <DataTable
+                headers={[
+                  t.skills.colLevel,
+                  ...scaling.map((e) => effectLabels(t)[e.labelKey] ?? e.labelKey),
+                ]}
+                rows={levels.map((level) => [
+                  <span key="l" className="font-mono">
+                    {level}
+                  </span>,
+                  ...scaling.map((e, i) => {
+                    const value = effectAtLevel(e, level);
+                    return (
+                      <span key={i} className="font-mono">
+                        {value === undefined ? "—" : e.unit === "percent" ? `${value}%` : value}
+                      </span>
+                    );
+                  }),
+                ])}
+              />
+            )}
+            {/*
+             * A chance the game bounds but does not chart. Printing two numbers
+             * and saying why there is no third column is the only honest render:
+             * interpolating between them would draw a line the game does not.
+             */}
+            {ranges.length > 0 && (
+              <>
+                <ul className={scaling.length > 0 ? "mt-4 space-y-1" : "space-y-1"}>
+                  {ranges.map((e, i) => {
+                    const shape = e.shape as { kind: "range"; min: number; max: number };
+                    return (
+                      <li key={i} className="text-sm text-ink">
+                        <span className="text-ink-muted">
+                          {effectLabels(t)[e.labelKey] ?? e.labelKey}:
+                        </span>{" "}
+                        <span className="font-mono">
+                          {fmt(t.skills.effectRangeFrom, { value: String(shape.min) })}
+                        </span>
+                        {", "}
+                        <span className="font-mono">
+                          {fmt(t.skills.effectRangeTo, { value: String(shape.max) })}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <p className="mt-3 text-sm leading-relaxed text-pretty text-ink-muted">
+                  <RichText>{t.skills.effectRangeNote}</RichText>
+                </p>
+              </>
+            )}
           </Section>
         )}
 

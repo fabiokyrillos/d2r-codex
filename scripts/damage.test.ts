@@ -23,8 +23,12 @@
  */
 import {
   FRAMES_PER_SECOND,
+  SKILL_GRAPH,
   damageAtLevel,
   durationAtLevel,
+  effectAtLevel,
+  splitEffects,
+  type SkillEffect,
   type SkillGraphNode,
 } from "../lib/skills";
 
@@ -181,6 +185,99 @@ console.log("\nPlanted mutations — each dropped step must change the answer");
     "the shipped level 20 window is 1150 frames, 46 seconds",
     durationAtLevel(POISON_JAVELIN, 20)!.frames === 1150 &&
       durationAtLevel(POISON_JAVELIN, 20)!.seconds === 46,
+  );
+}
+
+// ===========================================================================
+console.log("\nDerived quantities — three shapes, and the one that has no curve");
+// ===========================================================================
+
+{
+  const linear = (base: number, perLevel: number, cap?: number) =>
+    ({ labelKey: "x", unit: "count", shape: { kind: "linear", base, perLevel, cap } }) as SkillEffect;
+  const step = (base: number, per: number) =>
+    ({ labelKey: "x", unit: "count", shape: { kind: "step", base, per } }) as SkillEffect;
+  const range = (min: number, max: number) =>
+    ({ labelKey: "x", unit: "percent", shape: { kind: "range", min, max } }) as SkillEffect;
+
+  // Lightning Fury: 2 bolts at level 1, one more per level.
+  check("linear starts at its base", effectAtLevel(linear(2, 1), 1) === 2);
+  check("linear reaches 21 at level 20", effectAtLevel(linear(2, 1), 20) === 21);
+  // Multiple Shot's cap, and Strafe's.
+  check("a cap holds", effectAtLevel(linear(4, 1, 10), 20) === 10);
+  check("...and does not clamp below it", effectAtLevel(linear(4, 1, 10), 5) === 8);
+
+  // Charged Strike: one more bolt every five levels, integer division.
+  check("step starts at its base", effectAtLevel(step(3, 5), 1) === 3);
+  check("step is 7 at level 20", effectAtLevel(step(3, 5), 20) === 7);
+  check("step does not move between thresholds", effectAtLevel(step(3, 5), 9) === 4);
+
+  /*
+   * The one that matters. These five skills state a floor and a ceiling and no
+   * formula between them; interpolating would draw a line the game does not.
+   */
+  check("a range yields no per-level value", effectAtLevel(range(5, 80), 10) === undefined);
+  check("...at level 1 either", effectAtLevel(range(5, 80), 1) === undefined);
+
+  const split = splitEffects({ effects: [linear(2, 1), range(5, 80), step(3, 5)] });
+  check(
+    "ranges are separated from scaling effects",
+    split.scaling.length === 2 && split.ranges.length === 1,
+  );
+  check("a node with no effects splits to nothing", splitEffects({}).scaling.length === 0);
+}
+
+// ===========================================================================
+console.log("\nThe shipped effect data");
+// ===========================================================================
+
+{
+  /** slug -> [value at level 1, value at level 20] */
+  const scalingExpected: Record<string, [number, number]> = {
+    "lightning-fury": [2, 21],
+    "lightning-strike": [2, 21],
+    "charged-strike": [3, 7],
+    "multiple-shot": [2, 21],
+    strafe: [4, 10],
+    penetrate: [35, 225],
+  };
+  for (const [slug, [atOne, atTwenty]] of Object.entries(scalingExpected)) {
+    const scaling = splitEffects(SKILL_GRAPH[slug] ?? {}).scaling;
+    check(`${slug} publishes one scaling quantity`, scaling.length === 1, `${scaling.length}`);
+    if (scaling.length !== 1) continue;
+    check(
+      `${slug}: ${atOne} at level 1, ${atTwenty} at level 20`,
+      effectAtLevel(scaling[0], 1) === atOne && effectAtLevel(scaling[0], 20) === atTwenty,
+      `${effectAtLevel(scaling[0], 1)} / ${effectAtLevel(scaling[0], 20)}`,
+    );
+  }
+
+  /** slug -> [minimum, ceiling] */
+  const boundedExpected: Record<string, [number, number]> = {
+    "critical-strike": [5, 80],
+    dodge: [10, 65],
+    avoid: [15, 75],
+    evade: [10, 65],
+    pierce: [10, 100],
+  };
+  for (const [slug, [min, max]] of Object.entries(boundedExpected)) {
+    const ranges = splitEffects(SKILL_GRAPH[slug] ?? {}).ranges;
+    check(`${slug} publishes a bounded chance`, ranges.length === 1);
+    if (ranges.length !== 1) continue;
+    const shape = ranges[0].shape as { kind: "range"; min: number; max: number };
+    check(
+      `${slug}: ${min}% to ${max}%`,
+      shape.min === min && shape.max === max,
+      `${shape.min}-${shape.max}`,
+    );
+  }
+
+  // Anti-vacuity: every skill the effect table names must actually carry one.
+  const withEffects = Object.entries(SKILL_GRAPH).filter(([, n]) => (n.effects ?? []).length > 0);
+  check(
+    "exactly the eleven mapped skills carry effects",
+    withEffects.length === 11,
+    withEffects.map(([s]) => s).join(", "),
   );
 }
 

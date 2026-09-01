@@ -20,7 +20,9 @@
  * Only mechanical facts, which are not copyrightable:
  *
  *   from skills.json      charclass, reqlevel, reqskill1, reqskill2, maxlvl,
- *                         EType, HitShift, EMin/EMax and their five level bands
+ *                         EType, HitShift, EMin/EMax and their five level bands,
+ *                         ELen/ELevLen (poison only), and the Param columns the
+ *                         EFFECTS table names
  *   from skilldesc.json   SkillPage, SkillRow, SkillColumn
  *
  * Deliberately NOT extracted: `str name`, `str long`, `str short` (Blizzard's
@@ -30,7 +32,7 @@
  *
  * NORMALIZATION
  * -------------
- * 1. Filter to `charclass` of `pal` or `sor`.
+ * 1. Filter to the `charclass` codes in `classOf`.
  * 2. Slugify the skill's identifier: lowercase, non-alphanumerics to `-`.
  *    "Fist of the Heavens" -> "fist-of-the-heavens".
  * 3. Prerequisites are `reqskill1` and `reqskill2`, slugified, empties
@@ -44,7 +46,7 @@
  * ---------------
  * The repository ships two independent extractions: the current D2R tables and
  * the pre-D2R Lord of Destruction tables under `json/base/`. This script
- * compares the prerequisite sets of all 60 skills across both and records the
+ * compares the prerequisite sets of every extracted skill across both and records the
  * result in the generated header. "Independent" here means separately
  * extracted snapshots of two different game versions — agreement across them
  * shows the values are not an artifact of one extraction pass, and that the
@@ -224,6 +226,68 @@ function synergiesFor(row: RawSkill & Record<string, unknown>): { from: string; 
     .sort((x, y) => x.from.localeCompare(y.from));
 }
 
+/**
+ * The quantities a skill's page publishes, and where in the row they live.
+ *
+ * The numbers are extracted. The *mapping* is authored, and it has to be: the
+ * game's own parameter descriptions are Blizzard's prose and are deliberately
+ * never shipped (see LICENSING), and nothing in the table says which of eight
+ * parameters a reader actually wants. So the label is ours, the parameter
+ * indices are stated once here, and the values come from the row.
+ *
+ * Three shapes, because the game has three:
+ *
+ *   linear   base + perLevel x (level - 1), optionally capped
+ *   step     base + floor(level / per)
+ *   range    a chance that starts at `min` and climbs toward `max`
+ *
+ * `range` is the honest shape for the Amazon's passives, and the reason this
+ * table does not simply interpolate. Critical Strike, Dodge, Avoid, Evade and
+ * Pierce carry a minimum and a maximum and **no calc expression at all** -- the
+ * curve between them lives in the engine, not in any column extracted here.
+ * Publishing a per-level table for them would mean inventing the curve. The
+ * page prints what the data supports, which is the level-1 value and the
+ * ceiling, and says the rest is not in the extraction.
+ */
+interface EffectSpec {
+  readonly labelKey: string;
+  readonly unit: "percent" | "count";
+  readonly shape:
+    | { readonly kind: "linear"; readonly base: number; readonly perLevel: number; readonly cap?: number }
+    | { readonly kind: "step"; readonly base: number; readonly per: number }
+    | { readonly kind: "range"; readonly min: number; readonly max: number };
+}
+
+const par = (s: RawSkill & Record<string, unknown>, n: number): number => {
+  const v = s[`Param${n}`];
+  if (typeof v !== "number") {
+    throw new Error(`${s.skill}: Param${n} is missing; the effect table names a parameter the row does not have`);
+  }
+  return v;
+};
+
+const EFFECTS: Record<string, (s: RawSkill & Record<string, unknown>) => EffectSpec[]> = {
+  // Param1 Min %, Param2 Max %. No calc column; see the note above.
+  "critical-strike": (s) => [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } }],
+  dodge: (s) => [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } }],
+  avoid: (s) => [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } }],
+  evade: (s) => [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } }],
+  pierce: (s) => [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } }],
+  // Param1 baseline, Param2 per level. Passes 100%, which is correct for an
+  // attack-rating bonus and would be a bug to clamp.
+  penetrate: (s) => [{ labelKey: "effectAttackRating", unit: "percent", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } }],
+  // calc1: min(ln12, 24)
+  "multiple-shot": (s) => [{ labelKey: "effectArrows", unit: "count", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2), cap: 24 } }],
+  // calc1: min(par3 + lvl - 1, par4)
+  strafe: (s) => [{ labelKey: "effectShots", unit: "count", shape: { kind: "linear", base: par(s, 3), perLevel: 1, cap: par(s, 4) } }],
+  // calc1: par1 + lvl/par2 -- integer division, so a step rather than a slope.
+  "charged-strike": (s) => [{ labelKey: "effectBolts", unit: "count", shape: { kind: "step", base: par(s, 1), per: par(s, 2) } }],
+  // calc1: ln12
+  "lightning-fury": (s) => [{ labelKey: "effectBolts", unit: "count", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } }],
+  // calc2: ln34
+  "lightning-strike": (s) => [{ labelKey: "effectJumps", unit: "count", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } }],
+};
+
 const asArray = <T,>(j: unknown): T[] => (Array.isArray(j) ? j : Object.values(j as object)) as T[];
 
 /**
@@ -402,6 +466,7 @@ async function main() {
         maxLevel: s.maxlvl ?? 20,
         prerequisites: a.get(slug)!,
         synergies: synergiesFor(s as RawSkill & Record<string, unknown>),
+        effects: EFFECTS[slug]?.(s as RawSkill & Record<string, unknown>) ?? [],
         damage: hasDamage
           ? {
               element: s.EType!,
@@ -443,6 +508,25 @@ async function main() {
     }
   }
 
+  const eff = (list: (typeof rows)[number]["effects"]) =>
+    list.length === 0
+      ? ""
+      : `
+    effects: [` +
+        list
+          .map((e) => {
+            const sh = e.shape;
+            const body =
+              sh.kind === "linear"
+                ? `kind: "linear", base: ${sh.base}, perLevel: ${sh.perLevel}${sh.cap === undefined ? "" : `, cap: ${sh.cap}`}`
+                : sh.kind === "step"
+                  ? `kind: "step", base: ${sh.base}, per: ${sh.per}`
+                  : `kind: "range", min: ${sh.min}, max: ${sh.max}`;
+            return `{ labelKey: "${e.labelKey}", unit: "${e.unit}", shape: { ${body} } }`;
+          })
+          .join(", ") +
+        `],`;
+
   const dmg = (d: (typeof rows)[number]["damage"]) =>
     d
       ? `, damage: { element: "${d.element}", hitShift: ${d.hitShift}, ` +
@@ -463,7 +547,7 @@ async function main() {
         `    prerequisites: [${r.prerequisites.map((p) => `"${p}"`).join(", ")}],\n` +
         `    synergies: [${r.synergies
           .map((s) => `{ from: "${s.from}", kinds: [${s.kinds.map((k) => `"${k}"`).join(", ")}] }`)
-          .join(", ")}]${dmg(r.damage)},\n` +
+          .join(", ")}]${dmg(r.damage)},${eff(r.effects)}\n` +
         `  },`,
     )
     .join("\n");
@@ -614,6 +698,24 @@ export interface SkillGraphNode {
      */
     readonly overTime?: boolean;
   };
+  /**
+   * Published quantities other than damage: a chance, a projectile count, an
+   * attack-rating bonus. Empty for most skills.
+   *
+   * \`labelKey\` names a UI dictionary entry rather than carrying text, so sixty
+   * skills do not turn into sixty hand-translated strings for a dozen distinct
+   * words. \`range\` is a chance whose minimum and maximum the game states and
+   * whose curve between them it does not: the Amazon's five passives carry no
+   * calc column at all, so anything printed per level would be invented.
+   */
+  readonly effects?: readonly {
+    readonly labelKey: string;
+    readonly unit: "percent" | "count";
+    readonly shape:
+      | { readonly kind: "linear"; readonly base: number; readonly perLevel: number; readonly cap?: number }
+      | { readonly kind: "step"; readonly base: number; readonly per: number }
+      | { readonly kind: "range"; readonly min: number; readonly max: number };
+  }[];
 }
 
 /** Keyed by skill slug. */

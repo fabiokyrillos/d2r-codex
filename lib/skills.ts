@@ -230,6 +230,38 @@ export function damageAtLevel(
   };
 }
 
+export type SkillEffect = NonNullable<SkillGraphNode["effects"]>[number];
+
+/**
+ * A published quantity at a given hard-point level.
+ *
+ * Returns nothing for a `range` effect, and that is the point. Critical Strike,
+ * Dodge, Avoid, Evade and Pierce state a starting chance and a ceiling and no
+ * formula between them — the curve is in the engine, not in any column the
+ * extraction reads. A caller that wants a per-level number for one of those is
+ * asking for something the data does not contain, and gets nothing rather than
+ * a straight line drawn between two points the game never joins that way.
+ */
+export function effectAtLevel(effect: SkillEffect, level: number): number | undefined {
+  const shape = effect.shape;
+  if (shape.kind === "range") return undefined;
+  if (shape.kind === "step") return shape.base + Math.floor(level / shape.per);
+  const value = shape.base + shape.perLevel * (level - 1);
+  return shape.cap === undefined ? value : Math.min(value, shape.cap);
+}
+
+/** Effects that can be tabulated per level, and those that can only be bounded. */
+export function splitEffects(node: Pick<SkillGraphNode, "effects">): {
+  scaling: SkillEffect[];
+  ranges: SkillEffect[];
+} {
+  const all = node.effects ?? [];
+  return {
+    scaling: all.filter((e) => e.shape.kind !== "range"),
+    ranges: all.filter((e) => e.shape.kind === "range"),
+  };
+}
+
 /** D2 runs at 25 frames per second, and every duration column is in frames. */
 export const FRAMES_PER_SECOND = 25;
 

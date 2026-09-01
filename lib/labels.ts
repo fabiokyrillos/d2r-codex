@@ -121,6 +121,23 @@ export const synergyKindLabels = (t: Dictionary): Record<string, string> => ({
   hp: t.skills.synergyKindHp,
 });
 
+/**
+ * Effect labels, keyed by the `labelKey` the graph carries.
+ *
+ * The key travels in the data and the words live here, so sixty skills do not
+ * become sixty hand-translated strings for a dozen distinct words -- and so a
+ * label can never be a game string, which the extraction deliberately never
+ * takes.
+ */
+export const effectLabels = (t: Dictionary): Record<string, string> => ({
+  effectChance: t.skills.effectChance,
+  effectAttackRating: t.skills.effectAttackRating,
+  effectArrows: t.skills.effectArrows,
+  effectShots: t.skills.effectShots,
+  effectBolts: t.skills.effectBolts,
+  effectJumps: t.skills.effectJumps,
+});
+
 /** "damage", or "buff duration and damage" — never an untranslated slug. */
 export const synergyKinds = (kinds: readonly string[], t: Dictionary): string => {
   const labels = synergyKindLabels(t);
