@@ -5337,4 +5337,323 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "lightning-fury-amazon": {
+    summary:
+      "Uma javelin arremessada enche a tela de raios. A limpeza de área mais rápida do jogo, e um botão de boss na mesma barra.",
+    playstyle:
+      "Você arremessa uma javelin no meio de um grupo e ela se divide em raios que perseguem tudo dentro de um raio de quinze. Pierce é o que transforma isso de bom em absurdo: a javelin atravessa o alvo que acertou, e cada inimigo por quem ela passa libera outra rajada completa. Numa sala densa você aperta o botão uma vez. Aí aparece um boss, você entra em alcance corpo a corpo e aperta Charged Strike, que dispara bolts carregados da ponta da lança — e todos eles podem acertar um único alvo à queima-roupa. Dois botões, um conjunto de equipamento, e uma Valkyrie segurando a frente enquanto as duas coisas acontecem.",
+    strengths: [
+      "A limpeza mais rápida do jogo em áreas densas — nada mais esvazia uma sala do Cow Level em um arremesso",
+      "**Charged Strike está na mesma barra e no mesmo equipamento**, então a build não tem problema com boss",
+      "Escala com +skills mais forte que quase tudo: cada nível de skill é mais um raio",
+      "Bloqueio de verdade e uma Valkyrie, que é mais sobrevivência do que qualquer caster tem",
+      "A Titan's Revenge se repõe sozinha, então a build não custa nada para rodar depois de pronta",
+    ],
+    weaknesses: [
+      "Imunidade a raio é comum no Hell e a build não tem mastery para reduzi-la",
+      "**Velocidade de ataque não dá para planejar por um número único** — os frames dependem da javelin, da skill e de você estar arremessando ou golpeando, então esta página declara isso por arma em vez de publicar um breakpoint de Amazon",
+      "Fraca até ter −resistência a raio do inimigo vinda de algum lugar: um Griffon's Eye, uma Thunderstroke ou um Infinity",
+      "Divide atributos em três, coisa que nenhuma caster precisa fazer",
+      "Grupos lightning enchanted são o que tem mais chance de matá-la, e é a própria resistência ao elemento dela que a salva",
+    ],
+    flexPoints: [
+      "**O plano gasta 109 dos 110 pontos fixos que um personagem nível 99 tem.** Abaixo do 99, a ordem acima é a ordem para cortar de baixo para cima: os doze pontos de Lightning Strike são o bloco flexível.",
+      "**Mais pontos em Pierce normalmente é a resposta errada.** Um Razortail são 33% por um slot de cinto, e a curva da própria skill é decrescente entre 10% e 100%. Consiga o cinto primeiro e releia o seu total antes de gastar.",
+      "Pontos extras depois do Lightning Strike vão para **Decoy** — ele aumenta a vida da Valkyrie — ou para **Critical Strike**, que não faz nada pelo seu raio e faz tudo pelo Jab que você aperta num imune a raio.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento, e aqui é um número de verdade — um Thundergod's Vigor pede 110 e um Stormshield pede 156. Decida o cinto e o escudo antes de gastar.",
+      dexterity:
+        "O suficiente para bloqueio máximo com o escudo que você escolheu, e o suficiente para segurar a javelin. Uma Thunderstroke pede 151 de Dexterity sozinha.",
+      vitality: "Todo o resto. A Amazon ganha 3 de vida por ponto, metade a mais do que uma Sorceress.",
+      energy: "Nenhum. A mana vem de um mercenário com Insight e do roubo na javelin.",
+      notes: [
+        "**Esta classe paga por três atributos onde uma caster paga por um.** Strength pelo cinto e pelo escudo, Dexterity pela arma e pelo bloqueio, Vitality por todo o resto — e as próprias javelins têm requisitos altos de Dexterity.",
+        "Vale a pena alcançar o bloqueio máximo. A Amazon divide a tabela de bloqueio com o Paladin, então o custo em Dexterity é bem menor do que seria numa caster.",
+        "Não persiga os 156 de Strength de um Stormshield cedo. Um Ancient's Pledge ou um Lidless Wall custa uma fração disso e as resistências importam mais que o bloqueio antes do Hell.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "A tabela de recuperação de golpe da Amazon é uma das mais generosas do jogo, e 32% é o ponto em que ela deixa de te custar um arremesso inteiro. Alcançável só com uma armadura Peace.",
+      "fhr-52":
+        "Vale pegar se cair naturalmente do equipamento que você já queria. Não vale comprar por si só.",
+      "fbr-32":
+        "A meta padrão na tabela de Paladin, Amazon e Assassin. Um escudo do qual você não se recupera rápido é um escudo que te mata enquanto bloqueia.",
+    },
+    skillNotes: {
+      "lightning-fury":
+        "**Dois raios no nível 1 e mais um por nível**, com raio de busca 15. A build inteira.",
+      "charged-strike":
+        "A metade de alvo único deste personagem, não uma build separada. A contagem de bolts sobe a cada cinco níveis, e todos podem acertar um único alvo à queima-roupa.",
+      "lightning-bolt":
+        "Alimenta o Lightning Fury a +1% por nível e o Charged Strike a +14% por nível. O melhor gasto ponto a ponto do plano.",
+      "power-strike":
+        "As mesmas duas sinergias de novo. Nunca é apertada depois dos primeiros níveis — é maximizada pelo que alimenta.",
+      "lightning-strike":
+        "Alimenta as duas skills principais, e é uma corrente corpo a corpo utilizável por si só. É aqui que vão os pontos restantes.",
+      jab: "Pré-requisito do Power Strike, e o ataque físico que você aperta num imune a raio.",
+      "poison-javelin": "Pré-requisito do Lightning Bolt. Um ponto, e nunca apertada.",
+      "plague-javelin": "Pré-requisito do Lightning Fury. Um ponto.",
+      valkyrie: "Ela segura a frente enquanto você arremessa. Um ponto mais os seus +skills bastam.",
+      decoy:
+        "**Pontos fixos aqui aumentam a vida da Valkyrie**, e esse é o motivo de gastar mais que um. Também é um corpo em que os inimigos atiram no seu lugar.",
+      evade: "Pré-requisito da Valkyrie, e uma chance de desviar de ataques em movimento.",
+      avoid: "Pré-requisito do Evade. Uma chance de desviar de ataques à distância parada.",
+      dodge: "Pré-requisito do Avoid, e a metade corpo a corpo da mesma passiva.",
+      "slow-missiles":
+        "Pré-requisito do Decoy, e um dos botões defensivos mais fortes do jogo por um ponto.",
+      "inner-sight": "Pré-requisito do Slow Missiles.",
+      pierce:
+        "**Um ponto, porque um Razortail fornece 33% por um slot de cinto.** Leia o artigo de Pierce antes de gastar mais — a chance do equipamento e a da skill são um pool só.",
+      penetrate:
+        "Pré-requisito do Pierce, e attack rating de que você genuinamente precisa para o Charged Strike.",
+      "critical-strike":
+        "Pré-requisito do Penetrate. Não vale nada para o Charged Strike, que não causa dano físico.",
+    },
+    immunityPlan:
+      "Imunidade a raio é o único problema real da build e a Amazon **não tem mastery para reduzir a resistência do inimigo** — a resposta inteira precisa vir do equipamento, do mercenário ou de um segundo tipo de dano. Na ordem do que a maioria dos jogadores de fato alcança: o **Griffon's Eye** dá −15-20% de resistência a raio do inimigo, aplicados antes da checagem de imunidade; a **Thunderstroke** dá mais −15% e empilha com ele; o **Infinity no mercenário** é o que de fato quebra a imunidade, via Conviction, e é o que transforma Travincal e a Worldstone Keep de zonas ruins em zonas boas. Antes de qualquer um desses, a resposta honesta é **Jab** — um ataque físico, na barra desde o nível 1, com uma Valkyrie segurando o alvo enquanto ele trabalha. Um sunder charm **Crack of the Heavens** é a solução direta e o mais caro dos seis para carregar: ele remove 70 a 90 pontos da resistência que te protege de grupos lightning enchanted, que são justamente o que tem mais chance de matar esta build.",
+    mercenaryNotes:
+      "O mercenário do Ato 2, contratado no Nightmare, e o item que esta build espera é dele: um **Infinity**, cuja aura Conviction reduz a resistência a raio do inimigo o bastante para quebrar a maior parte da imunidade a raio que ocorre naturalmente. Antes disso existir, dê a ele um **Insight** pela mana — uma Amazon de javelin arremessa sem parar e não tem Warmth — e um **Fortitude** ou **Treachery** com um **Vampire Gaze** para mantê-lo de pé. Pegue **Might** pelo dano físico que mata o que você não consegue tocar, ou **Holy Freeze** se você preferir que nada chegue perto.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "A sala mais densa do jogo e nada lá é imune a raio. Um arremesso limpa uma tela; esta é a zona pela qual a build existe.",
+      "chaos-sanctuary-hell":
+        "Nível de área 85 e lotado. Os Oblivion Knights amaldiçoam em vez de resistir, e o Charged Strike dá conta do Diablo sem trocar de equipamento.",
+      "throne-of-destruction-hell":
+        "Cinco ondas densas numa sala só, que é o formato contra o qual o Lightning Fury é melhor. O Charged Strike mata o Baal na mesma barra.",
+      "worldstone-keep-hell":
+        "Nível de área 85 e muito denso. Imunidade a raio aparece aqui, então esta é uma zona de Infinity, não uma zona de início.",
+      "pit-hell":
+        "Nível de área 85, curto, e razoavelmente leve em imunidade a raio. Uma boa primeira zona de Hell quando as resistências estiverem no teto.",
+      "travincal-hell":
+        "O Council é imune a raio. Sem Infinity esta é uma zona de Jab e não vale o seu tempo; com Infinity vira uma das runs mais rápidas do jogo.",
+      "countess-hell":
+        "Runas para o Infinity que você está montando. Curto, e nada na torre resiste a raio de forma significativa.",
+    },
+    levelingPath: {
+      summary:
+        "**Não tente evoluir como esta build.** O Lightning Fury abre no 30 e o Charged Strike no 18, então os primeiros dezoito níveis são Jab e Power Strike com qualquer javelin que um vendedor tenha. Nada disso é desperdiçado — o Power Strike é uma sinergia de 14% para as duas skills para as quais você está indo — mas o personagem só parece uma Javazon a partir do nível 30, e só parece forte quando o Lightning Bolt estiver bem entrado nos vinte.",
+      respecAt:
+        "Normalmente nunca. Se você evoluiu com pontos espalhados por Impale e Fend, o respec da Den of Evil no começo do Nightmare recupera tudo.",
+    },
+    selfFoundNotes:
+      "Genuinamente boa, até certo ponto. Peace, Spirit, Lore e Ancient's Pledge são todos runas da Countess; Titan's Revenge, Harlequin Crest, Mara's Kaleidoscope e Razortail caem todos no Hell e nenhum deles é raro. O que o solo self-found não alcança é a −resistência a raio do inimigo: um Griffon's Eye é um elmo elite de nível 76 e um Infinity é uma Ber e uma Jah. Uma Lightning Fury Amazon self-found é um personagem muito rápido que farma o Cow Level, o Chaos Sanctuary e o Pit, e aperta Jab nas coisas que não consegue ferir. Isso é um personagem de verdade, e vale dizer isso em vez de fingir que o endgame está mais perto do que está.",
+    hardcoreNotes:
+      "Melhor do que parece. Bloqueio de verdade, uma Valkyrie, um Decoy e as passivas de Dodge fazem deste um dos personagens mais resistentes do jogo — e Slow Missiles por um ponto é quase injusto contra os grupos à distância do Hell. O perigo específico é **lightning enchanted**, porque é a sua própria resistência a raio que te salva e nenhuma aura te protege disso. Pegue o **Thundergod's Vigor** pela resistência máxima a raio elevada e pelo absorb, mantenha 75% em tudo antes do Hell, e não carregue um Crack of the Heavens. Prefira Holy Freeze no mercenário em vez de Might.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30, onde o Lightning Fury existe.",
+        nextUpgrade:
+          "Nível 30, e então as duas skills que fazem disto uma build em vez de um personagem: Lightning Fury e, a partir do 18, Charged Strike.",
+        notes:
+          "**Você ainda não é uma Lightning Fury Amazon e nem está perto.** O Lightning Fury abre no 30 e o Charged Strike no 18, então o primeiro ato e meio é Jab e Power Strike. Cada ponto gasto no Power Strike é uma sinergia que você mantém, então nada aqui é desperdiçado.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer javelin com +Javelin and Spear Skills",
+            why: "Vendedores no Ato 1 e no Ato 2 vendem javelins mágicas, e um +3 numa skill de javelin em uma delas vale mais que qualquer rolagem de dano neste nível.",
+            lookFor: ["+2-3 Javelin and Spear Skills", "Replenishes Quantity"],
+          },
+          "offhand-0": {
+            why: "Resistências por três runas da Countess, numa classe que de fato consegue usar escudo.",
+          },
+          "body-0": {
+            why: "25% de Faster Hit Recovery e 25% de Faster Run/Walk no nível 17, por duas runas comuns.",
+          },
+          "body-0-alt0": {
+            why: "+2 skills de Amazon no nível 29, que é o maior upgrade único disponível antes do Hell.",
+          },
+          "helm-0": { why: "+1 em Todas as Skills por duas runas que a Countess derruba sem parar." },
+        },
+      },
+      nightmare: {
+        goal: "As duas skills principais online, e a primeira javelin de verdade.",
+        nextUpgrade:
+          "Um Insight para o mercenário, e depois resistências em 75% antes de entrar no Hell.",
+        notes:
+          "**Velocidade de ataque começa a importar aqui, e não dá para ler num número só.** Os frames que você recebe dependem da velocidade base da própria javelin, de você estar arremessando o Lightning Fury ou golpeando com o Charged Strike, e do resto do seu equipamento — uma Titan's Revenge e uma Matriarchal Javelin não se comportam igual na mesma porcentagem. Busque velocidade de ataque no amuleto e nas luvas, e julgue pelo tato na arma que você de fato segura.",
+        picks: {
+          "weapon-0": {
+            why: "+2 skills de Amazon e mais +2 na aba Javelin and Spear, numa javelin que se repõe sozinha. O item que esta build espera.",
+          },
+          "offhand-0": {
+            why: "+2 skills e até +112 de mana num escudo, que são quatro níveis de skill de raios ao lado da javelin.",
+            sockets: "Tal, Thul, Ort e Amn num escudo de 4 sockets.",
+          },
+          "body-0": { why: "+2 skills de Amazon e 20% de Faster Hit Recovery por três runas baratas." },
+          "helm-0": { why: "+1 skills e magic find até aparecer algo melhor." },
+          "belt-0": {
+            why: "33% de Piercing Attack por 20 de Strength. No Lightning Fury isso multiplica em vez de somar.",
+          },
+          "ring1-0": {
+            why: "Cannot Be Frozen, mais Dexterity que conta para o bloqueio e para o requisito da javelin.",
+          },
+        },
+        charms: [{ why: "O caminho mais barato para 75% antes de o Hell começar." }],
+      },
+      "early-hell": {
+        goal: "Fechar as resistências e conseguir a primeira −resistência a raio do inimigo.",
+        nextUpgrade:
+          "Um Griffon's Eye, ou um Infinity para o mercenário. Até um dos dois existir, a imunidade a raio decide onde você pode farmar.",
+        notes:
+          "**É aqui que aparece o único problema real da build.** Imunidade a raio é comum no Hell e nada na árvore da Amazon reduz a resistência do inimigo — ela não tem mastery. O Jab está na barra exatamente por isso, e não é piada: um ataque físico com uma Valkyrie na sua frente mata um imune a raio devagar e com segurança.",
+        picks: {
+          "weapon-0": {
+            why: "Ainda a javelin certa. Replenishes Quantity é o que torna uma build de arremesso jogável.",
+          },
+          "offhand-0": { why: "+2 skills, e o bloqueio que a tabela da Amazon deixa barato." },
+          "offhand-0-alt0": {
+            why: "35% de redução de dano e bloqueio enorme, a 156 de Strength. Só pegue quando a Strength já estiver paga.",
+          },
+          "body-0": { why: "+2 skills de Amazon, e custa três runas em vez de uma fortuna." },
+          "body-0-alt0": {
+            why: "Cannot Be Frozen e resistências pesadas, se você preferir não segurar um Raven Frost.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida por nível e 10% de redução de dano com apenas 50 de Strength.",
+          },
+          "belt-0": {
+            why: "+3 Lightning Fury e +3 Lightning Strike, mais o lightning absorb que te mantém viva dentro do seu próprio elemento.",
+          },
+          "belt-0-alt0": {
+            why: "Volte para este na limpeza densa — o pierce vale mais que as skills quando a sala está cheia.",
+          },
+          "amulet-0": {
+            why: "+2 em todas as skills e até +30 em todas as resistências, que são dois problemas num slot só.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e Dexterity." },
+          "boots-0": {
+            why: "Vida, Dexterity para o bloqueio, e resistência máxima a fogo elevada.",
+          },
+        },
+        charms: [{ why: "Mantenha 75% nas quatro resistências." }],
+      },
+      budget: {
+        goal: "−resistência a raio do inimigo, e o dano de verdade da build.",
+        nextUpgrade:
+          "Infinity no mercenário. É a diferença entre escolher suas zonas e não precisar escolher.",
+        picks: {
+          "weapon-0": { why: "Mantida para limpar, porque se repõe sozinha." },
+          "weapon-0-alt0": {
+            why: "−15% de resistência a raio do inimigo e até +4 skills de Javelin and Spear, ao custo de reabastecer na mão. Muita gente carrega as duas.",
+          },
+          "helm-0": {
+            why: "**−15-20% de resistência a raio do inimigo**, aplicados antes da checagem de imunidade, mais dano de skills de raio. O maior upgrade único de dano que a build faz.",
+            lookFor: ["-20% Enemy Lightning Resistance", "+15% Lightning Skill Damage"],
+          },
+          "offhand-0": { why: "+2 skills e bloqueio, ainda imbatível pelo preço." },
+          "body-0": {
+            why: "+200% de Enhanced Damage e +15 em todas as resistências. O Enhanced Damage não faz nada pelos seus raios, mas a defesa e as resistências fazem.",
+          },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências — a escolha melhor se o que está falhando forem as resistências.",
+          },
+          "belt-0": { why: "33% de pierce para limpar. Troque para o Thundergod's Vigor num boss." },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de Increased Attack Speed",
+            why: "A velocidade de ataque mais barata do personagem, num slot sem nenhum unique que valha o espaço.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências"],
+          },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": { why: "Cannot Be Frozen e Dexterity." },
+          "ring2-0": { why: "+1 em todas as skills, que nesta build é mais um raio." },
+          "boots-0": { why: "Magic find enquanto você limpa, e Strength para o cinto." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon, que são três raios a mais." },
+          { why: "Níveis de skill diretos, no slot que não tem nada melhor para fazer." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders antes da luta, num personagem que apanha." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Infinity, e nada mais que seja imune.",
+        nextUpgrade: "Uma rolagem melhor de Griffon's, mais lightning facets, e charms de skill.",
+        picks: {
+          "weapon-0": {
+            why: "−15% de resistência a raio do inimigo em cima do Griffon's Eye e do Infinity. Três fontes empilham, e esta é a que você empunha.",
+            lookFor: ["+4 Javelin and Spear Skills"],
+          },
+          "weapon-0-alt0": {
+            why: "Guardada no cinto para sessões longas de limpeza, porque se repõe.",
+          },
+          "helm-0": {
+            why: "−20% de resistência a raio do inimigo e +15% de dano de skills de raio, com um lightning facet encaixado.",
+            sockets: "Um Rainbow Facet de raio.",
+          },
+          "offhand-0": {
+            why: "35% de redução de dano e o melhor bloqueio do jogo, agora que a Strength é pagável.",
+          },
+          "offhand-0-alt0": {
+            why: "Mantenha se os dois níveis de skill importarem mais que a redução de dano.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências, o que paga pelo Griffon's e pelo Infinity juntos.",
+          },
+          "belt-0": { why: "33% de pierce. Ainda o cinto de limpeza." },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas: 20% de Increased Attack Speed, resistências",
+            why: "Velocidade de ataque e as últimas resistências de uma vez.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 20+"],
+          },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen, mais Dexterity e attack rating de graça." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find, ou Waterwalk se a vida importar mais." },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "Raios e vida na mesma fileira." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "Depois deste ponto só sobra nível de skill para comprar: rolagens melhores de charm, um segundo lightning facet, e a Torch. **Velocidade de ataque é a única coisa que ainda vale testar em vez de ler** — os frames diferem entre arremessar o Lightning Fury e golpear com o Charged Strike, e entre uma Ceremonial e uma Matriarchal Javelin, então o total certo é o que parecer mais rápido na arma que você de fato segura.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem de +4 Javelin and Spear. A javelin de limpeza fica no cinto para sessões longas.",
+            lookFor: ["+4 Javelin and Spear Skills", "+200% Enhanced Damage"],
+          },
+          "helm-0": {
+            why: "Uma rolagem de −20% e +15% com um lightning facet dentro.",
+            lookFor: ["-20% Enemy Lightning Resistance", "+15% Lightning Skill Damage"],
+          },
+          "offhand-0": {
+            why: "Redução de dano e bloqueio, com um lightning facet encaixado.",
+          },
+          "body-0": {
+            why: "Teleport, que muda a forma como a build farma mais que qualquer upgrade de dano restante.",
+          },
+          "body-0-alt0": {
+            why: "Mantenha enquanto as resistências forem a restrição que aperta.",
+          },
+          "belt-0": { why: "33% de pierce, ainda imbatível no slot para limpar." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, duas resistências, vida",
+            why: "O único slot onde um craft vence qualquer unique.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "Carregado só onde o Infinity não alcança. Leia a página dele antes — a penalidade cai justamente na resistência que te mantém viva.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+    },
+  },
 };
