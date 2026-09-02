@@ -707,9 +707,17 @@ async function main() {
  *
  *   These are two snapshots of different game versions from one extraction
  *   project, not two independent publishers. Their agreement shows the values
- *   are not an artifact of a single extraction pass and that the prerequisite
- *   graph did not change between LoD and D2R. It is not corroboration by an
- *   unrelated party, and it is not evidence about patches after the baseline.
+ *   are not an artifact of a single extraction pass, and that these columns did
+ *   not change between LoD and D2R. It is not corroboration by an unrelated
+ *   party.
+ *
+ *   It also does not detect a change made in the engine rather than the table,
+ *   and agreement is exactly what such a change looks like from here. Patch 2.4
+ *   fixed Plague Javelin's poison duration at three seconds; its \`ELen\` and
+ *   \`ELevLen\` are byte-identical across both extractions, because nobody edited
+ *   them. Reading a high agreement score as "these values are current" is the
+ *   mistake this paragraph exists to prevent -- see FIXED_DURATION above for the
+ *   override that carries the correction.
  *
  * LICENSING
  *   The repository is MIT licensed, but its contents are extracted from

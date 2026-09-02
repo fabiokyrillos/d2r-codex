@@ -21,10 +21,17 @@ import type { Skill, SkillTree } from "@/lib/types";
  * Strike, Lightning Bolt, Lightning Fury and Lightning Strike all deliver the
  * weapon's damage; Charged Strike alone does not, because its stage passes the
  * skill's empty `SrcDam` straight to the damage allocator while Lightning
- * Strike's substitutes 100%. Every one of them still rolls against attack
- * rating, and every one creates its secondary bolts or chain separately from
- * the strike. That is recorded in `damageModel` rather than in prose, so the
- * damage section of each page cannot contradict it.
+ * Strike's substitutes 0x80 for an empty one. Every one of them still rolls
+ * against attack rating, and every one creates its secondary bolts or chain
+ * separately from the strike. That is recorded in `damageModel` rather than in
+ * prose, so the damage section of each page cannot contradict it.
+ *
+ * The two stages are `SKILLS_SrvSt06_PowerStrike_ChargedStrike` and
+ * `SKILLS_SrvSt10_LightningStrike` in D2MOO's `D2Game/src/SKILLS/SkillAma.cpp`
+ * — a community reimplementation of *legacy* Diablo II, not Blizzard's D2R
+ * source, cited to explain a column the shipped tables do not describe and
+ * reconciled against the pinned 3.3 extraction. `scripts/damage.test.ts`
+ * records the provenance in full and asserts the classifications.
  *
  * Names are the game's, in both locales, per ADR 0003. The one place the
  * internal identifier and the public name differ is Decoy, which the game's
