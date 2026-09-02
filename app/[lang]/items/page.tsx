@@ -36,8 +36,26 @@ export default async function ItemsPage() {
     },
     { label: t.items.groupBodyArmor, categories: ["body-armor"] },
     {
+      /*
+       * Missile and Amazon weapons belong here rather than in a group of their
+       * own. They were absent entirely until the Amazon pass, which is why
+       * Demon Machine — catalogued for the Enchant Sorceress — had a page and
+       * a sitemap entry but no route to it from this index.
+       */
       label: t.items.groupWeapons,
-      categories: ["orb", "dagger", "sword", "staff", "wand", "mace"],
+      categories: [
+        "orb",
+        "dagger",
+        "sword",
+        "staff",
+        "wand",
+        "mace",
+        "bow",
+        "crossbow",
+        "javelin",
+        "spear",
+        "amazon-weapon",
+      ],
     },
     {
       label: t.items.groupShields,

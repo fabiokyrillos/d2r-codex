@@ -396,6 +396,217 @@ export const uniques: UniqueItem[] = [
   },
 
   // -------------------------------------------------------------------------
+  // Bows, crossbows and Amazon weapons
+  //
+  // Verified against the pinned blizzhackers/d2data extraction
+  // (fc46999, patch 3.3), `json/uniqueitems.json` joined to `json/weapons.json`
+  // for the base's requirements and socket ceiling. See docs/sources/README.md.
+  // -------------------------------------------------------------------------
+  {
+    slug: "titans-revenge",
+    name: "Titan's Revenge",
+    summary:
+      "+2 Amazon skills and +2 Javelin and Spear skills on a javelin that refills itself. The javelin Amazon's weapon for most of her life.",
+    quality: "unique",
+    base: "Ceremonial Javelin",
+    category: "javelin",
+    tier: "exceptional",
+    slots: ["weapon"],
+    requiredLevel: 42,
+    requiredStrength: 25,
+    requiredDexterity: 109,
+    stats: [
+      { text: "+2 to Amazon Skill Levels", notable: true },
+      { text: "+2 to Javelin and Spear Skills (Amazon Only)", notable: true },
+      { text: "Replenishes Quantity", notable: true },
+      { text: "+150-200% Enhanced Damage", variable: true },
+      { text: "+30% Faster Run/Walk" },
+      { text: "+20 to Strength" },
+      { text: "+20 to Dexterity" },
+      { text: "5-9% Life Stolen per Hit", variable: true },
+      { text: "Adds 25-50 Damage" },
+      { text: "Increased Stack Size (60)" },
+    ],
+    drop: {
+      summary:
+        "Drops from Hell and late Nightmare content, and is one of the most commonly traded Amazon items in the game because every javelin build wants one.",
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "Replenishes Quantity is the line that matters most day to day: a javelin build throws its weapon, and without self-refill you are picking javelins off the floor between packs. The four skill levels it carries — two class-wide and two more on the Javelin and Spear tab — are worth more than any raw damage a rare javelin can roll.",
+    alternatives: [{ kind: "unique", slug: "thunderstroke" }],
+    confidence: "verified",
+  },
+  {
+    slug: "thunderstroke",
+    name: "Thunderstroke",
+    summary:
+      "The only Amazon weapon that lowers enemy lightning resistance. The lightning javelin's endgame, and it does not replenish.",
+    quality: "unique",
+    base: "Matriarchal Javelin",
+    category: "javelin",
+    tier: "elite",
+    slots: ["weapon"],
+    requiredLevel: 69,
+    requiredStrength: 107,
+    requiredDexterity: 151,
+    stats: [
+      { text: "-15% to Enemy Lightning Resistance", notable: true },
+      { text: "+2-4 to Javelin and Spear Skills (Amazon Only)", variable: true, notable: true },
+      { text: "+3 to Lightning Bolt (Amazon Only)" },
+      { text: "Adds 1-511 Lightning Damage", notable: true },
+      { text: "14% Chance to cast level 20 Lightning on striking" },
+      { text: "+150-200% Enhanced Damage", variable: true },
+      { text: "+15% Increased Attack Speed" },
+    ],
+    drop: {
+      summary:
+        "A Hell-only drop and a genuinely rare one. Most Amazons buy it rather than find it.",
+      tradeability: "rare",
+      confidence: "verified",
+    },
+    notes:
+      "The −15% enemy lightning resistance is applied before the immunity check, exactly as Griffon's Eye is, which makes this the one piece of Amazon gear that helps against lightning immunity rather than merely against resistance. It carries **no Replenishes Quantity**, so a Thunderstroke Amazon either buys the perfect-roll version and accepts refilling by hand, or keeps a Titan's Revenge on the swap for clearing. That trade-off is the whole decision between the two javelins.",
+    alternatives: [{ kind: "unique", slug: "titans-revenge" }],
+    confidence: "verified",
+  },
+  {
+    slug: "windforce",
+    name: "Windforce",
+    summary:
+      "The highest-damage bow in the game, on a base that fires fast. Knockback is both its signature and its main drawback.",
+    quality: "unique",
+    base: "Hydra Bow",
+    category: "bow",
+    tier: "elite",
+    slots: ["weapon"],
+    requiredLevel: 73,
+    requiredStrength: 134,
+    requiredDexterity: 167,
+    maxSockets: 6,
+    stats: [
+      { text: "+250% Enhanced Damage", notable: true },
+      {
+        text: "+3.125 to Maximum Damage per Character Level",
+        notable: true,
+      },
+      { text: "+20% Increased Attack Speed", notable: true },
+      { text: "Knockback", notable: true },
+      { text: "6-8% Mana Stolen per Hit", variable: true },
+      { text: "+10 to Strength" },
+      { text: "+5 to Dexterity" },
+      { text: "Heal Stamina Plus 30%" },
+    ],
+    drop: {
+      summary:
+        "Hell only, and among the rarer elite bows. Usually traded rather than found.",
+      tradeability: "rare",
+      confidence: "verified",
+    },
+    notes:
+      "At level 90 the per-level line alone is worth about 281 maximum damage, which is why this out-damages every other bow by a wide margin. **Knockback is not free.** It pushes a target out of a Strafe sequence and out of the middle of a Multiple Shot cone, so on those two skills it costs you hits; against a boss standing still it costs you nothing and buys safety. Players who dislike it use a Faith bow instead and accept the lower ceiling.",
+    alternatives: [{ kind: "runeword", slug: "faith" }],
+    confidence: "verified",
+  },
+  {
+    slug: "buriza-do-kyanon",
+    name: "Buriza-Do Kyanon",
+    summary:
+      "100% Piercing Attack with no skill points spent. A crossbow that solves pierce outright, at the cost of speed.",
+    quality: "unique",
+    base: "Balista",
+    category: "crossbow",
+    tier: "exceptional",
+    slots: ["weapon"],
+    requiredLevel: 41,
+    requiredStrength: 110,
+    requiredDexterity: 80,
+    maxSockets: 6,
+    stats: [
+      { text: "100% Piercing Attack", notable: true },
+      { text: "+80% Increased Attack Speed", notable: true },
+      { text: "+150-200% Enhanced Damage", variable: true },
+      { text: "+2.5 to Maximum Damage per Character Level", notable: true },
+      { text: "Adds 32-196 Cold Damage" },
+      { text: "Freezes Target +3" },
+      { text: "+35 to Dexterity" },
+      { text: "+75-150 Defense", variable: true },
+    ],
+    drop: {
+      summary:
+        "Available from late Nightmare onward and widely traded. One of the cheapest genuinely endgame-capable weapons in the game.",
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "The 80% attack speed is on a crossbow base, and crossbows are slow enough that the number is smaller than it looks — a Balista with 80% still fires more slowly than most bows with none. What you are buying is **100% Piercing Attack for free**, which lets a levelling Amazon skip Pierce entirely and spend those points elsewhere. The cold damage also chills, which is a real defensive line on a character with no shield up while shooting.",
+    confidence: "verified",
+  },
+  {
+    slug: "widowmaker",
+    name: "Widowmaker",
+    summary:
+      "Ignore Target's Defense and 33% Deadly Strike on a light bow base. The cheap answer to a bow build's attack rating problem.",
+    quality: "unique",
+    base: "Ward Bow",
+    category: "bow",
+    tier: "elite",
+    slots: ["weapon"],
+    requiredLevel: 65,
+    requiredStrength: 72,
+    requiredDexterity: 146,
+    maxSockets: 5,
+    stats: [
+      { text: "Ignore Target's Defense", notable: true },
+      { text: "33% Deadly Strike", notable: true },
+      { text: "+150-200% Enhanced Damage", variable: true },
+      { text: "+3-5 to Guided Arrow", variable: true },
+      { text: "Fires Magic Arrows (Level 11)" },
+    ],
+    drop: {
+      summary: "A Hell drop, and uncommon rather than rare. Cheap to buy.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "Ignore Target's Defense removes the attack-rating roll against normal monsters entirely, which is worth more on a bow Amazon than the raw damage of a bigger base — a missed arrow does no damage at all. The 72 Strength requirement is the lowest of any elite bow, so this fits a stat plan that a Hydra Bow does not. **The +3-5 to Guided Arrow is not a reason to buy it** on a Strafe or Multiple Shot plan; treat it as a bonus, not a build.",
+    confidence: "verified",
+  },
+  {
+    slug: "eaglehorn",
+    name: "Eaglehorn",
+    summary:
+      "+1 Amazon skills, Ignore Target's Defense, and damage that grows with your level. The bow to socket.",
+    quality: "unique",
+    base: "Crusader Bow",
+    category: "bow",
+    tier: "elite",
+    slots: ["weapon"],
+    requiredLevel: 69,
+    requiredStrength: 97,
+    requiredDexterity: 121,
+    maxSockets: 6,
+    stats: [
+      { text: "+1 to Amazon Skill Levels", notable: true },
+      { text: "Ignore Target's Defense", notable: true },
+      { text: "+200% Enhanced Damage", notable: true },
+      { text: "+2% Enhanced Damage per Character Level", variable: true, notable: true },
+      { text: "+1.5 to Attack Rating per Character Level" },
+      { text: "+25 to Dexterity" },
+    ],
+    drop: {
+      summary: "Hell only, and uncommon. Traded steadily because several builds want it.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "The two per-level lines are what make this scale: at level 90 the enhanced damage is 200% plus roughly 180% more, and the attack rating is up another 135. It is also the bow a Bowazon most often sockets — six sockets on an elite base with +1 skills is the cheapest route to stacking damage jewels or an Amn rune for leech.",
+    alternatives: [{ kind: "unique", slug: "widowmaker" }],
+    confidence: "verified",
+  },
+
+  // -------------------------------------------------------------------------
   // Body armor
   // -------------------------------------------------------------------------
   {

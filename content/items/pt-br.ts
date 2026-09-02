@@ -247,4 +247,53 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "A base Chu-Ko-Nu é a crossbow mais rápida do jogo — o modificador de velocidade dela é −60, mais que qualquer outra. Combinado com 66% de Piercing Attack, cada bolt carrega o dano elemental que você somou a ele através de vários alvos de uma vez, que é o mecanismo inteiro por trás da Enchant Sorceress. O requisito de 95 de Dexterity é o custo real, e não é pequeno para uma caster.",
   },
+
+  // Arcos, bestas e armas de Amazon
+  "titans-revenge": {
+    summary:
+      "+2 skills de Amazon e +2 skills de Javelin and Spear numa lança que se repõe sozinha. A arma da Amazon de javelin durante quase toda a vida dela.",
+    dropSummary:
+      "Cai no Hell e no fim do Nightmare, e é um dos itens de Amazon mais negociados do jogo, porque toda build de javelin quer um.",
+    notes:
+      "Replenishes Quantity é a linha que mais importa no dia a dia: uma build de javelin arremessa a própria arma, e sem reposição automática você fica catando javelins do chão entre um grupo e outro. Os quatro níveis de skill que ele carrega — dois da classe inteira e mais dois na aba Javelin and Spear — valem mais do que qualquer dano bruto que uma javelin rara consiga rolar.",
+  },
+  thunderstroke: {
+    summary:
+      "A única arma de Amazon que reduz a resistência a raio do inimigo. O endgame da javelin de raio, e ela não se repõe.",
+    dropSummary:
+      "Um drop exclusivo do Hell, e genuinamente raro. A maioria das Amazons compra em vez de encontrar.",
+    notes:
+      "Os −15% de resistência a raio do inimigo são aplicados antes da checagem de imunidade, exatamente como no Griffon's Eye, o que faz desta a única peça de equipamento de Amazon que ajuda contra a imunidade a raio, e não apenas contra a resistência. Ela **não tem Replenishes Quantity**, então uma Amazon de Thunderstroke ou compra a versão com rolagem perfeita e aceita reabastecer na mão, ou mantém uma Titan's Revenge no swap para limpar. Esse é todo o dilema entre as duas javelins.",
+  },
+  windforce: {
+    summary:
+      "O arco de maior dano do jogo, numa base que dispara rápido. Knockback é ao mesmo tempo a assinatura e o principal defeito dele.",
+    dropSummary:
+      "Só no Hell, e entre os arcos elite mais raros. Normalmente é negociado, não encontrado.",
+    notes:
+      "No nível 90 só a linha por nível vale cerca de 281 de dano máximo, e é por isso que ele supera qualquer outro arco por larga margem. **Knockback não sai de graça.** Ele empurra o alvo para fora de uma sequência de Strafe e do meio do cone do Multiple Shot, então nessas duas skills custa acertos; contra um boss parado não custa nada e compra segurança. Quem não gosta disso usa um arco Faith e aceita o teto mais baixo.",
+  },
+  "buriza-do-kyanon": {
+    summary:
+      "100% de Piercing Attack sem gastar um ponto de skill. Uma besta que resolve o pierce de vez, ao custo de velocidade.",
+    dropSummary:
+      "Disponível a partir do fim do Nightmare e muito negociada. Uma das armas genuinamente capazes de endgame mais baratas do jogo.",
+    notes:
+      "Os 80% de velocidade de ataque estão numa base de besta, e bestas são lentas o bastante para o número ser menor do que parece — uma Balista com 80% ainda dispara mais devagar que a maioria dos arcos sem nenhum. O que você está comprando é **100% de Piercing Attack de graça**, o que permite a uma Amazon em evolução pular o Pierce por completo e gastar esses pontos em outro lugar. O dano de frio também aplica chill, que é uma linha defensiva real num personagem que fica sem escudo enquanto atira.",
+  },
+  widowmaker: {
+    summary:
+      "Ignore Target's Defense e 33% de Deadly Strike numa base de arco leve. A resposta barata para o problema de attack rating de uma build de arco.",
+    dropSummary: "Um drop do Hell, e incomum em vez de raro. Barato de comprar.",
+    notes:
+      "Ignore Target's Defense elimina por completo a rolagem de attack rating contra monstros normais, o que vale mais numa Amazon de arco do que o dano bruto de uma base maior — uma flecha que erra não causa dano nenhum. O requisito de 72 de Strength é o mais baixo de qualquer arco elite, então ele cabe num plano de atributos onde um Hydra Bow não cabe. **Os +3-5 de Guided Arrow não são motivo para comprá-lo** num plano de Strafe ou Multiple Shot; trate como bônus, não como build.",
+  },
+  eaglehorn: {
+    summary:
+      "+1 skills de Amazon, Ignore Target's Defense e dano que cresce com o seu nível. O arco para socketar.",
+    dropSummary:
+      "Só no Hell, e incomum. Negociado com frequência porque várias builds o querem.",
+    notes:
+      "As duas linhas por nível são o que faz ele escalar: no nível 90 o dano aumentado é 200% mais cerca de 180% adicionais, e o attack rating sobe outros 135. É também o arco que uma Bowazon mais socketa — seis sockets numa base elite com +1 skills é o caminho mais barato para empilhar joias de dano ou uma runa Amn para roubo de vida.",
+  },
 };
