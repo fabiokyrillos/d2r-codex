@@ -533,9 +533,9 @@ export const strafeAmazon: Build = {
     {
       area: "pit",
       difficulty: "hell",
-      why: "Area level 85, short, and the population is light on physical immunity. The default Strafe zone.",
+      why: "Area level 85, short, and no boss to fight — the default Strafe zone. It does hold physical immunes, so this is where an Atma's Scarab starts earning its slot rather than where you can ignore the problem.",
       minTier: "early-hell",
-      rating: 5,
+      rating: 4,
     },
     {
       area: "mausoleum",
@@ -554,7 +554,7 @@ export const strafeAmazon: Build = {
     {
       area: "chaos-sanctuary",
       difficulty: "hell",
-      why: "Dense and high level, and Guided Arrow handles Diablo without a gear change. **Iron Maiden from the Oblivion Knights reflects a ten-shot burst back at you** — watch for the curse.",
+      why: "Dense and high level, and Guided Arrow handles Diablo without a gear change. Physical immunity is part of the regular population here, so bring the Amplify Damage. **Iron Maiden from the Oblivion Knights reflects a ten-shot burst back at you** — watch for the curse.",
       minTier: "budget",
       rating: 3,
     },

@@ -5420,13 +5420,13 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "secret-cow-level-hell":
         "A sala mais densa do jogo e nada lá é imune a raio. Um arremesso limpa uma tela; esta é a zona pela qual a build existe.",
       "chaos-sanctuary-hell":
-        "Nível de área 85 e lotado. Os Oblivion Knights amaldiçoam em vez de resistir, e o Charged Strike dá conta do Diablo sem trocar de equipamento.",
+        "Nível de área 85 e a zona mais densa do jogo, que é o que o Lightning Fury quer. Ela também carrega imunidade a raio na população comum, então é uma boa zona antes do Infinity e uma ótima depois. O Charged Strike dá conta do Diablo sem trocar de equipamento.",
       "throne-of-destruction-hell":
-        "Cinco ondas densas numa sala só, que é o formato contra o qual o Lightning Fury é melhor. O Charged Strike mata o Baal na mesma barra.",
+        "Cinco ondas densas numa sala só, que é o formato contra o qual o Lightning Fury é melhor, e o Charged Strike mata o Baal na mesma barra. Imunidade a raio é comum nas ondas, então Jab ou um Infinity decidem o quanto a run flui.",
       "worldstone-keep-hell":
         "Nível de área 85 e muito denso. Imunidade a raio aparece aqui, então esta é uma zona de Infinity, não uma zona de início.",
       "pit-hell":
-        "Nível de área 85, curto, e razoavelmente leve em imunidade a raio. Uma boa primeira zona de Hell quando as resistências estiverem no teto.",
+        "Nível de área 85, curto, e sem boss para enfrentar. Ele tem imunes a raio, então antes do Infinity esta é uma zona que você limpa apertando Jab nos intervalos, não uma que você limpa numa passada só.",
       "travincal-hell":
         "O Council é imune a raio. Sem Infinity esta é uma zona de Jab e não vale o seu tempo; com Infinity vira uma das runs mais rápidas do jogo.",
       "countess-hell":
@@ -5737,9 +5737,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "O mercenário do Ato 2 com **Might**, porque o dano físico dele é o que mata os imunes a raio que o seu Charged Strike não toca — e porque Might aumenta o dano da sua própria arma, que o Lightning Strike carrega e a build de arremesso não. Dê a ele um **Insight** pela mana cedo e um **Infinity** eventualmente; Conviction é a única coisa que de fato quebra imunidade a raio. **Holy Freeze** é a escolha de Hardcore, e é uma escolha mais forte aqui do que numa build à distância: tudo que está lento é uma coisa que não chega ao seu alcance.",
     farmingWhy: {
       "chaos-sanctuary-hell":
-        "Nível de área 85, denso o bastante para a corrente e cheio dos alvos únicos para os quais o Charged Strike existe. Cuidado com Iron Maiden dos Oblivion Knights — ela reflete a metade física de cada golpe.",
+        "Nível de área 85, denso o bastante para a corrente e cheio dos alvos únicos para os quais o Charged Strike existe. Ele tem imunes a raio, que o Lightning Strike ainda fere com a metade de arma e o Charged Strike não toca de jeito nenhum. Cuidado com Iron Maiden dos Oblivion Knights — ela reflete a metade física de cada golpe.",
       "throne-of-destruction-hell":
-        "O Charged Strike é a melhor resposta ao Baal no jogo, e as ondas ficam próximas o bastante para a corrente alcançar.",
+        "O Charged Strike é a melhor resposta ao Baal no jogo, e as ondas ficam próximas o bastante para a corrente alcançar. As ondas carregam imunidade a raio, então a metade de arma do Lightning Strike e um mercenário com Might fazem essa parte do trabalho.",
       "pindleskin-hell":
         "Runs de dez segundos contra um alvo único de monstro nível 86. É o formato contra o qual o Charged Strike é melhor, e não há nada para limpar.",
       "nihlathak-hell":
@@ -6042,13 +6042,13 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "**A Rogue do Ato 1 é a escolha incomum e a certa aqui.** Ela é a única mercenária que se beneficia de uma runeword de arco, e a aura Fanaticism do Faith se aplica a você tanto quanto a ela — então um segundo Faith na Rogue é um buff de velocidade de ataque e dano para o grupo inteiro que nenhum outro contratado consegue dar. Contrate a variante Cold pelo chill, dê a ela um **Insight** se você preferir mana, e um **Fortitude** com um **Vampire Gaze** para mantê-la de pé. **Se a imunidade física for o que está te travando, pegue o mercenário do Ato 2** e dê a ele uma arma elemental: o dano dele é o plano B que o seu não pode ser.",
     farmingWhy: {
       "pit-hell":
-        "Nível de área 85, curto, e a população é leve em imunidade física. A zona padrão do Strafe.",
+        "Nível de área 85, curto, e sem boss para enfrentar — a zona padrão do Strafe. Ele tem imunes a físico, então é aqui que um Atma's Scarab começa a justificar o slot, não onde dá para ignorar o problema.",
       "mausoleum-hell":
         "Nível de área 85, alcançável em segundos, e cheio dos mortos-vivos contra os quais o seu arco causa dano bônus.",
       "ancient-tunnels-hell":
         "Nível de área 85 com quase nada imune a físico. A zona-problema de uma build de frio é a melhor de uma build física.",
       "chaos-sanctuary-hell":
-        "Denso e de nível alto, e o Guided Arrow dá conta do Diablo sem trocar de equipamento. **Iron Maiden dos Oblivion Knights reflete uma rajada de dez tiros de volta em você** — fique atenta à maldição.",
+        "Denso e de nível alto, e o Guided Arrow dá conta do Diablo sem trocar de equipamento. Imunidade física faz parte da população comum aqui, então traga o Amplify Damage. **Iron Maiden dos Oblivion Knights reflete uma rajada de dez tiros de volta em você** — fique atenta à maldição.",
       "pindleskin-hell":
         "Dez segundos, monstro nível 86, e um alvo único que o Guided Arrow não consegue errar.",
       "worldstone-keep-hell":
@@ -6352,15 +6352,15 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "**O mercenário do Ato 2, não a Rogue.** A página do Strafe recomenda um segundo Faith numa Rogue do Ato 1 e faz bem, mas esta build tem uma lacuna mais larga a cobrir: sem bônus próprio de attack rating e sem dano elemental em lugar nenhum, ela quer **Might** pelo dano bruto e um contratado cuja arma consiga ferir o que a sua não fere. Dê a ele um **Insight** cedo pela mana, e depois um **Pride** ou uma arma elemental para ele resolver os imunes a físico enquanto você limpa todo o resto. **Holy Freeze** se você preferir que nada chegue à sua posição de tiro.",
     farmingWhy: {
       "secret-cow-level-hell":
-        "Uma manada enfileirada é exatamente o formato que um cone de vinte e quatro flechas quer, e nada lá é imune a físico.",
+        "Uma manada enfileirada é exatamente o formato que um cone de vinte e quatro flechas quer, e a run é curta o bastante para repetir para sempre. Imunidade física aparece aqui, então o amuleto e o mercenário são o que impede isso de te travar.",
       "pit-hell":
-        "Nível de área 85, corredores curtos que afunilam um cone, e leve em imunidade física.",
+        "Nível de área 85 e cheio de corredores curtos, que é o formato em que um cone é melhor. Ele tem imunes a físico, então esta é uma zona de Amplify Damage e não uma zona de graça.",
       "ancient-tunnels-hell":
         "Nível de área 85 e estreito. Quase nada lá resiste a dano físico, o que faz desta uma zona melhor para esta build do que para a maioria.",
       "mausoleum-hell":
         "Nível de área 85, a segundos de um waypoint, e cheio de mortos-vivos contra os quais o seu arco causa dano bônus.",
       "chaos-sanctuary-hell":
-        "Denso e de nível alto, e os grupos dos selos ficam nos corredores em que um cone é melhor. Cuidado com Iron Maiden — uma rajada de vinte e quatro flechas refletida é fatal.",
+        "Denso e de nível alto, e os grupos dos selos ficam nos corredores em que um cone é melhor. Imunidade física faz parte da população, e Iron Maiden é o outro perigo — uma rajada de vinte e quatro flechas refletida é fatal.",
       "travincal-hell":
         "O Council fica junto e não é imune a físico. Um cone cobre todos eles.",
       "worldstone-keep-hell":

@@ -616,16 +616,16 @@ export const lightningFuryAmazon: Build = {
     {
       area: "chaos-sanctuary",
       difficulty: "hell",
-      why: "Area level 85 and packed. The Oblivion Knights curse rather than resist, and Charged Strike handles Diablo without changing gear.",
+      why: "Area level 85 and the densest zone in the game, which is what Lightning Fury wants. It also carries lightning immunity among its regular population, so this is a good zone before Infinity and a great one after. Charged Strike handles Diablo without changing gear.",
       minTier: "early-hell",
-      rating: 5,
+      rating: 4,
     },
     {
       area: "throne-of-destruction",
       difficulty: "hell",
-      why: "Five dense waves in one room, which is the shape Lightning Fury is best against. Charged Strike kills Baal on the same bar.",
+      why: "Five dense waves in one room, which is the shape Lightning Fury is best against, and Charged Strike kills Baal on the same bar. Lightning immunity is common in the waves, so Jab or an Infinity decides how smooth the run is.",
       minTier: "budget",
-      rating: 5,
+      rating: 4,
     },
     {
       area: "worldstone-keep",
@@ -637,9 +637,9 @@ export const lightningFuryAmazon: Build = {
     {
       area: "pit",
       difficulty: "hell",
-      why: "Area level 85, short, and reasonably light on lightning immunity. A good first Hell zone once resistances are capped.",
+      why: "Area level 85, short, and no boss to fight. It does hold lightning immunes, so before Infinity this is a zone you clear with Jab in the gaps rather than one you clear in one pass.",
       minTier: "early-hell",
-      rating: 4,
+      rating: 3,
     },
     {
       area: "travincal",

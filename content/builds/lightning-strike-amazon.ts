@@ -534,14 +534,14 @@ export const lightningStrikeAmazon: Build = {
     {
       area: "chaos-sanctuary",
       difficulty: "hell",
-      why: "Area level 85, dense enough for the chain and full of the single targets Charged Strike is for. Watch for Iron Maiden from the Oblivion Knights — it reflects the physical half of every strike.",
+      why: "Area level 85, dense enough for the chain and full of the single targets Charged Strike is for. It holds lightning immunes, which Lightning Strike still hurts with its weapon half and Charged Strike does not touch at all. Watch for Iron Maiden from the Oblivion Knights — it reflects the physical half of every strike.",
       minTier: "budget",
       rating: 4,
     },
     {
       area: "throne-of-destruction",
       difficulty: "hell",
-      why: "Charged Strike is the best answer to Baal in the game, and the waves are close enough together for the chain to reach.",
+      why: "Charged Strike is the best answer to Baal in the game, and the waves are close enough together for the chain to reach. The waves carry lightning immunity, so the weapon half of Lightning Strike and a Might mercenary do that share of the work.",
       minTier: "budget",
       rating: 4,
     },

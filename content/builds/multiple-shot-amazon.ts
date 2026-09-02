@@ -515,16 +515,16 @@ export const multipleShotAmazon: Build = {
     {
       area: "secret-cow-level",
       difficulty: "hell",
-      why: "A herd standing in a line is exactly the shape a twenty-four arrow cone wants, and nothing there is physically immune.",
+      why: "A herd standing in a line is exactly the shape a twenty-four arrow cone wants, and the run is short enough to repeat forever. Physical immunity does appear here, so the amulet and the mercenary are what keep it from stopping you.",
       minTier: "nightmare",
-      rating: 5,
+      rating: 4,
     },
     {
       area: "pit",
       difficulty: "hell",
-      why: "Area level 85, short corridors that funnel a cone, and light on physical immunity.",
+      why: "Area level 85 and full of short corridors, which is the shape a cone is best in. It holds physical immunes, so this is an Amplify Damage zone rather than a free one.",
       minTier: "early-hell",
-      rating: 5,
+      rating: 4,
     },
     {
       area: "ancient-tunnels",
@@ -543,9 +543,9 @@ export const multipleShotAmazon: Build = {
     {
       area: "chaos-sanctuary",
       difficulty: "hell",
-      why: "Dense and high level, and the seal packs stand in the corridors a cone is best in. Watch for Iron Maiden — a twenty-four arrow burst reflected is fatal.",
+      why: "Dense and high level, and the seal packs stand in the corridors a cone is best in. Physical immunity is part of the population, and Iron Maiden is the other hazard — a twenty-four arrow burst reflected is fatal.",
       minTier: "budget",
-      rating: 4,
+      rating: 3,
     },
     {
       area: "travincal",
