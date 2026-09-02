@@ -7161,4 +7161,278 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "poison-javelin-amazon": {
+    summary:
+      "Uma linha de veneno que impede um grupo de regenerar por quase um minuto, e uma Valkyrie montada para matar o que o veneno não mata.",
+    playstyle:
+      "Você arremessa uma javelin atravessando um grupo e ela deixa veneno para trás. Nada morre na hora — veneno é dano ao longo do tempo e esta build nunca finge o contrário — mas tudo que você acertou para de regenerar e começa a perder vida enquanto você arremessa a próxima. O Plague Javelin é a versão em rajada: uma nuvem onde a javelin para, três segundos de dano bem mais pesado, e o motivo de esta build limpar o Cow Level tão rápido. Enquanto isso, uma Valkyrie com quatrocentos por cento a mais de vida que uma invocação de um ponto entra no grupo e mata o que for imune a veneno. Ela não é um bicho de estimação nesta build; ela é a segunda metade dela.",
+    strengths: [
+      "**Veneno impede um monstro de regenerar** enquanto estiver aplicado, o que em níveis altos é quase um minuto",
+      "A nuvem do Plague Javelin cobre mais chão que qualquer outro ataque de javelin — uma skill de Cow Level",
+      "Barata de rodar: 16 e 14 de mana, nenhuma exigência de attack rating na skill principal, e uma javelin que se repõe",
+      "**Um Decoy de vinte pontos faz da Valkyrie uma lutadora de verdade**, e ela herda o seu Critical Strike e as suas esquivas",
+      "O Bramble existe, e nada mais no jogo oferece dano de skills de veneno num slot de armadura",
+    ],
+    weaknesses: [
+      "**Nada morre quando você acerta.** Veneno é dano ao longo do tempo e a build parece lenta mesmo quando é rápida",
+      "Veneno é o segundo elemento mais resistido do Hell — dez das vinte áreas aqui registram isso",
+      "O dano não empilha: uma segunda aplicação renova o veneno em vez de somar",
+      "Cadáveres não estilhaçam e monstros morrem fora do seu campo de visão, o que faz da coleta de itens uma tarefa à parte",
+      "Nenhuma rajada de alvo único. Bosses morrem no ritmo do veneno ou no ritmo da Valkyrie",
+    ],
+    flexPoints: [
+      "**O plano gasta 109 de 110.** Critical Strike é o bloco ajustável: ele serve a Valkyrie e não você, então corte se preferir Dodge, Avoid e Evade mais altos.",
+      "**Não maximize o Lightning Bolt como segundo tipo de dano.** Ele recebe as sinergias dele de quatro skills de raio que você não está pegando, então um Lightning Bolt maximizado sozinho é uma skill fraca sem apoio. Se você quer raio, a página do Lightning Fury é essa build.",
+      "Poison Javelin e Plague Javelin são a única sinergia um do outro, a 12% e 14% por nível. Não há uma terceira para procurar.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o escudo e o cinto. Não há arma pesada a alcançar — o requisito de Strength de uma javelin é pequeno.",
+      dexterity:
+        "O suficiente para bloqueio máximo e para a javelin. **Nenhuma das suas duas skills principais rola contra attack rating**, então Dexterity aqui é para o escudo e para o Jab, não para o veneno conectar.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. Dezesseis e catorze de mana são as skills principais mais baratas de qualquer página de Amazon.",
+      notes: [
+        "**Esta é a única Amazon cujo dano principal nunca erra.** A linha do Poison Javelin não carrega bônus de attack rating porque não precisa — a javelin envenena o que ela atravessa. Isso libera Dexterity para bloqueio de um jeito que nenhuma outra build aqui consegue.",
+        "Vale a pena alcançar bloqueio máximo, porque ficar parada enquanto o veneno trabalha é o que esta build faz.",
+        "Poison Resist é a resistência para estourar o teto em vez de só encostar nele, se você pretende carregar um Rotting Fissure depois.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "Você arremessa e depois espera. Ser atordoada durante a espera é o que transforma uma luta segura numa luta ruim.",
+      "fhr-52":
+        "Um Bramble sozinho são 50% de Faster Hit Recovery, então nesta build a meta mais alta chega junto com a armadura em vez de no lugar de outra coisa.",
+      "fbr-32":
+        "A meta padrão na tabela de Paladin, Amazon e Assassin, e esta build tem o escudo e a Dexterity de sobra para ela.",
+    },
+    skillNotes: {
+      "poison-javelin":
+        "**25-37 de veneno em 8 segundos no nível 1, e a duração cresce 50 frames por nível** — dois segundos a mais a cada vez. No vinte ela se espalha por quase um minuto.",
+      "plague-javelin":
+        "**Fixo em três segundos desde o patch 2.4**, seja qual for o nível. Muito mais dano comprimido em muito menos tempo, numa área muito maior. Este é o botão de limpeza.",
+      decoy:
+        "**+20% de vida da Valkyrie por nível** — o grafo registra isso como uma sinergia de `hp`, não de dano, e vinte pontos são quatrocentos por cento a mais de vida naquilo que faz o seu trabalho físico.",
+      penetrate:
+        "**Pontos fixos aumentam o attack rating da Valkyrie além do seu.** Numa build cujo dano é um efeito de estado, esta é a skill que faz ela acertar as coisas.",
+      "critical-strike":
+        "Ela herda o seu nível nele, e ele dobra dano físico — o dela. Não faz absolutamente nada pelo seu veneno.",
+      "lightning-bolt": "Pré-requisito do Plague Javelin. Um ponto, e nunca arremessado.",
+      valkyrie:
+        "Um ponto mais +skills. Os vinte no Decoy é o que faz ela sobreviver, não o nível aqui.",
+      dodge: "Ela herda, e você também. Três pontos em vez de um porque dois personagens usam.",
+      avoid:
+        "O mesmo, para ataques à distância — e são os grupos à distância que matam Valkyries.",
+      evade: "O mesmo de novo, em movimento. Também é pré-requisito da Valkyrie.",
+      "slow-missiles":
+        "Pré-requisito do Decoy, e a melhor skill defensiva de um ponto do jogo.",
+      "inner-sight":
+        "Pré-requisito do Slow Missiles, e ele reduz a defesa de tudo contra o que a Valkyrie está lutando.",
+      jab: "Um ponto, e o único ataque físico que você vai fazer pessoalmente. Três estocadas, na javelin que você já segura.",
+      pierce:
+        "Um ponto, porque um Razortail fornece 33%. A javelin atravessa uma linha e envenena tudo nela, então o pierce importa de verdade — leia o artigo antes de gastar mais.",
+    },
+    immunityPlan:
+      "**Veneno é o segundo elemento mais resistido do Hell segundo os próprios dados de área deste site** — dez das vinte áreas catalogadas registram isso, contra treze de fogo e oito de raio — e, ao contrário de uma Amazon de raio, você não tem Conviction como plano B nem dano de arma nas suas skills principais. A resposta que esta build de fato usa é **a Valkyrie**, e é por isso que ela é financiada em vez de tolerada: vinte pontos de Decoy pela vida dela, vinte de Penetrate pelo attack rating dela, e os níveis de Critical Strike, Dodge, Avoid e Evade que ela herda de você. Um mercenário com Might aumenta ainda mais o dano dela, e um **Atma's Scarab** lança Amplify Damage a partir dos golpes *dela*, não dos seus. Além dela: **Jab**, um ponto, na javelin que você já segura, para o alvo único contra o qual ela é lenta; e um sunder charm **Rotting Fissure**, o menos negociado dos seis e o que esta build mais tem chance de querer. A penalidade dele é mais absorvível aqui que a da maioria, porque resistência a veneno é fácil de estourar com charms e um Atma's Scarab.",
+    mercenaryNotes:
+      "O mercenário do Ato 2 com **Might**, cuja aura aumenta o dano da Valkyrie além do dele — nesta build isso são dois lutadores físicos comprados com uma contratação. Dê a ele um **Insight** cedo se quiser a mana, embora esta seja a Amazon menos faminta de mana do site, e um **Fortitude** ou **Treachery** com um **Vampire Gaze** para mantê-lo de pé. **Holy Freeze merece uma segunda olhada aqui**: uma build de veneno vence fazendo as lutas durarem, e deixar tudo lento é exatamente isso.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "A nuvem do Plague Javelin cobre mais chão que qualquer outro ataque de javelin, e uma manada é a única coisa do jogo com o formato da nuvem. Físico é a imunidade registrada aqui, não veneno.",
+      "chaos-sanctuary-hell":
+        "Nível de área 85 e a zona mais densa do jogo, com fogo, raio e físico entre as imunidades em vez de veneno. As nuvens fazem o trabalho enquanto a Valkyrie segura os grupos dos selos.",
+      "pit-hell":
+        "Nível de área 85, curto, e nada lá é registrado como imune a veneno. Uma zona constante em vez de rápida, o que combina com dano ao longo do tempo.",
+      "travincal-hell":
+        "O Council é imune a fogo e raio, não a veneno, e eles ficam parados em grupo — que é o alvo ideal para uma nuvem que dura três segundos.",
+      "worldstone-keep-hell":
+        "Nível de área 85 e a melhor experiência do jogo, e as imunidades registradas dele são físico, fogo, raio e frio em vez de veneno.",
+      "arcane-sanctuary-hell":
+        "Imunidade a raio e a mágico em vez de veneno, e plataformas longas e estreitas são exatamente o formato que uma linha de veneno quer.",
+      "mausoleum-hell":
+        "Nível de área 85 e rápido de alcançar, mas a população dele é registrada como imune a veneno — uma zona de Valkyrie em vez de uma zona de veneno.",
+    },
+    levelingPath: {
+      summary:
+        "**Uma das duas Amazons que evoluem como elas mesmas.** O Poison Javelin está disponível no nível 6 e fica na barra para sempre; o Plague Javelin chega no 18 e vira o botão de limpeza. Nada antes de nenhum dos dois é desperdiçado, e nenhum respec está planejado. A única coisa a saber é que ela não vai parecer forte em nenhum momento antes de os dois estarem maximizados — veneno nunca parece forte, e isso não é sinal de que o plano está errado.",
+      respecAt: "Não é necessário. Guarde os tokens.",
+    },
+    selfFoundNotes:
+      "Barata de começar e genuinamente travada no fim. Titan's Revenge, Razortail, Raven Frost e Atma's Scarab são todos achados comuns do Hell, Peace e Spirit são runas da Countess, e as duas skills principais estão disponíveis antes do nível 20. **O Bramble é a parede**: Ral, Ohm, Sur e Eth é um investimento sério de runas, e é a única fonte de dano de skills de veneno do jogo. Uma versão self-found funciona e simplesmente causa menos dano — o que numa build de dano ao longo do tempo significa lutas mais longas, não lutas perdidas.",
+    hardcoreNotes:
+      "Melhor que a reputação dela. Você arremessa à distância, carrega escudo, bloqueia bem, e a coisa que entra no grupo é uma Valkyrie com quatrocentos por cento a mais de vida que uma invocação de um ponto. O perigo real é o ritmo: veneno mata devagar, então as lutas duram mais e você passa mais tempo na sala do que qualquer outra Amazon. Alcance as metas de 32% de bloqueio e de recuperação de golpe, mantenha **Slow Missiles** para os grupos à distância que desmontariam a Valkyrie, e trate um grupo imune a veneno como problema da Valkyrie em vez de um quebra-cabeça para encarar parada. Holy Freeze no mercenário combina mais com esta build do que Might, se você joga para sobreviver.",
+    gearSets: {
+      starter: {
+        goal: "Poison Javelin no nível 6, e Plague Javelin no 18.",
+        nextUpgrade:
+          "Nível 18 pelo Plague Javelin, e depois nível 24 por um Decoy que valha investir.",
+        notes:
+          "**O Poison Javelin está disponível no nível 6 e é genuinamente utilizável a partir dali**, coisa que nenhuma outra skill elemental de Amazon consegue. Ele não vai parecer forte, porque veneno nunca parece — verifique se as coisas estão morrendo em vez de se elas estão recuando.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer javelin com +Javelin and Spear Skills",
+            why: "Javelins mágicas de vendedor carregam isso, e um nível de skill vale mais que qualquer rolagem de dano para uma skill que não usa o dano da arma.",
+            lookFor: ["+2-3 Javelin and Spear Skills"],
+          },
+          "offhand-0": {
+            why: "Resistências por três runas da Countess, e um escudo com o qual você de fato vai bloquear.",
+          },
+          "body-0": { why: "Recuperação de golpe e velocidade de corrida a partir do nível 17." },
+          "helm-0": {
+            why: "+1 em Todas as Skills, o que aumenta o veneno e a duração ao mesmo tempo.",
+          },
+        },
+      },
+      nightmare: {
+        goal: "As duas javelins maximizadas, e uma Valkyrie que sobrevive a ser olhada.",
+        nextUpgrade:
+          "Um Bramble, que é a única armadura do jogo que aumenta dano de skills de veneno.",
+        notes:
+          "**Velocidade de ataque importa menos nesta build do que em qualquer outra Amazon.** O veneno se aplica no arremesso e não empilha, então a segunda javelin no mesmo grupo renova em vez de somar. Cadência de arremesso vale por cobertura, não por dano, e de qualquer forma não há número de Amazon para mirar.",
+        picks: {
+          "weapon-0": {
+            why: "+4 níveis de skill entre as duas linhas, e Replenishes Quantity — uma build que arremessa a cada segundo precisa de uma javelin que se reponha.",
+          },
+          "offhand-0": {
+            why: "+2 skills no slot com que você bloqueia. Dois níveis de skill a mais são mais veneno e mais duração.",
+            sockets: "Tal, Thul, Ort e Amn num escudo de 4 sockets.",
+          },
+          "body-0": {
+            why: "+2 skills de Amazon e recuperação de golpe por três runas baratas, até um Bramble existir.",
+          },
+          "helm-0": { why: "+1 skills e magic find enquanto nada melhor existir." },
+          "belt-0": {
+            why: "33% de pierce, para a javelin envenenar uma segunda fileira em que ela teria parado.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e Dexterity para o bloqueio." },
+        },
+        charms: [{ why: "75% antes do Hell." }],
+      },
+      "early-hell": {
+        goal: "Dano de skills de veneno, e uma Valkyrie que segura uma sala.",
+        nextUpgrade:
+          "Uma rolagem melhor de Bramble — o espalhamento do dano de veneno vai de 25% a 50% e a diferença é enorme.",
+        picks: {
+          "weapon-0": {
+            why: "Quatro níveis de skill e reposição automática. Nada mais no slot compete para quem arremessa.",
+          },
+          "body-0": {
+            why: "**+25-50% de Dano de Skills de Veneno** — a única fonte disso num slot de armadura no jogo — mais 50% de Faster Hit Recovery e uma aura de Thorns que ajuda a Valkyrie.",
+            sockets: "Ral, Ohm, Sur e Eth numa armadura de 4 sockets.",
+            lookFor: ["+50% to Poison Skill Damage"],
+          },
+          "helm-0": {
+            why: "+2 skills e uma resistência a veneno grande, numa build que eventualmente vai querer estourar o teto dela. Os −30% de resistência a fogo são o preço.",
+          },
+          "helm-0-alt0": {
+            why: "+2 skills sem penalidade, e mais fácil de alcançar com 50 de Strength.",
+          },
+          "offhand-0": { why: "+2 skills e bloqueio." },
+          "belt-0": { why: "33% de pierce ao longo da linha de veneno." },
+          "amulet-0": {
+            why: "**Amplify Damage ao golpear ajuda a Valkyrie, não você** — é ela que está acertando as coisas — e Poison Resist +75% é exatamente a linha que esta build quer estourar.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e Dexterity." },
+          "boots-0": {
+            why: "Vida, Dexterity para o bloqueio, e resistência máxima a fogo elevada para o Andariel's.",
+          },
+        },
+        charms: [{ why: "75% em tudo, e veneno acima do teto se der." }],
+      },
+      budget: {
+        goal: "Dano de veneno no teto, e uma Valkyrie que sobrevive ao grupo.",
+        nextUpgrade:
+          "Um Rotting Fissure se as zonas que você quer estiverem fechadas, e melhores charms de skill no resto do tempo.",
+        picks: {
+          "weapon-0": {
+            why: "Ainda a javelin certa. Nada no site aumenta dano de skills de veneno numa arma.",
+          },
+          "body-0": {
+            why: "Uma rolagem de +50% de Dano de Skills de Veneno, se você achar uma. O espalhamento é o maior de qualquer runeword do site.",
+          },
+          "helm-0": {
+            why: "+2 skills, resistência a veneno e +10% de resistência máxima a veneno. Encaixe uma Um pelo fogo que ele tira.",
+          },
+          "offhand-0": {
+            why: "35% de redução de dano e o melhor bloqueio do jogo, numa build que fica parada enquanto o veneno trabalha.",
+          },
+          "offhand-0-alt0": {
+            why: "Mantenha os dois níveis de skill se a Strength para um Monarch não estiver paga.",
+          },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": {
+            why: "+2 skills e +30 em todas as resistências, se a Valkyrie não precisar mais do Amplify Damage.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e Dexterity." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": {
+            why: "Magic find numa build que limpa de forma constante em vez de rápida.",
+          },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon, que são dano de veneno e duração juntos." },
+          { why: "Os únicos charms que aumentam as duas javelins de uma vez." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, e a Valkyrie também se beneficia." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Nada que resista a veneno e sobreviva à Valkyrie.",
+        nextUpgrade: "Um Rotting Fissure, e as últimas rolagens de charm.",
+        picks: {
+          "weapon-0": {
+            why: "Quatro níveis de skill, reposição automática, e 20 de Dexterity para o bloqueio.",
+          },
+          "body-0": { why: "+50% de Dano de Skills de Veneno e 50% de Faster Hit Recovery." },
+          "helm-0": {
+            why: "+2 skills e a resistência a veneno para estourar o teto, com uma Um no socket.",
+          },
+          "offhand-0": { why: "Redução de dano e bloqueio." },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen e Dexterity." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "Skills e vida numa fileira só." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "Esta build termina num teto mais baixo que o das de raio e chega nele muito mais barato. **O Bramble é o endgame inteiro**, e a rolagem dele é a diferença entre uma build que funciona e uma build forte. Tudo depois disso são níveis de skill, que aumentam o dano de veneno e a área do Plague Javelin — mas nunca a duração dele, que o jogo fixou em três segundos e nenhuma quantidade de equipamento move.",
+        picks: {
+          "weapon-0": { why: "A javelin que esta build nunca substitui." },
+          "body-0": {
+            why: "Um Bramble de rolagem máxima. Vinte e cinco por cento contra cinquenta é a maior diferença única que qualquer item desta lista faz.",
+            lookFor: ["+50% to Poison Skill Damage"],
+          },
+          "helm-0": {
+            why: "+2 skills, +10% de resistência máxima a veneno, Um no socket.",
+          },
+          "offhand-0": { why: "Redução de dano e bloqueio." },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "O menos negociado dos seis, e o que esta build mais tem chance de querer. Resistência a veneno é fácil de estourar com charms e um Atma's Scarab, então a penalidade dele é mais absorvível aqui do que a de um charm de fogo ou raio seria.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+    },
+  },
 };
