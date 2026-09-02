@@ -53,6 +53,14 @@ import {
 } from "../lib/skills";
 import { checkSkillGraph, checkSynergies, MAX_HARD_POINTS } from "./skill-graph-rules";
 import { exitCodeFor, isUntranslatedProse } from "./content-rules";
+import {
+  ALIAS_ONLY_NAMES,
+  EXPECTED_IMMUNITY_CENSUS,
+  checkAliasesAreNotPages,
+  checkClassPagesComplete,
+  checkImmunityCensus,
+  checkNoIasBreakpoints,
+} from "./amazon-rules";
 
 const SOURCE: Locale = DEFAULT_LOCALE;
 const TRANSLATED = LOCALES.filter((l) => l !== SOURCE);
@@ -555,6 +563,51 @@ console.log("\nSkill graph (validated against the generated game-data graph):");
         `${flex ? `  (+${flex} flex)` : ""}`,
     );
   }
+}
+
+// ---------------------------------------------------------------------------
+// The Amazon pass's own rules
+// ---------------------------------------------------------------------------
+
+/*
+ * See `scripts/amazon-rules.ts` for why each exists, and for the one that was
+ * written and then removed. All of these were introduced by the Amazon pass
+ * because the Amazon pass shipped, or nearly shipped, the thing they check:
+ * eight pages that discuss attack speed constantly and could each have put a
+ * number in the breakpoints table, one page whose central argument is a count
+ * over the area catalogue, four family nicknames that a later author would
+ * reasonably think deserved pages, and eight build pages written in a row where
+ * the eighth is the one that loses a section.
+ */
+console.log("\nAmazon pass rules:");
+{
+  const areas = getFarmingAreas(SOURCE);
+  const found = [
+    ...checkClassPagesComplete(getBuilds(SOURCE), "amazon", tierOrder),
+    ...checkNoIasBreakpoints(getBuilds(SOURCE)),
+    ...checkImmunityCensus(areas, EXPECTED_IMMUNITY_CENSUS),
+    ...checkAliasesAreNotPages(getBuilds(SOURCE), ALIAS_ONLY_NAMES),
+  ];
+  const rules = [
+    "incomplete-class-page",
+    "universal-ias-breakpoint",
+    "immunity-census-drift",
+    "alias-became-a-page",
+  ] as const;
+  for (const rule of rules) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(26)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+  console.log(
+    `  ${areas.length} areas; immunity census ` +
+      Object.entries(EXPECTED_IMMUNITY_CENSUS)
+        .map(([el, n]) => `${el} ${n}`)
+        .join(", "),
+  );
+  console.log(
+    `  ${ALIAS_ONLY_NAMES.length} alias names checked against every build slug and name`,
+  );
 }
 
 // ---------------------------------------------------------------------------

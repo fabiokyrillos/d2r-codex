@@ -37,6 +37,20 @@ export * from "./scoring";
  * which appears in the item's own name. Deliberately *not* translated: Brazilian
  * players use the same English shorthand, so the pt-BR entries are a superset
  * rather than a replacement.
+ *
+ * For the Amazon this map does a second job, and it is the reason there are
+ * eight Amazon builds on this site rather than fifteen. "Javazon", "Bowazon",
+ * "Spearazon" and "Strafezon" are not builds — they are what players call
+ * families of builds, and a page per name would have published the same
+ * character several times over with its gear advice split between the copies.
+ * The same applies to skills that are components rather than builds: Charged
+ * Strike is the single-target half of two javelin builds, Guided Arrow is the
+ * single-target half of four bow builds, and Plague Javelin is one of two
+ * skills on the poison page. Each of those names is an alias here and resolves
+ * to the canonical build; none of them is a route.
+ *
+ * `scripts/search-aliases.test.ts` asserts both halves of that: every alias
+ * below finds its build in both locales, and no alias has become a page.
  */
 const NICKNAMES: Record<string, string> = {
   "harlequin-crest": "shako harly",
@@ -69,6 +83,49 @@ const NICKNAMES: Record<string, string> = {
   "kurast-temples": "templos temples",
   nihlathak: "nihl",
   "river-of-flame": "rio de fogo hellforge",
+
+  // --- Amazon builds, and the family names that are not builds -------------
+  "lightning-fury-amazon":
+    "javazon jav zon lightning fury lf charged strike cs javelin lanceira raio zonzon",
+  "lightning-strike-amazon":
+    "charged strike cs lightning strike ls melee javazon spearazon javelin lanceira corpo a corpo",
+  "strafe-amazon":
+    "strafezon bowazon strafe zon guided arrow ga arqueira arco fisica physical",
+  "multiple-shot-amazon":
+    "bowazon multishot multiple shot ms guided arrow ga zon arqueira cone",
+  "freezing-arrow-amazon":
+    "bowazon freezezon freezing arrow fa guided arrow ga mavina mavinas ice bow arqueira frio gelo",
+  "exploding-arrow-amazon":
+    "bowazon exploding arrow ea immolation arrow ia guided arrow ga fire bow arqueira fogo",
+  "poison-javelin-amazon":
+    "plague javelin poisonzon poison javelin pj javazon veneno peste",
+  "jab-fend-amazon":
+    "spearazon fendazon jabazon jab fend impale spear lanceira lanca",
+
+  // --- Amazon items --------------------------------------------------------
+  "titans-revenge": "titans titan javelin",
+  thunderstroke: "tstroke stroke javelin",
+  windforce: "wf bow",
+  "buriza-do-kyanon": "buriza burizza crossbow pierce",
+  widowmaker: "widow bow",
+  eaglehorn: "eagle bow",
+  razortail: "razor pierce belt cinto",
+  "thundergods-vigor": "tgods thundergod belt cinto",
+  "andariels-visage": "andys andariels visage helm elmo",
+  "the-cats-eye": "cats eye cat amulet amuleto",
+  "atmas-scarab": "atmas atma amp damage amplify amulet amuleto",
+  waterwalk: "ww boots botas",
+  "bone-break": "sunder physical fisico charm",
+  "crack-of-the-heavens": "coth sunder lightning raio charm",
+  "cold-rupture": "sunder cold frio charm",
+  "flame-rift": "sunder fire fogo charm",
+  "rotting-fissure": "sunder poison veneno charm",
+  harmony: "vigor bow runeword",
+  ice: "ice bow runeword frio",
+  wrath: "wrath bow runeword decrepify",
+  melody: "melody bow runeword",
+  edge: "edge bow runeword thorns",
+  peace: "peace armor runeword valkyrie",
 };
 
 /** Locale-specific extra terms for the static section pages. */

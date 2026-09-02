@@ -29,7 +29,7 @@ import { tmpdir } from "node:os";
 import { basename, join, resolve, sep } from "node:path";
 
 import { SKILL_GRAPH, type SkillGraphNode } from "../content/classes/skill-graph";
-import { getBuilds, getSkills } from "../lib/registry";
+import { getBuilds, getFarmingAreas, getSkills } from "../lib/registry";
 import { DEFAULT_LOCALE } from "../lib/i18n/config";
 import type { Build, Skill, Slug } from "../lib/types";
 import {
@@ -44,6 +44,14 @@ import {
   unclassifiedElementalAttacks,
 } from "../lib/skills";
 import { MIN_PROSE_LENGTH, exitCodeFor, isUntranslatedProse } from "./content-rules";
+import {
+  ALIAS_ONLY_NAMES,
+  EXPECTED_IMMUNITY_CENSUS,
+  checkAliasesAreNotPages,
+  checkClassPagesComplete,
+  checkImmunityCensus,
+  checkNoIasBreakpoints,
+} from "./amazon-rules";
 import { getBuilds as getLocalisedBuilds } from "../lib/registry";
 import { LOCALES } from "../lib/i18n/config";
 
@@ -643,6 +651,123 @@ console.log("\nDamage models — an elemental attack must say how the weapon fig
     );
   } else {
     console.log("  --   no elemental attack models shipped yet; in-memory mutation deferred");
+  }
+}
+
+// ===========================================================================
+console.log("\nAmazon-pass rules, each planted against the real content");
+// ===========================================================================
+{
+  const realBuilds = getBuilds(DEFAULT_LOCALE);
+  const realAreas = getFarmingAreas(DEFAULT_LOCALE);
+  const TIERS = ["starter", "nightmare", "early-hell", "budget", "optimized", "bis"] as const;
+
+  // -- incomplete-class-page ----------------------------------------------
+  check(
+    "every Amazon build page is complete",
+    checkClassPagesComplete(realBuilds, "amazon", TIERS).length === 0,
+    JSON.stringify(checkClassPagesComplete(realBuilds, "amazon", TIERS).map((p) => p.message)),
+  );
+  {
+    const victim = realBuilds.find((b) => b.classSlug === "amazon");
+    if (!victim) throw new Error("no Amazon build to mutate");
+    const drops: [string, Build][] = [
+      ["the bis gear tier", { ...victim, gearSets: victim.gearSets.filter((g) => g.tier !== "bis") }],
+      ["the immunity plan", { ...victim, immunityPlan: undefined }],
+      ["the hardcore notes", { ...victim, hardcoreNotes: undefined }],
+      ["the self-found notes", { ...victim, selfFoundNotes: undefined }],
+      ["the mercenary", { ...victim, mercenary: undefined }],
+      ["every breakpoint", { ...victim, breakpoints: [] }],
+      [
+        "the skill it is named after",
+        { ...victim, skills: victim.skills.filter((s) => s.skill !== victim.primarySkill) },
+      ],
+    ];
+    for (const [what, mutated] of drops) {
+      const found = checkClassPagesComplete([mutated], "amazon", TIERS);
+      check(
+        `dropping ${what} from ${victim.slug} is caught`,
+        found.length >= 1 && found.every((p) => p.rule === "incomplete-class-page"),
+        JSON.stringify(found),
+      );
+    }
+    // Negative control: the rule is scoped, so a Paladin page cannot trip it.
+    check(
+      "the rule is scoped by class and ignores other classes entirely",
+      checkClassPagesComplete(
+        realBuilds.map((b) => ({ ...b, immunityPlan: undefined })),
+        "sorceress",
+        TIERS,
+      ).length > 0 &&
+        checkClassPagesComplete(
+          realBuilds.filter((b) => b.classSlug !== "amazon"),
+          "amazon",
+          TIERS,
+        ).length === 0,
+    );
+  }
+
+  // -- universal-ias-breakpoint -------------------------------------------
+  check("no build publishes an IAS breakpoint", checkNoIasBreakpoints(realBuilds).length === 0);
+  {
+    const victim = realBuilds[0];
+    const mutated: Build = {
+      ...victim,
+      breakpoints: [
+        ...victim.breakpoints,
+        { stat: "ias", value: 75, priority: "required", why: "planted" },
+      ],
+    };
+    const found = checkNoIasBreakpoints([mutated]);
+    check(
+      "adding an IAS breakpoint to a real build is caught",
+      found.length === 1 && found[0].rule === "universal-ias-breakpoint",
+      JSON.stringify(found),
+    );
+  }
+
+  // -- immunity-census-drift ----------------------------------------------
+  check(
+    "the immunity census matches what the prose argues from",
+    checkImmunityCensus(realAreas, EXPECTED_IMMUNITY_CENSUS).length === 0,
+    JSON.stringify(checkImmunityCensus(realAreas, EXPECTED_IMMUNITY_CENSUS)),
+  );
+  check(
+    "removing one fire-immune area from the census is caught",
+    checkImmunityCensus(
+      realAreas.filter((a, i) => !(a.commonImmunities.includes("fire") && i === realAreas.findIndex((x) => x.commonImmunities.includes("fire")))),
+      EXPECTED_IMMUNITY_CENSUS,
+    ).some((p) => p.rule === "immunity-census-drift"),
+  );
+
+  // -- alias-became-a-page -------------------------------------------------
+  check(
+    "no alias has become a build page",
+    checkAliasesAreNotPages(realBuilds, ALIAS_ONLY_NAMES).length === 0,
+    JSON.stringify(checkAliasesAreNotPages(realBuilds, ALIAS_ONLY_NAMES)),
+  );
+  {
+    const found = checkAliasesAreNotPages(
+      [...realBuilds, { slug: "javazon", name: "Javazon" }],
+      ALIAS_ONLY_NAMES,
+    );
+    check(
+      "publishing a build called Javazon is caught",
+      found.length === 1 && found[0].rule === "alias-became-a-page",
+      JSON.stringify(found),
+    );
+  }
+  {
+    // The subtler shape: a slug that differs but a display name that does not.
+    const found = checkAliasesAreNotPages(
+      [...realBuilds, { slug: "charged-strike-build", name: "Charged Strike" }],
+      ALIAS_ONLY_NAMES,
+    );
+    check(
+      "a build whose NAME is Charged Strike is caught even with a different slug",
+      found.length === 1,
+      JSON.stringify(found),
+    );
   }
 }
 
