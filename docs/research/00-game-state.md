@@ -202,7 +202,8 @@ a reason to play ladder.
 Tracked so we don't accidentally write content on unverified ground:
 
 1. Warlock full skill tables (names, levels, synergies, numbers).
-2. Warlock starting attributes, life/mana per level, per-vitality/energy gains.
+2. ~~Warlock starting attributes, life/mana per level, per-vitality/energy
+   gains.~~ **Closed 2026-09-01.** See "The Warlock attributes exception" below.
 3. Madawc's two unique jewels.
 4. Exact statue count for the Colossal Ancients recipe.
 5. What Latent Sunder Charms do, and how they differ from Sunder Charms.
@@ -212,11 +213,47 @@ Tracked so we don't accidentally write content on unverified ground:
 9. Whether the classic breakpoint tables (FCR/FHR/IAS) changed at all in 3.x.
 10. Whether Warlock has its own FCR/FHR breakpoint table (near-certain that it does).
 
+## The Warlock attributes exception
+
+The rule for the Warlock on this site is that **no number is published until it
+is verified against the game's own data**, because the class is paid DLC and
+almost nothing about it is documented publicly. Its starting attributes are the
+one exception, and it is an exception in the strict sense: they are published
+*because* they were verified, not in spite of not being.
+
+`json/charstats.json` in the pinned blizzhackers/d2data extraction carries a
+`warlock` row alongside the seven original classes, with the same eleven numeric
+columns. `scripts/attributes-rules.ts` transcribes that row and derives the
+published values from it through one conversion, and `npm run test:attributes`
+asserts the derivation against every class and plants mutations to prove the
+comparison can fail. That check found two Warlock values that had been authored
+from nothing: `hitPoints` read 60 where the table gives 55, and `stamina` read
+80 against 86. Both are now correct.
+
+So the boundary is: **the Warlock's attributes are Tier 1 and are published; the
+Warlock's skills are not verified and are not.** Open question 1 above stands
+unchanged, and nothing in the skill trees, synergies or damage numbers for that
+class has been written as fact. The DLC runewords keep their "stat lines not yet
+verified" placeholders for the same reason.
+
+## Class coverage
+
+| Class | Skills | Builds | Journey | Notes |
+| --- | --- | --- | --- | --- |
+| Sorceress | 30, with pages | 10 | Yes | Complete |
+| Paladin | 30, with pages | 8 | Yes | Complete |
+| **Amazon** | **30, with pages** | **8** | **Yes** | **Complete as of 2026-09-02** |
+| Assassin, Barbarian, Druid, Necromancer | — | — | — | Overview pages only |
+| Warlock | — | — | — | Attributes only; see the exception above |
+
 ## Related research
 
 - [`01-paladin-builds.md`](01-paladin-builds.md) — Paladin build families:
   catalogue, deduplication, implementation order and blocking gaps. **Executed.**
 - [`02-sorceress-builds.md`](02-sorceress-builds.md) — Sorceress build families.
+  **Executed.**
+- [`03-amazon-builds.md`](03-amazon-builds.md) — Amazon build families, the
+  alias decision, and the first pass to take item numbers from Tier 1.
   **Executed.**
 
 ## Sources

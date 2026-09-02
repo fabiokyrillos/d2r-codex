@@ -152,7 +152,7 @@ export const ptBR: Dictionary = {
     levelingGuide: "Guia de evolução",
     coverageTitle: "Cobertura",
     coverageBody:
-      "Sorceress e Paladin estão totalmente documentados — skills, jornadas completas de evolução e builds de endgame com progressão de equipamento em seis níveis. A Amazon já tem as três árvores de skill e uma página para cada uma das trinta skills; as builds e a jornada de evolução dela ainda vêm. As outras cinco classes têm páginas de visão geral. A profundidade é adicionada uma classe por vez, em vez de publicar guias rasos de todas de uma vez.",
+      "Sorceress, Paladin e Amazon estão totalmente documentados — skills, uma página para cada skill, jornadas completas de evolução e builds de endgame com progressão de equipamento em seis níveis. As outras cinco classes têm páginas de visão geral, e o Warlock tem atributos iniciais verificados e nada além disso. A profundidade é adicionada uma classe por vez, em vez de publicar guias rasos de todas de uma vez.",
     coverageLink: "Ver a implementação de referência →",
 
     dlcCalloutTitle: "Expansão paga necessária",

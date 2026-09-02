@@ -13,6 +13,9 @@ of it.
 | --- | --- |
 | `levels.txt` (via the [blizzhackers/d2data](https://github.com/blizzhackers/d2data) JSON extraction) | Area levels per difficulty, monster levels |
 | `skills.txt` / `skilldesc.txt` (same extraction) | **The skill graph**: unlock levels, prerequisite edges, tree membership. Also skill parameters, mana formulas and per-level damage bands. |
+| `charstats.txt` (same extraction) | Starting attributes and per-level gain rates, for every class including the Warlock |
+| `uniqueitems.txt` / `runes.txt` (same extraction) | **Unique item and runeword properties** since the Amazon pass — see below |
+| `weapons.txt` / `armor.txt` / `misc.txt` / `itemtypes.txt` (same extraction) | Base requirements, socket ceilings, weapon speed, and the item-type hierarchy that decides which runeword fits which base |
 
 **Critical detail:** `levels.txt` contains two parallel sets of monster-level
 columns.
@@ -29,6 +32,41 @@ is worth farming. Every area level on this site comes from the `Ex` columns.
 The same extraction confirmed the dataset is current: it contains a
 `ColossalSummit` level at monster level 87, the arena added by *Reign of the
 Warlock*.
+
+### Item numbers, and why they moved from Tier 3 to Tier 1
+
+Every unique and runeword catalogued before the Amazon pass was verified against
+D2Runewizard, a Tier 3 database. That was a reasonable choice and it is not
+being revisited. What changed is that the Amazon pass could not use it: its item
+pages are client-rendered, and a headless fetch returns a shell with no data in
+it.
+
+Rather than author from memory, that pass decoded `uniqueitems.json` and
+`runes.json` from the same pinned commit the skill graph comes from, and
+**calibrated the decoder against four items already in this catalogue** —
+Harlequin Crest, Raven Frost, Highlord's Wrath and Demon Machine. It reproduces
+every one of their published lines exactly, including the per-level divisor of
+eight that turns a raw `par=12` into "+1.5 to Life per Character Level" and the
+`hpadd`-style quirks that a spot-check of final values would not catch. Only
+after that did it decode anything new.
+
+Two rules came out of it that are worth stating once, because both are easy to
+get wrong from a database listing:
+
+1. **A runeword's displayed stat block is the runeword's own properties plus
+   each constituent rune's mod for that item type.** The table gives Faith
+   +280% Enhanced Damage; this site publishes +330%, because Ohm's weapon mod
+   supplies the other fifty. Every runeword added since is composed the same
+   way, from this repository's own rune data.
+2. **Item type membership is a hierarchy, not a list.** Amazon-only bows are
+   missile weapons (`abow` → `bow` → `miss`), so every bow runeword can be made
+   in one. Javelins are not (`ajav` → `jave` → `comb` → `mele`), and no Amazon
+   javelin base has a socket — which is why no javelin runeword exists rather
+   than why none is documented.
+
+The same extraction corrected a number already published: the resistances
+article gave Black Cleft the same −70 to −90% penalty as the four elemental
+Sunder Charms, where `res-mag` gives −45 to −65.
 
 ### The skill graph, and why it is generated rather than authored
 
@@ -208,8 +246,14 @@ Recorded rather than resolved by guesswork.
 - All rune upgrade recipes, including the gem tiers (Chipped → Flawed →
   standard → Flawless — **not** the Flawless→Perfect progression that is easy to
   misremember)
-- 19 runeword definitions with stat lines and base restrictions
-- 18 unique items with roll ranges
+- 46 runeword definitions with stat lines and base restrictions — the six added
+  in the Amazon pass composed from Tier 1 rather than a database
+- 49 unique items with roll ranges, including the five Sunder Charms and their
+  real penalties
+- Amazon skill trees: 30 skills, with the columns that decide eight build plans
+  — Strafe's ten-shot cap, Multiple Shot's absent attack-rating bonus, Freezing
+  Arrow's 36 mana, Plague Javelin's fixed three-second duration, and Pierce's
+  10%-to-100% diminishing curve
 - Sorceress skill trees: 30 skills, correct unlock levels, Blizzard's three
   synergies at +5% per level each
 - Sorceress and Warlock starting attributes and gain rates
@@ -232,4 +276,10 @@ in this list has been written into user-facing content as fact.
 - What Latent Sunder Charms and Worldstone Shards actually do
 - Stat lines for Authority, Coven, Void, Vigilence and Ritual
 - The complete Terror Zone rotation group list
-- Increased Attack Speed tables (weapon- and skill-dependent)
+- Increased Attack Speed tables (weapon- and skill-dependent). Since the Amazon
+  pass this is enforced rather than merely intended: `check:content` fails if
+  any build publishes an `ias` breakpoint
+- Hellfire Torch's on-striking proc, whose display name the extraction gives
+  only as an internal identifier. The charm is named in prose and not catalogued
+- Set items of any kind, which is why M'avina's Battle Hymn is described on the
+  Freezing Arrow page rather than given one
