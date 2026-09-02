@@ -6576,4 +6576,296 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "freezing-arrow-amazon": {
+    summary:
+      "Uma flecha que estoura num campo de frio e congela tudo que alcança. A Amazon mais segura do jogo, e a mais cara de alimentar.",
+    playstyle:
+      "Você atira no meio de um aglomerado e ele para de andar. O Freezing Arrow estoura num raio de cinco e congela sólido tudo que alcança, e um grupo congelado é um grupo que não está atacando ninguém — o que faz desta a forma mais segura de jogar a classe e a mais perdoadora de um erro. O dano chega enquanto eles ficam parados. O Guided Arrow é o segundo botão, e ele importa mais aqui do que em qualquer outra build de frio: é puramente físico, então é o que você aperta nos imunes a frio que o seu elemento único não toca. O custo é mana. O Freezing Arrow é a skill mais cara que a Amazon tem e você vai sentir isso em cada decisão de equipamento.",
+    strengths: [
+      "**Congelar um grupo é tão bom quanto matá-lo** enquanto durar — a Amazon mais segura do site",
+      "Frio está entre os elementos menos resistidos do Hell, então o problema de imunidade é menor que o de uma build de fogo ou raio",
+      "O Guided Arrow na mesma barra é uma resposta puramente física aos imunes a frio que aparecem",
+      "Uma sinergia de dano só significa um plano de skills curto e poucos erros possíveis",
+      "Ice, Nightwing's Veil e cold facets empilham −resistência a frio do inimigo, aplicada antes da checagem de imunidade",
+    ],
+    weaknesses: [
+      "**36 de mana no nível 1 e 55 no nível 20**, a skill mais cara da classe e uma restrição real de equipamento",
+      "**O Ice Arrow não acrescenta dano nenhum** — a sinergia dele é duração de congelamento, e vinte pontos ali compram segurança, não mortes",
+      "Imunes a frio não levam nada da skill principal; a resposta inteira é o Guided Arrow e o mercenário",
+      "Congelar elimina o estilhaçamento de cadáver que torna algumas zonas lucrativas, e trava aliados de Corpse Explosion",
+      "**Velocidade de ataque é uma pergunta por arco**, como em toda build de arco aqui, então nenhum número único de Amazon é publicado",
+    ],
+    flexPoints: [
+      "**O plano gasta 109 de 110.** Pierce é o bloco a ajustar quando um Razortail ou um Buriza entrar — equipamento e skill são um pool só.",
+      "**Os vinte pontos do Ice Arrow são os que geram discussão.** Eles não acrescentam dano nenhum. Corte para um e coloque a diferença nas passivas que sustentam o Guided Arrow se você preferir matar imunes a frio mais rápido a manter todo o resto congelado; mantenha se o motivo de você jogar esta build for ela ser segura.",
+      "Immolation Arrow é a sugestão usual de segundo elemento e aqui é a errada: ela exige Exploding Arrow e Fire Arrow embaixo, o que são três skills maximizadas para um tipo de dano que o Guided Arrow já cobre mais barato.",
+    ],
+    statPlan: {
+      strength: "O que o arco pedir. Uma runeword Ice num Crusader Bow são 97 de Strength; num Matriarchal Bow são 87 com 187 de Dexterity.",
+      dexterity: "Alta — o arco exige, e ela aumenta o attack rating e o dano físico da flecha.",
+      vitality: "Todo o resto. Nada congelado está te batendo, mas nada imune está congelado.",
+      energy:
+        "**Nenhum, e esta é a única build em que esse conselho precisa de defesa.** O custo do Freezing Arrow é real, mas Energy é uma forma ruim de pagá-lo: um mercenário com Insight, mana por abate e roubo de mana fornecem mais mana por slot do que o atributo por ponto.",
+      notes: [
+        "**Mana é a restrição que aperta nesta build e ela se resolve com equipamento, não com Energy.** Um Insight no mercenário é quase obrigatório; mana após cada abate e mana roubada por golpe são os dois afixos a procurar em anéis e luvas.",
+        "Dexterity faz dois trabalhos — paga o arco e aumenta a metade física de cada flecha, que é o que fere um imune a frio.",
+        "Sem escudo, Vitality e recuperação de golpe são a defesa inteira quando o congelamento falha.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "Prioridade menor que nas outras builds de arco, porque um monstro congelado não está te interrompendo. Ainda importa contra tudo que é imune a frio.",
+      "fhr-52": "Só vale comprar se cair do equipamento que você já queria.",
+    },
+    skillNotes: {
+      "freezing-arrow":
+        "**Raio 5, e 36 de mana subindo um por nível.** O congelamento é a defesa e o dano é a recompensa.",
+      "cold-arrow":
+        "**A única sinergia de dano que o Freezing Arrow tem.** Doze por cento por nível, e não há mais nada disputando estes pontos.",
+      "ice-arrow":
+        "**Uma sinergia de duração de congelamento, não de dano.** O próprio nível do Freezing Arrow não estende o congelamento dele; só este estende. Vinte pontos aqui compram tempo em vez de dano, e nesta build tempo é o objetivo.",
+      "guided-arrow":
+        "**Puramente físico, e a resposta a um imune a frio.** Ele também não pode errar, o que faz dele a skill de boss que uma build de área de frio não teria.",
+      pierce:
+        "Uma flecha que perfura estoura de novo onde cair em seguida, então o pierce multiplica o número de congelamentos além do dano. Conte o seu Razortail antes de gastar os últimos destes.",
+      "magic-arrow":
+        "Pré-requisito do Multiple Shot, e um tiro que não custa mana digna de nota nem flechas.",
+      "multiple-shot":
+        "O outro pré-requisito do Guided Arrow. Um ponto, e um leque utilizável durante a evolução.",
+      penetrate:
+        "Pré-requisito do Pierce. O Freezing Arrow carrega 40% de attack rating mais 9% por nível por conta própria, então um ponto basta.",
+      "critical-strike":
+        "Pré-requisito do Penetrate. Ele dobra dano físico, então ajuda o Guided Arrow e o dano da própria flecha, e não a explosão de frio.",
+      valkyrie: "Ela segura o que não congelou. Um ponto mais +skills.",
+      decoy: "Aumenta a vida da Valkyrie, e dá a um grupo congelado outra coisa para olhar.",
+      evade: "Pré-requisito da Valkyrie.",
+      avoid: "Pré-requisito do Evade.",
+      dodge: "Pré-requisito do Avoid.",
+      "slow-missiles":
+        "Pré-requisito do Decoy, e uma segunda forma de parar um grupo à distância que o congelamento não alcançou.",
+      "inner-sight": "Pré-requisito do Slow Missiles.",
+    },
+    immunityPlan:
+      "Frio está entre os elementos menos resistidos do Hell, então esta build encontra menos paredes que uma de fogo ou raio — e ainda assim tem duas respostas em vez de nenhuma. **O Guided Arrow é puramente físico**, na mesma barra, maximizado, e incapaz de errar; contra um imune a frio ele não é tanto um plano B quanto uma segunda skill principal, e é por isso que o plano gasta vinte pontos nele. **A −resistência a frio do inimigo empilha e é aplicada antes da checagem de imunidade**: uma runeword Ice são −20%, um Nightwing's Veil dá mais, e cold facets somam ainda mais. Isso não quebra uma imunidade de verdade — toda redução de resistência opera com um quinto da eficácia contra um monstro já imune — mas mantém a explosão relevante contra tudo que é apenas resistente, que é a maior parte do Hell. Um sunder charm **Cold Rupture** é a solução direta e o mais barato dos seis para carregar, porque dano de frio no Hell chega principalmente como chill em vez de como aquilo que te mata.",
+    mercenaryNotes:
+      "**O Insight não é opcional nesta build.** O Freezing Arrow custa 36 de mana no nível 1 e 55 no nível 20, e a aura Meditation de um Insight é a diferença entre atirar sem parar e atirar em rajadas entre poções. Além disso, pegue **Might** para o dano físico dele matar os imunes a frio, e dê a ele um **Fortitude** ou um **Treachery** com um **Vampire Gaze** para mantê-lo de pé. **Holy Freeze é redundante aqui** de um jeito que não é em outros lugares — você já está congelando tudo — então Might é a escolha clara mesmo no Hardcore.",
+    farmingWhy: {
+      "ancient-tunnels-hell":
+        "Nível de área 85, denso e autocontido, e a população comum dele carrega imunidade a fogo e veneno em vez de frio. A casa natural desta build, como é a de uma Blizzard Sorceress.",
+      "chaos-sanctuary-hell":
+        "Nível de área 85, a zona mais densa do jogo, e sem imunidade a frio na população comum — as imunidades dela são fogo, raio e físico. Congelar um grupo de selo é a forma mais segura que existe de limpar esta sala.",
+      "secret-cow-level-hell":
+        "Uma manada que para de andar é uma manada que você mata no seu ritmo, e nada aqui resiste a frio.",
+      "mephisto-hell":
+        "Uma run de vinte segundos contra um alvo que não é imune a frio, e o congelamento torna o truque do fosso desnecessário.",
+      "travincal-hell":
+        "O Council é imune a fogo e raio em vez de frio, e eles ficam próximos o bastante para uma explosão pegar todos.",
+      "pit-hell":
+        "Nível de área 85 e curto, mas a população inclui imunes a frio — uma zona em que o Guided Arrow faz uma parte real do trabalho.",
+      "worldstone-keep-hell":
+        "A melhor experiência do jogo e denso o bastante para congelar, mas todos os tipos de imunidade aparecem aqui, incluindo frio. Território de sunder charm.",
+    },
+    levelingPath: {
+      summary:
+        "Cold Arrow a partir do nível 6 e Multiple Shot a partir do 6 carregam os dois primeiros atos, e os dois ficam — o Cold Arrow como sinergia de dano, o Multiple Shot como pré-requisito que você ainda aperta. O Ice Arrow no 18 é um upgrade de verdade e não só um degrau. **O Freezing Arrow em si só existe a partir do nível 30**, então a identidade da build chega tarde mesmo que nada antes dela seja desperdiçado.",
+      respecAt: "Não é necessário. Guarde os tokens.",
+    },
+    selfFoundNotes:
+      "Muito boa. Edge, Melody, Peace e Insight são todas runewords de runas baixas, o Buriza-Do Kyanon cai no fim do Nightmare e dá pierce de graça, e o Nightwing's Veil — o elmo best-in-slot — é um achado realista do Hell. O Ice é o único item genuinamente fora de alcance, com quatro runas coroadas por uma Jah, e a build funciona sem ele porque frio não é muito resistido para começar. O Guided Arrow não custa nada além de pontos de skill e cobre os imunes.",
+    hardcoreNotes:
+      "**A Amazon mais segura do site, e um dos personagens mais seguros do jogo.** Um monstro congelado não está atacando ninguém, e o raio é largo o bastante para um grupo inteiro parar de uma vez. As duas coisas que ainda matam esta build são imunes a frio, que não congelam, e mana — ficar sem no meio de um grupo significa estar numa sala cheia de monstros descongelados sem botão para apertar. Carregue um mercenário com Insight, mantenha poções de mana no cinto, e trate um grupo imune a frio como motivo para sair em vez de um quebra-cabeça para resolver. Might no mercenário em vez de Holy Freeze; a fonte do chill já é você.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 pelo Freezing Arrow, jogando de Cold Arrow e Multiple Shot.",
+        nextUpgrade: "Nível 30, e depois um Insight no mercenário antes de qualquer outra coisa.",
+        notes:
+          "**O Cold Arrow é uma skill de verdade enquanto você evolui, não só uma sinergia.** Ele aplica chill, que é uma linha defensiva num ponto do jogo em que você não tem nenhuma, e cada ponto nele é mantido.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque e um bônus grande contra demônios e mortos-vivos por três runas baixas, enquanto o seu dano ainda é o do arco.",
+            sockets: "Tir, Tal e Amn num arco de 3 sockets.",
+          },
+          "body-0": {
+            why: "Recuperação de golpe, velocidade de corrida e um pouco de regeneração de mana a partir do nível 17.",
+          },
+          "helm-0": {
+            why: "+1 em Todas as Skills e +10 de Energy, que é mais útil nesta build do que em qualquer outra Amazon de arco.",
+          },
+          "belt-0": {
+            label: "Qualquer cinto com mana ou resistências",
+            why: "O Freezing Arrow são trinta e seis de mana por tiro desde o momento em que você o consegue. Qualquer coisa que ajude vale vestir.",
+            lookFor: ["+Mana", "Resistências"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "Freezing Arrow online, e a mana para apertá-lo.",
+        nextUpgrade:
+          "Um Insight para o mercenário — nesta build ele não é opcional — e depois um Nightwing's Veil.",
+        notes:
+          "**Velocidade de ataque importa e não existe tabela de Amazon para ela.** Uma besta lenta e um arco de Amazon rápido alcançam os frames deles em totais completamente diferentes, então pegue a velocidade onde ela for de graça e julgue pelo arco que está na sua mão.",
+        picks: {
+          "weapon-0": {
+            why: "+3 na aba de arco inteira, que é +3 em Freezing Arrow, Cold Arrow, Ice Arrow e Guided Arrow de uma vez.",
+            sockets: "Shael, Ko e Nef num arco de 3 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "100% de Piercing Attack significa que cada flecha estoura mais de uma vez, e o dano de frio dele aplica chill no que a explosão não pegar.",
+          },
+          "body-0": { why: "+2 skills de Amazon e recuperação de golpe por três runas baratas." },
+          "helm-0": { why: "+1 skills e magic find enquanto nada melhor existir." },
+          "gloves-0": {
+            label: "Luvas com Increased Attack Speed e roubo de mana",
+            why: "Mana roubada por golpe é a resposta mais barata a uma skill de cinquenta de mana, e é neste slot que ela mora.",
+            lookFor: ["20% Increased Attack Speed", "Mana Stolen per Hit"],
+          },
+          "ring1-0": {
+            why: "Cannot Be Frozen, attack rating, e +40 de mana que esta build genuinamente percebe.",
+          },
+        },
+        charms: [{ why: "75% antes do Hell." }],
+      },
+      "early-hell": {
+        goal: "Dano de skills de frio, e uma resposta física para os imunes.",
+        nextUpgrade: "Uma runeword Ice, que é o único arco feito para esta build.",
+        notes:
+          "**M'avina's Battle Hymn é o set mais associado a esta build.** O arco dele e os bônus dele miram exatamente nesta skill, e é uma forma legítima de jogar — mas este site ainda não cataloga itens de set, e publicar uma página de set com linhas de status não verificadas seria pior do que dizer isso. Se você tem o set, o arco dele substitui o slot de arma aqui e o resto desta lista continua valendo.",
+        picks: {
+          "weapon-0": {
+            why: "Pierce de graça significa que cada flecha estoura de novo onde continuar. Mais congelamentos sem gastar pontos de skill.",
+          },
+          "weapon-0-alt0": {
+            why: "+1 skills de Amazon e Ignore Target's Defense numa base mais rápida, com seis sockets para cold facets.",
+          },
+          "helm-0": {
+            why: "**+2 skills e até +15% de Dano de Skills de Frio**, mais −resistência a frio do inimigo. O elmo best-in-slot de qualquer build de frio, e ele cabe aqui tão bem quanto numa Sorceress.",
+            sockets: "Um Rainbow Facet de frio.",
+          },
+          "body-0": {
+            why: "+2 skills de Amazon e recuperação de golpe, ainda imbatível por três runas.",
+          },
+          "belt-0": {
+            why: "33% de pierce, que nesta build são 33% mais explosões além de mais flechas.",
+          },
+          "amulet-0": {
+            why: "+2 em todas as skills e até +30 em todas as resistências — skills para a explosão, resistências para o Hell.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen, attack rating e mana." },
+          "boots-0": {
+            why: "Vida e resistência máxima a fogo elevada num personagem sem escudo.",
+          },
+        },
+        charms: [{ why: "75% nas quatro, e vida para os grupos que não congelam." }],
+      },
+      budget: {
+        goal: "−resistência a frio do inimigo, e mana que deixa de ser problema.",
+        nextUpgrade:
+          "Cold facets em cada socket, e um Cold Rupture para as zonas que exigirem.",
+        picks: {
+          "weapon-0": {
+            why: "**−20% de resistência a frio do inimigo e +25-30% de Dano de Skills de Frio**, mais uma aura de Holy Freeze que aplica chill no que a explosão não pegar. O arco que esta build esperava.",
+            sockets: "Amn, Shael, Jah e Lo num arco de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Mais velocidade de ataque e attack rating, e nenhum dano de frio. A escolha se o Guided Arrow estiver fazendo a maior parte das suas mortes.",
+          },
+          "helm-0": {
+            why: "+2 skills, dano de skills de frio e −resistência a frio do inimigo, com um facet no socket.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências, que é o que permite ao resto desta lista ser egoísta.",
+          },
+          "body-0-alt0": {
+            why: "Mantenha até as runas existirem. +2 skills de Amazon é a maior parte do que o Chains of Honor te dá aqui.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas: 20% de Increased Attack Speed, roubo de mana",
+            why: "Velocidade de ataque e a mana que uma skill de custo cinquenta bebe.",
+            lookFor: ["20% Increased Attack Speed", "Mana Stolen per Hit"],
+          },
+          "belt-0": { why: "33% de pierce, e cada perfuração é outra explosão." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": { why: "Cannot Be Frozen, mais attack rating e mana." },
+          "ring2-0": {
+            why: "+1 em todas as skills e +25% de mana máxima, que é a linha de anel mais útil desta build.",
+          },
+          "boots-0": { why: "Magic find numa build segura o bastante para farmar em qualquer lugar." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon." },
+          { why: "Cada nível de skill é dano e duração de congelamento juntos." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, que também aumenta a reserva de mana de que esta build vive." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Resistência a frio do inimigo empilhada para baixo até onde dá.",
+        nextUpgrade:
+          "Os últimos facets, e um Cold Rupture se a zona que você quer estiver fechada para você.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem de +30% de Dano de Skills de Frio. Os −20% de resistência a frio do inimigo empilham com os do elmo e com cada facet.",
+            lookFor: ["+30% to Cold Skill Damage", "+210% Enhanced Damage"],
+          },
+          "helm-0": {
+            why: "+15% de Dano de Skills de Frio e −resistência a frio do inimigo, com um cold facet encaixado.",
+          },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, roubo de mana, resistências",
+            why: "Velocidade, mana e resistências de um slot só.",
+            lookFor: ["20% Increased Attack Speed", "Mana Stolen per Hit"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills e a reserva de mana." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "Skills e vida numa fileira só." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "**Tudo que resta é nível de skill e resistência do inimigo**, e os dois fazem trabalhos diferentes: níveis de skill aumentam o dano e o raio, e a −resistência a frio do inimigo é o que mantém eles conectando no que resiste. Velocidade de ataque continua sendo uma pergunta por arco e sempre vai ser — um Ice num Grand Matron Bow e um Ice num Crusader Bow alcançam os frames deles em totais diferentes.",
+        picks: {
+          "weapon-0": {
+            why: "Um Ice de rolagem máxima no arco de 4 sockets mais rápido que a sua Dexterity alcançar.",
+            lookFor: ["+30% to Cold Skill Damage"],
+          },
+          "helm-0": {
+            why: "Uma rolagem de +15% de Dano de Skills de Frio com um cold facet dentro.",
+          },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, roubo de mana, duas resistências",
+            why: "O slot sem nenhum unique que valha vestir, no melhor estado possível.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills e mana." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "O mais barato dos seis para carregar na prática, porque dano de frio no Hell chega principalmente como chill. Troque para uma zona imune a frio e deixe no baú no resto do tempo.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+    },
+  },
 };
