@@ -16,12 +16,15 @@ import type { Skill, SkillTree } from "@/lib/types";
  * benefit every build regardless of weapon. A tree of numbers, with almost no
  * prose to write.
  *
- * The **Javelin and Spear** tree splits its lightning skills into two halves
- * that behave completely differently. Power Strike, Lightning Bolt and
- * Lightning Fury all carry the weapon's damage. Charged Strike and Lightning
- * Strike carry none of it, which is why every javelin build keeps Jab on the
- * bar for lightning immunes. That distinction is recorded in `damageModel`
- * rather than in prose, so the damage section of each page cannot contradict it.
+ * The **Javelin and Spear** tree's lightning skills do not all compose their
+ * damage the same way, and the difference is one line of engine code. Power
+ * Strike, Lightning Bolt, Lightning Fury and Lightning Strike all deliver the
+ * weapon's damage; Charged Strike alone does not, because its stage passes the
+ * skill's empty `SrcDam` straight to the damage allocator while Lightning
+ * Strike's substitutes 100%. Every one of them still rolls against attack
+ * rating, and every one creates its secondary bolts or chain separately from
+ * the strike. That is recorded in `damageModel` rather than in prose, so the
+ * damage section of each page cannot contradict it.
  *
  * Names are the game's, in both locales, per ADR 0003. The one place the
  * internal identifier and the public name differ is Decoy, which the game's
@@ -75,7 +78,7 @@ export const amazonSkills: Skill[] = [
       "Three rapid thrusts with a spear or javelin. The javelin Amazon's answer to lightning immunity.",
     mechanics: [
       "The animation runs to completion — you are committed to all three thrusts once it starts.",
-      "Every javelin build keeps a point here, because Charged Strike and Lightning Strike deal no physical damage at all.",
+      "Every javelin build keeps a point here as the answer to a lightning immune, since the javelin tree's damage is almost all lightning.",
     ],
     confidence: "verified",
   },
@@ -175,8 +178,9 @@ export const amazonSkills: Skill[] = [
       { skill: "power-strike", bonus: "+14% damage per level" },
     ],
     mechanics: [
+      "The strike rolls against attack rating like any attack, and on a hit it delivers the skill's lightning damage. The bolts are created separately, which is why the count matters more than the swing.",
       "The bolt count rises with skill level, and all of them can land on one target at point-blank range. That is where the boss damage comes from.",
-      "The bolts carry none of the weapon's physical damage — a lightning immune takes nothing from this skill.",
+      "Unlike Power Strike, the skill contributes none of the weapon's base physical damage — its own damage is entirely lightning.",
     ],
     confidence: "verified",
   },
@@ -223,7 +227,7 @@ export const amazonSkills: Skill[] = [
     element: "lightning",
     requiredLevel: 30,
     prerequisites: ["charged-strike"],
-    damageModel: "element-only-attack",
+    damageModel: "weapon-plus-element",
     summary:
       "A melee strike that starts a lightning chain, jumping between nearby enemies.",
     synergies: [
@@ -232,8 +236,8 @@ export const amazonSkills: Skill[] = [
       { skill: "power-strike", bonus: "+11% damage per level" },
     ],
     mechanics: [
-      "The chain can double back onto a target it already hit, which is why it out-damages Lightning Fury on spread-out packs.",
-      "Like Charged Strike, it carries no weapon damage.",
+      "The strike itself rolls against attack rating and lands the weapon's full damage plus the skill's lightning; the chain is created separately from the target it hit.",
+      "The chain can double back onto a target it already struck, which is why it out-damages Lightning Fury on spread-out packs.",
     ],
     confidence: "verified",
   },
@@ -421,6 +425,7 @@ export const amazonSkills: Skill[] = [
     kind: "attack",
     element: "magic",
     requiredLevel: 1,
+    damageModel: "weapon-converted-to-element",
     summary:
       "Converts part of the arrow's physical damage to magic, and costs no arrows to fire.",
     mechanics: [

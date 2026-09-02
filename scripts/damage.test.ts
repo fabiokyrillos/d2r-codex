@@ -21,6 +21,8 @@
  * Checked against the values the game publishes: Poison Javelin at level 1 is
  * 25-37 poison over 8 seconds, and Plague Javelin at level 1 is 28-42 over 3.
  */
+import { getSkills } from "../lib/registry";
+import { DEFAULT_LOCALE } from "../lib/i18n/config";
 import {
   FRAMES_PER_SECOND,
   SKILL_GRAPH,
@@ -279,6 +281,159 @@ console.log("\nThe shipped effect data");
     withEffects.length === 11,
     withEffects.map(([s]) => s).join(", "),
   );
+}
+
+// ===========================================================================
+console.log("\nHow the javelin strikes compose their damage");
+// ===========================================================================
+
+/*
+ * REFERENCE IMPLEMENTATION, and what it is not.
+ *
+ * The classifications below were settled against D2MOO
+ * (github.com/ThePhrozenKeep/D2MOO, source/D2Game/src/SKILLS/SkillAma.cpp), a
+ * community reimplementation of *legacy* Diablo II -- its comments carry
+ * D2Game.dll addresses like 0x6FCF3280. It is **not** Blizzard's D2R 3.3
+ * source, and nothing here presents it as such. It is used the way the source
+ * registry uses any reverse-engineering reference: to explain a data column
+ * whose meaning the tables do not state, then reconciled against the pinned
+ * D2R 3.3 extraction.
+ *
+ * What it settles, in one line of code each:
+ *
+ *   SKILLS_SrvSt06_PowerStrike_ChargedStrike  (both skills share this stage)
+ *     hit check via SUNITDMG_GetResultFlags, then on a hit the skill's
+ *     elemental damage is rolled, and SUNITDMG_AllocCombat is called with
+ *     `pSkillsTxtRecord->nSrcDam` passed straight through. Power Strike's is
+ *     128; Charged Strike's is empty. No fallback.
+ *
+ *   SKILLS_SrvSt10_LightningStrike
+ *     the same hit check, the same elemental roll, and then:
+ *         uint8_t nSrcDam = pSkillsTxtRecord->nSrcDam;
+ *         if (!nSrcDam) nSrcDam = 0x80u;
+ *     0x80 is 128, so an empty column becomes 100% of the weapon's damage.
+ *
+ * That single conditional is the whole difference, and it is why Lightning
+ * Strike carries the weapon and Charged Strike does not. An earlier pass here
+ * read the two as identical because both have an empty SrcDam column, and
+ * published that Lightning Strike deals no weapon damage. It does.
+ *
+ *   SKILLS_SrvDo011_ChargedStrike / SKILLS_SrvDo014_LightningStrike
+ *     both drain durability and both create their secondary component --
+ *     Charged Bolts and the chain -- separately from the strike stage.
+ */
+{
+  const model = (slug: string) => getSkills(DEFAULT_LOCALE).find((s) => s.slug === slug)?.damageModel;
+
+  check(
+    "Lightning Strike carries the weapon: SrvSt10 substitutes 0x80 for an empty SrcDam",
+    model("lightning-strike") === "weapon-plus-element",
+    `${model("lightning-strike")}`,
+  );
+  check(
+    "Lightning Strike is no longer classified element-only",
+    model("lightning-strike") !== "element-only-attack",
+  );
+  check(
+    "Charged Strike does not: SrvSt06 passes SrcDam through unchanged",
+    model("charged-strike") === "element-only-attack",
+    `${model("charged-strike")}`,
+  );
+  check(
+    "Power Strike shares SrvSt06 but carries SrcDam 128, so it keeps the weapon",
+    model("power-strike") === "weapon-plus-element",
+    `${model("power-strike")}`,
+  );
+
+  /*
+   * The two stages differ only in the fallback, so the two skills must not be
+   * allowed to drift back into agreeing. This fails if either is edited to
+   * match the other.
+   */
+  check(
+    "the two strikes are classified differently, as their stages are written",
+    model("charged-strike") !== model("lightning-strike"),
+  );
+
+  // Every javelin strike rolls against attack rating, whatever it carries --
+  // so "no weapon damage" must never be read as "no attack".
+  for (const slug of ["charged-strike", "lightning-strike", "power-strike"]) {
+    const skill = getSkills(DEFAULT_LOCALE).find((s) => s.slug === slug)!;
+    check(`${slug} is an attack, not a spell`, skill.kind === "attack");
+  }
+
+  // The secondary component is a count, created separately from the strike.
+  for (const [slug, atOne, atTwenty] of [
+    ["charged-strike", 3, 7],
+    ["lightning-strike", 2, 21],
+  ] as const) {
+    const scaling = splitEffects(SKILL_GRAPH[slug] ?? {}).scaling;
+    check(
+      `${slug} publishes its secondary count (${atOne} -> ${atTwenty})`,
+      scaling.length === 1 &&
+        effectAtLevel(scaling[0], 1) === atOne &&
+        effectAtLevel(scaling[0], 20) === atTwenty,
+    );
+  }
+}
+
+// ===========================================================================
+console.log("\nConversion is read off the missile, not off the damage table");
+// ===========================================================================
+
+{
+  /*
+   * `DmgCalc1` of `dl12` is the game's "% Damage Dealt as Elemental". Four
+   * missiles in the game declare it, all Amazon. Magic Arrow is the reason this
+   * is separate from `damage`: it converts and has no elemental range at all,
+   * so a rule keyed on the damage table let it fall into the generic `weapon`
+   * bucket while its own prose said it converted.
+   */
+  const expected: Record<string, [string, number, number]> = {
+    "magic-arrow": ["mag", 5, 2],
+    "fire-arrow": ["fire", 3, 2],
+    "cold-arrow": ["cold", 3, 2],
+    "lightning-bolt": ["ltng", 100, 0],
+  };
+  const converting = Object.entries(SKILL_GRAPH).filter(([, n]) => n.conversion);
+  check(
+    "exactly four skills declare a conversion",
+    converting.length === 4,
+    converting.map(([s]) => s).join(", "),
+  );
+  for (const [slug, [element, base, perLevel]] of Object.entries(expected)) {
+    const c = SKILL_GRAPH[slug]?.conversion;
+    check(
+      `${slug} converts ${base}% +${perLevel}%/level to ${element}`,
+      c?.element === element && c?.base === base && c?.perLevel === perLevel,
+      JSON.stringify(c),
+    );
+  }
+
+  // Magic Arrow has no elemental table, and must still be classified.
+  check("Magic Arrow has no elemental table", SKILL_GRAPH["magic-arrow"]?.damage === undefined);
+  check(
+    "...and is still classified as converting, not as a plain weapon attack",
+    getSkills(DEFAULT_LOCALE).find((s) => s.slug === "magic-arrow")?.damageModel ===
+      "weapon-converted-to-element",
+  );
+
+  // The converted share is derived and tabulated, not written into prose.
+  const ma = splitEffects(SKILL_GRAPH["magic-arrow"] ?? {}).scaling;
+  check("Magic Arrow tabulates its converted share", ma.length === 1);
+  check(
+    "...5% at level 1, 43% at level 20",
+    effectAtLevel(ma[0], 1) === 5 && effectAtLevel(ma[0], 20) === 43,
+    `${effectAtLevel(ma[0], 1)} / ${effectAtLevel(ma[0], 20)}`,
+  );
+
+  // Fire and Cold Arrow convert AND add elemental damage; both facts survive.
+  for (const slug of ["fire-arrow", "cold-arrow"]) {
+    check(
+      `${slug} keeps its own elemental range alongside the conversion`,
+      Boolean(SKILL_GRAPH[slug]?.damage) && Boolean(SKILL_GRAPH[slug]?.conversion),
+    );
+  }
 }
 
 console.log(`\n${passed} checks passed.`);

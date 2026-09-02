@@ -373,11 +373,16 @@ export default async function SkillPage(
                 {fmt(
                   presentation === "weapon"
                     ? t.skills.noProgressionWeapon
-                    : presentation === "shield"
-                      ? t.skills.noProgressionShield
-                      : presentation === "proportional"
-                        ? t.skills.noProgressionProportional
-                        : t.skills.noProgressionNone,
+                    : // A skill can convert without carrying an elemental range
+                      // of its own — Magic Arrow does — and saying it has "no
+                      // damage table" would be true and useless.
+                      presentation === "weapon-converted-to-element"
+                      ? t.skills.noProgressionConverted
+                      : presentation === "shield"
+                        ? t.skills.noProgressionShield
+                        : presentation === "proportional"
+                          ? t.skills.noProgressionProportional
+                          : t.skills.noProgressionNone,
                   { mechanics: t.skills.mechanicsTitle },
                 )}
               </RichText>

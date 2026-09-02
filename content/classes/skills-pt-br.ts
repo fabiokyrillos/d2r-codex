@@ -470,7 +470,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "Três estocadas rápidas com spear ou javelin. A resposta da Amazon de javelin à imunidade a raio.",
     mechanics: [
       "A animação vai até o fim — depois que começa, as três estocadas acontecem.",
-      "Toda build de javelin guarda um ponto aqui, porque Charged Strike e Lightning Strike não causam dano físico nenhum.",
+      "Toda build de javelin guarda um ponto aqui como resposta a um imune a raio, já que o dano da árvore de javelin é quase todo elétrico.",
     ],
   },
   "power-strike": {
@@ -517,8 +517,9 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     summary:
       "Libera raios carregados da ponta da lança. A skill de alvo único mais forte que a Amazon tem.",
     mechanics: [
+      "O golpe rola contra o attack rating como qualquer ataque e, ao acertar, entrega o dano de raio da skill. Os raios são criados à parte, e é por isso que a quantidade deles importa mais que o golpe.",
       "A quantidade de raios cresce com o nível da skill, e todos podem acertar um único alvo à queima-roupa. É daí que vem o dano em chefe.",
-      "Os raios não carregam nada do dano físico da arma: um imune a raio não recebe nada desta skill.",
+      "Ao contrário da Power Strike, a skill não contribui com o dano físico base da arma: o dano próprio dela é todo de raio.",
     ],
     synergyBonuses: [
       "+14% de dano por nível",
@@ -545,8 +546,8 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     summary:
       "Um golpe corpo a corpo que inicia uma corrente de raio, saltando entre inimigos próximos.",
     mechanics: [
+      "O próprio golpe rola contra o attack rating e entrega o dano cheio da arma mais o raio da skill; a corrente é criada à parte, a partir do alvo atingido.",
       "A corrente pode voltar num alvo que já acertou, e por isso ela supera a Lightning Fury contra grupos espalhados.",
-      "Assim como a Charged Strike, não carrega dano de arma.",
     ],
     synergyBonuses: [
       "+11% de dano por nível",

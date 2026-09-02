@@ -677,6 +677,7 @@ export const enUS = {
     effectShots: "Shots per attack",
     effectBolts: "Bolts released",
     effectJumps: "Targets struck",
+    effectConverted: "Damage converted",
     effectRangeFrom: "{value}% at level 1",
     effectRangeTo: "up to {value}%",
     effectRangeNote:
@@ -720,7 +721,13 @@ export const enUS = {
     damageConverted:
       "The table is the skill's own elemental damage. The weapon's damage is carried too, but a share of it is converted to this element rather than added to it.",
     damageElementOnly:
-      "The table is the whole of this skill's damage. It carries none of your weapon's damage, so a monster immune to this element takes nothing from it.",
+      "The table is this skill's own damage. Unlike the other attacks in its tree, it contributes none of your weapon's base physical damage — the strike still rolls against attack rating, and any secondary projectiles are created separately from it.",
+    /*
+     * For a skill that converts but has no elemental range of its own, so the
+     * table above is the share converted rather than a damage figure.
+     */
+    noProgressionConverted:
+      "This skill's damage is your weapon's. Part of it is dealt as this skill's element instead of as physical damage, and that share grows with skill level — it is the converted figure in the table above. The skill has no elemental range of its own to publish.",
     damageOverTime:
       "Poison is dealt over time rather than on impact. The table gives the total across the duration beside it, and the duration grows with the skill.",
     seconds: "{seconds}s",

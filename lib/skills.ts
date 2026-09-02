@@ -250,12 +250,33 @@ export function effectAtLevel(effect: SkillEffect, level: number): number | unde
   return shape.cap === undefined ? value : Math.min(value, shape.cap);
 }
 
+/**
+ * The conversion, expressed as an ordinary scaling effect.
+ *
+ * Derived rather than authored, and rendered in the same table as every other
+ * quantity, because the share converted is a number that grows per level like
+ * any other — Magic Arrow's 5% at level 1 reaches 43% at 20. Writing that into
+ * prose would be a hand-maintained copy of two columns the graph already has.
+ */
+export function conversionEffect(
+  node: Pick<SkillGraphNode, "conversion">,
+): SkillEffect | undefined {
+  const c = node.conversion;
+  if (!c) return undefined;
+  return {
+    labelKey: "effectConverted",
+    unit: "percent",
+    shape: { kind: "linear", base: c.base, perLevel: c.perLevel },
+  };
+}
+
 /** Effects that can be tabulated per level, and those that can only be bounded. */
-export function splitEffects(node: Pick<SkillGraphNode, "effects">): {
+export function splitEffects(node: Pick<SkillGraphNode, "effects" | "conversion">): {
   scaling: SkillEffect[];
   ranges: SkillEffect[];
 } {
-  const all = node.effects ?? [];
+  const converted = conversionEffect(node);
+  const all = [...(node.effects ?? []), ...(converted ? [converted] : [])];
   return {
     scaling: all.filter((e) => e.shape.kind !== "range"),
     ranges: all.filter((e) => e.shape.kind === "range"),
@@ -343,20 +364,33 @@ export function damagePresentation(
 }
 
 /**
- * Attack skills whose damage the graph tabulates but which name no model.
+ * Attack skills whose damage is more than the weapon's, but which name no model.
+ *
+ * Two triggers, not one. A skill qualifies if the graph tabulates elemental
+ * damage for it **or** if its missile declares a conversion — because those are
+ * different facts and a skill can have either without the other.
+ *
+ * The second trigger is the one this rule was missing. Magic Arrow turns a
+ * growing share of the arrow's physical damage into magic and carries no
+ * EMin/EMax of its own, so a rule keyed on the damage table alone let it fall
+ * into the generic `weapon` bucket — where its page said the damage "comes from
+ * your weapon" while its own mechanics section said it converted. Fire Arrow and
+ * Cold Arrow have exactly the same conversion and were classified correctly,
+ * for the unrelated reason that they also add elemental damage.
  *
  * Exported and pure so `check-content.test.ts` can plant a mutation against a
- * fabricated graph. Without this rule such a skill falls through to `"table"`
- * and its page prints an elemental range with no statement about the weapon at
- * all — true as far as it goes, and silent about the half a reader is asking
- * about.
+ * fabricated graph.
  */
 export function unclassifiedElementalAttacks(
   skills: readonly Pick<Skill, "slug" | "kind" | "damageModel">[],
-  graph: Record<string, Pick<SkillGraphNode, "damage">>,
+  graph: Record<string, Pick<SkillGraphNode, "damage" | "conversion">>,
 ): string[] {
   return skills
-    .filter((s) => s.kind === "attack" && graph[s.slug]?.damage && !s.damageModel)
+    .filter((s) => {
+      if (s.kind !== "attack" || s.damageModel) return false;
+      const node = graph[s.slug];
+      return Boolean(node?.damage || node?.conversion);
+    })
     .map((s) => s.slug);
 }
 

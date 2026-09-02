@@ -570,6 +570,43 @@ console.log("\nDamage models — an elemental attack must say how the weapon fig
     unclassifiedElementalAttacks([skill("zeal", "attack")], { zeal: noTable }).length === 0,
   );
 
+  /*
+   * The second trigger. A skill whose missile converts physical damage into an
+   * element must be classified even with no elemental table of its own —
+   * Magic Arrow is exactly that, and a rule keyed on the table alone let it
+   * fall into the generic `weapon` bucket while its prose claimed conversion.
+   */
+  const converts = { conversion: { element: "mag", base: 5, perLevel: 2 } };
+  check(
+    "a converting attack with no table is reported",
+    unclassifiedElementalAttacks([skill("magic-arrow", "attack")], { "magic-arrow": converts })
+      .length === 1,
+  );
+  check(
+    "...and is cleared by authoring the conversion model",
+    unclassifiedElementalAttacks(
+      [skill("magic-arrow", "attack", "weapon-converted-to-element")],
+      { "magic-arrow": converts },
+    ).length === 0,
+  );
+  check(
+    "a converting spell is still not asked for a model",
+    unclassifiedElementalAttacks([skill("x", "spell")], { x: converts }).length === 0,
+  );
+
+  // The real content: strip Magic Arrow's model and the rule must fire on it.
+  {
+    const stripped = getSkills(DEFAULT_LOCALE).map((s) =>
+      s.slug === "magic-arrow" ? ({ ...s, damageModel: undefined } as Skill) : s,
+    );
+    const hit = unclassifiedElementalAttacks(stripped, SKILL_GRAPH);
+    check(
+      "un-classifying Magic Arrow is caught in the real content",
+      hit.length === 1 && hit[0] === "magic-arrow",
+      hit.join(", "),
+    );
+  }
+
   // An authored model must outrank the table, or every one of them would be
   // shadowed by the `node.damage` branch that used to run first.
   for (const model of ELEMENTAL_ATTACK_MODELS) {

@@ -136,6 +136,7 @@ export const effectLabels = (t: Dictionary): Record<string, string> => ({
   effectShots: t.skills.effectShots,
   effectBolts: t.skills.effectBolts,
   effectJumps: t.skills.effectJumps,
+  effectConverted: t.skills.effectConverted,
 });
 
 /** "damage", or "buff duration and damage" — never an untranslated slug. */

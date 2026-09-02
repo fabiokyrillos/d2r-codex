@@ -141,6 +141,18 @@ export interface SkillGraphNode {
     readonly overTime?: boolean;
   };
   /**
+   * Physical damage the skill turns into an element rather than adding to it.
+   *
+   * Declared by the missile (`DmgCalc1` of `dl12`), not the skill, which is why
+   * it is separate from `damage`: Magic Arrow converts and carries no elemental
+   * table at all, while Fire Arrow does both. `base` and `perLevel` are percent.
+   */
+  readonly conversion?: {
+    readonly element: string;
+    readonly base: number;
+    readonly perLevel: number;
+  };
+  /**
    * Published quantities other than damage: a chance, a projectile count, an
    * attack-rating bonus. Empty for most skills.
    *
@@ -166,19 +178,19 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 1, column: 2,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
-    synergies: [],
+    synergies: [], conversion: { element: "mag", base: 5, perLevel: 2 },
   },
   "fire-arrow": {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 1, column: 3,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
-    synergies: [{ from: "exploding-arrow", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 1, bands: [2, 3, 6, 12, 24] }, max: { base: 4, bands: [2, 3, 7, 14, 27] } },
+    synergies: [{ from: "exploding-arrow", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 1, bands: [2, 3, 6, 12, 24] }, max: { base: 4, bands: [2, 3, 7, 14, 27] } }, conversion: { element: "fire", base: 3, perLevel: 2 },
   },
   "cold-arrow": {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 2, column: 1,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
-    synergies: [{ from: "ice-arrow", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 6, bands: [4, 5, 8, 16, 42] }, max: { base: 8, bands: [4, 5, 9, 17, 44] } },
+    synergies: [{ from: "ice-arrow", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 6, bands: [4, 5, 8, 16, 42] }, max: { base: 8, bands: [4, 5, 9, 17, 44] } }, conversion: { element: "cold", base: 3, perLevel: 2 },
   },
   "multiple-shot": {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 2, column: 2,
@@ -318,7 +330,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["poison-javelin"],
-    synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-fury", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [12, 18, 28, 48, 88] } },
+    synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-fury", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [12, 18, 28, 48, 88] } }, conversion: { element: "ltng", base: 100, perLevel: 0 },
   },
   "charged-strike": {
     classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 4, column: 2,

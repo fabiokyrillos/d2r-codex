@@ -100,6 +100,7 @@ const PATHS = {
   current: "skills.json",
   base: "base/skills.json",
   descs: "skilldesc.json",
+  missiles: "missiles.json",
 } as const;
 
 interface RawSkill {
@@ -121,6 +122,22 @@ interface RawDesc {
   SkillPage?: number;
   SkillRow?: number;
   SkillColumn?: number;
+}
+
+/**
+ * A missile row, read only for the damage-conversion columns.
+ *
+ * `DmgCalc1` of `dl12` is the game's "% Damage Dealt as Elemental": the missile
+ * carries the weapon's damage and turns a share of it into `EType` rather than
+ * adding a separate amount. Four missiles in the entire game use it, all
+ * Amazon -- magicarrow, firearrow, coldarrow and lightningjavelin.
+ */
+interface RawMissile {
+  Missile: string;
+  DmgCalc1?: string;
+  dParam1?: number;
+  dParam2?: number;
+  EType?: string;
 }
 
 const slugify = (name: string) =>
@@ -359,11 +376,54 @@ function prereqSets(skills: RawSkill[]): Map<string, string[]> {
 }
 
 async function main() {
-  const [current, base, descs] = await Promise.all([
+  const [current, base, descs, missiles] = await Promise.all([
     getJson<RawSkill>(PATHS.current, ["skill", "charclass", "reqlevel", "maxlvl", "skilldesc"]),
     getJson<RawSkill>(PATHS.base, ["skill", "charclass", "reqlevel"]),
     getJson<RawDesc>(PATHS.descs, ["skilldesc", "SkillPage", "SkillRow", "SkillColumn"]),
+    getJson<RawMissile>(PATHS.missiles, ["Missile", "DmgCalc1"]),
   ]);
+
+  /*
+   * Conversion, keyed by missile name.
+   *
+   * A skill converts when the missile it creates declares `dl12`. That is
+   * independent of whether the skill row carries EMin/EMax: Magic Arrow
+   * converts and has no elemental table at all, while Fire Arrow does both.
+   * Reading it off the missile is what keeps those two facts separate.
+   */
+  const conversionByMissile = new Map<string, { element: string; base: number; perLevel: number }>();
+  for (const m of missiles) {
+    if (!String(m.DmgCalc1 ?? "").includes("dl12")) continue;
+    if (!m.EType) {
+      throw new Error(`missile ${m.Missile} declares a conversion with no element to convert into`);
+    }
+    conversionByMissile.set(String(m.Missile).toLowerCase(), {
+      element: m.EType,
+      base: m.dParam1 ?? 0,
+      perLevel: m.dParam2 ?? 0,
+    });
+  }
+  if (conversionByMissile.size === 0) {
+    throw new Error("no missile declares a dl12 conversion; the damage columns must have moved");
+  }
+
+  /** The missiles a skill can create, in the order the game would pick them. */
+  const missilesOf = (s: RawSkill & Record<string, unknown>) =>
+    ["srvmissile", "srvmissilea", "srvmissileb", "srvmissilec"]
+      .map((k) => s[k])
+      .filter((v): v is string => typeof v === "string" && v.length > 0);
+
+  const conversionFor = (s: RawSkill & Record<string, unknown>) => {
+    const found = missilesOf(s)
+      .map((name) => conversionByMissile.get(name.toLowerCase()))
+      .filter((c) => c !== undefined);
+    if (found.length === 0) return undefined;
+    const first = JSON.stringify(found[0]);
+    if (found.some((c) => JSON.stringify(c) !== first)) {
+      throw new Error(`${s.skill}: its missiles declare different conversions; pick one deliberately`);
+    }
+    return found[0];
+  };
 
   const mine = current.filter((s) => s.charclass !== undefined && s.charclass in classOf);
   const expected = Object.keys(classOf).length * 30;
@@ -467,6 +527,7 @@ async function main() {
         prerequisites: a.get(slug)!,
         synergies: synergiesFor(s as RawSkill & Record<string, unknown>),
         effects: EFFECTS[slug]?.(s as RawSkill & Record<string, unknown>) ?? [],
+        conversion: conversionFor(s as RawSkill & Record<string, unknown>),
         damage: hasDamage
           ? {
               element: s.EType!,
@@ -527,6 +588,11 @@ async function main() {
           .join(", ") +
         `],`;
 
+  const conv = (c: (typeof rows)[number]["conversion"]) =>
+    c
+      ? `, conversion: { element: "${c.element}", base: ${c.base}, perLevel: ${c.perLevel} }`
+      : "";
+
   const dmg = (d: (typeof rows)[number]["damage"]) =>
     d
       ? `, damage: { element: "${d.element}", hitShift: ${d.hitShift}, ` +
@@ -547,7 +613,7 @@ async function main() {
         `    prerequisites: [${r.prerequisites.map((p) => `"${p}"`).join(", ")}],\n` +
         `    synergies: [${r.synergies
           .map((s) => `{ from: "${s.from}", kinds: [${s.kinds.map((k) => `"${k}"`).join(", ")}] }`)
-          .join(", ")}]${dmg(r.damage)},${eff(r.effects)}\n` +
+          .join(", ")}]${dmg(r.damage)}${conv(r.conversion)},${eff(r.effects)}\n` +
         `  },`,
     )
     .join("\n");
@@ -697,6 +763,18 @@ export interface SkillGraphNode {
      * its damage lands at once, so multiplying it would be a fabrication.
      */
     readonly overTime?: boolean;
+  };
+  /**
+   * Physical damage the skill turns into an element rather than adding to it.
+   *
+   * Declared by the missile (\`DmgCalc1\` of \`dl12\`), not the skill, which is why
+   * it is separate from \`damage\`: Magic Arrow converts and carries no elemental
+   * table at all, while Fire Arrow does both. \`base\` and \`perLevel\` are percent.
+   */
+  readonly conversion?: {
+    readonly element: string;
+    readonly base: number;
+    readonly perLevel: number;
   };
   /**
    * Published quantities other than damage: a chance, a projectile count, an
