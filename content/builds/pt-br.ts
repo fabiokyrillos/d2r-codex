@@ -6868,4 +6868,297 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "exploding-arrow-amazon": {
+    summary:
+      "Cada flecha detona onde cai, e o pierce faz detonar de novo. Uma arqueira de fogo com uma skill física na mesma barra, porque fogo sozinho não basta no Hell.",
+    playstyle:
+      "Você atira num grupo e ele se desfaz numa corrente de explosões. O Exploding Arrow causa dano em tudo em volta do alvo em vez de só no alvo, e com pierce a flecha segue adiante e detona de novo na próxima coisa que tocar — um tiro por um corredor lotado são várias explosões de profundidade. O Immolation Arrow é o segundo botão e faz outra coisa: ele deixa uma mancha de fogo queimando no chão, o que transforma uma porta num lugar que os monstros não atravessam. O Guided Arrow é o terceiro, e ele está na barra por um motivo específico — fogo é o elemento mais resistido do Hell, e é o que você aperta nas coisas em que o fogo não encosta.",
+    strengths: [
+      "**Dano em área em cada tiro**, sem cooldown e sem exigência de posicionamento",
+      "Pierce transforma uma flecha numa corrente de explosões em vez de num acerto maior",
+      "O fogo no chão do Immolation Arrow é negação de área de verdade — poucas builds conseguem simplesmente fechar um corredor",
+      "Disponível no nível 12, mais cedo que qualquer outra limpeza elemental da Amazon",
+      "Dano de fogo fixo vindo do equipamento aumenta a explosão, não só a flecha",
+    ],
+    weaknesses: [
+      "**Fogo é o elemento mais resistido do Hell** — treze das vinte áreas catalogadas aqui listam imunidade a fogo",
+      "Uma sinergia de dano só, então a metade de fogo do plano é curta e o teto dela é menor que o de uma build de frio",
+      "Nenhum item do site aumenta dano de skills de fogo como o Nightwing's Veil aumenta frio ou o Griffon's Eye aumenta raio",
+      "O fogo no chão do Immolation Arrow não faz nada contra o que não pisar nele",
+      "**Velocidade de ataque é uma pergunta por arco**, então nenhum breakpoint de Amazon é publicado aqui também",
+    ],
+    flexPoints: [
+      "**O plano gasta 109 de 110.** Pierce é o bloco a ajustar quando um Razortail entrar.",
+      "**Os vinte pontos do Immolation Arrow são a bifurcação honesta.** Ele é uma segunda skill de fogo, não uma sinergia, então não faz nada pelo dano do Exploding Arrow. Mantenha se você quiser negação de área e um acerto de fogo de alvo único mais forte; mova para Critical Strike e Penetrate se o Guided Arrow estiver fazendo a maior parte das suas mortes no Hell, e ele vai estar.",
+      "**Não persiga uma terceira sinergia de fogo.** Ela não existe. A árvore dá ao Exploding Arrow exatamente o Fire Arrow e nada mais.",
+    ],
+    statPlan: {
+      strength: "O que o arco pedir. Esta build não tem motivo para buscar uma base pesada — nada aqui escala com o dano do próprio arco tão forte quanto numa build física.",
+      dexterity:
+        "O suficiente para o arco, mais o que aumentar o attack rating do Guided Arrow. Menos crítica que nas builds físicas.",
+      vitality: "Todo o resto.",
+      energy:
+        "Nenhum. O Exploding Arrow são 20 de mana no nível 1 e o Immolation Arrow 24, então esta build quer um Insight mas não passa a fome que a de Freezing Arrow passa.",
+      notes: [
+        "**Dano de fogo fixo no equipamento aumenta a explosão**, então um afixo que seria enchimento em outra build de arco aqui é dano de verdade — procure em anéis, amuletos e joias.",
+        "Dexterity rende menos nesta build do que nas físicas, porque a metade de fogo não escala com o arco. Gaste em requisitos e pare.",
+        "Resistência a fogo é a que vai faltar com mais frequência, porque a resposta à sua própria fraqueza — carregar um Flame Rift — custa 70 a 90 pontos dela.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "Você atira parada e sem escudo. Esta é a meta acessível e a que vale alcançar antes do Hell.",
+      "fhr-52": "Vale pegar se o equipamento que você já queria fornecer.",
+    },
+    skillNotes: {
+      "exploding-arrow":
+        "**Dano em área em cada tiro**, e a explosão dele é aumentada por dano de fogo fixo do equipamento além do nível de skill.",
+      "fire-arrow":
+        "**A única sinergia de dano que o Exploding Arrow tem**, a 14% por nível. Não há mais nada disputando estes vinte pontos.",
+      "immolation-arrow":
+        "Uma segunda skill de fogo em vez de uma sinergia — ela recebe 10% por nível do Exploding Arrow e não devolve nada. O fogo no chão é para o que ela serve.",
+      "guided-arrow":
+        "**Puramente físico e incapaz de errar.** Numa build de fogo no Hell isto não é um plano B, é a segunda metade do personagem.",
+      pierce:
+        "Uma flecha que perfura explode de novo onde cair em seguida, então o pierce multiplica o número de detonações. Conte um Razortail no total antes de gastar os últimos destes.",
+      "magic-arrow": "Pré-requisito do Multiple Shot, e um tiro que não custa flechas.",
+      "multiple-shot":
+        "O outro pré-requisito do Exploding Arrow, e do Guided Arrow. Um ponto cobre os dois.",
+      "cold-arrow":
+        "Pré-requisito do Guided Arrow. O chill é um bônus defensivo pequeno durante a evolução.",
+      penetrate:
+        "Pré-requisito do Pierce. O Exploding Arrow carrega 20% de attack rating mais 9% por nível por conta própria.",
+      "critical-strike":
+        "Pré-requisito do Penetrate, e ele dobra a metade física — que é todo o dano do Guided Arrow.",
+      valkyrie: "Alguém parada onde as explosões estão, para que não seja você.",
+      decoy:
+        "Aumenta a vida da Valkyrie, e um Decoy colocado dentro de um grupo o puxa para dentro da explosão.",
+      evade: "Pré-requisito da Valkyrie.",
+      avoid: "Pré-requisito do Evade.",
+      dodge: "Pré-requisito do Avoid.",
+      "slow-missiles": "Pré-requisito do Decoy, e a resposta a um grupo à distância.",
+      "inner-sight":
+        "Pré-requisito do Slow Missiles, e ele reduz a defesa de um grupo inteiro de uma vez.",
+    },
+    immunityPlan:
+      "**Fogo é o elemento mais resistido do Hell e esta build planeja em torno disso em vez de torcer.** Das vinte áreas de farm catalogadas neste site, treze registram fogo entre as imunidades comuns — e é por isso que o Guided Arrow é maximizado em vez de ficar em um ponto, e por isso a lista de farm acima é ordenada por dados de imunidade e não por nível de área. Em ordem de praticidade: **Guided Arrow**, puramente físico, incapaz de errar, já na sua barra; **o dano físico do seu mercenário**, que não custa nada; **Infinity no mercenário**, cuja Conviction reduz resistência a fogo e é a única fonte aqui que quebra a imunidade sem te custar nada; e **um sunder charm Flame Rift**, que é a solução direta e a pior troca das seis para esta build em particular — fogo é a resistência de que você já está com falta, e o charm leva mais 70 a 90 pontos dela. Não use um Andariel's Visage e um Flame Rift ao mesmo tempo; são 100 a 120 pontos de resistência a fogo entregues entre dois itens.",
+    mercenaryNotes:
+      "O mercenário do Ato 2 com **Might**, porque o dano dele é físico e o seu é metade fogo — contra os imunes ele é um segundo Guided Arrow que nunca fica sem mana. Dê a ele um **Insight** cedo pela sua própria mana, e depois um **Infinity**, cuja Conviction reduz resistência a fogo tanto quanto a raio e é a única coisa do site que quebra imunidade a fogo sem te custar resistência. **Holy Freeze** se você preferir que nada saia andando da mancha do Immolation Arrow.",
+    farmingWhy: {
+      "pit-hell":
+        "Nível de área 85, curto, e as imunidades registradas dele são físico, frio e raio em vez de fogo. A melhor zona de fogo do site exatamente por isso.",
+      "mausoleum-hell":
+        "Nível de área 85, a segundos de um waypoint, e imune a veneno e frio em vez de fogo. Mortos-vivos andam juntos, que é o que as explosões querem.",
+      "secret-cow-level-hell":
+        "Nada aqui é imune a fogo e a manada fica perto o bastante para uma flecha disparar várias explosões.",
+      "throne-of-destruction-hell":
+        "As ondas são imunes a frio, raio e veneno em vez de fogo, e chegam exatamente na densidade que o Exploding Arrow quer.",
+      "pindleskin-hell":
+        "Dez segundos, monstro nível 86, e não é imune a fogo. O Guided Arrow termina se as explosões não terminarem.",
+      "arcane-sanctuary-hell":
+        "Imunidade a raio e a mágico em vez de fogo, e as plataformas longas e estreitas combinam com um Immolation Arrow atravessando a largura de uma.",
+      "chaos-sanctuary-hell":
+        "A zona mais densa do jogo e um dos piores confrontos do site: imunidade a fogo faz parte da população comum. Uma zona de Guided Arrow com bônus de fogo, e não o contrário.",
+    },
+    levelingPath: {
+      summary:
+        "**Melhor que a maioria das Amazons em evoluir sozinha.** O Fire Arrow desde o nível 1 é um ataque de verdade e não um marcador de lugar, o Exploding Arrow chega no 12 e limpa direito, e o Immolation Arrow no 24 acrescenta negação de área. Nada precisa ser desaprendido. O Guided Arrow no 18 é a única adição que um personagem em evolução pode não pensar em fazer, e é a skill que vai carregar a build pelo Hell.",
+      respecAt: "Não é necessário. Guarde os tokens.",
+    },
+    selfFoundNotes:
+      "Boa, e mais barata que a maioria. Edge, Melody e Peace são runewords da Countess, o Magefist custa quase nada e dá um nível de skill de fogo, e o Buriza-Do Kyanon — o maior upgrade único — é comum a partir do fim do Nightmare. O que o solo self-found não conserta é o problema estrutural: não existe equivalente de fogo para um Nightwing's Veil ou um Griffon's Eye neste site, então o teto da metade de fogo é menor que o de uma build de frio ou raio, por mais que você farme. A build continua viável porque o Guided Arrow não custa nada além de pontos de skill.",
+    hardcoreNotes:
+      "O que há de mais seguro nesta build é que o Immolation Arrow consegue fechar uma porta, e o que há de mais perigoso é que imunidade a fogo é comum o bastante para você encontrar grupos que não consegue ferir enquanto fica parada atirando neles. Alcance 32% de Faster Hit Recovery, mantenha Slow Missiles na barra, e trate o Guided Arrow como a sua arma de verdade no Hell em vez de um detalhe. **Não carregue um Flame Rift no Hardcore.** Fogo é o tipo de dano mais comum do jogo além do mais resistido, e 70 a 90 pontos de resistência a fogo não é uma margem que um personagem de morte permanente deva abrir mão.",
+    gearSets: {
+      starter: {
+        goal: "Exploding Arrow no nível 12, e velocidade de ataque suficiente para usá-lo.",
+        nextUpgrade: "Nível 24 pelo Immolation Arrow, depois uma Melody pela aba inteira.",
+        notes:
+          "**O Exploding Arrow no nível 12 é a limpeza elemental em área mais precoce que a Amazon tem.** O Fire Arrow antes dele é uma skill de verdade e não um pré-requisito desperdiçado — ele converte parte do dano físico da flecha em fogo e soma mais por cima.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque e dano bônus contra demônios e mortos-vivos por três runas baixas, enquanto a explosão ainda é pequena.",
+            sockets: "Tir, Tal e Amn num arco de 3 sockets.",
+          },
+          "body-0": { why: "Recuperação de golpe e velocidade de corrida a partir do nível 17." },
+          "helm-0": {
+            why: "+1 em Todas as Skills, o que aumenta a explosão e a flecha ao mesmo tempo.",
+          },
+          "gloves-0": {
+            why: "**+1 em Fire Skills, e isso não é exclusivo de Sorceress** — é o bônus elemental de fogo que vale para todas as classes, então ele aumenta Fire Arrow, Exploding Arrow e Immolation Arrow. Disponível no nível 23 por quase nada.",
+          },
+        },
+      },
+      nightmare: {
+        goal: "As duas skills de fogo online, e uma skill física para os imunes.",
+        nextUpgrade:
+          "Um arco elite e um Fortitude, depois resistências no teto antes do Hell.",
+        notes:
+          "**Velocidade de ataque importa e nenhum número único de Amazon dá conta.** Os frames dependem da velocidade base do arco e da skill, então pegue a velocidade onde ela for de graça e julgue pelo arco que você segura.",
+        picks: {
+          "weapon-0": {
+            why: "+3 na aba de arco inteira aumenta todas as skills desta barra de uma vez, de fogo e físicas.",
+            sockets: "Shael, Ko e Nef num arco de 3 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Pierce de graça significa que cada flecha detona mais de uma vez. Nesta build esse é o maior upgrade disponível.",
+          },
+          "body-0": { why: "+2 skills de Amazon e recuperação de golpe por três runas baratas." },
+          "helm-0": { why: "+1 skills e magic find até aparecer algo melhor." },
+          "gloves-0": { why: "+1 em Fire Skills num slot que ainda não tem nada melhor." },
+          "belt-0": { why: "33% de pierce, que nesta build são 33% mais detonações." },
+          "ring1-0": {
+            why: "Cannot Be Frozen e attack rating para a metade de Guided Arrow.",
+          },
+        },
+        charms: [{ why: "75% antes do Hell, e resistência a fogo em especial." }],
+      },
+      "early-hell": {
+        goal: "Resistências no teto, e um Guided Arrow forte o bastante para carregar os imunes a fogo.",
+        nextUpgrade: "Um arco Faith, e uma decisão sobre o Flame Rift.",
+        notes:
+          "**É aqui que a imunidade a fogo deixa de ser ocasional.** Treze das vinte áreas catalogadas neste site listam fogo entre as imunidades comuns. A lista de farm abaixo está ordenada por isso em vez de por nível de área, e o Guided Arrow é o motivo de a lista não ser ainda mais curta.",
+        picks: {
+          "weapon-0": {
+            why: "Pierce de graça, então cada flecha explode ao longo de uma linha em vez de uma vez só.",
+          },
+          "weapon-0-alt0": {
+            why: "+1 skills de Amazon, Ignore Target's Defense para o Guided Arrow, e seis sockets para fire facets.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage, que a metade de Guided Arrow gasta e a explosão não.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida por nível e redução de dano com 50 de Strength.",
+          },
+          "gloves-0": {
+            why: "+1 Fire Skills. **Esta é uma troca de verdade e não uma escolha de graça** — a alternativa são 20% de velocidade de ataque, que a metade de Guided Arrow quer mais do que a metade de fogo.",
+          },
+          "gloves-0-alt0": {
+            label: "Luvas raras ou craftadas com 20% de Increased Attack Speed",
+            why: "Pegue estas quando o Guided Arrow estiver fazendo a maior parte das mortes no Hell.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências"],
+          },
+          "belt-0": { why: "33% de pierce, e cada perfuração é outra explosão." },
+          "amulet-0": {
+            why: "+2 em todas as skills e até +30 em todas as resistências — e resistência a fogo é a que vai te faltar.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "boots-0": {
+            why: "Vida e **+5% de resistência máxima a fogo**, que importa mais nesta build do que em qualquer outra por causa do que você pode acabar carregando.",
+          },
+        },
+        charms: [{ why: "Resistência a fogo primeiro, e o resto depois." }],
+      },
+      budget: {
+        goal: "Uma aura de Fanaticism, e uma resposta definida à imunidade a fogo.",
+        nextUpgrade: "Fire facets em cada socket, e uma decisão sobre o sunder charm.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism aumenta velocidade de ataque, attack rating e dano, e +1-2 em todas as skills aumenta as duas metades da build de uma vez.",
+            sockets: "Ohm, Jah, Lem e Eld num arco de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "66% de Piercing Attack na besta mais rápida do jogo, e ela dispara as próprias flechas explosivas. Uma curiosidade aqui em vez de um plano, mas uma curiosidade adequada.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage para a metade física, e a defesa de que uma build sem escudo precisa.",
+          },
+          "helm-0": {
+            why: "+2 skills sem penalidade de resistência. **O Andariel's Visage é o elmo errado nesta build especificamente** — os −30% de resistência a fogo dele empilham com a penalidade de um Flame Rift num número do qual nada se recupera.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas: 20% de Increased Attack Speed, resistências",
+            why: "A esta altura o Guided Arrow está carregando os imunes a fogo, e velocidade de ataque serve mais a ele do que +1 Fire Skills.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 20+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find, ou Waterwalk se você tiver pegado um Flame Rift." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon." },
+          { why: "Eles aumentam a metade de fogo e a metade física ao mesmo tempo." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders num personagem sem escudo." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "A metade de fogo no teto, e a metade física cobrindo o que ela não alcança.",
+        nextUpgrade:
+          "Os últimos fire facets, e um Flame Rift se você tiver decidido pagar por um.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem de Fanaticism nível 15 com +2 em todas as skills.",
+            lookFor: ["Level 15 Fanaticism", "+2 to All Skills"],
+          },
+          "weapon-0-alt0": {
+            why: "Decrepify e Crushing Blow para a metade de Guided Arrow, no swap. Nada nele ajuda a metade de fogo.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências, que é o que torna um Flame Rift sobrevivível se você carregar um.",
+          },
+          "helm-0": { why: "+2 skills, com um fire facet encaixado." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, resistências, vida",
+            why: "Velocidade para a metade física e resistência para a de fogo.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": {
+            why: "+5% de resistência máxima a fogo, que é a defesa mais barata contra o seu próprio sunder charm.",
+          },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "As duas metades, mais a vida." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "Esta build termina como dois personagens dividindo um arco: uma arqueira de fogo que limpa tudo que não é imune, e uma arqueira física que mata o que é. **A última decisão de verdade é o Flame Rift**, e é uma troca pior aqui do que numa Sorceress — o mesmo charm, mas numa build que já não gasta resistência com mais nada. A maioria acaba carregando para duas ou três zonas e deixando no baú no resto do tempo.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism nível 15 e +2 em todas as skills.",
+            lookFor: ["Level 15 Fanaticism", "+2 to All Skills"],
+          },
+          "body-0": { why: "+2 skills e +65 em todas as resistências." },
+          "helm-0": { why: "+2 skills e um fire facet no socket." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, duas resistências, vida",
+            why: "A melhor versão de um slot sem nenhum unique que valha vestir a esta altura.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "+5% de resistência máxima a fogo e vida." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "A resposta direta, e a mais cara das seis para conviver: fogo é o elemento de que você já está com falta, e este leva mais 70 a 90 pontos dele. Carregue pela zona, nunca como padrão.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders." },
+          { why: "Para a metade de Guided Arrow contra um imune a físico." },
+        ],
+      },
+    },
+  },
 };
