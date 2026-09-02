@@ -148,8 +148,14 @@ export default async function BuildPage(
 
       <div className="mt-8 space-y-12">
         <Section title={t.builds.howItPlays}>
+          {/*
+            Through RichText like every other content string. It was not, and
+            nothing noticed until an Amazon page emphasised one word in a
+            sentence about Crushing Blow applying per hit — the marker printed.
+            Every other prose field on this page already went through it.
+          */}
           <p className="text-lg leading-relaxed text-pretty text-ink-muted">
-            {build.playstyle}
+            <RichText>{build.playstyle}</RichText>
           </p>
         </Section>
 

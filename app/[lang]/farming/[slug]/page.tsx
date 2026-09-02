@@ -299,8 +299,13 @@ export default async function FarmingAreaPage(
                       )}
                     </div>
                     {entry && (
+                      // The same string the build page renders through
+                      // RichText. Here it did not, so the first farming reason
+                      // that emphasised a word printed the asterisks — on the
+                      // area page only, where a reader who came from the build
+                      // page had already seen it rendered correctly.
                       <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
-                        {entry.why}
+                        <RichText>{entry.why}</RichText>
                       </p>
                     )}
                   </Card>
