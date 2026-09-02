@@ -489,4 +489,128 @@ export const mechanics: MechanicArticle[] = [
     related: ["area-levels-and-treasure-classes"],
     confidence: "verified",
   },
+
+  {
+    slug: "pierce",
+    name: "Pierce",
+    category: "combat",
+    summary:
+      "Why one stat multiplies four Amazon builds and does nothing at all for three others, and why nobody publishes a per-level table for it.",
+    keyFacts: [
+      "Pierce lets a projectile continue past a target it has hit and keep travelling.",
+      "The skill and every source on gear are one pool, and the game's own columns give it a floor of 10% and a ceiling of 100%.",
+      "It applies to projectiles only. A melee attack cannot pierce, whatever your total says.",
+      "On Lightning Fury it multiplies rather than adds: every enemy the javelin passes through releases a fresh burst of bolts.",
+      "Guided Arrow does not pierce. It seeks a single target and stops there.",
+    ],
+    body: [
+      {
+        type: "paragraph",
+        text: "Pierce is the Amazon's force multiplier and the most commonly misunderstood number on her sheet. Two things make it confusing: it is both a skill and an item stat with one shared total, and its value swings from *build-defining* to *literally zero* depending on which button you are pressing.",
+      },
+      {
+        type: "heading",
+        text: "What the game's own columns say",
+      },
+      {
+        type: "paragraph",
+        text: "The Pierce skill is a passive whose two parameters the game labels **Min % Chance** and **Max % Chance**, set to 10 and 100. Its curve between them is a diminishing-returns calculation that lives in the engine rather than in any column an extraction can read — which is why this site publishes the floor and the ceiling and refuses to draw a straight line between them. A per-level table for Pierce is a table somebody invented.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "Critical Strike works the same way",
+        text: "Critical Strike, Dodge, Avoid and Evade all use the same shape: a stated starting chance, a stated ceiling, and a curve the tables do not contain. Any guide that prints exact per-level values for them is filling in a gap rather than reading one.",
+      },
+      {
+        type: "heading",
+        text: "The skill and your gear are one pool",
+      },
+      {
+        type: "paragraph",
+        text: "Piercing Attack from an item adds to the Pierce skill's chance rather than rolling separately, and the total is what the projectile checks against. This is why builds state a *chance to reach* rather than a *number of points to spend* — the points you need depend entirely on what you are wearing.",
+      },
+      {
+        type: "table",
+        headers: ["Source", "Piercing Attack", "Cost"],
+        rows: [
+          ["Razortail", "33%", "A belt slot and 20 Strength"],
+          ["Demon Machine", "66%", "A weapon slot, and 95 Dexterity"],
+          ["Buriza-Do Kyanon", "100%", "A weapon slot, on a slow crossbow base"],
+          ["Pierce (skill)", "10% at level 1, ceiling 100%", "Hard points, plus Penetrate as its prerequisite"],
+        ],
+        caption:
+          "Item values from the pinned blizzhackers/d2data extraction. A Buriza already sits at the ceiling on its own, which is why a Buriza Amazon spends no points on Pierce at all.",
+      },
+      {
+        type: "heading",
+        text: "Which skills it actually helps",
+      },
+      {
+        type: "paragraph",
+        text: "This is the part that decides whether Razortail belongs on a build's list. Pierce is a property of *projectiles*. A skill that fires one gets everything from it; a skill that swings a weapon gets nothing.",
+      },
+      {
+        type: "table",
+        headers: ["Skill", "Does pierce help?", "Why"],
+        rows: [
+          [
+            "Lightning Fury",
+            "**Enormously**",
+            "The javelin passes through the target and every enemy it passes releases another burst of bolts. This multiplies the skill rather than adding to it.",
+          ],
+          [
+            "Multiple Shot, Strafe",
+            "Yes",
+            "Each arrow that pierces hits the row behind the one you aimed at.",
+          ],
+          [
+            "Exploding, Immolation and Freezing Arrow",
+            "Yes",
+            "The arrow explodes on each impact, so a pierced arrow detonates more than once.",
+          ],
+          [
+            "Poison Javelin, Plague Javelin, Lightning Bolt",
+            "Yes",
+            "All three are thrown, and all three travel past what they hit.",
+          ],
+          [
+            "Guided Arrow",
+            "**No**",
+            "It seeks one target and ends on it. Pierce is wasted on a Guided Arrow bar.",
+          ],
+          [
+            "Charged Strike, Lightning Strike, Jab, Fend, Impale",
+            "**No**",
+            "Melee attacks. Nothing leaves the weapon, so there is nothing to pierce with.",
+          ],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        title: "Pierce does not help the skill it is most often bought for",
+        text: "A javelin Amazon presses Lightning Fury to clear and Charged Strike to kill bosses. Pierce is the single biggest multiplier on the first and worth exactly nothing on the second — so a Razortail is a clearing item, and swapping to a defensive belt for a boss costs you no single-target damage at all.",
+      },
+      {
+        type: "heading",
+        text: "Where it stops paying",
+      },
+      {
+        type: "paragraph",
+        text: "Pierce checks once per target, so its value falls off in thin crowds and rises steeply in dense ones. In the Secret Cow Level or the Chaos Sanctuary a high total is worth more than an equivalent amount of raw damage; against a lone boss it is worth nothing at all. That asymmetry is why the farming lists on the javelin and bow pages are ordered by density rather than by area level.",
+      },
+      {
+        type: "refs",
+        title: "Items that carry Piercing Attack",
+        refs: [
+          { kind: "unique", slug: "razortail" },
+          { kind: "unique", slug: "buriza-do-kyanon" },
+          { kind: "unique", slug: "demon-machine" },
+        ],
+      },
+    ],
+    related: ["resistances-and-immunities"],
+    confidence: "verified",
+  },
 ];

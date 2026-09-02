@@ -387,4 +387,116 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
       },
     ],
   },
+
+  pierce: {
+    name: "Pierce",
+    summary:
+      "Por que um único atributo multiplica quatro builds de Amazon e não faz absolutamente nada por outras três, e por que ninguém publica uma tabela por nível para ele.",
+    keyFacts: [
+      "Pierce permite que um projétil siga adiante depois de acertar um alvo e continue viajando.",
+      "A skill e todas as fontes de equipamento são um pool só, e as colunas do próprio jogo dão a ele um piso de 10% e um teto de 100%.",
+      "Vale só para projéteis. Um ataque corpo a corpo não perfura, não importa o que o seu total diga.",
+      "No Lightning Fury ele multiplica em vez de somar: cada inimigo que a javelin atravessa libera uma nova rajada de raios.",
+      "Guided Arrow não perfura. Ele persegue um alvo único e para nele.",
+    ],
+    body: [
+      {
+        type: "paragraph",
+        text: "Pierce é o multiplicador de força da Amazon e o número mais mal compreendido da ficha dela. Duas coisas confundem: ele é ao mesmo tempo uma skill e um atributo de item com um total compartilhado, e o valor dele oscila entre *definir a build* e ser *literalmente zero*, dependendo de qual botão você está apertando.",
+      },
+      { type: "heading", text: "O que dizem as colunas do próprio jogo" },
+      {
+        type: "paragraph",
+        text: "A skill Pierce é uma passiva cujos dois parâmetros o jogo rotula como **Min % Chance** e **Max % Chance**, definidos em 10 e 100. A curva entre eles é um cálculo de retornos decrescentes que vive no motor, e não em nenhuma coluna que uma extração consiga ler — e é por isso que este site publica o piso e o teto e se recusa a traçar uma reta entre os dois. Uma tabela de Pierce por nível é uma tabela que alguém inventou.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "Critical Strike funciona igual",
+        text: "Critical Strike, Dodge, Avoid e Evade usam a mesma forma: uma chance inicial declarada, um teto declarado, e uma curva que as tabelas não contêm. Qualquer guia que imprima valores exatos por nível para eles está preenchendo uma lacuna, não lendo uma.",
+      },
+      { type: "heading", text: "A skill e o seu equipamento são um pool só" },
+      {
+        type: "paragraph",
+        text: "Piercing Attack vindo de um item soma à chance da skill Pierce em vez de rolar separado, e é o total que o projétil consulta. É por isso que as builds declaram uma *chance a alcançar* em vez de um *número de pontos a gastar* — os pontos de que você precisa dependem inteiramente do que você está usando.",
+      },
+      {
+        type: "table",
+        headers: ["Fonte", "Piercing Attack", "Custo"],
+        rows: [
+          ["Razortail", "33%", "Um slot de cinto e 20 de Strength"],
+          ["Demon Machine", "66%", "Um slot de arma, e 95 de Dexterity"],
+          ["Buriza-Do Kyanon", "100%", "Um slot de arma, numa base de besta lenta"],
+          [
+            "Pierce (skill)",
+            "10% no nível 1, teto de 100%",
+            "Pontos de skill, mais o Penetrate como pré-requisito",
+          ],
+        ],
+        caption:
+          "Valores de item vindos da extração fixada de blizzhackers/d2data. Um Buriza já fica no teto sozinho, e é por isso que uma Amazon de Buriza não gasta ponto nenhum em Pierce.",
+      },
+      { type: "heading", text: "Quais skills ele realmente ajuda" },
+      {
+        type: "paragraph",
+        text: "Esta é a parte que decide se o Razortail entra na lista de uma build. Pierce é uma propriedade de *projéteis*. Uma skill que dispara um recebe tudo dele; uma skill que balança uma arma não recebe nada.",
+      },
+      {
+        type: "table",
+        headers: ["Skill", "Pierce ajuda?", "Por quê"],
+        rows: [
+          [
+            "Lightning Fury",
+            "**Enormemente**",
+            "A javelin atravessa o alvo e cada inimigo por quem ela passa libera outra rajada de raios. Isso multiplica a skill em vez de somar a ela.",
+          ],
+          [
+            "Multiple Shot, Strafe",
+            "Sim",
+            "Cada flecha que perfura acerta a fileira atrás daquela em que você mirou.",
+          ],
+          [
+            "Exploding, Immolation e Freezing Arrow",
+            "Sim",
+            "A flecha explode a cada impacto, então uma flecha que perfura detona mais de uma vez.",
+          ],
+          [
+            "Poison Javelin, Plague Javelin, Lightning Bolt",
+            "Sim",
+            "As três são arremessadas, e as três seguem adiante depois de acertar.",
+          ],
+          [
+            "Guided Arrow",
+            "**Não**",
+            "Ele persegue um alvo e termina nele. Pierce é desperdiçado numa barra de Guided Arrow.",
+          ],
+          [
+            "Charged Strike, Lightning Strike, Jab, Fend, Impale",
+            "**Não**",
+            "Ataques corpo a corpo. Nada sai da arma, então não há nada para perfurar.",
+          ],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        title: "Pierce não ajuda a skill pela qual ele é mais comprado",
+        text: "Uma Amazon de javelin aperta Lightning Fury para limpar e Charged Strike para matar bosses. Pierce é o maior multiplicador da primeira e vale exatamente nada na segunda — então um Razortail é um item de limpeza, e trocar para um cinto defensivo num boss não te custa dano de alvo único nenhum.",
+      },
+      { type: "heading", text: "Onde ele deixa de pagar" },
+      {
+        type: "paragraph",
+        text: "Pierce é checado uma vez por alvo, então o valor dele despenca em grupos ralos e sobe muito em grupos densos. No Secret Cow Level ou no Chaos Sanctuary um total alto vale mais que a mesma quantidade de dano bruto; contra um boss sozinho não vale nada. Essa assimetria é o motivo de as listas de farm das páginas de javelin e de arco serem ordenadas por densidade em vez de por nível de área.",
+      },
+      {
+        type: "refs",
+        title: "Itens que carregam Piercing Attack",
+        refs: [
+          { kind: "unique", slug: "razortail" },
+          { kind: "unique", slug: "buriza-do-kyanon" },
+          { kind: "unique", slug: "demon-machine" },
+        ],
+      },
+    ],
+  },
 };
