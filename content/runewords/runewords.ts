@@ -1358,4 +1358,259 @@ export const runewords: Runeword[] = [
     notes:
       "Runes and base from Blizzard's announcement. Stat lines unpublished and unverified. Level requirement shown is the minimum implied by Ohm (level 57).",
   },
+
+  // -------------------------------------------------------------------------
+  // Bows, crossbows and the Amazon
+  //
+  // Verified against the pinned blizzhackers/d2data extraction (fc46999,
+  // patch 3.3), `json/runes.json`. A runeword's displayed stat block is the
+  // runeword's own properties PLUS each constituent rune's mod for that item
+  // type, which is why Faith reads +330% Enhanced Damage where the table says
+  // 280 — Ohm's weapon mod supplies the other 50. Every list below is composed
+  // that way, from this repository's own rune data.
+  //
+  // The game's `miss` item type covers bows and crossbows, and Amazon-only
+  // bows sit under it (`abow` -> `bow` -> `miss`), so all of these can be made
+  // in a Matriarchal or Grand Matron Bow. Javelins cannot take any runeword at
+  // all: `ajav` resolves to `mele`, not `miss`, and no Amazon javelin base has
+  // a socket.
+  // -------------------------------------------------------------------------
+  {
+    slug: "edge",
+    name: "Edge",
+    summary:
+      "A Thorns aura, 35% attack speed and enormous bonus damage against demons and undead, for three Countess runes.",
+    runes: ["tir", "tal", "amn"],
+    sockets: 3,
+    requiredLevel: 25,
+    tier: "starter",
+    bases: {
+      categories: ["bow", "crossbow"],
+      display: "Any 3-socket Bow or Crossbow",
+      exclusions: [
+        "Missile weapons only. Amazon-only bows count; javelins and spears do not.",
+      ],
+    },
+    stats: [
+      { text: "Level 15 Thorns Aura When Equipped", notable: true },
+      { text: "+35% Increased Attack Speed", notable: true },
+      { text: "+320-380% Damage to Demons", variable: true, notable: true },
+      { text: "+280% Damage to Undead" },
+      { text: "7% Life Stolen per Hit" },
+      { text: "Prevent Monster Heal" },
+      { text: "+5-10 to All Attributes", variable: true },
+      { text: "+2 to Mana after each Kill" },
+      { text: "+75 Poison Damage over 5 seconds" },
+      { text: "15% Reduced Vendor Prices" },
+    ],
+    recommendedBases: [
+      "Any 3-socket bow you can hold. This is a levelling runeword and the base matters far less than having it at all.",
+      "A fast base beats a heavy one — the 35% attack speed compounds with the base's own speed, and nothing here scales off raw weapon damage.",
+    ],
+    usedBy:
+      "Levelling Amazons and Act 1 Rogue mercenaries. The two damage lines cover most of what a character kills between level 25 and Hell, and the reduced vendor prices pay for repairs and shopping along the way.",
+    commonMistakes: [
+      "Expecting the demon and undead bonuses to help against everything. They do nothing at all to an animal, a construct or a human — which is most of Act 3.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "peace",
+    name: "Peace",
+    summary:
+      "+2 Amazon skills and a Valkyrie that summons herself. The cheapest body armor an Amazon will ever want.",
+    runes: ["shael", "thul", "amn"],
+    sockets: 3,
+    requiredLevel: 29,
+    tier: "starter",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 3-socket Body Armor",
+      exclusions: ["Body armor only — not helms, not shields."],
+    },
+    stats: [
+      { text: "+2 to Amazon Skill Levels", notable: true },
+      { text: "+2 to Critical Strike", notable: true },
+      { text: "2% Chance to cast level 15 Valkyrie on striking", notable: true },
+      { text: "4% Chance to cast level 5 Slow Missiles when struck" },
+      { text: "+20% Faster Hit Recovery" },
+      { text: "Cold Resist +30%" },
+      { text: "Attacker Takes Damage of 14" },
+    ],
+    recommendedBases: [
+      "The lightest 3-socket armor you can find. Nothing here scales with defence, so Strength spent on a heavy base is Strength wasted.",
+      "A Breast Plate or Light Plate keeps you in the Fast run speed and costs 30 to 41 Strength.",
+    ],
+    usedBy:
+      "Every Amazon between level 29 and a Fortitude or a Chains of Honor, and it is not only a levelling item — the +2 skills alone match a Skin of the Vipermagi's +1 with a second skill level on top.",
+    commonMistakes: [
+      "**The +2 to Critical Strike is an Oskill**, granted to any class, while the +2 to Amazon Skill Levels is not. A non-Amazon making this gets the passive and the two procs and nothing else.",
+      "Treating the level 15 Valkyrie proc as a replacement for the skill. Two percent per hit summons her occasionally; a build that wants a Valkyrie holding the front puts a point in her.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "melody",
+    name: "Melody",
+    summary:
+      "+3 to Bow and Crossbow Skills and three more passives, in three runes. The Bowazon's levelling weapon.",
+    runes: ["shael", "ko", "nef"],
+    sockets: 3,
+    requiredLevel: 39,
+    tier: "nightmare",
+    bases: {
+      categories: ["bow", "crossbow"],
+      display: "Any 3-socket Bow or Crossbow",
+      exclusions: [
+        "Missile weapons only. Amazon-only bows count; javelins and spears do not.",
+      ],
+    },
+    stats: [
+      { text: "+3 to Bow and Crossbow Skills (Amazon Only)", notable: true },
+      { text: "+3 to Critical Strike (Amazon Only)", notable: true },
+      { text: "+3 to Dodge (Amazon Only)" },
+      { text: "+3 to Slow Missiles (Amazon Only)" },
+      { text: "+300% Damage to Undead" },
+      { text: "+50% Enhanced Damage" },
+      { text: "+20% Increased Attack Speed" },
+      { text: "+10 to Dexterity" },
+      { text: "Knockback" },
+    ],
+    recommendedBases: [
+      "A fast 3-socket bow. The +50% Enhanced Damage is small, so the base's own speed and damage are doing most of the work.",
+      "An Amazon-only bow if one drops with three sockets — its base damage is higher than a common bow's at the same level.",
+    ],
+    usedBy:
+      "Bow Amazons from level 39 until a Faith or an endgame unique replaces it. Twelve skill levels for three low runes is a better rate than anything else available at that point in the game.",
+    commonMistakes: [
+      "Making it for a non-Amazon. Every skill line here is class-restricted, so a Rogue mercenary gets the damage and the attack speed and none of the skills.",
+      "**Knockback fights Strafe and Multiple Shot**, pushing targets out of the sequence you are firing. It is a levelling weapon, and this is one reason it stops being one.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "harmony",
+    name: "Harmony",
+    summary:
+      "A Vigor aura in a bow, plus a Valkyrie any class can summon. The reason bow Amazons move the way they do.",
+    runes: ["tir", "ith", "sol", "ko"],
+    sockets: 4,
+    requiredLevel: 39,
+    tier: "nightmare",
+    bases: {
+      categories: ["bow", "crossbow"],
+      display: "Any 4-socket Bow or Crossbow",
+      exclusions: [
+        "Missile weapons only. Amazon-only bows count; javelins and spears do not.",
+      ],
+    },
+    stats: [
+      { text: "Level 10 Vigor Aura When Equipped", notable: true },
+      { text: "+2-6 to Valkyrie", variable: true, notable: true },
+      { text: "+200-275% Enhanced Damage", variable: true, notable: true },
+      { text: "Adds 55-160 Fire Damage" },
+      { text: "Adds 55-160 Lightning Damage" },
+      { text: "Adds 55-160 Cold Damage" },
+      { text: "+9 to Minimum Damage" },
+      { text: "+9 to Maximum Damage" },
+      { text: "+10 to Dexterity" },
+      { text: "Regenerate Mana 20%" },
+      { text: "+2 to Mana after each Kill" },
+      { text: "+2 to Light Radius" },
+      { text: "Level 20 Revive (25 Charges)" },
+    ],
+    recommendedBases: [
+      "A 4-socket bow you can hold at level 39. Harmony is worn for the aura and the elemental damage, neither of which scales with the base.",
+      "**Not a weapon-swap item.** An aura only runs from the weapon set you are actually holding, so a Harmony parked on the swap gives you nothing until you switch to it.",
+    ],
+    usedBy:
+      "Bow Amazons of every kind, and plenty of characters who are not Amazons at all — the Valkyrie is an Oskill, so any class that can hold a bow can summon her. Also a standard mercenary bow for the movement speed it gives the whole party.",
+    commonMistakes: [
+      "Expecting the 55-160 elemental damage to break an immunity. It is three separate small elemental lines, and each is resisted normally.",
+      "Reading the Vigor aura as a damage line. It is movement speed and stamina, and on a kiting build that is worth more than it sounds.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "wrath",
+    name: "Wrath",
+    summary:
+      "Decrepify on striking, 20% Crushing Blow and magic damage in a bow. The physical Bowazon's answer to physical immunity.",
+    runes: ["pul", "lum", "ber", "mal"],
+    sockets: 4,
+    requiredLevel: 63,
+    tier: "bis",
+    bases: {
+      categories: ["bow", "crossbow"],
+      display: "Any 4-socket Bow or Crossbow",
+      exclusions: [
+        "Missile weapons only. Amazon-only bows count; javelins and spears do not.",
+      ],
+    },
+    stats: [
+      { text: "30% Chance to cast level 1 Decrepify on striking", notable: true },
+      { text: "5% Chance to cast level 10 Life Tap on striking", notable: true },
+      { text: "Adds 85-120 Magic Damage", notable: true },
+      { text: "20% Chance of Crushing Blow", notable: true },
+      { text: "+375% Damage to Demons" },
+      { text: "+250-300% Damage to Undead", variable: true },
+      { text: "Adds 41-240 Lightning Damage" },
+      { text: "+100 to Attack Rating against Demons" },
+      { text: "Prevent Monster Heal" },
+      { text: "Cannot Be Frozen" },
+      { text: "+10 to Energy" },
+    ],
+    recommendedBases: [
+      "A fast 4-socket bow. Every line here is per-hit rather than per-damage, so hit rate is what you are buying.",
+      "**Not an Amazon-only base with high requirements.** Wrath is worth making in whatever 4-socket bow you can hold, because none of its damage comes from the base.",
+    ],
+    usedBy:
+      "Strafe and Multiple Shot Amazons above all. Decrepify halves a target's physical resistance and breaks most physical immunity outright, which is the one thing a pure physical bow build cannot otherwise do; Life Tap is the sustain that lets it stand still and fire.",
+    commonMistakes: [
+      "Comparing it to Faith on raw damage and concluding it loses. It does — Wrath is bought for the curses, the Crushing Blow and the magic damage, none of which Faith has.",
+      "**Decrepify from an item does not stack with a Necromancer's curse.** One curse holds a monster at a time; the last one applied wins.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "ice",
+    name: "Ice",
+    summary:
+      "-20% to Enemy Cold Resistance and a Holy Freeze aura, in a bow. The one runeword a cold Amazon is actually waiting for.",
+    runes: ["amn", "shael", "jah", "lo"],
+    sockets: 4,
+    requiredLevel: 65,
+    tier: "bis",
+    bases: {
+      categories: ["bow", "crossbow"],
+      display: "Any 4-socket Bow or Crossbow",
+      exclusions: [
+        "Missile weapons only. Amazon-only bows count; javelins and spears do not.",
+      ],
+    },
+    stats: [
+      { text: "-20% to Enemy Cold Resistance", notable: true },
+      { text: "+25-30% to Cold Skill Damage", variable: true, notable: true },
+      { text: "Level 18 Holy Freeze Aura When Equipped", notable: true },
+      { text: "+140-210% Enhanced Damage", variable: true },
+      { text: "25% Chance to cast level 22 Frost Nova on striking" },
+      { text: "100% Chance to cast level 40 Blizzard when you Level-Up" },
+      { text: "+20% Increased Attack Speed" },
+      { text: "Ignore Target's Defense" },
+      { text: "20% Deadly Strike" },
+      { text: "7% Life Stolen per Hit" },
+      { text: "+3.125% Extra Gold from Monsters per Character Level" },
+    ],
+    recommendedBases: [
+      "A fast 4-socket bow — Matriarchal Bow if you can reach 187 Dexterity, a Crusader Bow if you cannot.",
+      "The Holy Freeze aura already chills everything nearby, so a base with its own cold damage adds nothing you do not have.",
+    ],
+    usedBy:
+      "Freezing Arrow Amazons. The −20% enemy cold resistance is applied before the immunity check, and stacked with cold facets it is what keeps a single-element bow build relevant deep into Hell.",
+    commonMistakes: [
+      "Expecting −20% enemy cold resistance to break a cold immune on its own. It does not; against an already-immune monster all resistance reduction works at one fifth effectiveness. It is a damage line against everything that is merely resistant.",
+      "Ignoring **Holy Freeze on a Freezing Arrow build**. The aura chills, the skill freezes, and a frozen monster cannot be chilled further — the two overlap more than the stat block suggests.",
+    ],
+    confidence: "verified",
+  },
 ];

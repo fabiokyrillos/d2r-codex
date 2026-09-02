@@ -504,4 +504,111 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     notes:
       "O `Oskill` no Werebear e no Shape Shifting é a parte incomum: um Oskill é concedido a todas as classes em vez de só à dona da árvore. Essa única palavra é o que torna a Werebear Sorceress e o Werebear Barbarian possíveis.",
   },
+
+  // Arcos, bestas e a Amazon
+  edge: {
+    summary:
+      "Uma aura de Thorns, 35% de velocidade de ataque e um dano bônus enorme contra demônios e mortos-vivos, por três runas da Countess.",
+    basesDisplay: "Qualquer Bow ou Crossbow de 3 sockets",
+    basesExclusions: [
+      "Só armas de projétil. Arcos exclusivos de Amazon contam; javelins e spears não.",
+    ],
+    recommendedBases: [
+      "Qualquer arco de 3 sockets que você consiga segurar. Esta é uma runeword de evolução e a base importa muito menos do que simplesmente tê-la.",
+      "Uma base rápida vence uma pesada — os 35% de velocidade de ataque compõem com a velocidade da própria base, e nada aqui escala com o dano bruto da arma.",
+    ],
+    usedBy:
+      "Amazons em evolução e mercenários Rogue do Ato 1. As duas linhas de dano cobrem a maior parte do que um personagem mata entre o nível 25 e o Hell, e o desconto com vendedores paga os reparos e as compras pelo caminho.",
+    commonMistakes: [
+      "Esperar que os bônus contra demônios e mortos-vivos ajudem contra tudo. Eles não fazem nada contra um animal, um construto ou um humano — que é a maior parte do Ato 3.",
+    ],
+  },
+  peace: {
+    summary:
+      "+2 skills de Amazon e uma Valkyrie que se invoca sozinha. A armadura mais barata que uma Amazon vai querer na vida.",
+    basesDisplay: "Qualquer Armadura de 3 sockets",
+    basesExclusions: ["Só armadura de corpo — não elmos, não escudos."],
+    recommendedBases: [
+      "A armadura de 3 sockets mais leve que você encontrar. Nada aqui escala com defesa, então Strength gasta numa base pesada é Strength desperdiçada.",
+      "Uma Breast Plate ou uma Light Plate mantém você na velocidade de corrida Fast e custa de 30 a 41 de Strength.",
+    ],
+    usedBy:
+      "Toda Amazon entre o nível 29 e um Fortitude ou um Chains of Honor, e não é só um item de evolução — os +2 skills sozinhos superam o +1 de um Skin of the Vipermagi com um nível de skill a mais por cima.",
+    commonMistakes: [
+      "**Os +2 em Critical Strike são um Oskill**, concedido a qualquer classe, enquanto os +2 em Amazon Skill Levels não são. Quem não é Amazon e montar esta runeword fica com a passiva e os dois procs, e mais nada.",
+      "Tratar o proc de Valkyrie nível 15 como substituto da skill. Dois por cento por golpe a invoca de vez em quando; uma build que quer uma Valkyrie segurando a frente coloca um ponto nela.",
+    ],
+  },
+  melody: {
+    summary:
+      "+3 em Bow and Crossbow Skills e mais três passivas, em três runas. A arma de evolução da Bowazon.",
+    basesDisplay: "Qualquer Bow ou Crossbow de 3 sockets",
+    basesExclusions: [
+      "Só armas de projétil. Arcos exclusivos de Amazon contam; javelins e spears não.",
+    ],
+    recommendedBases: [
+      "Um arco rápido de 3 sockets. Os +50% de Enhanced Damage são pouco, então a velocidade e o dano da própria base fazem quase todo o trabalho.",
+      "Um arco exclusivo de Amazon, se cair um com três sockets — o dano base dele é maior que o de um arco comum do mesmo nível.",
+    ],
+    usedBy:
+      "Amazons de arco a partir do nível 39, até um Faith ou um unique de endgame substituí-la. Doze níveis de skill por três runas baixas é uma taxa melhor que qualquer outra coisa disponível naquele ponto do jogo.",
+    commonMistakes: [
+      "Montar para quem não é Amazon. Toda linha de skill aqui é restrita à classe, então um mercenário Rogue fica com o dano e a velocidade de ataque e nenhuma skill.",
+      "**Knockback briga com Strafe e Multiple Shot**, empurrando os alvos para fora da sequência que você está disparando. É uma arma de evolução, e este é um dos motivos de ela deixar de ser.",
+    ],
+  },
+  harmony: {
+    summary:
+      "Uma aura de Vigor num arco, mais uma Valkyrie que qualquer classe pode invocar. O motivo de Amazons de arco se moverem como se movem.",
+    basesDisplay: "Qualquer Bow ou Crossbow de 4 sockets",
+    basesExclusions: [
+      "Só armas de projétil. Arcos exclusivos de Amazon contam; javelins e spears não.",
+    ],
+    recommendedBases: [
+      "Um arco de 4 sockets que você consiga segurar no nível 39. O Harmony é usado pela aura e pelo dano elemental, e nenhum dos dois escala com a base.",
+      "**Não é um item de weapon swap.** Uma aura só funciona a partir do conjunto de armas que você está de fato segurando, então um Harmony guardado no swap não te dá nada até você trocar para ele.",
+    ],
+    usedBy:
+      "Amazons de arco de todo tipo, e muita gente que nem é Amazon — a Valkyrie é um Oskill, então qualquer classe capaz de segurar um arco pode invocá-la. Também é um arco de mercenário padrão, pela velocidade de movimento que ele dá ao grupo inteiro.",
+    commonMistakes: [
+      "Esperar que os 55-160 de dano elemental quebrem uma imunidade. São três linhas elementais pequenas e separadas, e cada uma é resistida normalmente.",
+      "Ler a aura de Vigor como uma linha de dano. Ela é velocidade de movimento e stamina, e numa build de kite isso vale mais do que parece.",
+    ],
+  },
+  wrath: {
+    summary:
+      "Decrepify ao golpear, 20% de Crushing Blow e dano mágico num arco. A resposta da Bowazon física à imunidade física.",
+    basesDisplay: "Qualquer Bow ou Crossbow de 4 sockets",
+    basesExclusions: [
+      "Só armas de projétil. Arcos exclusivos de Amazon contam; javelins e spears não.",
+    ],
+    recommendedBases: [
+      "Um arco rápido de 4 sockets. Toda linha aqui é por golpe em vez de por dano, então o que você está comprando é frequência de acerto.",
+      "**Não uma base exclusiva de Amazon com requisitos altos.** Vale montar o Wrath em qualquer arco de 4 sockets que você consiga segurar, porque nenhum dano dele vem da base.",
+    ],
+    usedBy:
+      "Amazons de Strafe e Multiple Shot acima de tudo. Decrepify corta pela metade a resistência física do alvo e quebra a maior parte da imunidade física de vez, que é a única coisa que uma build física pura de arco não consegue fazer sozinha; Life Tap é o sustento que permite ficar parada e atirar.",
+    commonMistakes: [
+      "Comparar com o Faith em dano bruto e concluir que ele perde. E perde mesmo — o Wrath é comprado pelas maldições, pelo Crushing Blow e pelo dano mágico, e o Faith não tem nenhum dos três.",
+      "**Decrepify de um item não empilha com a maldição de um Necromancer.** Uma maldição por monstro de cada vez; a última aplicada vence.",
+    ],
+  },
+  ice: {
+    summary:
+      "-20% de resistência a frio do inimigo e uma aura de Holy Freeze, num arco. A única runeword que uma Amazon de frio realmente espera.",
+    basesDisplay: "Qualquer Bow ou Crossbow de 4 sockets",
+    basesExclusions: [
+      "Só armas de projétil. Arcos exclusivos de Amazon contam; javelins e spears não.",
+    ],
+    recommendedBases: [
+      "Um arco rápido de 4 sockets — Matriarchal Bow se você alcançar 187 de Dexterity, um Crusader Bow se não alcançar.",
+      "A aura de Holy Freeze já aplica chill em tudo por perto, então uma base com dano de frio próprio não acrescenta nada que você já não tenha.",
+    ],
+    usedBy:
+      "Amazons de Freezing Arrow. Os −20% de resistência a frio do inimigo são aplicados antes da checagem de imunidade, e empilhados com cold facets é o que mantém uma build de arco de elemento único relevante fundo no Hell.",
+    commonMistakes: [
+      "Esperar que −20% de resistência a frio do inimigo quebre um imune a frio sozinho. Não quebra; contra um monstro já imune toda redução de resistência opera com um quinto da eficácia. É uma linha de dano contra tudo que é apenas resistente.",
+      "Ignorar o **Holy Freeze numa build de Freezing Arrow**. A aura aplica chill, a skill congela, e um monstro congelado não pode ser chillado ainda mais — as duas coisas se sobrepõem mais do que a lista de status sugere.",
+    ],
+  },
 };
