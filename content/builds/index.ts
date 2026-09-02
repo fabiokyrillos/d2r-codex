@@ -24,6 +24,7 @@ import { multipleShotAmazon } from "./multiple-shot-amazon";
 import { freezingArrowAmazon } from "./freezing-arrow-amazon";
 import { explodingArrowAmazon } from "./exploding-arrow-amazon";
 import { poisonJavelinAmazon } from "./poison-javelin-amazon";
+import { jabFendAmazon } from "./jab-fend-amazon";
 
 /**
  * Build registry.
@@ -32,4 +33,4 @@ import { poisonJavelinAmazon } from "./poison-javelin-amazon";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon, jabFendAmazon];

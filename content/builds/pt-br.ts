@@ -7435,4 +7435,295 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "jab-fend-amazon": {
+    summary:
+      "Uma lança, um escudo e três ataques físicos sem nenhuma sinergia entre eles. A Amazon que luta onde o Barbarian luta.",
+    playstyle:
+      "Você entra com o escudo levantado e a lança em riste. O Fend ataca cada inimigo adjacente numa sequência — mais um alvo por nível de skill — e é assim que você limpa. O Jab são três estocadas rápidas num alvo único, e é a skill de boss por um motivo não óbvio: Crushing Blow tira uma porcentagem da vida atual por *golpe*, e o Jab acerta três deles por ataque. O Impale é a abertura, uma estocada enorme que não pode ser interrompida e que deixa lento o que acerta. Não há dano elemental em lugar nenhum e nenhuma sinergia entre nada disso — a árvore simplesmente não oferece uma — então a build inteira é a arma, as passivas, e o que você conseguir colocar como efeito ao acertar.",
+    strengths: [
+      "**Um ponto no Impale são 300% de dano de arma** — o melhor ponto único da classe",
+      "O Jab acerta três golpes por ataque, então Crushing Blow, roubo de vida e Amplify Damage disparam três vezes",
+      "O Fend acerta mais um alvo adjacente por nível de skill, sem teto na coluna dele",
+      "Um escudo, uma Valkyrie, um Decoy e o maior investimento em esquiva do site",
+      "Barata: 5 e 8 de mana, e nada no plano precisa de uma runa acima de Amn para começar",
+    ],
+    weaknesses: [
+      "**Nenhuma sinergia.** Nada neste plano multiplica nada, então o teto de dano é o da arma",
+      "**Imunidade física é total** — e, ao contrário das builds de arco, você está parada ao lado dela enquanto ela não morre",
+      "O Fend é uma animação longa. Ser atingida no meio pode te prender nela, e esse é o principal assassino da build",
+      "O Impale gasta durabilidade da arma a cada golpe, então é abertura e não rotação",
+      "**Velocidade de ataque é uma pergunta por arma** — uma javelin, uma Ceremonial Pike e uma Matriarchal Pike se comportam diferente no mesmo total",
+    ],
+    flexPoints: [
+      "**O plano gasta 109 de 110 e não contém nenhuma sinergia**, porque Jab, Impale e Fend não têm. Nada aqui multiplica nada — os pontos compram a escala da própria skill ou uma passiva, e é essa a árvore inteira.",
+      "**O Impale é o ponto mais gasto errado.** Ele são 300% de dano de arma por um ponto e 775% no vinte, mas gasta durabilidade a cada golpe e não dá para spammar. Mantenha em um, a menos que você esteja montando especificamente em torno de uma abertura enorme.",
+      "O bloco de Dodge, Avoid e Evade é onde um personagem de Hardcore acrescenta e um de Softcore corta. As curvas deles são decrescentes, então os primeiros pontos valem muito mais que os últimos.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o escudo e a lança. Um Stormshield são 156, uma Matriarchal Pike 132 — decida entre o escudo e a arma de duas mãos antes de gastar.",
+      dexterity:
+        "O suficiente para bloqueio máximo, e ela aumenta attack rating e dano de arma por cima. Aqui nunca é um atributo morto.",
+      vitality: "Todo o resto, e ela importa mais aqui do que em qualquer outro lugar do site.",
+      energy: "Nenhum. O Fend são 5 de mana e o Jab 8 — a barra mais barata que a Amazon tem.",
+      notes: [
+        "**A primeira decisão de verdade é uma mão ou duas.** Uma javelin com um Stormshield te dá bloqueio, redução de dano e uma Valkyrie segurando a linha; uma Matriarchal Pike com um Passion te dá muito mais dano e Berserk para os imunes a físico. Esta página assume o escudo, e diz onde a lança vence.",
+        "Bloqueio máximo importa mais aqui do que em qualquer outra Amazon e custa menos que em qualquer outra classe — a Amazon divide a tabela de bloqueio com o Paladin.",
+        "Roubo de vida não é opcional. Dracul's Grasp, um Andariel's Visage ou uma Titan's Revenge — pegue ao menos um antes do Hell.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "O Fend é uma animação longa e ser arrancada dela é o que mata esta build. Este é o número a alcançar antes do Hell e ele não é negociável.",
+      "fhr-52":
+        "Um Shael num escudo mais uma armadura Peace alcançam, e num personagem parado no corpo a corpo o frame vale o socket.",
+      "fbr-32":
+        "O bloqueio é metade da defesa desta build, e bloquear te prende numa animação própria. 32% é onde isso para de se somar à do Fend.",
+    },
+    skillNotes: {
+      fend: "**70% de dano de arma na base e +10% por nível, mais um alvo adjacente a mais por nível.** A skill de limpeza, e a que te prende no lugar enquanto roda.",
+      jab: "**Três estocadas num ataque**, a −15% de dano na base subindo 3% por nível. Os três golpes são o ponto: Crushing Blow, roubo de vida e qualquer maldição ao acertar disparam por golpe.",
+      "critical-strike":
+        "Uma chance de dobrar dano físico, e cada ponto do seu dano é físico. A chance sobe em direção ao teto de 80% que as colunas do jogo nomeiam.",
+      penetrate:
+        "**35% de attack rating mais 10% por nível.** O Fend carrega 40% mais 10% por conta própria e o Jab só 10% mais 9%, então é isto que faz a skill de boss conectar.",
+      dodge:
+        "**Uma chance de desviar por completo de um ataque corpo a corpo parada ou atacando** — que descreve tudo que esta build faz. Dez pontos, mais do que qualquer outra página aqui gasta.",
+      avoid:
+        "O mesmo para ataques à distância e mágicos enquanto você está no meio da sequência. Grupos à distância são o que pune uma lança.",
+      evade:
+        "O mesmo de novo andando ou correndo — a brecha que os outros dois deixam aberta, e o pré-requisito da Valkyrie.",
+      impale:
+        "**300% de dano de arma no nível 1**, mais uma lentidão de até 75%, por um único ponto. Pré-requisito do Fend, e vale apertar em vez de só possuir — ele gasta durabilidade, então use como abertura.",
+      valkyrie:
+        "Um segundo corpo na luta, e ela herda os dez e os sete pontos de esquiva acima.",
+      decoy:
+        "Pré-requisito da Valkyrie, e algo para um grupo à distância atirar enquanto você está presa num Fend.",
+      "slow-missiles":
+        "Pré-requisito do Decoy, e a resposta aos ataques à distância que matam Amazons de lança.",
+      "inner-sight":
+        "Pré-requisito do Slow Missiles, e ele reduz a defesa de tudo que o Fend está prestes a acertar.",
+    },
+    immunityPlan:
+      "**Cada ponto de dano desta build é físico e ela não tem segundo elemento**, o que faz da imunidade física uma parede em vez de um atraso — e, ao contrário das páginas de arco, você está parada ao lado da coisa que não está morrendo. Quatro respostas, na ordem em que a maioria as alcança. **Amplify Damage de um Atma's Scarab** corta pela metade a resistência física do alvo e normalmente quebra a imunidade de vez, e o Jab aplica isso três vezes por ataque, que é o que torna um proc de cinco por cento confiável aqui. **Berserk de um Passion** converte o seu dano físico em mágico por inteiro; é a solução mais limpa e custa o escudo, que nesta build é metade da defesa. **O seu mercenário** com uma arma elemental mata o que você não toca, pelo preço de uma contratação. E **um charm Bone Break** é a resposta direta com o pior encaixe: a penalidade dele são 10 a 20 pontos da sua própria redução de dano físico em vez de uma resistência, e dano físico é justamente o que os monstros em alcance corpo a corpo estão te causando. Leia a página dele antes de pegar um, carregue pela zona, e tire depois.",
+    mercenaryNotes:
+      "O mercenário do Ato 2 com **Might**, cuja aura aumenta o dano da sua arma — e numa build sem nenhuma sinergia, uma aura que multiplica a arma vale mais aqui do que em qualquer outra página. Dê a ele um **Insight** se quiser a mana, embora esta barra quase não use, e depois um **Pride** pela Concentration ou uma arma elemental para ele ferir os imunes a físico que você não fere. **Holy Freeze é a escolha de Hardcore e é forte**: o Fend te prende numa animação, então tudo que estiver lento é algo que chega depois de a animação terminar, e não durante.",
+    farmingWhy: {
+      "ancient-tunnels-hell":
+        "Nível de área 85 e denso, com fogo e veneno entre as imunidades registradas em vez de físico. A melhor zona do site para uma build de um tipo de dano só, sendo esse tipo o físico.",
+      "mausoleum-hell":
+        "Nível de área 85, a segundos de um waypoint, imune a veneno e frio em vez de físico, e cheio de mortos-vivos que se amontoam em volta de um Fend.",
+      "travincal-hell":
+        "O Council é imune a fogo e raio, não a físico, e eles ficam num grupo que uma sequência de Fend alcança. Uma das runs mais rápidas disponíveis a esta build.",
+      "pindleskin-hell":
+        "Dez segundos, monstro nível 86, um alvo único e nenhuma multidão. Jab mais Crushing Blow é exatamente o que esta luta pede.",
+      "andariel-hell":
+        "A run de boss mais curta do jogo, imune a veneno e não a físico, e ela fica parada. Jab com Life Tap ativo é quase sem risco.",
+      "pit-hell":
+        "Nível de área 85 e curto, mas imunidade física faz parte da população registrada — uma zona de Amplify Damage em vez de uma zona de graça.",
+      "chaos-sanctuary-hell":
+        "Imunidade física na população, e **Iron Maiden dos Oblivion Knights reflete uma sequência inteira de Fend de volta em você**. A zona mais perigosa do site para esta build.",
+    },
+    levelingPath: {
+      summary:
+        "**Esta build evolui como ela mesma desde o nível 1**, coisa que só as builds de arco conseguem também. O Jab está disponível na hora, o Impale no 12 são 300% de dano de arma por um único ponto, e o Fend no 24 é o botão de limpeza que você mantém. Coloque os pontos passivos iniciais no Critical Strike no caminho — é uma porcentagem que funciona desde o primeiro ponto e nunca deixa de ser o maior multiplicador da build.",
+      respecAt: "Não é necessário. Guarde os três tokens da Den of Evil.",
+    },
+    selfFoundNotes:
+      "**Uma das melhores builds self-found do site**, e é a ausência de sinergias que faz isso. Não há runeword a alcançar, mastery a desbloquear nem −resistência a empilhar; a build é uma arma e algumas passivas, e funciona desde o nível 1 com o que um vendedor tiver. Titan's Revenge, String of Ears, Gore Rider, Vampire Gaze e Raven Frost são todos drops comuns do Hell, Peace e Spirit são runas da Countess, e o Fortitude é o único item caro da lista — e vale as runas, já que Enhanced Damage é o único multiplicador que esta build tem. Imunidade física é a única coisa que o solo self-found não conserta barato, e um Atma's Scarab é um achado realista.",
+    hardcoreNotes:
+      "Exigente mas genuinamente sobrevivível, e o plano reflete isso — dez pontos de Dodge e sete de cada um de Avoid e Evade é o maior investimento em esquiva deste site, porque esta é a única Amazon cujo trabalho inteiro é ficar ao lado das coisas. **A animação do Fend é o perigo específico**: ela roda até o fim, então um grupo que te alcança no meio ganha golpes de graça, e é por isso que 32% de recuperação de golpe e 32% de bloqueio estão marcados como obrigatórios em vez de recomendados. **Iron Maiden é o outro** — os Oblivion Knights refletem dano físico e o Fend são vários golpes por segundo dele, então um grupo amaldiçoado no Chaos Sanctuary pode encerrar um personagem de uma vez. Fique atenta à maldição e saia de dentro dela. Dracul's Grasp antes de tudo, Holy Freeze no mercenário, e nada de Bone Break.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 24 pelo Fend, jogando de Jab e um ponto de Impale.",
+        nextUpgrade: "Nível 24 pelo Fend, e uma arma com dano de verdade.",
+        notes:
+          "**Jab desde o nível 1 e um ponto de Impale no 12 é um kit completo para o Normal inteiro.** O Impale com um ponto já causa 300% de dano de arma, que é mais do que qualquer outro ponto único que a Amazon possa gastar tão cedo.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer spear ou javelin com +Javelin and Spear Skills",
+            why: "Vendedores vendem lanças mágicas pelo Ato 1 e pelo Ato 2 inteiros. Um nível de skill vence uma rolagem de dano aqui porque toda skill escala com a arma de qualquer forma.",
+            lookFor: ["+2-3 Javelin and Spear Skills", "Increased Attack Speed"],
+          },
+          "offhand-0": {
+            why: "Resistências por três runas da Countess, e você vai bloquear o tempo todo.",
+          },
+          "body-0": {
+            why: "25% de Faster Hit Recovery a partir do nível 17, que numa Amazon de lança é o atributo de sobrevivência.",
+          },
+          "helm-0": { why: "+1 em Todas as Skills por duas runas comuns." },
+        },
+      },
+      nightmare: {
+        goal: "Fend online, roubo de vida no lugar, e um escudo que valha bloquear.",
+        nextUpgrade: "Um Fortitude, e o Dracul's Grasp pelo Life Tap.",
+        notes:
+          "**Velocidade de ataque importa e nenhum número de Amazon dá conta.** Uma javelin de uma mão, uma Ceremonial Pike e uma Matriarchal Pike se comportam diferente na mesma porcentagem, e a animação do Fend não é a do Jab. Pegue velocidade de ataque onde for de graça e julgue pela arma que você está segurando.",
+        picks: {
+          "weapon-0": {
+            why: "+4 níveis de skill entre as duas linhas, 5-9% de roubo de vida, e de uma mão — que é o que mantém o escudo no seu braço.",
+          },
+          "weapon-0-alt0": {
+            why: "Numa lança: muito mais dano, 25% de velocidade de ataque, e **+1 em Berserk, que converte dano físico em mágico** e é a resposta de duas mãos à imunidade física.",
+            sockets: "Dol, Ort, Eld e Lem numa lança de 4 sockets.",
+          },
+          "offhand-0": {
+            why: "+2 skills e a chance de bloqueio que a tabela da Amazon deixa barata.",
+            sockets: "Tal, Thul, Ort e Amn num escudo de 4 sockets.",
+          },
+          "body-0": {
+            why: "+2 skills de Amazon, +2 Critical Strike e 20% de Faster Hit Recovery por três runas baratas.",
+          },
+          "helm-0": {
+            why: "Roubo de vida, roubo de mana e redução de dano — três coisas que a árvore de lança não fornece.",
+          },
+          "belt-0": {
+            why: "Roubo de vida e até 15% de redução de dano. **O Razortail é uma armadilha nesta build** — pierce não faz nada por um ataque corpo a corpo.",
+          },
+          "boots-0": {
+            why: "Crushing Blow, Deadly Strike e Open Wounds, e o Jab aplica os três três vezes por ataque.",
+          },
+        },
+        charms: [{ why: "75% antes do Hell, num personagem que vai ficar cercado." }],
+      },
+      "early-hell": {
+        goal: "Enhanced Damage, Life Tap, e bloqueio máximo.",
+        nextUpgrade: "Um Atma's Scarab, e depois uma decisão sobre o Bone Break.",
+        notes:
+          "**A imunidade física começa aqui e é absoluta.** Você não tem nenhum segundo tipo de dano, a menos que tenha pegado o Passion. O próximo tier é sobre comprar um.",
+        picks: {
+          "weapon-0": {
+            why: "Quatro níveis de skill e roubo de vida, de uma mão. O escudo vale mais que o dano que uma arma de duas mãos acrescentaria nesta etapa.",
+          },
+          "offhand-0": {
+            why: "35% de redução de dano e o melhor bloqueio do jogo, quando os 156 de Strength estiverem pagos.",
+          },
+          "offhand-0-alt0": {
+            why: "Mantenha os dois níveis de skill até a Strength existir.",
+          },
+          "body-0": {
+            why: "**+300% de Enhanced Damage, e esta build não é nada além do que o Enhanced Damage multiplica.** O maior upgrade único da lista.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida por nível e 10% de redução de dano com apenas 50 de Strength.",
+          },
+          "gloves-0": {
+            why: "**Life Tap ao golpear, e o Jab golpeia três vezes por ataque.** Nada mais no slot chega perto numa Amazon corpo a corpo.",
+          },
+          "belt-0": { why: "Roubo de vida e redução de dano." },
+          "amulet-0": {
+            why: "+1 skills, 20% de velocidade de ataque e Deadly Strike que escala com o nível — uma segunda rolagem de dobra ao lado do Critical Strike.",
+          },
+          "boots-0": {
+            why: "Crushing Blow contra qualquer coisa com muita vida, aplicado por golpe.",
+          },
+        },
+        charms: [{ why: "75% e vida — as duas coisas importam mais no corpo a corpo do que em qualquer outro lugar." }],
+      },
+      budget: {
+        goal: "Uma resposta à imunidade física, e o dano para usá-la.",
+        nextUpgrade: "Um charm Bone Break, e as últimas rolagens de charm.",
+        picks: {
+          "weapon-0": { why: "Skills, roubo de vida e um braço de escudo livre." },
+          "weapon-0-alt0": {
+            why: "A bifurcação de duas mãos: **Berserk converte o seu dano físico em mágico**, que é a resposta mais limpa que um personagem corpo a corpo tem a um imune a físico. Você abre mão do escudo por isso.",
+          },
+          "amulet-0": {
+            why: "**Amplify Damage ao golpear corta pela metade a resistência física e normalmente quebra a imunidade**, e o Jab aplica isso três vezes por ataque. Nesta build o amuleto é um tipo de dano, não uma linha de status.",
+          },
+          "amulet-0-alt0": {
+            why: "Mais velocidade de ataque e Deadly Strike, se o Passion ou o mercenário estiverem dando conta dos imunes.",
+          },
+          "body-0": { why: "+300% de Enhanced Damage e 200% de defesa aumentada." },
+          "helm-0": {
+            why: "+2 skills, 20% de velocidade de ataque e até 10% de roubo de vida. Pague os −30% de resistência a fogo em outro lugar antes.",
+            sockets: "Uma runa Um devolve a maior parte da resistência a fogo.",
+          },
+          "offhand-0": { why: "35% de redução de dano e bloqueio." },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": { why: "Roubo de vida e redução de dano." },
+          "ring1-0": {
+            why: "Cannot Be Frozen e attack rating. Velocidade de ataque reduzida por chill é pior justamente para quem fica parada golpeando.",
+          },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Crushing Blow, Deadly Strike e Open Wounds." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon." },
+          { why: "Os únicos charms que aumentam Fend e Jab ao mesmo tempo." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, na Amazon que mais precisa da vida." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Duas formas de ferir um imune a físico, e bloqueio suficiente para ficar parada fazendo isso.",
+        nextUpgrade: "Um Bone Break para as zonas que o Amplify Damage não cobre.",
+        picks: {
+          "weapon-0": {
+            why: "Quatro níveis de skill, roubo de vida, e um braço de escudo. Toda alternativa troca o escudo por dano.",
+          },
+          "offhand-0": {
+            why: "35% de redução de dano e o melhor bloqueio do jogo, com uma joia de dano no socket.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage, que é o multiplicador de dano da build inteira.",
+          },
+          "helm-0": {
+            why: "+2 skills, velocidade de ataque e roubo de vida, com uma Um no socket.",
+          },
+          "gloves-0": { why: "Life Tap ao golpear, aplicado três vezes por Jab." },
+          "amulet-0": {
+            why: "Amplify Damage ao golpear — a resposta de dano da build, não um atributo.",
+          },
+          "belt-0": { why: "Roubo de vida e até 15% de redução de dano." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": {
+            why: "Crushing Blow, que é percentual e portanto melhor exatamente contra os bosses para os quais o Jab existe.",
+          },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "Dano e a vida de que uma Amazon corpo a corpo precisa." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "A build termina onde começou: uma arma, um escudo e três ataques sem nada multiplicando eles. **Tudo que resta comprar é Enhanced Damage, efeitos ao acertar e velocidade de ataque**, e velocidade de ataque continua sendo uma pergunta por arma — a animação do Fend não é a do Jab, e uma javelin não é uma Matriarchal Pike. Teste em vez de ler uma tabela.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem máxima de Enhanced Damage, com o roubo de vida e os quatro níveis de skill.",
+            lookFor: ["+200% Enhanced Damage", "9% Life Stolen per Hit"],
+          },
+          "offhand-0": {
+            why: "Redução de dano, bloqueio, e um socket para uma joia de dano.",
+          },
+          "body-0": { why: "+300% de Enhanced Damage." },
+          "helm-0": {
+            why: "+2 skills, velocidade de ataque e roubo de vida, Um no socket.",
+          },
+          "gloves-0": { why: "Life Tap. Nada compete." },
+          "amulet-0": { why: "Amplify Damage ao golpear." },
+          "belt-0": { why: "Roubo de vida e redução de dano." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Crushing Blow e Open Wounds." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "**Leia a página dele antes de carregar.** A penalidade são 10 a 20 pontos da sua própria redução de dano físico, e dano físico é o que os monstros corpo a corpo causam — então nesta build, entre todas, o charm que te deixa ferir um imune a físico também faz cada golpe comum doer mais. Carregue pela zona, nunca como padrão.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+    },
+  },
 };
