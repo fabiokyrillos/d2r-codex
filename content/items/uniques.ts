@@ -395,6 +395,43 @@ export const uniques: UniqueItem[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "andariels-visage",
+    name: "Andariel's Visage",
+    summary:
+      "+2 skills, 20% attack speed and up to 10% life steal — bought with 30 points of your own fire resistance.",
+    quality: "unique",
+    base: "Demonhead",
+    category: "helm",
+    tier: "elite",
+    slots: ["helm"],
+    requiredLevel: 83,
+    requiredStrength: 102,
+    maxSockets: 3,
+    stats: [
+      { text: "+2 to All Skills", notable: true },
+      { text: "+20% Increased Attack Speed", notable: true },
+      { text: "8-10% Life Stolen per Hit", variable: true, notable: true },
+      { text: "Fire Resist -30%", notable: true },
+      { text: "+25-30 to Strength", variable: true },
+      { text: "Poison Resist +70%" },
+      { text: "+10% to Maximum Poison Resist" },
+      { text: "15% Chance to cast level 15 Poison Nova when struck" },
+      { text: "Level 3 Venom (20 Charges)" },
+      { text: "+100-150% Enhanced Defense", variable: true },
+    ],
+    drop: {
+      summary:
+        "Hell only, and one of the higher required levels in the game at 83. Traded rather than farmed.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "**The −30% fire resistance is not a footnote.** Hell already applies −100, so this helm has to be paid for somewhere else before it goes on — an Um rune in a shield, a resistance charm row, or simply not wearing it in a fire-heavy zone. What it buys is the best attack-speed-plus-skills helm an attacking character can wear, and the life steal is what keeps a melee Amazon standing without a Life Tap source. Socket it with an Um for the resistance it took away, or a 15% attack speed jewel if you can afford the resistance elsewhere.",
+    alternatives: [{ kind: "unique", slug: "vampire-gaze" }],
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Bows, crossbows and Amazon weapons
   //
@@ -906,9 +943,162 @@ export const uniques: UniqueItem[] = [
     confidence: "verified",
   },
 
+  {
+    slug: "razortail",
+    name: "Razortail",
+    summary:
+      "33% Piercing Attack in a belt slot. The cheapest pierce on the site, and the reason Lightning Fury works before Pierce is maxed.",
+    quality: "unique",
+    base: "Sharkskin Belt",
+    category: "belt",
+    tier: "exceptional",
+    slots: ["belt"],
+    requiredLevel: 32,
+    requiredStrength: 20,
+    stats: [
+      { text: "33% Piercing Attack", notable: true },
+      { text: "+15 to Dexterity", notable: true },
+      { text: "+120-150% Enhanced Defense", variable: true },
+      { text: "+10 to Maximum Damage" },
+      { text: "+15 Defense" },
+      { text: "+1 Attacker Takes Damage per Character Level" },
+    ],
+    drop: {
+      summary:
+        "Available from Nightmare onward, abundant, and cheap to buy. One of the best value items in the game for the builds that want it.",
+      tradeability: "abundant",
+      confidence: "verified",
+    },
+    notes:
+      "Pierce from gear and pierce from the skill are one pool, and this is 33 points of it for a belt slot and 20 Strength. On Lightning Fury that is not a damage increase of 33% — every enemy the javelin passes through releases another burst of bolts, so it multiplies. It is equally load-bearing on a bow build, where an arrow that pierces hits the row behind the one you aimed at. **It is worth nothing at all to Charged Strike, Lightning Strike, Jab or Fend**, which are melee attacks that never fire a projectile.",
+    confidence: "verified",
+  },
+  {
+    slug: "thundergods-vigor",
+    name: "Thundergod's Vigor",
+    summary:
+      "+3 to Lightning Strike and +3 to Lightning Fury, plus the lightning absorb that keeps a javelin Amazon alive in her own element.",
+    quality: "unique",
+    base: "War Belt",
+    category: "belt",
+    tier: "exceptional",
+    slots: ["belt"],
+    requiredLevel: 47,
+    requiredStrength: 110,
+    stats: [
+      { text: "+3 to Lightning Fury (Amazon Only)", notable: true },
+      { text: "+3 to Lightning Strike (Amazon Only)", notable: true },
+      { text: "+10% to Maximum Lightning Resist", notable: true },
+      { text: "+20 Lightning Absorb", notable: true },
+      { text: "Adds 1-50 Lightning Damage" },
+      { text: "5% Chance to cast level 7 Fist of the Heavens when struck" },
+      { text: "+160-200% Enhanced Defense", variable: true },
+      { text: "+20 to Strength" },
+      { text: "+20 to Vitality" },
+    ],
+    drop: {
+      summary:
+        "Drops from Nightmare onward and trades cheaply, because only the javelin Amazon really wants it.",
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "Six skill levels split across the two skills a javelin Amazon actually presses, in a slot whose competition is a belt with resistances. The 110 Strength requirement is the real price and it is not small on a character who also has to reach a shield. The lightning absorb and the raised maximum lightning resistance are the other half of the argument: **lightning enchanted packs are what kill javelin Amazons**, and this belt is the cheapest answer to them.",
+    alternatives: [{ kind: "unique", slug: "razortail" }],
+    confidence: "verified",
+  },
+  {
+    slug: "waterwalk",
+    name: "Waterwalk",
+    summary:
+      "Life, Dexterity and a raised maximum fire resistance on a light boot. The defensive alternative to magic-find boots.",
+    quality: "unique",
+    base: "Sharkskin Boots",
+    category: "boots",
+    tier: "exceptional",
+    slots: ["boots"],
+    requiredLevel: 32,
+    requiredStrength: 47,
+    stats: [
+      { text: "+45-65 to Life", variable: true, notable: true },
+      { text: "+15 to Dexterity", notable: true },
+      { text: "+5% to Maximum Fire Resist", notable: true },
+      { text: "+20% Faster Run/Walk" },
+      { text: "+180-210% Enhanced Defense", variable: true },
+      { text: "+100 Defense vs. Missile" },
+      { text: "+40 to Stamina" },
+      { text: "Heal Stamina Plus 50%" },
+    ],
+    drop: {
+      summary: "Nightmare onward, abundant and cheap.",
+      tradeability: "abundant",
+      confidence: "verified",
+    },
+    notes:
+      "The Dexterity counts toward maximum block, and on a class that blocks well that makes this quietly better than its stat line reads. The raised maximum fire resistance is the line hardcore players buy it for — 80% instead of 75% is a fifth less damage from every fire source in Hell, and no amount of ordinary resistance gets you there.",
+    alternatives: [{ kind: "unique", slug: "gore-rider" }],
+    confidence: "verified",
+  },
+
   // -------------------------------------------------------------------------
   // Jewellery
   // -------------------------------------------------------------------------
+  {
+    slug: "the-cats-eye",
+    name: "The Cat's Eye",
+    summary:
+      "Movement, attack speed and Dexterity in one amulet. The physical bow Amazon's default neck slot.",
+    quality: "unique",
+    base: "Amulet",
+    category: "amulet",
+    tier: "elite",
+    slots: ["amulet"],
+    requiredLevel: 50,
+    stats: [
+      { text: "+20% Increased Attack Speed", notable: true },
+      { text: "+30% Faster Run/Walk", notable: true },
+      { text: "+25 to Dexterity", notable: true },
+      { text: "+100 Defense" },
+      { text: "+100 Defense vs. Missile" },
+    ],
+    drop: {
+      summary: "Nightmare onward, common, and cheap to buy.",
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "No skills at all, which is why it is not on a caster's list. What it is instead is the cheapest 20% attack speed on the site paired with 25 Dexterity, and on a bow build both of those turn directly into damage — Dexterity raises attack rating and the base damage of every arrow. The 30% Faster Run/Walk is the reason a Bowazon wearing it plays differently: this class kites, and movement is a defensive stat.",
+    alternatives: [{ kind: "unique", slug: "highlords-wrath" }],
+    confidence: "verified",
+  },
+  {
+    slug: "atmas-scarab",
+    name: "Atma's Scarab",
+    summary:
+      "Amplify Damage on striking. The one amulet that answers physical immunity without spending a charm slot.",
+    quality: "unique",
+    base: "Amulet",
+    category: "amulet",
+    tier: "elite",
+    slots: ["amulet"],
+    requiredLevel: 60,
+    stats: [
+      { text: "5% Chance to cast level 2 Amplify Damage on striking", notable: true },
+      { text: "Poison Resist +75%", notable: true },
+      { text: "+102 Poison Damage over 4 seconds" },
+      { text: "20% Bonus to Attack Rating" },
+      { text: "Attacker Takes Damage of 5" },
+      { text: "+3 to Light Radius" },
+    ],
+    drop: {
+      summary: "Nightmare onward. Uncommon, and traded steadily for the curse alone.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "**Amplify Damage halves the target's physical resistance, and against a physical immune that is often enough to break the immunity outright.** Five percent per hit sounds small until you count the hits: Strafe fires up to ten arrows in a burst and Fend strikes every adjacent enemy in one sequence, so a multi-hit physical build applies it constantly. On a single-hit build it is unreliable and the amulet is not worth the slot. Poison Resist +75% is the other half of the case, and it is a real line in the Hell zones full of poison.",
+    confidence: "verified",
+  },
   {
     slug: "stone-of-jordan",
     name: "The Stone of Jordan",

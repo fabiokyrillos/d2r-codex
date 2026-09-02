@@ -248,6 +248,53 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
       "A base Chu-Ko-Nu é a crossbow mais rápida do jogo — o modificador de velocidade dela é −60, mais que qualquer outra. Combinado com 66% de Piercing Attack, cada bolt carrega o dano elemental que você somou a ele através de vários alvos de uma vez, que é o mecanismo inteiro por trás da Enchant Sorceress. O requisito de 95 de Dexterity é o custo real, e não é pequeno para uma caster.",
   },
 
+  "andariels-visage": {
+    summary:
+      "+2 skills, 20% de velocidade de ataque e até 10% de roubo de vida — pagos com 30 pontos da sua própria resistência a fogo.",
+    dropSummary:
+      "Só no Hell, e com um dos requisitos de nível mais altos do jogo, 83. Negociado em vez de farmado.",
+    notes:
+      "**Os −30% de resistência a fogo não são uma nota de rodapé.** O Hell já aplica −100, então este elmo precisa ser pago em outro lugar antes de entrar — uma runa Um num escudo, uma fileira de charms de resistência, ou simplesmente não usá-lo numa zona cheia de fogo. O que ele compra é o melhor elmo de velocidade de ataque com skills que um personagem de ataque pode vestir, e o roubo de vida é o que mantém uma Amazon corpo a corpo de pé sem uma fonte de Life Tap. Socke-o com uma Um pela resistência que ele tirou, ou com uma joia de 15% de velocidade de ataque se você conseguir a resistência em outro lugar.",
+  },
+  razortail: {
+    summary:
+      "33% de Piercing Attack num slot de cinto. O pierce mais barato do site, e o motivo de Lightning Fury funcionar antes de Pierce estar maximizado.",
+    dropSummary:
+      "Disponível a partir do Nightmare, abundante e barato de comprar. Um dos melhores custo-benefícios do jogo para as builds que o querem.",
+    notes:
+      "Pierce de equipamento e pierce da skill são um pool só, e isto são 33 pontos dele por um slot de cinto e 20 de Strength. No Lightning Fury isso não é um aumento de dano de 33% — cada inimigo que a javelin atravessa libera outra rajada de raios, então ele multiplica. É igualmente decisivo numa build de arco, onde uma flecha que perfura acerta a fileira atrás daquela em que você mirou. **Não vale absolutamente nada para Charged Strike, Lightning Strike, Jab ou Fend**, que são ataques corpo a corpo e nunca disparam um projétil.",
+  },
+  "thundergods-vigor": {
+    summary:
+      "+3 de Lightning Strike e +3 de Lightning Fury, mais o lightning absorb que mantém viva uma Amazon de javelin dentro do próprio elemento.",
+    dropSummary:
+      "Cai a partir do Nightmare e é negociado barato, porque só a Amazon de javelin realmente o quer.",
+    notes:
+      "Seis níveis de skill divididos entre as duas skills que uma Amazon de javelin de fato aperta, num slot cuja concorrência é um cinto com resistências. O requisito de 110 de Strength é o preço real e não é pequeno num personagem que também precisa alcançar um escudo. O lightning absorb e a resistência máxima a raio elevada são a outra metade do argumento: **grupos lightning enchanted são o que mata Amazons de javelin**, e este cinto é a resposta mais barata a eles.",
+  },
+  waterwalk: {
+    summary:
+      "Vida, Dexterity e resistência máxima a fogo elevada numa bota leve. A alternativa defensiva às botas de magic find.",
+    dropSummary: "A partir do Nightmare, abundante e barato.",
+    notes:
+      "A Dexterity conta para o bloqueio máximo, e numa classe que bloqueia bem isso torna esta bota discretamente melhor do que a lista de status sugere. A resistência máxima a fogo elevada é a linha pela qual jogadores de Hardcore a compram — 80% em vez de 75% é um quinto a menos de dano de toda fonte de fogo no Hell, e nenhuma quantidade de resistência comum leva você até lá.",
+  },
+  "the-cats-eye": {
+    summary:
+      "Movimento, velocidade de ataque e Dexterity num amuleto só. O slot de pescoço padrão da Amazon física de arco.",
+    dropSummary: "A partir do Nightmare, comum e barato de comprar.",
+    notes:
+      "Nenhuma skill, e é por isso que ele não está na lista de nenhuma caster. O que ele é, em vez disso, é a velocidade de ataque de 20% mais barata do site somada a 25 de Dexterity, e numa build de arco as duas coisas viram dano diretamente — Dexterity aumenta o attack rating e o dano base de cada flecha. Os 30% de Faster Run/Walk são o motivo de uma Bowazon que o usa jogar diferente: esta classe faz kite, e movimento é um atributo defensivo.",
+  },
+  "atmas-scarab": {
+    summary:
+      "Amplify Damage ao golpear. O único amuleto que responde à imunidade física sem gastar um slot de charm.",
+    dropSummary:
+      "A partir do Nightmare. Incomum, e negociado com constância só pela maldição.",
+    notes:
+      "**Amplify Damage corta pela metade a resistência física do alvo, e contra um imune físico isso costuma bastar para quebrar a imunidade de vez.** Cinco por cento por golpe parece pouco até você contar os golpes: Strafe dispara até dez flechas numa rajada e Fend atinge cada inimigo adjacente numa sequência, então uma build física de múltiplos acertos aplica a maldição o tempo todo. Numa build de acerto único é pouco confiável e o amuleto não vale o slot. Poison Resist +75% é a outra metade do argumento, e é uma linha real nas zonas do Hell cheias de veneno.",
+  },
+
   // Arcos, bestas e armas de Amazon
   "titans-revenge": {
     summary:
