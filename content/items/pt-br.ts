@@ -248,6 +248,48 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
       "A base Chu-Ko-Nu é a crossbow mais rápida do jogo — o modificador de velocidade dela é −60, mais que qualquer outra. Combinado com 66% de Piercing Attack, cada bolt carrega o dano elemental que você somou a ele através de vários alvos de uma vez, que é o mecanismo inteiro por trás da Enchant Sorceress. O requisito de 95 de Dexterity é o custo real, e não é pequeno para uma caster.",
   },
 
+  // Sunder Charms
+  "bone-break": {
+    summary:
+      "Quebra a imunidade física, e tira de 10 a 20 pontos da sua própria redução de dano físico para fazer isso.",
+    dropSummary:
+      "Só no Hell. Cai do Herald das Terror Zones em qualquer nível, ou de monstros comuns a uma taxa bem menor, desde que o patch 3.3 elevou o nível mínimo de drop para 75.",
+    notes:
+      "**A penalidade dele é diferente das outras cinco.** Os Sunder Charms elementais custam de 70 a 90 pontos de uma resistência, que um personagem com resistências empilhadas consegue absorver em parte. Este subtrai da sua redução de dano físico, e dano físico é o que os monstros corpo a corpo causam — então o charm que permite a uma build física ferir um imune físico é também o charm que faz cada golpe comum doer mais. Numa Amazon de Jab e Fend parada em alcance corpo a corpo, essa é a troca para pensar com mais calma; numa Amazon de arco à distância custa muito menos. Leve para as zonas que exigem e deixe no baú no resto do tempo.",
+  },
+  "crack-of-the-heavens": {
+    summary:
+      "Quebra a imunidade a raio, ao custo de 70 a 90 pontos da sua própria resistência a raio.",
+    dropSummary:
+      "Só no Hell, do Herald das Terror Zones ou a uma taxa reduzida de monstros comuns acima do nível 75.",
+    notes:
+      "O mais caro dos seis para carregar, por um motivo que não tem nada a ver com o número dele: **monstros lightning enchanted são os que matam personagens de raio**, e este charm remove a maior parte da resistência que te protege deles. Uma Amazon de javelin carregando isso está no meio dos grupos com 70 a 90 pontos a menos de resistência a raio do que ela imagina ter. Um Infinity no mercenário faz o mesmo serviço sem penalidade nenhuma, e custa uma Ber e uma Jah.",
+  },
+  "cold-rupture": {
+    summary:
+      "Quebra a imunidade a frio, ao custo de 70 a 90 pontos da sua própria resistência a frio.",
+    dropSummary:
+      "Só no Hell, do Herald das Terror Zones ou a uma taxa reduzida de monstros comuns acima do nível 75.",
+    notes:
+      "O mais barato dos seis para carregar na prática, porque dano de frio no Hell chega principalmente como chill, e não como aquilo que te mata. É o que transforma os Ancient Tunnels — nível de área 85, e cheios de imunes a frio — numa zona que uma build de frio consegue de fato farmar.",
+  },
+  "flame-rift": {
+    summary:
+      "Quebra a imunidade a fogo, ao custo de 70 a 90 pontos da sua própria resistência a fogo.",
+    dropSummary:
+      "Só no Hell, do Herald das Terror Zones ou a uma taxa reduzida de monstros comuns acima do nível 75.",
+    notes:
+      "Fogo é o elemento mais resistido do Hell, o que faz deste o mais carregado dos seis e aquele cuja penalidade é sentida com mais frequência. Qualquer coisa com aura de fogo, ataque de Immolation ou encantamento de fogo dói bem mais enquanto ele está no inventário. Usar um Andariel's Visage ao mesmo tempo são 100 a 120 pontos de resistência a fogo entregues entre dois itens.",
+  },
+  "rotting-fissure": {
+    summary:
+      "Quebra a imunidade a veneno, ao custo de 70 a 90 pontos da sua própria resistência a veneno.",
+    dropSummary:
+      "Só no Hell, do Herald das Terror Zones ou a uma taxa reduzida de monstros comuns acima do nível 75.",
+    notes:
+      "O menos negociado dos seis, porque veneno é o tipo de dano menos jogado — o que também significa que é o que mais costuma faltar quando uma build de veneno finalmente precisa dele. Resistência a veneno é fácil de estourar o teto com charms e um Atma's Scarab, então a penalidade é mais absorvível que a de fogo ou a de raio.",
+  },
+
   "andariels-visage": {
     summary:
       "+2 skills, 20% de velocidade de ataque e até 10% de roubo de vida — pagos com 30 pontos da sua própria resistência a fogo.",

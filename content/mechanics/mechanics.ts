@@ -269,14 +269,14 @@ export const mechanics: MechanicArticle[] = [
       {
         type: "table",
         caption:
-          "Charm names and their own penalty, from the game's item data. The penalty applies to you, permanently, while the charm is in your inventory.",
+          "Charm names and their own penalty, from the game's item data. The penalty applies to you, permanently, while the charm is in your inventory. Black Cleft is the odd one out at -45 to -65%, and Bone Break does not touch a resistance at all.",
         headers: ["Damage type", "Charm", "What it costs you"],
         rows: [
           ["Fire", "Flame Rift", "-70 to -90% to your own Fire Resistance"],
           ["Cold", "Cold Rupture", "-70 to -90% to your own Cold Resistance"],
           ["Lightning", "Crack of the Heavens", "-70 to -90% to your own Lightning Resistance"],
           ["Poison", "Rotting Fissure", "-70 to -90% to your own Poison Resistance"],
-          ["Magic", "Black Cleft", "-70 to -90% to your own Magic Resistance"],
+          ["Magic", "Black Cleft", "-45 to -65% to your own Magic Resistance"],
           ["Physical", "Bone Break", "-10 to -20% Physical Damage Reduction"],
         ],
       },

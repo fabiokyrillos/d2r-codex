@@ -565,6 +565,7 @@ export const ptBR: Dictionary = {
     groupShields: "Escudos",
     groupGlovesBeltsBoots: "Luvas, cintos e botas",
     groupJewellery: "Joias",
+    groupCharms: "Charms",
     related: "Relacionado",
     statistics: "Estatísticas",
     statisticsNote:

@@ -213,14 +213,14 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
       {
         type: "table",
         caption:
-          "Nomes dos charms e a penalidade de cada um, vinda dos dados de item do jogo. A penalidade se aplica a você, permanentemente, enquanto o charm estiver no seu inventário.",
+          "Nomes dos charms e a penalidade de cada um, vinda dos dados de item do jogo. A penalidade se aplica a você, permanentemente, enquanto o charm estiver no seu inventário. O Black Cleft é o fora da curva, com -45 a -65%, e o Bone Break não mexe em resistência nenhuma.",
         headers: ["Tipo de dano", "Charm", "O que custa a você"],
         rows: [
           ["Fogo", "Flame Rift", "-70 a -90% na sua própria resistência a fogo"],
           ["Frio", "Cold Rupture", "-70 a -90% na sua própria resistência a frio"],
           ["Raio", "Crack of the Heavens", "-70 a -90% na sua própria resistência a raio"],
           ["Veneno", "Rotting Fissure", "-70 a -90% na sua própria resistência a veneno"],
-          ["Mágico", "Black Cleft", "-70 a -90% na sua própria resistência a mágico"],
+          ["Mágico", "Black Cleft", "-45 a -65% na sua própria resistência a mágico"],
           ["Físico", "Bone Break", "-10 a -20% de redução de dano físico"],
         ],
       },

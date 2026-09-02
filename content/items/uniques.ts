@@ -1245,6 +1245,139 @@ export const uniques: UniqueItem[] = [
   },
 
   // -------------------------------------------------------------------------
+  // Sunder Charms
+  //
+  // Catalogued rather than named in prose, because a build whose immunity plan
+  // is a charm needs the charm's own cost on a page of its own. Every line here
+  // is the pinned blizzhackers/d2data extraction (fc46999, patch 3.3),
+  // `json/uniqueitems.json`: one `pierce-immunity-*` property and one penalty
+  // to the carrier, and nothing else. Five of the six are here; the magic one,
+  // Black Cleft, is not, because no build on the site deals magic damage.
+  // -------------------------------------------------------------------------
+  {
+    slug: "bone-break",
+    name: "Bone Break",
+    summary:
+      "Sunders physical immunity, and takes 10 to 20 points off your own physical damage reduction to do it.",
+    quality: "unique",
+    base: "Grand Charm",
+    category: "charm",
+    tier: "normal",
+    slots: [],
+    requiredLevel: 75,
+    stats: [
+      { text: "Monster Physical Immunity is Sundered", notable: true },
+      { text: "-10 to -20% Physical Damage Reduction", variable: true, notable: true },
+    ],
+    drop: {
+      summary:
+        "Hell only. Drops from the Terror Zone Herald at any level, or from ordinary monsters at a much reduced rate since patch 3.3 raised the minimum drop level to 75.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "**Its penalty is unlike the other five.** The elemental Sunder Charms cost you 70 to 90 points of one resistance, which a resistance-stacked character can partly absorb. This one instead subtracts from your physical damage reduction, and physical damage is what melee monsters deal — so the charm that lets a physical build hurt a physical immune is also the charm that makes every ordinary hit land harder. On a Jab and Fend Amazon standing in melee range, that is the trade to think hardest about; on a bow Amazon at range it costs far less. Carry it for the zones that need it and leave it in the stash otherwise.",
+    confidence: "verified",
+  },
+  {
+    slug: "crack-of-the-heavens",
+    name: "Crack of the Heavens",
+    summary:
+      "Sunders lightning immunity, at 70 to 90 points of your own lightning resistance.",
+    quality: "unique",
+    base: "Grand Charm",
+    category: "charm",
+    tier: "normal",
+    slots: [],
+    requiredLevel: 75,
+    stats: [
+      { text: "Monster Lightning Immunity is Sundered", notable: true },
+      { text: "Lightning Resist -70 to -90%", variable: true, notable: true },
+    ],
+    drop: {
+      summary:
+        "Hell only, from the Terror Zone Herald or at a reduced rate from ordinary monsters above level 75.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "The most expensive of the six to carry, for a reason that has nothing to do with its number: **lightning enchanted monsters are the ones that kill lightning characters**, and this charm removes most of the resistance that protects you from them. A javelin Amazon carrying it is standing in the middle of packs with 70 to 90 points less lightning resistance than she thinks she has. Infinity on the mercenary does the same job with no penalty at all, and costs a Ber and a Jah.",
+    confidence: "verified",
+  },
+  {
+    slug: "cold-rupture",
+    name: "Cold Rupture",
+    summary: "Sunders cold immunity, at 70 to 90 points of your own cold resistance.",
+    quality: "unique",
+    base: "Grand Charm",
+    category: "charm",
+    tier: "normal",
+    slots: [],
+    requiredLevel: 75,
+    stats: [
+      { text: "Monster Cold Immunity is Sundered", notable: true },
+      { text: "Cold Resist -70 to -90%", variable: true, notable: true },
+    ],
+    drop: {
+      summary:
+        "Hell only, from the Terror Zone Herald or at a reduced rate from ordinary monsters above level 75.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "The cheapest of the six to carry in practice, because cold damage in Hell mostly arrives as a chill rather than as the thing that kills you. It is what turns the Ancient Tunnels — area level 85, and full of cold immunes — into a zone a cold build can actually farm.",
+    confidence: "verified",
+  },
+  {
+    slug: "flame-rift",
+    name: "Flame Rift",
+    summary: "Sunders fire immunity, at 70 to 90 points of your own fire resistance.",
+    quality: "unique",
+    base: "Grand Charm",
+    category: "charm",
+    tier: "normal",
+    slots: [],
+    requiredLevel: 75,
+    stats: [
+      { text: "Monster Fire Immunity is Sundered", notable: true },
+      { text: "Fire Resist -70 to -90%", variable: true, notable: true },
+    ],
+    drop: {
+      summary:
+        "Hell only, from the Terror Zone Herald or at a reduced rate from ordinary monsters above level 75.",
+      tradeability: "uncommon",
+      confidence: "verified",
+    },
+    notes:
+      "Fire is the most commonly resisted element in Hell, which makes this the most frequently carried of the six and the one whose penalty is felt most often. Anything with a fire aura, an Immolation attack or a fire enchantment hurts substantially more while it is in the inventory. Wearing an Andariel's Visage at the same time is 100 to 120 points of fire resistance given away between two items.",
+    confidence: "verified",
+  },
+  {
+    slug: "rotting-fissure",
+    name: "Rotting Fissure",
+    summary: "Sunders poison immunity, at 70 to 90 points of your own poison resistance.",
+    quality: "unique",
+    base: "Grand Charm",
+    category: "charm",
+    tier: "normal",
+    slots: [],
+    requiredLevel: 75,
+    stats: [
+      { text: "Monster Poison Immunity is Sundered", notable: true },
+      { text: "Poison Resist -70 to -90%", variable: true, notable: true },
+    ],
+    drop: {
+      summary:
+        "Hell only, from the Terror Zone Herald or at a reduced rate from ordinary monsters above level 75.",
+      tradeability: "rare",
+      confidence: "verified",
+    },
+    notes:
+      "The least traded of the six, because poison is the least played damage type — which also means it is the one most often missing when a poison build finally needs it. Poison resistance is easy to over-cap from charms and an Atma's Scarab, so the penalty is more absorbable than the fire or lightning equivalents.",
+    confidence: "verified",
+  },
+
+  // -------------------------------------------------------------------------
   // Shields
   // -------------------------------------------------------------------------
   {

@@ -63,6 +63,7 @@ export default async function ItemsPage() {
     },
     { label: t.items.groupGlovesBeltsBoots, categories: ["gloves", "belt", "boots"] },
     { label: t.items.groupJewellery, categories: ["ring", "amulet"] },
+    { label: t.items.groupCharms, categories: ["charm"] },
   ];
 
   return (

@@ -558,6 +558,7 @@ export const enUS = {
     groupShields: "Shields",
     groupGlovesBeltsBoots: "Gloves, belts & boots",
     groupJewellery: "Jewellery",
+    groupCharms: "Charms",
     related: "Related",
     statistics: "Statistics",
     statisticsNote:
