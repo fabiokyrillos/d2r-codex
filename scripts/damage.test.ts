@@ -59,14 +59,28 @@ const POISON_JAVELIN = node({
   overTime: true,
 });
 
-/** Plague Javelin, verbatim. A different HitShift and a much shorter window. */
+/**
+ * Plague Javelin, as the generator emits it.
+ *
+ * `perLevel` is zero, not the 5 the table still carries. D2R patch 2.4 fixed
+ * this skill's poison duration at three seconds without editing the column --
+ * `ELevLen` is identical in the pinned 3.3 extraction and in the pre-D2R Lord
+ * of Destruction tables beside it -- so the generator overrides it explicitly.
+ * See FIXED_DURATION in scripts/generate-skill-graph.ts.
+ */
 const PLAGUE_JAVELIN = node({
   element: "pois",
   hitShift: 3,
   min: { base: 12, bands: [8, 16, 26, 55, 80] },
   max: { base: 18, bands: [8, 16, 26, 55, 80] },
-  duration: { base: 75, perLevel: 5 },
+  duration: { base: 75, perLevel: 0 },
   overTime: true,
+});
+
+/** The same skill with the residual column restored: what must never ship. */
+const PLAGUE_JAVELIN_UNFIXED = node({
+  ...PLAGUE_JAVELIN.damage!,
+  duration: { base: 75, perLevel: 5 },
 });
 
 /** Freezing Arrow. Cold, and its ELen is a freeze length, so it is not recorded. */
@@ -89,8 +103,33 @@ console.log("\nThe published values, reproduced");
 
   const gj = damageAtLevel(PLAGUE_JAVELIN, 1)!;
   check("Plague Javelin level 1 is 28-42", gj.min === 28 && gj.max === 42, `${gj.min}-${gj.max}`);
-  const gjd = durationAtLevel(PLAGUE_JAVELIN, 1)!;
-  check("...over 3 seconds", gjd.frames === 75 && gjd.seconds === 3, `${gjd.seconds}s`);
+
+  /*
+   * Both ends anchored to the patch note, not to the implementation. A test
+   * that read level 20 off the code would pass whatever the code did, which is
+   * how 6.8 seconds shipped: only the level 1 figures were externally checked,
+   * and the level 20 figures were written from the output they were meant to
+   * verify.
+   */
+  for (const level of [1, 20]) {
+    const d = durationAtLevel(PLAGUE_JAVELIN, level)!;
+    check(
+      `Plague Javelin at level ${level} lasts 75 frames, 3.0 s (D2R 2.4, fixed)`,
+      d.frames === 75 && d.seconds === 3,
+      `${d.frames} frames / ${d.seconds}s`,
+    );
+  }
+  check(
+    "Plague Javelin's duration does not change between level 1 and 20",
+    durationAtLevel(PLAGUE_JAVELIN, 1)!.frames === durationAtLevel(PLAGUE_JAVELIN, 20)!.frames,
+  );
+
+  // Poison Javelin has no such note and must keep its scaling duration.
+  check(
+    "Poison Javelin still lengthens with level",
+    durationAtLevel(POISON_JAVELIN, 20)!.frames === 1150 &&
+      durationAtLevel(POISON_JAVELIN, 1)!.frames === 200,
+  );
 
   check("a frame is a twenty-fifth of a second", FRAMES_PER_SECOND === 25);
 
@@ -187,6 +226,25 @@ console.log("\nPlanted mutations — each dropped step must change the answer");
     "the shipped level 20 window is 1150 frames, 46 seconds",
     durationAtLevel(POISON_JAVELIN, 20)!.frames === 1150 &&
       durationAtLevel(POISON_JAVELIN, 20)!.seconds === 46,
+  );
+
+  /*
+   * 6. The regression this pass exists to prevent: the residual ELevLen finding
+   *    its way back into Plague Javelin's duration.
+   */
+  const unfixed = durationAtLevel(PLAGUE_JAVELIN_UNFIXED, 20)!;
+  check(
+    "restoring ELevLen would stretch Plague Javelin to 170 frames, 6.8 s",
+    unfixed.frames === 170 && Math.abs(unfixed.seconds - 6.8) < 1e-9,
+    `${unfixed.frames} frames / ${unfixed.seconds}s`,
+  );
+  check(
+    "...and would inflate its level 20 damage far past the fixed-duration figure",
+    damageAtLevel(PLAGUE_JAVELIN_UNFIXED, 20)!.min > damageAtLevel(PLAGUE_JAVELIN, 20)!.min,
+  );
+  check(
+    "the shipped skill is the fixed one, not the unfixed one",
+    durationAtLevel(PLAGUE_JAVELIN, 20)!.frames !== unfixed.frames,
   );
 }
 

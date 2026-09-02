@@ -147,6 +147,28 @@ const slugify = (name: string) =>
 const slugFor = (name: string) => SLUG_OVERRIDES[name] ?? slugify(name);
 
 /**
+ * Skills whose elemental duration does not grow with level, whatever `ELevLen`
+ * still says.
+ *
+ * Diablo II: Resurrected patch 2.4 fixed Plague Javelin's poison duration at
+ * three seconds. The column that used to lengthen it was not edited: `ELen` is
+ * 75 frames and `ELevLen` is 5 in the pinned 3.3 extraction, byte-identical to
+ * the pre-D2R Lord of Destruction tables in the same repository. The change
+ * lives in code, so a generator that trusts the column publishes a duration the
+ * game stopped using -- which is exactly what this one did, reporting 6.8
+ * seconds at level 20 against a real 3.0.
+ *
+ * That is also the limit of the AGREEMENT check in the generated header:
+ * agreement between the two extractions shows the tables match each other, and
+ * says nothing about behaviour changed in the engine.
+ *
+ * Deliberately a set of one. Poison Javelin has no such note and keeps its
+ * scaling duration; adding an entry here means finding the patch that justifies
+ * it, not noticing that a number looks large.
+ */
+const FIXED_DURATION = new Set<string>(["Plague Javelin"]);
+
+/**
  * Synergies, read out of the game's own formulas.
  *
  * A skill's calc columns are expressions. Where one references another skill's
@@ -498,6 +520,9 @@ async function main() {
           `without a duration the published damage would be zero.`,
       );
     }
+    if (FIXED_DURATION.has(s.skill)) {
+      return { base, perLevel: 0 };
+    }
     const perLevel = [s.ELevLen1 ?? 0, s.ELevLen2 ?? 0, s.ELevLen3 ?? 0];
     if (new Set(perLevel).size > 1) {
       throw new Error(
@@ -755,6 +780,7 @@ export interface SkillGraphNode {
      */
     readonly duration?: {
       readonly base: number;
+      /** Zero where a patch fixed the duration; see FIXED_DURATION in the generator. */
       readonly perLevel: number;
     };
     /**

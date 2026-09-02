@@ -221,9 +221,14 @@ for (const locale of LOCALES) {
       continue;
     }
     check(`${locale} ${slug}: no 0-0 damage row`, !/\b0[–-]0\b/.test(text), "prints 0–0");
-    // The level 1 and level 20 figures, so a silently halved or squared table
-    // cannot pass by merely being non-zero.
-    const expected = slug === "poison-javelin" ? ["25–37", "2659–2946"] : ["28–42", "1593–1625"];
+    /*
+     * The level 1 and level 20 figures, so a silently halved or squared table
+     * cannot pass by merely being non-zero. Plague Javelin's level 20 total
+     * follows from its duration being fixed at 75 frames by D2R 2.4; the
+     * arithmetic is checked in damage.test.ts, and this checks that the page
+     * prints what the arithmetic produced.
+     */
+    const expected = slug === "poison-javelin" ? ["25–37", "2659–2946"] : ["28–42", "703–717"];
     for (const range of expected) {
       check(`${locale} ${slug}: publishes ${range}`, text.includes(range));
     }
@@ -232,6 +237,19 @@ for (const locale of LOCALES) {
       text.includes(marker(t.damageOverTime)),
     );
     check(`${locale} ${slug}: shows a duration`, /\d+(\.\d+)?s/.test(text));
+
+    if (slug === "plague-javelin") {
+      // Both rows must read 3.0s, and the figure the residual column produced
+      // must be gone from the page entirely.
+      const seconds = [...text.matchAll(/(\d+(?:\.\d+)?)s/g)].map((m) => m[1]);
+      check(
+        `${locale} plague-javelin: every duration on the page is 3`,
+        seconds.length >= 2 && seconds.every((v) => v === "3"),
+        seconds.join(", "),
+      );
+      check(`${locale} plague-javelin: no 6.8s anywhere`, !text.includes("6.8"));
+      check(`${locale} plague-javelin: no 1593–1625 anywhere`, !text.includes("1593"));
+    }
   }
 
   // =========================================================================

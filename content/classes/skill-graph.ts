@@ -131,6 +131,7 @@ export interface SkillGraphNode {
      */
     readonly duration?: {
       readonly base: number;
+      /** Zero where a patch fixed the duration; see FIXED_DURATION in the generator. */
       readonly perLevel: number;
     };
     /**
@@ -343,7 +344,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 4, column: 3,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["lightning-bolt"],
-    synergies: [{ from: "poison-javelin", kinds: ["damage"] }], damage: { element: "pois", hitShift: 3, min: { base: 12, bands: [8, 16, 26, 55, 80] }, max: { base: 18, bands: [8, 16, 26, 55, 80] }, duration: { base: 75, perLevel: 5 }, overTime: true },
+    synergies: [{ from: "poison-javelin", kinds: ["damage"] }], damage: { element: "pois", hitShift: 3, min: { base: 12, bands: [8, 16, 26, 55, 80] }, max: { base: 18, bands: [8, 16, 26, 55, 80] }, duration: { base: 75, perLevel: 0 }, overTime: true },
   },
   "fend": {
     classSlug: "amazon", tree: "javelin-and-spear", page: 3, row: 5, column: 1,

@@ -729,7 +729,13 @@ export const enUS = {
     noProgressionConverted:
       "This skill's damage is your weapon's. Part of it is dealt as this skill's element instead of as physical damage, and that share grows with skill level — it is the converted figure in the table above. The skill has no elemental range of its own to publish.",
     damageOverTime:
-      "Poison is dealt over time rather than on impact. The table gives the total across the duration beside it, and the duration grows with the skill.",
+      "Poison is dealt over time rather than on impact. The table gives the total across the duration beside it.",
+    /*
+     * Only where the duration is level-independent. Said explicitly because a
+     * column of identical values reads like an oversight otherwise.
+     */
+    damageOverTimeFixed:
+      "The duration does not change with skill level: Diablo II: Resurrected patch 2.4 fixed it, and only the damage packed into it grows.",
     seconds: "{seconds}s",
     colDuration: "Duration",
     backToTree: "← All {class} skills",

@@ -345,7 +345,11 @@ export default async function SkillPage(
               />
               {node.damage.overTime && (
                 <p className="mt-3 text-sm leading-relaxed text-pretty text-ink-muted">
-                  <RichText>{t.skills.damageOverTime}</RichText>
+                  <RichText>
+                    {node.damage.duration?.perLevel === 0
+                      ? `${t.skills.damageOverTime} ${t.skills.damageOverTimeFixed}`
+                      : t.skills.damageOverTime}
+                  </RichText>
                 </p>
               )}
               {/*

@@ -699,7 +699,9 @@ export const ptBR: Dictionary = {
     noProgressionConverted:
       "O dano desta skill é o da sua arma. Parte dele acontece como o elemento da skill em vez de dano físico, e essa parcela cresce com o nível — é o valor convertido na tabela acima. A skill não tem alcance elemental próprio para publicar.",
     damageOverTime:
-      "O veneno acontece ao longo do tempo, e não no impacto. A tabela dá o total durante a duração ao lado, e a duração cresce com a skill.",
+      "O veneno acontece ao longo do tempo, e não no impacto. A tabela dá o total durante a duração ao lado.",
+    damageOverTimeFixed:
+      "A duração não muda com o nível da skill: o patch 2.4 do Diablo II: Resurrected a fixou, e só o dano concentrado nela cresce.",
     seconds: "{seconds}s",
     colDuration: "Duração",
     backToTree: "← Todas as skills de {class}",
