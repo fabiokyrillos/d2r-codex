@@ -493,4 +493,200 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
       },
     },
   },
+
+  amazon: {
+    summary:
+      "Evolua com o arco, porque o Multiple Shot funciona no nível 6. Decida no 30 — é ali que Lightning Fury, Freezing Arrow e Valkyrie abrem todos de uma vez.",
+    overview: [
+      "**O problema inteiro de evolução da Amazon é o nível 30.** Lightning Fury, Lightning Strike, Freezing Arrow, Valkyrie e Pierce abrem todos ali, e cada um deles é a skill de endgame de alguém. Antes do 30 você está jogando outra coisa, e a pergunta é qual.",
+      "A resposta que esta jornada dá é **a árvore de arco**, por um motivo que não tem nada a ver com gosto: o Multiple Shot está disponível no nível 6, custa quatro de mana, e dispara um leque de flechas que limpa o Normal inteiro. O Guided Arrow no 18 mata o que sobreviver. Nada mais que a classe tenha chega tão cedo nem funciona tão bem sem apoio.",
+      "**Se você faz respec no 30 depende inteiramente de para qual build você vai.** As três builds de arco e as duas físicas de lança não precisam de respec nenhum — você joga com elas desde o nível 6. As de javelin precisam, e a de veneno fica no meio do caminho. O plano de respec abaixo diz qual é qual, e a quest Den of Evil dá um token grátis por dificuldade, então nada disso custa nada.",
+      "Resistências importam para esta classe tanto quanto para qualquer outra. O Nightmare aplica −40 em todas e o Hell aplica −100. A Amazon consegue carregar escudo, o que torna o conserto mais barato para ela que para uma Sorceress — um Ancient's Pledge são três runas da Countess.",
+    ],
+    respecPlan: [
+      {
+        at: "Nunca, se você vai para uma build de arco",
+        why: "Multiple Shot, Guided Arrow, Strafe, Freezing Arrow e Exploding Arrow são todos alcançáveis sem desaprender nada. Você vem evoluindo o personagem pronto desde o nível 6.",
+      },
+      {
+        at: "Nunca, se você vai para Jab e Fend",
+        why: "O Jab está disponível no nível 1 e o Fend no 24. Esta build não tem sinergias para arranjar nem nada para desfazer.",
+      },
+      {
+        at: "Nível 30, se você vai para uma build de javelin",
+        why: "Lightning Fury e Lightning Strike abrem os dois no 30 e os dois querem quatro skills maximizadas embaixo. Pontos gastos na árvore de arco enquanto você esperava não fazem parte desse plano, e é para isso que o token da Den of Evil do Normal existe.",
+      },
+      {
+        at: "Guarde ao menos um token para sempre",
+        why: "A Amazon tem mais builds de endgame genuinamente diferentes que qualquer classe deste site, e elas compartilham muito equipamento. Um token sobrando é o que te deixa experimentar a outra no personagem que você já tem.",
+      },
+    ],
+    stages: {
+      "ama-act-1-normal": {
+        name: "Arco desde a primeira hora",
+        summary: "Níveis 1-11. O Multiple Shot no 6 é todo o começo de jogo, e custa quatro de mana.",
+        location: "Ato 1 — Rogue Encampment até o Monastery",
+        goal: "Limpar a Den of Evil, chegar ao nível 12 e matar a Andariel.",
+        killingWith: "Magic Arrow até o nível 6, e depois Multiple Shot em tudo.",
+        skillPoints: [
+          "Nível 1: **Magic Arrow**. Ele cria a própria flecha, então nunca esvazia uma aljava — o que importa quando flechas custam ouro que você não tem.",
+          "Nível 6: **Multiple Shot**. Duas flechas mais uma por nível, quatro de mana, e ele limpa o resto do Normal sozinho.",
+          "Gaste os sobrando em **Critical Strike**. É uma porcentagem que funciona desde o primeiro ponto e nenhuma build daqui se arrepende.",
+          "**Não coloque pontos em Jab ou Power Strike a menos que você saiba que vai de javelin.** São skills boas; só não são as que te levam ao 30.",
+        ],
+        statPoints: [
+          "**Dexterity** para segurar o melhor arco que encontrar, e depois **Vitality**.",
+          "Um pouco de Strength para a armadura, e nada além do que a armadura exigir.",
+          "Nenhum Energy. O Multiple Shot são quatro de mana.",
+        ],
+        actions: [
+          "Limpe a **Den of Evil** por completo. A Akara dá **+1 ponto de skill** e um **respec completo grátis**.",
+          "Guarde o token de respec. Se você acabar indo de javelin no 30, é este que você vai gastar.",
+          "Compre com a **Charsi** e a **Akara** por arcos. Um arco mágico com +2 ou +3 numa skill de Bow and Crossbow vale mais que qualquer drop que você vá ver antes do Ato 3.",
+          "Mate a **Blood Raven** por uma Rogue Scout grátis. Pegue a variante Cold — o chill é defesa de verdade neste nível, e ela é a mercenária que duas das oito builds de Amazon mantêm para sempre.",
+          "Guarde qualquer armadura de 2 sockets para um **Stealth** no nível 17.",
+          "Pegue toda javelin e spear que encontrar, seja lá o que você pretenda jogar. Elas empilham, elas vendem, e uma mágica com +Javelin and Spear Skills é a arma inicial inteira de três das oito builds.",
+        ],
+        exitCriteria: "Andariel morta, nível 12+, e um arco do qual você não tenha vergonha.",
+      },
+      "ama-act-2-normal": {
+        name: "A bifurcação elemental",
+        summary:
+          "Níveis 12-17. O Exploding Arrow no 12 é a primeira escolha de verdade, e o Stealth chega no 17.",
+        location: "Ato 2 — Lut Gholein, os desertos e as tumbas",
+        goal: "Chegar ao nível 18 e matar o Duriel.",
+        killingWith: "Multiple Shot, e Exploding Arrow a partir do 12 se você pegou.",
+        skillPoints: [
+          "Nível 12: **Exploding Arrow** se você estiver indo para a build de fogo, ou **Impale** se estiver indo para a de lança — 300% de dano de arma por um único ponto é a melhor taxa que a classe tem.",
+          "Caso contrário, continue alimentando **Multiple Shot** e **Critical Strike**.",
+          "**Cold Arrow** vale um ponto de qualquer forma. Ele aplica chill, que é defesa para a qual você não tem outra fonte, e é pré-requisito do Guided Arrow.",
+        ],
+        statPoints: [
+          "Dexterity para o arco, Vitality para todo o resto.",
+          "**Decida agora se você quer escudo.** Se quiser, Strength e Dexterity passam a importar mais daqui em diante, e um Ancient's Pledge no nível 21 são três runas da Countess.",
+        ],
+        actions: [
+          "Faça um **Stealth** no instante em que chegar ao 17. Recuperação de golpe e velocidade de corrida são o que falta a uma Amazon e o que a mantém viva.",
+          "O **Radament** dá um ponto de skill grátis. Não pule.",
+          "Se você preferir um mercenário do Ato 2, é aqui que se contrata um. **Might** por dano, **Holy Freeze** por segurança. A aura é fixada pela dificuldade em que você contrata e nunca muda.",
+          "Farme a **Countess** por runas. Toda runeword de Amazon deste site — Edge, Peace, Melody, Ancient's Pledge, Spirit, Insight — é feita com o que ela derruba.",
+        ],
+        exitCriteria: "Duriel morto, nível 18, e um Stealth nas costas.",
+      },
+      "ama-act-3-4-normal": {
+        name: "Guided Arrow e a cadeia da Valkyrie",
+        summary:
+          "Níveis 18-24. O Guided Arrow não pode errar, e os sete pontos rumo à Valkyrie começam a pagar de imediato.",
+        location: "Ato 3 e Ato 4 — Kurast até o River of Flame",
+        goal: "Matar o Diablo e chegar ao nível 24.",
+        killingWith: "Multiple Shot para grupos, Guided Arrow para o que sobreviver.",
+        skillPoints: [
+          "Nível 18: **Guided Arrow**. Ele persegue o alvo e não pode errar, e é isso que torna os grupos à distância do Ato 3 e os bosses do Ato 4 administráveis.",
+          "**Comece a cadeia da Valkyrie agora**: Inner Sight, Slow Missiles, Dodge, Avoid. Cada um deles é útil sozinho, e juntos abrem o Decoy no 24 e a Valkyrie no 30.",
+          "**Slow Missiles é o ponto mais subestimado da classe.** Um ponto, e os grupos de arremessadores do Ato 3 deixam de ser perigosos.",
+        ],
+        statPoints: [
+          "Dexterity e Vitality. Se você estiver usando escudo, Dexterity suficiente para a chance de bloqueio valer a pena.",
+        ],
+        actions: [
+          "**The Golden Bird** dá +20 de vida permanente. **Lam Esen's Tome** dá um ponto de skill. Os dois são rápidos.",
+          "Faça um **Edge** se encontrar um arco de 3 sockets no 25 — Tir, Tal, Amn, e ele te carrega até a Melody no 39.",
+          "Um **Peace** no 29 são +2 skills de Amazon por três runas baratas, e é a melhor armadura que a maioria das Amazons vai usar antes do Hell.",
+          "**Não gaste o respec da Den of Evil ainda.** Se você for de javelin, o nível 30 é onde você vai querer, e o token do Normal é o mais barato dos três.",
+          "A **Hellforge** do Ato 4 dá uma runa. No Normal é uma baixa; pegue e siga em frente.",
+        ],
+        exitCriteria: "Diablo morto, nível 24, e Decoy disponível.",
+      },
+      "ama-act-5-normal": {
+        name: "Nível 30, e a decisão",
+        summary:
+          "Níveis 24-32. Fend, Strafe e Immolation Arrow no 24; Lightning Fury, Lightning Strike, Freezing Arrow, Valkyrie e Pierce todos no 30.",
+        location: "Ato 5 — Harrogath até a Worldstone Chamber",
+        goal: "Matar o Baal, chegar ao nível 30, e escolher a build que você está de fato jogando.",
+        killingWith: "Multiple Shot e Guided Arrow, ou Strafe a partir do 24 se for para lá que você vai.",
+        skillPoints: [
+          "Nível 24: **Strafe**, **Fend** ou **Immolation Arrow**, conforme a build. Os tiros do Strafe travam em dez no nível 7 da skill, então não despeje pontos nele esperando mais.",
+          "**O nível 30 é a bifurcação.** Lightning Fury, Lightning Strike, Freezing Arrow, Valkyrie e Pierce abrem todos aqui.",
+          "**Se você vai de javelin, gaste o respec da Den of Evil agora** e reconstrua em Power Strike, Lightning Bolt, Charged Strike e a skill que dá nome ao personagem.",
+          "**Se você vai de arco ou de lança, não gaste nada.** Pegue a Valkyrie, pegue Pierce se a sua build quiser, e siga.",
+        ],
+        statPoints: [
+          "Strength e Dexterity suficientes para a arma de endgame que você escolheu — um Hydra Bow são 134 e 167, um Ward Bow são 72 e 146, e uma javelin não é nem um nem outro.",
+          "Todo o resto em Vitality. O Nightmare é o próximo e aplica −40 em cada resistência que você tiver.",
+        ],
+        actions: [
+          "**Rescue on Mount Arreat** dá um ponto de skill. **Prison of Ice** dá um respec completo grátis — um segundo token, e o motivo de você poder experimentar no 30.",
+          "**Builds de javelin fazem respec aqui.** Tudo que você gastou na árvore de arco volta, e Power Strike, Lightning Bolt e Charged Strike são para onde vai.",
+          "Ancient's Pledge se você estiver carregando escudo. Três runas, e é o que torna os −40 do Nightmare sobrevivíveis.",
+          "**O Nightmare aplica −40 em todas as resistências no instante em que você entra.** Conserte no Normal, e não no Ato 2 do Nightmare quando as coisas começarem a te matar.",
+          "Rode o **Baal** no fim do Normal pelos níveis. Chegar ao 30 antes do Nightmare deixa a dificuldade inteira mais fácil.",
+        ],
+        exitCriteria: "Baal morto, nível 30+, resistências rumo aos 75%, e a build decidida.",
+      },
+      "ama-nightmare": {
+        name: "Nightmare, e o primeiro equipamento de verdade",
+        summary:
+          "Níveis 32-60. Titan's Revenge, Melody e uma Valkyrie que sobrevive. As resistências são a dificuldade inteira.",
+        location: "Nightmare, Ato 1 até o Ato 5",
+        goal: "Chegar ao nível 60 com 75% de resistências e as skills centrais da build maximizadas.",
+        killingWith: "A skill principal que você escolheu no 30, com a primeira sinergia subindo.",
+        skillPoints: [
+          "**Maximize a skill principal primeiro, depois a sinergia dela.** Qual sinergia é essa depende da build, e cada página de build nomeia isso na ordem de maximização — Cold Arrow para o Freezing Arrow, Fire Arrow para o Exploding Arrow, Lightning Bolt para as de javelin, Guided Arrow para o Strafe.",
+          "**Um ponto na Valkyrie basta** nesta etapa; os +skills do equipamento aumentam ela. Pontos no Decoy aumentam a vida dela, e esse é o motivo para gastar mais de um.",
+          "Continue alimentando **Critical Strike** se o seu dano for físico, e **Penetrate** se você estiver errando.",
+        ],
+        statPoints: [
+          "Strength suficiente para o escudo ou o cinto rumo aos quais você está indo — um Thundergod's Vigor são 110 e um Stormshield são 156.",
+          "Dexterity para bloqueio máximo se você carregar escudo. A Amazon divide a tabela de bloqueio com o Paladin, então sai mais barato para ela do que para qualquer um exceto ele.",
+          "Todo o resto em Vitality.",
+        ],
+        actions: [
+          "**Titan's Revenge** é a javelin que as duas builds de javelin e a de veneno querem. Ela se repõe sozinha, e é isso que torna uma build de arremesso jogável.",
+          "A **Melody** no nível 39 são +3 na aba inteira de Bow and Crossbow mais +3 em cada um de Critical Strike, Dodge e Slow Missiles, por três runas baixas. Doze níveis de skill.",
+          "O **Razortail** são 33% de Piercing Attack por 20 de Strength — e não vale absolutamente nada para Charged Strike, Lightning Strike, Jab ou Fend, que nunca disparam um projétil.",
+          "Um **Insight** no mercenário. O Freezing Arrow custa 36 de mana e sobe; toda outra skill de Amazon é mais barata, mas nenhuma é de graça.",
+          "**Countess** e **Andariel** no Nightmare. As runas fazem tudo que está acima e a Andariel é a run de boss mais curta do jogo.",
+          "**O Hell aplica −100 em todas as resistências.** Ficar exatamente em 75% no Nightmare significa −25% no Hell. Estoure o teto antes de atravessar.",
+        ],
+        gearTargets: [
+          { why: "+2 skills de Amazon por três runas baratas, e 20% de Faster Hit Recovery." },
+          { why: "Cannot Be Frozen, attack rating e Dexterity — três coisas que toda build de Amazon quer." },
+          { why: "33% de pierce, para as builds que disparam um projétil." },
+        ],
+        exitCriteria:
+          "Nível 60, skill principal e primeira sinergia maximizadas, resistências acima de 75% no Nightmare.",
+      },
+      "ama-hell": {
+        name: "Hell, e a imunidade que você precisa responder",
+        summary:
+          "Níveis 60-85. Toda build de Amazon encontra uma parede no Hell, e cada uma responde de um jeito.",
+        location: "Hell, Ato 1 até o Ato 5",
+        goal: "Farmar o Hell com constância, e comprar a única coisa sem a qual a sua build não vive.",
+        killingWith: "A build pronta, mais o que ela carregar para as coisas que não consegue ferir.",
+        skillPoints: [
+          "Termine a ordem de maximização na página da sua build. Todo plano deste site gasta 108 ou 109 dos 110 pontos fixos que um personagem nível 99 tem, então os últimos são os flexíveis.",
+          "**As passivas são onde um personagem em dificuldade encontra sobrevivência.** Dodge, Avoid e Evade têm curvas decrescentes, então os primeiros pontos extras neles valem muito mais que os últimos.",
+        ],
+        statPoints: [
+          "O que a arma e o escudo de endgame exigirem, e Vitality com o resto.",
+          "**Pare de somar Dexterity quando o bloqueio máximo for alcançado.** Além disso ela compra attack rating e dano de arma, o que é real mas muito mais barato em outro lugar.",
+        ],
+        actions: [
+          "**Cada build de Amazon tem exatamente uma parede.** As de raio não têm mastery, então precisam de Griffon's Eye, Thunderstroke ou um Infinity. As físicas precisam de Amplify Damage, Decrepify ou um Bone Break. As de fogo são as mais resistidas de todas e se apoiam no Guided Arrow.",
+          "O **Fortitude** é o maior upgrade único para toda build física e para o Lightning Strike, cuja metade de arma gasta Enhanced Damage. Ele não faz absolutamente nada pelos raios do Lightning Fury.",
+          "**Dracul's Grasp** para qualquer coisa em alcance corpo a corpo, e **Atma's Scarab** para qualquer coisa física. Os dois são baratos e os dois mudam o que a build consegue enfrentar.",
+          "**The Pit, os Ancient Tunnels e o Mausoleum** são as três zonas de nível de área 85 que uma Amazon alcança cedo. Qual delas te serve depende do seu tipo de dano — a lista de imunidades na página de cada área é o que se deve ler.",
+          "Um **Sunder Charm** é a resposta direta à imunidade da sua build, e cada um deles te custa alguma coisa. Leia a página do próprio charm antes de pegar um.",
+          "**Uma segunda build de Amazon sai mais barato que um segundo personagem.** Titan's Revenge, Raven Frost, Fortitude e um Peace cobrem metade do equipamento de seis das oito builds, e um token de respec sobrando cobre o resto.",
+        ],
+        gearTargets: [
+          { why: "+300% de Enhanced Damage para toda build cujo dano seja o da arma." },
+          { why: "−15-20% de resistência a raio do inimigo, aplicados antes da checagem de imunidade." },
+          { why: "Uma aura de Fanaticism num arco — velocidade de ataque, attack rating e dano de uma vez." },
+        ],
+        exitCriteria:
+          "Farmando com constância uma zona de nível de área 85 no Hell, resistências em 75%, e uma resposta em mãos para a única imunidade pela qual a sua build não passa.",
+      },
+    },
+  },
 };

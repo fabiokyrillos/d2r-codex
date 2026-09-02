@@ -1,5 +1,6 @@
 import type { ProgressionJourney } from "@/lib/types";
 import { sorceressJourney } from "./sorceress-journey";
 import { paladinJourney } from "./paladin-journey";
+import { amazonJourney } from "./amazon-journey";
 
-export const journeys: ProgressionJourney[] = [sorceressJourney, paladinJourney];
+export const journeys: ProgressionJourney[] = [sorceressJourney, paladinJourney, amazonJourney];
