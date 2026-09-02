@@ -5962,4 +5962,320 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "strafe-amazon": {
+    summary:
+      "Até dez flechas por rajada, cada uma com o dano completo do arco. A arqueira física mais pura do jogo, e a que nunca erra.",
+    playstyle:
+      "Você segura o botão e a Amazon dispara em tudo que estiver no alcance numa rajada só — até dez tiros, cada um escolhendo o próprio alvo, cada um carregando o dano completo do arco. Você fica presa na animação enquanto ela roda, e essa é toda a troca: uma saída enorme em troca de ficar parada. O Guided Arrow é a outra metade da barra, uma flecha que persegue o alvo e não pode errar, para o boss que a rajada não termina. Não existe dano elemental nenhum nesta build, o que faz dela a Amazon mais simples de equipar e a de fraqueza mais afiada.",
+    strengths: [
+      "**Dez tiros por rajada, cada um com o dano completo do arco** — a maior saída física sustentada do jogo",
+      "O Strafe carrega o próprio bônus de attack rating, então ele conecta onde outras builds físicas erram",
+      "O Guided Arrow não pode errar, o que transforma bosses numa questão de tempo em vez de equipamento",
+      "Um tipo de dano só significa um plano de equipamento só: velocidade de ataque, dano e Deadly Strike",
+      "Barata de começar — uma runeword Melody são três runas baixas e +3 na árvore inteira",
+    ],
+    weaknesses: [
+      "**Imunidade física é a única parede, e é uma parede completa** sem Amplify Damage ou Decrepify",
+      "Você fica presa na animação durante a rajada inteira, e é daí que vêm as mortes",
+      "**Os tiros travam em dez no nível 7 da skill** — pontos além disso compram só dano, e muitos guias sugerem o contrário",
+      "Knockback briga com a skill: um alvo empurrado para longe é um tiro que não encontra nada",
+      "**Velocidade de ataque é uma pergunta por arco**, não um número de Amazon — um Hydra Bow e um Ward Bow não se comportam igual na mesma porcentagem",
+    ],
+    flexPoints: [
+      "**O plano gasta 108 de 110.** Penetrate e Dodge são os blocos ajustáveis; mova pontos entre eles conforme você estiver errando ou morrendo.",
+      "**Não empurre o Strafe além de vinte esperando mais tiros.** O teto é dez e chega no nível 7 da skill. Além disso a skill compra 5% de dano por nível, e +skills do equipamento também compram só isso.",
+      "Avoid e Evade merecem mais de um ponto cada num personagem de Hardcore. Eles saem do Penetrate.",
+    ],
+    statPlan: {
+      strength:
+        "O que o arco pedir, e arcos pedem muito — um Hydra Bow são 134, um Crusader Bow 97, um Ward Bow só 72. Escolha o arco antes de gastar.",
+      dexterity:
+        "**Mais que em qualquer outra build do site.** Arcos têm os maiores requisitos de Dexterity do jogo, Dexterity aumenta o attack rating, e numa build física aumenta o dano também.",
+      vitality: "Todo o resto. Você está à distância mas presa, e presa à distância não é seguro.",
+      energy: "Nenhum. O Strafe custa 11 de mana fixos e o custo do Guided Arrow cai conforme ele sobe de nível.",
+      notes: [
+        "**Esta é a única Amazon em que Dexterity é um atributo de dano.** Ela aumenta o attack rating e aumenta o dano do arco, então pontos ali nunca são mortos como são numa caster.",
+        "Os requisitos dos arcos são a restrição real do plano de atributos inteiro. Um Ward Bow com 72 de Strength e 146 de Dexterity, e um Hydra Bow com 134 e 167, pedem personagens completamente diferentes.",
+        "Sem escudo não há bloqueio, então Vitality e recuperação de golpe são toda a defesa que você tem além da Valkyrie e das passivas.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "Um personagem preso numa animação de ataque e depois atordoado para fora dela é um personagem levando a atenção de um grupo inteiro. Este é o número a alcançar antes do Hell.",
+      "fhr-52":
+        "Barato nesta build — uma armadura Peace são 20% e as botas fornecem o resto.",
+    },
+    skillNotes: {
+      strafe:
+        "**Dez tiros no nível 7 da skill, e nunca mais que isso.** Pontos além disso são 5% de dano cada, o que ainda é o melhor lugar para eles.",
+      "guided-arrow":
+        "Uma sinergia de 10% por nível para o Strafe **e** a skill de alvo único. Ele persegue, então não pode errar — bosses e monstros em fuga, os dois.",
+      "multiple-shot":
+        "Uma sinergia de 5% por nível, e um cone largo para os momentos em que uma rajada desperdiçaria tiros num alvo só.",
+      "critical-strike":
+        "**Uma chance de dobrar dano físico, e todo o seu dano é físico.** A chance sobe em direção ao teto de 80% que as próprias colunas do jogo nomeiam; a curva entre os dois está no motor, não em nenhuma tabela.",
+      penetrate:
+        "**Menos do que um plano de Multiple Shot precisa**, porque o Strafe já carrega 30% de attack rating mais 9% por nível por conta própria. Dez pontos e Ignore Target's Defense no arco resolvem.",
+      dodge:
+        "**A passiva que mais importa nesta build.** O Strafe te prende no lugar, e o Dodge é a chance de desviar de um ataque corpo a corpo parada ou atacando.",
+      pierce:
+        "Um ponto. Os tiros do Strafe já escolhem alvos separados, então o pierce acrescenta menos aqui do que na build de cone — leia o artigo de Pierce.",
+      "magic-arrow":
+        "Pré-requisito do Multiple Shot, e um ataque sem custo de mana que nunca esvazia uma aljava.",
+      "cold-arrow":
+        "Pré-requisito do Guided Arrow. O chill que ele aplica é uma linha defensiva de verdade no começo.",
+      valkyrie:
+        "Alguma coisa na sua frente enquanto você está presa numa animação. Não é opcional nesta build.",
+      decoy:
+        "Pontos fixos aumentam a vida da Valkyrie, e um Decoy é no que os grupos à distância atiram em vez de em você.",
+      evade: "Pré-requisito da Valkyrie, e esquiva em movimento.",
+      avoid: "Pré-requisito do Evade, e esquiva de ataques à distância enquanto você atira.",
+      "slow-missiles":
+        "Pré-requisito do Decoy, e a resposta aos grupos à distância que punem um personagem preso no lugar.",
+      "inner-sight":
+        "Pré-requisito do Slow Missiles, e ele reduz a defesa de tudo em que você está atirando.",
+    },
+    immunityPlan:
+      "**Cada ponto de dano desta build é físico, então imunidade física é uma parede completa em vez de um atraso.** Não existe mastery, facet nem aura que faça dano físico passar por uma imunidade. As quatro respostas honestas, na ordem em que a maioria as alcança: **Amplify Damage de um Atma's Scarab**, que corta pela metade a resistência física do alvo e normalmente quebra a imunidade de vez — cinco por cento por golpe é constante numa skill que dispara dez flechas por rajada; **Decrepify de um arco Wrath**, que faz o mesmo a 30% por golpe e vale manter no weapon swap; **um charm Bone Break**, a solução direta, cuja penalidade são 10 a 20 pontos da sua própria redução de dano físico em vez de uma resistência — uma troca mais barata à distância do que no corpo a corpo; e **o seu mercenário**, se você pegar o mercenário do Ato 2 com uma arma elemental em vez de um segundo Faith. Escolher zonas também funciona, e a lista de farm acima está ordenada por quanta imunidade física você vai encontrar.",
+    mercenaryNotes:
+      "**A Rogue do Ato 1 é a escolha incomum e a certa aqui.** Ela é a única mercenária que se beneficia de uma runeword de arco, e a aura Fanaticism do Faith se aplica a você tanto quanto a ela — então um segundo Faith na Rogue é um buff de velocidade de ataque e dano para o grupo inteiro que nenhum outro contratado consegue dar. Contrate a variante Cold pelo chill, dê a ela um **Insight** se você preferir mana, e um **Fortitude** com um **Vampire Gaze** para mantê-la de pé. **Se a imunidade física for o que está te travando, pegue o mercenário do Ato 2** e dê a ele uma arma elemental: o dano dele é o plano B que o seu não pode ser.",
+    farmingWhy: {
+      "pit-hell":
+        "Nível de área 85, curto, e a população é leve em imunidade física. A zona padrão do Strafe.",
+      "mausoleum-hell":
+        "Nível de área 85, alcançável em segundos, e cheio dos mortos-vivos contra os quais o seu arco causa dano bônus.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 com quase nada imune a físico. A zona-problema de uma build de frio é a melhor de uma build física.",
+      "chaos-sanctuary-hell":
+        "Denso e de nível alto, e o Guided Arrow dá conta do Diablo sem trocar de equipamento. **Iron Maiden dos Oblivion Knights reflete uma rajada de dez tiros de volta em você** — fique atenta à maldição.",
+      "pindleskin-hell":
+        "Dez segundos, monstro nível 86, e um alvo único que o Guided Arrow não consegue errar.",
+      "worldstone-keep-hell":
+        "A melhor experiência do jogo, e imunidade física é comum o bastante para esta ser uma zona de Amplify Damage em vez de uma zona de início.",
+      "travincal-hell":
+        "O Council não é imune a físico e fica parado num lugar só. Uma run curta e extremamente lucrativa para um arco físico.",
+    },
+    levelingPath: {
+      summary:
+        "**Esta aqui genuinamente evolui como ela mesma**, coisa que quase nenhuma Amazon faz. Magic Arrow desde o nível 1 não custa flechas, Multiple Shot no 6 limpa, Guided Arrow no 18 mata bosses e o Strafe chega no 24 — todas são skills que a build pronta continua usando. Nada precisa ser desaprendido e nenhum respec está planejado.",
+      respecAt: "Não é necessário. Guarde os três tokens da Den of Evil.",
+    },
+    selfFoundNotes:
+      "**A melhor Amazon self-found do site.** Edge, Melody, Peace e Harmony são todas runewords de runas baixas, e só a Melody são doze níveis de skill por três runas que a Countess derruba sem parar. Widowmaker, Eaglehorn, Razortail, The Cat's Eye, Raven Frost e Gore Rider são todos achados realistas do Hell. A build funciona em cada etapa dessa progressão porque não tem nenhum limiar a atravessar — nenhuma mastery a alcançar, nenhuma −resistência a empilhar, nenhuma aura a comprar. O que o solo self-found não fornece é o Faith, e a consequência honesta é um personagem mais lento em vez de um personagem travado.",
+    hardcoreNotes:
+      "Ficar presa é o perigo. O Strafe te trava na animação durante a rajada inteira, então um grupo que te alcança enquanto ela roda ganha vários golpes de graça — e é por isso que o Dodge leva cinco pontos aqui em vez de um, por isso a meta de 32% de recuperação de golpe está marcada como obrigatória, e por isso a Valkyrie não é opcional. Mantenha **Slow Missiles** na barra; contra os grupos à distância do Hell é a skill defensiva de um ponto mais forte do jogo. Evite **Windforce** no Hardcore por um motivo não óbvio: knockback espalha um grupo em vez de matá-lo, e um grupo espalhado te cerca. Pegue o mercenário do Ato 2 com Holy Freeze em vez de um segundo Faith.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 24 pelo Strafe, com um arco que não te envergonhe.",
+        nextUpgrade: "Nível 24 pelo Strafe, depois uma Melody no 39 e um arco de verdade depois disso.",
+        notes:
+          "Magic Arrow desde o nível 1 não custa flecha nenhuma, o que importa mais do que parece quando aljavas custam ouro que você não tem. Multiple Shot no 6 é o botão de limpeza até o Strafe existir no 24.",
+        picks: {
+          "weapon-0": {
+            why: "35% de velocidade de ataque, Thorns, e um dano bônus enorme contra demônios e mortos-vivos por três runas da Countess no nível 25.",
+            sockets: "Tir, Tal e Amn num arco de 3 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "+3 na aba inteira de Bow and Crossbow mais +3 em cada um de Critical Strike, Dodge e Slow Missiles, no nível 39. Doze níveis de skill por três runas baixas.",
+          },
+          "body-0": {
+            why: "Recuperação de golpe e velocidade de corrida no nível 17, que é do que um personagem preso no lugar mais precisa.",
+          },
+          "helm-0": { why: "+1 em Todas as Skills por duas runas comuns." },
+          "gloves-0": {
+            label: "Quaisquer luvas com Increased Attack Speed",
+            why: "Velocidade de ataque é o único atributo que importa tão cedo, e vendedores vendem luvas mágicas que a carregam.",
+            lookFor: ["20% Increased Attack Speed"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "Strafe online, velocidade de ataque subindo, e uma Valkyrie na sua frente.",
+        nextUpgrade: "Um arco elite e um Fortitude. Os dois são passos grandes e nenhum é caro.",
+        notes:
+          "**Velocidade de ataque agora é o atributo que você está caçando, e não existe um número único para mirar.** Os frames que um arco te dá dependem da velocidade base dele e da skill que você está usando, e este site não publica uma tabela que estaria errada para a maioria dos conjuntos. Pegue velocidade de ataque onde ela for de graça e julgue pelo arco que está na sua mão.",
+        picks: {
+          "weapon-0": {
+            why: "+3 na aba de arco inteira e +3 em Critical Strike. Nada mais neste nível chega perto pelo preço.",
+            sockets: "Shael, Ko e Nef num arco de 3 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Uma aura de Vigor e uma Valkyrie que qualquer classe pode invocar, se você preferir movimento e dano elemental a níveis de skill.",
+          },
+          "body-0": {
+            why: "+2 skills de Amazon, +2 Critical Strike e 20% de Faster Hit Recovery por três runas baratas.",
+          },
+          "helm-0": { why: "+1 skills e magic find enquanto nada melhor existir." },
+          "belt-0": {
+            why: "33% de Piercing Attack por 20 de Strength — cada flecha que perfura acerta a fileira atrás daquela em que você mirou.",
+          },
+          "amulet-0": {
+            why: "20% de velocidade de ataque, 25 de Dexterity e 30% de velocidade de corrida. Numa build física de arco, cada uma dessas linhas é dano ou sobrevivência.",
+          },
+          "ring1-0": {
+            why: "Cannot Be Frozen e até 250 de attack rating. Estar sob chill enquanto presa no lugar é a pior combinação que esta build tem.",
+          },
+        },
+        charms: [{ why: "75% nas quatro antes do Hell." }],
+      },
+      "early-hell": {
+        goal: "Um arco elite, resistências no teto, e o attack rating para usar os dois.",
+        nextUpgrade: "Um arco Faith, ou um Wrath para os imunes a físico.",
+        notes:
+          "**Imunidade física começa aqui e é absoluta.** Nenhuma quantidade de dano ajuda; cada ponto dele é físico. As respostas são Amplify Damage de um Atma's Scarab, Decrepify de um arco Wrath, um charm Bone Break, ou o seu mercenário — e a lista de farm abaixo está ordenada com isso em mente.",
+        picks: {
+          "weapon-0": {
+            why: "**Ignore Target's Defense e 33% de Deadly Strike** com apenas 72 de Strength — o jeito mais barato de parar de errar e começar a dobrar.",
+          },
+          "weapon-0-alt0": {
+            why: "+1 skills de Amazon, Ignore Target's Defense, e dano que cresce com o seu nível. Seis sockets, que é o motivo para preferi-lo depois.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage. Numa build cujo dano é inteiramente o do arco, este é o maior upgrade disponível.",
+          },
+          "helm-0": { why: "+2 skills, vida por nível e 10% de redução de dano com 50 de Strength." },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque e resistências no slot sem nenhum unique que valha a pena.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências"],
+          },
+          "belt-0": {
+            why: "33% de pierce, e ele está fazendo mais pelo seu dano do que qualquer cinto com resistências faria.",
+          },
+          "amulet-0": { why: "Velocidade de ataque, Dexterity e movimento." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "boots-0": {
+            why: "Vida, Dexterity e resistência máxima a fogo elevada, num personagem sem escudo.",
+          },
+        },
+        charms: [{ why: "Mantenha 75% e some a vida de que um personagem sem escudo precisa." }],
+      },
+      budget: {
+        goal: "Uma aura de Fanaticism, e uma resposta à imunidade física.",
+        nextUpgrade: "Um Windforce, ou uma rolagem melhor de Faith. Depois os charms.",
+        picks: {
+          "weapon-0": {
+            why: "**Uma aura de Fanaticism no seu próprio arco**: velocidade de ataque, attack rating e dano juntos, mais +1-2 em todas as skills. A melhor arma de Strafe do jogo.",
+            sockets: "Ohm, Jah, Lem e Eld num arco de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Decrepify ao golpear, que corta pela metade a resistência física e quebra a maior parte da imunidade física. Fica no swap para os grupos que o Faith não consegue ferir.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage e a defesa para a qual um personagem sem escudo não tem outra fonte.",
+          },
+          "helm-0": {
+            why: "+2 skills, 20% de velocidade de ataque e roubo de vida. Os −30% de resistência a fogo dele precisam ser pagos antes.",
+            sockets: "Uma runa Um devolve a maior parte da resistência a fogo.",
+          },
+          "helm-0-alt0": {
+            why: "Mais seguro, mais barato, e sem penalidade de resistência para planejar em volta.",
+          },
+          "amulet-0": {
+            why: "**Amplify Damage ao golpear**, que corta pela metade a resistência física e muitas vezes quebra a imunidade física de vez. Dez flechas por rajada aplicam isso o tempo todo.",
+          },
+          "amulet-0-alt0": {
+            why: "Mais velocidade de ataque e Dexterity, se o mercenário estiver dando conta dos imunes.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas: 20% de Increased Attack Speed, resistências",
+            why: "A velocidade de ataque mais barata que resta no personagem.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 20+"],
+          },
+          "belt-0": { why: "33% de pierce, ainda o melhor dano do slot." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find e dano enquanto você farma." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon." },
+          { why: "Dano no Strafe e no Guided Arrow ao mesmo tempo." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, num personagem sem escudo." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "O maior dano físico sustentado que o jogo permite.",
+        nextUpgrade: "Um Wrath no swap, e as últimas rolagens de charm.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem de Fanaticism nível 15 com +2 em todas as skills. Velocidade de ataque, attack rating e dano de um item só, numa build que precisa dos três.",
+            lookFor: ["Level 15 Fanaticism", "+2 to All Skills"],
+          },
+          "weapon-0-alt0": {
+            why: "Mais dano bruto que qualquer outra coisa do jogo — e **Knockback, que empurra alvos para fora de uma rajada de Strafe.** Uma troca de verdade, não um upgrade puro.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage, e tudo que você tem é do Enhanced Damage multiplicar.",
+          },
+          "helm-0": {
+            why: "+2 skills, 20% de velocidade de ataque e roubo de vida, com uma Um no socket.",
+          },
+          "amulet-0": {
+            why: "Amplify Damage ao golpear — a resposta da build à imunidade física, aplicada dez vezes por rajada.",
+          },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, resistências, vida",
+            why: "A última velocidade de ataque, e as resistências que o Andariel's Visage custa.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": {
+            why: "Crushing Blow, Deadly Strike e Open Wounds — os três multiplicam dano físico, que é tudo que você tem.",
+          },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "Dano e a vida de que uma build sem escudo precisa." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "A build termina com três respostas separadas para a sua única fraqueza — Amplify Damage do amuleto, Decrepify de um Wrath no swap, e um charm Bone Break — e precisa das três só nas piores zonas. **Todo o resto que sobrou para comprar é velocidade de ataque e níveis de skill, e velocidade de ataque continua sendo uma pergunta por arco**: um Grand Matron Bow, um Ward Bow e um Hydra Bow alcançam os frames deles em totais diferentes.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem de Fanaticism nível 15 e +2 em todas as skills, num Grand Matron Bow se a Dexterity permitir.",
+            lookFor: ["Level 15 Fanaticism", "+2 to All Skills"],
+          },
+          "weapon-0-alt0": {
+            why: "O arco da imunidade física, no swap. Decrepify a 30% por golpe e 20% de Crushing Blow.",
+          },
+          "body-0": { why: "+300% de Enhanced Damage e 200% de defesa aumentada." },
+          "helm-0": {
+            why: "+2 skills, velocidade de ataque e roubo de vida, com Um no socket.",
+          },
+          "amulet-0": { why: "Amplify Damage ao golpear." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, duas resistências, vida",
+            why: "O único slot onde um craft vence qualquer unique.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Crushing Blow, Deadly Strike e Open Wounds." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "A resposta direta à imunidade física, e a única cuja penalidade é a sua própria redução de dano em vez de uma resistência. Carregado pela zona, não usado sempre.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders." },
+          { why: "Trocado para um grupo imune a físico em vez de carregado no cinto." },
+        ],
+      },
+    },
+  },
 };

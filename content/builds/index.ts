@@ -19,6 +19,7 @@ import { fireWallSorceress } from "./fire-wall-sorceress";
 import { meleeSorceress } from "./melee-sorceress";
 import { lightningFuryAmazon } from "./lightning-fury-amazon";
 import { lightningStrikeAmazon } from "./lightning-strike-amazon";
+import { strafeAmazon } from "./strafe-amazon";
 
 /**
  * Build registry.
@@ -27,4 +28,4 @@ import { lightningStrikeAmazon } from "./lightning-strike-amazon";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon];
