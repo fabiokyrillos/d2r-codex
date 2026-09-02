@@ -5656,4 +5656,310 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "lightning-strike-amazon": {
+    summary:
+      "Uma javelin corpo a corpo que encadeia raios entre tudo que está por perto, com a skill de alvo único mais forte do jogo na mesma barra.",
+    playstyle:
+      "Você luta em alcance corpo a corpo com uma javelin e um escudo. O Lightning Strike acerta o que está na sua frente e inicia uma corrente que salta entre inimigos próximos — dois saltos no nível 1 e mais um por nível, e ela pode voltar num alvo que já atingiu, e é por isso que ela supera o Lightning Fury em grupos espalhados. Aí Charged Strike para o que precisa morrer agora: bolts da ponta da lança, e todos podem acertar um único alvo à queima-roupa. Uma Valkyrie segura a frente, um Decoy leva as flechas, e a sua chance de bloqueio faz o resto.",
+    strengths: [
+      "**Charged Strike é a skill de alvo único mais forte do jogo** e esta build é montada em torno de segurá-la",
+      "O Lightning Strike entrega o dano da arma além do próprio, então um imune a raio ainda leva alguma coisa",
+      "Alcance corpo a corpo com escudo de verdade, uma Valkyrie e um Decoy — mais resistente que qualquer caster",
+      "A corrente pode voltar num alvo que já acertou, o que combina com grupos espalhados",
+      "Sem pierce, sem projétil, sem imposto de posicionamento: você acerta o que está na sua frente",
+    ],
+    weaknesses: [
+      "Você está em alcance corpo a corpo com a menor reserva de vida entre as classes de melee",
+      "**Attack rating é uma restrição real** — as duas skills rolam contra ele, e a Amazon não tem Blessed Aim",
+      "O Charged Strike não entrega absolutamente nada num imune a raio",
+      "A velocidade de limpeza é uma fração da build de arremesso; este é um personagem de boss que limpa de forma aceitável",
+      "**Velocidade de ataque também não tem número único aqui** — arremessar e golpear usam animações diferentes, então a meta depende da javelin e da skill",
+    ],
+    flexPoints: [
+      "**O plano gasta 109 de 110.** O Penetrate é o bloco ajustável: corte em direção a um ponto se o seu attack rating já estiver bom pelo equipamento, e gaste a diferença em Decoy ou Critical Strike.",
+      "**Não pegue Pierce.** As duas skills principais são corpo a corpo e nada sai da arma — a chance é desperdiçada. Esta é a maior diferença em relação ao plano da build de arremesso.",
+      "**Critical Strike vale mais aqui do que em qualquer outra Amazon**, porque o Lightning Strike carrega o dano físico da arma. Se você estiver com uma javelin de dano alto, pontos aqui são dano de verdade em vez de pré-requisito.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o escudo e o cinto que você escolheu. Um Stormshield são 156 e um Thundergod's Vigor são 110.",
+      dexterity:
+        "O suficiente para bloqueio máximo, e o suficiente para a javelin — uma Thunderstroke pede 151 sozinha. Esta é a build em que Dexterity não é opcional.",
+      vitality: "Todo o resto, e é a diferença entre lutar corpo a corpo e morrer nisso.",
+      energy: "Nenhum.",
+      notes: [
+        "**Bloqueio máximo importa mais aqui do que em qualquer outra Amazon**, porque esta é a única que fica em alcance corpo a corpo por escolha de projeto. A Amazon divide a tabela de bloqueio com o Paladin, então dá para pagar.",
+        "Dexterity também aumenta o attack rating e o dano da arma, então, ao contrário do que acontece numa caster, aqui ela nunca é um atributo morto.",
+        "Roubo de vida não é um atributo que você compra com pontos, mas é um que você precisa ter. Dracul's Grasp, uma Titan's Revenge ou um Andariel's Visage — escolha ao menos um antes do Hell.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "Um personagem corpo a corpo preso em recuperação de golpe é um personagem morrendo. Aqui isso não é opcional como é na build de arremesso.",
+      "fhr-52":
+        "Alcançável com um Shael num escudo ou uma armadura Peace mais botas, e vale os sockets num personagem em alcance corpo a corpo.",
+      "fbr-32":
+        "O bloqueio é a sobrevivência desta build, e bloquear te prende numa animação. 32% é onde essa animação deixa de ser um problema.",
+    },
+    skillNotes: {
+      "lightning-strike":
+        "**Dois saltos de corrente no nível 1 e mais um por nível.** O golpe em si entrega o dano completo da arma mais o raio da skill.",
+      "charged-strike":
+        "O botão de boss. A contagem de bolts sobe a cada cinco níveis e todos podem acertar um alvo à queima-roupa.",
+      "power-strike":
+        "+14% de dano por nível para as duas skills principais. Maximizada pelo que alimenta, não pelo que faz.",
+      "lightning-bolt":
+        "Os outros 14% por nível no Charged Strike, e 11% por nível no Lightning Strike.",
+      penetrate:
+        "**35% de attack rating no nível 1 e +10% por nível.** As suas duas skills rolam contra attack rating e a Amazon não tem aura para consertar isso. Pontos fixos aqui também aumentam o da Valkyrie.",
+      jab: "Pré-requisito do Power Strike, e o ataque puramente físico que você aperta num imune a raio.",
+      "poison-javelin": "Pré-requisito do Lightning Bolt. Nunca apertada.",
+      "plague-javelin": "Pré-requisito do Lightning Fury, pego só pelo ponto abaixo dele.",
+      "lightning-fury":
+        "**Um ponto, como botão de limpeza à distância.** Com os seus +skills ele resolve um corredor no qual você preferiria não entrar. Maximizar é outra build — veja a página do Lightning Fury.",
+      valkyrie: "Ela segura o alvo enquanto você golpeia. Um ponto mais +skills.",
+      decoy:
+        "Pontos fixos aqui aumentam a vida da Valkyrie, e um Decoy é no que os grupos à distância atiram no seu lugar.",
+      evade: "Pré-requisito da Valkyrie, e esquiva em movimento.",
+      avoid: "Pré-requisito do Evade.",
+      dodge:
+        "Pré-requisito do Avoid, e a metade corpo a corpo da passiva — que aqui importa mais que em qualquer outra Amazon.",
+      "slow-missiles":
+        "Pré-requisito do Decoy, e o melhor botão defensivo do jogo por um ponto.",
+      "inner-sight":
+        "Pré-requisito do Slow Missiles, e ele reduz a defesa de tudo em volta de você.",
+      "critical-strike":
+        "Pré-requisito do Penetrate. Ele dobra dano **físico**, então ajuda a metade de arma do Lightning Strike e não faz nada pelo Charged Strike.",
+    },
+    immunityPlan:
+      "Esta build lida melhor com imunidade a raio do que a de arremesso, e o motivo é uma diferença em como as duas skills são construídas. **O Lightning Strike entrega o dano físico completo da arma além do próprio raio**, então um imune a raio ainda leva a metade da arma — com um Fortitude, um Gore Rider e um mercenário com Might, essa metade é substancial. **O Charged Strike não entrega dano de arma nenhum**; contra um imune a raio ele literalmente não faz nada, e é por isso que o Jab fica na barra. Os upgrades são os mesmos de toda Amazon de raio: **Griffon's Eye** e **Thunderstroke** pela −resistência do inimigo aplicada antes da checagem de imunidade, e **Infinity no mercenário** pela Conviction que de fato a quebra. Um **Crack of the Heavens** funciona e custa 70 a 90 pontos da resistência que te protege de grupos lightning enchanted — uma troca pior em alcance corpo a corpo do que à distância.",
+    mercenaryNotes:
+      "O mercenário do Ato 2 com **Might**, porque o dano físico dele é o que mata os imunes a raio que o seu Charged Strike não toca — e porque Might aumenta o dano da sua própria arma, que o Lightning Strike carrega e a build de arremesso não. Dê a ele um **Insight** pela mana cedo e um **Infinity** eventualmente; Conviction é a única coisa que de fato quebra imunidade a raio. **Holy Freeze** é a escolha de Hardcore, e é uma escolha mais forte aqui do que numa build à distância: tudo que está lento é uma coisa que não chega ao seu alcance.",
+    farmingWhy: {
+      "chaos-sanctuary-hell":
+        "Nível de área 85, denso o bastante para a corrente e cheio dos alvos únicos para os quais o Charged Strike existe. Cuidado com Iron Maiden dos Oblivion Knights — ela reflete a metade física de cada golpe.",
+      "throne-of-destruction-hell":
+        "O Charged Strike é a melhor resposta ao Baal no jogo, e as ondas ficam próximas o bastante para a corrente alcançar.",
+      "pindleskin-hell":
+        "Runs de dez segundos contra um alvo único de monstro nível 86. É o formato contra o qual o Charged Strike é melhor, e não há nada para limpar.",
+      "nihlathak-hell":
+        "Uma run curta até um alvo perigoso. Mantenha distância das Vipers em vez do homem — o Charged Strike o mata em poucos golpes.",
+      "secret-cow-level-hell":
+        "Nada aqui é imune a raio e a densidade combina com a corrente. Mais lento que a build de arremesso, mas perfeitamente seguro com o escudo levantado.",
+      "worldstone-keep-hell":
+        "Nível de área 85 e a melhor experiência do jogo. Imunidade a raio é comum, então esta é uma zona de Infinity ou uma zona de Jab.",
+      "travincal-hell":
+        "O Council é imune a raio e bate forte corpo a corpo. Não é zona para esta build antes de o Infinity existir.",
+    },
+    levelingPath: {
+      summary:
+        "O Charged Strike no 18 é cedo o bastante para esta build genuinamente evoluir como ela mesma a partir do meio do Normal. Antes disso é Jab e Power Strike, e nenhum dos dois é desperdiçado — o Power Strike é uma sinergia de 14% e o Jab nunca sai da barra. **O Lightning Strike só existe a partir do nível 30**, então a corrente chega tarde; isso é esperado, não um erro na sua distribuição.",
+      respecAt:
+        "Normalmente nunca. Guarde os tokens da Den of Evil para uma mudança de ideia em vez de uma correção.",
+    },
+    selfFoundNotes:
+      "Razoável. Titan's Revenge, Vampire Gaze, String of Ears, Gore Rider e Raven Frost são todos drops comuns do Hell, e Peace e Spirit são runas da Countess. Dracul's Grasp é o único item pelo qual vale sair do caminho e ele é encontrável. O que o solo self-found não fornece é −resistência a raio do inimigo, o que significa que o Charged Strike para de funcionar contra uma fatia crescente do Hell enquanto o Lightning Strike continua entregando a metade física. Uma versão self-found desta build é uma Amazon física corpo a corpo com um bônus de raio, e funciona — só não é o personagem apaga-boss que a versão de endgame é.",
+    hardcoreNotes:
+      "Jogável e exigente. Você está em alcance corpo a corpo com a menor reserva de vida entre os personagens de melee, então o plano inteiro é bloqueio, recuperação de golpe e roubo de vida: alcance 32% de Faster Block Rate e 32% de Faster Hit Recovery antes do Hell, segure um Stormshield, e coloque um Dracul's Grasp o quanto antes — Life Tap ao golpear vale mais que qualquer quantidade de defesa bruta. **Iron Maiden é a assassina específica.** Os Oblivion Knights no Chaos Sanctuary refletem dano físico, e o Lightning Strike carrega uma metade física, então um grupo amaldiçoado pode encerrar o personagem. Fique atenta à maldição e saia de dentro dela. Holy Freeze no mercenário, não Might.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 18 e ao Charged Strike, e depois ao 30 pelo Lightning Strike.",
+        nextUpgrade: "Nível 30 pelo Lightning Strike, e uma javelin com dano de verdade.",
+        notes:
+          "Jab e Power Strike carregam os primeiros dezoito níveis. Os dois ficam: o Jab permanece na barra para sempre como resposta a um imune a raio, e cada ponto de Power Strike é uma sinergia de 14% para as duas skills para as quais você está indo.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer javelin ou spear com +Javelin and Spear Skills",
+            why: "Uma javelin mágica de vendedor com +3 numa skill vence qualquer rolagem de dano que você vá ver antes do Nightmare.",
+            lookFor: ["+2-3 Javelin and Spear Skills"],
+          },
+          "offhand-0": {
+            why: "Resistências por três runas da Countess, e um escudo com o qual você vai bloquear o tempo todo.",
+          },
+          "body-0": {
+            why: "25% de Faster Hit Recovery a partir do nível 17, que num personagem corpo a corpo é o atributo que te mantém viva.",
+          },
+          "body-0-alt0": {
+            why: "+2 skills de Amazon e mais 20% de recuperação de golpe no nível 29.",
+          },
+          "helm-0": { why: "+1 em Todas as Skills por duas runas comuns." },
+        },
+      },
+      nightmare: {
+        goal: "As duas skills online, roubo de vida no lugar, e um escudo que valha bloquear.",
+        nextUpgrade: "Um Insight para o mercenário, e resistências no teto antes de o Hell começar.",
+        notes:
+          "**Velocidade de ataque começa a importar e não existe um número único de Amazon para mirar.** Golpear com Charged Strike e arremessar Lightning Fury não usam a mesma animação, e uma Ceremonial Javelin não é uma Matriarchal. Pegue velocidade de ataque onde ela é de graça — Highlord's Wrath, Andariel's Visage, luvas — e julgue o resultado na arma que você de fato segura.",
+        picks: {
+          "weapon-0": {
+            why: "+4 níveis de skill entre as duas linhas, 5-9% de roubo de vida, e 20 de Dexterity para o bloqueio. A melhor javelin corpo a corpo disponível tão cedo.",
+          },
+          "offhand-0": {
+            why: "+2 skills e mana no slot com que você bloqueia.",
+            sockets: "Tal, Thul, Ort e Amn num escudo de 4 sockets.",
+          },
+          "body-0": {
+            why: "+2 skills de Amazon, +2 Critical Strike e 20% de Faster Hit Recovery por três runas baratas.",
+          },
+          "helm-0": {
+            why: "Roubo de vida, roubo de mana e redução de dano — três coisas de que uma Amazon corpo a corpo precisa e não consegue na árvore dela.",
+          },
+          "belt-0": {
+            why: "Roubo de vida e até 15% de redução de dano. O cinto de melee até o Thundergod's Vigor ficar acessível.",
+          },
+          "ring1-0": {
+            why: "Cannot Be Frozen, attack rating e Dexterity. Velocidade de ataque reduzida por chill é pior justamente para quem fica parada golpeando.",
+          },
+        },
+        charms: [{ why: "75% nas quatro antes do Hell, e nem um ponto a menos num personagem corpo a corpo." }],
+      },
+      "early-hell": {
+        goal: "Fechar resistências, colocar roubo de vida num segundo slot, e alcançar bloqueio máximo.",
+        nextUpgrade:
+          "Um Griffon's Eye ou um Infinity, e um Fortitude pelo Enhanced Damage que a metade física de fato usa.",
+        picks: {
+          "weapon-0": {
+            why: "Ainda a javelin certa, e o roubo de vida dela está trabalhando mais que o dano.",
+          },
+          "offhand-0": { why: "+2 skills e bloqueio." },
+          "offhand-0-alt0": {
+            why: "35% de redução de dano e o melhor bloqueio do jogo, quando os 156 de Strength estiverem pagos.",
+          },
+          "body-0": {
+            why: "Cannot Be Frozen e resistências pesadas, num personagem que não pode se dar ao luxo de ficar lento.",
+          },
+          "body-0-alt0": { why: "+2 skills de Amazon se as resistências já estiverem resolvidas." },
+          "helm-0": { why: "+2 skills, vida por nível e 10% de redução de dano com 50 de Strength." },
+          "gloves-0": {
+            why: "**Life Tap ao golpear.** Numa build que acerta várias vezes por segundo isso é quase permanente, e é o maior item de sobrevivência disponível a uma Amazon corpo a corpo.",
+          },
+          "belt-0": {
+            why: "+3 Lightning Strike, +3 Lightning Fury, e a resistência máxima a raio elevada de que você precisa parada no meio dos grupos.",
+          },
+          "amulet-0": {
+            why: "+1 skills, 20% de velocidade de ataque, e Deadly Strike que dobra a metade física do Lightning Strike.",
+          },
+          "boots-0": {
+            why: "Crushing Blow, Deadly Strike e Open Wounds — os três se aplicam ao dano de arma que o Lightning Strike carrega.",
+          },
+        },
+        charms: [{ why: "Mantenha 75% e some vida; as duas coisas importam mais no corpo a corpo." }],
+      },
+      budget: {
+        goal: "Enhanced Damage na metade física, e a primeira −resistência a raio do inimigo.",
+        nextUpgrade: "Griffon's Eye, e depois um Infinity no mercenário.",
+        picks: {
+          "weapon-0": { why: "Roubo de vida e quatro níveis de skill." },
+          "weapon-0-alt0": {
+            why: "−15% de resistência a raio do inimigo e até +4 skills de Javelin and Spear, a 151 de Dexterity e sem roubo de vida.",
+          },
+          "body-0": {
+            why: "**+300% de Enhanced Damage, e aqui não é linha desperdiçada** — o Lightning Strike entrega o dano da arma, então isto é um upgrade de dano de verdade além de defensivo.",
+            sockets: "El, Sol, Dol e Lo numa armadura de 4 sockets.",
+          },
+          "helm-0": {
+            why: "+2 skills, 20% de velocidade de ataque e até 10% de roubo de vida. Pague os −30% de resistência a fogo dele em outro lugar antes de vestir.",
+            sockets: "Uma runa Um, que devolve boa parte da resistência a fogo que ele tirou.",
+          },
+          "offhand-0": { why: "35% de redução de dano e o bloqueio que mantém esta build de pé." },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": {
+            why: "Seis níveis de skill entre as duas linhas de raio, mais lightning absorb.",
+          },
+          "amulet-0": { why: "Velocidade de ataque e Deadly Strike." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Crushing Blow contra qualquer coisa com muita vida." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon." },
+          { why: "Níveis de skill, que são bolts e saltos de corrente." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, no personagem que mais precisa da vida." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Os dois tipos de dano na força total, e nada que resista aos dois.",
+        nextUpgrade: "Facets em cada socket, e uma rolagem melhor de Thunderstroke.",
+        picks: {
+          "weapon-0": {
+            why: "−15% de resistência a raio do inimigo, empilhando com um Griffon's Eye e um Infinity. Agora que o Dracul's Grasp fornece o roubo de vida, abrir mão da Titan's é viável.",
+            lookFor: ["+4 Javelin and Spear Skills"],
+          },
+          "helm-0": {
+            why: "−20% de resistência a raio do inimigo e +15% de dano de skills de raio, aplicados antes da checagem de imunidade.",
+            sockets: "Um Rainbow Facet de raio.",
+          },
+          "helm-0-alt0": {
+            why: "Mantenha se o roubo de vida e a velocidade de ataque ainda estiverem te carregando.",
+          },
+          "offhand-0": {
+            why: "Redução de dano e bloqueio, com um lightning facet encaixado.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage na metade física, e a defesa para ficar no corpo a corpo.",
+          },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": { why: "Seis níveis de skill e lightning absorb." },
+          "amulet-0": {
+            why: "Velocidade de ataque e Deadly Strike, que a metade de arma converte em dano.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": {
+            why: "Crushing Blow, que é percentual e portanto melhor contra bosses.",
+          },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "Skills e vida juntas." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "Esta build termina com dois tipos de dano na força total e um escudo na frente dos dois. **A última decisão de verdade é Fortitude contra Chains of Honor**, e é uma decisão real: o Enhanced Damage do Fortitude alimenta a metade do Lightning Strike que acerta imunes a raio, e as resistências do Chains of Honor são o que permite usar um Griffon's Eye e um Andariel's Visage ao mesmo tempo.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem de +4 Javelin and Spear com o Enhanced Damage máximo.",
+            lookFor: ["+4 Javelin and Spear Skills", "+200% Enhanced Damage"],
+          },
+          "helm-0": {
+            why: "Uma rolagem de −20% e +15%, com um lightning facet encaixado.",
+            lookFor: ["-20% Enemy Lightning Resistance", "+15% Lightning Skill Damage"],
+          },
+          "offhand-0": { why: "Redução de dano, bloqueio, e um facet no socket." },
+          "body-0": {
+            why: "O Enhanced Damage que a metade física gasta, e as resistências que o Griffon's custa.",
+          },
+          "body-0-alt0": {
+            why: "Troque dano por +65 em todas as resistências se o Hell estiver te punindo em vez de te cansando.",
+          },
+          "gloves-0": {
+            why: "Life Tap. Nada mais no slot compete numa Amazon corpo a corpo.",
+          },
+          "belt-0": {
+            why: "Seis níveis de skill, +10% de resistência máxima a raio e 20 de absorb.",
+          },
+          "amulet-0": { why: "Velocidade de ataque e Deadly Strike escalando com o nível." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Crushing Blow e Open Wounds." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "Só onde o Infinity não alcança, e nunca numa zona lightning enchanted — leia a página dele antes.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+    },
+  },
 };
