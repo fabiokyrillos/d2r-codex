@@ -6278,4 +6278,302 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "multiple-shot-amazon": {
+    summary:
+      "Um cone de até vinte e quatro flechas, cada uma perfurando a fileira atrás dela. A limpeza física mais larga do jogo.",
+    playstyle:
+      "Você aponta a Amazon para um aglomerado e dispara um leque de flechas nele — duas no nível 1 e mais uma por nível, até vinte e quatro. As flechas vão para onde você mirou em vez de perseguirem alvos, então a skill recompensa encarar um corredor e pune atirar num monstro só em campo aberto. Pierce é o que transforma o cone numa parede: cada flecha que atravessa um alvo continua e acerta a fileira atrás, e num grupo denso essa é a diferença entre limpar uma tela e arranhá-la. O Guided Arrow é o outro botão, para o alvo único em que o cone se desperdiça.",
+    strengths: [
+      "**Até vinte e quatro flechas num aperto só**, coisa de que nenhuma outra skill do jogo chega perto",
+      "Pierce multiplica o cone inteiro de uma vez, então um Razortail vale mais aqui do que em qualquer outra build",
+      "Custa 4 de mana no nível 1 — a skill de limpeza mais barata que qualquer Amazon tem",
+      "Disponível no nível 6, então o personagem fica completo bem antes de qualquer build de javelin",
+      "Um tipo de dano e um plano de equipamento, sem imunidade para pensar até o Hell",
+    ],
+    weaknesses: [
+      "**Imunidade física é uma parede completa**, exatamente como na página do Strafe e pelo mesmo motivo",
+      "Cada flecha carrega três quartos do dano do arco em vez de todo ele",
+      "**Só as duas flechas centrais aplicam efeitos ao acertar** — knockback, roubo de vida, Crushing Blow",
+      "**Nenhum bônus de attack rating próprio**, ao contrário do Strafe, então Penetrate e Ignore Target's Defense não são opcionais",
+      "Ele dispara para onde você mirou em vez de para o que está lá, então se desperdiça quase todo num alvo único",
+    ],
+    flexPoints: [
+      "**O plano gasta 108 de 110.** Pierce é o bloco a ajustar: some um Razortail e 33% chegam de graça, então reconte antes de gastar os últimos cinco pontos aqui.",
+      "**Não pegue Strafe.** Ele divide a mesma arma e as mesmas passivas, e uma build que maximiza os dois são duas meias-builds. Se o que você quer apertar é o Strafe, aquela página tem uma divisão diferente de Penetrate e Pierce por bons motivos.",
+      "Se o cone estiver limpando bem e você estiver morrendo, mova os últimos pontos do Pierce para Dodge, Avoid e Evade.",
+    ],
+    statPlan: {
+      strength: "O que o arco pedir. Uma Balista são 110 de Strength e um Ward Bow são 72 — essa diferença são trinta pontos de atributo.",
+      dexterity:
+        "Alta, e nunca desperdiçada: ela paga o arco, aumenta o attack rating e aumenta o dano físico.",
+      vitality: "Todo o resto. Sem escudo, Vitality e recuperação de golpe são a defesa inteira.",
+      energy:
+        "Nenhum. O Multiple Shot custa 4 de mana no nível 1 e sobe 1 por nível — a limpeza mais barata do jogo.",
+      notes: [
+        "**O arco decide o plano de atributos, então escolha antes de gastar.** Um Buriza-Do Kyanon com 110 de Strength e 80 de Dexterity é um personagem completamente diferente de um Ward Bow com 72 e 146.",
+        "Dexterity aumenta o dano do próprio arco além do attack rating, então nesta build ela compete com Vitality de forma honesta em vez de perder automaticamente.",
+        "Não há escudo e não há bloqueio. Cada ponto que não for para requisitos pertence à Vitality.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-32":
+        "Você atira parada e sem escudo. Ser atordoada nessa posição é como esta build morre, e 32% é a resposta acessível.",
+      "fhr-52":
+        "Uma armadura Peace e botas alcançam juntas, então normalmente não custa nada que você já não fosse comprar.",
+    },
+    skillNotes: {
+      "multiple-shot":
+        "**Duas flechas no nível 1, mais uma por nível, teto 24.** Ao contrário do teto de dez tiros do Strafe, este é alto o bastante para +skills continuarem comprando flechas.",
+      "guided-arrow":
+        "A skill de alvo único, e a que as tabelas do jogo ligam ao Multiple Shot nos dois sentidos — uma sinergia de dano rotulada num sentido e um parâmetro de 'Damage % per level' no outro.",
+      "critical-strike":
+        "Uma chance de dobrar dano físico, aplicada por flecha. A chance sobe em direção ao teto de 80% que as colunas nomeiam; a curva entre os dois está no motor.",
+      penetrate:
+        "**35% de attack rating mais 10% por nível, e o Multiple Shot não tem bônus próprio.** Esta é a skill de que o Strafe não precisa e sem a qual esta build não vive.",
+      pierce:
+        "**Quinze pontos, coisa que nenhuma outra build do site gasta aqui.** Um cone de vinte e quatro flechas perfurando uma fileira a mais são vinte e quatro acertos a mais. Conte o seu Razortail primeiro — equipamento e skill são um pool só.",
+      "magic-arrow": "Pré-requisito do Multiple Shot, e um tiro que não custa flecha nenhuma.",
+      "cold-arrow": "Pré-requisito do Guided Arrow.",
+      valkyrie: "Alguma coisa para segurar a frente do cone enquanto você atira dentro dele.",
+      decoy:
+        "Pontos fixos aumentam a vida da Valkyrie. Um Decoy colocado atrás de um grupo também o puxa para dentro do seu cone.",
+      evade: "Pré-requisito da Valkyrie, e esquiva enquanto você se reposiciona.",
+      avoid: "Pré-requisito do Evade.",
+      dodge: "Pré-requisito do Avoid.",
+      "slow-missiles":
+        "Pré-requisito do Decoy, e a resposta a um grupo à distância que você está parada atirando.",
+      "inner-sight":
+        "Pré-requisito do Slow Missiles, e ele reduz a defesa de um grupo inteiro de uma vez — o que combina com um cone.",
+    },
+    immunityPlan:
+      "Idêntico em natureza ao da página do Strafe, e diferente num detalhe. **Todo o seu dano é físico, então um imune a físico não leva absolutamente nada** — nenhuma mastery, facet ou aura faz dano físico passar por uma imunidade. As respostas são **Amplify Damage de um Atma's Scarab**, **Decrepify de um arco Wrath no swap**, **um charm Bone Break** e **a arma elemental do seu mercenário**. O detalhe que difere: **só as duas flechas centrais de um Multiple Shot aplicam efeitos ao acertar**, então um proc de maldição dispara bem menos aqui do que numa rajada de dez tiros de Strafe, em que cada tiro é um acerto separado. Isso torna o mercenário e o swap de Wrath relativamente mais importantes nesta build, e o amuleto relativamente menos.",
+    mercenaryNotes:
+      "**O mercenário do Ato 2, não a Rogue.** A página do Strafe recomenda um segundo Faith numa Rogue do Ato 1 e faz bem, mas esta build tem uma lacuna mais larga a cobrir: sem bônus próprio de attack rating e sem dano elemental em lugar nenhum, ela quer **Might** pelo dano bruto e um contratado cuja arma consiga ferir o que a sua não fere. Dê a ele um **Insight** cedo pela mana, e depois um **Pride** ou uma arma elemental para ele resolver os imunes a físico enquanto você limpa todo o resto. **Holy Freeze** se você preferir que nada chegue à sua posição de tiro.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "Uma manada enfileirada é exatamente o formato que um cone de vinte e quatro flechas quer, e nada lá é imune a físico.",
+      "pit-hell":
+        "Nível de área 85, corredores curtos que afunilam um cone, e leve em imunidade física.",
+      "ancient-tunnels-hell":
+        "Nível de área 85 e estreito. Quase nada lá resiste a dano físico, o que faz desta uma zona melhor para esta build do que para a maioria.",
+      "mausoleum-hell":
+        "Nível de área 85, a segundos de um waypoint, e cheio de mortos-vivos contra os quais o seu arco causa dano bônus.",
+      "chaos-sanctuary-hell":
+        "Denso e de nível alto, e os grupos dos selos ficam nos corredores em que um cone é melhor. Cuidado com Iron Maiden — uma rajada de vinte e quatro flechas refletida é fatal.",
+      "travincal-hell":
+        "O Council fica junto e não é imune a físico. Um cone cobre todos eles.",
+      "worldstone-keep-hell":
+        "A melhor experiência do jogo e denso o bastante para o cone, mas imunidade física é comum — uma zona de Amplify Damage em vez de uma zona de início.",
+    },
+    levelingPath: {
+      summary:
+        "**Esta build é o próprio plano de evolução**, e o mais precoce do site. O Multiple Shot no nível 6 limpa o Normal inteiro, o Guided Arrow no 18 dá conta dos bosses, e nada nos dois precisa ser desaprendido depois. Coloque pontos em Critical Strike no caminho em vez de guardá-los — é uma porcentagem que funciona desde o primeiro ponto.",
+      respecAt: "Não é necessário. Guarde os tokens.",
+    },
+    selfFoundNotes:
+      "Excelente, e um pouco melhor que a da página do Strafe por um motivo: **o Multiple Shot chega no nível 6** em vez do 24, então um personagem novo está limpando direito dentro de uma hora. Edge, Melody e Peace são todas runewords da Countess, e o Buriza-Do Kyanon — o maior upgrade único que esta build faz — cai a partir do fim do Nightmare e é uma das armas capazes de endgame mais comuns do jogo. O Faith é o único item genuinamente fora de alcance, e a build fica bem sem ele.",
+    hardcoreNotes:
+      "Mais segura que o Strafe por um motivo: você não fica presa numa animação longa, então dá para atirar e andar. Todo o resto é igual — sem escudo, sem bloqueio, e Vitality mais recuperação de golpe como defesa inteira. Alcance 32% de Faster Hit Recovery antes do Hell, mantenha **Slow Missiles** na barra, e coloque o **Decoy** atrás de um grupo em vez de na sua frente: ele puxa o grupo para dentro do cone e leva as flechas destinadas a você ao mesmo tempo. Pegue Holy Freeze no mercenário.",
+    gearSets: {
+      starter: {
+        goal: "Multiple Shot no nível 6, e um arco que aceite três sockets.",
+        nextUpgrade: "Nível 18 pelo Guided Arrow, depois uma Melody no 39.",
+        notes:
+          "**O Multiple Shot é a limpeza completa mais precoce que a Amazon tem**, disponível no nível 6 por quatro de mana. A dificuldade inteira do Normal é esta skill e o Magic Arrow, e nenhuma das duas é jogada fora depois.",
+        picks: {
+          "weapon-0": {
+            why: "35% de velocidade de ataque e um dano bônus enorme contra demônios e mortos-vivos, por três runas da Countess no nível 25.",
+            sockets: "Tir, Tal e Amn num arco de 3 sockets.",
+          },
+          "body-0": {
+            why: "Recuperação de golpe e velocidade de corrida a partir do nível 17 — os dois atributos que mais faltam a um personagem sem escudo.",
+          },
+          "helm-0": {
+            why: "+1 em Todas as Skills, que neste nível é mais uma flecha em cada cone.",
+          },
+          "gloves-0": {
+            label: "Quaisquer luvas com Increased Attack Speed",
+            why: "Vendedores vendem luvas mágicas com isso, e nada mais no slot importa ainda.",
+            lookFor: ["20% Increased Attack Speed"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "Um cone largo, uma Valkyrie, e o primeiro pierce.",
+        nextUpgrade: "Um arco elite e um Fortitude.",
+        notes:
+          "**Velocidade de ataque importa e não existe número de Amazon para ela.** Uma Balista é uma das bases mais lentas do jogo e um Ward Bow uma das mais rápidas, então a mesma porcentagem compra frames muito diferentes. Pegue velocidade de ataque onde for de graça, e julgue pelo arco que você está segurando em vez de por uma tabela.",
+        picks: {
+          "weapon-0": {
+            why: "+3 na aba inteira de Bow and Crossbow são três flechas a mais por cone, mais +3 em Critical Strike.",
+            sockets: "Shael, Ko e Nef num arco de 3 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "**100% de Piercing Attack de graça** no nível 41, que é o maior passo que esta build dá — e permite deixar o Pierce em um ponto até bem mais tarde.",
+          },
+          "body-0": {
+            why: "+2 skills de Amazon, +2 Critical Strike e recuperação de golpe, por três runas baratas.",
+          },
+          "helm-0": { why: "+1 skills e magic find enquanto nada melhor existir." },
+          "belt-0": {
+            why: "33% de pierce por 20 de Strength. Num cone de vinte e quatro flechas este é o melhor custo-benefício do jogo.",
+          },
+          "amulet-0": {
+            why: "20% de velocidade de ataque e 25 de Dexterity, e os dois são dano num arco físico.",
+          },
+          "ring1-0": {
+            why: "Cannot Be Frozen e até 250 de attack rating, para o qual esta build não tem outra fonte barata.",
+          },
+        },
+        charms: [{ why: "75% antes do Hell, num personagem sem escudo para se esconder atrás." }],
+      },
+      "early-hell": {
+        goal: "Attack rating, resistências no teto, e pierce perto do limite.",
+        nextUpgrade: "Um arco Faith, e uma resposta à imunidade física.",
+        notes:
+          "**Conte o seu total de pierce antes de gastar mais pontos de skill.** Um Buriza já está no teto sozinho, e um Razortail mais um punhado de pontos fixos chega quase lá sem ele. Esta é a única build em que ler o artigo de Pierce primeiro economiza quinze pontos de skill.",
+        picks: {
+          "weapon-0": {
+            why: "100% de Piercing Attack e 80% de velocidade de ataque numa base lenta. Cada flecha do cone atravessa tudo que encontra.",
+          },
+          "weapon-0-alt0": {
+            why: "Ignore Target's Defense e +1 skills de Amazon, numa base bem mais rápida — a escolha se os seus pontos de Pierce e o Razortail já cobrirem o pierce.",
+          },
+          "body-0": { why: "+300% de Enhanced Damage em cada uma das vinte e quatro flechas." },
+          "helm-0": {
+            why: "+2 skills — duas flechas a mais — além de vida e redução de dano com 50 de Strength.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de Increased Attack Speed",
+            why: "Velocidade de ataque e resistências num slot só.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências"],
+          },
+          "belt-0": { why: "33% de pierce, e ele empilha com a skill em direção ao mesmo teto." },
+          "amulet-0": {
+            why: "Velocidade de ataque, Dexterity e o movimento de que um personagem sem escudo precisa.",
+          },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "boots-0": { why: "Vida, Dexterity e resistência máxima a fogo elevada." },
+        },
+        charms: [{ why: "75% nas quatro, e vida por cima." }],
+      },
+      budget: {
+        goal: "Fanaticism, e alguma coisa que fira imunes a físico.",
+        nextUpgrade: "Um Wrath para os imunes a físico, e os últimos charms de skill.",
+        picks: {
+          "weapon-0": {
+            why: "Uma aura de Fanaticism nas suas próprias mãos — velocidade de ataque, attack rating e dano juntos, mais +1-2 em todas as skills para mais flechas.",
+            sockets: "Ohm, Jah, Lem e Eld num arco de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            why: "Mantenha se o seu total de pierce desmoronar sem ele. Pierce de graça vale bastante velocidade de ataque.",
+          },
+          "body-0": { why: "+300% de Enhanced Damage, multiplicado pelo cone inteiro." },
+          "helm-0": {
+            why: "+2 skills, 20% de velocidade de ataque e roubo de vida — embora **só as duas flechas centrais roubem**, então o roubo é menor do que parece.",
+            sockets: "Uma runa Um pela resistência a fogo que ele custa.",
+          },
+          "helm-0-alt0": { why: "Sem penalidade de resistência, e os mesmos +2 skills." },
+          "amulet-0": {
+            why: "**Amplify Damage ao golpear**, que é a resposta à imunidade física. Repare que as flechas centrais são as que conseguem aplicá-lo.",
+          },
+          "amulet-0-alt0": {
+            why: "Mais velocidade de ataque e Dexterity, se o mercenário estiver dando conta dos imunes.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas: 20% de Increased Attack Speed, resistências",
+            why: "A velocidade de ataque mais barata que resta.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 20+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills, que é mais uma flecha." },
+          "boots-0": { why: "Magic find na build de limpeza mais rápida que a Amazon tem." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Amazon — três flechas a mais por cone." },
+          { why: "Níveis de skill aqui são flechas, não só dano." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, num personagem sem escudo." },
+          { why: "O escudo da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Um cone de vinte e quatro flechas que perfura tudo e acerta tudo.",
+        nextUpgrade:
+          "As últimas rolagens de charm, e um Bone Break para as zonas que o Amplify Damage não cobre.",
+        picks: {
+          "weapon-0": {
+            why: "Uma rolagem de Fanaticism nível 15 com +2 em todas as skills — velocidade de ataque, attack rating e duas flechas a mais de um item só.",
+            lookFor: ["Level 15 Fanaticism", "+2 to All Skills"],
+          },
+          "weapon-0-alt0": {
+            why: "Decrepify ao golpear, para os grupos que o Faith não consegue ferir de jeito nenhum. Fica no swap em vez de vestido.",
+          },
+          "body-0": {
+            why: "+300% de Enhanced Damage e a defesa para a qual uma build sem escudo não tem outra fonte.",
+          },
+          "helm-0": { why: "+2 skills e 20% de velocidade de ataque, com uma Um no socket." },
+          "amulet-0": {
+            why: "Amplify Damage ao golpear, a única resposta de verdade da build à imunidade física.",
+          },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, resistências, vida",
+            why: "Velocidade de ataque e as resistências que o Andariel's Visage custa.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": {
+            why: "Magic find, ou Gore Rider se você preferir Crushing Blow nas flechas centrais.",
+          },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Amazon." },
+          { why: "Flechas e vida juntas." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "O escudo da troca." }],
+      },
+      bis: {
+        goal: "Nada mais para consertar.",
+        notes:
+          "**O cone está em vinte e quatro flechas e todas elas perfuram**, então o que resta comprar é dano por flecha e frequência de acerto. Velocidade de ataque continua sendo uma pergunta por arco e sempre vai ser: o mesmo total se comporta diferente num Grand Matron Bow, num Ward Bow e numa Balista, então teste em vez de ler.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism nível 15 e +2 em todas as skills, no arco de 4 sockets que a sua Dexterity alcançar.",
+            lookFor: ["Level 15 Fanaticism", "+2 to All Skills"],
+          },
+          "weapon-0-alt0": { why: "No swap, para imunes a físico." },
+          "body-0": { why: "+300% de Enhanced Damage." },
+          "helm-0": { why: "+2 skills e velocidade de ataque, com Um no socket." },
+          "amulet-0": { why: "Amplify Damage ao golpear." },
+          "gloves-0": {
+            label: "Luvas craftadas: 20% de Increased Attack Speed, duas resistências, vida",
+            why: "A melhor versão do único slot sem nenhum unique que valha vestir.",
+            lookFor: ["20% Increased Attack Speed", "Duas resistências em 30+"],
+          },
+          "belt-0": { why: "33% de pierce." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Amazon." },
+          {
+            why: "Carregado para as zonas em que os cinco por cento por golpe do Amplify Damage não bastam. A penalidade dele é a sua própria redução de dano, que à distância de arco é a mais barata das seis.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders." },
+          { why: "Trocado para um grupo imune a físico." },
+        ],
+      },
+    },
+  },
 };
