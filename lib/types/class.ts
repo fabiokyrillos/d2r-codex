@@ -72,6 +72,9 @@ export interface Skill extends Entity {
    *                                 than added alongside
    *   element-only-attack           an attack that carries no weapon damage at
    *                                 all; the table is the whole of it
+   *   corpse-life                   the damage is a share of the exploded
+   *                                 corpse's *type's* base life, so it belongs
+   *                                 to what died rather than to the skill
    *
    * Plain weapon attacks need no entry — `kind === "attack"` with no elemental
    * table is unambiguous. Everything else is authored, never derived, and
@@ -96,7 +99,8 @@ export interface Skill extends Entity {
     | "shield"
     | "weapon-plus-element"
     | "weapon-converted-to-element"
-    | "element-only-attack";
+    | "element-only-attack"
+    | "corpse-life";
   /** Mana cost at base, when it is decision-relevant. */
   manaCost?: string;
   /** Cast/attack behaviour notes that affect play. */

@@ -389,6 +389,106 @@ export function synergiesFor(
     .sort((x, y) => x.from.localeCompare(y.from));
 }
 
+/**
+ * How many minions a summon holds at once, read from the `petmax` column.
+ *
+ * Two shapes exist among the skills in scope and they mean different things, so
+ * neither is inferred from the other:
+ *
+ *   lvl                        Revive. The cap *is* the effective skill level.
+ *   (lvl < 4) ?lvl:(2+lvl/3)   Raise Skeleton and Raise Skeletal Mage. One per
+ *                              level for the first three, then two plus one for
+ *                              every three levels — integer division, so a step
+ *                              rather than a slope.
+ *
+ * The piecewise branch is the reason this is parsed rather than approximated.
+ * `2 + floor(lvl/3)` alone gives two skeletons at level 1 and two at level 2,
+ * where the game gives one and two; the site would have published a wrong
+ * number at exactly the levels a reader is looking at it.
+ *
+ * A golem's `petmax` is the literal `1`, which is prose ("one golem at a time")
+ * rather than a table, and is not read through here.
+ *
+ * @param raw   the column, as the extraction gives it
+ * @param where the skill, for the error a broken assumption raises
+ */
+export function petMaxFromColumn(
+  raw: unknown,
+  where: string,
+):
+  | { kind: "linear"; base: number; perLevel: number }
+  | { kind: "petmax"; threshold: number; base: number; per: number } {
+  if (typeof raw !== "string" || raw.trim() === "") {
+    throw new Error(`${where}: petmax is missing or empty, and the count published comes from it`);
+  }
+  const expression = raw.trim().replace(/^"([\s\S]*)"$/, "$1").replace(/\s+/g, "");
+  if (expression === "lvl") return { kind: "linear", base: 1, perLevel: 1 };
+  const piecewise = expression.match(/^\(lvl<(\d+)\)\?lvl:\((\d+)\+lvl\/(\d+)\)$/);
+  if (piecewise) {
+    return {
+      kind: "petmax",
+      threshold: Number(piecewise[1]),
+      base: Number(piecewise[2]),
+      per: Number(piecewise[3]),
+    };
+  }
+  throw new Error(
+    `${where}: petmax reads "${expression}", which is neither \`lvl\` nor the piecewise ` +
+      `\`(lvl < N) ? lvl : (B + lvl / P)\` shape. A new shape means a new count formula; wire ` +
+      `it up deliberately rather than approximating it.`,
+  );
+}
+
+/**
+ * A skill's mana cost, as base and per-level in player-facing units.
+ *
+ * `manashift` is a power-of-two divisor expressed as an exponent around 8, the
+ * same convention `HitShift` uses for damage: Bone Spear's `mana=28` at
+ * `manashift=6` is 28/4 = 7 mana at level 1, not 28. Reading the raw column
+ * would publish a cost four times the real one.
+ *
+ * The result is deliberately fractional. Teeth costs 3 at level 1 and gains half
+ * a point per level; rounding it to whole numbers would flatten the growth the
+ * table exists to show.
+ *
+ * @returns undefined where the row carries no cast cost at all
+ */
+export function manaFromRow(
+  row: SkillRow,
+  where: string,
+): { base: number; perLevel: number } | undefined {
+  const read = (column: string): number => {
+    const value = row[column];
+    if (value === undefined) return 0;
+    if (typeof value !== "number") {
+      throw new Error(`${where}: ${column} is ${typeof value}, not a number`);
+    }
+    return value;
+  };
+  const mana = read("mana");
+  const perLevel = read("lvlmana");
+  if (mana === 0 && perLevel === 0) return undefined;
+  const scale = Math.pow(2, read("manashift") - 8);
+  const base = mana * scale;
+  const slope = perLevel * scale;
+  /*
+   * `minmana` is a floor the engine applies after the arithmetic, and the shapes
+   * this graph emits cannot express one. Every skill in scope stays above its
+   * floor across the whole level range, so rather than model a floor that never
+   * binds, the generator refuses when it would.
+   */
+  const floor = read("minmana");
+  for (const level of [1, 20]) {
+    if (base + slope * (level - 1) < floor) {
+      throw new Error(
+        `${where}: mana at level ${level} falls below minmana (${floor}), and the published ` +
+          `shapes carry no floor. Model it deliberately before publishing this skill's cost.`,
+      );
+    }
+  }
+  return { base, perLevel: slope };
+}
+
 export interface GraphProblem {
   rule:
     | "authored-drift"
@@ -664,6 +764,40 @@ export function checkSynergyKindLabels(
       // source language for being the source language.
       if (!resolve(locale, kind)) {
         problems.push(`synergy kind "${kind}" has no ${locale} label`);
+      }
+    }
+  }
+  return problems;
+}
+
+/**
+ * Every effect the graph publishes must have a word in every locale.
+ *
+ * Same failure as the synergy kinds, one layer along: `effectLabels` falls back
+ * to printing the raw `labelKey`, so a Necromancer table would have shown
+ * "effectRadiusHalfSquares" as a column heading in both languages rather than
+ * failing. Twenty-two label keys arrived in one commit; one typo among them is
+ * indistinguishable from a deliberate key until something reads the page.
+ *
+ * @param resolve returns the label for a key in one locale, or undefined
+ */
+export function checkEffectLabels(
+  graph: Record<string, { effects?: readonly { labelKey: string }[] }>,
+  resolve: (locale: string, labelKey: string) => string | undefined,
+  locales: readonly string[],
+): string[] {
+  const problems: string[] = [];
+  const used = new Set<string>();
+  for (const node of Object.values(graph)) {
+    for (const effect of node.effects ?? []) used.add(effect.labelKey);
+  }
+  if (used.size === 0) {
+    problems.push("no skill publishes an effect at all; the extraction must have moved");
+  }
+  for (const key of [...used].sort()) {
+    for (const locale of locales) {
+      if (!resolve(locale, key)) {
+        problems.push(`effect label "${key}" has no ${locale} word, so the column heading is the key`);
       }
     }
   }

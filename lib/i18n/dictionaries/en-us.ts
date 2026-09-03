@@ -681,6 +681,31 @@ export const enUS = {
     effectBolts: "Bolts released",
     effectJumps: "Targets struck",
     effectConverted: "Damage converted",
+    // The Necromancer's quantities. `effectRadius` is deliberately vague about
+    // its unit and `effectRadiusHalfSquares` is deliberately specific: the game
+    // names one and not the other, and the engine halves only the named one.
+    effectRadius: "Radius",
+    effectRadiusHalfSquares: "Radius (half squares)",
+    effectDuration: "Duration",
+    effectMana: "Mana",
+    effectMissiles: "Projectiles",
+    effectAbsorbed: "Damage absorbed",
+    effectMinions: "Minions at once",
+    effectMinionLife: "Life per minion",
+    effectMinionDamage: "Damage per minion",
+    effectDamageDealt: "Damage dealt",
+    effectDamageReturned: "Damage returned",
+    effectResistReduction: "Resistance reduced",
+    effectWallLife: "Wall life bonus",
+    effectWallSegments: "Wall segments",
+    effectSlow: "Target slowed",
+    effectGolemLife: "Golem life",
+    effectGolemAttackRating: "Golem attack rating",
+    effectGolemSpeed: "Golem speed",
+    effectLifeSteal: "Life stolen",
+    effectMinionResist: "Minion resistance",
+    effectFireAbsorb: "Fire absorbed",
+    effectAuraLevel: "Aura level",
     effectRangeFrom: "{value}% at level 1",
     effectRangeTo: "up to {value}%",
     effectRangeNote:
@@ -714,6 +739,14 @@ export const enUS = {
       "This skill deals damage as a proportion of the target's current life rather than as a minimum–maximum range, so a level table would say nothing. The difficulty floors and the resistance question are covered under {mechanics}.",
     noProgressionNone: "This skill has no direct damage table. Its effects are described under {mechanics}.",
     /*
+     * Corpse Explosion, and nothing else. Its damage is real and is not the
+     * skill's: it is a share of the exploded monster type's base life, so there
+     * is nothing per level to tabulate and the level that matters is your
+     * character's rather than the skill's.
+     */
+    noProgressionCorpse:
+      "This skill deals real damage and none of it belongs to the skill. It is a share of the exploded monster **type's** base life — recomputed from the game's own table at that monster's level and difficulty, not read off the corpse — so there is no per-level range to publish. Skill points buy radius. What raises the damage is your character level, and what died. See {mechanics}.",
+    /*
      * Printed *under* the table, not instead of it. These three skills all have
      * a real elemental range and a real relationship to the weapon, and showing
      * the range while saying nothing about the weapon is how a page ends up
@@ -738,7 +771,7 @@ export const enUS = {
      * column of identical values reads like an oversight otherwise.
      */
     damageOverTimeFixed:
-      "The duration does not change with skill level: Diablo II: Resurrected patch 2.4 fixed it, and only the damage packed into it grows.",
+      "The duration does not change with skill level — only the damage packed into it grows.",
     seconds: "{seconds}s",
     colDuration: "Duration",
     backToTree: "← All {class} skills",

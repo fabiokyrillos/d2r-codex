@@ -550,6 +550,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "Um javelin arremessado que deixa veneno pelo caminho e estoura numa nuvem onde para.",
     mechanics: [
       "Duração menor que a do Poison Javelin, mas com muito mais dano concentrado nela.",
+      "**Os três segundos dela não crescem com o nível da skill.** O patch 2.4 do Diablo II: Resurrected fixou a duração no código; a coluna que a alongava nunca foi editada, então um banco de dados que lê a tabela ainda reporta quase sete segundos no nível 20.",
       "A área é o que faz dela uma skill de Cow Level: a nuvem cobre mais chão que qualquer outro ataque de javelin.",
     ],
     synergyBonuses: ["+14% de dano por nível"],
@@ -742,6 +743,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "clay-golem": {
     summary: "Um golem lento e resistente cujos golpes desaceleram o que tocam.",
+    synergyBonuses: ["+5% de vida por nível", "+6% de dano por nível", "+35 de defesa por nível"],
     mechanics: [
       "A lentidão que ele aplica sobe de **0% em direção a um teto de 75%** numa curva de retornos decrescentes — a maior lentidão disponível para a classe, e a razão de um ponto nele valer a pena até em builds que nunca invocam mais nada.",
       "Você só pode ter **um golem por vez**. As quatro skills de golem dividem um único tipo de criatura invocada com máximo de um, então invocar outro substitui este.",
@@ -767,6 +769,11 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "blood-golem": {
     summary: "Um golem que rouba vida do que acerta, e divide parte dela com você.",
+    synergyBonuses: [
+      "+20 de chance de acerto por nível",
+      "+6% de dano por nível",
+      "+35 de defesa por nível",
+    ],
     mechanics: [
       "O roubo de vida dele sobe de **75% em direção a um teto de 150%** numa curva de retornos decrescentes, e **30% do que ele rouba é repassado a você**.",
       "**25% da cura que você recebe é repassada ao golem**, então as poções o mantêm vivo junto com você.",
@@ -786,6 +793,11 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   "iron-golem": {
     summary:
       "Consome um item para construir um golem que carrega as propriedades dele. O item some.",
+    synergyBonuses: [
+      "+5% de vida por nível",
+      "+20 de chance de acerto por nível",
+      "+6% de dano por nível",
+    ],
     mechanics: [
       "O item escolhido é **destruído** e vira o golem. Esta é a única skill da classe que pode custar algo que você não recupera.",
       "Ele carrega uma aura própria de devolução de dano, além do que quer que o item de origem forneça.",
@@ -794,6 +806,11 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "fire-golem": {
     summary: "Um golem que roda uma aura de Holy Fire e é curado, não ferido, por fogo.",
+    synergyBonuses: [
+      "+5% de vida por nível",
+      "+20 de chance de acerto por nível",
+      "+35 de defesa por nível",
+    ],
     mechanics: [
       "Ele roda **Holy Fire no nível 7, subindo um por nível da skill até o teto de 30** — uma aura de verdade, afetando tudo por perto.",
       "A absorção de fogo dele sobe de **25% em direção a 100%** numa curva de retornos decrescentes, e é por isso que ele é o golem que sobrevive aos grupos fire enchanted do Hell.",
@@ -817,6 +834,12 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   // -------------------------------------------------------------------------
   teeth: {
     summary: "Uma rajada de lascas de osso. O dano mágico mais barato do jogo no nível 1.",
+    synergyBonuses: [
+      "+15% de dano por nível",
+      "+15% de dano por nível",
+      "+15% de dano por nível",
+      "+15% de dano por nível",
+    ],
     mechanics: [
       "Dispara **dois projéteis no nível 1 e mais um por nível, com teto de 24** — o mesmo teto do Multiple Shot, lido do mesmo formato de coluna.",
       "Os projéteis se abrem em leque, então a quantidade importa muito mais contra um grupo do que contra um alvo só.",
@@ -825,6 +848,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "bone-armor": {
     summary: "Um escudo que absorve uma quantidade fixa de dano, depois quebra e é reconjurado.",
+    synergyBonuses: ["+15 de dano absorvido por nível", "+15 de dano absorvido por nível"],
     mechanics: [
       "Absorve **20 de dano no nível 1 e mais 15 por nível**, e **mais 15 para cada ponto em Bone Wall e Bone Prison**.",
       "Absorve dano **físico** — corpo a corpo e de projétil. Um acerto elemental passa direto por ele, que é o contrário do que o nome sugere para a maioria dos leitores.",
@@ -833,6 +857,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "poison-dagger": {
     summary: "Um ataque corpo a corpo que soma dano de veneno. Exige uma adaga.",
+    synergyBonuses: ["+20% de dano por nível", "+20% de dano por nível"],
     mechanics: [
       "**O dano da própria adaga também entra.** A tabela desta página é o veneno que a skill acrescenta, não o golpe inteiro.",
       "O veneno dura **2 segundos no nível 1 e 0,4 segundo a mais por nível**, e o dano da tabela é o total espalhado por essa janela, não um acerto instantâneo.",
@@ -853,6 +878,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "bone-wall": {
     summary: "Ergue uma parede de osso que bloqueia passagem até ser quebrada.",
+    synergyBonuses: ["+10% de vida por nível", "+10% de vida por nível"],
     mechanics: [
       "**Oito segmentos**, e a quantidade não cresce com o nível da skill — os pontos compram a vida da parede, a **+25% por nível**.",
       "Ela fica de pé por **600 frames — 24 segundos** — em qualquer nível.",
@@ -862,6 +888,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   "poison-explosion": {
     summary:
       "Detona um cadáver numa nuvem de veneno. Precisa de um corpo, como tudo em volta dela.",
+    synergyBonuses: ["+15% de dano por nível", "+15% de dano por nível"],
     mechanics: [
       "O veneno dura **2 segundos no nível 1 e 0,4 segundo a mais por nível**; a tabela dá o dano total espalhado por essa janela.",
       "Ela consome o cadáver, então disputa com o Corpse Explosion e com o Raise Skeleton os mesmos corpos.",
@@ -871,6 +898,12 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   "bone-spear": {
     summary:
       "Uma lança de osso que perfura. Dano mágico em linha reta, e o ataque principal da árvore.",
+    synergyBonuses: [
+      "+8% de dano por nível",
+      "+8% de dano por nível",
+      "+8% de dano por nível",
+      "+8% de dano por nível",
+    ],
     mechanics: [
       "Ela **perfura todos os alvos no caminho**, o que faz dela uma skill de limpar fileiras em vez de uma de alvo único.",
       "Dano mágico: só um punhado de monstros do jogo resiste, e nenhum deles é comum nos lugares que essa build farma.",
@@ -879,6 +912,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "bone-prison": {
     summary: "Enjaula um alvo em osso. A mesma parede, fechada em volta de alguma coisa.",
+    synergyBonuses: ["+8% de vida por nível", "+8% de vida por nível"],
     mechanics: [
       "A vida escala a **+25% por nível**, e ela fica de pé por **600 frames — 24 segundos** — como o Bone Wall.",
       "O custo de mana dela **cai** com o nível em vez de subir: 27 no nível 1, um a menos por nível.",
@@ -887,6 +921,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "poison-nova": {
     summary: "Um anel de veneno que se expande a partir de você. O único ataque em área da classe.",
+    synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
     mechanics: [
       "O veneno dura **2 segundos em qualquer nível**. As colunas que alongam as outras duas skills de veneno simplesmente não existem aqui, então todo o crescimento vai para o dano.",
       "A tabela dá o dano **total** ao longo desses dois segundos, não dano por segundo e não um acerto instantâneo.",
@@ -897,6 +932,12 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   "bone-spirit": {
     summary:
       "Um crânio teleguiado que persegue o alvo. Dano de alvo único maior que o do Bone Spear.",
+    synergyBonuses: [
+      "+8% de dano por nível",
+      "+8% de dano por nível",
+      "+8% de dano por nível",
+      "+8% de dano por nível",
+    ],
     mechanics: [
       "Ele **persegue** em vez de viajar reto, e acerta um alvo — a troca oposta à da perfuração do Bone Spear.",
       "Dano base maior que o do Bone Spear no mesmo nível, e é por isso que ele é a metade de chefe de uma build de osso, não uma build própria.",

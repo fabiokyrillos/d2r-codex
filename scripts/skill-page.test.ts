@@ -99,6 +99,7 @@ const buckets: Record<DamagePresentation, string[]> = {
   "element-only-attack": [],
   shield: [],
   proportional: [],
+  "corpse-life": [],
   none: [],
 };
 for (const s of skills) {
@@ -148,6 +149,18 @@ check(
   "Static Field is the proportional skill",
   buckets.proportional.length === 1 && buckets.proportional[0] === "static-field",
   buckets.proportional.join(", "),
+);
+/*
+ * Corpse Explosion is the only skill whose damage comes from what it explodes
+ * rather than from itself. It is its own model because reusing `proportional`
+ * would print Static Field's sentence — current life, difficulty floors — where
+ * every clause of it is false, and falling through to `none` announced that the
+ * skill dealt no direct damage at all.
+ */
+check(
+  "Corpse Explosion is the only corpse-life skill",
+  buckets["corpse-life"].length === 1 && buckets["corpse-life"][0] === "corpse-explosion",
+  buckets["corpse-life"].join(", "),
 );
 
 // ===========================================================================

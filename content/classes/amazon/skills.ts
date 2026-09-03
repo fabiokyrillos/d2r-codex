@@ -206,6 +206,7 @@ export const amazonSkills: Skill[] = [
     synergies: [{ skill: "poison-javelin", bonus: "+14% damage per level" }],
     mechanics: [
       "Shorter duration than Poison Javelin but far more damage packed into it.",
+      "**Its three seconds do not grow with skill level.** Diablo II: Resurrected patch 2.4 fixed the duration in code; the column that used to lengthen it was never edited, so a database reading the table still reports nearly seven seconds at level 20.",
       "Its area is what makes it a Cow Level skill — the cloud covers more ground than any other javelin attack.",
     ],
     confidence: "verified",

@@ -252,8 +252,59 @@ export function effectAtLevel(effect: SkillEffect, level: number): number | unde
   const shape = effect.shape;
   if (shape.kind === "range") return undefined;
   if (shape.kind === "step") return shape.base + Math.floor(level / shape.per);
+  /*
+   * The minion cap, which is piecewise and has to stay that way. Raise Skeleton
+   * gives one skeleton per level for the first three and then two plus one for
+   * every three; `2 + floor(level / 3)` alone would publish two at level 1 and
+   * two at level 2, where the game gives one and two.
+   */
+  if (shape.kind === "petmax") {
+    return level < shape.threshold ? level : shape.base + Math.floor(level / shape.per);
+  }
   const value = shape.base + shape.perLevel * (level - 1);
   return shape.cap === undefined ? value : Math.min(value, shape.cap);
+}
+
+/**
+ * Rounds a computed value for display without turning it into a lie.
+ *
+ * Mana is genuinely fractional -- Teeth costs 3 at level 1 and gains half a
+ * point per level -- and a duration in frames divided by 25 rarely lands on a
+ * whole second. `toFixed` then `Number` keeps two decimals where they exist and
+ * drops the trailing zeros where they do not, so 11.75 stays 11.75 and 3 stays
+ * 3 rather than becoming "3.00".
+ */
+export const roundTo = (value: number, places: number): number =>
+  Number(value.toFixed(places));
+
+/**
+ * One published quantity, as the page prints it.
+ *
+ * `unit` decides the rendering and the label carries the meaning, which is why
+ * `units` prints a bare number: Corpse Explosion's radius is stated by the game
+ * in half squares and halved by the engine, a curse's is stated plainly and used
+ * as it stands, and giving them a shared suffix would imply a shared scale they
+ * do not have.
+ *
+ * Pure and exported so `damage.test.ts` can pin the four conversions rather than
+ * reading them back off a rendered page.
+ */
+export function formatEffect(
+  effect: Pick<SkillEffect, "unit">,
+  value: number | undefined,
+  seconds: (value: number) => string,
+): string {
+  if (value === undefined) return "\u2014";
+  switch (effect.unit) {
+    case "percent":
+      return `${value}%`;
+    case "frames":
+      return seconds(roundTo(value / FRAMES_PER_SECOND, 1));
+    case "mana":
+      return String(roundTo(value, 2));
+    default:
+      return String(value);
+  }
 }
 
 /**
@@ -334,6 +385,13 @@ export function durationAtLevel(
  *   proportional  damage as a fraction of the target's life, so no range
  *                 exists to publish. Authored, because nothing in the extracted
  *                 columns distinguishes it from a skill with no damage at all.
+ *   corpse-life   Corpse Explosion. Also has no table, and for a different
+ *                 reason again: the number comes from the corpse's monster
+ *                 *type*, recomputed at that monster's level and difficulty,
+ *                 so it varies with what you killed rather than with the skill.
+ *                 Reusing `proportional` would have printed Static Field's
+ *                 sentence — current life, difficulty floors — on a page where
+ *                 every clause of it is wrong.
  *   none          genuinely no direct damage — auras, buffs, passives.
  *
  * `damageModel` is checked before `kind`, so an authored exception always wins
@@ -347,6 +405,7 @@ export type DamagePresentation =
   | "element-only-attack"
   | "shield"
   | "proportional"
+  | "corpse-life"
   | "none";
 
 /** The models an attack whose damage the graph tabulates is allowed to claim. */

@@ -109,6 +109,11 @@ export const necromancerSkills: Skill[] = [
     kind: "summon",
     requiredLevel: 6,
     summary: "A slow, tough golem whose hits slow what they touch.",
+    synergies: [
+      { skill: "blood-golem", bonus: "+5% life per level" },
+      { skill: "fire-golem", bonus: "+6% damage per level" },
+      { skill: "iron-golem", bonus: "+35 defence per level" },
+    ],
     mechanics: [
       "The slow it applies climbs from **0% toward a 75% ceiling** on a diminishing curve — the strongest slow available to the class, and the reason one point in it is worth having on builds that never summon anything else.",
       "You can have **one golem at a time**. All four golem skills share a single pet type with a maximum of one, so summoning another replaces this one.",
@@ -157,6 +162,11 @@ export const necromancerSkills: Skill[] = [
     requiredLevel: 18,
     prerequisites: ["clay-golem"],
     summary: "A golem that steals life from what it hits, and shares some of it with you.",
+    synergies: [
+      { skill: "clay-golem", bonus: "+20 attack rating per level" },
+      { skill: "fire-golem", bonus: "+6% damage per level" },
+      { skill: "iron-golem", bonus: "+35 defence per level" },
+    ],
     mechanics: [
       "Its life steal climbs from **75% toward a 150% ceiling** on a diminishing curve, and **30% of what it steals is passed to you**.",
       "**25% of the healing you receive is passed to the golem**, so potions keep it alive as well as you.",
@@ -191,6 +201,11 @@ export const necromancerSkills: Skill[] = [
     prerequisites: ["blood-golem"],
     summary:
       "Consumes an item to build a golem that carries that item's properties. The item is gone.",
+    synergies: [
+      { skill: "blood-golem", bonus: "+5% life per level" },
+      { skill: "clay-golem", bonus: "+20 attack rating per level" },
+      { skill: "fire-golem", bonus: "+6% damage per level" },
+    ],
     mechanics: [
       "The item you target is **destroyed** and becomes the golem. This is the one skill in the class that can cost you something you cannot get back.",
       "It carries a damage-return aura of its own, on top of whatever the item it was made from provides.",
@@ -208,6 +223,11 @@ export const necromancerSkills: Skill[] = [
     requiredLevel: 30,
     prerequisites: ["iron-golem"],
     summary: "A golem that runs a Holy Fire aura and is healed rather than hurt by fire.",
+    synergies: [
+      { skill: "blood-golem", bonus: "+5% life per level" },
+      { skill: "clay-golem", bonus: "+20 attack rating per level" },
+      { skill: "iron-golem", bonus: "+35 defence per level" },
+    ],
     mechanics: [
       "It runs **Holy Fire at level 7, rising by one per skill level to a cap of 30** — a real aura, affecting everything near it.",
       "Its fire absorb climbs from **25% toward 100%** on a diminishing curve, which is why it is the golem that survives Hell's fire enchanted packs.",
@@ -247,6 +267,12 @@ export const necromancerSkills: Skill[] = [
     element: "magic",
     requiredLevel: 1,
     summary: "A spray of bone shards. The cheapest magic damage in the game at level one.",
+    synergies: [
+      { skill: "bone-prison", bonus: "+15% damage per level" },
+      { skill: "bone-spear", bonus: "+15% damage per level" },
+      { skill: "bone-spirit", bonus: "+15% damage per level" },
+      { skill: "bone-wall", bonus: "+15% damage per level" },
+    ],
     mechanics: [
       "Fires **two projectiles at level 1 and one more per level, capped at 24** — the same ceiling Multiple Shot uses, read from the same shape of column.",
       "The projectiles spread, so the count matters far more against a group than against a single target.",
@@ -262,6 +288,10 @@ export const necromancerSkills: Skill[] = [
     kind: "buff",
     requiredLevel: 1,
     summary: "A shield that absorbs a flat amount of damage, then breaks and is recast.",
+    synergies: [
+      { skill: "bone-prison", bonus: "+15 damage absorbed per level" },
+      { skill: "bone-wall", bonus: "+15 damage absorbed per level" },
+    ],
     mechanics: [
       "Absorbs **20 damage at level 1 and 15 more per level**, and **+15 more for every point in Bone Wall and Bone Prison**.",
       "It absorbs **physical** damage — melee and missile. An elemental hit goes straight through it, which is the opposite of what the name suggests to most readers.",
@@ -282,6 +312,10 @@ export const necromancerSkills: Skill[] = [
     // the dagger swinging with it.
     damageModel: "weapon-plus-element",
     summary: "A melee attack that adds poison damage. Requires a dagger.",
+    synergies: [
+      { skill: "poison-explosion", bonus: "+20% damage per level" },
+      { skill: "poison-nova", bonus: "+20% damage per level" },
+    ],
     mechanics: [
       "**The dagger's own damage lands as well.** The table on this page is the poison the skill adds, not the whole hit.",
       "The poison lasts **2 seconds at level 1 and 0.4 seconds longer per level**, and the damage in the table is the total spread across that window rather than an instant hit.",
@@ -298,6 +332,12 @@ export const necromancerSkills: Skill[] = [
     // Deliberately no `element`: the damage is half physical and half fire, and
     // a single badge would say one of those and hide the other. The split is
     // the first thing the mechanics list states instead.
+    //
+    // `corpse-life` rather than falling through to "no damage table". The graph
+    // has no EMin/EMax for this skill because the number is not the skill's —
+    // it is a share of the exploded monster type's base life — and the page
+    // used to announce that it dealt no direct damage at all.
+    damageModel: "corpse-life",
     requiredLevel: 6,
     prerequisites: ["teeth"],
     summary:
@@ -321,6 +361,10 @@ export const necromancerSkills: Skill[] = [
     requiredLevel: 12,
     prerequisites: ["bone-armor"],
     summary: "Raises a wall of bone that blocks movement until it is broken.",
+    synergies: [
+      { skill: "bone-armor", bonus: "+10% life per level" },
+      { skill: "bone-prison", bonus: "+10% life per level" },
+    ],
     mechanics: [
       "**Eight segments**, and the count does not grow with skill level — points buy the wall's life instead, at **+25% per level**.",
       "It stands for **600 frames — 24 seconds** — at every level.",
@@ -338,6 +382,10 @@ export const necromancerSkills: Skill[] = [
     requiredLevel: 18,
     prerequisites: ["corpse-explosion", "poison-dagger"],
     summary: "Detonates a corpse into a poison cloud. Needs a body, like everything around it.",
+    synergies: [
+      { skill: "poison-dagger", bonus: "+15% damage per level" },
+      { skill: "poison-nova", bonus: "+15% damage per level" },
+    ],
     mechanics: [
       "The poison lasts **2 seconds at level 1 and 0.4 seconds longer per level**; the table gives the total damage spread across that window.",
       "It consumes the corpse, so it competes with Corpse Explosion and with Raise Skeleton for the same bodies.",
@@ -356,6 +404,12 @@ export const necromancerSkills: Skill[] = [
     prerequisites: ["corpse-explosion"],
     summary:
       "A piercing spear of bone. Magic damage in a straight line, and the tree's main attack.",
+    synergies: [
+      { skill: "bone-prison", bonus: "+8% damage per level" },
+      { skill: "bone-spirit", bonus: "+8% damage per level" },
+      { skill: "bone-wall", bonus: "+8% damage per level" },
+      { skill: "teeth", bonus: "+8% damage per level" },
+    ],
     mechanics: [
       "It **pierces every target in its path**, which is what makes it a line-clearing skill rather than a single-target one.",
       "Magic damage: only a handful of monsters in the game resist it, and none of them are common in the places this build farms.",
@@ -372,6 +426,10 @@ export const necromancerSkills: Skill[] = [
     requiredLevel: 24,
     prerequisites: ["bone-spear", "bone-wall"],
     summary: "Cages a target in bone. The same wall, wrapped around something.",
+    synergies: [
+      { skill: "bone-armor", bonus: "+8% life per level" },
+      { skill: "bone-wall", bonus: "+8% life per level" },
+    ],
     mechanics: [
       "Life scales at **+25% per level**, and it stands for **600 frames — 24 seconds** — like Bone Wall.",
       "Its mana cost **falls** with level rather than rising: 27 at level 1, one less per level.",
@@ -389,6 +447,10 @@ export const necromancerSkills: Skill[] = [
     requiredLevel: 30,
     summary: "A ring of poison expanding from you. The class's one true area attack.",
     prerequisites: ["poison-explosion"],
+    synergies: [
+      { skill: "poison-dagger", bonus: "+10% damage per level" },
+      { skill: "poison-explosion", bonus: "+10% damage per level" },
+    ],
     mechanics: [
       "The poison lasts **2 seconds at every level**. The columns that lengthen the other two poison skills are simply absent here, so all the growth goes into damage.",
       "The table gives the **total** damage over those two seconds, not damage per second and not an instant hit.",
@@ -407,6 +469,12 @@ export const necromancerSkills: Skill[] = [
     requiredLevel: 30,
     prerequisites: ["bone-spear"],
     summary: "A homing skull that seeks a target. Higher single-target damage than Bone Spear.",
+    synergies: [
+      { skill: "bone-prison", bonus: "+8% damage per level" },
+      { skill: "bone-spear", bonus: "+8% damage per level" },
+      { skill: "bone-wall", bonus: "+8% damage per level" },
+      { skill: "teeth", bonus: "+8% damage per level" },
+    ],
     mechanics: [
       "It **seeks** rather than travelling straight, and hits one target — the opposite trade to Bone Spear's pierce.",
       "Higher base damage than Bone Spear at the same level, which is why it is the boss half of a bone build rather than a build of its own.",

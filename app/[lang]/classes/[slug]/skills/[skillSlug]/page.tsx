@@ -32,6 +32,7 @@ import {
   dependents,
   durationAtLevel,
   effectAtLevel,
+  formatEffect,
   splitEffects,
   progressionLevels,
   synergyReceivers,
@@ -267,14 +268,13 @@ export default async function SkillPage(
                   <span key="l" className="font-mono">
                     {level}
                   </span>,
-                  ...scaling.map((e, i) => {
-                    const value = effectAtLevel(e, level);
-                    return (
-                      <span key={i} className="font-mono">
-                        {value === undefined ? "—" : e.unit === "percent" ? `${value}%` : value}
-                      </span>
-                    );
-                  }),
+                  ...scaling.map((e, i) => (
+                    <span key={i} className="font-mono">
+                      {formatEffect(e, effectAtLevel(e, level), (seconds) =>
+                        fmt(t.skills.seconds, { seconds: String(seconds) }),
+                      )}
+                    </span>
+                  )),
                 ])}
               />
             )}
@@ -386,7 +386,12 @@ export default async function SkillPage(
                         ? t.skills.noProgressionShield
                         : presentation === "proportional"
                           ? t.skills.noProgressionProportional
-                          : t.skills.noProgressionNone,
+                          : // Corpse Explosion. Its damage is real and is not
+                            // the skill's, so neither the weapon sentence nor
+                            // "no direct damage" is true of it.
+                            presentation === "corpse-life"
+                            ? t.skills.noProgressionCorpse
+                            : t.skills.noProgressionNone,
                   { mechanics: t.skills.mechanicsTitle },
                 )}
               </RichText>

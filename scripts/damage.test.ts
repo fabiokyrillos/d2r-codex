@@ -332,12 +332,67 @@ console.log("\nThe shipped effect data");
     );
   }
 
-  // Anti-vacuity: every skill the effect table names must actually carry one.
-  const withEffects = Object.entries(SKILL_GRAPH).filter(([, n]) => (n.effects ?? []).length > 0);
+  /*
+   * The Necromancer's diminishing-return values, which the game writes as `dmNN`
+   * columns and evaluates on a curve that is in the engine and in no column read
+   * here. They are `range` for the same reason the Amazon's passives are: two
+   * numbers and a sentence is what the data supports, and interpolating between
+   * them would draw a line the game does not.
+   */
+  const diminishingExpected: Record<string, [number, number]> = {
+    "clay-golem": [0, 75],
+    "blood-golem": [75, 150],
+    "summon-resist": [20, 75],
+    "fire-golem": [25, 100],
+    "lower-resist": [25, 70],
+  };
+  for (const [slug, [min, max]] of Object.entries(diminishingExpected)) {
+    const ranges = splitEffects(SKILL_GRAPH[slug] ?? {}).ranges;
+    check(`${slug} publishes a bounded value`, ranges.length === 1, `${ranges.length}`);
+    if (ranges.length !== 1) continue;
+    const shape = ranges[0].shape as { kind: "range"; min: number; max: number };
+    check(
+      `${slug}: ${min}% to ${max}%`,
+      shape.min === min && shape.max === max,
+      `${shape.min}-${shape.max}`,
+    );
+    // The point of the shape: no per-level number is invented for it.
+    check(
+      `${slug} refuses to state a per-level value`,
+      effectAtLevel(ranges[0], 10) === undefined,
+    );
+  }
+
+  /*
+   * Anti-vacuity, per class rather than as one number.
+   *
+   * This read "exactly the eleven mapped skills carry effects" — true when the
+   * Amazon was the only class with a mapping, and a count that says nothing
+   * about which class lost coverage when it changes. Every Necromancer skill
+   * publishes at least one quantity; every Paladin and Sorceress skill still
+   * publishes none, and that is a scope fact worth failing on rather than a
+   * total worth updating.
+   */
+  const perClass = new Map<string, number>();
+  for (const node of Object.values(SKILL_GRAPH)) {
+    if ((node.effects ?? []).length === 0) continue;
+    perClass.set(node.classSlug, (perClass.get(node.classSlug) ?? 0) + 1);
+  }
+  const expectedPerClass: Record<string, number> = {
+    amazon: 11,
+    necromancer: 30,
+  };
+  for (const [classSlug, expected] of Object.entries(expectedPerClass)) {
+    check(
+      `${classSlug}: ${expected} skills publish an effect`,
+      perClass.get(classSlug) === expected,
+      `${perClass.get(classSlug) ?? 0}`,
+    );
+  }
   check(
-    "exactly the eleven mapped skills carry effects",
-    withEffects.length === 11,
-    withEffects.map(([s]) => s).join(", "),
+    "no other class publishes one",
+    [...perClass.keys()].every((c) => c in expectedPerClass),
+    [...perClass.keys()].join(", "),
   );
 }
 

@@ -176,19 +176,30 @@ export interface SkillGraphNode {
    * Published quantities other than damage: a chance, a projectile count, an
    * attack-rating bonus. Empty for most skills.
    *
-   * `labelKey` names a UI dictionary entry rather than carrying text, so sixty
-   * skills do not turn into sixty hand-translated strings for a dozen distinct
-   * words. `range` is a chance whose minimum and maximum the game states and
-   * whose curve between them it does not: the Amazon's five passives carry no
-   * calc column at all, so anything printed per level would be invented.
+   * `labelKey` names a UI dictionary entry rather than carrying text, so a
+   * hundred and twenty skills do not turn into a hundred and twenty
+   * hand-translated strings for two dozen distinct words.
+   *
+   * `range` is a value whose minimum and maximum the game states and whose
+   * curve between them it does not — the Amazon's five passives carry no calc
+   * column at all, and the Necromancer's diminishing-return columns (`dmNN`)
+   * are evaluated in the engine. Anything printed per level for those would be
+   * invented.
+   *
+   * `unit` decides rendering, not meaning. `frames` is shown as seconds;
+   * `units` is a bare number in a unit the game does not name, so the label
+   * carries it — Corpse Explosion's radius is stated in half squares and halved
+   * by the engine, a curse's is stated plainly and used as it stands, and the
+   * two must never share a conversion.
    */
   readonly effects?: readonly {
     readonly labelKey: string;
-    readonly unit: "percent" | "count";
+    readonly unit: "percent" | "count" | "frames" | "units" | "mana";
     readonly shape:
       | { readonly kind: "linear"; readonly base: number; readonly perLevel: number; readonly cap?: number }
       | { readonly kind: "step"; readonly base: number; readonly per: number }
-      | { readonly kind: "range"; readonly min: number; readonly max: number };
+      | { readonly kind: "range"; readonly min: number; readonly max: number }
+      | { readonly kind: "petmax"; readonly threshold: number; readonly base: number; readonly per: number };
   }[];
 }
 
@@ -390,180 +401,210 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 3, perLevel: 1 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 200, perLevel: 75 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 4, perLevel: 0 } }],
   },
   "dim-vision": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 2, column: 1,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 4, perLevel: 1 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 175, perLevel: 50 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 9, perLevel: 0 } }],
   },
   "weaken": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 2, column: 3,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: ["amplify-damage"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 9, perLevel: 1 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 350, perLevel: 60 } }, { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: -33, perLevel: -1 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 4, perLevel: 0 } }],
   },
   "iron-maiden": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 3, column: 2,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["amplify-damage"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 7, perLevel: 0 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 300, perLevel: 60 } }, { labelKey: "effectDamageReturned", unit: "percent", shape: { kind: "linear", base: 200, perLevel: 25 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 5, perLevel: 0 } }],
   },
   "terror": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["weaken"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 4, perLevel: 0 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 200, perLevel: 25 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 7, perLevel: 0 } }],
   },
   "confuse": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 4, column: 1,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["dim-vision"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 6, perLevel: 1 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 250, perLevel: 50 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 13, perLevel: 0 } }],
   },
   "life-tap": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["iron-maiden"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 4, perLevel: 1 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 400, perLevel: 60 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 9, perLevel: 0 } }],
   },
   "attract": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 5, column: 1,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["confuse"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 9, perLevel: 0 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 300, perLevel: 90 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 17, perLevel: 0 } }],
   },
   "decrepify": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 5, column: 3,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["terror"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 6, perLevel: 0 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 100, perLevel: 15 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 11, perLevel: 0 } }],
   },
   "lower-resist": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["decrepify", "life-tap"],
     synergies: [],
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 7, perLevel: 1 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 500, perLevel: 50 } }, { labelKey: "effectResistReduction", unit: "percent", shape: { kind: "range", min: 25, max: 70 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 22, perLevel: 0 } }],
   },
   "teeth": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 1, column: 2,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
     synergies: [{ from: "bone-prison", kinds: ["damage"] }, { from: "bone-spear", kinds: ["damage"] }, { from: "bone-spirit", kinds: ["damage"] }, { from: "bone-wall", kinds: ["damage"] }], damage: { element: "mag", hitShift: 7, min: { base: 4, bands: [2, 2, 3, 4, 5] }, max: { base: 8, bands: [2, 3, 4, 5, 6] } },
+    effects: [{ labelKey: "effectMissiles", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1, cap: 24 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 3, perLevel: 0.5 } }],
   },
   "bone-armor": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 1, column: 3,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
     synergies: [{ from: "bone-prison", kinds: ["absorb"] }, { from: "bone-wall", kinds: ["absorb"] }],
+    effects: [{ labelKey: "effectAbsorbed", unit: "units", shape: { kind: "linear", base: 20, perLevel: 15 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 11, perLevel: 1 } }],
   },
   "poison-dagger": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 2, column: 1,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
     synergies: [{ from: "poison-explosion", kinds: ["damage"] }, { from: "poison-nova", kinds: ["damage"] }], damage: { element: "pois", hitShift: 1, min: { base: 18, bands: [10, 15, 20, 23, 26] }, max: { base: 40, bands: [10, 15, 20, 23, 26] }, duration: { base: 50, perLevel: 10 }, overTime: true },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 3, perLevel: 0.25 } }],
   },
   "corpse-explosion": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 2, column: 2,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: ["teeth"],
     synergies: [],
+    effects: [{ labelKey: "effectRadiusHalfSquares", unit: "units", shape: { kind: "linear", base: 8, perLevel: 1 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 15, perLevel: 1 } }],
   },
   "bone-wall": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["bone-armor"],
     synergies: [{ from: "bone-armor", kinds: ["hp"] }, { from: "bone-prison", kinds: ["hp"] }],
+    effects: [{ labelKey: "effectWallLife", unit: "percent", shape: { kind: "linear", base: 0, perLevel: 25 } }, { labelKey: "effectWallSegments", unit: "count", shape: { kind: "linear", base: 8, perLevel: 0 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 600, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 17, perLevel: 0 } }],
   },
   "poison-explosion": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 4, column: 1,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["corpse-explosion", "poison-dagger"],
     synergies: [{ from: "poison-dagger", kinds: ["damage"] }, { from: "poison-nova", kinds: ["damage"] }], damage: { element: "pois", hitShift: 4, min: { base: 8, bands: [2, 4, 6, 8, 10] }, max: { base: 24, bands: [2, 4, 6, 8, 10] }, duration: { base: 50, perLevel: 10 }, overTime: true },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 8, perLevel: 0 } }],
   },
   "bone-spear": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["corpse-explosion"],
     synergies: [{ from: "bone-prison", kinds: ["damage"] }, { from: "bone-spirit", kinds: ["damage"] }, { from: "bone-wall", kinds: ["damage"] }, { from: "teeth", kinds: ["damage"] }], damage: { element: "mag", hitShift: 8, min: { base: 16, bands: [8, 9, 12, 18, 24] }, max: { base: 24, bands: [8, 9, 13, 19, 25] } },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 7, perLevel: 0.25 } }],
   },
   "bone-prison": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 5, column: 3,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["bone-spear", "bone-wall"],
     synergies: [{ from: "bone-armor", kinds: ["hp"] }, { from: "bone-wall", kinds: ["hp"] }],
+    effects: [{ labelKey: "effectWallLife", unit: "percent", shape: { kind: "linear", base: 0, perLevel: 25 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 600, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 27, perLevel: -1 } }],
   },
   "poison-nova": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 6, column: 1,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["poison-explosion"],
     synergies: [{ from: "poison-dagger", kinds: ["damage"] }, { from: "poison-explosion", kinds: ["damage"] }], damage: { element: "pois", hitShift: 4, min: { base: 16, bands: [4, 6, 9, 14, 16] }, max: { base: 29, bands: [4, 6, 9, 14, 16] }, duration: { base: 50, perLevel: 0 }, overTime: true },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 20, perLevel: 0 } }],
   },
   "bone-spirit": {
     classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["bone-spear"],
     synergies: [{ from: "bone-prison", kinds: ["damage"] }, { from: "bone-spear", kinds: ["damage"] }, { from: "bone-wall", kinds: ["damage"] }, { from: "teeth", kinds: ["damage"] }], damage: { element: "mag", hitShift: 8, min: { base: 20, bands: [16, 17, 18, 19, 20] }, max: { base: 30, bands: [17, 18, 19, 20, 21] } },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 12, perLevel: 0.5 } }],
   },
   "skeleton-mastery": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 1, column: 1,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: ["raise-skeleton"],
     synergies: [],
+    effects: [{ labelKey: "effectMinionLife", unit: "units", shape: { kind: "linear", base: 8, perLevel: 8 } }, { labelKey: "effectMinionDamage", unit: "units", shape: { kind: "linear", base: 2, perLevel: 2 } }],
   },
   "raise-skeleton": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 1, column: 3,
     requiredLevel: 1, maxLevel: 20,
     prerequisites: [],
     synergies: [],
+    effects: [{ labelKey: "effectMinions", unit: "count", shape: { kind: "petmax", threshold: 4, base: 2, per: 3 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 6, perLevel: 1 } }],
   },
   "clay-golem": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 2, column: 2,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: [],
     synergies: [{ from: "blood-golem", kinds: ["hp"], magnitude: 5 }, { from: "fire-golem", kinds: ["damage"], magnitude: 6 }, { from: "iron-golem", kinds: ["armor"], magnitude: 35 }],
+    effects: [{ labelKey: "effectSlow", unit: "percent", shape: { kind: "range", min: 0, max: 75 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 15, perLevel: 3 } }],
   },
   "golem-mastery": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 3, column: 1,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["clay-golem"],
     synergies: [],
+    effects: [{ labelKey: "effectGolemLife", unit: "percent", shape: { kind: "linear", base: 20, perLevel: 20 } }, { labelKey: "effectGolemAttackRating", unit: "units", shape: { kind: "linear", base: 25, perLevel: 25 } }, { labelKey: "effectGolemSpeed", unit: "percent", shape: { kind: "range", min: 0, max: 40 } }],
   },
   "raise-skeletal-mage": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["raise-skeleton"],
     synergies: [],
+    effects: [{ labelKey: "effectMinions", unit: "count", shape: { kind: "petmax", threshold: 4, base: 2, per: 3 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 8, perLevel: 1 } }],
   },
   "blood-golem": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 4, column: 2,
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["clay-golem"],
     synergies: [{ from: "clay-golem", kinds: ["attack-rating"], magnitude: 20 }, { from: "fire-golem", kinds: ["damage"], magnitude: 6 }, { from: "iron-golem", kinds: ["armor"], magnitude: 35 }],
+    effects: [{ labelKey: "effectLifeSteal", unit: "percent", shape: { kind: "range", min: 75, max: 150 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 25, perLevel: 3 } }],
   },
   "summon-resist": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 5, column: 1,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["golem-mastery"],
     synergies: [],
+    effects: [{ labelKey: "effectMinionResist", unit: "percent", shape: { kind: "range", min: 20, max: 75 } }],
   },
   "iron-golem": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 5, column: 2,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["blood-golem"],
     synergies: [{ from: "blood-golem", kinds: ["hp"], magnitude: 5 }, { from: "clay-golem", kinds: ["attack-rating"], magnitude: 20 }, { from: "fire-golem", kinds: ["damage"], magnitude: 6 }],
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 35, perLevel: 0 } }],
   },
   "fire-golem": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["iron-golem"],
     synergies: [{ from: "blood-golem", kinds: ["hp"], magnitude: 5 }, { from: "clay-golem", kinds: ["attack-rating"], magnitude: 20 }, { from: "iron-golem", kinds: ["armor"], magnitude: 35 }], damage: { element: "fire", hitShift: 8, min: { base: 10, bands: [9, 10, 11, 12, 13] }, max: { base: 27, bands: [10, 11, 12, 13, 14] } },
+    effects: [{ labelKey: "effectFireAbsorb", unit: "percent", shape: { kind: "range", min: 25, max: 100 } }, { labelKey: "effectAuraLevel", unit: "count", shape: { kind: "linear", base: 7, perLevel: 1, cap: 30 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 50, perLevel: 8 } }],
   },
   "revive": {
     classSlug: "necromancer", tree: "summoning", page: 3, row: 6, column: 3,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["iron-golem", "raise-skeletal-mage"],
     synergies: [],
+    effects: [{ labelKey: "effectMinions", unit: "count", shape: { kind: "linear", base: 1, perLevel: 1 } }, { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 4500, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 45, perLevel: 0 } }],
   },
   "sacrifice": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 1, column: 1,

@@ -38,20 +38,29 @@ import {
 } from "../lib/registry";
 import { OVERLAYS } from "../lib/registry/overlays";
 import { missingOverlaySlugs, orphanOverlaySlugs } from "../lib/registry/localize";
-import { SYNERGY_KINDS_LABELLED, synergyKindLabels, tierOrder } from "../lib/labels";
+import {
+  SYNERGY_KINDS_LABELLED,
+  effectLabels,
+  synergyKindLabels,
+  tierOrder,
+} from "../lib/labels";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import {
   ELEMENTAL_ATTACK_MODELS,
+  damageAtLevel,
   damagePresentation,
+  durationAtLevel,
+  effectAtLevel,
   unclassifiedElementalAttacks,
   synergyEdges,
   synergyReceivers,
   type DamagePresentation,
 } from "../lib/skills";
 import {
+  checkEffectLabels,
   checkSkillGraph,
   checkSynergies,
   checkSynergyKindLabels,
@@ -59,7 +68,15 @@ import {
 } from "./skill-graph-rules";
 import { exitCodeFor, isUntranslatedProse } from "./content-rules";
 import { TREES_NOT_YET_AUTHORED, checkClassTrees } from "./class-tree-rules";
-import { GOLEM_SYNERGY_CONTROLS, checkGolemSynergies } from "./necromancer-rules";
+import {
+  CORROBORATED,
+  DIVERGENCES,
+  GOLEM_SYNERGY_CONTROLS,
+  NEVER_PUBLISHES_MANA,
+  checkGolemSynergies,
+  checkPublishedNumbers,
+  publishedReader,
+} from "./necromancer-rules";
 import {
   ALIAS_ONLY_NAMES,
   EXPECTED_IMMUNITY_CENSUS,
@@ -949,6 +966,56 @@ console.log("\nSynergies (validated against the generated game-data graph):");
  * all. The extracted columns are identical in all three cases, so the model is
  * authored per skill and this refuses the ones that are not.
  */
+console.log("\nPublished effects:");
+{
+  const problems = checkEffectLabels(
+    SKILL_GRAPH,
+    (locale, key) => effectLabels(dictionaryFor(locale as Locale))[key],
+    LOCALES,
+  );
+  const keys = new Set(
+    Object.values(SKILL_GRAPH).flatMap((n) => (n.effects ?? []).map((e) => e.labelKey)),
+  );
+  const withEffects = Object.values(SKILL_GRAPH).filter((n) => (n.effects ?? []).length > 0);
+  console.log(
+    `  ${problems.length === 0 ? "ok" : " x"} ${keys.size} label keys across ` +
+      `${withEffects.length} skills, in ${LOCALES.length} locales`,
+  );
+  for (const detail of problems) fail("effect-label", detail);
+}
+
+/*
+ * The published numbers, against The Arreat Summit rather than against the file
+ * they came from. See `scripts/necromancer-rules.ts` for what agrees, what does
+ * not, and why the disagreements are pinned in both directions.
+ */
+console.log("\nPublished numbers (Tier 1, cross-checked against Tier 2):");
+{
+  const read = publishedReader(
+    SKILL_GRAPH,
+    damageAtLevel as never,
+    durationAtLevel as never,
+    effectAtLevel as never,
+  );
+  const found = checkPublishedNumbers(read, CORROBORATED, DIVERGENCES, NEVER_PUBLISHES_MANA);
+  const rules = [
+    "published-value-wrong",
+    "published-matches-stale-source",
+    "published-missing",
+    "mana-on-passive",
+  ] as const;
+  for (const rule of rules) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(30)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+  console.log(
+    `  ${CORROBORATED.length} values corroborated by the 1.11 documentation, ` +
+      `${DIVERGENCES.length} divergences recorded, ` +
+      `${NEVER_PUBLISHES_MANA.length} passives held to no mana cost`,
+  );
+}
+
 console.log("\nDamage presentation:");
 {
   const buckets: Record<DamagePresentation, string[]> = {
@@ -959,6 +1026,7 @@ console.log("\nDamage presentation:");
     "element-only-attack": [],
     shield: [],
     proportional: [],
+    "corpse-life": [],
     none: [],
   };
   for (const skill of getSkills(DEFAULT_LOCALE)) {

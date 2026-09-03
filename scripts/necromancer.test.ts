@@ -10,10 +10,25 @@
  * Run with `npm run test:necromancer`.
  */
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
+import { getSkills } from "../lib/registry";
+import { DEFAULT_LOCALE } from "../lib/i18n/config";
 import {
+  damageAtLevel,
+  damagePresentation,
+  durationAtLevel,
+  effectAtLevel,
+  unclassifiedElementalAttacks,
+} from "../lib/skills";
+import {
+  CORROBORATED,
+  DIVERGENCES,
   GOLEM_SYNERGY_CONTROLS,
+  NEVER_PUBLISHES_MANA,
   checkGolemSynergies,
+  checkPublishedNumbers,
+  publishedReader,
   type NecromancerProblem,
+  type PublishedValues,
 } from "./necromancer-rules";
 
 let passed = 0;
@@ -163,6 +178,186 @@ console.log("\nPlanted mutations");
     "an empty graph is caught rather than passing vacuously",
     fired(found, "golem-edge-missing") === GOLEM_SYNERGY_CONTROLS.length,
     JSON.stringify(found.map((p) => p.rule)),
+  );
+}
+
+// ===========================================================================
+console.log("\nPublished numbers, against the 1.11 documentation");
+// ===========================================================================
+
+const read = publishedReader(
+  SKILL_GRAPH,
+  damageAtLevel as never,
+  durationAtLevel as never,
+  effectAtLevel as never,
+);
+
+check(
+  "every corroborated value is what the site publishes",
+  checkPublishedNumbers(read, CORROBORATED, DIVERGENCES, NEVER_PUBLISHES_MANA).length === 0,
+  JSON.stringify(checkPublishedNumbers(read, CORROBORATED, DIVERGENCES, NEVER_PUBLISHES_MANA)),
+);
+
+check(
+  "there is something to corroborate",
+  CORROBORATED.length > 30 && DIVERGENCES.length > 5,
+  `${CORROBORATED.length} / ${DIVERGENCES.length}`,
+);
+
+/** A reader that answers from a fixture instead of the graph. */
+const fake = (values: Record<string, PublishedValues>) => (slug: string) => values[slug];
+
+{
+  /*
+   * The failure the poison model exists to prevent. Poison's columns are damage
+   * per frame; published without multiplying by the duration they floor to
+   * nothing, and Poison Dagger's page reads "0-0" for a skill that deals 540.
+   */
+  const found = checkPublishedNumbers(
+    fake({ "poison-dagger": { damage: { min: 0, max: 0 }, durationSeconds: 2, effects: {} } }),
+    CORROBORATED.filter((c) => c.slug === "poison-dagger" && c.level === 1 && c.damage),
+    [],
+    [],
+  );
+  check(
+    "poison published per frame, flooring to 0-0, is caught",
+    found.length === 1 && found[0].rule === "published-value-wrong",
+    JSON.stringify(found),
+  );
+}
+
+{
+  // The duration dropped entirely, which is what treating poison like cold
+  // would do: the damage lands at once and the window disappears.
+  const found = checkPublishedNumbers(
+    fake({ "poison-nova": { damage: { min: 50, max: 90 }, effects: {} } }),
+    CORROBORATED.filter((c) => c.slug === "poison-nova" && c.durationSeconds !== undefined),
+    [],
+    [],
+  );
+  check(
+    "poison losing its duration is caught",
+    found.length === 2 && found.every((p) => p.rule === "published-missing"),
+    JSON.stringify(found.map((p) => p.rule)),
+  );
+}
+
+{
+  // Poison Nova's two seconds turned into a scaling duration, which is what
+  // copying Poison Explosion's ELevLen across would produce.
+  const found = checkPublishedNumbers(
+    fake({ "poison-nova": { damage: { min: 50, max: 90 }, durationSeconds: 9.6, effects: {} } }),
+    CORROBORATED.filter((c) => c.slug === "poison-nova" && c.level === 20 && c.durationSeconds),
+    [],
+    [],
+  );
+  check(
+    "Poison Nova gaining a scaling duration is caught",
+    found.length === 1 && found[0].rule === "published-value-wrong",
+    JSON.stringify(found),
+  );
+}
+
+{
+  /*
+   * The quiet one. A future author reads the 1.11 documentation, decides the
+   * site's Bone Armor is wrong, and "fixes" 305 to 210. This is the rule that
+   * says no.
+   */
+  const found = checkPublishedNumbers(
+    fake({ "bone-armor": { effects: { effectAbsorbed: 210 } } }),
+    [],
+    DIVERGENCES.filter((d) => d.slug === "bone-armor"),
+    [],
+  );
+  check(
+    "a value moved to agree with the older source is caught",
+    found.length === 1 && found[0].rule === "published-matches-stale-source",
+    JSON.stringify(found),
+  );
+}
+
+{
+  // Drifting away from both sources at once.
+  const found = checkPublishedNumbers(
+    fake({ "poison-nova": { damage: { min: 999, max: 999 }, effects: {} } }),
+    [],
+    DIVERGENCES.filter((d) => d.slug === "poison-nova" && d.level === 1),
+    [],
+  );
+  check(
+    "a value that matches neither source is caught",
+    found.length === 1 && found[0].rule === "published-value-wrong",
+    JSON.stringify(found),
+  );
+}
+
+{
+  // Corpse Explosion's radius converted to the 1.11 yard figure.
+  const found = checkPublishedNumbers(
+    fake({ "corpse-explosion": { effects: { effectRadiusHalfSquares: 9 } } }),
+    [],
+    DIVERGENCES.filter((d) => d.slug === "corpse-explosion"),
+    [],
+  );
+  check(
+    "the radius converted to the other source's unit is caught",
+    found.length === 1 && found[0].rule === "published-matches-stale-source",
+    JSON.stringify(found),
+  );
+}
+
+{
+  // A passive priced as though it were cast.
+  const found = checkPublishedNumbers(
+    fake({ "summon-resist": { effects: { effectMana: 44 } } }),
+    [],
+    [],
+    ["summon-resist"],
+  );
+  check(
+    "a mana cost on a passive is caught",
+    found.length === 1 && found[0].rule === "mana-on-passive",
+    JSON.stringify(found),
+  );
+}
+
+// ===========================================================================
+console.log("\nDamage models");
+// ===========================================================================
+
+{
+  const skills = getSkills(DEFAULT_LOCALE);
+  const bySlug = new Map(skills.map((s) => [s.slug, s]));
+
+  /*
+   * Poison Dagger is a weapon attack that adds poison. Without the model its
+   * page prints the poison range and says nothing about the dagger swinging
+   * with it, which is the defect `unclassifiedElementalAttacks` exists to catch.
+   */
+  check(
+    "Poison Dagger keeps its weapon component",
+    damagePresentation(bySlug.get("poison-dagger")!, SKILL_GRAPH["poison-dagger"]) ===
+      "weapon-plus-element",
+  );
+  check(
+    "stripping the model leaves Poison Dagger unclassified",
+    unclassifiedElementalAttacks(
+      [{ slug: "poison-dagger", kind: "attack", damageModel: undefined }],
+      SKILL_GRAPH,
+    ).join() === "poison-dagger",
+  );
+  check(
+    "Corpse Explosion is presented as corpse-life, not as no damage",
+    damagePresentation(bySlug.get("corpse-explosion")!, SKILL_GRAPH["corpse-explosion"]) ===
+      "corpse-life",
+  );
+  check(
+    "dropping that model would announce it deals no damage",
+    damagePresentation(
+      { kind: "spell", damageModel: undefined },
+      SKILL_GRAPH["corpse-explosion"],
+    ) === "none",
   );
 }
 

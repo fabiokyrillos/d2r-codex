@@ -60,6 +60,8 @@ import { join } from "node:path";
 import { allSkills } from "../content/classes";
 import {
   capFromMinCalc,
+  manaFromRow,
+  petMaxFromColumn,
   slugFor,
   synergiesFor,
   type SkillRow,
@@ -184,11 +186,19 @@ const FIXED_DURATION = new Set<string>(["Plague Javelin"]);
  * parameters a reader actually wants. So the label is ours, the parameter
  * indices are stated once here, and the values come from the row.
  *
- * Three shapes, because the game has three:
+ * Four shapes, because the game has four:
  *
  *   linear   base + perLevel x (level - 1), optionally capped
  *   step     base + floor(level / per)
- *   range    a chance that starts at `min` and climbs toward `max`
+ *   range    a value that starts at `min` and climbs toward `max`
+ *   petmax   level below `threshold`, then base + floor(level / per)
+ *
+ * `range` covers two different things the game writes the same way: the Amazon's
+ * passive chances and the Necromancer's diminishing-return values -- Clay
+ * Golem's slow, Summon Resist's resistance, the Blood Golem's life steal, the
+ * Fire Golem's fire absorb and Lower Resist's reduction. Every one of them is a
+ * `dmNN` column, which the game evaluates on a curve that is in the engine and
+ * in no column read here. Two numbers and a sentence is what the data supports.
  *
  * `range` is the honest shape for the Amazon's passives, and the reason this
  * table does not simply interpolate. Critical Strike, Dodge, Avoid, Evade and
@@ -200,14 +210,23 @@ const FIXED_DURATION = new Set<string>(["Plague Javelin"]);
  */
 interface EffectSpec {
   readonly labelKey: string;
-  readonly unit: "percent" | "count";
+  /*
+   * `frames` is rendered as seconds -- the column is in D2's 25-per-second
+   * frames and a reader wants time. `units` is a bare number in a unit the game
+   * does not name, and the label says which: Corpse Explosion's radius is
+   * labelled "half squares" by the game and halved by the engine, while a
+   * curse's is labelled "Radius" and used as it stands, so the two must not
+   * share a conversion. `mana` is fractional by design.
+   */
+  readonly unit: "percent" | "count" | "frames" | "units" | "mana";
   readonly shape:
     | { readonly kind: "linear"; readonly base: number; readonly perLevel: number; readonly cap?: number }
     | { readonly kind: "step"; readonly base: number; readonly per: number }
-    | { readonly kind: "range"; readonly min: number; readonly max: number };
+    | { readonly kind: "range"; readonly min: number; readonly max: number }
+    | { readonly kind: "petmax"; readonly threshold: number; readonly base: number; readonly per: number };
 }
 
-const par = (s: RawSkill & Record<string, unknown>, n: number): number => {
+const par = (s: RawSkill, n: number): number => {
   const v = s[`Param${n}`];
   if (typeof v !== "number") {
     throw new Error(`${s.skill}: Param${n} is missing; the effect table names a parameter the row does not have`);
@@ -215,7 +234,13 @@ const par = (s: RawSkill & Record<string, unknown>, n: number): number => {
   return v;
 };
 
-const EFFECTS: Record<string, (s: RawSkill & Record<string, unknown>) => EffectSpec[]> = {
+/** Radius and duration, shared by all ten curses. `ln12` and `ln34`. */
+const curseEffects = (s: RawSkill): EffectSpec[] => [
+  { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+  { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+];
+
+const EFFECTS: Record<string, (s: RawSkill) => EffectSpec[]> = {
   // Param1 Min %, Param2 Max %. No calc column; see the note above.
   "critical-strike": (s) => [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } }],
   dodge: (s) => [{ labelKey: "effectChance", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } }],
@@ -247,7 +272,153 @@ const EFFECTS: Record<string, (s: RawSkill & Record<string, unknown>) => EffectS
   "lightning-fury": (s) => [{ labelKey: "effectBolts", unit: "count", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } }],
   // calc2: ln34
   "lightning-strike": (s) => [{ labelKey: "effectJumps", unit: "count", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } }],
+
+  // -- Necromancer ---------------------------------------------------------
+  /*
+   * Curses share two columns, `aurarangecalc = ln12` and `auralencalc = ln34`,
+   * so radius and duration are read the same way for all ten: Param1/Param2 and
+   * Param3/Param4.
+   *
+   * The radius unit is the game's own and it does not name it. Corpse
+   * Explosion's parameters *are* named -- "Explosion Radius (half squares)" --
+   * and the engine halves them before use, which is why that skill gets its own
+   * label and why no conversion is shared between the two.
+   *
+   * Dim Vision and Terror have their duration divided by the difficulty's
+   * AiCurseDivisor (1, 2, 4) in the engine. The table publishes the Normal
+   * figure the column gives and the skill pages say so; dividing here would
+   * publish one difficulty's number as though it were every difficulty's.
+   */
+  ...Object.fromEntries(
+    ["amplify-damage", "dim-vision", "terror", "confuse", "life-tap", "attract", "decrepify"].map(
+      (slug) => [slug, (s: RawSkill) => curseEffects(s)],
+    ),
+  ),
+  // ln56: Param5 baseline, Param6 per level. Negative, and correctly so.
+  weaken: (s) => [
+    ...curseEffects(s),
+    { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+  ],
+  "iron-maiden": (s) => [
+    ...curseEffects(s),
+    { labelKey: "effectDamageReturned", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+  ],
+  // aurastatcalc: -dm56, a diminishing curve between Param5 and Param6.
+  "lower-resist": (s) => [
+    ...curseEffects(s),
+    { labelKey: "effectResistReduction", unit: "percent", shape: { kind: "range", min: par(s, 5), max: par(s, 6) } },
+  ],
+  // calc1: min(ln12, 24) -- the same shape and the same ceiling as Multiple Shot.
+  teeth: (s) => [
+    {
+      labelKey: "effectMissiles",
+      unit: "count",
+      shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2), cap: capFromMinCalc(s.calc1, `${s.skill} calc1`) },
+    },
+  ],
+  // aurastatcalc1: (ln12 + synergy) * 256 -- a flat pool, not a percentage.
+  "bone-armor": (s) => [
+    { labelKey: "effectAbsorbed", unit: "units", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+  ],
+  // aurarangecalc: ln34, and Param3/Param4 are the ones named "half squares".
+  "corpse-explosion": (s) => [
+    { labelKey: "effectRadiusHalfSquares", unit: "units", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+  ],
+  /*
+   * calc1: par1 * (lvl - 1) + synergy, so the wall's life bonus is zero at level
+   * 1 and the base is the wall's own. calc2: ln34, the segment count, which does
+   * not grow. Param2 is a flat duration in frames.
+   */
+  "bone-wall": (s) => [
+    { labelKey: "effectWallLife", unit: "percent", shape: { kind: "linear", base: 0, perLevel: par(s, 1) } },
+    { labelKey: "effectWallSegments", unit: "count", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+    { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 2), perLevel: 0 } },
+  ],
+  "bone-prison": (s) => [
+    { labelKey: "effectWallLife", unit: "percent", shape: { kind: "linear", base: 0, perLevel: par(s, 1) } },
+    { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 2), perLevel: 0 } },
+  ],
+  /*
+   * Raise Skeleton, Raise Skeletal Mage and Revive all read Skeleton Mastery's
+   * parameters through its *effective* level, so these figures are per level of
+   * this skill and land on every minion it feeds.
+   */
+  "skeleton-mastery": (s) => [
+    { labelKey: "effectMinionLife", unit: "units", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 1) } },
+    { labelKey: "effectMinionDamage", unit: "units", shape: { kind: "linear", base: par(s, 2), perLevel: par(s, 2) } },
+  ],
+  "raise-skeleton": (s) => [
+    { labelKey: "effectMinions", unit: "count", shape: petMaxFromColumn(s.petmax, `${s.skill} petmax`) },
+  ],
+  "raise-skeletal-mage": (s) => [
+    { labelKey: "effectMinions", unit: "count", shape: petMaxFromColumn(s.petmax, `${s.skill} petmax`) },
+  ],
+  // aurastatcalc1: dm34, the slow, on a diminishing curve between Param3 and Param4.
+  "clay-golem": (s) => [
+    { labelKey: "effectSlow", unit: "percent", shape: { kind: "range", min: par(s, 3), max: par(s, 4) } },
+  ],
+  // ln12 life, ln56 attack rating, dm34 movement speed.
+  "golem-mastery": (s) => [
+    { labelKey: "effectGolemLife", unit: "percent", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+    { labelKey: "effectGolemAttackRating", unit: "units", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+    { labelKey: "effectGolemSpeed", unit: "percent", shape: { kind: "range", min: par(s, 3), max: par(s, 4) } },
+  ],
+  // calc2: dm12, the life steal.
+  "blood-golem": (s) => [
+    { labelKey: "effectLifeSteal", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } },
+  ],
+  // passivecalc1: dm12. Passive, so no mana cost is published for it.
+  "summon-resist": (s) => [
+    { labelKey: "effectMinionResist", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } },
+  ],
+  /*
+   * aurastatcalc2: dm12, the fire absorb. sumsk1calc: min(ln56, 30), the level
+   * of the Holy Fire aura the golem runs -- read through the same cap parser
+   * Multiple Shot uses, because it is the same shape of column.
+   */
+  "fire-golem": (s) => [
+    { labelKey: "effectFireAbsorb", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } },
+    {
+      labelKey: "effectAuraLevel",
+      unit: "count",
+      shape: {
+        kind: "linear",
+        base: par(s, 5),
+        perLevel: par(s, 6),
+        cap: capFromMinCalc(s.sumsk1calc, `${s.skill} sumsk1calc`),
+      },
+    },
+  ],
+  // petmax: lvl, so the count is the effective skill level. calc2: ln34, a flat
+  // duration in frames -- Param4 is zero, and a revive cannot be refreshed.
+  revive: (s) => [
+    { labelKey: "effectMinions", unit: "count", shape: petMaxFromColumn(s.petmax, `${s.skill} petmax`) },
+    { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+  ],
 };
+
+/**
+ * Skills whose mana cost is published.
+ *
+ * Opt-in rather than "every row that has a `mana` column", because three
+ * Necromancer rows carry one and cannot be cast. Summon Resist is a passive with
+ * `mana=44, lvlmana=-3`; taken at face value it would publish a 44-mana cost for
+ * a skill that has no activation at all, falling below its own floor by level
+ * 20. Skeleton Mastery and Golem Mastery carry zeroes for the same reason.
+ *
+ * Scoped to the Necromancer. The other three classes publish mana in authored
+ * prose where it is decision-relevant, and moving them onto extraction rewrites
+ * ninety nodes — a change that deserves its own pass and its own diff rather
+ * than riding along with this one.
+ */
+const PUBLISHES_MANA = new Set<string>([
+  "amplify-damage", "dim-vision", "weaken", "iron-maiden", "terror",
+  "confuse", "life-tap", "attract", "decrepify", "lower-resist",
+  "teeth", "bone-armor", "poison-dagger", "corpse-explosion", "bone-wall",
+  "poison-explosion", "bone-spear", "bone-prison", "poison-nova", "bone-spirit",
+  "raise-skeleton", "clay-golem", "raise-skeletal-mage", "blood-golem",
+  "iron-golem", "fire-golem", "revive",
+]);
 
 const asArray = <T,>(j: unknown): T[] => (Array.isArray(j) ? j : Object.values(j as object)) as T[];
 
@@ -467,6 +638,24 @@ async function main() {
     current.map((s) => [s.skill, s]),
   );
 
+  /**
+   * The mana cost, refused rather than guessed when the row has none.
+   *
+   * `PUBLISHES_MANA` is the decision that a skill is cast at all; this is the
+   * arithmetic. A slug on that list whose row carries no cost is a contradiction
+   * worth stopping for -- it means either the list is wrong or the columns moved.
+   */
+  const manaShape = (s: RawSkill, slug: string) => {
+    const mana = manaFromRow(s, `${s.skill} mana`);
+    if (!mana) {
+      throw new Error(
+        `${slug} is listed in PUBLISHES_MANA and its row carries no mana cost at all. ` +
+          `Either it is not a cast skill or the mana columns have moved.`,
+      );
+    }
+    return mana;
+  };
+
   const rows = mine
     .map((s) => {
       const slug = slugFor(s.skill);
@@ -484,7 +673,12 @@ async function main() {
         maxLevel: s.maxlvl ?? 20,
         prerequisites: a.get(slug)!,
         synergies: synergiesFor(s, rowByName),
-        effects: EFFECTS[slug]?.(s) ?? [],
+        effects: [
+          ...(EFFECTS[slug]?.(s) ?? []),
+          ...(PUBLISHES_MANA.has(slug)
+            ? [{ labelKey: "effectMana", unit: "mana" as const, shape: { kind: "linear" as const, ...manaShape(s, slug) } }]
+            : []),
+        ],
         conversion: conversionFor(s),
         damage: hasDamage
           ? {
@@ -540,7 +734,9 @@ async function main() {
                 ? `kind: "linear", base: ${sh.base}, perLevel: ${sh.perLevel}${sh.cap === undefined ? "" : `, cap: ${sh.cap}`}`
                 : sh.kind === "step"
                   ? `kind: "step", base: ${sh.base}, per: ${sh.per}`
-                  : `kind: "range", min: ${sh.min}, max: ${sh.max}`;
+                  : sh.kind === "petmax"
+                    ? `kind: "petmax", threshold: ${sh.threshold}, base: ${sh.base}, per: ${sh.per}`
+                    : `kind: "range", min: ${sh.min}, max: ${sh.max}`;
             return `{ labelKey: "${e.labelKey}", unit: "${e.unit}", shape: { ${body} } }`;
           })
           .join(", ") +
@@ -762,19 +958,30 @@ export interface SkillGraphNode {
    * Published quantities other than damage: a chance, a projectile count, an
    * attack-rating bonus. Empty for most skills.
    *
-   * \`labelKey\` names a UI dictionary entry rather than carrying text, so sixty
-   * skills do not turn into sixty hand-translated strings for a dozen distinct
-   * words. \`range\` is a chance whose minimum and maximum the game states and
-   * whose curve between them it does not: the Amazon's five passives carry no
-   * calc column at all, so anything printed per level would be invented.
+   * \`labelKey\` names a UI dictionary entry rather than carrying text, so a
+   * hundred and twenty skills do not turn into a hundred and twenty
+   * hand-translated strings for two dozen distinct words.
+   *
+   * \`range\` is a value whose minimum and maximum the game states and whose
+   * curve between them it does not — the Amazon's five passives carry no calc
+   * column at all, and the Necromancer's diminishing-return columns (\`dmNN\`)
+   * are evaluated in the engine. Anything printed per level for those would be
+   * invented.
+   *
+   * \`unit\` decides rendering, not meaning. \`frames\` is shown as seconds;
+   * \`units\` is a bare number in a unit the game does not name, so the label
+   * carries it — Corpse Explosion's radius is stated in half squares and halved
+   * by the engine, a curse's is stated plainly and used as it stands, and the
+   * two must never share a conversion.
    */
   readonly effects?: readonly {
     readonly labelKey: string;
-    readonly unit: "percent" | "count";
+    readonly unit: "percent" | "count" | "frames" | "units" | "mana";
     readonly shape:
       | { readonly kind: "linear"; readonly base: number; readonly perLevel: number; readonly cap?: number }
       | { readonly kind: "step"; readonly base: number; readonly per: number }
-      | { readonly kind: "range"; readonly min: number; readonly max: number };
+      | { readonly kind: "range"; readonly min: number; readonly max: number }
+      | { readonly kind: "petmax"; readonly threshold: number; readonly base: number; readonly per: number };
   }[];
 }
 
