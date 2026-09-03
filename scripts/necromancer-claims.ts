@@ -44,10 +44,18 @@ export interface ClaimProblem {
   message: string;
 }
 
-/** Splits authored prose into sentence-ish units so a rule can scope itself. */
+/**
+ * Splits authored prose into sentence-ish units so a rule can scope itself.
+ *
+ * The `\*{0,2}` matters more than it looks. Site prose is markdown, and a bold
+ * lead-in ends `…level 24.** Halving a boss's…` — a full stop followed by the
+ * closing asterisks rather than by whitespace. Without it, that whole paragraph
+ * stays one "sentence", and any rule that reasons about two terms appearing
+ * together starts firing on terms a reader would never connect.
+ */
 export function sentencesOf(lines: readonly string[]): string[] {
   return lines
-    .flatMap((line) => line.split(/(?<=[.!?;:])\s+|\s+—\s+/))
+    .flatMap((line) => line.split(/(?<=[.!?;:])\*{0,2}\s+|\s+—\s+|\n+/))
     .map((s) => s.trim())
     .filter((s) => s.length > 0);
 }

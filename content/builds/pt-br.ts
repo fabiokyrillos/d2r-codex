@@ -8270,4 +8270,264 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "bone-spear-necromancer": {
+    summary:
+      "Uma lança de osso que atravessa uma linha inteira, um espírito que caça um alvo só, e dano mágico — que uma área em vinte resiste.",
+    playstyle:
+      "O Bone Spear viaja em linha reta e atravessa tudo que estiver nela, então você luta por corredores e ao longo de paredes em vez de entrar no meio das salas. O Bone Spirit é a outra metade: ele curva no ar, procura um alvo único, e é o que você lança na coisa que tem nome. Entre os dois você tem uma resposta para um grupo e uma resposta para um boss, ambas causando dano mágico que quase nada no Hell resiste. O Bone Armor fica entre você e o que chegar perto, renovado ao reconjurar, e o Corpse Explosion fica na barra para a única coisa em que a dupla é ruim — matar rápido depois que algo já morreu.",
+    strengths: [
+      "**Mágico é o dano menos resistido do jogo.** Uma das vinte áreas catalogadas aqui registra imunidade a mágico, contra treze para fogo e oito para raio",
+      "**O Bone Spear atravessa tudo numa linha**, então um corredor de monstros é uma conjuração em vez de uma por monstro",
+      "O Bone Spirit procura o alvo e não erra, o que faz deste o melhor Necromancer de alvo único",
+      "Todas as sinergias são compartilhadas: os cem pontos que maximizam a lança maximizam o espírito também",
+      "Bone Armor, Bone Wall e Bone Prison são três defesas que os mesmos pontos já compraram",
+    ],
+    weaknesses: [
+      "**Cem pontos em cinco skills**, o maior compromisso do site, e sobram cinco para todo o resto",
+      "**Sem dano antes das sinergias entrarem.** Um Bone Spear de nível 30 sem nada atrás dele é fraco, e a build só vira ela mesma lá pelos 70 e poucos",
+      "Você é quem causa o dano, então você está no alcance do que está matando — sem exército, sem roubo de vida e com pouca vida",
+      "Come mana: o Bone Spear custa cerca de 12 em níveis altos e você conjura sem parar",
+      "O dano não escala com equipamento como o de uma build elemental. Não existe +% de dano de skill mágica em lugar nenhum",
+    ],
+    flexPoints: [
+      "**O núcleo são 105 pontos e os cinco flexíveis acima são os outros cinco**, então este plano realmente fecha em 110 em vez de ser inflado até lá. Os cem da árvore de osso não são negociáveis: cada uma das cinco skills alimenta os outros dois ataques, então cortar qualquer uma corta os dois.",
+      "**A decisão de verdade é o Bone Armor, e é uma armadilha.** A absorção dele é 305 com vinte pontos duros, o que soa como plano defensivo — mas as duas sinergias dele são Bone Wall e Bone Prison, e esta build já maximiza as duas pelo dano. Um ponto duro mais quarenta níveis de sinergia já dá um escudo grande. Vinte pontos duros compram quarenta de absorção a mais ao custo de quarenta por conjuração no seu ataque. Fique com o ponto único.",
+      "**Se você abrir mão da cadeia do Decrepify**, os três pontos vão para Bone Armor ou para Raise Skeleton. É uma troca defensável num personagem que joga atrás de uma porta em vez de em campo aberto.",
+      "**Não acrescente Lower Resist.** Ele reduz resistência a fogo, frio, raio e veneno, e esta build não causa nenhum dos quatro. Não existe maldição de resistência mágica no jogo, e esse é o preço de o elemento não ser resistido.",
+      "**Não maximize o Corpse Explosion aqui.** Ele é complemento, não uma segunda build: os vinte pontos que ele custaria saem direto das sinergias que fazem os dois ataques funcionarem, e o raio dele já cresce com os +skills que a build quer de qualquer jeito.",
+    ],
+    statPlan: {
+      strength: "Só o suficiente para a sua armadura e a sua shrunken head. Nada aqui escala com isso.",
+      dexterity: "Base. Considere bloqueio máximo em vez disso se estiver jogando Hardcore — um Homunculus dá +40% de chance de bloqueio antes de um único ponto.",
+      vitality: "Todo o resto. Você é quem está no alcance, e não há exército na sua frente.",
+      energy: "Nenhum. O Bone Spear custa cerca de 12 de mana em níveis altos e você conjura sem parar, mas a resposta é um Insight e uma reserva de mana vinda do equipamento, e não um atributo que dá 2 de mana por ponto.",
+      notes: [
+        "**Este é o Necromancer que mais come mana.** Um mercenário com Insight não é luxo aqui; é a diferença entre conjurar e beber poção.",
+        "As suas resistências caem 40 no Nightmare e 100 no Hell, e não há exército entre você e as consequências.",
+        "Faster Cast Rate é o atributo de dano. Não existe +% de dano de skill mágica no jogo, então conjurar mais vezes é o único jeito de o número subir fora de +skills.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-75":
+        "Dano por segundo nesta build é dano por conjuração vezes conjurações por segundo, e a primeira metade é fixada pelo plano de pontos. 75% é o mínimo em que isso parece um ataque em vez de uma magia.",
+      "fcr-125":
+        "A meta realista com um Spirit e um Arachnid Mesh, e 25% mais conjurações são 25% mais dano numa build sem nenhum outro multiplicador.",
+      "fhr-48":
+        "Você fica parado para mirar uma linha. Ficar preso em recuperação de golpe é como um Bonemancer morre, e o Bone Armor absorver o golpe não impede a interrupção.",
+    },
+    skillNotes: {
+      "bone-spear":
+        "**16-204 de dano mágico ao longo de vinte pontos, antes das sinergias** — e as sinergias são a maior parte do número. Ele atravessa, então mire ao longo da maior fila de monstros que encontrar, e não no mais próximo.",
+      teeth:
+        "Os vinte pontos mais baratos do plano e os primeiros a maximizar, porque alimentam a lança e o espírito. Você vai parar de conjurá-la lá pelo nível 10 e continuar aumentando pelo resto do jogo.",
+      "bone-spirit":
+        "**20-369 de dano mágico ao longo de vinte pontos**, e ele procura o alvo. É com isto que um boss morre, e é sinergia do Bone Spear ao mesmo tempo — os pontos nunca são desperdiçados nos grupos contra os quais ele é mais lento.",
+      "bone-wall":
+        "Sinergia de dano para os dois ataques, sinergia de vida para o Bone Prison, e sinergia de absorção para o Bone Armor — três trabalhos num bloco de pontos. E também é uma parede que você derruba numa porta.",
+      "bone-prison":
+        "Os últimos vinte, e os mesmos três trabalhos do Bone Wall. **O custo de mana dele cai com o nível** — 27 com um ponto e 8 com vinte — e é a única skill da classe que fica mais barata.",
+      "bone-armor":
+        "**Um ponto é a resposta certa aqui, e é contraintuitiva.** A absorção própria do Bone Armor é 305 com vinte pontos duros, mas as duas sinergias dele são Bone Wall e Bone Prison — que este plano já maximiza pelo dano. Um ponto mais quarenta níveis de sinergia é um escudo grande; vinte pontos seriam quarenta de absorção a mais comprados com pontos de que o ataque precisa.",
+      "corpse-explosion":
+        "Um ponto, mais cada +skill que você tiver, pelo raio. Ele é pré-requisito do Bone Spear de qualquer jeito, e é como você limpa o lixo que um boss deixa para trás sem gastar cem conjurações nisso.",
+      "amplify-damage":
+        "Pela metade física do Corpse Explosion, e não pelo seu próprio dano — **nada na classe reduz resistência mágica**, então nenhuma maldição melhora a lança ou o espírito diretamente.",
+      "clay-golem": "Algo para ficar na sua frente. Ele desacelera o que acerta, o que numa build sem exército é todo o seu controle de grupo.",
+      "raise-skeleton": "Um ponto mais +skills são três ou quatro corpos entre você e o grupo. Numa build que precisa ficar parada para mirar uma linha, isso vale mais do que parece.",
+      weaken: "O primeiro de três pontos em direção ao Decrepify. Útil por si só contra um grupo corpo a corpo.",
+      terror: "Pré-requisito do Decrepify.",
+      decrepify:
+        "**O Decrepify é destravado no nível 24.** Cortar pela metade a velocidade de ataque e o movimento de um boss é o que permite ficar parado tempo suficiente para acertar um Bone Spirit, que é a coisa mais útil que uma maldição faz por esta build.",
+      "golem-mastery": "Mantém o Clay Golem de pé tempo suficiente para importar.",
+      "summon-resist": "Um ponto. O primeiro ponto da curva é quase tudo, e o golem não sofre penalidade por dificuldade para ser consertada em primeiro lugar.",
+    },
+    immunityPlan:
+      "**Mágico é o tipo de dano menos resistido do jogo, e os dados de área deste próprio site são o argumento.** Uma das vinte áreas catalogadas registra imunidade a mágico — o Arcane Sanctuary — contra treze para fogo, dez para veneno, e oito cada para raio e físico. Esse único número é a maior parte do motivo de esta build existir.\n\nO preço disso é que **não há socorro disponível quando ela falha.** Nenhuma maldição do jogo reduz resistência mágica, então o Lower Resist está fora do plano por inteiro. Não existe Magic Mastery, nem +% de dano de skill mágica em item nenhum, nem sunder charm para mágico. Um monstro que resiste a mágico simplesmente resiste, e nada que você compre ou conjure muda isso.\n\nEntão a resposta é o **Corpse Explosion**, com um ponto mais cada +skill que você tiver. Metade físico e metade fogo, Amplify Damage na barra pela metade física, e um raio que cresce com os níveis de skill que a build já está juntando. Não é uma segunda build e não é maximizado — é o que você conjura no Arcane Sanctuary, e o que limpa o lixo que um boss deixa para trás em todo o resto.",
+    mercenaryNotes:
+      "**Um mercenário do Ato 2 carregando um Insight, e o Insight é o ponto.** Este é o Necromancer que mais come mana — o Bone Spear custa cerca de 12 de mana em níveis altos e você o conjura sem parar — e o Meditation é a diferença entre atacar e beber poção. A aura do mercenário em si importa menos que o normal, porque nenhuma delas aumenta dano mágico: **Might** se você quiser ele matando coisas, **Holy Freeze** se quiser o grupo desacelerado enquanto você mira uma linha, e o Holy Freeze é a melhor resposta para a maioria dos jogadores aqui.\n\nEquipe-o para sobreviver — **Fortitude** ou **Treachery** com um **Vampire Gaze** — e lembre que **as resistências dele sofrem os −40 inteiros no Nightmare e os −100 no Hell**, exatamente como as suas. As do seu Clay Golem não sofrem; são regras diferentes, e o mercenário é o que precisa do equipamento.\n\n**O Infinity não faz nada pelo seu dano.** A Conviction reduz resistência a fogo, frio e raio; não existe resistência mágica para ele reduzir. Ele não está na lista desta build em orçamento nenhum.",
+    farmingWhy: {
+      "chaos-sanctuary-hell":
+        "Aproximações longas e retas e grupos de selo amontoados, que é exatamente o formato que a perfuração do Bone Spear quer. Imunidade a fogo, raio e físico é registrada aqui e nenhuma das três toca dano mágico.",
+      "worldstone-keep-hell":
+        "Área de nível 85, a melhor experiência do jogo, e quatro imunidades registradas — física, fogo, raio e frio — e nenhuma delas é mágico. Os corredores combinam com um ataque em linha melhor que a maioria das zonas de nível 85.",
+      "pit-hell":
+        "Área de nível 85 e curta, com físico, frio e raio entre as imunidades em vez de mágico. O Bone Spirit dá conta dos grupos de boss contra os quais a lança é mais lenta.",
+      "mephisto-hell":
+        "Um alvo único com reserva grande de vida e sem resistência mágica, parado do outro lado de um fosso. É a luta ideal do Bone Spirit e uma das melhores runs de magic find do jogo.",
+      "travincal-hell":
+        "O Council fica num grupo apertado numa plataforma reta, e a imunidade a fogo e raio deles é irrelevante para dano mágico.",
+      "ancient-tunnels-hell":
+        "Área de nível 85 sem imunidade a mágico registrada, e estreita o bastante para uma linha perfurada alcançar a maior parte de um grupo. As imunidades a fogo e veneno dela são problema de outra pessoa.",
+      "arcane-sanctuary-hell":
+        "**A única zona desta lista para evitar.** É a única área catalogada que registra imunidade a mágico, que é exatamente o ponto cego desta build — e o Corpse Explosion é a única resposta que você tem lá.",
+    },
+    levelingPath: {
+      summary:
+        "**Dá para subir com ela mesma desde o nível 1, com o Teeth fazendo o trabalho.** O Teeth é um ataque de verdade no Normal, é pré-requisito do Corpse Explosion, e cada ponto nele é sinergia das duas skills de endgame — então nada é desperdiçado. O Bone Spear assume no 18 e o Bone Spirit no 30. Muitos jogadores ainda preferem subir como Summoner e fazer respec, porque um exército é mais rápido pelo Normal e pelo Nightmare do que uma lança com sinergias pela metade; a página de evolução do Necromancer percorre essa rota.",
+      respecAt:
+        "Não é necessário se você subir com Teeth e Bone Spear. Se subir como Summoner, faça respec a qualquer momento depois do 30. **Desfaça um Iron Golem de propósito antes de gastar um token** — o respec destrói o golem e o item dentro dele.",
+    },
+    selfFoundNotes:
+      "**Muito boa, porque a arma é de graça.** O White são duas runas de nível Countess numa wand que cai no Ato 1, e ele carrega esta build do nível 35 até dentro do Hell sem reclamar — +3 em Poison and Bone, +2 em Bone Spear, +3 em Bone Armor e 20% de taxa de conjuração é uma linha genuinamente próxima de endgame por nada. Homunculus, Harlequin Crest, Skin of the Vipermagi e Magefist são todos achados comuns. O que falta numa versão self-found é taxa de conjuração, que é o atributo de dano aqui — então ela limpa mais devagar em vez de falhar. A única coisa que ela não consegue substituir é nada, porque não existe um item único do qual esta build dependa.",
+    hardcoreNotes:
+      "**Melhor do que parece, com uma condição: jogue atrás de alguma coisa.** Um Clay Golem de um ponto e três ou quatro esqueletos custam quatro pontos e são a diferença entre mirar uma linha e ser cercado enquanto mira. O Bone Prison é uma fuga de verdade — vinte pontos dele já estão no plano pelo dano — e o Bone Armor com um ponto mais quarenta níveis de sinergia absorve mais que a skill defensiva da maioria das builds. Alcance 48% de recuperação de golpe, pegue o Homunculus pelo bloqueio e não pelas skills, e trate o **Arcane Sanctuary como fechado**: é o único lugar em que o seu dano não funciona, e não existe resposta de equipamento para isso.",
+    gearSets: {
+      starter: {
+        goal: "Teeth até vinte, e Bone Spear no instante em que ele destravar.",
+        nextUpgrade: "Nível 35 por um White, que é a arma que esta build mantém por vinte níveis.",
+        notes:
+          "**Teeth primeiro, e não ache estranho.** É um ataque de verdade no Normal, é pré-requisito do Corpse Explosion, e cada ponto é sinergia das duas skills de endgame. O Bone Spear destrava no nível 18 e assume dali em diante.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer wand com +Teeth ou +Poison and Bone Skills",
+            why: "O Teeth é um ataque de verdade até uns nível 18 e sinergia depois disso, então uma wand que o aumente faz os dois trabalhos. Vendedores vendem essas desde o Ato 1.",
+            lookFor: ["+2-3 Poison and Bone Skills", "+3 to Teeth", "+1 Necromancer Skills"],
+          },
+          "body-0": { why: "Taxa de conjuração, recuperação de golpe, velocidade de corrida e regeneração de mana por duas runas. Cada linha está no plano." },
+          "helm-0": { why: "+1 em Todas as Skills e +10 de Energy." },
+          "offhand-0": {
+            label: "Qualquer shrunken head de Necromancer com +Poison and Bone Skills",
+            why: "Um escudo que carrega skills de classe. Guarde toda de 2 sockets que aparecer para um Splendor depois.",
+            lookFor: ["+2 Necromancer Skills", "+3 Bone Spear", "2 sockets"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "Uma wand White, e as cinco skills de osso subindo juntas.",
+        nextUpgrade: "Um Harlequin Crest e um Homunculus, e depois a subida longa até 75% de taxa de conjuração.",
+        picks: {
+          "weapon-0": {
+            why: "**A arma de progressão desta build, e nem é perto.** +3 em Poison and Bone Skills aumenta as cinco skills de osso de uma vez, +2 em Bone Spear e +3 em Bone Armor por cima disso, e 20% de Faster Cast Rate — por duas runas numa wand que cai no Ato 1.",
+            sockets: "Dol e Io numa wand de 2 sockets. Uma Bone Wand ou Grim Wand é a base mais barata; uma Wand comum ou Yew Wand para em um socket e não serve.",
+          },
+          "offhand-0": {
+            why: "+2 skills e até 35% de Faster Cast Rate. Numa build cujo único multiplicador de dano é taxa de conjuração, isto é um item de dano.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "offhand-0-alt0": {
+            why: "+1 skill e +10% de taxa de conjuração numa shrunken head de 2 sockets, empilhando com o +Poison and Bone da própria head. Disponível no 37 e muito mais barato que um Monarch.",
+            sockets: "Eth e Lum em qualquer escudo de 2 sockets — uma shrunken head conta.",
+          },
+          "body-0": {
+            why: "+2 skills de Necromancer e +100-150 de mana na build que mais come mana da classe. O proc de Bone Armor ao ser atingido é genuinamente útil aqui, ao contrário do de Bone Spear.",
+            sockets: "Sol, Um, Um numa armadura de corpo de 3 sockets.",
+          },
+          "helm-0": { why: "+1 skills e magic find." },
+          "gloves-0": { why: "20% de Faster Cast Rate e regeneração de mana, que são as duas coisas que acabam nesta build." },
+        },
+        charms: [{ why: "75% antes do Hell — e não há exército na sua frente." }],
+      },
+      "early-hell": {
+        goal: "75% de taxa de conjuração, resistências no teto, e as sinergias terminadas.",
+        nextUpgrade: "125% de taxa de conjuração, e depois um Enigma ou um Heart of the Oak.",
+        picks: {
+          "weapon-0": { why: "Ainda a melhor wand que você consegue fazer. Cinco níveis de skill na árvore e 20% de taxa de conjuração." },
+          "offhand-0": { why: "+2 skills de Necromancer, All Resistances +40 e +40% de bloqueio. Numa build sem exército o bloqueio não é bônus — é o plano defensivo." },
+          "offhand-0-alt0": { why: "Dois níveis de skill e 35% de taxa de conjuração, se as resistências estiverem cobertas em outro lugar." },
+          "body-0": { why: "+1 skills, +30 de todas as resistências e 30% de Faster Cast Rate. A armadura padrão de entrada no Hell." },
+          "helm-0": { why: "+2 skills, vida, mana e magic find com 50 de Strength." },
+          "amulet-0": { why: "+2 skills e +30 de todas as resistências." },
+          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate — os dois atributos que aumentam o dano desta build." },
+          "gloves-0": { why: "Taxa de conjuração e regeneração de mana." },
+          "ring1-0": { why: "+1 em todas as skills, +20% de mana máxima." },
+          "boots-0": { why: "Recuperação de golpe e Strength. **Marrowwalk** é a bota de Necromancer que as pessoas citam aqui — ela carrega cargas de Bone Prison e +1-2 em Skeleton Mastery, e este site não a catalogou nem ao comportamento às vezes atribuído a ela." },
+        },
+        charms: [{ why: "75% em tudo, e vida porque não há nada na sua frente." }],
+      },
+      budget: {
+        goal: "125% de taxa de conjuração e uma wand que aumente os dois ataques diretamente.",
+        nextUpgrade: "Um Heart of the Oak, ou um Enigma se você preferir a mobilidade.",
+        picks: {
+          "weapon-0": {
+            label: "Uma wand rara ou craftada com +3 Bone Spear e +2 Necromancer Skills",
+            why: "A primeira melhoria sobre o White, e é troca em vez de achado. +3 em Bone Spear por cima de +2 skills de Necromancer são cinco níveis efetivos na skill que você mais conjura.",
+            lookFor: ["+3 to Bone Spear", "+3 to Bone Spirit", "+2 Necromancer Skills", "20% Faster Cast Rate"],
+          },
+          "weapon-0-alt0": { why: "Ainda excelente, e de graça." },
+          "offhand-0": { why: "Skills, resistências e bloqueio." },
+          "body-0": { why: "Skills, resistências e taxa de conjuração." },
+          "helm-0": { why: "+2 skills, com uma Um ou uma joia de taxa de conjuração no socket." },
+          "amulet-0": { why: "+2 skills e +30 de todas as resistências." },
+          "belt-0": { why: "+1 skills e 20% de taxa de conjuração." },
+          "gloves-0": { why: "Taxa de conjuração e regeneração de mana." },
+          "ring1-0": { why: "+1 em todas as skills e mana máxima." },
+          "ring2-0": {
+            label: "Um anel raro com 10% de Faster Cast Rate e resistências",
+            why: "Os últimos pontos até 125%, e mais barato que um segundo Stone of Jordan.",
+            lookFor: ["10% Faster Cast Rate", "All resistances", "Life", "Mana"],
+          },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Necromancer — três níveis nas cinco skills de osso de uma vez, que é o maior efeito isolado de charm que esta build pode carregar." },
+          { why: "Os únicos charms que aumentam a árvore inteira junto." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, numa build com pouca vida e nada na frente." },
+          { why: "A mão secundária da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Todos os níveis de skill disponíveis, e a taxa de conjuração para usá-los.",
+        nextUpgrade: "Os últimos níveis de skill, de charms e de uma wand melhor.",
+        picks: {
+          "weapon-0": {
+            why: "+3 skills, 40% de Faster Cast Rate, +30-40 de todas as resistências e 15% de mana máxima. Numa build cujo único multiplicador é taxa de conjuração e cuja única escala são níveis de skill, isto é as duas coisas de uma vez.",
+            sockets: "Ko, Vex, Pul, Thul numa wand ou staff de 4 sockets.",
+          },
+          "weapon-0-alt0": {
+            label: "Uma wand craftada com +3 Bone Spear, +3 Bone Spirit e +2 Necromancer Skills",
+            why: "Oito níveis efetivos nos dois ataques, contra os três em tudo do Heart of the Oak. A wand ganha no dano; o Heart of the Oak ganha em resistências e mana.",
+          },
+          "offhand-0": { why: "+2 skills, +40 de resistências e bloqueio. **Boneflame** e **Darkforge Spawn** são as outras shrunken heads de Necromancer citadas aqui; nenhuma das duas está catalogada neste site." },
+          "body-0": {
+            why: "Teleport, que numa build que luta em linhas significa escolher a linha em vez de andar até ela.",
+            sockets: "Jah, Ith, Ber numa armadura de corpo de 3 sockets.",
+          },
+          "body-0-alt0": { why: "+2 skills, +65 de todas as resistências e redução de dano, se a Ber não for acontecer." },
+          "helm-0": { why: "+2 skills e um socket." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "belt-0": { why: "+1 skills e 20% de taxa de conjuração." },
+          "gloves-0": { why: "Taxa de conjuração e regeneração de mana." },
+          "ring1-0": { why: "+1 em todas as skills e mana máxima." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Necromancer." },
+          { why: "Skills e vida numa fileira só." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "A mão secundária da troca." }],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "**Não existe item de dano para esta build**, e esse é o resumo honesto do endgame dela. Nenhuma armadura dá +% de dano de skill mágica, nenhum charm dá, e nenhuma maldição reduz resistência mágica. Tudo acima aumenta níveis de skill ou taxa de conjuração, e essas são as duas únicas alavancas. O lado bom é que as alavancas são baratas e o elemento que elas aumentam é o que nada resiste.",
+        picks: {
+          "weapon-0": {
+            why: "**+2 em Todas as Skills, e metade dele é desperdiçada aqui** — os −40-50% de resistência a veneno do inimigo não fazem nada por dano mágico. Ele está nesta lista mesmo assim porque dois níveis nas cinco skills de osso são dois níveis, e o +1-2 em Poison and Bone soma por cima. Uma wand craftada com +3 em cada ataque é o item melhor; este é o que você de fato vai receber uma oferta.",
+          },
+          "weapon-0-alt0": { why: "+3 skills e 40% de taxa de conjuração, e cada linha dele faz alguma coisa." },
+          "offhand-0": { why: "+2 skills, +40 de resistências, +40% de bloqueio. Socke com o que ainda estiver curto." },
+          "body-0": { why: "Teleport." },
+          "helm-0": { why: "+2 skills, com uma Um no socket." },
+          "amulet-0": { why: "+2 skills, +30 de todas as resistências." },
+          "belt-0": { why: "+1 skills, 20% de taxa de conjuração." },
+          "gloves-0": { why: "Taxa de conjuração e regeneração de mana." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Necromancer." },
+          { why: "Os últimos níveis efetivos." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "A mão secundária da troca." }],
+      },
+    },
+  },
 };

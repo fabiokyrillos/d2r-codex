@@ -290,4 +290,13 @@ export const EXPECTED_IMMUNITY_CENSUS: Readonly<Partial<Record<Element, number>>
   lightning: 8,
   physical: 8,
   cold: 5,
+  /*
+   * Magic was added by the Necromancer pass, and it is the entry that most
+   * needs the gate. The Bone Spear page's central argument is that one area in
+   * twenty records magic immunity — which is why the build takes no resistance
+   * reduction, no mastery and no sunder charm, none of which exist for magic.
+   * Adding a magic-immune area would make that sentence wrong and nothing else
+   * on the site would notice.
+   */
+  magic: 1,
 };
