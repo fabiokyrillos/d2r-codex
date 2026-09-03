@@ -204,7 +204,12 @@ export const classes: CharacterClass[] = [
         body: "Human, Werewolf and Werebear each use different Faster Cast Rate and Faster Hit Recovery tables. Gear planned for one form is wrong for another.",
       },
     ],
-    trees: ["elemental", "shape-shifting", "summoning"],
+    // `druid-summoning` rather than `summoning`: the Necromancer's Summoning
+    // Spells tree is authored and owns that slug, and a tree slug resolves
+    // globally. Left unprefixed, this class page would have rendered the
+    // Necromancer's tree under the Druid's name. Same rule as the skill slugs —
+    // the class that arrives second carries the prefix.
+    trees: ["elemental", "shape-shifting", "druid-summoning"],
     classItems: ["Druid Pelts"],
     bestFor: "Players who want variety, or a caster that is not stopped by a single immunity.",
     beginnerFriendliness: 3,
@@ -235,7 +240,7 @@ export const classes: CharacterClass[] = [
         body: "Corpse Explosion deals damage based on the exploded corpse's maximum life, so it stays relevant at every difficulty and gear level. Skill points only increase its radius.",
       },
     ],
-    trees: ["curses", "poison-and-bone", "summoning"],
+    trees: ["summoning", "poison-and-bone", "curses"],
     classItems: ["Necromancer Shrunken Heads"],
     bestFor: "Hardcore players, and anyone who wants a very safe first character.",
     beginnerFriendliness: 4,

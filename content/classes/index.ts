@@ -3,6 +3,7 @@ import type { Skill, SkillTree } from "@/lib/types";
 import { sorceressSkills, sorceressTrees } from "./sorceress/skills";
 import { paladinSkills, paladinTrees } from "./paladin/skills";
 import { amazonSkills, amazonTrees } from "./amazon/skills";
+import { necromancerSkills, necromancerTrees } from "./necromancer/skills";
 
 /**
  * Skill registry across all classes.
@@ -17,10 +18,16 @@ import { amazonSkills, amazonTrees } from "./amazon/skills";
  * concept), so class-specific slugs are prefixed where a collision exists. The
  * duplicate-slug guard in `lib/registry` enforces this at module load.
  */
-export const allSkills: Skill[] = [...sorceressSkills, ...paladinSkills, ...amazonSkills];
+export const allSkills: Skill[] = [
+  ...sorceressSkills,
+  ...paladinSkills,
+  ...amazonSkills,
+  ...necromancerSkills,
+];
 
 export const allSkillTrees: SkillTree[] = [
   ...sorceressTrees,
   ...paladinTrees,
   ...amazonTrees,
+  ...necromancerTrees,
 ];

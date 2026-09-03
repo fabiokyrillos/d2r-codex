@@ -63,6 +63,24 @@ export const skillTreesPtBr: Overlay<SkillTreeCopy> = {
     theme:
       "As auras defensivas cobrem sobrevivência e qualidade de vida. Várias valem um ponto só para servirem de troca situacional.",
   },
+  summoning: {
+    name: "Summoning Spells",
+    summary: "Um exército que luta por você, e as passivas que o mantêm de pé.",
+    theme:
+      "O jeito mais seguro de jogar a classe e a razão de ela ser escolha padrão no Hardcore: um exército de esqueletos absorve o que iria acertar você. As duas masteries e o Summon Resist rendem muito mais para o exército do que mais um tipo de criatura invocada.",
+  },
+  "poison-and-bone": {
+    name: "Poison and Bone Spells",
+    summary: "Dano mágico que quase nada resiste, veneno ao longo do tempo e o Corpse Explosion.",
+    theme:
+      "Duas escolas de dano numa árvore só. O ramo de osso causa dano mágico, que pouquíssimos monstros resistem; o veneno é aplicado ao longo do tempo e é o único elemento sem Mastery para aumentá-lo. O Corpse Explosion fica entre os dois e pertence a toda build da classe.",
+  },
+  curses: {
+    name: "Curses",
+    summary: "Dez maldições — uma por alvo, de cada vez.",
+    theme:
+      "Um monstro carrega exatamente uma maldição: lançar a segunda substitui a primeira. É essa regra que transforma a árvore num conjunto de escolhas em vez de um empilhamento, e é por isso que a discussão nunca é qual maldição é a mais forte, e sim qual você está abrindo mão de usar.",
+  },
 };
 
 export const skillsPtBr: Overlay<SkillCopy> = {
@@ -700,5 +718,283 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "A duração do congelamento dela não cresce com o próprio nível: só Ice Arrow a estende.",
     ],
     synergyBonuses: ["+12% de dano por nível", "+5% de duração do congelamento por nível"],
+  },
+
+  // -------------------------------------------------------------------------
+  // Necromancer — Summoning Spells
+  // -------------------------------------------------------------------------
+  "skeleton-mastery": {
+    summary:
+      "Soma vida e dano a cada esqueleto, mago esqueleto e revive que você levantar.",
+    mechanics: [
+      "Cada ponto duro soma **+8 de vida e +2 de dano** à criatura invocada, e o jogo lê o nível *efetivo* desta skill — ou seja, +skills do equipamento contam aqui, diferente de uma sinergia.",
+      "Ela carrega mais dois parâmetros que o jogo rotula só para o Revive: **+5% de vida e +10% de dano por nível** no monstro revivido.",
+      "O bônus é gravado no lacaio no instante em que ele é criado. Aumentar esta skill não faz nada pelos esqueletos que já estão de pé; o exército precisa ser levantado de novo para receber o bônus.",
+    ],
+  },
+  "raise-skeleton": {
+    summary: "Levanta um esqueleto guerreiro de um cadáver. A espinha dorsal do Summoner.",
+    mechanics: [
+      "O limite é **um esqueleto por nível até o terceiro, depois dois mais um a cada três níveis** — oito no nível duro 20, e mais conforme +skills elevam o nível efetivo.",
+      "Cada conjuração precisa de um cadáver, então a primeira morte de uma sala é sempre a demorada.",
+      "Os magos esqueletos são contados à parte e não dividem esse limite.",
+    ],
+  },
+  "clay-golem": {
+    summary: "Um golem lento e resistente cujos golpes desaceleram o que tocam.",
+    mechanics: [
+      "A lentidão que ele aplica sobe de **0% em direção a um teto de 75%** numa curva de retornos decrescentes — a maior lentidão disponível para a classe, e a razão de um ponto nele valer a pena até em builds que nunca invocam mais nada.",
+      "Você só pode ter **um golem por vez**. As quatro skills de golem dividem um único tipo de criatura invocada com máximo de um, então invocar outro substitui este.",
+    ],
+  },
+  "golem-mastery": {
+    summary:
+      "Aumenta vida, velocidade e chance de acerto do golem. Vale para qualquer um deles.",
+    mechanics: [
+      "**+20% de vida com um ponto e +20% a mais por nível**, além de **+25 de chance de acerto e +25 a mais por nível**.",
+      "Também eleva a velocidade de movimento do golem de **0% em direção a um teto de 40%** numa curva de retornos decrescentes, que é o que impede o Clay Golem de ficar para trás.",
+      "Isto não é uma sinergia no sentido do jogo: os golens leem o nível efetivo desta skill, então +skills do equipamento a aumentam.",
+    ],
+  },
+  "raise-skeletal-mage": {
+    summary:
+      "Levanta um esqueleto que conjura um de quatro elementos, sorteado no momento da invocação.",
+    mechanics: [
+      "Mesma fórmula de contagem do Raise Skeleton e um **limite separado**: um Summoner mantém os dois exércitos ao mesmo tempo.",
+      "O elemento é sorteado quando o mago é levantado e não pode ser escolhido, e é por isso que o dano do grupo é pouco confiável contra qualquer coisa com a imunidade correspondente.",
+      "O nível da skill de ataque dele acompanha o Skeleton Mastery, então os magos ficam mais fortes com a mesma passiva que fortalece os guerreiros.",
+    ],
+  },
+  "blood-golem": {
+    summary: "Um golem que rouba vida do que acerta, e divide parte dela com você.",
+    mechanics: [
+      "O roubo de vida dele sobe de **75% em direção a um teto de 150%** numa curva de retornos decrescentes, e **30% do que ele rouba é repassado a você**.",
+      "**25% da cura que você recebe é repassada ao golem**, então as poções o mantêm vivo junto com você.",
+      "O antigo vínculo de vida — o conjurador levando parte do dano que o golem sofre — **não está nas tabelas fixadas**: a coluna que o carrega está zerada. Guias escritos antes dessa mudança ainda o descrevem como um risco no Hardcore.",
+    ],
+  },
+  "summon-resist": {
+    summary:
+      "Dá resistência elemental e a veneno aos seus lacaios. Um ponto já é um salto grande.",
+    mechanics: [
+      "A resistência sobe de **20% em direção a um teto de 75%** numa curva de retornos decrescentes, então o primeiro ponto compra quase tudo o que vinte comprariam.",
+      "Ela é aplicada ao lacaio no instante em que ele é criado, o que significa que aumentar a skill não faz nada por um exército já de pé.",
+      "Ela não sobrescreve um elemento que o lacaio já absorve — o Fire Golem mantém a própria absorção de fogo em vez de receber resistência a fogo.",
+      "Na implementação de referência do motor antigo ela é aplicada a esqueletos, magos esqueletos e golens, e **não** aos revives. Se Diablo II: Resurrected mudou isso é algo que este repositório não conseguiu estabelecer.",
+    ],
+  },
+  "iron-golem": {
+    summary:
+      "Consome um item para construir um golem que carrega as propriedades dele. O item some.",
+    mechanics: [
+      "O item escolhido é **destruído** e vira o golem. Esta é a única skill da classe que pode custar algo que você não recupera.",
+      "Ele carrega uma aura própria de devolução de dano, além do que quer que o item de origem forneça.",
+      "Continua sendo um golem por vez: invocar qualquer outro o substitui, e o item não volta.",
+    ],
+  },
+  "fire-golem": {
+    summary: "Um golem que roda uma aura de Holy Fire e é curado, não ferido, por fogo.",
+    mechanics: [
+      "Ele roda **Holy Fire no nível 7, subindo um por nível da skill até o teto de 30** — uma aura de verdade, afetando tudo por perto.",
+      "A absorção de fogo dele sobe de **25% em direção a 100%** numa curva de retornos decrescentes, e é por isso que ele é o golem que sobrevive aos grupos fire enchanted do Hell.",
+      "A tabela de dano desta página é o dano de fogo que a aura acrescenta, não a faixa de uma arma.",
+    ],
+  },
+  revive: {
+    summary:
+      "Levanta um monstro morto para lutar por você durante três minutos. A quantidade é o nível da skill.",
+    mechanics: [
+      "**A quantidade que você mantém é o nível efetivo da skill**, então +skills do equipamento a aumentam diretamente.",
+      "Cada revive dura **4500 frames — três minutos** — e não pode ser renovado. É isso que faz dele uma leva de corpos e não um exército permanente.",
+      "A vida do revive é **sorteada de novo a partir da faixa de vida base daquele tipo de monstro** no nível e na dificuldade dele, e não copiada do cadáver. Um Champion revive com a vida comum da espécie dele.",
+      "Se o nível do monstro estiver acima do nível do seu personagem, a vida dele é reduzida nessa proporção.",
+      "Só monstros que o jogo marca como revivíveis podem ser levantados, e é por isso que alguns grupos nunca rendem um.",
+    ],
+  },
+
+  // -------------------------------------------------------------------------
+  // Necromancer — Poison and Bone Spells
+  // -------------------------------------------------------------------------
+  teeth: {
+    summary: "Uma rajada de lascas de osso. O dano mágico mais barato do jogo no nível 1.",
+    mechanics: [
+      "Dispara **dois projéteis no nível 1 e mais um por nível, com teto de 24** — o mesmo teto do Multiple Shot, lido do mesmo formato de coluna.",
+      "Os projéteis se abrem em leque, então a quantidade importa muito mais contra um grupo do que contra um alvo só.",
+      "Causa dano mágico, que só um punhado de monstros do jogo resiste.",
+    ],
+  },
+  "bone-armor": {
+    summary: "Um escudo que absorve uma quantidade fixa de dano, depois quebra e é reconjurado.",
+    mechanics: [
+      "Absorve **20 de dano no nível 1 e mais 15 por nível**, e **mais 15 para cada ponto em Bone Wall e Bone Prison**.",
+      "Absorve dano **físico** — corpo a corpo e de projétil. Um acerto elemental passa direto por ele, que é o contrário do que o nome sugere para a maioria dos leitores.",
+      "Quando a reserva acaba o efeito termina e precisa ser reconjurado. Não é uma duração.",
+    ],
+  },
+  "poison-dagger": {
+    summary: "Um ataque corpo a corpo que soma dano de veneno. Exige uma adaga.",
+    mechanics: [
+      "**O dano da própria adaga também entra.** A tabela desta página é o veneno que a skill acrescenta, não o golpe inteiro.",
+      "O veneno dura **2 segundos no nível 1 e 0,4 segundo a mais por nível**, e o dano da tabela é o total espalhado por essa janela, não um acerto instantâneo.",
+      "Só funciona com uma adaga equipada, o que a mantém como curiosidade em vez de build.",
+    ],
+  },
+  "corpse-explosion": {
+    summary:
+      "Detona um cadáver com dano baseado na vida base daquele tipo de monstro. Metade físico, metade fogo.",
+    mechanics: [
+      "**Metade do dano é físico e metade é fogo**, divididos a partir de um único total sorteado. Cada metade é então reduzida pela resistência do alvo àquele tipo, então um imune a fogo ainda leva a metade física.",
+      "O dano é **70%–120% da vida base média do tipo de monstro**, e essa vida é recalculada a partir da tabela do próprio jogo no nível e na dificuldade do cadáver — não lida do cadáver. Quantidade de jogadores e bônus de Champion, Unique e Super Unique não a aumentam.",
+      "**Pontos compram raio, não dano.** O parâmetro de raio começa em 8 e sobe 1 por nível, e o motor o divide por dois: cerca de 4 unidades no nível 1 e 13 no nível 20.",
+      "Se o nível do seu personagem estiver abaixo do nível do monstro do cadáver, o dano é reduzido nessa proporção. Subir de nível o aumenta; o nível da própria skill não.",
+      "Amplify Damage age sobre a metade física — o mesmo corte de 100 pontos na resistência a dano físico que qualquer outro golpe físico recebe.",
+      "Existe um artigo inteiro sobre isso: veja a página de mecânica do Corpse Explosion.",
+    ],
+  },
+  "bone-wall": {
+    summary: "Ergue uma parede de osso que bloqueia passagem até ser quebrada.",
+    mechanics: [
+      "**Oito segmentos**, e a quantidade não cresce com o nível da skill — os pontos compram a vida da parede, a **+25% por nível**.",
+      "Ela fica de pé por **600 frames — 24 segundos** — em qualquer nível.",
+      "O uso real dela é como porta: os monstros precisam quebrá-la, o que compra para um conjurador os segundos que um Teleport custaria.",
+    ],
+  },
+  "poison-explosion": {
+    summary:
+      "Detona um cadáver numa nuvem de veneno. Precisa de um corpo, como tudo em volta dela.",
+    mechanics: [
+      "O veneno dura **2 segundos no nível 1 e 0,4 segundo a mais por nível**; a tabela dá o dano total espalhado por essa janela.",
+      "Ela consome o cadáver, então disputa com o Corpse Explosion e com o Raise Skeleton os mesmos corpos.",
+      "Diferente do Corpse Explosion, o dano é da própria skill e não depende do que morreu.",
+    ],
+  },
+  "bone-spear": {
+    summary:
+      "Uma lança de osso que perfura. Dano mágico em linha reta, e o ataque principal da árvore.",
+    mechanics: [
+      "Ela **perfura todos os alvos no caminho**, o que faz dela uma skill de limpar fileiras em vez de uma de alvo único.",
+      "Dano mágico: só um punhado de monstros do jogo resiste, e nenhum deles é comum nos lugares que essa build farma.",
+      "Não existe Mastery para ela. O dano vem das quatro sinergias e dos +skills, e de mais nada.",
+    ],
+  },
+  "bone-prison": {
+    summary: "Enjaula um alvo em osso. A mesma parede, fechada em volta de alguma coisa.",
+    mechanics: [
+      "A vida escala a **+25% por nível**, e ela fica de pé por **600 frames — 24 segundos** — como o Bone Wall.",
+      "O custo de mana dela **cai** com o nível em vez de subir: 27 no nível 1, um a menos por nível.",
+      "Encaixotar um atacante à distância é para o que ela serve; não segura nada que teleporte nem nada que já esteja do seu lado.",
+    ],
+  },
+  "poison-nova": {
+    summary: "Um anel de veneno que se expande a partir de você. O único ataque em área da classe.",
+    mechanics: [
+      "O veneno dura **2 segundos em qualquer nível**. As colunas que alongam as outras duas skills de veneno simplesmente não existem aqui, então todo o crescimento vai para o dano.",
+      "A tabela dá o dano **total** ao longo desses dois segundos, não dano por segundo e não um acerto instantâneo.",
+      "Ela não precisa de cadáver, e é isso que a separa do resto da árvore.",
+      "Veneno não tem Mastery. O Lower Resist é a única coisa na classe que reduz resistência a veneno.",
+    ],
+  },
+  "bone-spirit": {
+    summary:
+      "Um crânio teleguiado que persegue o alvo. Dano de alvo único maior que o do Bone Spear.",
+    mechanics: [
+      "Ele **persegue** em vez de viajar reto, e acerta um alvo — a troca oposta à da perfuração do Bone Spear.",
+      "Dano base maior que o do Bone Spear no mesmo nível, e é por isso que ele é a metade de chefe de uma build de osso, não uma build própria.",
+      "Ele divide as sinergias do Bone Spear, então os dois são investidos juntos em vez de escolhidos um ou outro.",
+    ],
+  },
+
+  // -------------------------------------------------------------------------
+  // Necromancer — Curses
+  // -------------------------------------------------------------------------
+  "amplify-damage": {
+    summary:
+      "Corta 100 pontos da resistência a dano físico do monstro. O maior multiplicador físico do jogo.",
+    mechanics: [
+      "Ela baixa a **resistência** a dano físico em 100 pontos, em vez de multiplicar o dano: um monstro com 0% de resistência vai para −100% e passa a levar o dobro. Um com 50% vai para −50%, e ali a mesma maldição vale muito mais.",
+      "Contra um monstro **imune a físico** a maldição entra com um quinto da força, cortando 20 pontos em vez de 100. Isso é exatamente o suficiente para quebrar um monstro parado em 100% de resistência física, e não é suficiente para um acima de 120%.",
+      "O raio cresce 1 por nível a partir de 3, e ela dura 8 segundos no nível 1, com 3 segundos a mais por nível.",
+      "Um ponto costuma bastar para um grupo físico; o que os pontos extras compram é duração e raio.",
+    ],
+  },
+  "dim-vision": {
+    summary: "Cega um grupo para que ele não enxergue você. A maldição de segurança do Summoner.",
+    mechanics: [
+      "Um monstro cegado para de perseguir e para de usar ataques à distância até alguma coisa acertá-lo.",
+      "**A duração dela é dividida pela dificuldade**: 7 segundos no nível 1 em Normal, metade disso em Nightmare e um quarto em Hell. Só esta maldição e o Terror são tratados assim.",
+      "Por ser uma maldição, lançá-la remove a maldição que já estivesse no alvo — inclusive o Amplify Damage.",
+    ],
+  },
+  weaken: {
+    summary: "Reduz o dano físico que o monstro causa. Raio grande, duração longa.",
+    mechanics: [
+      "**−33% de dano causado no nível 1, um ponto a mais por nível**, então vinte pontos chegam a −52%.",
+      "O raio dela começa em 9 — empatado como o maior de qualquer maldição — e é isso que faz dela uma conjuração defensiva de sala inteira em vez de algo mirado.",
+      "Ela é a metade mais segura da decisão do Amplify Damage: uma reduz o que você leva, a outra aumenta o que você causa, e um alvo só carrega uma das duas.",
+    ],
+  },
+  "iron-maiden": {
+    summary:
+      "Devolve ao monstro boa parte do dano corpo a corpo dele. A ferramenta clássica de Uber.",
+    mechanics: [
+      "Devolve **200% do dano causado no nível 1, +25% por nível** — 675% com vinte pontos.",
+      "Só devolve dano de ataques que conectam corpo a corpo, então não faz nada contra conjuradores e monstros à distância.",
+      "É a maldição que mata coisas muito acima do seu próprio dano, e é por isso que ela é a contribuição do Necromancer para a Uber Tristram.",
+    ],
+  },
+  terror: {
+    summary: "Faz os monstros fugirem. Útil para quebrar um grupo, perigoso para espalhá-lo.",
+    mechanics: [
+      "**Dividida pela dificuldade como o Dim Vision**: 8 segundos no nível 1 em Normal, quatro em Nightmare, dois em Hell.",
+      "Monstros em fuga se espalham, que é o contrário do que uma build de Corpse Explosion quer — é botão de pânico, não conjuração de rotina.",
+      "A distância percorrida na fuga cresce com o nível, o que na prática só aumenta o problema.",
+    ],
+  },
+  confuse: {
+    summary: "Os monstros atacam o que estiver mais perto, inclusive uns aos outros.",
+    mechanics: [
+      "Monstros confusos escolhem alvos ao acaso, então um grupo denso briga consigo mesmo enquanto o seu exército chega.",
+      "É uma maldição de controle de grupo, não de dano: nada nela aumenta o que você causa.",
+      "Raio e duração são o que os pontos compram — 6 e 10 segundos no nível 1, crescendo 1 e 2 por nível.",
+    ],
+  },
+  "life-tap": {
+    summary:
+      "Metade do dano físico causado ao monstro amaldiçoado volta como vida. A melhor maldição de grupo.",
+    mechanics: [
+      "**50% do dano causado volta como vida**, e o número não muda com o nível — os pontos compram só raio e duração.",
+      "Vale para todo mundo que estiver batendo no alvo, o que faz dela a coisa mais forte que um Necromancer leva para um grupo corpo a corpo.",
+      "Dracul's Grasp a conjura ao acertar, então um personagem corpo a corpo pode carregá-la sem um Necromancer no grupo.",
+    ],
+  },
+  attract: {
+    summary: "Tudo que está por perto ataca o monstro amaldiçoado em vez de você.",
+    mechanics: [
+      "A maldição mais longa da árvore: 12 segundos no nível 1 e 3,6 segundos a mais por nível.",
+      "O raio dela é 9 e não cresce, empatando com o do Weaken como o maior da árvore.",
+      "**Nenhuma maldição pode ser aplicada a um alvo enquanto o Attract estiver nele** — nem outro Attract, nem o Amplify Damage. É a única maldição da árvore que tranca o espaço em vez de dividi-lo.",
+    ],
+  },
+  decrepify: {
+    summary:
+      "Desacelera, enfraquece e expõe o monstro de uma vez. Mais curta que o Amplify Damage, e faz mais.",
+    mechanics: [
+      "Uma maldição, quatro efeitos, todos a **−50% e nenhum deles crescendo com o nível**: velocidade de movimento, velocidade de ataque, dano causado e resistência a dano físico.",
+      "A metade de resistência é o efeito do Amplify Damage pela metade — então, contra um monstro com 0% de resistência física, o Amplify dobra o seu dano e o Decrepify o multiplica por 1,5.",
+      "Contra um monstro **imune a físico** ela é cortada para um quinto como toda maldição de resistência, o que deixa 10 pontos — não o bastante para quebrar uma imunidade de 100% que o Amplify Damage quebra. Os imunes são o único lugar onde a escolha entre as duas não é questão de gosto.",
+      "É a maldição mais curta da árvore: 4 segundos no nível 1, 0,6 segundo a mais por nível. Os pontos compram duração e nada mais.",
+      "Um Reaper's Toll a conjura ao acertar, e é por isso que essa lança é arma padrão de mercenário para builds físicas fora desta classe.",
+      "A resposta de sempre é usar as duas: Amplify Damage para limpar, Decrepify para o que for realmente perigoso.",
+    ],
+  },
+  "lower-resist": {
+    summary:
+      "Reduz resistência a fogo, frio, raio e veneno. A única coisa da classe que encosta em resistência a veneno.",
+    mechanics: [
+      "A redução sobe de **25% em direção a um teto de 70%** numa curva de retornos decrescentes, então o primeiro ponto vale muito mais que o vigésimo.",
+      "Ela cobre **veneno além dos três elementos**, o que nenhuma aura e nenhuma outra maldição faz — e veneno não tem Mastery, então esta é toda a resposta de resistência de uma build de veneno.",
+      "Contra um monstro *imune* ao elemento ela entra com um quinto da força, do mesmo jeito que toda redução de resistência.",
+      "É uma maldição como qualquer outra: substitui o Amplify Damage no alvo em vez de se somar a ele.",
+    ],
   },
 };
