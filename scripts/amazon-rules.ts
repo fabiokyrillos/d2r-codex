@@ -17,7 +17,8 @@ export interface AmazonProblem {
     | "incomplete-class-page"
     | "universal-ias-breakpoint"
     | "immunity-census-drift"
-    | "alias-became-a-page";
+    | "alias-became-a-page"
+    | "incomplete-chain-claim";
   message: string;
 }
 
@@ -185,6 +186,84 @@ export function checkAliasesAreNotPages(
   }
   return found;
 }
+
+// ---------------------------------------------------------------------------
+// A sentence that walks a prerequisite chain must walk all of it
+// ---------------------------------------------------------------------------
+
+/** Every skill `slug` transitively requires, by the graph rather than by eye. */
+export function prerequisiteClosure(
+  graph: Readonly<Record<string, { readonly prerequisites?: readonly string[] }>>,
+  slug: string,
+): string[] {
+  const seen = new Set<string>();
+  const walk = (s: string) => {
+    for (const p of graph[s]?.prerequisites ?? []) {
+      if (seen.has(p)) continue;
+      seen.add(p);
+      walk(p);
+    }
+  };
+  walk(slug);
+  return [...seen];
+}
+
+/**
+ * The leveling journey told a reader to spend Inner Sight, Slow Missiles, Dodge
+ * and Avoid and said that "together they open Decoy at 24 and Valkyrie at 30".
+ * They do not. Valkyrie requires Decoy *and* Evade, and Evade was not in the
+ * list — so a reader who followed the sentence literally arrived at 30 with the
+ * skill still locked. The stage's own summary said "seven points", which is the
+ * count *with* Evade, so the page disagreed with itself.
+ *
+ * **What counts as a chain claim.** A sentence that names the target and at
+ * least two skills from its prerequisite closure is enumerating the chain, and
+ * must therefore name all of it. That threshold is what keeps the rule from
+ * firing on the many sentences that mention a skill without routing to it —
+ * "one point in Valkyrie is enough at this stage" names none of the closure and
+ * is left alone. Two is deliberate: one could be a passing reference, two is a
+ * list.
+ *
+ * Names rather than slugs, because prose is written in names and ADR 0003 keeps
+ * them identical across locales — which is what lets one rule check both.
+ */
+export function checkChainClaims(
+  sentences: readonly string[],
+  graph: Readonly<Record<string, { readonly prerequisites?: readonly string[] }>>,
+  nameOf: (slug: string) => string,
+  targets: readonly string[],
+  where: string,
+): AmazonProblem[] {
+  const found: AmazonProblem[] = [];
+  const mentions = (text: string, name: string) =>
+    new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(text);
+
+  for (const target of targets) {
+    const closure = prerequisiteClosure(graph, target);
+    if (closure.length === 0) continue;
+    const targetName = nameOf(target);
+
+    for (const sentence of sentences) {
+      if (!mentions(sentence, targetName)) continue;
+      const named = closure.filter((s) => mentions(sentence, nameOf(s)));
+      if (named.length < 2) continue; // a mention, not an enumeration
+      const missing = closure.filter((s) => !named.includes(s));
+      if (missing.length === 0) continue;
+      found.push({
+        rule: "incomplete-chain-claim",
+        message:
+          `${where}: a sentence routes to ${targetName} through ` +
+          `${named.map(nameOf).join(", ")} but never names ` +
+          `${missing.map(nameOf).join(", ")}, which ${targetName} also requires. ` +
+          `A reader following it arrives with the skill still locked. Sentence: "${sentence.slice(0, 90)}…"`,
+      });
+    }
+  }
+  return found;
+}
+
+/** The chains a journey page is allowed to route to, and must route to fully. */
+export const CHAIN_TARGETS: readonly string[] = ["valkyrie"];
 
 /** The names that must stay aliases. Shared by the checker and its tests. */
 export const ALIAS_ONLY_NAMES: readonly string[] = [

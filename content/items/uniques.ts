@@ -493,7 +493,11 @@ export const uniques: UniqueItem[] = [
       { text: "+2-4 to Javelin and Spear Skills (Amazon Only)", variable: true, notable: true },
       { text: "+3 to Lightning Bolt (Amazon Only)" },
       { text: "Adds 1-511 Lightning Damage", notable: true },
-      { text: "14% Chance to cast level 20 Lightning on striking" },
+      // `hit-skill par=Lightning min=20 max=14`: min is the chance, max is the
+      // skill level. Published the other way round until the audit caught it —
+      // the four items the decoder was calibrated against carry no
+      // cast-on-striking line at all, so nothing exercised this column's order.
+      { text: "20% Chance to cast level 14 Lightning on striking" },
       { text: "+150-200% Enhanced Damage", variable: true },
       { text: "+15% Increased Attack Speed" },
     ],

@@ -579,7 +579,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     summary: "Chance de dobrar o dano físico. Sempre ativa, com qualquer arma.",
     mechanics: [
       "Acumula com Deadly Strike do equipamento como duas rolagens separadas, e não como uma chance maior.",
-      "Não vale nada para Charged Strike nem Lightning Strike, que não causam dano físico.",
+      "Não vale nada para a Charged Strike, cujo dano é todo de raio e não carrega nada do físico da arma.",
     ],
   },
   dodge: {

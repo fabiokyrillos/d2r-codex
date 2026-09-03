@@ -78,12 +78,18 @@ export interface Skill extends Entity {
    * `check:content` refuses an attack whose damage the graph tabulates but
    * which names no model here.
    *
-   * That refusal is the point. A rule of the shape "an attack with a table adds
-   * its element to the weapon" would be right for Power Strike and Fire Arrow
-   * and wrong for Charged Strike and Lightning Strike, which carry none of the
-   * weapon's damage — which is precisely why every javelin build keeps Jab on
-   * the bar for lightning immunes. One derivation cannot tell those apart, so
-   * none is attempted.
+   * That refusal is the point, and the javelin tree is where it earns its keep.
+   * A rule of the shape "an attack with a table adds its element to the weapon"
+   * would be right for Power Strike and Fire Arrow and wrong for Charged
+   * Strike, whose damage is entirely lightning and carries none of the weapon's
+   * physical. Lightning Strike looks identical in the tables — both leave
+   * `SrcDam` empty — and behaves differently: it lands the weapon's full damage
+   * on the target it strikes, plus its own lightning, and the chain is created
+   * separately from there. The two are told apart by the stage each runs
+   * (`SrvSt06` passes the empty column through; `SrvSt10` substitutes 0x80),
+   * not by anything in the columns. So no derivation is attempted, and Jab
+   * stays on every javelin bar because the tree's damage is mostly lightning
+   * rather than because none of it touches a weapon.
    */
   damageModel?:
     | "proportional"

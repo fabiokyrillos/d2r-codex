@@ -300,7 +300,10 @@ export const amazonSkills: Skill[] = [
     summary: "A chance to double physical damage. Always on, with any weapon.",
     mechanics: [
       "Stacks with Deadly Strike from gear as two separate rolls rather than one larger chance.",
-      "Worth nothing to Charged Strike or Lightning Strike, which deal no physical damage.",
+      // Charged Strike alone. Lightning Strike lands the weapon's full damage,
+      // so this doubles that half of it — which is why its build page calls
+      // Critical Strike the best points on any Amazon.
+      "Worth nothing to Charged Strike, whose damage is entirely lightning and carries none of the weapon's physical.",
     ],
     confidence: "verified",
   },

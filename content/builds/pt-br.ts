@@ -6046,7 +6046,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "mausoleum-hell":
         "Nível de área 85, alcançável em segundos, e cheio dos mortos-vivos contra os quais o seu arco causa dano bônus.",
       "ancient-tunnels-hell":
-        "Nível de área 85 com quase nada imune a físico. A zona-problema de uma build de frio é a melhor de uma build física.",
+        "Nível de área 85 com quase nada imune a físico — as imunidades registradas dela são fogo e veneno. Curta, fechada em si mesma, e a zona que esta build limpa mais rápido.",
       "chaos-sanctuary-hell":
         "Denso e de nível alto, e o Guided Arrow dá conta do Diablo sem trocar de equipamento. Imunidade física faz parte da população comum aqui, então traga o Amplify Damage. **Iron Maiden dos Oblivion Knights reflete uma rajada de dez tiros de volta em você** — fique atenta à maldição.",
       "pindleskin-hell":

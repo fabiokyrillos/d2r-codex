@@ -44,9 +44,13 @@ import {
   unclassifiedElementalAttacks,
 } from "../lib/skills";
 import { MIN_PROSE_LENGTH, exitCodeFor, isUntranslatedProse } from "./content-rules";
+import { checkProcLines } from "./item-rules";
 import {
   ALIAS_ONLY_NAMES,
+  CHAIN_TARGETS,
   EXPECTED_IMMUNITY_CENSUS,
+  checkChainClaims,
+  prerequisiteClosure,
   checkAliasesAreNotPages,
   checkClassPagesComplete,
   checkImmunityCensus,
@@ -769,6 +773,163 @@ console.log("\nAmazon-pass rules, each planted against the real content");
       JSON.stringify(found),
     );
   }
+}
+
+// ===========================================================================
+console.log("\nChain claims — a sentence that routes to a skill must route all of it");
+// ===========================================================================
+{
+  const nameOf = (slug: string) =>
+    getSkills(DEFAULT_LOCALE).find((s) => s.slug === slug)?.name ?? slug;
+
+  // The closure is read from the graph, so this asserts the fixture rather than
+  // assuming it: Valkyrie needs both branches, six skills in all.
+  const closure = prerequisiteClosure(SKILL_GRAPH, "valkyrie").sort();
+  check(
+    "Valkyrie's prerequisite closure is the six skills of both branches",
+    JSON.stringify(closure) ===
+      JSON.stringify(["avoid", "decoy", "dodge", "evade", "inner-sight", "slow-missiles"]),
+    JSON.stringify(closure),
+  );
+
+  const full =
+    "Start the Valkyrie chain now. Inner Sight, Slow Missiles, Decoy, and Dodge, Avoid, Evade.";
+  check(
+    "a sentence naming the whole chain passes",
+    checkChainClaims([full], SKILL_GRAPH, nameOf, CHAIN_TARGETS, "fixture").length === 0,
+  );
+
+  // Planted: the exact sentence that shipped, with Evade missing.
+  const shipped =
+    "Start the Valkyrie chain now: Inner Sight, Slow Missiles, Dodge, Avoid. " +
+    "Every one of them is useful on its own, and together they open Decoy at 24 and Valkyrie at 30.";
+  {
+    const found = checkChainClaims([shipped], SKILL_GRAPH, nameOf, CHAIN_TARGETS, "fixture");
+    check(
+      "the sentence that shipped without Evade is caught",
+      found.length === 1 && found[0].rule === "incomplete-chain-claim",
+      JSON.stringify(found),
+    );
+    check(
+      "and the message names the skill that is missing",
+      found[0]?.message.includes("Evade") === true,
+      found[0]?.message,
+    );
+  }
+
+  // Dropping any single link from the full sentence must fire. This is what
+  // stops the rule passing because it only ever looked for one name.
+  for (const link of closure) {
+    const name = nameOf(link);
+    const mutated = full.replace(new RegExp(`\\b${name}\\b,? ?`), "");
+    const found = checkChainClaims([mutated], SKILL_GRAPH, nameOf, CHAIN_TARGETS, "fixture");
+    check(
+      `dropping ${name} from the chain sentence is caught`,
+      found.length === 1 && found[0].message.includes(name),
+      JSON.stringify(found),
+    );
+  }
+
+  // Negative controls. A rule that fired on these would be unusable, because
+  // the journey mentions Valkyrie in five other places without routing to her.
+  check(
+    "a passing mention of Valkyrie is not a chain claim",
+    checkChainClaims(
+      ["One point in Valkyrie is enough at this stage; the +skills from gear raise her."],
+      SKILL_GRAPH,
+      nameOf,
+      CHAIN_TARGETS,
+      "fixture",
+    ).length === 0,
+  );
+  check(
+    "naming one closure skill beside her is still not an enumeration",
+    checkChainClaims(
+      ["Hard points in Decoy raise the Valkyrie's life."],
+      SKILL_GRAPH,
+      nameOf,
+      CHAIN_TARGETS,
+      "fixture",
+    ).length === 0,
+  );
+  check(
+    "a sentence that never names the target is ignored",
+    checkChainClaims(
+      ["Inner Sight, Slow Missiles, Dodge and Avoid are all useful on their own."],
+      SKILL_GRAPH,
+      nameOf,
+      CHAIN_TARGETS,
+      "fixture",
+    ).length === 0,
+  );
+}
+
+// ===========================================================================
+console.log("\nProc lines — chance and level, in the order Tier 1 gives them");
+// ===========================================================================
+{
+  const entity = (stats: string[]) => [
+    { slug: "control", name: "Control", stats: stats.map((text) => ({ text })) },
+  ];
+  const spec = [
+    {
+      kind: "unique" as const,
+      slug: "control",
+      column: "hit-skill" as const,
+      skill: "Lightning",
+      chance: 20,
+      level: 14,
+    },
+  ];
+
+  check(
+    "the correct line passes",
+    checkProcLines(entity(["20% Chance to cast level 14 Lightning on striking"]), spec).length === 0,
+  );
+  // Planted: the regression this rule is named after.
+  {
+    const found = checkProcLines(
+      entity(["14% Chance to cast level 20 Lightning on striking"]),
+      spec,
+    );
+    check(
+      "chance and level swapped is caught, and reported as a swap",
+      found.length === 1 && found[0].rule === "proc-line-swapped",
+      JSON.stringify(found),
+    );
+  }
+  {
+    const found = checkProcLines(entity(["+15% Increased Attack Speed"]), spec);
+    check(
+      "a missing proc line is caught",
+      found.length === 1 && found[0].rule === "proc-line-missing",
+      JSON.stringify(found),
+    );
+  }
+  {
+    const found = checkProcLines(
+      entity([
+        "20% Chance to cast level 14 Lightning on striking",
+        "10% Chance to cast level 3 Nova on striking",
+      ]),
+      spec,
+    );
+    check(
+      "a proc line no control accounts for is caught",
+      found.length === 1 && found[0].rule === "proc-line-unaccounted",
+      JSON.stringify(found),
+    );
+  }
+  check(
+    "a control naming an entity that does not exist is caught",
+    checkProcLines([], spec)[0]?.rule === "proc-entity-missing",
+  );
+  // The trigger phrase is part of the line, so a `gethit-skill` value written
+  // as `on striking` is a different claim and must not pass.
+  check(
+    "the wrong trigger phrase is caught",
+    checkProcLines(entity(["20% Chance to cast level 14 Lightning when struck"]), spec).length === 1,
+  );
 }
 
 // ===========================================================================

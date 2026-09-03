@@ -547,7 +547,7 @@ export const strafeAmazon: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 with almost nothing physically immune. A cold build's problem zone is a physical build's best one.",
+      why: "Area level 85 with almost nothing physically immune — its recorded immunities are fire and poison. Short, self-contained, and the zone this build clears fastest.",
       minTier: "early-hell",
       rating: 5,
     },

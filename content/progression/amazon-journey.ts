@@ -159,7 +159,11 @@ export const amazonJourney: ProgressionJourney = {
       order: 3,
       skillPoints: [
         "Level 18: **Guided Arrow**. It seeks its target and cannot miss, which is what makes Act 3's ranged packs and Act 4's bosses manageable.",
-        "**Start the Valkyrie chain now**: Inner Sight, Slow Missiles, Dodge, Avoid. Every one of them is useful on its own, and together they open Decoy at 24 and Valkyrie at 30.",
+        // Two branches, not one list. Valkyrie's prerequisites are Decoy AND
+        // Evade; naming four of the seven skills read as though Avoid were the
+        // last step, which would leave a reader at 30 with Valkyrie still
+        // locked. The summary above already counted seven.
+        "**Start the Valkyrie chain now.** It is seven points in two branches that meet at 30: Inner Sight (1) → Slow Missiles (12) → **Decoy** (24), and Dodge (6) → Avoid (12) → **Evade** (24). Valkyrie needs Decoy *and* Evade, so both branches have to be finished — and every point along the way is worth having on its own.",
         "**Slow Missiles is the most underrated point in the class.** One point, and Act 3's dart-throwing packs stop being dangerous.",
       ],
       statPoints: [
@@ -313,7 +317,9 @@ export const amazonJourney: ProgressionJourney = {
       killingWith: "The finished build, plus whatever it carries for the things it cannot hurt.",
       order: 6,
       skillPoints: [
-        "Finish the maxing order on your build's page. Every plan on this site spends 108 or 109 of the 110 hard points a level 99 character has, so the last few are the flexible ones.",
+        // Amazon only. Other classes on this site range from 67 to 107, so the
+        // site-wide version of this sentence was false for most of them.
+        "Finish the maxing order on your build's page. Every Amazon plan on this site spends 108 or 109 of the 110 hard points a level 99 character has, so the last few are the flexible ones.",
         "**The passives are where a struggling character finds survivability.** Dodge, Avoid and Evade all have diminishing curves, so the first extra points in them are worth far more than the last.",
       ],
       statPoints: [

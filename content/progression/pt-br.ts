@@ -582,7 +582,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         killingWith: "Multiple Shot para grupos, Guided Arrow para o que sobreviver.",
         skillPoints: [
           "Nível 18: **Guided Arrow**. Ele persegue o alvo e não pode errar, e é isso que torna os grupos à distância do Ato 3 e os bosses do Ato 4 administráveis.",
-          "**Comece a cadeia da Valkyrie agora**: Inner Sight, Slow Missiles, Dodge, Avoid. Cada um deles é útil sozinho, e juntos abrem o Decoy no 24 e a Valkyrie no 30.",
+          "**Comece a cadeia da Valkyrie agora.** São sete pontos em dois ramos que se encontram no 30: Inner Sight (1) → Slow Missiles (12) → **Decoy** (24), e Dodge (6) → Avoid (12) → **Evade** (24). A Valkyrie exige Decoy *e* Evade, então os dois ramos precisam ser terminados — e cada ponto do caminho vale por si só.",
           "**Slow Missiles é o ponto mais subestimado da classe.** Um ponto, e os grupos de arremessadores do Ato 3 deixam de ser perigosos.",
         ],
         statPoints: [
@@ -664,7 +664,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         goal: "Farmar o Hell com constância, e comprar a única coisa sem a qual a sua build não vive.",
         killingWith: "A build pronta, mais o que ela carregar para as coisas que não consegue ferir.",
         skillPoints: [
-          "Termine a ordem de maximização na página da sua build. Todo plano deste site gasta 108 ou 109 dos 110 pontos fixos que um personagem nível 99 tem, então os últimos são os flexíveis.",
+          "Termine a ordem de maximização na página da sua build. Todo plano de Amazon deste site gasta 108 ou 109 dos 110 pontos fixos que um personagem nível 99 tem, então os últimos são os flexíveis.",
           "**As passivas são onde um personagem em dificuldade encontra sobrevivência.** Dodge, Avoid e Evade têm curvas decrescentes, então os primeiros pontos extras neles valem muito mais que os últimos.",
         ],
         statPoints: [

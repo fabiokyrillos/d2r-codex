@@ -60,7 +60,14 @@ import {
   checkClassPagesComplete,
   checkImmunityCensus,
   checkNoIasBreakpoints,
+  CHAIN_TARGETS,
+  checkChainClaims,
 } from "./amazon-rules";
+import {
+  RUNEWORD_PROC_CONTROLS,
+  UNIQUE_PROC_CONTROLS,
+  checkProcLines,
+} from "./item-rules";
 
 const SOURCE: Locale = DEFAULT_LOCALE;
 const TRANSLATED = LOCALES.filter((l) => l !== SOURCE);
@@ -582,17 +589,40 @@ console.log("\nSkill graph (validated against the generated game-data graph):");
 console.log("\nAmazon pass rules:");
 {
   const areas = getFarmingAreas(SOURCE);
+  /*
+   * Chain claims are checked in every locale, not just the source. The journey
+   * prose is translated, but skill names are not (ADR 0003), so a translator can
+   * drop a link from the chain without changing a single name the rule looks
+   * for — which is exactly the kind of drift an overlay hides.
+   */
+  const chainProblems = LOCALES.flatMap((locale) => {
+    const journey = getJourneys(locale).find((j) => j.classSlug === "amazon");
+    if (!journey) return [];
+    const sentences = journey.stages.flatMap((s) => [
+      ...s.skillPoints,
+      ...s.actions.map((a) => a.text),
+    ]);
+    return checkChainClaims(
+      sentences,
+      SKILL_GRAPH,
+      (slug) => getSkill(locale, slug)?.name ?? slug,
+      CHAIN_TARGETS,
+      `${locale} amazon journey`,
+    );
+  });
   const found = [
     ...checkClassPagesComplete(getBuilds(SOURCE), "amazon", tierOrder),
     ...checkNoIasBreakpoints(getBuilds(SOURCE)),
     ...checkImmunityCensus(areas, EXPECTED_IMMUNITY_CENSUS),
     ...checkAliasesAreNotPages(getBuilds(SOURCE), ALIAS_ONLY_NAMES),
+    ...chainProblems,
   ];
   const rules = [
     "incomplete-class-page",
     "universal-ias-breakpoint",
     "immunity-census-drift",
     "alias-became-a-page",
+    "incomplete-chain-claim",
   ] as const;
   for (const rule of rules) {
     const hits = found.filter((p) => p.rule === rule);
@@ -607,6 +637,40 @@ console.log("\nAmazon pass rules:");
   );
   console.log(
     `  ${ALIAS_ONLY_NAMES.length} alias names checked against every build slug and name`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Proc lines, against the Tier 1 columns they were decoded from
+// ---------------------------------------------------------------------------
+
+/*
+ * See `scripts/item-rules.ts`. Thunderstroke shipped its cast-on-striking
+ * chance and level the wrong way round, and the four items the decoder was
+ * calibrated against carry no such line, so nothing exercised the column order.
+ * These controls pin it on entities whose real values are not in dispute.
+ */
+console.log("\nItem proc lines (Tier 1 column order):");
+{
+  const found = [
+    ...checkProcLines(getUniques(SOURCE), UNIQUE_PROC_CONTROLS),
+    ...checkProcLines(getRunewords(SOURCE), RUNEWORD_PROC_CONTROLS),
+  ];
+  const rules = [
+    "proc-line-swapped",
+    "proc-line-missing",
+    "proc-line-unaccounted",
+    "proc-entity-missing",
+  ] as const;
+  for (const rule of rules) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(26)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+  const controls = UNIQUE_PROC_CONTROLS.length + RUNEWORD_PROC_CONTROLS.length;
+  console.log(
+    `  ${controls} controls across ${new Set([...UNIQUE_PROC_CONTROLS, ...RUNEWORD_PROC_CONTROLS].map((s) => s.slug)).size} entities ` +
+      `and all three trigger columns`,
   );
 }
 
