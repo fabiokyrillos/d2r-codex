@@ -225,8 +225,8 @@ console.log("\n4. The two locales cover exactly the same pages");
   check(`nothing exists only in ${a}`, onlyA.length === 0, onlyA.slice(0, 8).join(", "));
   check(`nothing exists only in ${b}`, onlyB.length === 0, onlyB.slice(0, 8).join(", "));
 
-  // The eight Amazon builds and the journey, named rather than counted, so a
-  // page that silently stopped generating is reported by name.
+  // Named rather than counted, so a page that silently stopped generating is
+  // reported by name rather than as a count that moved.
   const REQUIRED = [
     "/builds/amazon/lightning-fury-amazon",
     "/builds/amazon/lightning-strike-amazon",
@@ -238,6 +238,21 @@ console.log("\n4. The two locales cover exactly the same pages");
     "/builds/amazon/jab-fend-amazon",
     "/leveling/amazon",
     "/mechanics/pierce",
+    // The Necromancer pass: three builds, one journey, three articles and the
+    // six new entity pages.
+    "/builds/necromancer/summoner-necromancer",
+    "/builds/necromancer/poison-nova-necromancer",
+    "/builds/necromancer/bone-spear-necromancer",
+    "/leveling/necromancer",
+    "/mechanics/minions",
+    "/mechanics/curses",
+    "/mechanics/corpse-explosion",
+    "/runewords/white",
+    "/runewords/splendor",
+    "/runewords/bone",
+    "/items/homunculus",
+    "/items/deaths-web",
+    "/items/arm-of-king-leoric",
   ];
   for (const path of REQUIRED) {
     check(
@@ -246,11 +261,35 @@ console.log("\n4. The two locales cover exactly the same pages");
       LOCALES.filter((l) => !pages.has(`/${l}${path}`)).join(", "),
     );
   }
-  // And a control that the list above is not trivially satisfiable.
-  check(
-    "a path that should not exist is absent",
-    !pages.has("/en-us/builds/amazon/javazon"),
-  );
+  /*
+   * Controls that the list above is not trivially satisfiable, and that the
+   * alias decision held: none of these fourteen names is a route, in either
+   * locale. An alias that quietly became a page breaks nothing — it publishes
+   * one character twice — so a crawl is the only place it shows up.
+   */
+  const NOT_ROUTES = [
+    "/builds/amazon/javazon",
+    "/builds/necromancer/fishymancer",
+    "/builds/necromancer/summonmancer",
+    "/builds/necromancer/skeletonmancer",
+    "/builds/necromancer/skelemancer",
+    "/builds/necromancer/poisonmancer",
+    "/builds/necromancer/novamancer",
+    "/builds/necromancer/pnova",
+    "/builds/necromancer/bonemancer",
+    "/builds/necromancer/bone-spirit-necromancer",
+    "/builds/necromancer/teeth-necromancer",
+    "/builds/necromancer/trang-ouls-necromancer",
+    "/items/marrowwalk",
+    "/items/boneflame",
+  ];
+  for (const path of NOT_ROUTES) {
+    check(
+      `no page exists at ${path}`,
+      LOCALES.every((l) => !pages.has(`/${l}${path}`)),
+      LOCALES.filter((l) => pages.has(`/${l}${path}`)).join(", "),
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------

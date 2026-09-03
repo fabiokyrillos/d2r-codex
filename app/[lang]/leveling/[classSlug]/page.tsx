@@ -138,8 +138,14 @@ export default async function LevelingPage(
               {journey.respecPlan.map((entry) => (
                 <Card key={entry.at}>
                   <p className="font-display text-base text-ember">{entry.at}</p>
+                  {/*
+                    Prose, so it goes through RichText. Rendered raw until the
+                    Necromancer journey put emphasis in a respec entry — the
+                    three earlier journeys happen to author these unformatted,
+                    which is exactly the shape of gap `test:markup` exists for.
+                  */}
                   <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
-                    {entry.why}
+                    <RichText>{entry.why}</RichText>
                   </p>
                 </Card>
               ))}

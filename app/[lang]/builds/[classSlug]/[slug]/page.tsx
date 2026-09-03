@@ -202,9 +202,18 @@ export default async function BuildPage(
           <Section title={t.builds.gettingThere}>
             <Callout variant="warning" title={t.builds.doNotLevelAs}>
               <RichText>{build.levelingPath.summary}</RichText>
+              {/*
+                `respecAt` is prose and is authored in markdown like every other
+                prose field, so it goes through RichText. It was rendered raw
+                until the Necromancer builds put emphasis in it — the Amazon and
+                Sorceress values are short unformatted sentences, so the gap was
+                invisible until a page needed it. `raw-markup.test.ts` is what
+                found it.
+              */}
               {build.levelingPath.respecAt && (
                 <p className="mt-2">
-                  <strong>{t.builds.respecAt}</strong> {build.levelingPath.respecAt}
+                  <strong>{t.builds.respecAt}</strong>{" "}
+                  <RichText>{build.levelingPath.respecAt}</RichText>
                 </p>
               )}
               <p className="mt-2">

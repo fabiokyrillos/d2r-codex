@@ -8,8 +8,10 @@
  * page rather than the data, because a correct data model wired to the wrong
  * prop renders an empty section and passes every content check.
  *
- * Scoped to the Amazon by default, for the same reason `amazon-rules.ts` is:
- * this is the completeness contract for the class published in this pass. The
+ * Scoped to the classes published under the completeness contract — the Amazon
+ * and, since this pass, the Necromancer. That scoping is the same judgement
+ * `amazon-rules.ts` records: a gate that forces edits to already-approved
+ * content in order to go green gets argued with rather than obeyed. The
  * structural assertions that are class-agnostic run over every build page on
  * the site, in both locales, and are marked as such below.
  *
@@ -22,7 +24,7 @@ import { assertFreshBuild } from "./build-freshness";
 
 import { dictionaryFor, fmt } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
-import { getBuilds, getFarmingArea, getSkill, resolveRef } from "../lib/registry";
+import { getBuilds, getFarmingArea, getJourneys, getSkill, resolveRef } from "../lib/registry";
 import type { ItemRef } from "../lib/types";
 import { MAX_HARD_POINTS } from "../lib/skills";
 
@@ -56,7 +58,27 @@ const visible = (html: string) =>
 const pageFor = (locale: Locale, classSlug: string, slug: string) =>
   join(root, locale, "builds", classSlug, `${slug}.html`);
 
-const AMAZON = getBuilds("en-us").filter((b) => b.classSlug === "amazon");
+/**
+ * The longest stretch of an authored string that renders as one contiguous run.
+ *
+ * `**bold**` becomes a `<strong>` element, and `visible()` replaces every tag
+ * with a space — so a slice taken across a bold boundary picks up whitespace
+ * the source does not have and never matches. Taking the longest segment
+ * *between* markers gives a fragment that is guaranteed contiguous in the
+ * output, which is what an assertion about rendered prose actually needs.
+ */
+const longestPlainRun = (authored: string, cap = 45) =>
+  authored
+    .split(/\*\*|`/)
+    .map((run) => run.trim())
+    .sort((a, b) => b.length - a.length)[0]
+    .slice(0, cap);
+
+/** The classes whose pages this file holds to the full contract. */
+const CONTRACTED_CLASSES = ["amazon", "necromancer"] as const;
+const CONTRACTED = getBuilds("en-us").filter((b) =>
+  (CONTRACTED_CLASSES as readonly string[]).includes(b.classSlug),
+);
 
 /** Every mandatory total the eight pages printed, collected as they are checked. */
 const totalsSeen = new Set<number>();
@@ -91,7 +113,7 @@ for (const locale of LOCALES) {
   const t = dictionaryFor(locale);
   const localised = getBuilds(locale);
 
-  for (const source of AMAZON) {
+  for (const source of CONTRACTED) {
     const build = localised.find((b) => b.slug === source.slug)!;
     const html = readFileSync(pageFor(locale, build.classSlug, build.slug), "utf8");
     const text = visible(html);
@@ -188,7 +210,7 @@ for (const locale of LOCALES) {
 // ---------------------------------------------------------------------------
 console.log("\nThe two locales are structurally equivalent, not merely both present");
 // ---------------------------------------------------------------------------
-for (const source of AMAZON) {
+for (const source of CONTRACTED) {
   const [en, pt] = LOCALES.map((locale) =>
     visible(readFileSync(pageFor(locale, source.classSlug, source.slug), "utf8")),
   );
@@ -297,9 +319,147 @@ console.log("\nA negative control: these assertions can fail");
 }
 
 // ---------------------------------------------------------------------------
+console.log("\nEvery journey page was prerendered, and carries its own stages");
+// ---------------------------------------------------------------------------
+
+/*
+ * Journeys had no built-page gate at all. The build pages got one because a
+ * build page is the deepest structure on the site — but a journey is the second
+ * deepest, it is where a new player starts, and its stages are the one place
+ * where a wrong unlock level costs a reader six levels of waiting.
+ *
+ * The Necromancer journey is the reason this exists now: its whole point is two
+ * corrected levels, and nothing was reading the rendered page to confirm they
+ * survived translation and rendering.
+ */
+for (const locale of LOCALES) {
+  for (const journey of getJourneys(locale)) {
+    const file = join(root, locale, "leveling", `${journey.classSlug}.html`);
+    const where = `${locale}/leveling/${journey.classSlug}`;
+    if (!existsSync(file)) {
+      check(`${where}: prerendered`, false, "file missing");
+      continue;
+    }
+    const text = visible(readFileSync(file, "utf8"));
+    check(`${where}: prerendered`, true);
+    check(`${where}: renders its summary`, text.includes(journey.summary.slice(0, 50)));
+
+    const stagesMissing = journey.stages.filter((s) => !text.includes(s.name));
+    check(
+      `${where}: all ${journey.stages.length} stages render their name`,
+      stagesMissing.length === 0,
+      stagesMissing.map((s) => s.slug).join(", "),
+    );
+    const goalsMissing = journey.stages.filter((s) => !text.includes(s.goal.slice(0, 35)));
+    check(
+      `${where}: every stage renders its goal`,
+      goalsMissing.length === 0,
+      goalsMissing.map((s) => s.slug).join(", "),
+    );
+    if (journey.respecPlan) {
+      const respecMissing = journey.respecPlan.filter((r) => !text.includes(r.at));
+      check(
+        `${where}: all ${journey.respecPlan.length} respec entries render`,
+        respecMissing.length === 0,
+        respecMissing.map((r) => r.at).join(" | "),
+      );
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nThe Necromancer's corrected claims survived rendering, in both locales");
+// ---------------------------------------------------------------------------
+
+/*
+ * The rules in `necromancer-claims.ts` run over the data. These run over the
+ * HTML, because the failure this pass actually hit was a rendering one: build
+ * pages printed `respecAt` without RichText, so `**A respec that removes your
+ * point in Iron Golem…**` reached a shipped page with its asterisks intact.
+ * Every gate over the data was green while that was true.
+ *
+ * Each assertion below is a claim the summons research changed, checked as a
+ * reader would see it.
+ */
+{
+  const NECROMANCER = getBuilds("en-us").filter((b) => b.classSlug === "necromancer");
+  check("three Necromancer builds are published", NECROMANCER.length === 3, `${NECROMANCER.length}`);
+
+  for (const locale of LOCALES) {
+    const pages: { where: string; text: string }[] = NECROMANCER.map((b) => ({
+      where: `${locale}/${b.slug}`,
+      text: visible(readFileSync(pageFor(locale, b.classSlug, b.slug), "utf8")),
+    }));
+    pages.push({
+      where: `${locale}/leveling/necromancer`,
+      text: visible(readFileSync(join(root, locale, "leveling", "necromancer.html"), "utf8")),
+    });
+
+    for (const { where, text } of pages) {
+      // The retired claim, as rendered. A page may say summons do NOT take it.
+      const claimsPenalty = /(?:summons?|minions?|skeletons?|invoca[çc]|lacaios?|esqueletos?)[^.]{0,80}(?:takes?|suffers?|sofre[m]?|perde[m]?)[^.]{0,40}(?:−40|−100)/i.test(
+        text,
+      );
+      const refutes = /(?:do not|does not|n[ãa]o)[^.]{0,60}(?:−40|−100)/i.test(text);
+      check(
+        `${where}: does not claim summons take the difficulty penalty`,
+        !claimsPenalty || refutes,
+      );
+
+      // No expensive item is offered to the golem, in rendered text.
+      const feeds = /Iron Golem[^.]{0,120}\b(?:Pride|Infinity|Beast|Insight|Fortitude|Enigma)\b/i.test(
+        text,
+      );
+      const refusesFeeding = /(?:never|not|n[ãa]o|nunca)[^.]{0,140}\b(?:Pride|Infinity|Beast|Insight)\b/i.test(
+        text,
+      );
+      check(`${where}: offers the Iron Golem no expensive item`, !feeds || refusesFeeding);
+    }
+
+    /*
+     * Decrepify's level, on the three pages whose plans turn on it.
+     *
+     * Asserted through the authored note rather than by pattern-matching the
+     * flattened page. The first draft looked for "Decrepify … level 30" and
+     * fired on all four pages — because the rendered skill tree lists tier rows
+     * as "Level 24 … Decrepify … Level 30 Lower Resist", which is the tree being
+     * *correct*. Reading the note the build actually authors keeps the check on
+     * the claim rather than on the layout, and `checkUnlockLevelClaims` already
+     * owns the negative half at the data layer, precisely.
+     */
+    for (const build of getBuilds(locale).filter((b) => b.classSlug === "necromancer")) {
+      const note = build.skills.find((a) => a.skill === "decrepify")?.note;
+      if (!note) continue;
+      const text = visible(readFileSync(pageFor(locale, "necromancer", build.slug), "utf8"));
+      check(
+        `${locale}/${build.slug}: renders its Decrepify note, which states level 24`,
+        text.includes(longestPlainRun(note)) && /\b24\b/.test(note),
+        `looked for "${longestPlainRun(note)}"`,
+      );
+    }
+  }
+
+  // A control: the penalty detector is capable of firing.
+  check(
+    "control: the penalty detector fires on the retired sentence",
+    /(?:summons?|minions?|skeletons?)[^.]{0,80}(?:takes?|suffers?)[^.]{0,40}(?:−40|−100)/i.test(
+      "Your skeletons take the −100 resistance penalty in Hell.",
+    ),
+  );
+  // And a control that the golem detector is capable of firing.
+  check(
+    "control: the golem detector fires on a real recommendation",
+    /Iron Golem[^.]{0,120}\b(?:Pride|Infinity|Beast|Insight|Fortitude|Enigma)\b/i.test(
+      "Feed the Iron Golem a spare Pride for its Concentration aura.",
+    ),
+  );
+}
+
+// ---------------------------------------------------------------------------
 console.log(
   failures.length === 0
-    ? `\n${passed} checks passed across ${AMAZON.length} Amazon pages in ${LOCALES.length} locales.`
+    ? `\n${passed} checks passed across ${CONTRACTED.length} contracted build pages, ` +
+        `${getJourneys("en-us").length} journeys and ${LOCALES.length} locales.`
     : `\n${failures.length} FAILED of ${passed + failures.length}:`,
 );
 if (failures.length > 0) {
