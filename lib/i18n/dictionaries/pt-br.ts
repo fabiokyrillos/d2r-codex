@@ -663,6 +663,8 @@ export const ptBR: Dictionary = {
     synergyKindDuration: "duração",
     synergyKindFreeze: "tempo de congelamento",
     synergyKindHp: "vida",
+    synergyKindAbsorb: "absorção de dano",
+    synergyKindAttackRating: "chance de acerto",
     synergyKindJoin: "e",
     effectsTitle: "Valores por nível",
     effectsBody: "Só pontos fixos. Equipamento que soma níveis de skill também aumenta estes valores.",

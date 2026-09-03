@@ -119,7 +119,29 @@ export const synergyKindLabels = (t: Dictionary): Record<string, string> => ({
   duration: t.skills.synergyKindDuration,
   freeze: t.skills.synergyKindFreeze,
   hp: t.skills.synergyKindHp,
+  absorb: t.skills.synergyKindAbsorb,
+  "attack-rating": t.skills.synergyKindAttackRating,
 });
+
+/**
+ * The kinds this map covers, so a gate can assert it covers every kind the
+ * generated graph actually carries.
+ *
+ * `synergyKinds` falls back to printing the raw kind when it finds no label,
+ * which keeps a page from crashing and is exactly the wrong failure mode for a
+ * translation: the Necromancer's golem edges would have rendered "attack-rating"
+ * in both languages and nothing would have said so.
+ */
+export const SYNERGY_KINDS_LABELLED: readonly string[] = [
+  "damage",
+  "armor",
+  "healing",
+  "duration",
+  "freeze",
+  "hp",
+  "absorb",
+  "attack-rating",
+];
 
 /**
  * Effect labels, keyed by the `labelKey` the graph carries.

@@ -618,6 +618,58 @@ export interface SynergyProblem {
   detail: string;
 }
 
+/**
+ * Every synergy kind the graph carries must have a word in every locale.
+ *
+ * `synergyKinds` in lib/labels.ts prints the raw kind when it has no label for
+ * it. That keeps a page rendering, and it is the wrong failure for a
+ * translation: the Necromancer's twelve golem edges arrived carrying
+ * `attack-rating` and `absorb`, neither of which had a word in either language,
+ * and every one of them would have rendered the slug in Portuguese with nothing
+ * complaining. Coverage of *content* slugs is checked; the kinds travel inside
+ * the graph and were not.
+ *
+ * @param resolve returns the label for a kind in one locale, or undefined
+ */
+export function checkSynergyKindLabels(
+  graph: Record<string, { synergies: readonly { kinds: readonly string[] }[] }>,
+  labelled: readonly string[],
+  resolve: (locale: string, kind: string) => string | undefined,
+  locales: readonly string[],
+): string[] {
+  const problems: string[] = [];
+  const used = new Set<string>();
+  for (const node of Object.values(graph)) {
+    for (const syn of node.synergies) for (const kind of syn.kinds) used.add(kind);
+  }
+  for (const kind of used) {
+    if (!labelled.includes(kind)) {
+      problems.push(
+        `synergy kind "${kind}" is in the graph but not in SYNERGY_KINDS_LABELLED, so it ` +
+          `renders as its own slug rather than as a word`,
+      );
+    }
+  }
+  for (const kind of labelled) {
+    if (!used.has(kind)) {
+      problems.push(
+        `synergy kind "${kind}" is labelled but no edge in the graph carries it — a label ` +
+          `for a kind that does not exist is a claim about the game nothing checks`,
+      );
+    }
+    for (const locale of locales) {
+      // Existence only. Several kinds are legitimately the same word in both
+      // locales -- "damage" and "healing" are English words the map returns
+      // unchanged -- so treating label === kind as missing would fail the
+      // source language for being the source language.
+      if (!resolve(locale, kind)) {
+        problems.push(`synergy kind "${kind}" has no ${locale} label`);
+      }
+    }
+  }
+  return problems;
+}
+
 export function checkSynergies(
   graph: Record<string, { classSlug: string; synergies: readonly { from: string; kinds: readonly string[] }[] }>,
   authored: readonly { slug: string; synergies?: readonly { skill: string; bonus: string }[] }[],

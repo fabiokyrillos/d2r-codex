@@ -188,9 +188,15 @@ export function synergyReceivers(slug: Slug): { slug: Slug; kinds: readonly stri
 }
 
 /** Every canonical synergy edge, as `from -> to` pairs. For the validator. */
-export function synergyEdges(): { from: Slug; to: Slug; kinds: readonly string[] }[] {
+export function synergyEdges(): {
+  from: Slug;
+  to: Slug;
+  kinds: readonly string[];
+  /** Present only where the graph read it off the source skill's own row. */
+  magnitude?: number;
+}[] {
   return Object.entries(SKILL_GRAPH).flatMap(([to, node]) =>
-    node.synergies.map((s) => ({ from: s.from, to, kinds: s.kinds })),
+    node.synergies.map((s) => ({ from: s.from, to, kinds: s.kinds, magnitude: s.magnitude })),
   );
 }
 

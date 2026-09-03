@@ -669,6 +669,8 @@ export const enUS = {
     synergyKindDuration: "duration",
     synergyKindFreeze: "freeze length",
     synergyKindHp: "life",
+    synergyKindAbsorb: "damage absorbed",
+    synergyKindAttackRating: "attack rating",
     synergyKindJoin: "and",
     effectsTitle: "Values by level",
     effectsBody: "Hard points only. Gear that adds skill levels raises these too.",

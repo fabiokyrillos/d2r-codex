@@ -38,7 +38,7 @@ import {
 } from "../lib/registry";
 import { OVERLAYS } from "../lib/registry/overlays";
 import { missingOverlaySlugs, orphanOverlaySlugs } from "../lib/registry/localize";
-import { tierOrder } from "../lib/labels";
+import { SYNERGY_KINDS_LABELLED, synergyKindLabels, tierOrder } from "../lib/labels";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import type { GearPick, ItemRef } from "../lib/types";
@@ -51,8 +51,15 @@ import {
   synergyReceivers,
   type DamagePresentation,
 } from "../lib/skills";
-import { checkSkillGraph, checkSynergies, MAX_HARD_POINTS } from "./skill-graph-rules";
+import {
+  checkSkillGraph,
+  checkSynergies,
+  checkSynergyKindLabels,
+  MAX_HARD_POINTS,
+} from "./skill-graph-rules";
 import { exitCodeFor, isUntranslatedProse } from "./content-rules";
+import { TREES_NOT_YET_AUTHORED, checkClassTrees } from "./class-tree-rules";
+import { GOLEM_SYNERGY_CONTROLS, checkGolemSynergies } from "./necromancer-rules";
 import {
   ALIAS_ONLY_NAMES,
   EXPECTED_IMMUNITY_CENSUS,
@@ -318,6 +325,44 @@ for (const journey of getJourneys(SOURCE)) {
 
 for (const cls of getClasses(SOURCE)) {
   if (cls.trees.length === 0) fail(`class "${cls.slug}"`, "has no skill trees");
+}
+
+/*
+ * Class, tree, skill and node have to agree with each other. See
+ * `scripts/class-tree-rules.ts` — the Barbarian was listing the Paladin's
+ * `combat-skills`, and the class page's `.filter(Boolean)` rendered it under the
+ * Barbarian's heading without a word.
+ */
+console.log("\nClass trees:");
+{
+  const found = checkClassTrees(
+    getClasses(SOURCE),
+    getSkillTrees(SOURCE),
+    getSkills(SOURCE),
+    SKILL_GRAPH,
+  );
+  const rules = [
+    "tree-unresolved",
+    "tree-wrong-class",
+    "tree-duplicate",
+    "tree-not-listed",
+    "tree-scope-drift",
+    "skill-tree-not-in-class",
+    "skill-node-missing",
+    "skill-node-tree-mismatch",
+  ] as const;
+  for (const rule of rules) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(26)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+  const authored = getClasses(SOURCE).filter(
+    (c) => !TREES_NOT_YET_AUTHORED.includes(c.slug),
+  );
+  console.log(
+    `  ${authored.length} of ${getClasses(SOURCE).length} classes have their trees authored ` +
+      `(${getSkillTrees(SOURCE).length} trees); not yet: ${TREES_NOT_YET_AUTHORED.join(", ")}`,
+  );
 }
 
 for (const table of getBreakpointTables(SOURCE)) {
@@ -812,6 +857,47 @@ console.log("\nSynergies (validated against the generated game-data graph):");
   if (edges.length === 0) fail("synergy", "the graph carries no synergy edges at all");
   const annotated = authored.reduce((n, s) => n + (s.synergies?.length ?? 0), 0);
   console.log(`  ${annotated} of them carry an authored magnitude`);
+  const extracted = edges.filter((e) => e.magnitude !== undefined).length;
+  console.log(`  ${extracted} carry a magnitude extracted from the source skill's own row`);
+
+  /*
+   * The kinds travel inside the graph rather than as content slugs, so nothing
+   * in the coverage report above can see one arriving without a word for it.
+   */
+  const labelProblems = checkSynergyKindLabels(
+    SKILL_GRAPH,
+    SYNERGY_KINDS_LABELLED,
+    (locale, kind) => synergyKindLabels(dictionaryFor(locale as Locale))[kind],
+    LOCALES,
+  );
+  console.log(
+    `  ${labelProblems.length === 0 ? "ok" : "!!"}   synergy kinds labelled       ` +
+      `${SYNERGY_KINDS_LABELLED.length} kinds x ${LOCALES.length} locales`,
+  );
+  for (const detail of labelProblems) fail("synergy-kind-label", detail);
+
+  /*
+   * The golem ring, against the Tier 1 rows it was read from rather than
+   * against itself. See `scripts/necromancer-rules.ts`.
+   */
+  const golemProblems = checkGolemSynergies(SKILL_GRAPH, GOLEM_SYNERGY_CONTROLS);
+  const golemRules = [
+    "golem-edge-missing",
+    "golem-kind-wrong",
+    "golem-magnitude-wrong",
+    "golem-magnitude-absent",
+    "golem-edge-unaccounted",
+    "golem-self-edge",
+  ] as const;
+  for (const rule of golemRules) {
+    const hits = golemProblems.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : "!!"}   ${rule.padEnd(24)} ${hits.length}`);
+    for (const h of hits) fail(rule, h.message);
+  }
+  console.log(
+    `  ${GOLEM_SYNERGY_CONTROLS.length} golem controls: ` +
+      GOLEM_SYNERGY_CONTROLS.map((c) => `${c.source} ${c.kind} ${c.magnitude}`).join(", "),
+  );
 
   /*
    * `synergyBonuses` is a positional overlay onto `synergies`. A stale extra

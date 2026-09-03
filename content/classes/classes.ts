@@ -173,7 +173,11 @@ export const classes: CharacterClass[] = [
         body: "After Find Potion, Find Item lets the Barbarian re-roll a fresh drop from an already-looted corpse. This is the engine behind Travincal running and is unique to the class.",
       },
     ],
-    trees: ["warcries", "combat-masteries", "combat-skills"],
+    // `barbarian-combat-skills` rather than `combat-skills`: that slug is the
+    // Paladin's, and tree slugs resolve globally. Listed unprefixed, this class
+    // page rendered the Paladin's Combat Skills card — theme sentence and ten
+    // Paladin skills — under the Barbarian's heading.
+    trees: ["warcries", "combat-masteries", "barbarian-combat-skills"],
     classItems: ["Barbarian Helms (primal helms and their upgrades)"],
     bestFor: "Players who want to fight in melee and support a party.",
     beginnerFriendliness: 3,
