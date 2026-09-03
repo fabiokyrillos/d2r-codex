@@ -564,6 +564,94 @@ console.log("\nThe curse table, against the graph it describes");
 }
 
 // ===========================================================================
+console.log("\nWhat the pages say about minions");
+// ===========================================================================
+
+{
+  /** Every string in one mechanics article, flattened. */
+  const articleProse = (locale: Locale, slug: string): string[] => {
+    const article = getMechanics(locale).find((a) => a.slug === slug);
+    if (!article) return [];
+    const out = [article.summary, article.name, ...article.keyFacts];
+    for (const block of article.body) {
+      if (block.type === "paragraph" || block.type === "heading") out.push(block.text);
+      if (block.type === "callout") out.push(block.text, block.title ?? "");
+      if (block.type === "list") out.push(...block.items);
+      if (block.type === "table") out.push(...block.headers, ...block.rows.flat());
+    }
+    return out;
+  };
+
+  for (const locale of LOCALES) {
+    const prose = articleProse(locale, "minions");
+    const anywhere = (pattern: RegExp) => prose.some((line) => pattern.test(line));
+    check(`${locale}: there is a minions article`, prose.length > 30, `${prose.length}`);
+
+    /*
+     * The counts in the table are the ones the graph publishes, so a
+     * hand-written article cannot claim a different army size from the skill
+     * page next to it.
+     */
+    const minionsAt20 = (slug: string) => {
+      const effect = (SKILL_GRAPH[slug].effects ?? []).find((e) => e.labelKey === "effectMinions");
+      return effect ? effectAtLevel(effect, 20) : undefined;
+    };
+    check(
+      `${locale}: the skeleton and mage caps in the article are the graph's eight`,
+      minionsAt20("raise-skeleton") === 8 &&
+        minionsAt20("raise-skeletal-mage") === 8 &&
+        prose.filter((l) => l === "8").length === 2,
+      `${minionsAt20("raise-skeleton")} / ${minionsAt20("raise-skeletal-mage")}`,
+    );
+    check(
+      `${locale}: the revive count in the article is the graph's twenty`,
+      minionsAt20("revive") === 20 && prose.includes("20"),
+      `${minionsAt20("revive")}`,
+    );
+
+    /*
+     * The rule the brief names outright. Building an Iron Golem from an
+     * expensive runeword is standard advice and it rests on two things this
+     * pass could not establish — when one survives a new game, and what makes
+     * one vanish. Until both are settled the site must not recommend it.
+     */
+    const recommends = prose.filter(
+      (line) =>
+        /Iron Golem/i.test(line) &&
+        /(sacrifice|feed|build one from|use a .*runeword|vale a pena (usar|sacrificar)|sacrifique|entregue)/i.test(line) &&
+        !/does not tell you|não manda|could not establish|não conseguiu estabelecer|safe reading|leitura segura/i.test(line),
+    );
+    check(
+      `${locale}: nothing recommends feeding an item to the Iron Golem`,
+      recommends.length === 0,
+      recommends.join(" | "),
+    );
+    check(
+      `${locale}: the risk is stated rather than left out`,
+      anywhere(/consumed when the golem was made|consumido quando o golem foi criado/i) ||
+        anywhere(/treating the item as spent|tratar o item como gasto/i),
+    );
+    check(
+      `${locale}: the unresolved questions are listed rather than answered`,
+      anywhere(/could not settle|não conseguiu resolver/i) &&
+        anywhere(/Skill Shrine/i) &&
+        anywhere(/Uber/i),
+    );
+    check(
+      `${locale}: the reference implementation is named as the legacy engine`,
+      anywhere(/legacy engine|motor antigo/i),
+    );
+  }
+
+  // Control: the recommendation detector must be able to reject something.
+  check(
+    "control: an actual recommendation would be caught",
+    /Iron Golem/i.test("Sacrifice a spare Iron runeword to the Iron Golem.") &&
+      /(sacrifice|feed|build one from)/i.test("Sacrifice a spare Iron runeword to the Iron Golem."),
+  );
+}
+
+// ===========================================================================
 console.log(
   failures.length === 0
     ? `\n${passed} checks passed. Magnitudes, poison, mana, damage models and the published claims are pinned.`

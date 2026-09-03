@@ -702,7 +702,7 @@ export const mechanics: MechanicArticle[] = [
         text: "The 70%, the 120%, the 50% split and the radius parameters are the skill's own columns in the pinned game-data extraction this site reads. The substitution of the monster type's table life for the corpse's own, the halving of the radius, and the character-level penalty are read from the reference implementation of the legacy engine — which is the Diablo II that predates Resurrected, and is named as such rather than presented as the current build. Nothing here depends on a claim the two disagree about.",
       },
     ],
-    related: ["resistances-and-immunities"],
+    related: ["resistances-and-immunities", "curses", "minions"],
     confidence: "verified",
   },
   {
@@ -818,7 +818,136 @@ export const mechanics: MechanicArticle[] = [
         text: "The radii, durations and magnitudes are the curses' own columns in the pinned game-data extraction. The one-slot rule, the Attract exception, the one-fifth immunity divisor, the refresh-and-do-not-downgrade behaviour and the Curse Resistance cut-off are read from the reference implementation of the legacy engine — the Diablo II that predates Resurrected. The difficulty divisor comes from the game's own difficulty table.",
       },
     ],
-    related: ["resistances-and-immunities", "corpse-explosion"],
+    related: ["resistances-and-immunities", "corpse-explosion", "minions"],
     confidence: "verified",
+  },
+  {
+    slug: "minions",
+    name: "Minions and summons",
+    category: "combat",
+    summary:
+      "What is fixed when a minion is raised, how many you get, and the four questions about summons this site could not answer.",
+    keyFacts: [
+      "A minion's stats are written onto it when it is created. Raising a skill or putting on +skills gear changes the next one you raise, not the ones already standing.",
+      "Skeletons and skeletal mages have **separate** caps: eight each at twenty hard points, and more with +skills.",
+      "Only one golem exists at a time. All four golem skills share a single pet type with a maximum of one.",
+      "A revive lasts three minutes, cannot be refreshed, and takes its life from the monster type's table rather than from the corpse.",
+      "Summon Resist reaches skeletons, mages and golems. In the reference implementation of the legacy engine it does not reach revives.",
+    ],
+    body: [
+      { type: "heading", text: "The snapshot" },
+      {
+        type: "paragraph",
+        text: "This is the single most consequential thing about the class, and it is invisible while you play. When a minion is created, the game writes its life, its damage, its attack rating, its defence and its resistances onto it — once. They are not recalculated afterwards. A skeleton raised before you put on a helm with +3 to Skeleton Mastery is exactly as strong as it was before you put the helm on.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "What to do about it",
+        text: "Re-raise. Unsummon the army and rebuild it after any change to your skill levels — a level-up into Skeleton Mastery, a new helm, a new wand on the swap. It is the difference between an army built at your current +skills and one built at whatever you were wearing when you last found a corpse.",
+      },
+      { type: "heading", text: "How many of each" },
+      {
+        type: "table",
+        headers: ["Minion", "How many", "At 20 hard points"],
+        rows: [
+          ["Skeletons", "One per level up to three, then two plus one for every three levels", "8"],
+          ["Skeletal mages", "The same formula, counted separately", "8"],
+          ["Golems", "One, shared across all four golem skills", "1"],
+          ["Revives", "The skill's effective level", "20"],
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "All four counts read the **effective** skill level rather than hard points, so +skills gear raises them directly. The skeleton and mage caps are independent, which is why a Summoner fields both armies at once rather than choosing between them.",
+      },
+      { type: "heading", text: "What the two masteries actually give" },
+      {
+        type: "table",
+        headers: ["Skill", "Per level", "Reaches"],
+        rows: [
+          ["Skeleton Mastery", "+8 life and +2 damage", "Skeletons, skeletal mages and revives"],
+          ["Skeleton Mastery (revives only)", "+5% life and +10% damage", "Revives"],
+          ["Golem Mastery", "+20% life and +25 attack rating", "Whichever golem is out"],
+          ["Golem Mastery (movement)", "0% climbing toward 40%", "Whichever golem is out"],
+          ["Summon Resist", "20% climbing toward 75% resistance", "Skeletons, mages and golems"],
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "None of these is a synergy in the game's sense. A synergy reads hard points only; all three of these read the effective level, so gear that grants +skills raises them — and all three are still subject to the snapshot, so raising them does nothing for an army already standing.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "Summon Resist's first point is most of it",
+        text: "The resistance climbs on a diminishing curve from 20% toward a 75% ceiling. One point buys the large part of it and twenty buy the rest, which is why it is a one-point skill on almost every build that reaches it.",
+      },
+      { type: "heading", text: "Immunity piercing carries to the army" },
+      {
+        type: "paragraph",
+        text: "Each of these minions has a passive that reads the caster's immunity-piercing stats — the effect a Sunder Charm grants. Which immunities each one pierces is not uniform, and the pattern is in the game's own tables:",
+      },
+      {
+        type: "table",
+        headers: ["Minion", "Immunities it pierces"],
+        rows: [
+          ["Skeletons", "Physical"],
+          ["Skeletal mages", "Cold, fire, lightning, poison"],
+          ["Clay and Blood Golem", "Physical"],
+          ["Fire Golem", "Fire"],
+          ["Iron Golem and revives", "All six"],
+        ],
+      },
+      { type: "heading", text: "The golem, and the item you cannot get back" },
+      {
+        type: "paragraph",
+        text: "One golem at a time, across all four skills. Summoning a Clay Golem while an Iron Golem is standing replaces the Iron Golem, and the item the Iron Golem was made from is already gone — it was consumed when the golem was made, not held somewhere and returned.",
+      },
+      {
+        type: "callout",
+        variant: "danger",
+        title: "This site does not tell you to feed an item to the Iron Golem",
+        text: "Guides commonly suggest building one from an expensive runeword. That advice depends on two things this pass could not establish for the current game: exactly when an Iron Golem survives between games, and exactly what makes one disappear. Until both are settled here, treating the item as spent the moment you cast is the only safe reading — and an item you would mind losing is not a candidate.",
+      },
+      { type: "heading", text: "Revive is a burst, not an army" },
+      {
+        type: "list",
+        items: [
+          "Three minutes, flat, at every skill level, and **it cannot be refreshed**. The clock starts when the monster stands up.",
+          "The revive's life is **re-rolled from that monster type's base life range** at its level and difficulty. A Champion revives with the ordinary life of its kind.",
+          "If the monster's level is above your character level, its life is scaled down in that proportion.",
+          "Only monsters the game flags as revivable can be raised, which is why some packs never yield one.",
+          "In the reference implementation of the legacy engine, Summon Resist is applied to skeletons, mages and golems and **not** to revives.",
+        ],
+      },
+      { type: "heading", text: "Keeping the army with you" },
+      {
+        type: "paragraph",
+        text: "Minions left far enough behind can stop following, and sometimes disappear. A Town Portal, a waypoint or a set of dungeon stairs collects them; so does Teleport, which recalls them instantly. This is documented behaviour rather than a bug, and it is the practical reason a Summoner walks the route rather than running ahead of it.",
+      },
+      { type: "heading", text: "What this site could not settle" },
+      {
+        type: "paragraph",
+        text: "These are open, and are listed rather than answered. Each is a claim that appears confidently in community guides, and none of them could be established here from the game's own tables or from the reference implementation without reading the current build.",
+      },
+      {
+        type: "list",
+        items: [
+          "**Whether minions take the difficulty resistance penalty.** Players lose 40 and 100 points of resistance in Nightmare and Hell. Whether a summon does is not something the skill tables say, and Summon Resist's existence is evidence in both directions.",
+          "**Whether a Skill Shrine's bonus survives on minions raised under it.** The snapshot suggests it would; nothing here confirms it.",
+          "**Iron Golem persistence between games**, and what causes one to be lost.",
+          "**Minion life and damage per difficulty.** The 1.11 documentation publishes a table for the skeletal mage; the pinned extraction this site reads does not carry one, and the older figures are not assumed to be current.",
+          "**How minions behave against the Uber bosses.**",
+        ],
+      },
+      { type: "heading", text: "Where this comes from" },
+      {
+        type: "paragraph",
+        text: "The counts, the mastery figures, the golem limit, the revive duration and the immunity-piercing table are columns in the pinned game-data extraction, and the minion count is corroborated level by level against the 1.11 documentation. The snapshot, the revive's re-rolled life, its character-level penalty and Summon Resist's reach are read from the reference implementation of the legacy engine — the Diablo II that predates Resurrected, named as such because it is not proof about the current build.",
+      },
+    ],
+    related: ["resistances-and-immunities", "corpse-explosion", "curses"],
+    confidence: "single",
   },
 ];

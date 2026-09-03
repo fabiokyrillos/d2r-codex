@@ -699,4 +699,129 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
       },
     ],
   },
+  minions: {
+    name: "Lacaios e invocações",
+    summary:
+      "O que é fixado no momento da invocação, quantos você tem, e as quatro perguntas sobre criaturas invocadas que este site não conseguiu responder.",
+    keyFacts: [
+      "Os atributos de um lacaio são gravados nele no momento da invocação. Aumentar uma skill ou vestir +skills muda o próximo que você levantar, não os que já estão de pé.",
+      "Esqueletos e magos esqueletos têm limites **separados**: oito de cada com vinte pontos duros, e mais com +skills.",
+      "Só existe um golem por vez. As quatro skills de golem dividem um único tipo de criatura invocada com máximo de um.",
+      "Um revive dura três minutos, não pode ser renovado, e tira a vida da tabela do tipo de monstro em vez de do cadáver.",
+      "O Summon Resist alcança esqueletos, magos e golens. Na implementação de referência do motor antigo ele não alcança os revives.",
+    ],
+    body: [
+      { type: "heading", text: "Os atributos são fixados na invocação" },
+      {
+        type: "paragraph",
+        text: "Esta é de longe a coisa mais consequente da classe, e ela é invisível enquanto você joga. Quando um lacaio é criado, o jogo grava nele a vida, o dano, a chance de acerto, a defesa e as resistências — uma vez só. Nada disso é recalculado depois. Um esqueleto levantado antes de você vestir um elmo com +3 em Skeleton Mastery continua exatamente tão forte quanto era antes do elmo.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "O que fazer a respeito",
+        text: "Levantar de novo. Desinvoque o exército e reconstrua depois de qualquer mudança nos seus níveis de skill — um nível novo em Skeleton Mastery, um elmo novo, uma wand nova na troca. É a diferença entre um exército construído com os seus +skills atuais e um construído com o que você estava usando da última vez que achou um cadáver.",
+      },
+      { type: "heading", text: "Quantos de cada" },
+      {
+        type: "table",
+        headers: ["Lacaio", "Quantos", "Com 20 pontos duros"],
+        rows: [
+          ["Esqueletos", "Um por nível até o terceiro, depois dois mais um a cada três níveis", "8"],
+          ["Magos esqueletos", "A mesma fórmula, contada à parte", "8"],
+          ["Golens", "Um, dividido entre as quatro skills de golem", "1"],
+          ["Revives", "O nível efetivo da skill", "20"],
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "As quatro contagens leem o nível **efetivo** da skill, e não os pontos duros, então +skills do equipamento as aumentam diretamente. Os limites de esqueletos e de magos são independentes, e é por isso que um Summoner mantém os dois exércitos ao mesmo tempo em vez de escolher entre eles.",
+      },
+      { type: "heading", text: "O que as duas masteries dão de verdade" },
+      {
+        type: "table",
+        headers: ["Skill", "Por nível", "Alcança"],
+        rows: [
+          ["Skeleton Mastery", "+8 de vida e +2 de dano", "Esqueletos, magos esqueletos e revives"],
+          ["Skeleton Mastery (só revives)", "+5% de vida e +10% de dano", "Revives"],
+          ["Golem Mastery", "+20% de vida e +25 de chance de acerto", "O golem que estiver ativo"],
+          ["Golem Mastery (movimento)", "0% subindo em direção a 40%", "O golem que estiver ativo"],
+          ["Summon Resist", "20% subindo em direção a 75% de resistência", "Esqueletos, magos e golens"],
+        ],
+      },
+      {
+        type: "paragraph",
+        text: "Nenhuma delas é uma sinergia no sentido do jogo. Uma sinergia lê apenas pontos duros; as três leem o nível efetivo, então equipamento com +skills as aumenta — e as três continuam sujeitas à fixação na invocação, então aumentá-las não faz nada por um exército já de pé.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "O primeiro ponto de Summon Resist é quase tudo",
+        text: "A resistência sobe numa curva de retornos decrescentes de 20% em direção a um teto de 75%. Um ponto compra a maior parte e vinte compram o resto, e é por isso que ela é uma skill de um ponto em quase toda build que chega até ela.",
+      },
+      { type: "heading", text: "A perfuração de imunidade acompanha o exército" },
+      {
+        type: "paragraph",
+        text: "Cada um destes lacaios tem uma passiva que lê os atributos de perfuração de imunidade do conjurador — o efeito que um Sunder Charm concede. Quais imunidades cada um perfura não é uniforme, e o padrão está nas tabelas do próprio jogo:",
+      },
+      {
+        type: "table",
+        headers: ["Lacaio", "Imunidades que perfura"],
+        rows: [
+          ["Esqueletos", "Física"],
+          ["Magos esqueletos", "Frio, fogo, raio, veneno"],
+          ["Clay e Blood Golem", "Física"],
+          ["Fire Golem", "Fogo"],
+          ["Iron Golem e revives", "Todas as seis"],
+        ],
+      },
+      { type: "heading", text: "O golem, e o item que você não recupera" },
+      {
+        type: "paragraph",
+        text: "Um golem por vez, entre as quatro skills. Invocar um Clay Golem com um Iron Golem de pé substitui o Iron Golem, e o item do qual ele foi feito já era — foi consumido quando o golem foi criado, não guardado em algum lugar e devolvido.",
+      },
+      {
+        type: "callout",
+        variant: "danger",
+        title: "Este site não manda você entregar um item ao Iron Golem",
+        text: "Guias costumam sugerir construir um a partir de um runeword caro. Essa recomendação depende de duas coisas que esta etapa não conseguiu estabelecer para o jogo atual: exatamente quando um Iron Golem sobrevive entre partidas, e exatamente o que faz um sumir. Enquanto as duas não estiverem resolvidas aqui, tratar o item como gasto no instante da conjuração é a única leitura segura — e um item cuja perda te incomodaria não é candidato.",
+      },
+      { type: "heading", text: "Revive é uma leva, não um exército" },
+      {
+        type: "list",
+        items: [
+          "Três minutos, fixos, em qualquer nível de skill, e **não pode ser renovado**. O relógio começa quando o monstro se levanta.",
+          "A vida do revive é **sorteada de novo a partir da faixa de vida base daquele tipo de monstro** no nível e na dificuldade dele. Um Champion revive com a vida comum da espécie dele.",
+          "Se o nível do monstro estiver acima do nível do seu personagem, a vida dele é reduzida nessa proporção.",
+          "Só monstros que o jogo marca como revivíveis podem ser levantados, e é por isso que alguns grupos nunca rendem um.",
+          "Na implementação de referência do motor antigo, o Summon Resist é aplicado a esqueletos, magos e golens, e **não** aos revives.",
+        ],
+      },
+      { type: "heading", text: "Mantendo o exército junto de você" },
+      {
+        type: "paragraph",
+        text: "Lacaios deixados longe o bastante podem parar de seguir, e às vezes somem. Um Town Portal, um waypoint ou uma escada de masmorra os recolhe; o Teleport também, e ele os chama de volta na hora. Isso é comportamento documentado, não bug, e é a razão prática de um Summoner percorrer o caminho em vez de correr à frente dele.",
+      },
+      { type: "heading", text: "O que este site não conseguiu resolver" },
+      {
+        type: "paragraph",
+        text: "Estas ficam em aberto, e são listadas em vez de respondidas. Cada uma aparece com confiança em guias da comunidade, e nenhuma pôde ser estabelecida aqui a partir das tabelas do próprio jogo ou da implementação de referência sem ler a build atual.",
+      },
+      {
+        type: "list",
+        items: [
+          "**Se os lacaios sofrem a penalidade de resistência por dificuldade.** Jogadores perdem 40 e 100 pontos de resistência no Nightmare e no Hell. Se uma criatura invocada perde também não é algo que as tabelas de skill digam, e a existência do Summon Resist é indício nas duas direções.",
+          "**Se o bônus de um Skill Shrine sobrevive nos lacaios levantados sob ele.** A fixação na invocação sugere que sim; nada aqui confirma.",
+          "**A persistência do Iron Golem entre partidas**, e o que faz um ser perdido.",
+          "**Vida e dano dos lacaios por dificuldade.** A documentação de 1.11 publica uma tabela para o mago esqueleto; a extração fixada que este site lê não carrega uma, e os números antigos não são assumidos como atuais.",
+          "**Como os lacaios se comportam contra os chefes Uber.**",
+        ],
+      },
+      { type: "heading", text: "De onde isto vem" },
+      {
+        type: "paragraph",
+        text: "As contagens, os números das masteries, o limite de golens, a duração do revive e a tabela de perfuração de imunidade são colunas da extração fixada de dados do jogo, e a contagem de lacaios é corroborada nível a nível pela documentação de 1.11. A fixação na invocação, a vida re-sorteada do revive, a penalidade por nível de personagem e o alcance do Summon Resist vêm da implementação de referência do motor antigo — o Diablo II anterior ao Resurrected, nomeado assim porque não é prova sobre a build atual.",
+      },
+    ],
+  },
 };
