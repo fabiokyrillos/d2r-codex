@@ -16,6 +16,8 @@ of it.
 | `charstats.txt` (same extraction) | Starting attributes and per-level gain rates, for every class including the Warlock |
 | `uniqueitems.txt` / `runes.txt` (same extraction) | **Unique item and runeword properties** since the Amazon pass — see below |
 | `weapons.txt` / `armor.txt` / `misc.txt` / `itemtypes.txt` (same extraction) | Base requirements, socket ceilings, weapon speed, and the item-type hierarchy that decides which runeword fits which base |
+| `monstats.txt` (same extraction) | **Minion life, damage, defence and resistances per difficulty**, and the `primeevil` flag — since the Necromancer builds pass; see below |
+| `monprop.txt` / `properties.txt` / `itemstatcost.txt` (same extraction) | Used to establish what a stat is, and — for Curse Resistance — that nothing on this baseline carries it |
 
 **Critical detail:** `levels.txt` contains two parallel sets of monster-level
 columns.
@@ -75,11 +77,33 @@ cast level 20 Lightning on striking" where the extraction gives `min=20 max=14`
 cast-on-striking line**, so the column's argument order was never exercised by
 the calibration, and no gate could see the result.
 
-`scripts/item-rules.ts` is the narrow answer to that: nine controls across six
-entities and all three trigger columns, pinning the one thing that went wrong.
-It is not a decoder and does not pretend to be. **A reproducible item generator
-is outstanding work**, and until it exists the honest summary is that item
-numbers carry Tier 1 *values* with Tier 3 *reproducibility*.
+`scripts/item-rules.ts` is the narrow answer to that. It began as nine controls
+across six entities and all three trigger columns, pinning the one thing that
+went wrong; the Necromancer builds pass widened it to **twenty-six controls
+across four column semantics**, because its six new entities exercised three
+more columns whose argument order inverts as quietly as the proc columns did:
+
+| Column | Semantics | Calibrated against |
+| --- | --- | --- |
+| `hit-skill` / `gethit-skill` / `levelup-skill` | min is the chance, max is the level | Thunderstroke (the failure), Atma's Scarab, Thundergod's Vigor, Peace, Ice, Wrath, Bone |
+| `charged` | **min is the charge count, max is the level** | Andariel's Visage, Arachnid Mesh — both already published correctly |
+| `skilltab` | `par` is an index into the list of skill **trees**, and those indices overlap the skill ids | Thunderstroke, whose `+2-4` also proves min/max is a level range |
+| rune composition | a runeword's block is its own properties **plus** each rune's mod for the item type | Faith, whose +330% is +280% plus Ohm's fifty |
+
+Every one of those sets contains entities published *before* the pass that added
+it. That is the correction to the calibration failure above, applied as a rule:
+a control set made only of the entries added alongside it agrees with its author
+rather than with the game.
+
+The `skilltab` rule needed a third failure mode the others do not have. **Arm of
+King Leoric carries two of them**, naming two different trees, and publishing
+only one leaves "+2 to Summoning Skills" — a line with nothing visibly wrong
+with it. `skilltab-collapsed` exists for that, and its planted mutation is the
+only one in `check-content.test.ts` with no visible symptom.
+
+It is still not a decoder and does not pretend to be. **A reproducible item
+generator is outstanding work**, and until it exists the honest summary is that
+item numbers carry Tier 1 *values* with Tier 3 *reproducibility*.
 
 Two rules came out of it that are worth stating once, because both are easy to
 get wrong from a database listing:
@@ -286,6 +310,71 @@ All ten are pinned **in both directions**. One rule catches the site drifting of
 Tier 1; the other catches a future author reading the older source, deciding the
 site is wrong, and "correcting" 305 back to 210.
 
+### The minion tables, and the claim they retired
+
+`monstats.json` was not decoded until the Necromancer builds pass, and reading
+it answered four of the five questions the foundation pass had listed as open.
+The decisive one is a shape rather than a value.
+
+The table carries a **separate resistance column per difficulty** for every
+monster. For every Necromancer minion the three values are identical:
+
+| Minion | Physical | Magic | Fire | Lightning | Cold | Poison |
+| --- | --- | --- | --- | --- | --- | --- |
+| Skeleton | 0 | 0 | 0 | 0 | 0 | 0 |
+| Skeletal mage | 0 | 0 | 0 | 0 | 0 | 0 |
+| Clay Golem | 25 | 0 | 0 | 20 | 50 | 0 |
+| Blood Golem | 0 | 20 | 0 | 0 | 0 | 20 |
+| Iron Golem | 0 | 0 | 0 | 50 | 0 | 100 |
+| Fire Golem | 0 | 0 | 100 | 0 | 0 | 0 |
+
+So **summons do not take the −40 / −100 difficulty resistance penalty**. It is a
+property of the player character, and a minion is a monster. The mercenary, who
+is a hireling rather than a summon, takes it in full — and the two are
+constantly confused, which is how a page ends up recommending resistance charms
+"for the pets" while leaving the one party member who needs them at −100.
+
+The same table supplies life, damage and defence per difficulty, which the site
+publishes as the **base** it is. The layers on top — skill level, Skeleton
+Mastery, Golem Mastery, Battle Orders — are engine behaviour read from the
+reference implementation of the legacy engine, and multiplying them out on a
+page would present a reconstruction of the pre-Resurrected engine as a
+documented interface of the current build. The base is published; the rest is
+described.
+
+`primeevil` is the fifth answer and it is half of one. Fifteen monsters carry
+the flag and the engine uses it to raise the damage they deal to pets
+specifically. **The multiplier is not established and none is published** — a
+number invented to fill that gap would be the page's most quotable sentence and
+its least supported.
+
+### Curse Resistance exists and nothing carries it
+
+Checked in three tables rather than assumed. `curse_resistance` is stat id 109
+in `itemstatcost.json`, so the mechanism is real. **No row in `properties.json`
+writes to it**, and `monprop.json` — thirteen rows for the whole game — grants
+extra fire damage, crushing blow, faster cast, knockback, thorns and fade, and
+curse resistance to nothing.
+
+The curses article therefore no longer publishes the common claim that curses
+are generally weaker against bosses. It is a statement about a stat that is
+currently zero everywhere, and repeating it would send a reader past the largest
+physical damage multiplier in the game on the fights where it works.
+
+### Two class pages were rendering another class's tree
+
+Recorded here because it was a routing defect rather than a data one, and it was
+invisible to every check the site had. `CharacterClass.trees` is a list of slugs
+and tree slugs resolve globally, like skill slugs — so the **Barbarian** listed
+`combat-skills`, which is the Paladin's, and rendered the Paladin's Combat
+Skills card with ten Paladin skills under a Barbarian heading. The **Druid**
+listed `summoning`, which was unclaimed until the Necromancer pass authored a
+tree with that slug.
+
+Both are class-prefixed now, and `scripts/class-tree-rules.ts` holds eight rules
+so it cannot recur. Neither class had build pages, so no published plan was
+affected — but the Barbarian class page had been wrong since it was written.
+
 ### Facts versus protected content
 
 The repository carries an MIT licence, but its contents are extracted from
@@ -363,6 +452,27 @@ Recorded rather than resolved by guesswork.
 | Does the fire half of Corpse Explosion take +Fire Skills, Fire Mastery or +% Fire Skill Damage? | Community guides: yes | The skill's `EType` **is** `fire`, so +to Fire Skills raises its effective level — and the level buys radius, not the 70–120% band. Whether the fire damage then meets +% Fire Skill Damage is not established, and a Necromancer cannot have a Fire Mastery at all | **Split.** The `+to Fire Skills` half is now asserted and explained; the other two are still not asserted in either direction. `checkCorpseExplosionClaims` requires the three quantities to be distinguished and rejects an unsupported increase claim. |
 | Death's Web's stat block | Pinned tables: five properties — `allskills 2 2`, `pierce-pois 40 50`, `heal-kill 7 12`, `mana-kill 7 12`, `skilltab par=7 1 2` | Every community database: `+1-2 To All Skills` and a `+40-50% To Poison Skill Damage` line the extraction does not carry | **The extraction is published**, as everywhere else the two disagree, and pinned in both directions: `SKILL_TAB_CONTROLS` holds the tab line and `DEATHS_WEB_ABSENT_LINES` fails if either missing line reappears. The item's own page states the difference rather than hiding it, and points a reader wanting +% Poison Skill Damage at Bramble. |
 
+## Routing, aliases and redirects
+
+**No redirect has ever been needed and none exists.** Worth stating once,
+because the alias mechanism looks like the sort of thing that would require
+them.
+
+Aliases are search terms, not paths. "Fishymancer" resolves to the Summoner
+build through `NICKNAMES` in `lib/search/index.ts`; it has never been a URL, so
+there is nothing to redirect *from*. `ALIAS_ONLY_NAMES` holds thirty-four such
+names, and `check:content` fails if a build ever answers to one.
+
+Nothing has been renamed either. Every slug published by an earlier pass still
+resolves to the same page, no page has been removed, and the Necromancer pass
+added routes without moving any. The bilingual crawl asserts both halves: the
+twelve new paths exist in both locales, and fourteen paths that must **not**
+exist — every alias, plus Marrowwalk and Boneflame, which are referenced in
+prose and deliberately uncatalogued — return nothing.
+
+If a slug ever does change, that is the point at which this section becomes a
+redirect table rather than a note.
+
 ## Verified in this research pass
 
 - Class roster: **8**, including the Warlock (*Reign of the Warlock*, Feb 2026)
@@ -395,6 +505,17 @@ Recorded rather than resolved by guesswork.
 - Static Field floors: 33% in Nightmare, 50% in Hell
 - Difficulty penalties: −40 / −100 resistances, 5% / 10% experience on death
 - Quest reward totals: 4 skill points and 5 stat points per difficulty
+- **Minion life, damage, defence and resistances per difficulty** for all six
+  Necromancer summons, and the fifteen monsters carrying the `primeevil` flag
+- **Six Necromancer entities** decoded and composed from Tier 1: White,
+  Splendor and Bone, and Homunculus, Death's Web and Arm of King Leoric — the
+  last of which carries two skill-tab properties and both `gethit-skill` shapes
+- **Two item-type facts** that decide where a runeword can go and are invisible
+  in a database listing: a Necromancer shrunken head resolves to the shield
+  type (`head` → `shld`), and most normal wands cap at one socket — Bone Wand
+  and Grim Wand are the two that reach the two White needs
+- Two public names checked against the extraction's: **Death's Web** (the table
+  spells it "Deaths's Web") and **Darkforge Spawn** (not "Darkforce")
 
 ## Outstanding tooling
 
@@ -434,10 +555,13 @@ in this list has been written into user-facing content as fact.
   only as an internal identifier. The charm is named in prose and not catalogued
 - Set items of any kind, which is why M'avina's Battle Hymn is described on the
   Freezing Arrow page rather than given one
-- Five questions about summons, listed on the minions article rather than
-  answered: whether minions take the −40 / −100 difficulty resistance penalty,
-  whether a Skill Shrine's bonus survives on minions raised under it, when an
-  Iron Golem persists between games and what loses one, minion life and damage
-  per difficulty for the current build, and behaviour against the Uber bosses.
-  Because the third is open, no page recommends building an Iron Golem from an
-  expensive item, and a gate fails if one starts to
+- **Three questions about summons.** The five the foundation pass listed are
+  down to these: the Prime Evil damage multiplier against pets (the flag is
+  Tier 1, the number is not), how the layers above the minion base table
+  compose, and Uber Tristram, which is not researched at all. No Necromancer
+  page rates itself an Uber specialist or publishes a strategy for that fight
+- Whether **+% Fire Skill Damage** reaches Corpse Explosion's fire half. `+to
+  Fire Skills` is answered — the skill's `EType` is `fire`, so it raises the
+  effective level and therefore the radius — and Fire Mastery turned out to be a
+  simpler case than it looked, being a Sorceress passive a Necromancer cannot
+  have. The third is still not asserted in either direction

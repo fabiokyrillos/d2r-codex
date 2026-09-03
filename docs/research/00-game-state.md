@@ -243,7 +243,7 @@ verified" placeholders for the same reason.
 | Sorceress | 30, with pages | 10 | Yes | Complete |
 | Paladin | 30, with pages | 8 | Yes | Complete |
 | **Amazon** | **30, with pages** | **8** | **Yes** | **Complete as of 2026-09-02** |
-| **Necromancer** | **30, with pages** | **—** | **—** | **Foundation only as of 2026-09-03; see [`04-necromancer-foundation.md`](04-necromancer-foundation.md)** |
+| **Necromancer** | **30, with pages** | **3** | **Yes** | **Complete as of 2026-09-03; see [`04-necromancer-foundation.md`](04-necromancer-foundation.md) and [`05-necromancer-builds.md`](05-necromancer-builds.md)** |
 | Assassin, Barbarian, Druid | — | — | — | Overview pages only |
 | Warlock | — | — | — | Attributes only; see the exception above |
 
@@ -259,7 +259,12 @@ verified" placeholders for the same reason.
 - [`04-necromancer-foundation.md`](04-necromancer-foundation.md) — the
   Necromancer's trees, skills, extraction and mechanics articles; the synergy
   parameter-ownership bug; the Tier 2 cross-check and its ten divergences; and
-  what still blocks the three approved builds. **Executed.**
+  the five summons questions that blocked the builds. **Executed.**
+- [`05-necromancer-builds.md`](05-necromancer-builds.md) — the three builds, the
+  Summoner journey, six dependency pages and the aliases; the summons research
+  that answered four of those five questions and reshaped the point plan; the
+  three new item-column semantics; and Death's Web, where the extraction and
+  every community database disagree. **Executed.**
 
 ## Sources
 

@@ -192,6 +192,13 @@ an expensive item, and a gate fails if any page starts to.
 
 ## Blocked work
 
+> **Unblocked 2026-09-03.** Every item below was answered or scoped by the
+> builds pass; see [`05-necromancer-builds.md`](05-necromancer-builds.md). Four
+> of the five open summons questions were settled from `monstats.json`, which
+> this pass had not decoded, and the fifth — the Ubers — is answered as far as
+> the `primeevil` flag goes and left open for the multiplier and the fight. The
+> list is kept as written so the record shows what was blocking and why.
+
 The three approved builds — `summoner-necromancer`, `poison-nova-necromancer`,
 `bone-spear-necromancer` — and the Summoner levelling journey need the following
 first:
@@ -217,3 +224,6 @@ first:
 - [`00-game-state.md`](00-game-state.md) — version baseline and class coverage.
 - [`03-amazon-builds.md`](03-amazon-builds.md) — the pass that moved item
   numbers to Tier 1 and set the precedent for a control set.
+- [`05-necromancer-builds.md`](05-necromancer-builds.md) — the pass that
+  answered four of the five summons questions above, and the three builds,
+  journey and dependency pages they were blocking.
