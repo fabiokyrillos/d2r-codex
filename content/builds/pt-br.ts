@@ -8012,4 +8012,262 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "poison-nova-necromancer": {
+    summary:
+      "Um anel de veneno que impede uma sala inteira de regenerar, o único item do jogo que reduz resistência a veneno do inimigo, e Corpse Explosion para tudo que é imune aos dois.",
+    playstyle:
+      "Você anda até o meio de um grupo e lança uma nova, e tudo ao seu redor fica envenenado por dois segundos. Nada morre na conjuração — veneno é dano ao longo do tempo e esta build nunca finge o contrário — então você lança de novo, e de novo, mantendo a sala coberta enquanto o dano entra. O Lower Resist vai primeiro se o grupo for problema, e o Death's Web está fazendo o resto quer você perceba ou não. Aí algo morre, e o Corpse Explosion o transforma numa explosão física e de fogo que limpa o que o veneno não conseguiu tocar. O ritmo é nova, nova, maldição, detonar, e a build inteira é sobre saber de qual dos quatro a sala precisa.",
+    strengths: [
+      "**O Death's Web é o único item do jogo com −% de resistência a veneno do inimigo**, e ele empilha com o Lower Resist",
+      "Veneno impede um monstro de regenerar enquanto estiver aplicado, e é isso que o faz funcionar em coisas com reservas grandes de vida",
+      "Dois tipos de dano numa barra só: veneno da nova, e físico mais fogo do Corpse Explosion",
+      "A nova é centrada em você e atinge tudo ao redor, então uma sala cheia é uma conjuração",
+      "Barata de conjurar — 20 de mana no nível 20 — e não há cooldown para planejar",
+    ],
+    weaknesses: [
+      "**Nada morre quando você conjura.** Veneno é dano ao longo do tempo, e a build parece lenta mesmo quando está limpando rápido",
+      "**A duração do Poison Nova é fixa em dois segundos em qualquer nível**, então uma nova mais forte é mais dano espremido na mesma janela, e não uma janela maior",
+      "**Conjurar de novo não soma dano.** Uma aplicação mais forte substitui a que está rodando e uma mais fraca não faz nada — repetir é cobertura e renovação, nunca soma",
+      "Veneno é o segundo elemento mais resistido no Hell: dez das vinte áreas daqui registram imunidade a veneno",
+      "Você fica no meio do grupo para conjurar, numa classe sem plano de bloqueio por padrão e sem roubo de vida",
+    ],
+    flexPoints: [
+      "**O plano gasta 94 de 110**, deixando cerca de 16 no nível 99. Tudo que é obrigatório está acima: as três skills de veneno e o Corpse Explosion com vinte cada, a cadeia completa de maldições até o Lower Resist, e um ponto em cada invocação utilitária.",
+      "**Raise Skeletal Mage é o primeiro destino flexível.** Um exército de magos é dano elemental de uma segunda fonte, e custa um ponto para começar. Numa build cuja fraqueza inteira é ter um elemento só, essa é a diversificação mais barata disponível.",
+      "**Mais Raise Skeleton e Skeleton Mastery** se você se pegar apanhando enquanto conjura. Esta build fica no meio do que está matando, e mais corpos entre você e o grupo é investimento defensivo, não ofensivo.",
+      "**Bone Wall e Bone Prison**, se você preferir que a resposta a estar cercado seja uma parede em vez de um esqueleto. São as sinergias do Bone Armor, então os pontos fazem duas coisas.",
+      "**Amplify Damage além do primeiro ponto** por raio, nos grupos em que o Corpse Explosion está fazendo o trabalho em vez do veneno.",
+      "**Nada vai para uma quarta skill de veneno, porque não existe uma.** As sinergias do Poison Nova são Poison Dagger e Poison Explosion, e essa é a lista completa — a árvore não tem uma terceira fonte para procurar.",
+    ],
+    statPlan: {
+      strength: "Só o suficiente para a sua armadura e a sua shrunken head. Um Bramble é uma armadura de corpo como qualquer outra; uma Heirophant Trophy pede 58.",
+      dexterity: "Base, a menos que você esteja construindo para bloqueio máximo — o que é uma escolha defensável numa build que fica no meio do grupo.",
+      vitality: "Todo o resto, e mais do que um Summoner precisa. Você é quem está na sala.",
+      energy: "Nenhum. Vinte de mana por conjuração é barato, e um Insight cobre o resto.",
+      notes: [
+        "**Resistência a veneno é a que vale ultrapassar o teto** se você pretende carregar um Rotting Fissure depois, e é a que um Andariel's Visage te entrega de graça.",
+        "As suas resistências caem 40 no Nightmare e 100 no Hell. As dos seus esqueletos e do seu golem não se mexem, e as do seu mercenário caem exatamente como as suas.",
+        "Faster Cast Rate é o atributo que decide quanto da sala continua coberta, porque cobertura é função de com que frequência você consegue renovar.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-75":
+        "Esta build renova em vez de acumular, então taxa de conjuração é a vazão. Abaixo de 75% a janela de dois segundos fecha antes de a próxima nova entrar, e a sala deixa de estar coberta.",
+      "fcr-125":
+        "A meta realista de endgame depois de um Arachnid Mesh e um Spirit. Dois frames por conjuração é uma fração grande de um efeito de dois segundos.",
+      "fhr-48":
+        "Você conjura de dentro do grupo. Ficar preso em recuperação de golpe é o modo de falha, e é a razão de os 50% próprios de um Bramble valerem tanto quanto o dano de veneno dele.",
+    },
+    skillNotes: {
+      "poison-nova":
+        "**Dois segundos, em qualquer nível.** A coluna de duração não tem termo por nível, então vinte pontos são mais dano dentro da mesma janela de dois segundos — não uma janela maior. É essa a razão inteira de esta build conjurar sem parar em vez de uma vez só.",
+      "poison-explosion":
+        "A maior sinergia do Poison Nova, e uma skill utilizável por si só quando você tem um cadáver e não quer entrar no grupo. A duração dela cresce — de 2 segundos para 9,6 — ao contrário da da nova.",
+      "poison-dagger":
+        "A outra sinergia, e você nunca vai esfaquear nada com ela. O dano publicado dela — 7-15 no nível 1 crescendo para 540-581 no vinte — é a prova mais clara de como os números de veneno funcionam: são totais ao longo da duração, não por golpe.",
+      "corpse-explosion":
+        "**O segundo tipo de dano, e não opcional numa build de elemento único.** Metade físico e metade fogo, então responde aos imunes a veneno que o Death's Web e o Lower Resist não alcançam. Pontos compram raio; a faixa de dano de 70–120% nunca se mexe.",
+      "lower-resist":
+        "**Um ponto, e é a única skill do jogo que reduz resistência a veneno.** Ela empilha com o Death's Web. Contra um monstro que já é imune a veneno ela é cortada para um quinto e não quebra a imunidade — esse é o trabalho do Corpse Explosion.",
+      teeth: "Pré-requisito do Corpse Explosion.",
+      "amplify-damage":
+        "No caminho para o resto da árvore de maldições, e vale o ponto por si só: é o que faz a metade física do Corpse Explosion entrar num imune a físico.",
+      weaken: "Pré-requisito do Terror, e uma maldição defensiva de verdade contra um grupo corpo a corpo.",
+      terror: "Pré-requisito do Decrepify.",
+      decrepify:
+        "**O Decrepify é destravado no nível 24.** Numa build que fica dentro do grupo, reduzir tudo nele pela metade é a diferença entre conjurar de novo e correr.",
+      "iron-maiden": "Pré-requisito do Life Tap. Genuinamente útil contra um grupo corpo a corpo que está batendo no seu mercenário.",
+      "life-tap": "O segundo pré-requisito do Lower Resist, e a razão de o seu mercenário sobreviver a uma luta que o veneno está levando tempo para resolver.",
+      "raise-skeleton": "Um ponto mais +skills são três ou quatro esqueletos — o suficiente para segurar uma porta enquanto uma nova trabalha, e o suficiente para impedir que algo chegue em você.",
+      "skeleton-mastery": "Um ponto. Ela lê o nível efetivo, então +skills faz a maior parte do trabalho aqui.",
+      "clay-golem": "Ele desacelera o que acerta e é pré-requisito da Golem Mastery. Numa build que precisa que o grupo fique dentro da nova, desacelerá-lo está no plano.",
+      "golem-mastery": "Pré-requisito do Summon Resist, e mantém o golem de pé.",
+      "summon-resist": "Um ponto. Fogo, raio, frio e veneno, numa curva cujo primeiro ponto é quase tudo — e as invocações não sofrem penalidade por dificuldade, então isto é adição e não conserto.",
+      "bone-armor": "Um ponto, renovado ao reconjurar. Você está parado no grupo; pegue a absorção de graça.",
+    },
+    immunityPlan:
+      "**Veneno é o segundo elemento mais resistido no Hell**: dez das vinte áreas catalogadas aqui registram imunidade a veneno, contra treze para fogo e oito para raio. Esta build tem um elemento, e o plano tem duas camadas.\n\n**Contra algo apenas resistente, empilhe as reduções.** O Death's Web dá −40-50% de resistência a veneno do inimigo e o Lower Resist dá mais −25% a −70%, e os dois se aplicam juntos. Isso basta para transformar um monstro resistente num monstro comum, e é a razão inteira de a build funcionar no Hell.\n\n**Contra algo de fato imune, nenhum dos dois ajuda.** Redução contra um alvo cuja resistência base já é 100 ou mais opera com um quinto da eficácia, o que não quebra a imunidade — a mesma regra que impede a mastery de uma Sorceress de quebrar um imune a frio. Então a resposta é o **Corpse Explosion**, e é por isso que ele é central e não flexível aqui: metade físico e metade fogo, vinte pontos de raio, e nenhuma sinergia para pagar. O Amplify Damage fica na barra pela metade física.\n\n**Um Rotting Fissure é a terceira resposta** e a única que faz o próprio veneno funcionar num imune, colocando-o em 95% de resistência. A penalidade dele custa resistência a veneno, que esta build já ultrapassa o teto de qualquer jeito.\n\n**Uber Mephisto e Uber Andariel não são alvos desta build**, por mais que o encaixe elemental sugira o contrário. Este site não pesquisou o Uber Tristram, três dos quinze monstros que carregam a marcação de dano contra invocações ficam naquela sala, e um efeito de dano ao longo do tempo de dois segundos contra reservas enormes de vida e com cronômetro é a versão menos favorável do argumento desta build. Nada aqui deve ser lido como plano para aquela luta.",
+    mercenaryNotes:
+      "**Um mercenário do Ato 2, e a escolha de aura é genuinamente aberta aqui.** O Might aumenta o dano físico dele, o que importa porque ele costuma ser quem termina algo que o veneno já impediu de regenerar. **O Holy Freeze merece atenção séria**: esta build vence fazendo as lutas durarem, e desacelerar tudo é exatamente isso — e mantém o grupo dentro da nova.\n\nDê a ele um **Insight** cedo. **Fortitude** ou **Treachery** com um **Vampire Gaze** o mantêm de pé, e o **Life Tap** está no seu plano em parte por causa dele.\n\n**As resistências dele sofrem os −40 inteiros no Nightmare e os −100 no Hell.** As dos seus esqueletos e do seu golem não sofrem, e confundir os dois é como uma página acaba equipando o membro errado do grupo.\n\n**Infinity é opcional e não é voltado para o seu dano.** A Conviction reduz resistência a fogo, frio e raio, não a veneno — então não faz nada pela nova e faz algo real pela metade de fogo do Corpse Explosion. O Death's Web e o Lower Resist são as reduções de que esta build realmente precisa, e nenhuma das duas é uma runeword.",
+    farmingWhy: {
+      "chaos-sanctuary-hell":
+        "A zona mais densa do jogo, e veneno não está entre as imunidades registradas dela — fogo, raio e físico estão. Uma nova cobre um grupo de selo numa conjuração e o Corpse Explosion limpa os imunes a físico.",
+      "pit-hell":
+        "Área de nível 85, curta, e nada ali é registrado como imune a veneno. Uma zona constante em vez de rápida, que é o que dano ao longo do tempo quer.",
+      "secret-cow-level-hell":
+        "Um rebanho ombro a ombro é o formato para o qual uma nova foi desenhada, e a imunidade registrada aqui é física, não veneno.",
+      "worldstone-keep-hell":
+        "Área de nível 85 e a melhor experiência do jogo, com físico, fogo, raio e frio entre as imunidades em vez de veneno.",
+      "travincal-hell":
+        "O Council é imune a fogo e raio, não a veneno, e eles ficam em grupo — o alvo ideal de uma nova. As reservas de vida deles são grandes, o que combina com uma build que impede regeneração.",
+      "arcane-sanctuary-hell":
+        "Imunidade a raio e a mágico em vez de veneno, e plataformas longas e estreitas mantêm os grupos num lugar só. Lento, mas nada ali resiste a você.",
+      "mausoleum-hell":
+        "Área de nível 85 e rápida, mas a população registrada dela é imune a veneno — uma run de Corpse Explosion, não de veneno, e só vale a pena depois que essa metade da build estiver equipada.",
+    },
+    levelingPath: {
+      summary:
+        "**Você não sobe de nível como isto.** O Poison Nova é destravado no nível 30, as duas sinergias dele são quarenta pontos sozinhas, e uma versão parcial não mata nada. Suba como Summoner — essa rota está na página de evolução do Necromancer e não precisa de respec própria — e gaste um token no 30 ou depois, quando Poison Explosion e Poison Dagger tiverem para onde ir. A Den of Evil dá um token grátis por dificuldade, então a troca não custa nada.",
+      respecAt:
+        "Nível 30 no mínimo, e mais tarde tudo bem. **Se você construiu um Iron Golem enquanto subia, desfaça-o de propósito antes de gastar o token** — um respec que remova a skill destrói o golem e o item dentro dele.",
+    },
+    selfFoundNotes:
+      "**A mais fraca das três solo self-found, e a diferença é um item.** Tudo até o nível 66 é alcançável: o White são duas runas baratas, Homunculus e Andariel's Visage são achados comuns, e o Bramble é investimento em runas, não troca. **O Death's Web é a parede.** Ele só cai a partir de área de nível 74, está entre os itens menos encontrados do jogo, e nada o substitui — não existe uma segunda fonte de −% de resistência a veneno do inimigo em lugar nenhum. Uma versão self-found se apoia muito mais no Corpse Explosion e no Lower Resist, e funciona; ela apenas passa mais tempo na metade da build que não é veneno.",
+    hardcoreNotes:
+      "**O mais difícil dos três Necromancers de jogar com segurança**, porque a nova é centrada em você: limpar uma sala significa ficar dentro dela. Leve a rota de bloqueio a sério — um Homunculus dá +40% de chance de bloqueio antes de você gastar um ponto de Dexterity — alcance a meta de 48% de recuperação de golpe, e guarde o **Decrepify** para qualquer coisa que chegue em você em vez de reservá-lo para um boss. Uma parede de esqueletos de um ponto mais um Clay Golem é uma porta que você coloca entre você e uma investida, e é por isso que as invocações utilitárias estão no plano central e não na lista flexível. Um Enigma muda o perfil de risco mais que qualquer item defensivo, porque ir embora é sempre melhor que sobreviver.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 pela nova. Antes disso você está subindo como outra coisa.",
+        nextUpgrade: "Nível 30, e então o token de respec da Den of Evil.",
+        notes:
+          "**Esta build não existe antes do nível 30**, e fingir o contrário é como um personagem trava. O Poison Nova é a última skill da árvore dele, as duas sinergias dele são 40 pontos sozinhas, e uma versão parcial não mata nada. Suba como Summoner e troque.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer wand com +Poison and Bone Skills",
+            why: "O Poison Nova é destravado no nível 30 e nada antes dele é esta build. Suba como Summoner — a página de evolução do Necromancer percorre essa rota — e guarde qualquer wand que aumente a árvore de veneno para o dia do respec.",
+            lookFor: ["+2-3 Poison and Bone Skills", "+1 Necromancer Skills"],
+          },
+          "body-0": { why: "Taxa de conjuração, recuperação de golpe e velocidade de corrida por duas runas." },
+          "helm-0": { why: "+1 em Todas as Skills." },
+          "offhand-0": {
+            label: "Qualquer shrunken head de Necromancer com +Poison and Bone Skills",
+            why: "Uma shrunken head é um escudo que carrega skills de classe, uma combinação que nenhum outro slot oferece.",
+            lookFor: ["+2 Necromancer Skills", "+3 Poison Nova", "2 sockets"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "As três skills de veneno subindo, e um mercenário que te mantém vivo enquanto elas trabalham.",
+        nextUpgrade: "Um Bramble, e depois a longa espera por um Death's Web.",
+        picks: {
+          "weapon-0": {
+            why: "+3 Poison and Bone Skills — que é Poison Nova, Poison Explosion, Poison Dagger e Corpse Explosion de uma vez — mais 20% de Faster Cast Rate por duas runas baratas.",
+            sockets: "Dol e Io numa wand de 2 sockets. Uma Bone Wand ou Grim Wand é a base mais barata.",
+          },
+          "offhand-0": {
+            why: "+2 skills e até 35% de Faster Cast Rate, que nesta build é vazão e não conveniência.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "offhand-0-alt0": {
+            why: "+1 skill e +10% de taxa de conjuração numa shrunken head de 2 sockets, o que empilha com as skills de classe da própria head. Muito mais barato que um Monarch.",
+            sockets: "Eth e Lum em qualquer escudo de 2 sockets — uma shrunken head conta.",
+          },
+          "body-0": {
+            why: "+2 skills de Necromancer e uma reserva grande de mana, até existir um Bramble.",
+            sockets: "Sol, Um, Um numa armadura de corpo de 3 sockets.",
+          },
+          "helm-0": { why: "+1 skills e magic find." },
+          "gloves-0": { why: "20% de Faster Cast Rate e regeneração de mana." },
+        },
+        charms: [{ why: "75% antes do Hell." }],
+      },
+      "early-hell": {
+        goal: "+% de Poison Skill Damage no slot de armadura, e o Corpse Explosion carregando os imunes.",
+        nextUpgrade: "Death's Web, que é o item que esta build está esperando e o único que ela não consegue substituir.",
+        notes:
+          "**O Trang-Oul's Avatar é a outra rota por este tier**, e é uma variante de equipamento em vez de uma build diferente: o set dá +25% de dano de skill de veneno, um bloco grande de taxa de conjuração e cargas de Fire Ball, ao custo de quase todo o seu planejamento de resistência e do slot do Bramble. Este site não catalogou itens de set, então ele é citado aqui em vez de detalhado. O plano de pontos não muda de nenhum dos dois jeitos.",
+        picks: {
+          "weapon-0": { why: "Ainda a melhor wand disponível antes do nível 66. Três níveis de skill na árvore de veneno inteira." },
+          "body-0": {
+            why: "**+25-50% de Poison Skill Damage — a única fonte desse atributo num slot de armadura no jogo** — mais 50% de Faster Hit Recovery, que é exatamente o que um conjurador parado dentro do grupo precisa.",
+            sockets: "Ral, Ohm, Sur, Eth numa armadura de corpo de 4 sockets.",
+            lookFor: ["+50% to Poison Skill Damage"],
+          },
+          "helm-0": {
+            why: "+2 skills, Poison Resist +70% e +10% de resistência máxima a veneno — a resistência que esta build mais quer ultrapassar o teto. Os −30% de resistência a fogo são o preço, e uma Um no socket paga.",
+          },
+          "helm-0-alt0": { why: "+2 skills sem penalidade e com requisito de Strength muito menor." },
+          "offhand-0": { why: "+2 skills de Necromancer, +2 em Curses — que é o nível do Lower Resist — e All Resistances +40 num slot só." },
+          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate, e taxa de conjuração é cobertura." },
+          "gloves-0": { why: "Taxa de conjuração, e um nível de skill de fogo que aumenta o nível efetivo do Corpse Explosion e portanto o raio dele." },
+          "ring1-0": { why: "+1 em todas as skills e mana." },
+          "boots-0": { why: "Recuperação de golpe e redução de duração de veneno. **Marrowwalk** é a bota de Necromancer que as pessoas citam aqui, e este site não a catalogou." },
+        },
+        charms: [{ why: "75% em tudo, e veneno acima do teto se der." }],
+      },
+      budget: {
+        goal: "Death's Web, e as duas reduções rodando juntas.",
+        nextUpgrade: "Um Enigma, para que ficar no meio do grupo vire escolha em vez de compromisso.",
+        picks: {
+          "weapon-0": {
+            why: "**−40-50% de resistência a veneno do inimigo, e nada mais no jogo tem isso.** Com o Lower Resist por cima, um monstro resistente deixa de ser resistente. Repare no que ele não tem: as tabelas fixadas não dão nenhuma linha de +% Poison Skill Damage, diga o que disser um banco de dados — esse atributo vem do Bramble.",
+            lookFor: ["-50% to Enemy Poison Resistance", "+2 to Poison and Bone Skills"],
+          },
+          "weapon-0-alt0": { why: "Até existir um. Não é substituto — nada é — mas são três níveis de skill." },
+          "body-0": { why: "+50% de Poison Skill Damage se a rolagem permitir. A variação de 25% a 50% é a maior de qualquer runeword do site." },
+          "helm-0": { why: "+2 skills e a resistência a veneno para ultrapassar o teto, com uma Um pelo fogo." },
+          "offhand-0": { why: "Skills, maldições e resistências, e ele bloqueia." },
+          "belt-0": { why: "+1 skills e 20% de taxa de conjuração." },
+          "amulet-0": { why: "+2 skills e +30 de todas as resistências." },
+          "gloves-0": { why: "Taxa de conjuração e um nível de skill de fogo em direção ao raio do Corpse Explosion." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Um anel raro com 10% de Faster Cast Rate e resistências",
+            why: "Os últimos pontos em direção aos 125% de taxa de conjuração, e mais barato que um segundo Stone of Jordan.",
+            lookFor: ["10% Faster Cast Rate", "All resistances", "Life"],
+          },
+          "boots-0": { why: "Magic find numa build que limpa de forma constante." },
+        },
+        charms: [
+          { why: "+1 em todas as skills e resistências." },
+          { why: "+3 skills de Necromancer — três níveis na nova e nas duas sinergias dela de uma vez." },
+          { why: "Os únicos charms que aumentam as três skills de veneno juntas." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, numa build com reserva de vida pequena que fica no meio da luta." },
+          { why: "A mão secundária da troca." },
+        ],
+      },
+      optimized: {
+        goal: "125% de taxa de conjuração, as duas reduções, e um jeito de sair da sala.",
+        nextUpgrade: "Um Rotting Fissure, se as zonas que você quer viverem sendo imunes a veneno.",
+        picks: {
+          "weapon-0": { why: "Uma rolagem de −50%. A diferença entre −40 e −50 é um décimo da resistência a veneno de todo monstro." },
+          "body-0": {
+            why: "Teleport, que transforma ficar no meio do grupo de compromisso em decisão reversível.",
+            sockets: "Jah, Ith, Ber numa armadura de corpo de 3 sockets.",
+          },
+          "body-0-alt0": { why: "**Esta é a troca de verdade da build.** O Bramble são até +50% de dano de skill de veneno e o Enigma é Teleport, e são o mesmo slot. Dano ou mobilidade; não existe versão com os dois." },
+          "helm-0": { why: "+2 skills e resistência a veneno acima do teto." },
+          "offhand-0": { why: "+2 skills, +2 maldições, resistências e bloqueio." },
+          "belt-0": { why: "+1 skills e taxa de conjuração." },
+          "amulet-0": { why: "+2 skills e +30 de todas as resistências." },
+          "gloves-0": { why: "Taxa de conjuração e um nível de skill de fogo." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Necromancer." },
+          { why: "Skills e vida numa fileira só." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "A mão secundária da troca." }],
+      },
+      bis: {
+        goal: "Nada mais que resista a veneno e sobreviva ao Corpse Explosion.",
+        notes:
+          "**Totalmente equipada, esta build tem duas respostas e nenhuma terceira.** Veneno com as duas reduções rodando dá conta de tudo que é apenas resistente; o Corpse Explosion dá conta do que é imune. Um Rotting Fissure funde as duas em uma, tornando os imunes apenas resistentes — e é por isso que ele é o charm mais valioso que esta build pode carregar, e por isso está listado aqui em vez de como curiosidade.",
+        picks: {
+          "weapon-0": { why: "O item em torno do qual a build é nomeada na prática. Uma rolagem de −50% com +2 Poison and Bone." },
+          "body-0": { why: "Um Bramble de rolagem máxima. Se você também tiver um Enigma, esta é a troca que você faz para um boss e desfaz para limpar." },
+          "helm-0": { why: "+2 skills, +10% de resistência máxima a veneno, Um no socket." },
+          "offhand-0": { why: "+2 skills, +2 maldições, +40 de resistências." },
+          "belt-0": { why: "+1 skills, 20% de taxa de conjuração." },
+          "amulet-0": { why: "+2 skills, +30 de todas as resistências." },
+          "gloves-0": { why: "Taxa de conjuração e um nível de skill de fogo." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Necromancer." },
+          { why: "O sunder charm que coloca imunes a veneno em 95% de resistência a veneno e os transforma em alvos comuns. A penalidade dele é a mais absorvível dos seis aqui, porque esta build ultrapassa o teto de resistência a veneno de qualquer forma." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "A mão secundária da troca." }],
+      },
+    },
+  },
 };

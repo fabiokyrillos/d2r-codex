@@ -108,6 +108,7 @@ import {
   checkReviveSummonResist,
   checkSummonPenaltyClaims,
   checkUnlockLevelClaims,
+  recommendsBuildingAGolem,
 } from "./necromancer-claims";
 
 /**
@@ -889,24 +890,37 @@ console.log("\nNecromancer page claims (both locales):");
   }
 
   const found = LOCALES.flatMap((locale) => {
-    const pages: { where: string; lines: string[] }[] = [];
+    const pages: { where: string; lines: string[]; owesLosses: boolean }[] = [];
 
+    /*
+     * `owesLosses` decides which pages must enumerate every way an Iron Golem
+     * is lost. For a build the honest test is its own skill plan: a page that
+     * allocates a point to the golem is telling a reader to make one. A page
+     * that only warns — "unsummon yours before you respec" — is not, and
+     * forcing it to restate all four losses would push the same paragraph onto
+     * every page that mentions the skill. A journey has no allocation array, so
+     * there the prose detector stands in.
+     */
     for (const build of getBuilds(locale).filter((b) => b.classSlug === "necromancer")) {
-      pages.push({ where: `${locale} ${build.slug}`, lines: buildProse(build) });
+      pages.push({
+        where: `${locale} ${build.slug}`,
+        lines: buildProse(build),
+        owesLosses: build.skills.some((a) => a.skill === "iron-golem" && a.points > 0),
+      });
     }
     for (const journey of getJourneys(locale).filter((j) => j.classSlug === "necromancer")) {
-      pages.push({ where: `${locale} ${journey.classSlug} journey`, lines: journeyProse(journey) });
+      const lines = journeyProse(journey);
+      pages.push({
+        where: `${locale} ${journey.classSlug} journey`,
+        lines,
+        owesLosses: recommendsBuildingAGolem(lines),
+      });
     }
 
-    return pages.flatMap(({ where, lines }) => [
+    return pages.flatMap(({ where, lines, owesLosses }) => [
       // An Iron Golem section is allowed; an expensive item in it is not, and a
-      // page that discusses building one owes the reader every way to lose it.
-      ...checkIronGolemAdvice(
-        lines,
-        NEVER_FEED_TO_A_GOLEM,
-        where,
-        lines.some((l) => /Iron Golem/i.test(l)),
-      ),
+      // page that tells a reader to make one owes them every way to lose it.
+      ...checkIronGolemAdvice(lines, NEVER_FEED_TO_A_GOLEM, where, owesLosses),
       // Silence on the penalty is only required of pages that raise the subject.
       ...checkSummonPenaltyClaims(lines, where, false),
       ...checkReviveSummonResist(lines, where),

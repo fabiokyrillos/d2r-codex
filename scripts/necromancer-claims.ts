@@ -160,6 +160,28 @@ export const NEVER_FEED_TO_A_GOLEM: readonly string[] = [
 ];
 
 /**
+ * Does this page tell a reader to make one, or merely mention the skill?
+ *
+ * The distinction decides whether the full loss list is owed. A page that says
+ * "a respec destroys your Iron Golem" is warning about it, not recommending it,
+ * and demanding it also enumerate dying and golem-replacement would push the
+ * same four sentences onto every page that mentions the skill in passing.
+ */
+export function recommendsBuildingAGolem(lines: readonly string[]): boolean {
+  return sentencesOf(lines).some(
+    (s) =>
+      /Iron Golem/i.test(s) &&
+      // Past tense included deliberately: the first draft listed "build" but not
+      // "built", so the English page escaped a rule its Portuguese twin tripped
+      // on "construiu". A detector that behaves differently per locale is worse
+      // than no detector.
+      /\b(?:build|building|built|make|making|made|summon|summoning|summoned|cast|casting|feed|feeding|fed)\b|constru|invoc|conjur|criar|fazer|feito/i.test(
+        s,
+      ),
+  );
+}
+
+/**
  * An Iron Golem section is allowed — it is a real option, and the persistence
  * question that blocked it is answered now. What it may not do is point at an
  * expensive item, and what it must do is say how the golem is lost.
