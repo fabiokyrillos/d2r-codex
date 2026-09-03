@@ -11,6 +11,7 @@ import {
   type Grid,
 } from "@/lib/skill-tree-nav";
 import { trapTarget } from "@/lib/focus-trap";
+import { lockScroll } from "@/lib/scroll-lock";
 
 /**
  * The only interactive part of the skill tree.
@@ -190,6 +191,22 @@ export function SkillTreeInteractive({
      */
     if (sheet.getClientRects().length === 0) return;
 
+    /*
+     * Hold the page still. Everything else about this sheet already said it was
+     * modal — `aria-modal`, the trap, a scrim that eats pointer events — and the
+     * document behind it scrolled anyway. On a touch screen a drag that starts
+     * in the sheet's own scrollable body and runs past its end carries straight
+     * into the page underneath, so the content the reader just opened slides
+     * away while they are reading it.
+     *
+     * After the desktop guard on purpose: above `lg` this effect returns before
+     * reaching here, so the docked panel never locks anything. `lockScroll`
+     * restores the exact previous inline value, and its release is idempotent
+     * and counted — see `lib/scroll-lock.ts` for why that matters with three
+     * trees on a class page.
+     */
+    const unlock = lockScroll(document.body);
+
     // Initial focus inside the sheet, on its close control: the first thing a
     // screen-reader user needs is the way out, and it is a stable target
     // whatever the panel body happens to contain.
@@ -209,7 +226,13 @@ export function SkillTreeInteractive({
       items[target].focus();
     };
     document.addEventListener("keydown", onKey, true);
-    return () => document.removeEventListener("keydown", onKey, true);
+    // Both halves in one cleanup: React runs it when the sheet closes, when
+    // `selected` moves to another tile, and on unmount — which is every way out
+    // of a locked page, including the ones a close handler never sees.
+    return () => {
+      document.removeEventListener("keydown", onKey, true);
+      unlock();
+    };
   }, [sheetOpen, selected]);
 
   const focusOn = (cell: Cell | null) => {

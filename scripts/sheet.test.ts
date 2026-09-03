@@ -30,6 +30,7 @@ import { assertFreshBuild } from "./build-freshness";
 import { CLASSES_WITH_SKILL_PAGES } from "../lib/skills";
 
 import { trapTarget } from "../lib/focus-trap";
+import { isScrollLocked, lockScroll } from "../lib/scroll-lock";
 import { LOCALES } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 
@@ -117,6 +118,96 @@ check(
   /getClientRects\(\)\.length === 0/.test(src),
 );
 check("the sheet and its scrim are both hidden above lg", (sheetBlock.match(/lg:hidden/g) ?? []).length >= 1);
+
+// ===========================================================================
+console.log("\nThe page is held still while the sheet is open");
+// ===========================================================================
+{
+  // -- the bookkeeping, exercised directly --------------------------------
+  const target = () => ({ style: { overflow: "" } });
+
+  {
+    const el = target();
+    const release = lockScroll(el);
+    check("opening locks the document", el.style.overflow === "hidden");
+    check("and the lock is recorded", isScrollLocked(el));
+    release();
+    check("releasing restores the previous value", el.style.overflow === "");
+    check("and the lock is gone", !isScrollLocked(el));
+  }
+
+  // The requirement that makes this a restore rather than a reset: whatever was
+  // there before comes back, not a hardcoded default.
+  {
+    const el = { style: { overflow: "clip" } };
+    const release = lockScroll(el);
+    check("an existing inline overflow is replaced while locked", el.style.overflow === "hidden");
+    release();
+    check("and the exact previous inline value is put back", el.style.overflow === "clip");
+  }
+
+  // Release is what runs on close, on Escape, and on unmount alike — it is one
+  // cleanup — so the interesting case is running it more than once.
+  {
+    const el = target();
+    const release = lockScroll(el);
+    release();
+    el.style.overflow = "scroll"; // something else takes over
+    release();
+    check("a second release is a no-op and does not clobber", el.style.overflow === "scroll");
+  }
+
+  // Two locks on one target: the leak this counter exists to prevent.
+  {
+    const el = target();
+    const first = lockScroll(el);
+    const second = lockScroll(el);
+    first();
+    check("one release of two leaves the page locked", el.style.overflow === "hidden");
+    second();
+    check("the last release restores it", el.style.overflow === "");
+    check("and nothing is still held", !isScrollLocked(el));
+  }
+
+  // Releasing out of order must not strand the page either.
+  {
+    const el = target();
+    const first = lockScroll(el);
+    const second = lockScroll(el);
+    second();
+    first();
+    check("releasing out of order still restores", el.style.overflow === "");
+  }
+
+  // A negative control: without the lock the value never changes, so the
+  // assertions above are reading something this file actually does.
+  {
+    const el = target();
+    check("an untouched target keeps its overflow", el.style.overflow === "" && !isScrollLocked(el));
+  }
+
+  // -- the component wiring the pure function cannot see -------------------
+  check("the sheet effect locks the document body", /lockScroll\(document\.body\)/.test(src));
+  check("and releases it in the same cleanup", /return \(\) => \{[\s\S]{0,200}unlock\(\);/.test(src));
+
+  /*
+   * The desktop guard has to come first, or the docked panel locks the page it
+   * does not cover. Compared by index rather than trusted: this is the one
+   * ordering in the effect that is load-bearing.
+   */
+  const guardAt = src.indexOf("getClientRects().length === 0");
+  const lockAt = src.indexOf("lockScroll(document.body)");
+  check(
+    "the lock is taken after the desktop guard, so the panel never locks",
+    guardAt !== -1 && lockAt !== -1 && guardAt < lockAt,
+    `guard at ${guardAt}, lock at ${lockAt}`,
+  );
+  check(
+    "the lock lives in the sheet effect, not the Escape effect",
+    /if \(!sheetOpen \|\| !selected\) return;[\s\S]{0,900}lockScroll\(document\.body\)/.test(src),
+  );
+  check("the desktop panel never locks anything", !/lockScroll/.test(asideBlock));
+}
 
 // ===========================================================================
 console.log("\nWhat ships before JavaScript runs");
