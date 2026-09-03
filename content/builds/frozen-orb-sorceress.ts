@@ -43,7 +43,7 @@ export const frozenOrbSorceress: Build = {
     "Cold immunes exist and Cold Mastery does not break them, only shrinks resistance on things that are not immune",
     "Single-target damage is modest; bosses take a while",
     "Low life, no block, and no defensive layer beyond Teleport and the freeze",
-    "The Ancient Tunnels, one of the best area level 85 zones, is full of cold immunes",
+    "One damage type, so a genuine cold immune is a wall rather than a slow-down — the Pit and the Worldstone Keep are where this site records them",
   ],
   difficulty: "beginner",
   budget: "low",
@@ -441,7 +441,7 @@ export const frozenOrbSorceress: Build = {
         { ref: { kind: "runeword", slug: "call-to-arms" }, why: "Battle Orders." },
         { ref: { kind: "runeword", slug: "spirit" }, why: "Off-hand for the swap." },
       ],
-      nextUpgrade: "Cold facets in every socket, and a Cold Rupture charm if the Ancient Tunnels are what you want to farm.",
+      nextUpgrade: "Cold facets in every socket, and a Cold Rupture charm if the Pit or the Worldstone Keep are what you want to farm.",
     },
 
     {
@@ -578,14 +578,14 @@ export const frozenOrbSorceress: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 and one of the best zones in the game — but heavily cold immune. Only worth it with a Cold Rupture charm or a mercenary who can carry.",
-      minTier: "optimized",
-      rating: 2,
+      why: "Area level 85 and one of the best zones in the game, with fire and poison among its recorded immunities rather than cold. The natural home of a cold build, and this one is no exception.",
+      minTier: "early-hell",
+      rating: 5,
     },
   ],
 
   immunityPlan:
-    "Cold builds meet fewer walls than fire or lightning ones and it is worth understanding why. **Cold Mastery reduces the enemy's cold resistance by 20% at level 1 and 5% more per level**, where Fire and Lightning Mastery instead raise your own damage. Against anything not actually immune, that means your damage keeps landing deep into Hell without a single item bought for the purpose. **It does not break true immunity**, though: resistance reduction applies at one fifth effectiveness against an already-immune monster, so a maxed Cold Mastery is worth about −20% against something at 110% and that is nowhere near enough. The answers to genuine cold immunes are a **Cold Rupture** sunder charm at the cost of 70 to 90 points of your own cold resistance, **your mercenary's physical damage**, or **skipping them** — which for a farming build is usually correct. The Ancient Tunnels are the one place where that choice really costs you, and the farming list above is rated accordingly.",
+    "Cold builds meet fewer walls than fire or lightning ones and it is worth understanding why. **Cold Mastery reduces the enemy's cold resistance by 20% at level 1 and 5% more per level**, where Fire and Lightning Mastery instead raise your own damage. Against anything not actually immune, that means your damage keeps landing deep into Hell without a single item bought for the purpose. **It does not break true immunity**, though: resistance reduction applies at one fifth effectiveness against an already-immune monster, so a maxed Cold Mastery is worth about −20% against something at 110% and that is nowhere near enough. The answers to genuine cold immunes are a **Cold Rupture** sunder charm at the cost of 70 to 90 points of your own cold resistance, **your mercenary's physical damage**, or **skipping them** — which for a farming build is usually correct. The Pit and the Worldstone Keep are where that choice costs you, and the farming list above is rated accordingly.",
 
   hardcoreNotes:
     "One of the safest casters in the game, and the reason is the freeze rather than the damage. Everything the orb touches is chilled, so packs approach slowly and in pieces; Frost Nova and Glacial Spike give you two panic buttons that stop a room outright. Take Chains of Honor over Enigma, treat 60% Faster Hit Recovery as required, and keep a Call to Arms swap. The genuine danger is the same as every Sorceress's — cold immune packs that close the distance while you have nothing to slow them with.",

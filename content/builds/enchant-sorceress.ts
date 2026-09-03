@@ -517,7 +517,7 @@ export const enchantSorceress: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 and cold-immune heavy, which does not affect either half of your damage.",
+      why: "Area level 85 and quick to clear. Fire is among its recorded immunities, which the enchanted weapon's physical half handles — the reason this build carries two damage types at all.",
       minTier: "early-hell",
       rating: 4,
     },

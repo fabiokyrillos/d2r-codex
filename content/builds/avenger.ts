@@ -606,7 +606,7 @@ export const avenger: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 with heavy cold immunity, which is precisely the kind of zone this build exists for.",
+      why: "Area level 85, with fire and poison among its recorded immunities. A build carrying four damage types walks through exactly that kind of zone.",
       minTier: "early-hell",
       rating: 4,
     },

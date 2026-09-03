@@ -271,7 +271,7 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     dropSummary:
       "Só no Hell, do Herald das Terror Zones ou a uma taxa reduzida de monstros comuns acima do nível 75.",
     notes:
-      "O mais barato dos seis para carregar na prática, porque dano de frio no Hell chega principalmente como chill, e não como aquilo que te mata. É o que transforma os Ancient Tunnels — nível de área 85, e cheios de imunes a frio — numa zona que uma build de frio consegue de fato farmar.",
+      "O mais barato dos seis para carregar na prática, porque dano de frio no Hell chega principalmente como chill, e não como aquilo que te mata. É o que transforma o Pit e o Worldstone Keep — ambos nível de área 85, e ambos registrando frio entre as imunidades deles — em zonas que uma build de frio farma em vez de contornar.",
   },
   "flame-rift": {
     summary:

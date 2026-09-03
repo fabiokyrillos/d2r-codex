@@ -576,7 +576,7 @@ export const fireballMeteorSorceress: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 and cold-immune heavy, which does not affect you at all.",
+      why: "Area level 85 and compact. Fire is among its recorded immunities, so this is a zone where the mercenary earns his keep rather than one you clear untouched.",
       minTier: "early-hell",
       rating: 4,
     },
@@ -590,7 +590,7 @@ export const fireballMeteorSorceress: Build = {
   ],
 
   immunityPlan:
-    "Fire is the most commonly resisted element in Hell, and **Fire Mastery does not help** — it gives 30% damage at level 1 and +7% per level, raising your output rather than lowering their resistance. There are three honest answers and you should pick one before Act 3 rather than during it. **A Flame Rift sunder charm** breaks fire immunity directly and costs 70 to 90 points of your own fire resistance, which in a difficulty that already applies −100 is a serious price. **Infinity on the mercenary** breaks many fire immunities through Conviction with no penalty to you, and costs a Ber and a Jah. **Choosing zones** is legitimate and free: Stony Tomb, the Ancient Tunnels and Mephisto are all light on fire immunity, and the farming list above is ordered accordingly. **Static Field** is not an immunity answer but it is a boss answer — it takes a quarter of current life regardless of what the target resists.",
+    "Fire is the most commonly resisted element in Hell, and **Fire Mastery does not help** — it gives 30% damage at level 1 and +7% per level, raising your output rather than lowering their resistance. There are three honest answers and you should pick one before Act 3 rather than during it. **A Flame Rift sunder charm** breaks fire immunity directly and costs 70 to 90 points of your own fire resistance, which in a difficulty that already applies −100 is a serious price. **Infinity on the mercenary** breaks many fire immunities through Conviction with no penalty to you, and costs a Ber and a Jah. **Choosing zones** is legitimate and free, and the farming list above is ordered accordingly — though there is no fire-free zone on this site to choose, and the areas this build farms most all record fire among their immunities. **Static Field** is not an immunity answer but it is a boss answer — it takes a quarter of current life regardless of what the target resists.",
 
   hardcoreNotes:
     "One of the more survivable Sorceress builds, for an unglamorous reason: Meteor is cast at a distance and Fire Ball travels, so you spend less time near what you are killing than a Blizzard or Nova Sorceress does. The dangers are the class's, not the build's — no block, the smallest life pool in the game, and death by being interrupted. Take Chains of Honor over Enigma, treat 60% Faster Hit Recovery as required, keep Frost Nova on a key as a panic button, and use a Call to Arms swap before anything dangerous.",

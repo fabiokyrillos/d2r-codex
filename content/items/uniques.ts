@@ -1329,7 +1329,7 @@ export const uniques: UniqueItem[] = [
       confidence: "verified",
     },
     notes:
-      "The cheapest of the six to carry in practice, because cold damage in Hell mostly arrives as a chill rather than as the thing that kills you. It is what turns the Ancient Tunnels — area level 85, and full of cold immunes — into a zone a cold build can actually farm.",
+      "The cheapest of the six to carry in practice, because cold damage in Hell mostly arrives as a chill rather than as the thing that kills you. It is what turns the Pit and the Worldstone Keep — both area level 85, and both recording cold among their immunities — into zones a cold build can farm rather than pick around.",
     confidence: "verified",
   },
   {

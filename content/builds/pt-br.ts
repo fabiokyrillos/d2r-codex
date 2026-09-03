@@ -2488,7 +2488,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "pit-hell":
         "Nível de área 85 e curta. Alguns imunes a fogo, que é para o que serve a metade do Zeal.",
       "ancient-tunnels-hell":
-        "Nível de área 85 e cheia de imunes a frio, o que não te afeta em nada.",
+        "Nível de área 85 e um trajeto curto. Fogo está entre as imunidades registradas dela, então a aura não faz nada contra parte da população e é o dano da sua arma que mata esses — e é por isso que a metade física desta build não é opcional.",
       "chaos-sanctuary-hell":
         "Densa, mas cheia de demônios resistentes a fogo e com Iron Maiden dos Oblivion Knights, que reflete o seu Zeal. Possível, não confortável.",
       "travincal-hell":
@@ -3011,7 +3011,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "fire-wall": "**O Meteor exige Fire Ball e Fire Wall.** O Fire Wall é a metade que a maioria dos guias omite, e ele custa uma cadeia de três pontos a partir do Inferno.",
     },
     immunityPlan:
-      "Fogo é o elemento mais resistido do Hell, e **a Fire Mastery não ajuda** — ela dá 30% de dano no nível 1 e +7% por nível, aumentando a sua saída em vez de baixar a resistência deles. Existem três respostas honestas e você deve escolher uma antes do Ato 3, não durante. **Um sunder charm Flame Rift** quebra imunidade a fogo diretamente e custa de 70 a 90 pontos da sua própria resistência a fogo, o que numa dificuldade que já aplica −100 é um preço sério. **Infinity no mercenário** quebra muitas imunidades a fogo via Conviction sem penalidade para você, e custa uma Ber e uma Jah. **Escolher zonas** é legítimo e de graça: Stony Tomb, Ancient Tunnels e Mephisto são todos leves em imunidade a fogo, e a lista de farming acima está ordenada de acordo. O **Static Field** não é resposta para imunidade, mas é resposta para boss — ele tira um quarto da vida atual independentemente do que o alvo resiste.",
+      "Fogo é o elemento mais resistido do Hell, e **a Fire Mastery não ajuda** — ela dá 30% de dano no nível 1 e +7% por nível, aumentando a sua saída em vez de baixar a resistência deles. Existem três respostas honestas e você deve escolher uma antes do Ato 3, não durante. **Um sunder charm Flame Rift** quebra imunidade a fogo diretamente e custa de 70 a 90 pontos da sua própria resistência a fogo, o que numa dificuldade que já aplica −100 é um preço sério. **Infinity no mercenário** quebra muitas imunidades a fogo via Conviction sem penalidade para você, e custa uma Ber e uma Jah. **Escolher zonas** é legítimo e de graça, e a lista de farming acima está ordenada de acordo — embora não exista neste site uma zona livre de fogo para escolher, e as áreas que esta build mais farma registrem fogo entre as imunidades delas. O **Static Field** não é resposta para imunidade, mas é resposta para boss — ele tira um quarto da vida atual independentemente do que o alvo resiste.",
     mercenaryNotes:
       "Mercenário do Ato 2 com **Might**, e um **Insight** na polearm dele o quanto antes — a Meditation resolve de vez a mana de uma Sorceress por quatro runas comuns. Depois, o **Infinity** é a alternativa a carregar um Sunder Charm: a aura de Conviction dele quebra muitas imunidades a fogo sem te custar 70 a 90 pontos da sua própria resistência a fogo. Dê um **Vampire Gaze** enquanto isso.",
     farmingWhy: {
@@ -3025,7 +3025,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "pit-hell":
         "Nível de área 85 e curta. Alguns imunes a fogo, que é para o que serve o seu Sunder Charm ou Infinity.",
       "ancient-tunnels-hell":
-        "Nível de área 85 e cheia de imunes a frio, o que não te afeta em nada.",
+        "Nível de área 85 e compacta. Fogo está entre as imunidades registradas dela, então esta é uma zona em que o mercenário justifica o salário, e não uma que você limpa sem ser incomodada.",
       "chaos-sanctuary-hell":
         "Densa e de nível alto, mas boa parte resiste a fogo. Confortável só depois de a imunidade estar resolvida.",
     },
@@ -3236,7 +3236,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Imunes a frio existem e a Cold Mastery não os quebra, só reduz resistência do que não é imune",
       "Dano de alvo único é modesto; bosses demoram",
       "Vida baixa, sem bloqueio, e nenhuma camada defensiva além do Teleport e do congelamento",
-      "Os Ancient Tunnels, uma das melhores zonas de nível 85, são cheios de imunes a frio",
+      "Um tipo de dano só, então um imune a frio de verdade é uma parede e não uma lentidão — o Pit e o Worldstone Keep são onde este site os registra",
     ],
     flexPoints: [
       "**Os pontos restantes vão para o Glacial Spike**, que é ao mesmo tempo uma terceira sinergia e o melhor botão de emergência da árvore de frio.",
@@ -3282,7 +3282,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "**Pré-requisito do Frozen Orb**, então este ponto é obrigatório. Também é uma build inteira — veja a página da Blizzard Sorceress se o estilo de colocar no chão te agradar mais que o orb que viaja.",
     },
     immunityPlan:
-      "Builds de frio encontram menos paredes que as de fogo ou raio, e vale entender por quê. **A Cold Mastery reduz a resistência a frio do inimigo em 20% no nível 1 e mais 5% por nível**, enquanto as masteries de fogo e raio aumentam o seu próprio dano. Contra qualquer coisa que não seja de fato imune, isso significa que o seu dano continua acertando bem dentro do Hell sem um único item comprado para isso. **Mas ela não quebra imunidade verdadeira**: redução de resistência é aplicada com um quinto da eficácia contra um monstro já imune, então uma Cold Mastery maximizada vale cerca de −20% contra algo em 110%, o que está longe de bastar. As respostas contra imunes a frio de verdade são um sunder charm **Cold Rupture** ao custo de 70 a 90 pontos da sua própria resistência a frio, **o dano físico do seu mercenário**, ou **pular** — que numa build de farm costuma ser o certo. Os Ancient Tunnels são o único lugar em que essa escolha realmente custa caro, e a lista de farming acima está avaliada de acordo.",
+      "Builds de frio encontram menos paredes que as de fogo ou raio, e vale entender por quê. **A Cold Mastery reduz a resistência a frio do inimigo em 20% no nível 1 e mais 5% por nível**, enquanto as masteries de fogo e raio aumentam o seu próprio dano. Contra qualquer coisa que não seja de fato imune, isso significa que o seu dano continua acertando bem dentro do Hell sem um único item comprado para isso. **Mas ela não quebra imunidade verdadeira**: redução de resistência é aplicada com um quinto da eficácia contra um monstro já imune, então uma Cold Mastery maximizada vale cerca de −20% contra algo em 110%, o que está longe de bastar. As respostas contra imunes a frio de verdade são um sunder charm **Cold Rupture** ao custo de 70 a 90 pontos da sua própria resistência a frio, **o dano físico do seu mercenário**, ou **pular** — que numa build de farm costuma ser o certo. O Pit e o Worldstone Keep são onde essa escolha custa caro, e a lista de farming acima está avaliada de acordo.",
     mercenaryNotes:
       "Mercenário do Ato 2 com **Might**, um **Insight** para a sua mana, e um **Vampire Gaze** para mantê-lo vivo. Diferente da Lightning Sorceress, esta build não precisa de um Infinity — a Cold Mastery já reduz a resistência a frio do inimigo, então o mercenário está ali pelo dano e pelos imunes a frio que você decidir não pular. **Treachery** na armadura dele é um upgrade barato cujo proc de Fade sobe muito as resistências dele.",
     farmingWhy: {
@@ -3297,7 +3297,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "mausoleum-hell":
         "Nível de área 85 densa e perto de um waypoint. Densidade é onde um projétil que viaja está no seu melhor.",
       "ancient-tunnels-hell":
-        "Nível de área 85 e uma das melhores zonas do jogo — mas muito imune a frio. Só vale com um charm Cold Rupture ou um mercenário que consiga carregar.",
+        "Nível de área 85 e uma das melhores zonas do jogo, com fogo e veneno entre as imunidades registradas, e não frio. A casa natural de uma build de frio, e esta não é exceção.",
     },
     levelingPath: {
       summary:
@@ -3414,7 +3414,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       optimized: {
         goal: "Dano de frio empilhado, e a escolha entre achar mais e matar mais rápido.",
         nextUpgrade:
-          "Facets de frio em todo socket, e um charm Cold Rupture se os Ancient Tunnels forem o que você quer farmar.",
+          "Facets de frio em todo socket, e um charm Cold Rupture se o Pit ou o Worldstone Keep forem o que você quer farmar.",
         picks: {
           "weapon-0": {
             why: "Até +30% de dano de skills de frio além dos +3 skills de Sorceress. O maior item de dano que esta build tem.",
@@ -3859,7 +3859,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "Nível de área 85 e curta. As salas abertas combinam com uma atacante à distância com Teleport.",
       "mausoleum-hell": "Nível de área 85 densa com corredores, que é o que a perfuração quer.",
       "ancient-tunnels-hell":
-        "Nível de área 85 e cheia de imunes a frio, o que não afeta nenhuma das duas metades do seu dano.",
+        "Nível de área 85 e rápida de limpar. Fogo está entre as imunidades registradas dela, e a metade física da arma encantada dá conta disso — o motivo de esta build carregar dois tipos de dano.",
       "chaos-sanctuary-hell":
         "Densa e de nível alto, mas boa parte resiste a fogo e o Iron Maiden dos Oblivion Knights reflete a metade física do seu dano. Possível, não confortável.",
     },
@@ -4324,7 +4324,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "**Os pontos restantes são a decisão real da build.** Sobram cerca de dezoito depois das quatro skills maximizadas e dos pré-requisitos, e eles vão para as sinergias da metade que você de fato usa mais. **Ice Bolt e Ice Blast** sobem o Frozen Orb; **Fire Bolt** sobe o Meteor. Dividir igualmente é a única opção claramente pior que as alternativas.",
-      "**Prefira frio se você está farmando**, porque a Cold Mastery mantém a metade de frio relevante sem ajuda. Prefira fogo se você encontra imunes a frio especificamente — os Ancient Tunnels são o caso óbvio.",
+      "**Prefira frio se você está farmando**, porque a Cold Mastery mantém a metade de frio relevante sem ajuda. Prefira fogo se você encontra imunes a frio especificamente — o Pit e o Worldstone Keep são as zonas que este site registra com eles.",
       "**Variante de magic find:** a build é barata o bastante para o orçamento de equipamento ir para magic find sem custar muito. Mesmo plano de skills.",
       "**Não coloque pontos em Energy.** Warmth e um mercenário com Insight bastam.",
     ],
@@ -4381,7 +4381,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "pit-hell":
         "Nível de área 85 e curta, e o que resiste a um elemento lá não resiste ao outro.",
       "ancient-tunnels-hell":
-        "Nível de área 85 e muito imune a frio — que é exatamente a zona para a qual uma build dividida existe. O Meteor lida com o que o Frozen Orb não consegue.",
+        "Nível de área 85, e fogo está entre as imunidades registradas dela, e não frio — que é exatamente a zona para a qual uma build dividida existe. O Frozen Orb lida com o que o Meteor não consegue.",
       "mausoleum-hell": "Nível de área 85 densa perto de um waypoint.",
       "countess-hell": "Runas, curta, e nada lá para as duas metades.",
       "andariel-hell":
@@ -4619,7 +4619,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "Defesa e congelamento em quem te ataca, somando com o congelamento que você já está aplicando.",
     },
     immunityPlan:
-      "Um tipo de dano e nenhuma alternativa, que é o custo da simplicidade da build. **A Cold Mastery reduz a resistência a frio do inimigo em 20% no nível 1 mais 5% por nível**, o que mantém o dano relevante contra qualquer coisa resistente mas não imune — e isso cobre a maior parte do Hell. Contra um imune a frio de verdade ela quase não faz nada, porque redução de resistência é aplicada com um quinto da eficácia depois que um monstro já é imune. As respostas reais são um sunder charm **Cold Rupture** ao custo de 70 a 90 pontos da sua própria resistência a frio, um **Infinity** no mercenário, ou **escolher zonas** — e para uma build cujas melhores áreas são o cow level, o Mausoleum e o Worldstone Keep, escolher zonas costuma bastar. Os Ancient Tunnels estão avaliados em 1 acima exatamente por isso.",
+      "Um tipo de dano e nenhuma alternativa, que é o custo da simplicidade da build. **A Cold Mastery reduz a resistência a frio do inimigo em 20% no nível 1 mais 5% por nível**, o que mantém o dano relevante contra qualquer coisa resistente mas não imune — e isso cobre a maior parte do Hell. Contra um imune a frio de verdade ela quase não faz nada, porque redução de resistência é aplicada com um quinto da eficácia depois que um monstro já é imune. As respostas reais são um sunder charm **Cold Rupture** ao custo de 70 a 90 pontos da sua própria resistência a frio, um **Infinity** no mercenário, ou **escolher zonas** — e para uma build cujas melhores áreas são o cow level, os Ancient Tunnels e o Mausoleum, escolher zonas costuma bastar. A lista de farming acima está ordenada com isso em mente.",
     mercenaryNotes:
       "Mercenário do Ato 2 com **Might** pelo dano, um **Insight** pela mana, e **Treachery** mais um **Vampire Gaze** para mantê-lo de pé — ele está no meio do grupo com você. **Holy Freeze** é a aura alternativa e ela combina conceitualmente com o que você já faz: tudo desacelerado fica mais tempo dentro do seu anel. Depois, um **Infinity** nele é a única resposta real contra imunes a frio fora um Sunder Charm.",
     farmingWhy: {
@@ -4634,7 +4634,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "chaos-sanctuary-hell":
         "Densa e de nível alto. O Static Field lida com os bosses dos Seals que o seu anel não consegue explodir.",
       "ancient-tunnels-hell":
-        "Nível de área 85 e muito imune a frio — a única grande zona que esta build não consegue usar sem um Cold Rupture.",
+        "Nível de área 85, estreita, e as imunidades registradas dela são fogo e veneno, não frio. Corredores são onde uma nova de curto alcance quer lutar, e nada nesta resiste a ela.",
     },
     levelingPath: {
       summary:
@@ -4709,7 +4709,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       budget: {
         goal: "Farm rápido de Terror Zones e de áreas densas.",
         nextUpgrade:
-          "Nightwing's Veil e facets de frio, ou um Cold Rupture se você quiser os Ancient Tunnels.",
+          "Nightwing's Veil e facets de frio, ou um Cold Rupture se você quiser o Pit e o Worldstone Keep.",
         picks: {
           "weapon-0": {
             why: "+3 skills de Sorceress, 30% de velocidade, +20 em todas as resistências e 50% de magic find — as resistências importam numa build sem distância.",

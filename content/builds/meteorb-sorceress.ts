@@ -125,7 +125,7 @@ export const meteorbSorceress: Build = {
   ],
   flexPoints: [
     "**The remaining points are the build's real decision.** Roughly eighteen are left after the four maxed skills and the prerequisites, and they go into synergies for whichever half you actually use more. **Ice Bolt and Ice Blast** raise Frozen Orb; **Fire Bolt** raises Meteor. Splitting them evenly is the one option that is clearly worse than the alternatives.",
-    "**Favour cold if you are farming**, because Cold Mastery keeps the cold half relevant without help. Favour fire if you keep meeting cold immunes specifically — the Ancient Tunnels are the obvious case.",
+    "**Favour cold if you are farming**, because Cold Mastery keeps the cold half relevant without help. Favour fire if you keep meeting cold immunes specifically — the Pit and the Worldstone Keep are the zones on this site that record them.",
     "**Magic find variant:** the build is cheap enough that the gear budget goes to magic find without costing much. Same skill plan.",
     "**Do not put points in Energy.** Warmth and an Insight mercenary are enough.",
   ],
@@ -525,7 +525,7 @@ export const meteorbSorceress: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 and heavily cold immune — which is exactly the zone a split build exists for. Meteor handles what Frozen Orb cannot.",
+      why: "Area level 85, and fire is among its recorded immunities rather than cold — which is exactly the zone a split build exists for. Frozen Orb handles what Meteor cannot.",
       minTier: "early-hell",
       rating: 5,
     },

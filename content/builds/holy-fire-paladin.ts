@@ -572,7 +572,7 @@ export const holyFirePaladin: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 and cold-immune heavy, which does not affect you at all.",
+      why: "Area level 85 and a short route. Fire is among its recorded immunities, so the aura does nothing to part of the population and your weapon damage is what kills those — which is why the physical half of this build is not optional.",
       minTier: "budget",
       rating: 4,
     },

@@ -232,10 +232,33 @@ Nothing blocked a page, and two things were deliberately not published:
 2. **Set items are still not modelled**, so M'avina's Battle Hymn is described
    in prose on the Freezing Arrow page rather than given a page.
 
-One inconsistency was found and **not** corrected, because it is in another
-class's approved content: the Frozen Orb and Frost Nova pages describe the
-Ancient Tunnels as heavily cold immune, while the area entity records its
-immunities as fire and poison and the Blizzard page describes it as having
-almost no cold immunes. The area entity is the site's record and the Blizzard
-page agrees with it; the other two do not. Flagged here for a Sorceress pass to
-decide.
+One inconsistency was found and deferred, and the audit that followed showed it
+was larger than this section first recorded.
+
+The area entity gives the Ancient Tunnels `fire` and `poison`, and the Blizzard
+Sorceress page agrees — "essentially no cold immunes in the base population".
+This section originally named **two** pages that disagreed, Frozen Orb and Frost
+Nova. A sweep of all twenty-six builds found **eight**: those two plus Avenger,
+Enchant, Fireball/Meteor, Holy Fire, Meteorb, and — written *during this pass* —
+the Strafe Amazon, which called the zone "a cold build's problem zone" one click
+from the Freezing Arrow page calling it that build's natural home.
+
+That last one is the part worth keeping. The pass had a commit whose entire
+purpose was to stop Amazon farming prose contradicting the area entity, and the
+rule that came out of it compares each build's *own* damage types against the
+zone. A claim about somebody else's damage type slips straight through it, which
+is why a ninth instance was added by the commit series that was fixing the
+problem.
+
+All nine are corrected now, in both locales, in a commit kept separate from the
+Amazon fixes. Two ratings moved with the prose: Frozen Orb had the zone at 2 and
+Frost Nova at 1, both gated behind a Cold Rupture, and those numbers were the
+false claim in structured form — the same pages rate the Pit and the Mausoleum 4
+and 5 *with* a real cold clash. The Hammerdin page was read and left alone: "less
+of a standout here than for a cold build" asserts nothing about the population
+and is true.
+
+Two claims about *other* areas were noticed and deliberately not touched, being
+outside this correction's scope: the Fireball/Meteor page calls Stony Tomb and
+Mephisto "light on fire immunity" where the entity records fire in both. Flagged
+for a Sorceress pass.

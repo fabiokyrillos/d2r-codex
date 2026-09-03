@@ -340,7 +340,7 @@ export const frostNovaSorceress: Build = {
         { label: "Cold skill grand charms with life", why: "Damage and the life a centre-of-the-pack build needs." },
       ],
       weaponSwap: [{ ref: { kind: "runeword", slug: "call-to-arms" }, why: "Battle Orders. Not optional on this playstyle." }],
-      nextUpgrade: "Nightwing's Veil and cold facets, or a Cold Rupture if the Ancient Tunnels are what you want.",
+      nextUpgrade: "Nightwing's Veil and cold facets, or a Cold Rupture if the Pit and the Worldstone Keep are what you want.",
     },
 
     {
@@ -551,14 +551,14 @@ export const frostNovaSorceress: Build = {
     {
       area: "ancient-tunnels",
       difficulty: "hell",
-      why: "Area level 85 and heavily cold immune — the one great zone this build cannot use without a Cold Rupture.",
-      minTier: "optimized",
-      rating: 1,
+      why: "Area level 85, narrow, and its recorded immunities are fire and poison rather than cold. Corridors are where a short-range nova wants to fight, and nothing in this one resists it.",
+      minTier: "early-hell",
+      rating: 5,
     },
   ],
 
   immunityPlan:
-    "One damage type and no fallback, which is the cost of the build's simplicity. **Cold Mastery reduces enemy cold resistance by 20% at level 1 plus 5% per level**, which keeps the damage relevant against anything resistant but not immune — and that covers most of Hell. Against a true cold immune it does almost nothing, because resistance reduction applies at one fifth effectiveness once a monster is already immune. The real answers are a **Cold Rupture** sunder charm at the cost of 70 to 90 points of your own cold resistance, an **Infinity** on the mercenary, or **choosing zones** — and for a build whose best areas are the cow level, the Mausoleum and the Worldstone Keep, choosing zones is usually enough. The Ancient Tunnels are rated 1 above for exactly this reason.",
+    "One damage type and no fallback, which is the cost of the build's simplicity. **Cold Mastery reduces enemy cold resistance by 20% at level 1 plus 5% per level**, which keeps the damage relevant against anything resistant but not immune — and that covers most of Hell. Against a true cold immune it does almost nothing, because resistance reduction applies at one fifth effectiveness once a monster is already immune. The real answers are a **Cold Rupture** sunder charm at the cost of 70 to 90 points of your own cold resistance, an **Infinity** on the mercenary, or **choosing zones** — and for a build whose best areas are the cow level, the Ancient Tunnels and the Mausoleum, choosing zones is usually enough. The farming list above is ordered with that in mind.",
 
   hardcoreNotes:
     "Safer than the lightning Nova it resembles, and the difference is the freeze. Everything in your ring stops moving, which converts the most dangerous playstyle in the game into a manageable one — and unlike the Nova Sorceress you keep your shield, because nothing here needs a two-handed weapon. Take Chains of Honor over Enigma, treat 60% Faster Hit Recovery as the hard floor it is listed as, and keep Glacial Spike bound for the moments the ring is not enough.",
