@@ -76,7 +76,7 @@ const SOURCE_REPO = "blizzhackers/d2data";
  * the tree on the class page, the tree on every build page, the sitemap entries
  * and the search index at once -- there is no second list to keep in step.
  */
-const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon" } as const;
+const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer" } as const;
 
 /**
  * The exact commit the shipped graph was extracted from.
@@ -679,7 +679,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "paladin" | "sorceress" | "amazon">;
+  readonly classSlug: Extract<ClassSlug, ${[...new Set(Object.values(classOf))].sort().map((c) => `"${c}"`).join(" | ")}>;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of \`tree\`. */
@@ -689,7 +689,7 @@ export interface SkillGraphNode {
   /** 1-based column, left to right. */
   readonly column: 1 | 2 | 3;
   readonly requiredLevel: number;
-  /** Hard-point cap. 20 for every Paladin and Sorceress skill. */
+  /** Hard-point cap. 20 for every skill extracted so far. */
   readonly maxLevel: number;
   /** Skills needing at least one point before this can be allocated. */
   readonly prerequisites: readonly Slug[];
