@@ -705,4 +705,120 @@ export const mechanics: MechanicArticle[] = [
     related: ["resistances-and-immunities"],
     confidence: "verified",
   },
+  {
+    slug: "curses",
+    name: "Curses",
+    category: "combat",
+    summary:
+      "One curse per monster, what each of the ten actually does, and why the argument is never which is strongest.",
+    keyFacts: [
+      "A monster carries exactly one curse. Casting a second replaces the first.",
+      "Attract is the exception: while it runs, **no** curse can be applied to that target at all.",
+      "Against a monster immune to the resistance a curse lowers, the curse works at **one fifth** strength.",
+      "Dim Vision and Terror are the only two curses whose duration is divided by the difficulty — by 2 in Nightmare and by 4 in Hell.",
+      "A monster's Curse Resistance shortens the duration in proportion, and at 100 or more the curse does not land at all.",
+    ],
+    body: [
+      { type: "heading", text: "One slot" },
+      {
+        type: "paragraph",
+        text: "Every curse writes into the same place on the monster. Casting Decrepify over Amplify Damage does not add to it; it replaces it. That single rule is the whole shape of the tree — ten skills competing for one slot — and it is why the useful question is never which curse is strongest but which one you are giving up to cast this one.",
+      },
+      {
+        type: "list",
+        items: [
+          "Recasting **the same** curse at the same effective level refreshes its duration.",
+          "Casting it at a **lower** effective level than the one already on the target does nothing at all — a Necromancer whose curse level dropped when they swapped gear cannot overwrite their own better curse.",
+          "**Attract locks the slot.** While it is on a monster, no curse can be applied — not Amplify Damage, and not another Attract.",
+        ],
+      },
+      { type: "heading", text: "Immunity cuts a curse to one fifth" },
+      {
+        type: "paragraph",
+        text: "Where a curse lowers a resistance, and the target's **base** value of that resistance is 100 or more, the game divides the curse's effect by five. It is the same one-fifth rule the Sorceress's masteries run into, and it applies per stat rather than per skill.",
+      },
+      {
+        type: "table",
+        headers: ["Curse", "Full effect", "Against something immune to that stat"],
+        rows: [
+          ["Amplify Damage", "−100 physical damage resistance", "−20, which breaks a monster sitting at exactly 100%"],
+          ["Decrepify", "−50 physical damage resistance", "−10, which does not break a 100% immunity"],
+          ["Lower Resist", "−25% up to −70% fire, cold, lightning and poison resistance", "A fifth of that, against the element the monster is immune to"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "This is the one place the choice is not a judgement call",
+        text: "Against a physical immune, Amplify Damage breaks the immunity and Decrepify does not. Everywhere else the two are a real trade — Amplify doubles your damage against an unresisting target while Decrepify multiplies it by 1.5 and slows, weakens and hobbles the target as well.",
+      },
+      { type: "heading", text: "The ten, with their numbers" },
+      {
+        type: "paragraph",
+        text: "Radius and duration at one hard point and at twenty. The durations are the Normal-difficulty figures; Dim Vision and Terror are shorter elsewhere, and nothing else is.",
+      },
+      {
+        type: "table",
+        headers: ["Curse", "Radius", "Duration", "What it does"],
+        rows: [
+          ["Amplify Damage", "3 → 22", "8s → 65s", "−100 physical damage resistance"],
+          ["Dim Vision", "4 → 23", "7s → 45s", "Blinds: the monster stops chasing and stops shooting"],
+          ["Weaken", "9 → 28", "14s → 59.6s", "−33% → −52% physical damage dealt"],
+          ["Iron Maiden", "7", "12s → 57.6s", "Returns 200% → 675% of melee damage to the attacker"],
+          ["Terror", "4", "8s → 27s", "The monster flees"],
+          ["Confuse", "6 → 25", "10s → 48s", "The monster attacks whatever is nearest, including its own pack"],
+          ["Life Tap", "4 → 23", "16s → 61.6s", "50% of physical damage dealt to it returns as life"],
+          ["Attract", "9", "12s → 80.4s", "Everything nearby attacks the cursed monster"],
+          ["Decrepify", "6", "4s → 15.4s", "−50% movement, attack speed, damage dealt and physical resistance"],
+          ["Lower Resist", "7 → 26", "20s → 58s", "−25% up to −70% fire, cold, lightning and poison resistance"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        title: "Radius is in the game's own unit, and it is not Corpse Explosion's",
+        text: "A curse's radius parameters are named only \"Radius\" and the engine uses them exactly as they stand. Corpse Explosion's are named \"half squares\" and the engine halves them first. The two are different units with the same-looking numbers, so no shared conversion to yards is applied to either.",
+      },
+      { type: "heading", text: "Difficulty, and the two curses it shortens" },
+      {
+        type: "paragraph",
+        text: "Dim Vision and Terror both work by changing what a monster's AI is doing, and both have their duration divided by the difficulty's curse divisor: 1 in Normal, 2 in Nightmare, 4 in Hell. Dim Vision at one point lasts 7 seconds in Normal and under 2 in Hell. Every other curse in the tree lasts the same everywhere.",
+      },
+      { type: "heading", text: "Bosses" },
+      {
+        type: "paragraph",
+        text: "A monster can carry a Curse Resistance stat. Where it does, the curse's duration is reduced in proportion to it, and at 100 or more the curse does not land at all. This is the mechanism behind curses feeling unreliable on the things you most want them on, and it is a property of the monster rather than of the curse.",
+      },
+      { type: "heading", text: "Which one, and when" },
+      {
+        type: "paragraph",
+        text: "There is no strongest curse, and a guide that names one is answering a different question than the one the slot poses. What there is, is a shortlist per situation:",
+      },
+      {
+        type: "list",
+        items: [
+          "**Clearing with physical damage** — Amplify Damage. It is the largest physical multiplier in the game and one point is enough.",
+          "**Something dangerous** — Decrepify. Slower, weaker and easier to hit is worth more than a bigger number on a monster that is about to kill you.",
+          "**A physical immune** — Amplify Damage, and only Amplify Damage. Decrepify's cut becomes 10 points and does not break it.",
+          "**An elemental build, or any poison build** — Lower Resist. It is the only thing in the class that lowers poison resistance, and poison has no Mastery.",
+          "**A melee party** — Life Tap. Half the damage dealt comes back as life, for everyone hitting the target.",
+          "**Uber Tristram** — Iron Maiden, which kills things far above your own damage output.",
+          "**Being overwhelmed as a Summoner** — Dim Vision. A blinded pack stops shooting and stops chasing, which is worth more than any amount of damage while the army catches up.",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "Curses arrive from outside the class too",
+        text: "A Reaper's Toll casts Decrepify on striking and a Dracul's Grasp casts Life Tap, which is why both turn up on characters with no Necromancer anywhere near them. The one-slot rule still applies: a mercenary's Decrepify overwrites your Amplify Damage exactly as another Necromancer's would.",
+      },
+      { type: "heading", text: "Where this comes from" },
+      {
+        type: "paragraph",
+        text: "The radii, durations and magnitudes are the curses' own columns in the pinned game-data extraction. The one-slot rule, the Attract exception, the one-fifth immunity divisor, the refresh-and-do-not-downgrade behaviour and the Curse Resistance cut-off are read from the reference implementation of the legacy engine — the Diablo II that predates Resurrected. The difficulty divisor comes from the game's own difficulty table.",
+      },
+    ],
+    related: ["resistances-and-immunities", "corpse-explosion"],
+    confidence: "verified",
+  },
 ];

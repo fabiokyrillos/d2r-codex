@@ -587,4 +587,116 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
       },
     ],
   },
+  curses: {
+    name: "Curses",
+    summary:
+      "Uma maldição por monstro, o que cada uma das dez faz de verdade, e por que a discussão nunca é qual delas é a mais forte.",
+    keyFacts: [
+      "Um monstro carrega exatamente uma maldição. Lançar a segunda substitui a primeira.",
+      "O Attract é a exceção: enquanto ele dura, **nenhuma** maldição pode ser aplicada àquele alvo.",
+      "Contra um monstro imune à resistência que a maldição reduz, ela entra com **um quinto** da força.",
+      "Dim Vision e Terror são as duas únicas maldições cuja duração é dividida pela dificuldade — por 2 no Nightmare e por 4 no Hell.",
+      "A Curse Resistance do monstro encurta a duração na proporção dela, e a partir de 100 a maldição simplesmente não entra.",
+    ],
+    body: [
+      { type: "heading", text: "Um espaço só" },
+      {
+        type: "paragraph",
+        text: "Toda maldição escreve no mesmo lugar do monstro. Lançar Decrepify por cima de Amplify Damage não soma; substitui. Essa regra única é o formato inteiro da árvore — dez skills disputando um espaço — e é por isso que a pergunta útil nunca é qual maldição é a mais forte, e sim qual você está abrindo mão de usar para lançar esta.",
+      },
+      {
+        type: "list",
+        items: [
+          "Relançar **a mesma** maldição no mesmo nível efetivo renova a duração.",
+          "Lançá-la num nível efetivo **menor** que o da que já está no alvo não faz absolutamente nada — um Necromancer cujo nível de maldição caiu ao trocar de equipamento não consegue sobrescrever a própria maldição melhor.",
+          "**O Attract tranca o espaço.** Enquanto ele está num monstro, nenhuma maldição pode ser aplicada — nem Amplify Damage, nem outro Attract.",
+        ],
+      },
+      { type: "heading", text: "Imunidade corta a maldição para um quinto" },
+      {
+        type: "paragraph",
+        text: "Quando uma maldição reduz uma resistência e o valor **base** dessa resistência no alvo é 100 ou mais, o jogo divide o efeito da maldição por cinco. É a mesma regra de um quinto que as masteries da Sorceress encontram, e ela vale por atributo, não por skill.",
+      },
+      {
+        type: "table",
+        headers: ["Maldição", "Efeito cheio", "Contra algo imune àquele atributo"],
+        rows: [
+          ["Amplify Damage", "−100 de resistência a dano físico", "−20, o que quebra um monstro parado em exatamente 100%"],
+          ["Decrepify", "−50 de resistência a dano físico", "−10, o que não quebra uma imunidade de 100%"],
+          ["Lower Resist", "−25% até −70% de resistência a fogo, frio, raio e veneno", "Um quinto disso, contra o elemento ao qual o monstro é imune"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "É o único lugar onde a escolha não é questão de gosto",
+        text: "Contra um imune a físico, o Amplify Damage quebra a imunidade e o Decrepify não. Em todo o resto os dois são uma troca de verdade — o Amplify dobra o seu dano contra um alvo que não resiste, enquanto o Decrepify o multiplica por 1,5 e ainda desacelera, enfraquece e trava o alvo.",
+      },
+      { type: "heading", text: "As dez, com os números delas" },
+      {
+        type: "paragraph",
+        text: "Raio e duração com um ponto duro e com vinte. As durações são as do Normal; Dim Vision e Terror são mais curtas nas outras dificuldades, e mais nada é.",
+      },
+      {
+        type: "table",
+        headers: ["Maldição", "Raio", "Duração", "O que faz"],
+        rows: [
+          ["Amplify Damage", "3 → 22", "8s → 65s", "−100 de resistência a dano físico"],
+          ["Dim Vision", "4 → 23", "7s → 45s", "Cega: o monstro para de perseguir e para de atirar"],
+          ["Weaken", "9 → 28", "14s → 59,6s", "−33% → −52% de dano físico causado"],
+          ["Iron Maiden", "7", "12s → 57,6s", "Devolve 200% → 675% do dano corpo a corpo ao atacante"],
+          ["Terror", "4", "8s → 27s", "O monstro foge"],
+          ["Confuse", "6 → 25", "10s → 48s", "O monstro ataca o que estiver mais perto, inclusive o próprio grupo"],
+          ["Life Tap", "4 → 23", "16s → 61,6s", "50% do dano físico causado a ele volta como vida"],
+          ["Attract", "9", "12s → 80,4s", "Tudo por perto ataca o monstro amaldiçoado"],
+          ["Decrepify", "6", "4s → 15,4s", "−50% de movimento, velocidade de ataque, dano causado e resistência física"],
+          ["Lower Resist", "7 → 26", "20s → 58s", "−25% até −70% de resistência a fogo, frio, raio e veneno"],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        title: "O raio está na unidade do próprio jogo, e não é a do Corpse Explosion",
+        text: "Os parâmetros de raio de uma maldição se chamam apenas \"Radius\" e o motor os usa exatamente como estão. Os do Corpse Explosion se chamam \"meios quadrados\" e o motor os divide por dois antes. São unidades diferentes com números parecidos, então nenhuma conversão comum para jardas é aplicada a nenhuma das duas.",
+      },
+      { type: "heading", text: "A dificuldade, e as duas maldições que ela encurta" },
+      {
+        type: "paragraph",
+        text: "Dim Vision e Terror funcionam mudando o que a IA do monstro está fazendo, e as duas têm a duração dividida pelo divisor de maldição da dificuldade: 1 no Normal, 2 no Nightmare, 4 no Hell. Dim Vision com um ponto dura 7 segundos no Normal e menos de 2 no Hell. Todas as outras maldições da árvore duram o mesmo em qualquer lugar.",
+      },
+      { type: "heading", text: "Chefes" },
+      {
+        type: "paragraph",
+        text: "Um monstro pode carregar um atributo de Curse Resistance. Onde ele existe, a duração da maldição é reduzida na proporção dele, e a partir de 100 a maldição não entra de jeito nenhum. É esse o mecanismo por trás da sensação de que as maldições são pouco confiáveis exatamente nas coisas em que você mais as quer, e é uma propriedade do monstro, não da maldição.",
+      },
+      { type: "heading", text: "Qual delas, e quando" },
+      {
+        type: "paragraph",
+        text: "Não existe maldição mais forte, e um guia que aponte uma está respondendo a uma pergunta diferente da que o espaço único propõe. O que existe é uma lista curta por situação:",
+      },
+      {
+        type: "list",
+        items: [
+          "**Limpando com dano físico** — Amplify Damage. É o maior multiplicador físico do jogo e um ponto basta.",
+          "**Algo perigoso** — Decrepify. Mais lento, mais fraco e mais fácil de acertar vale mais que um número maior num monstro que está prestes a te matar.",
+          "**Um imune a físico** — Amplify Damage, e só ele. O corte do Decrepify vira 10 pontos e não quebra a imunidade.",
+          "**Uma build elemental, ou qualquer build de veneno** — Lower Resist. É a única coisa da classe que reduz resistência a veneno, e veneno não tem Mastery.",
+          "**Um grupo corpo a corpo** — Life Tap. Metade do dano causado volta como vida, para todo mundo que estiver batendo no alvo.",
+          "**Uber Tristram** — Iron Maiden, que mata coisas muito acima do seu próprio dano.",
+          "**Estar sendo prensado como Summoner** — Dim Vision. Um grupo cegado para de atirar e para de perseguir, o que vale mais que qualquer quantidade de dano enquanto o exército chega.",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "Maldições chegam de fora da classe também",
+        text: "Um Reaper's Toll conjura Decrepify ao acertar e um Dracul's Grasp conjura Life Tap, e é por isso que os dois aparecem em personagens sem nenhum Necromancer por perto. A regra do espaço único continua valendo: o Decrepify de um mercenário sobrescreve o seu Amplify Damage exatamente como o de outro Necromancer sobrescreveria.",
+      },
+      { type: "heading", text: "De onde isto vem" },
+      {
+        type: "paragraph",
+        text: "Os raios, durações e magnitudes são as colunas das próprias maldições na extração fixada de dados do jogo. A regra do espaço único, a exceção do Attract, o divisor de um quinto por imunidade, o comportamento de renovar-mas-não-rebaixar e o corte por Curse Resistance vêm da implementação de referência do motor antigo — o Diablo II anterior ao Resurrected. O divisor por dificuldade vem da própria tabela de dificuldades do jogo.",
+      },
+    ],
+  },
 };

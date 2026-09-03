@@ -13,10 +13,12 @@ import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import { getClasses, getMechanics, getSkills } from "../lib/registry";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import {
+  FRAMES_PER_SECOND,
   damageAtLevel,
   damagePresentation,
   durationAtLevel,
   effectAtLevel,
+  roundTo,
   unclassifiedElementalAttacks,
 } from "../lib/skills";
 import {
@@ -475,9 +477,96 @@ console.log("\nWhat the pages say about Corpse Explosion");
 }
 
 // ===========================================================================
+console.log("\nThe curse table, against the graph it describes");
+// ===========================================================================
+
+/*
+ * A hand-written table of thirty numbers is a hand-written table of thirty
+ * numbers, in two languages, and nothing about being inside a prose article
+ * makes it self-checking. This reads the rows back out of the article and
+ * compares each one against the graph the skill pages render from, so the
+ * article cannot drift away from its own class.
+ *
+ * Radius is the number the game states and the engine uses as it stands — it is
+ * deliberately not converted, and Corpse Explosion's half-square parameter is
+ * deliberately not converted the same way. Duration is frames over 25.
+ */
+{
+  const CURSES = [
+    ["Amplify Damage", "amplify-damage"],
+    ["Dim Vision", "dim-vision"],
+    ["Weaken", "weaken"],
+    ["Iron Maiden", "iron-maiden"],
+    ["Terror", "terror"],
+    ["Confuse", "confuse"],
+    ["Life Tap", "life-tap"],
+    ["Attract", "attract"],
+    ["Decrepify", "decrepify"],
+    ["Lower Resist", "lower-resist"],
+  ] as const;
+
+  /** "3 → 22" or "7" or "8s → 65s" or "59,6s" -> [first, last] */
+  const pair = (cell: string): [number, number] => {
+    const parts = cell.split("→").map((p) => Number(p.replace(/[s\s]/g, "").replace(",", ".")));
+    return [parts[0], parts.length > 1 ? parts[1] : parts[0]];
+  };
+
+  const valueAt = (slug: string, labelKey: string, level: number) => {
+    const effect = (SKILL_GRAPH[slug].effects ?? []).find((e) => e.labelKey === labelKey);
+    return effect ? effectAtLevel(effect, level) : undefined;
+  };
+
+  for (const locale of LOCALES) {
+    const article = getMechanics(locale).find((a) => a.slug === "curses");
+    check(`${locale}: the curses article exists`, article !== undefined);
+    if (!article) continue;
+
+    const tables = article.body.filter((b) => b.type === "table");
+    const table = tables.find((t) => t.rows.length === CURSES.length);
+    check(
+      `${locale}: the article carries a row per curse`,
+      table !== undefined,
+      tables.map((t) => t.rows.length).join(", "),
+    );
+    if (!table) continue;
+
+    for (const [index, [name, slug]] of CURSES.entries()) {
+      const row = table.rows[index];
+      check(`${locale}: row ${index + 1} is ${name}`, row[0] === name, row[0]);
+
+      const [radiusOne, radiusTwenty] = pair(row[1]);
+      check(
+        `${locale}: ${name} radius ${row[1]} matches the graph`,
+        radiusOne === valueAt(slug, "effectRadius", 1) &&
+          radiusTwenty === valueAt(slug, "effectRadius", 20),
+        `${valueAt(slug, "effectRadius", 1)} / ${valueAt(slug, "effectRadius", 20)}`,
+      );
+
+      const [secondsOne, secondsTwenty] = pair(row[2]);
+      const framesToSeconds = (level: number) => {
+        const frames = valueAt(slug, "effectDuration", level);
+        return frames === undefined ? undefined : roundTo(frames / FRAMES_PER_SECOND, 1);
+      };
+      check(
+        `${locale}: ${name} duration ${row[2]} matches the graph`,
+        secondsOne === framesToSeconds(1) && secondsTwenty === framesToSeconds(20),
+        `${framesToSeconds(1)} / ${framesToSeconds(20)}`,
+      );
+    }
+  }
+
+  // Anti-vacuity: the parser must actually be able to reject something.
+  check(
+    "control: the cell parser reads both shapes",
+    pair("3 → 22").join() === "3,22" && pair("7").join() === "7,7" && pair("59,6s").join() === "59.6,59.6",
+    JSON.stringify([pair("3 → 22"), pair("7"), pair("59,6s")]),
+  );
+}
+
+// ===========================================================================
 console.log(
   failures.length === 0
-    ? `\n${passed} checks passed. Magnitudes, poison, mana, damage models and the Corpse Explosion claims are pinned.`
+    ? `\n${passed} checks passed. Magnitudes, poison, mana, damage models and the published claims are pinned.`
     : `\n${failures.length} FAILED of ${passed + failures.length}:`,
 );
 if (failures.length > 0) {
