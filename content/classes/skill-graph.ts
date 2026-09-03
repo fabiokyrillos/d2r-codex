@@ -44,7 +44,7 @@
  *   Critical Strike under no parameter at all -- those columns set the summon's
  *   own skill levels. Neither produces an edge. The Valkyrie's one real synergy
  *   is Decoy, under a parameter the game itself labels "HP % synergy".
- *   Extracted   90 skills (30 paladin, 30 sorceress, 30 amazon)
+ *   Extracted   120 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces
  *   this file exactly, or fails; it never silently follows the source forward.
@@ -54,7 +54,7 @@
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —
  *   the current D2R tables and the pre-D2R Lord of Destruction tables under
- *   `json/base/` — for 90 of 90 skills.
+ *   `json/base/` — for 120 of 120 skills.
  *
  *   These are two snapshots of different game versions from one extraction
  *   project, not two independent publishers. Their agreement shows the values
@@ -93,7 +93,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "paladin" | "sorceress" | "amazon">;
+  readonly classSlug: Extract<ClassSlug, "amazon" | "necromancer" | "paladin" | "sorceress">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of `tree`. */
@@ -103,7 +103,7 @@ export interface SkillGraphNode {
   /** 1-based column, left to right. */
   readonly column: 1 | 2 | 3;
   readonly requiredLevel: number;
-  /** Hard-point cap. 20 for every Paladin and Sorceress skill. */
+  /** Hard-point cap. 20 for every skill extracted so far. */
   readonly maxLevel: number;
   /** Skills needing at least one point before this can be allocated. */
   readonly prerequisites: readonly Slug[];
@@ -384,6 +384,186 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     prerequisites: ["plague-javelin"],
     synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [20, 30, 40, 50, 50] } },
     effects: [{ labelKey: "effectBolts", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1 } }],
+  },
+  "amplify-damage": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "dim-vision": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "weaken": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["amplify-damage"],
+    synergies: [],
+  },
+  "iron-maiden": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 3, column: 2,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["amplify-damage"],
+    synergies: [],
+  },
+  "terror": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["weaken"],
+    synergies: [],
+  },
+  "confuse": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["dim-vision"],
+    synergies: [],
+  },
+  "life-tap": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["iron-maiden"],
+    synergies: [],
+  },
+  "attract": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["confuse"],
+    synergies: [],
+  },
+  "decrepify": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["terror"],
+    synergies: [],
+  },
+  "lower-resist": {
+    classSlug: "necromancer", tree: "curses", page: 1, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["decrepify", "life-tap"],
+    synergies: [],
+  },
+  "teeth": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "bone-prison", kinds: ["damage"] }, { from: "bone-spear", kinds: ["damage"] }, { from: "bone-spirit", kinds: ["damage"] }, { from: "bone-wall", kinds: ["damage"] }], damage: { element: "mag", hitShift: 7, min: { base: 4, bands: [2, 2, 3, 4, 5] }, max: { base: 8, bands: [2, 3, 4, 5, 6] } },
+  },
+  "bone-armor": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "bone-prison", kinds: ["absorb"] }, { from: "bone-wall", kinds: ["absorb"] }],
+  },
+  "poison-dagger": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "poison-explosion", kinds: ["damage"] }, { from: "poison-nova", kinds: ["damage"] }], damage: { element: "pois", hitShift: 1, min: { base: 18, bands: [10, 15, 20, 23, 26] }, max: { base: 40, bands: [10, 15, 20, 23, 26] }, duration: { base: 50, perLevel: 10 }, overTime: true },
+  },
+  "corpse-explosion": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["teeth"],
+    synergies: [],
+  },
+  "bone-wall": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["bone-armor"],
+    synergies: [{ from: "bone-armor", kinds: ["hp"] }, { from: "bone-prison", kinds: ["hp"] }],
+  },
+  "poison-explosion": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["corpse-explosion", "poison-dagger"],
+    synergies: [{ from: "poison-dagger", kinds: ["damage"] }, { from: "poison-nova", kinds: ["damage"] }], damage: { element: "pois", hitShift: 4, min: { base: 8, bands: [2, 4, 6, 8, 10] }, max: { base: 24, bands: [2, 4, 6, 8, 10] }, duration: { base: 50, perLevel: 10 }, overTime: true },
+  },
+  "bone-spear": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["corpse-explosion"],
+    synergies: [{ from: "bone-prison", kinds: ["damage"] }, { from: "bone-spirit", kinds: ["damage"] }, { from: "bone-wall", kinds: ["damage"] }, { from: "teeth", kinds: ["damage"] }], damage: { element: "mag", hitShift: 8, min: { base: 16, bands: [8, 9, 12, 18, 24] }, max: { base: 24, bands: [8, 9, 13, 19, 25] } },
+  },
+  "bone-prison": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["bone-spear", "bone-wall"],
+    synergies: [{ from: "bone-armor", kinds: ["hp"] }, { from: "bone-wall", kinds: ["hp"] }],
+  },
+  "poison-nova": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["poison-explosion"],
+    synergies: [{ from: "poison-dagger", kinds: ["damage"] }, { from: "poison-explosion", kinds: ["damage"] }], damage: { element: "pois", hitShift: 4, min: { base: 16, bands: [4, 6, 9, 14, 16] }, max: { base: 29, bands: [4, 6, 9, 14, 16] }, duration: { base: 50, perLevel: 0 }, overTime: true },
+  },
+  "bone-spirit": {
+    classSlug: "necromancer", tree: "poison-and-bone", page: 2, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["bone-spear"],
+    synergies: [{ from: "bone-prison", kinds: ["damage"] }, { from: "bone-spear", kinds: ["damage"] }, { from: "bone-wall", kinds: ["damage"] }, { from: "teeth", kinds: ["damage"] }], damage: { element: "mag", hitShift: 8, min: { base: 20, bands: [16, 17, 18, 19, 20] }, max: { base: 30, bands: [17, 18, 19, 20, 21] } },
+  },
+  "skeleton-mastery": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: ["raise-skeleton"],
+    synergies: [],
+  },
+  "raise-skeleton": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "clay-golem": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "blood-golem", kinds: ["hp"], magnitude: 5 }, { from: "fire-golem", kinds: ["damage"], magnitude: 6 }, { from: "iron-golem", kinds: ["armor"], magnitude: 35 }],
+  },
+  "golem-mastery": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["clay-golem"],
+    synergies: [],
+  },
+  "raise-skeletal-mage": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["raise-skeleton"],
+    synergies: [],
+  },
+  "blood-golem": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["clay-golem"],
+    synergies: [{ from: "clay-golem", kinds: ["attack-rating"], magnitude: 20 }, { from: "fire-golem", kinds: ["damage"], magnitude: 6 }, { from: "iron-golem", kinds: ["armor"], magnitude: 35 }],
+  },
+  "summon-resist": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["golem-mastery"],
+    synergies: [],
+  },
+  "iron-golem": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["blood-golem"],
+    synergies: [{ from: "blood-golem", kinds: ["hp"], magnitude: 5 }, { from: "clay-golem", kinds: ["attack-rating"], magnitude: 20 }, { from: "fire-golem", kinds: ["damage"], magnitude: 6 }],
+  },
+  "fire-golem": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["iron-golem"],
+    synergies: [{ from: "blood-golem", kinds: ["hp"], magnitude: 5 }, { from: "clay-golem", kinds: ["attack-rating"], magnitude: 20 }, { from: "iron-golem", kinds: ["armor"], magnitude: 35 }], damage: { element: "fire", hitShift: 8, min: { base: 10, bands: [9, 10, 11, 12, 13] }, max: { base: 27, bands: [10, 11, 12, 13, 14] } },
+  },
+  "revive": {
+    classSlug: "necromancer", tree: "summoning", page: 3, row: 6, column: 3,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["iron-golem", "raise-skeletal-mage"],
+    synergies: [],
   },
   "sacrifice": {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 1, column: 1,
