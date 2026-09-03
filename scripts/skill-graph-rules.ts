@@ -41,6 +41,52 @@ export const SLUG_OVERRIDES: Record<string, string> = {
 /** The single place a game identifier becomes a published slug. */
 
 
+/**
+ * The ceiling in a `min(expression, N)` calc column.
+ *
+ * Multiple Shot's arrow count was published with `cap: 24` written into the
+ * generator by hand, above a comment quoting the column it came from. The number
+ * was right and the provenance was a comment, which is the arrangement this
+ * repository does not otherwise accept: re-pinning `SOURCE_SHA` would have moved
+ * every other value in the graph and left this one behind, silently, still
+ * claiming to be extracted.
+ *
+ * So it is read. The game gives Multiple Shot `calc1 = "min(ln12,24)"` — `ln12`
+ * being "Param1 plus Param2 per level", the base and slope this already reads —
+ * and the cap is the literal beside it.
+ *
+ * **Only a literal.** Strafe's calc1 is `min(par3 + lvl - 1, par4)`, whose cap is
+ * a parameter rather than a number; that skill reads `Param4` directly and does
+ * not come through here. A column of that shape therefore fails rather than
+ * being quietly accommodated, because the two cases want different code and
+ * guessing which one a new skill meant is how a wrong cap ships.
+ *
+ * @param raw   the calc column, as the extraction gives it — quoted or not
+ * @param where the skill and column, for the error a broken assumption raises
+ */
+export function capFromMinCalc(raw: unknown, where: string): number {
+  if (typeof raw !== "string" || raw.trim() === "") {
+    throw new Error(
+      `${where}: the column is missing or empty, and the cap this effect publishes is read from it. ` +
+        `Either the extraction moved or this skill no longer caps its count.`,
+    );
+  }
+  // The extraction quotes its expressions; the quotes are part of the value.
+  const expression = raw
+    .trim()
+    .replace(/^"([\s\S]*)"$/, "$1")
+    .replace(/\s+/g, "");
+  const match = expression.match(/^min\(([^(),]+),(\d+)\)$/);
+  if (!match) {
+    throw new Error(
+      `${where}: reads "${expression}", which is not the min(expression, literal) shape a cap is ` +
+        `read from. A cap held in a parameter — Strafe's min(par3+lvl-1,par4) — is read from that ` +
+        `parameter instead; wire it up deliberately rather than widening this.`,
+    );
+  }
+  return Number(match[2]);
+}
+
 export interface GraphProblem {
   rule:
     | "authored-drift"

@@ -58,7 +58,7 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { allSkills } from "../content/classes";
-import { SLUG_OVERRIDES } from "./skill-graph-rules";
+import { SLUG_OVERRIDES, capFromMinCalc } from "./skill-graph-rules";
 
 const SOURCE_REPO = "blizzhackers/d2data";
 
@@ -315,8 +315,20 @@ const EFFECTS: Record<string, (s: RawSkill & Record<string, unknown>) => EffectS
   // Param1 baseline, Param2 per level. Passes 100%, which is correct for an
   // attack-rating bonus and would be a bug to clamp.
   penetrate: (s) => [{ labelKey: "effectAttackRating", unit: "percent", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } }],
-  // calc1: min(ln12, 24)
-  "multiple-shot": (s) => [{ labelKey: "effectArrows", unit: "count", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2), cap: 24 } }],
+  // calc1: min(ln12, 24) — the cap is read out of that column, not restated
+  // here. See `capFromMinCalc`, and why Strafe below does not use it.
+  "multiple-shot": (s) => [
+    {
+      labelKey: "effectArrows",
+      unit: "count",
+      shape: {
+        kind: "linear",
+        base: par(s, 1),
+        perLevel: par(s, 2),
+        cap: capFromMinCalc(s.calc1, `${s.skill} calc1`),
+      },
+    },
+  ],
   // calc1: min(par3 + lvl - 1, par4)
   strafe: (s) => [{ labelKey: "effectShots", unit: "count", shape: { kind: "linear", base: par(s, 3), perLevel: 1, cap: par(s, 4) } }],
   // calc1: par1 + lvl/par2 -- integer division, so a step rather than a slope.

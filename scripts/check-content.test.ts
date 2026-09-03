@@ -33,6 +33,7 @@ import { getBuilds, getFarmingAreas, getSkills } from "../lib/registry";
 import { DEFAULT_LOCALE } from "../lib/i18n/config";
 import type { Build, Skill, Slug } from "../lib/types";
 import {
+  capFromMinCalc,
   checkSkillGraph,
   requiredClosure,
   MAX_HARD_POINTS,
@@ -772,6 +773,60 @@ console.log("\nAmazon-pass rules, each planted against the real content");
       found.length === 1,
       JSON.stringify(found),
     );
+  }
+}
+
+// ===========================================================================
+console.log("\nCaps are read out of the calc column, not remembered");
+// ===========================================================================
+{
+  // The real column, exactly as the extraction gives it: quoted, no spaces.
+  check('the shipped column yields 24', capFromMinCalc('"min(ln12,24)"', "fixture") === 24);
+
+  /*
+   * The mutation that matters. If the cap were still hardcoded, changing the
+   * fixture would change nothing — this is the assertion that proves the number
+   * travels from the column rather than from memory.
+   */
+  check("a fixture with a different cap yields that cap", capFromMinCalc('"min(ln12,30)"', "f") === 30);
+  check("and another one, so 24 and 30 are not both special-cased",
+    capFromMinCalc('"min(ln12,7)"', "f") === 7);
+
+  // Shapes the extraction could legitimately hand over.
+  check("unquoted is accepted", capFromMinCalc("min(ln12,24)", "f") === 24);
+  check("whitespace is accepted", capFromMinCalc('" min( ln12 , 24 ) "', "f") === 24);
+
+  const throws = (raw: unknown) => {
+    try {
+      capFromMinCalc(raw, "fixture");
+      return null;
+    } catch (e) {
+      return (e as Error).message;
+    }
+  };
+  check("a missing column fails", throws(undefined) !== null);
+  check("an empty column fails", throws("") !== null);
+  check("a whitespace-only column fails", throws('"   "') !== null);
+  check("a non-numeric column fails", throws(24) !== null);
+  check("an expression with no min() fails", throws('"ln12"') !== null);
+  check("a min() with no cap fails", throws('"min(ln12)"') !== null);
+  // Strafe's shape: a cap held in a parameter. It must fail rather than be
+  // guessed at, and the message must say where that case is handled instead.
+  {
+    const message = throws('"min(par3 + lvl - 1, par4)"');
+    check("Strafe's parameter-held cap is refused", message !== null);
+    check("and the refusal names the parameter case", message?.includes("par4") === true, message ?? "");
+  }
+  check("a nested min() is refused rather than half-parsed", throws('"min(min(a,2),24)"') !== null);
+
+  // The committed graph is what all of that is for.
+  {
+    const node = SKILL_GRAPH["multiple-shot"];
+    const shape = node?.effects?.[0]?.shape as { kind: string; cap?: number } | undefined;
+    check("the shipped Multiple Shot node still caps at 24", shape?.cap === 24, JSON.stringify(shape));
+    // And Strafe is untouched by this change: its cap is Param4, still 10.
+    const strafe = SKILL_GRAPH["strafe"]?.effects?.[0]?.shape as { cap?: number } | undefined;
+    check("Strafe still caps at 10, read from its own parameter", strafe?.cap === 10, JSON.stringify(strafe));
   }
 }
 
