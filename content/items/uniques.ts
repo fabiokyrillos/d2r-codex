@@ -1622,4 +1622,131 @@ export const uniques: UniqueItem[] = [
       "Only 8 potion slots, which is its real cost. The damage-to-mana conversion is genuinely useful on a caster with no Energy investment — it turns incoming damage into spell casts.",
     confidence: "verified",
   },
+
+  // -------------------------------------------------------------------------
+  // Necromancer class items
+  //
+  // Decoded from `json/uniqueitems.json` joined to `json/weapons.json` and
+  // `json/armor.json` at the pinned commit, and checked against the column
+  // semantics in `scripts/item-rules.ts` — which these three exercise more
+  // thoroughly than anything else in the catalogue:
+  //
+  //   - `skilltab.par` is a tree index, not a skill id. Necromancer tabs are
+  //     6 (Curses), 7 (Poison and Bone) and 8 (Summoning), and those numbers
+  //     are also three Amazon skill ids.
+  //   - Arm of King Leoric carries TWO of them, naming two different trees.
+  //     Merging them into one line leaves something that reads complete.
+  //   - `gethit-skill` is min-is-chance, max-is-level, and Arm of King Leoric
+  //     has one of each shape: 5/10 and 10/2. Swapped, the second becomes
+  //     "2% chance of level 10", which is exactly as plausible.
+  //   - `mana/lvl` carries a raw parameter over a divisor of eight, the same
+  //     conversion that turns Harlequin Crest's par=12 into +1.5 life per level.
+  //
+  // One entity's public name differs from the extraction's, and one entity's
+  // stat block differs from every database listing. Both are documented at the
+  // point of use rather than silently reconciled.
+  // -------------------------------------------------------------------------
+  {
+    slug: "homunculus",
+    name: "Homunculus",
+    summary:
+      "+2 Necromancer skills and +2 Curses on a shield that blocks like a shield. The class's own answer to Spirit.",
+    quality: "unique",
+    base: "Heirophant Trophy",
+    category: "necromancer-head",
+    tier: "exceptional",
+    slots: ["offhand"],
+    requiredLevel: 42,
+    requiredStrength: 58,
+    maxSockets: 2,
+    stats: [
+      { text: "+2 to Necromancer Skill Levels", notable: true },
+      { text: "+2 to Curses (Necromancer Only)", notable: true },
+      { text: "+150-200% Enhanced Defense", variable: true },
+      { text: "+40% Increased Chance of Blocking", notable: true },
+      { text: "30% Faster Block Rate" },
+      { text: "All Resistances +40", notable: true },
+      { text: "Regenerate Mana 33%", notable: true },
+      { text: "+5 to Mana after each Kill" },
+      { text: "+20 to Energy" },
+    ],
+    drop: {
+      summary: "Area level 50+, from Nightmare onward. Common enough to find and cheap to buy.",
+      minMonsterLevel: 50,
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "**Four skill levels from one slot, and the +40% block is not decoration.** A Necromancer standing behind an army still gets hit by what walks past it, and this is the only class item that pays for that. All Resistances +40 covers most of Hell's −100 on its own, and Regenerate Mana 33% is the largest single mana-recovery line available to the class — which matters more than it sounds when rebuilding an army costs a full bar. **The +2 to Curses raises Amplify Damage and Decrepify together**, and neither wants hard points beyond the first, so this is where their levels come from.",
+    alternatives: [{ kind: "runeword", slug: "splendor" }],
+    confidence: "verified",
+  },
+  {
+    slug: "deaths-web",
+    name: "Death's Web",
+    summary:
+      "The only item in the game that lowers enemy poison resistance. A poison Necromancer's endgame, and nothing substitutes for it.",
+    quality: "unique",
+    base: "Unearthed Wand",
+    category: "wand",
+    tier: "elite",
+    slots: ["weapon"],
+    requiredLevel: 66,
+    requiredStrength: 25,
+    maxSockets: 2,
+    stats: [
+      { text: "-40-50% to Enemy Poison Resistance", variable: true, notable: true },
+      { text: "+2 to All Skills", notable: true },
+      { text: "+1-2 to Poison and Bone Skills (Necromancer Only)", variable: true, notable: true },
+      { text: "+7-12 Life after each Kill", variable: true },
+      { text: "+7-12 Mana after each Kill", variable: true },
+    ],
+    drop: {
+      summary:
+        "Area level 74+, so Hell only and only in the deepest zones. One of the least commonly found items in the game and priced accordingly.",
+      minMonsterLevel: 74,
+      tradeability: "very-rare",
+      confidence: "verified",
+    },
+    notes:
+      "**−40-50% to Enemy Poison Resistance exists nowhere else.** Poison has no Mastery, so a poison build's only other reduction is Lower Resist — and the two stack, which is the whole reason a Poison Nova Necromancer is a build rather than a novelty. Against a merely resistant monster this is the difference between a slow kill and a fast one; against a poison immune it is cut to one fifth like every other reduction and does not break the immunity.\n\n**One caution on the stat block.** The pinned extraction gives +2 to All Skills flat and carries no \"+% to Poison Skill Damage\" line at all. Community databases list +1-2 to All Skills and +40-50% Poison Skill Damage. This site publishes the extraction, as it does everywhere the two disagree; the difference is recorded in `docs/sources/README.md` and pinned in both directions so neither side can drift. If you want +% Poison Skill Damage, it comes from a Bramble.",
+    confidence: "verified",
+  },
+  {
+    slug: "arm-of-king-leoric",
+    name: "Arm of King Leoric",
+    summary:
+      "+2 to two whole skill trees and ten more levels across four named summoning skills. The levelling Summoner's wand, and it arrives at 36.",
+    quality: "unique",
+    base: "Tomb Wand",
+    category: "wand",
+    tier: "exceptional",
+    slots: ["weapon"],
+    requiredLevel: 36,
+    requiredStrength: 25,
+    maxSockets: 2,
+    stats: [
+      { text: "+2 to Summoning Skills (Necromancer Only)", notable: true },
+      { text: "+2 to Poison and Bone Skills (Necromancer Only)", notable: true },
+      { text: "+3 to Raise Skeleton (Necromancer Only)", notable: true },
+      { text: "+3 to Skeleton Mastery (Necromancer Only)", notable: true },
+      { text: "+2 to Raise Skeletal Mage (Necromancer Only)" },
+      { text: "+2 to Terror (Necromancer Only)" },
+      { text: "+10% Faster Cast Rate" },
+      { text: "10% Chance to cast level 2 Bone Prison when struck" },
+      { text: "5% Chance to cast level 10 Bone Spirit when struck" },
+      { text: "+1.25 to Mana per Character Level" },
+    ],
+    drop: {
+      summary:
+        "Area level 44+, which is late Nightmare. Common, cheap, and routinely handed to a new Necromancer.",
+      minMonsterLevel: 44,
+      tradeability: "common",
+      confidence: "verified",
+    },
+    notes:
+      "**Read the two tab lines together.** +2 to Summoning stacks with +3 to Raise Skeleton and +3 to Skeleton Mastery, so a level-36 character holding this is raising skeletons at five effective levels above their hard points and making them count at five above too — and the +2 to Poison and Bone raises Corpse Explosion's radius at the same time. Nothing else at this level does both halves of a Summoner at once.\n\nThe two procs fire when *you* are struck rather than when you strike, which suits a character who is not in melee: they are a defensive Bone Prison and an occasional Bone Spirit rather than a damage plan. **This wand is outgrown rather than replaced** — a White gives more to the bone tree and nothing to summoning, and the endgame answer is a rare or crafted wand with +3 to a summoning skill and +Necromancer skills.",
+    alternatives: [{ kind: "runeword", slug: "white" }],
+    confidence: "verified",
+  },
 ];

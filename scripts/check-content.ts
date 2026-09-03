@@ -89,11 +89,13 @@ import {
 } from "./amazon-rules";
 import {
   CHARGE_CONTROLS,
+  DEATHS_WEB_ABSENT_LINES,
   RUNEWORD_PROC_CONTROLS,
   RUNE_MOD_CONTROLS,
   SKILL_TABS,
   SKILL_TAB_CONTROLS,
   UNIQUE_PROC_CONTROLS,
+  checkAbsentLines,
   checkChargeLines,
   checkProcLines,
   checkRuneComposition,
@@ -766,6 +768,7 @@ console.log("\nCharges, skill tabs and rune composition:");
     ...checkChargeLines(catalogue, CHARGE_CONTROLS),
     ...checkSkillTabLines(catalogue, SKILL_TAB_CONTROLS, SKILL_TABS),
     ...checkRuneComposition(getRunewords(SOURCE), RUNE_MOD_CONTROLS),
+    ...checkAbsentLines(getUniques(SOURCE), "deaths-web", DEATHS_WEB_ABSENT_LINES),
   ];
   const rules = [
     "charge-line-swapped",

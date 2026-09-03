@@ -385,4 +385,28 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "As duas linhas por nível são o que faz ele escalar: no nível 90 o dano aumentado é 200% mais cerca de 180% adicionais, e o attack rating sobe outros 135. É também o arco que uma Bowazon mais socketa — seis sockets numa base elite com +1 skills é o caminho mais barato para empilhar joias de dano ou uma runa Amn para roubo de vida.",
   },
+  homunculus: {
+    summary:
+      "+2 em skills de Necromancer e +2 em Curses num escudo que bloqueia como escudo. A resposta da própria classe ao Spirit.",
+    dropSummary:
+      "Área de nível 50+, a partir do Nightmare. Comum o bastante para achar e barato de comprar.",
+    notes:
+      "**Quatro níveis de skill num slot só, e os +40% de bloqueio não são enfeite.** Um Necromancer parado atrás de um exército ainda leva pancada do que passa por ele, e este é o único item de classe que paga por isso. All Resistances +40 cobre sozinho a maior parte dos −100 do Hell, e Regenerate Mana 33% é a maior linha de recuperação de mana disponível para a classe — o que importa mais do que parece quando reconstruir um exército custa a barra inteira. **Os +2 em Curses aumentam Amplify Damage e Decrepify juntos**, e nenhuma das duas quer pontos duros além do primeiro, então é daqui que os níveis delas vêm.",
+  },
+  "deaths-web": {
+    summary:
+      "O único item do jogo que reduz a resistência a veneno do inimigo. O endgame de um Necromancer de veneno, e nada substitui.",
+    dropSummary:
+      "Área de nível 74+, então só no Hell e só nas zonas mais fundas. Um dos itens menos encontrados do jogo, e precificado de acordo.",
+    notes:
+      "**−40-50% de resistência a veneno do inimigo não existe em nenhum outro lugar.** Veneno não tem Mastery, então a única outra redução de uma build de veneno é o Lower Resist — e os dois empilham, que é a razão inteira de um Necromancer de Poison Nova ser uma build e não uma curiosidade. Contra um monstro apenas resistente isso é a diferença entre uma morte lenta e uma rápida; contra um imune a veneno é cortado para um quinto como toda redução e não quebra a imunidade.\n\n**Uma ressalva sobre o bloco de status.** A extração fixada dá +2 em todas as skills, fixo, e não carrega nenhuma linha de \"+% to Poison Skill Damage\". Bancos de dados da comunidade listam +1-2 em todas as skills e +40-50% de Poison Skill Damage. Este site publica a extração, como faz em todo lugar onde as duas discordam; a diferença está registrada em `docs/sources/README.md` e fixada nas duas direções para que nenhum dos lados escorregue. Se você quer +% Poison Skill Damage, ele vem de um Bramble.",
+  },
+  "arm-of-king-leoric": {
+    summary:
+      "+2 em duas árvores inteiras e mais dez níveis espalhados por quatro skills de invocação. A wand do Summoner em evolução, e ela chega no 36.",
+    dropSummary:
+      "Área de nível 44+, o que é o fim do Nightmare. Comum, barata, e entregue de rotina a um Necromancer novo.",
+    notes:
+      "**Leia as duas linhas de aba juntas.** Os +2 em Summoning empilham com os +3 em Raise Skeleton e os +3 em Skeleton Mastery, então um personagem de nível 36 segurando esta wand levanta esqueletos cinco níveis efetivos acima dos pontos duros dele e faz cada um valer cinco acima também — e os +2 em Poison and Bone aumentam o raio do Corpse Explosion ao mesmo tempo. Nada mais neste nível cobre as duas metades de um Summoner de uma vez.\n\nOs dois procs disparam quando *você* é atingido, e não quando você acerta, o que combina com um personagem que não está no corpo a corpo: são um Bone Prison defensivo e um Bone Spirit ocasional, não um plano de dano. **Esta wand é superada, não substituída** — um White dá mais para a árvore de osso e nada para a de invocação, e a resposta de endgame é uma wand rara ou craftada com +3 numa skill de invocação e +Necromancer skills.",
+  },
 };

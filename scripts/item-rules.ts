@@ -489,7 +489,75 @@ export const SKILL_TAB_CONTROLS: readonly SkillTabSpec[] = [
     max: 4,
   },
   { kind: "runeword", slug: "white", tab: 7, tabName: "Poison and Bone Skills", min: 3, max: 3 },
+  { kind: "unique", slug: "homunculus", tab: 6, tabName: "Curses", min: 2, max: 2 },
+  { kind: "unique", slug: "deaths-web", tab: 7, tabName: "Poison and Bone Skills", min: 1, max: 2 },
+  /*
+   * The two-tab case, and the reason `skilltab-collapsed` exists. Arm of King
+   * Leoric grants two different trees from two different `skilltab` properties,
+   * and "+2 to Summoning Skills" on its own reads as a complete item line.
+   */
+  {
+    kind: "unique",
+    slug: "arm-of-king-leoric",
+    tab: 8,
+    tabName: "Summoning Skills",
+    min: 2,
+    max: 2,
+  },
+  {
+    kind: "unique",
+    slug: "arm-of-king-leoric",
+    tab: 7,
+    tabName: "Poison and Bone Skills",
+    min: 2,
+    max: 2,
+  },
 ];
+
+/**
+ * Death's Web, pinned in both directions.
+ *
+ * The pinned tables give five properties: +2 to All Skills flat,
+ * −40-50% to Enemy Poison Resistance, +7-12 life and mana after each kill, and
+ * +1-2 to Poison and Bone Skills. Every community database lists two further
+ * things — +1-2 to All Skills as a range, and +40-50% to Poison Skill Damage.
+ *
+ * The site publishes the extraction, and that decision needs a gate in both
+ * directions for the same reason the ten Necromancer number divergences do: one
+ * rule catches the site drifting off Tier 1, and the other catches a future
+ * author reading a database, deciding the site is wrong, and "correcting" it.
+ * A poison build's gear advice turns on which of the two is true, so this is
+ * not a cosmetic difference.
+ */
+export const DEATHS_WEB_ABSENT_LINES: readonly string[] = [
+  "Poison Skill Damage",
+  "+1-2 to All Skills",
+];
+
+export function checkAbsentLines(
+  entities: readonly ProcEntity[],
+  slug: string,
+  absent: readonly string[],
+): ColumnProblem[] {
+  const entity = entities.find((e) => e.slug === slug);
+  if (!entity) {
+    return [
+      {
+        rule: "column-entity-missing",
+        message: `${slug}: named as an absent-line control but is not in the catalogue.`,
+      },
+    ];
+  }
+  return absent
+    .filter((fragment) => entity.stats.some((s) => s.text.includes(fragment)))
+    .map((fragment) => ({
+      rule: "rune-mod-absent" as const,
+      message:
+        `${entity.name}: publishes a "${fragment}" line, which the pinned extraction does not ` +
+        `carry. Community databases do. The site publishes the extraction — see the note on the ` +
+        `item and the live-disagreements table in docs/sources/README.md.`,
+    }));
+}
 
 /** Tab indices for every class whose items are controlled here. */
 export const SKILL_TABS: Readonly<Record<number, string>> = {
