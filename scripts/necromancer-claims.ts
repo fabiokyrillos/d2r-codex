@@ -352,8 +352,14 @@ export function checkReviveSummonResist(lines: readonly string[], where: string)
  * So an enumeration of several levels is skipped rather than guessed at, and
  * prose that wants to be checked says one unlock per sentence.
  */
+/*
+ * Portuguese verbs are matched by stem rather than by whole word. The first
+ * draft listed `\bdestrava\b`, which does not match "destravado" — the participle
+ * every one of these sentences actually uses — so the Portuguese half of the
+ * rule was silently inert while the English half worked.
+ */
 const UNLOCK_VERB =
-  /\bunlocks?\b|\bunlocked\b|\bavailable\b|\barrives?\b|\bopens?\b|\bbecomes?\b|\bdestrava\b|\bdisponível\b|\bchega\b|\bexige\b|\babre\b|\bliberad[ao]\b|\bsurge\b/i;
+  /\bunlocks?\b|\bunlocked\b|\bavailable\b|\barrives?\b|\bopens?\b|\bbecomes?\b|\bdestrav\w*|\bdispon[íi]ve[li]s?\b|\bchega\w*|\bexige\b|\babre\b|\bliberad[ao]s?\b|\bsurge\b/i;
 const LEVEL_NUMBER = /\blevel\s+(\d{1,2})\b|\bnível\s+(\d{1,2})\b/gi;
 export const UNLOCK_CLAIM_SKILLS: readonly string[] = [
   "Decrepify",

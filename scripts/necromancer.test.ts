@@ -40,6 +40,7 @@ import {
   checkIronGolemAdvice,
   checkReviveSummonResist,
   checkSummonPenaltyClaims,
+  checkUnlockLevelClaims,
 } from "./necromancer-claims";
 
 let passed = 0;
@@ -801,6 +802,89 @@ console.log("\nWhat the pages say about minions");
       checkReviveSummonResist(["Summon Resist covers your revives too."], "c").length === 1,
     );
   }
+}
+
+// ===========================================================================
+console.log("\nUnlock levels, against the graph rather than against memory");
+// ===========================================================================
+
+/*
+ * The rule that would have caught the mistake this pass inherited. The research
+ * preceding it put Decrepify at 30; the graph says 24, and Lower Resist is the
+ * skill that unlocks at 30 — which is how the two get swapped in the first
+ * place. A levelling route built on the wrong one wastes six levels.
+ *
+ * Every mutation below is a sentence a careful author could write. The two
+ * negative controls matter as much as the positives, because the first draft of
+ * this rule fired on both of them: an ordinary sentence about hard points
+ * ("Corpse Explosion at level 20"), and a sentence stating two unlocks at once.
+ */
+{
+  const levels: Record<string, number> = {
+    Decrepify: 24,
+    "Lower Resist": 30,
+    "Summon Resist": 24,
+    "Corpse Explosion": 6,
+    Revive: 30,
+  };
+  const levelOf = (name: string) => levels[name];
+  const watched = Object.keys(levels);
+  const run = (line: string) => checkUnlockLevelClaims([line], levelOf, watched, "c");
+
+  check("the shipped claim passes", run("Decrepify unlocks at level 24.").length === 0);
+  check(
+    "the inherited mistake is caught",
+    (() => {
+      const found = run("Decrepify unlocks at level 30.");
+      return found.length === 1 && found[0].rule === "unlock-level-wrong";
+    })(),
+    JSON.stringify(run("Decrepify unlocks at level 30.")),
+  );
+  check(
+    "the swap in the other direction is caught",
+    run("Lower Resist becomes available at level 24.").length === 1,
+  );
+  check("Portuguese is checked too", run("O Decrepify é destravado no nível 30.").length === 1);
+  check(
+    "and the correct Portuguese sentence passes",
+    run("O Decrepify é destravado no nível 24.").length === 0,
+  );
+  check(
+    "a level far from the truth is caught",
+    run("Corpse Explosion unlocks at level 18.").length === 1,
+  );
+
+  /*
+   * The two narrowings, each proven rather than asserted. Without the first,
+   * every build page that says "Corpse Explosion at level 20" — twenty hard
+   * points, not an unlock — reads as a claim that it unlocks at 20. Without the
+   * second, one sentence naming two skills and one level attributes that level
+   * to both, which is what fired on the Bone Spear page's Decrepify note.
+   */
+  check(
+    "a sentence about hard points is not an unlock claim",
+    run("Corpse Explosion at level 20 has a radius of 27 half squares.").length === 0,
+  );
+  check(
+    "a sentence stating two unlocks is skipped rather than guessed at",
+    run("Lower Resist unlocks at level 30, six levels after Decrepify at level 24.").length === 0,
+  );
+  check("an unwatched skill is left alone", run("Frozen Orb unlocks at level 30.").length === 0);
+
+  /*
+   * And the markdown narrowing, which is why `sentencesOf` splits on a full
+   * stop followed by the closing asterisks of a bold run. Without it these two
+   * clauses are one "sentence" and the rule attributes 24 to Bone Spirit.
+   */
+  check(
+    "a bold lead-in does not merge two sentences",
+    checkUnlockLevelClaims(
+      ["**Decrepify unlocks at level 24.** Long enough to land a Bone Spirit."],
+      (name) => ({ Decrepify: 24, "Bone Spirit": 30 })[name],
+      ["Decrepify", "Bone Spirit"],
+      "c",
+    ).length === 0,
+  );
 }
 
 // ===========================================================================
