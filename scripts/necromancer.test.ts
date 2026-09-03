@@ -11,6 +11,8 @@
  */
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import { getClasses, getMechanics, getSkills } from "../lib/registry";
+import { buildSearchIndex } from "../lib/search";
+import { SLUG_OVERRIDES } from "./skill-graph-rules";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import {
   FRAMES_PER_SECOND,
@@ -649,6 +651,53 @@ console.log("\nWhat the pages say about minions");
     /Iron Golem/i.test("Sacrifice a spare Iron runeword to the Iron Golem.") &&
       /(sacrifice|feed|build one from)/i.test("Sacrifice a spare Iron runeword to the Iron Golem."),
   );
+}
+
+// ===========================================================================
+console.log("\nSearch");
+// ===========================================================================
+
+/*
+ * Skills and mechanics articles reach the search index automatically, which is
+ * exactly why it is worth asserting: nothing failed when thirty skills and three
+ * articles were added, and nothing would have failed if they had not arrived.
+ */
+for (const locale of LOCALES) {
+  const index = buildSearchIndex(locale);
+  const skills = getSkills(locale).filter((s) => s.classSlug === "necromancer");
+  const byName = new Map(index.map((e) => [`${e.k}:${e.n}`, e]));
+
+  check(`${locale}: all thirty Necromancer skills are authored`, skills.length === 30, `${skills.length}`);
+
+  const missing = skills.filter((s) => !byName.has(`skill:${s.name}`));
+  check(`${locale}: every one of them is searchable`, missing.length === 0, missing.map((s) => s.name).join(", "));
+
+  const wrongLink = skills.filter(
+    (s) => byName.get(`skill:${s.name}`)?.h !== `/${locale}/classes/necromancer/skills/${s.slug}`,
+  );
+  check(
+    `${locale}: each one links to its own page rather than the class tree`,
+    wrongLink.length === 0,
+    wrongLink.map((s) => `${s.name} -> ${byName.get(`skill:${s.name}`)?.h}`).join(", "),
+  );
+
+  for (const slug of ["corpse-explosion", "curses", "minions"]) {
+    const article = getMechanics(locale).find((a) => a.slug === slug)!;
+    check(
+      `${locale}: the ${slug} article is searchable`,
+      index.some((e) => e.k === "mechanic" && e.n === article.name),
+      article.name,
+    );
+  }
+
+  /*
+   * The golems' internal identifiers must not reach the index any more than
+   * they reach a URL. `skill-page.test.ts` sweeps the built artifacts; this
+   * catches it one layer earlier, where the entry is assembled.
+   */
+  const serialised = JSON.stringify(index).toLowerCase();
+  const leaked = Object.keys(SLUG_OVERRIDES).filter((id) => serialised.includes(id.toLowerCase()));
+  check(`${locale}: no overridden identifier reaches the index`, leaked.length === 0, leaked.join(", "));
 }
 
 // ===========================================================================

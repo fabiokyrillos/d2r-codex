@@ -243,7 +243,8 @@ verified" placeholders for the same reason.
 | Sorceress | 30, with pages | 10 | Yes | Complete |
 | Paladin | 30, with pages | 8 | Yes | Complete |
 | **Amazon** | **30, with pages** | **8** | **Yes** | **Complete as of 2026-09-02** |
-| Assassin, Barbarian, Druid, Necromancer | — | — | — | Overview pages only |
+| **Necromancer** | **30, with pages** | **—** | **—** | **Foundation only as of 2026-09-03; see [`04-necromancer-foundation.md`](04-necromancer-foundation.md)** |
+| Assassin, Barbarian, Druid | — | — | — | Overview pages only |
 | Warlock | — | — | — | Attributes only; see the exception above |
 
 ## Related research
@@ -255,6 +256,10 @@ verified" placeholders for the same reason.
 - [`03-amazon-builds.md`](03-amazon-builds.md) — Amazon build families, the
   alias decision, and the first pass to take item numbers from Tier 1.
   **Executed.**
+- [`04-necromancer-foundation.md`](04-necromancer-foundation.md) — the
+  Necromancer's trees, skills, extraction and mechanics articles; the synergy
+  parameter-ownership bug; the Tier 2 cross-check and its ten divergences; and
+  what still blocks the three approved builds. **Executed.**
 
 ## Sources
 

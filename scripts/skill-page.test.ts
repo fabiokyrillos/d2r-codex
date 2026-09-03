@@ -200,6 +200,7 @@ for (const locale of LOCALES) {
   const WEAPON = marker(t.noProgressionWeapon);
   const SHIELD = marker(t.noProgressionShield);
   const PROPORTIONAL = marker(t.noProgressionProportional);
+  const CORPSE = marker(t.noProgressionCorpse);
   const NONE = marker(t.noProgressionNone);
 
   // =========================================================================
@@ -207,8 +208,8 @@ for (const locale of LOCALES) {
   // =========================================================================
 
   check(
-    `${locale}: the four messages are distinct`,
-    new Set([WEAPON, SHIELD, PROPORTIONAL, NONE]).size === 4,
+    `${locale}: the five messages are distinct`,
+    new Set([WEAPON, SHIELD, PROPORTIONAL, CORPSE, NONE]).size === 5,
   );
 
   const read = (slug: string): string | null => {
@@ -227,7 +228,16 @@ for (const locale of LOCALES) {
    * function -- damage.test.ts covers the arithmetic; what can still go wrong
    * here is the table being wired to the wrong call.
    */
-  for (const slug of ["poison-javelin", "plague-javelin"]) {
+  for (const slug of [
+    "poison-javelin",
+    "plague-javelin",
+    // The Necromancer's three, which is where the model is exercised hardest:
+    // one duration that grows, one that grows on a weapon attack, and one the
+    // columns fix at two seconds with no ELevLen at all.
+    "poison-dagger",
+    "poison-explosion",
+    "poison-nova",
+  ]) {
     const text = read(slug);
     if (text === null) {
       check(`${locale} ${slug}: page exists`, false, "not built");
@@ -241,7 +251,20 @@ for (const locale of LOCALES) {
      * arithmetic is checked in damage.test.ts, and this checks that the page
      * prints what the arithmetic produced.
      */
-    const expected = slug === "poison-javelin" ? ["25–37", "2659–2946"] : ["28–42", "703–717"];
+    /*
+     * Level 1 and level 20, so a silently halved or squared table cannot pass by
+     * merely being non-zero. The three Necromancer figures agree with the 1.11
+     * documentation for Poison Dagger and are pinned against it in
+     * `necromancer-rules.ts`; Poison Explosion and Poison Nova are the recorded
+     * divergences, and these are the Tier 1 values the site publishes.
+     */
+    const expected = {
+      "poison-javelin": ["25–37", "2659–2946"],
+      "plague-javelin": ["28–42", "703–717"],
+      "poison-dagger": ["7–15", "540–581"],
+      "poison-explosion": ["25–75", "1170–1410"],
+      "poison-nova": ["50–90", "400–440"],
+    }[slug]!;
     for (const range of expected) {
       check(`${locale} ${slug}: publishes ${range}`, text.includes(range));
     }
@@ -460,6 +483,31 @@ for (const locale of LOCALES) {
     `${locale}: Static Field still points at its verified mechanics`,
     Boolean(staticField && staticField.includes(dictionaryFor(locale).skills.mechanicsTitle)),
   );
+
+  /*
+   * Corpse Explosion. Its damage is real, is not the skill's, and has no table
+   * — so the page must carry its own sentence rather than the weapon one, the
+   * proportional one, or the "no direct damage" one it used to carry.
+   */
+  {
+    const text = read("corpse-explosion");
+    check(`${locale} corpse-explosion: page exists`, text !== null, "not built");
+    if (text !== null) {
+      check(`${locale} corpse-explosion: carries the corpse-life message`, text.includes(CORPSE));
+      check(
+        `${locale} corpse-explosion: carries none of the other four`,
+        !text.includes(WEAPON) &&
+          !text.includes(SHIELD) &&
+          !text.includes(PROPORTIONAL) &&
+          !text.includes(NONE),
+      );
+      // The radius is published in the game's own unit and the mana with it.
+      check(
+        `${locale} corpse-explosion: publishes its radius parameter and mana`,
+        text.includes("8") && text.includes("27") && text.includes("34"),
+      );
+    }
+  }
 
   // --- auras, buffs, passives ---------------------------------------------
   let noneOk = 0;

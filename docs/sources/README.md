@@ -116,9 +116,10 @@ be spent as a result.
 | **Paths** | `json/skills.json`, `json/skilldesc.json`, `json/base/skills.json` |
 | **Baseline** | D2R Patch 3.3 / Ladder Season 15 extraction |
 | **Regenerate** | `npm run gen:skill-graph` |
-| **Fields taken** | `charclass`, `reqlevel`, `reqskill1`, `reqskill2`, `SkillPage`, and the `calc`/`Param` columns for synergies |
-| **Normalization** | Filter to `pal`/`sor`; slugify the identifier; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
-| **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **60 of 60** skills |
+| **Fields taken** | `charclass`, `reqlevel`, `reqskill1`, `reqskill2`, `SkillPage`, the `calc`/`Param` columns for synergies and effects, `mana`/`lvlmana`/`manashift`, and `petmax` |
+| **Normalization** | Filter to the `charclass` codes in scope — currently `pal`, `sor`, `ama`, `nec`; slugify the identifier through `SLUG_OVERRIDES`; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
+| **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **120 of 120** skills |
+| **Non-drift** | `npm run check:graph-drift` compares every node body against the file as committed at `c98e3ed` and fails on any change to one that already existed |
 
 **Why a commit and not `master`.** A moving ref means the generator is not a
 function of anything written down: re-running it later can rewrite the graph
@@ -155,9 +156,9 @@ Blessed Hammer  EDmgSymPerCalc       (skill('Vigor'.blvl)+skill('Blessed Aim'.bl
 ```
 
 So an edge exists when the contribution is governed by a parameter the game
-calls a synergy — **69 edges across 34 receivers**. Both directions now come
-from that one extraction; `synergyFor` is gone and the reverse index is
-computed.
+calls a synergy — **136 edges across 63 receivers** at four classes. Both
+directions now come from that one extraction; `synergyFor` is gone and the
+reverse index is computed.
 
 **Removed, because the formulas contradict them:**
 
@@ -171,10 +172,13 @@ computed.
 | Thunder Storm ← Lightning | Thunder Storm ← Static Field |
 | Blaze ← Inferno | Blaze ← Warmth |
 
-**Recorded gaps.** Of the 69 edges, **17 carry an authored magnitude** and 52 do
-not. The identity of all 69 is sourced; the missing magnitudes are a gap in this
-repository's prose, not a claim about the game, and a page shows the source and
-what it improves without inventing a number.
+**Recorded gaps.** Of the 136 edges, **84 carry an authored magnitude** and 52
+do not. The identity of all 136 is sourced; the missing magnitudes are a gap in
+this repository's prose, not a claim about the game, and a page shows the source
+and what it improves without inventing a number.
+
+**Twelve carry an extracted one.** See the next section: where the game keeps the
+coefficient on the *source* skill's row, the graph states it.
 
 **What is excluded, and what only looks excluded.** The rule drops individual
 *references*, not skills, and the difference matters because one pair of skills
@@ -195,6 +199,92 @@ state, and the only trace of it is `*Param1 Description` on Blessed Hammer,
 *"Damage % from Concentration (in 8ths)"*: a parameter description with no skill
 reference for it to govern. There is nothing for the rule to reject, because an
 aura that never appears in a formula is never a candidate.
+
+### Who owns the parameter, and the golem ring
+
+The rule above says an edge exists where the contribution is governed by "a
+`parN`". Which row that `parN` lives on was, until the Necromancer pass, assumed
+to be the receiver's — and for the Paladin, the Sorceress and the Amazon it
+always is:
+
+```
+Blessed Hammer  EDmgSymPerCalc  (skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8
+```
+
+The Necromancer's golems write it the other way:
+
+```
+Clay Golem      passivecalc4    skill('IronGolem'.blvl)*skill('IronGolem'.par8)
+```
+
+There the description **and** the value are Iron Golem's. Reading them off Clay
+Golem's row instead gives "Clay Golem Attack Rating synergy" at 20 — which is
+what Clay Golem *gives* — for a bonus the game calls armour at 35. Twelve edges,
+in both directions, would have carried the wrong stat and the wrong number.
+
+| | Gives | Magnitude |
+| --- | --- | --- |
+| Clay Golem | Attack rating | 20 |
+| Blood Golem | Life | 5 |
+| Iron Golem | Defence | 35 |
+| Fire Golem | Damage | 6 |
+
+The extractor now attributes each `parN` to its owner before reading it, and the
+graph carries `magnitude` for exactly these source-owned cases. Regenerating the
+pre-Necromancer scope after the fix reproduced all ninety node bodies byte for
+byte, which is what `check:graph-drift` pins.
+
+Three shapes are deliberately **not** edges, and each is a decision rather than a
+filter:
+
+| Shape | Example | Why not |
+| --- | --- | --- |
+| A skill scaling itself | `skill('Blessed Aim'.blvl) * par8` | No second skill in it |
+| A skill applying its own coefficient to its own level | Clay Golem's `lvl*par8` | Same |
+| A synergy-labelled parameter over a *soft* level | Revive reading `skill('Skeleton Mastery'.lvl)` | A synergy reads `blvl`, hard points only. `.lvl` is raised by +skills, so the game's own "Revive Synergy" label describes something that is not one. Listed explicitly; the Druid's three summons have the same shape and will stop the generator until someone rules on them. |
+
+Skeleton Mastery, Golem Mastery and Summon Resist are not edges for the same
+reason: they reach their minions through the effective level. They are explained
+in prose instead, and a control fails if one ever becomes an edge.
+
+### The Necromancer's numbers, cross-checked against 1.11
+
+The Arreat Summit documents patch 1.11 and was written from the game rather than
+from `skills.json`, which makes it the only source available here that is
+genuinely independent of the file this repository parses. `scripts/necromancer-rules.ts`
+pins the comparison.
+
+**37 values agree exactly** — Teeth's damage at both ends (2–4 and 23–31, which
+corroborates the five damage bands and the HitShift divisor), Poison Dagger's
+7–15 growing to 540–581 over 2 to 9.6 seconds (the poison duration multiply),
+eleven mana costs across every shape `manashift` produces, and the minion count
+at levels 2, 3 and 4 where the piecewise formula bends.
+
+**10 values disagree**, all in the bone and poison trees:
+
+| Claim | Pinned 3.3 tables | 1.11 documentation |
+| --- | --- | --- |
+| Bone Armor absorbed, level 20 | 305 | 210 |
+| Bone Spear damage, level 1 min | 16 | 17 |
+| Bone Spear damage, level 20 max | 204 | 218 |
+| Bone Spirit damage, level 1 min | 20 | 22 |
+| Bone Spirit damage, level 20 max | 369 | 413 |
+| Bone Spear / Bone Spirit synergies | +8% per level | +7% / +6% per level |
+| Poison Explosion damage, level 1 min | 25 | 28 |
+| Poison Explosion damage, level 20 max | 1410 | 1620 |
+| Poison Nova damage, level 1 min | 50 | 52 |
+| Poison Nova damage, level 20 max | 440 | 468 |
+| Corpse Explosion radius, level 20 | 27 half squares | 9 yards |
+
+**The site publishes the extraction.** The pattern is what D2R's rebalancing of
+the bone tree looks like — lower base damage against higher synergies — and
+Teeth agreeing exactly rules out an error in how the columns are read. The last
+row is a unit disagreement rather than a value one: the engine halves the
+parameter and the older documentation divides it by three.
+
+All ten are pinned **in both directions**. One rule catches the site drifting off
+Tier 1; the other catches a future author reading the older source, deciding the
+site is wrong, and "correcting" 305 back to 210.
 
 ### Facts versus protected content
 
@@ -218,7 +308,7 @@ table is available to us, so game proper nouns stay in English in both locales.
 | --- | --- | --- |
 | [Blizzard News](https://news.blizzard.com/) — *Rain Annihilation in Reign of the Warlock* | Warlock class design, Grimoires, Colossal Ancients, Terror Zone rework, new runewords and uniques, quality-of-life changes | Prose, not tables. Contains at least two internal inconsistencies (see below). |
 | Patch 3.3 / Season 15 notes | Terror Zone tuning, Latent Sunder Charm changes, ladder→non-ladder item migration | — |
-| [The Arreat Summit](https://classic.battle.net/diablo2exp/) | Rune modifiers and required levels, Horadric Cube recipes, difficulty penalties, quest structure | Predates D2R. Authoritative for mechanics unchanged since 1.11; must be cross-checked for anything patched since. |
+| [The Arreat Summit](https://classic.battle.net/diablo2exp/) | Rune modifiers and required levels, Horadric Cube recipes, difficulty penalties, quest structure, and — since the Necromancer pass — an independent cross-check on published skill numbers | Predates D2R. Authoritative for mechanics unchanged since 1.11; must be cross-checked for anything patched since. Where it disagrees with the pinned extraction the extraction wins, and the disagreement is recorded above. |
 
 ### Known inconsistencies in Blizzard's own material
 
@@ -268,6 +358,9 @@ Recorded rather than resolved by guesswork.
 | --- | --- | --- | --- |
 | Does enemy Lightning Resistance reduce Static Field? | Diablo Wiki: yes, it is affected by Lightning Resist | Some build guides: no, it ignores resistance | Both recorded. Static Field is presented as a softening tool, not an answer to immunity. Confidence set to `community`. |
 | How many statues open the Colossal Ancients? | Blizzard: "all five other statues" (six) | Blizzard: "all five statues" (five) | Neither asserted. Described as "one statue from each terrorized Act boss". |
+| Bone and poison damage figures | Pinned 3.3 tables | The Arreat Summit's 1.11 tables, consistently higher | The extraction is published; all ten differences are pinned in both directions so neither side can drift. See above. |
+| What unit is Corpse Explosion's radius in? | The game names it "half squares" and the engine halves it | The Arreat Summit publishes the same parameter divided by three, as yards | Neither converted. The site publishes the parameter and states the halving. A curse's radius is a different unit again and shares no conversion with it. |
+| Does the fire half of Corpse Explosion take +Fire Skills, Fire Mastery or +% Fire Skill Damage? | Community guides: yes | Not established from the skill function, which computes the split from the corpse's life before the damage pipeline runs | **Not asserted either way.** The article names the gap; a gate fails if any page starts claiming it. |
 
 ## Verified in this research pass
 
@@ -285,6 +378,12 @@ Recorded rather than resolved by guesswork.
   — Strafe's ten-shot cap, Multiple Shot's absent attack-rating bonus, Freezing
   Arrow's 36 mana, Plague Javelin's fixed three-second duration, and Pierce's
   10%-to-100% diminishing curve
+- Necromancer skill trees: 30 skills, three trees, and the columns that decide
+  the class — the golem ring's four source-owned magnitudes, Corpse Explosion's
+  70–120% of the monster *type's* base life with a 50/50 physical–fire split,
+  the piecewise minion count, Revive's fixed three minutes, Poison Nova's fixed
+  two seconds, and the `AiCurseDivisor` that shortens Dim Vision and Terror in
+  Nightmare and Hell and shortens nothing else
 - Sorceress skill trees: 30 skills, correct unlock levels, Blizzard's three
   synergies at +5% per level each
 - Sorceress and Warlock starting attributes and gain rates
@@ -300,6 +399,16 @@ Recorded rather than resolved by guesswork.
 
 Not a gap in what is published, but in how it can be checked.
 
+- **Receiver-owned synergy magnitudes are not in the graph.** Where the game
+  keeps a synergy's coefficient on the source skill's row the graph now states
+  it, and where it keeps it on the receiver's — Blessed Hammer's `par8` of 14,
+  governing a sum of several sources at once — it is left to authored prose.
+  That number is equally real and equally extractable. It is deferred because
+  emitting it rewrites all 136 edges, which is a diff to read on its own rather
+  than one to bury inside a directional bug fix.
+- **Mana is extracted for the Necromancer only.** The other three classes
+  publish mana in authored prose where it is decision-relevant. Moving them onto
+  extraction is another ninety-node rewrite and belongs in its own pass.
 - **A reproducible item and runeword generator.** The values came from Tier 1;
   the process did not survive the research pass that produced them. See
   ["What that does *not* mean"](#what-that-does-not-mean) above. Until a
@@ -324,3 +433,10 @@ in this list has been written into user-facing content as fact.
   only as an internal identifier. The charm is named in prose and not catalogued
 - Set items of any kind, which is why M'avina's Battle Hymn is described on the
   Freezing Arrow page rather than given one
+- Five questions about summons, listed on the minions article rather than
+  answered: whether minions take the −40 / −100 difficulty resistance penalty,
+  whether a Skill Shrine's bonus survives on minions raised under it, when an
+  Iron Golem persists between games and what loses one, minion life and damage
+  per difficulty for the current build, and behaviour against the Uber bosses.
+  Because the third is open, no page recommends building an Iron Golem from an
+  expensive item, and a gate fails if one starts to
