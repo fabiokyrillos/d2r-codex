@@ -1935,7 +1935,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "pit-hell":
         "Nível de área 85 e trajeto curto. Mais lento que um Hammerdin aqui, mas nada lá dentro te para.",
       "ancient-tunnels-hell":
-        "Nível de área 85 com muita imunidade a frio, que é exatamente o tipo de zona para o qual esta build existe.",
+        "Nível de área 85, com fogo e veneno entre as imunidades registradas. Uma build que carrega quatro tipos de dano atravessa exatamente esse tipo de zona.",
       "worldstone-keep-hell":
         "Nível de área 85 e densa. Dano de alvo único torna isso mais lento do que é para um caster, mas todo grupo morre.",
       "pindleskin-hell":
