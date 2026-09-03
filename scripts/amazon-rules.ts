@@ -262,8 +262,29 @@ export function checkChainClaims(
   return found;
 }
 
-/** The chains a journey page is allowed to route to, and must route to fully. */
-export const CHAIN_TARGETS: readonly string[] = ["valkyrie"];
+/**
+ * The chains a journey page is allowed to route to, and must route to fully.
+ *
+ * Valkyrie is the original: the Amazon journey listed four skills and said they
+ * "open Decoy at 24 and Valkyrie at 30", and Valkyrie also requires Evade — so a
+ * reader who followed the sentence arrived with the skill locked.
+ *
+ * The Necromancer entries are the same shape and the same risk. Its chains are
+ * longer than the Amazon's and cross two trees: Revive sits behind Iron Golem,
+ * Blood Golem, Clay Golem, Raise Skeletal Mage AND Raise Skeleton, and a
+ * sentence that lists three of the five reads as a complete cost.
+ */
+export const CHAIN_TARGETS: readonly string[] = [
+  "valkyrie",
+  "decrepify",
+  "lower-resist",
+  "summon-resist",
+  "revive",
+  "iron-golem",
+  "corpse-explosion",
+  "bone-prison",
+  "poison-nova",
+];
 
 /** The names that must stay aliases. Shared by the checker and its tests. */
 export const ALIAS_ONLY_NAMES: readonly string[] = [

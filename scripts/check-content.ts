@@ -741,21 +741,22 @@ console.log("\nAmazon pass rules:");
    * drop a link from the chain without changing a single name the rule looks
    * for — which is exactly the kind of drift an overlay hides.
    */
-  const chainProblems = LOCALES.flatMap((locale) => {
-    const journey = getJourneys(locale).find((j) => j.classSlug === "amazon");
-    if (!journey) return [];
-    const sentences = journey.stages.flatMap((s) => [
-      ...s.skillPoints,
-      ...s.actions.map((a) => a.text),
-    ]);
-    return checkChainClaims(
-      sentences,
-      SKILL_GRAPH,
-      (slug) => getSkill(locale, slug)?.name ?? slug,
-      CHAIN_TARGETS,
-      `${locale} amazon journey`,
-    );
-  });
+  const chainProblems = LOCALES.flatMap((locale) =>
+    getJourneys(locale).flatMap((journey) => {
+      const sentences = [
+        ...journey.overview,
+        ...(journey.respecPlan ?? []).map((r) => r.why),
+        ...journey.stages.flatMap((s) => [...s.skillPoints, ...s.actions.map((a) => a.text)]),
+      ];
+      return checkChainClaims(
+        sentences,
+        SKILL_GRAPH,
+        (slug) => getSkill(locale, slug)?.name ?? slug,
+        CHAIN_TARGETS,
+        `${locale} ${journey.classSlug} journey`,
+      );
+    }),
+  );
   const found = [
     ...checkClassPagesComplete(getBuilds(SOURCE), "amazon", tierOrder),
     ...checkNoIasBreakpoints(getBuilds(SOURCE)),
