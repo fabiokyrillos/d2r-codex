@@ -7726,4 +7726,290 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+
+  "summoner-necromancer": {
+    summary:
+      "Oito esqueletos, oito magos e um golem fazem a matança, e o Corpse Explosion transforma o primeiro corpo no resto da sala. O personagem mais autossuficiente do jogo.",
+    playstyle:
+      "Você acha um cadáver, levanta oito esqueletos e oito magos a partir dele e do grupo de onde ele saiu, e então para de ser quem mata. Seu trabalho vira posicionamento: entrar, lançar Amplify Damage no que o exército alcançou, e detonar o primeiro corpo que cair. O Corpse Explosion encadeia pelo grupo, e cada explosão deixa cadáveres para a próxima. Quando aparece algo perigoso, você lança Decrepify nele e ele fica lento, fraco e fácil de acertar. Você nunca é o alvo e nunca fica sem corpos, e é por isso que este é o personagem com que as pessoas terminam o Hell quando nada mais funcionou.",
+    strengths: [
+      "**O exército não sofre a penalidade de resistência por dificuldade.** As resistências de um esqueleto são o mesmo número no Hell e no Normal — os −40 e os −100 valem para você e para o seu mercenário, e para nada que você invoque",
+      "O Corpse Explosion é metade físico e metade fogo, então um botão só cobre dois tipos de imunidade e o Amplify Damage cuida do terceiro",
+      "**Genuinamente jogável do nível 1 ao 99 sem respec**, e a rota de evolução é esta build, não um desvio",
+      "Dezesseis invocações mais um golem mais um mercenário significam que você quase nunca é quem está sendo atacado",
+      "Todo item central é barato. Arm of King Leoric no 36 e uma wand White são o plano de equipamento inicial inteiro",
+    ],
+    weaknesses: [
+      "**Os atributos dos lacaios são gravados na criação.** Cada nível ganho e cada troca de equipamento exige desinvocar e reconstruir o exército para aproveitar",
+      "**Nada acontece antes de existir o primeiro cadáver**, e produzi-lo é problema seu — veja a seção do mercenário, porque é para isso que ele serve",
+      "Lento. O exército anda, não teleporta, e precisa ser recolhido em cada waypoint e cada escada",
+      "**Quinze chefes carregam a marcação de Prime Evil, que aumenta o dano que eles causam especificamente a invocações**, então o exército derrete exatamente nas lutas em que vinha indo tão bem",
+      "O dano do Corpse Explosion não escala com o nível da skill — os pontos compram raio, e o dano vem do que você matou",
+    ],
+    flexPoints: [
+      "**O núcleo são 65 pontos**: Raise Skeleton, Skeleton Mastery e Corpse Explosion com vinte cada, mais um em Amplify Damage, Clay Golem, Golem Mastery, Summon Resist e Teeth. **Três a mais fecham em 68** se você pegar Decrepify, o que esta página recomenda — Weaken e Terror são pré-requisitos dele e os dois já valem o próprio ponto.",
+      "**Mais seis são gastos acima como flexíveis**, em Raise Skeletal Mage, Bone Armor, Bone Wall e a cadeia Blood Golem–Iron Golem–Revive. Sobram cerca de **36 livres no nível 99**, e esta página não os gasta por você: há cinco destinos sensatos e nenhum mais forte que os outros.",
+      "**Raise Skeletal Mage** é a maior melhoria isolada para a maioria dos jogadores. Os magos têm limite próprio, então cada ponto acrescenta um corpo em vez de substituir um, e o dano elemental deles é a resposta do exército a um imune a físico.",
+      "**Golem Mastery** se o golem viver morrendo. +20% de vida por nível é composto, e ao contrário do Summon Resist esta curva não achata.",
+      "**Bone Wall e Bone Prison**, que são as duas sinergias do Bone Armor. Vinte pontos entre as duas transformam um escudo simbólico em várias centenas de dano absorvido, e o Bone Prison é uma parede que você derruba entre você e algo que o exército ainda não alcançou.",
+      "**Amplify Damage além do primeiro ponto** compra raio e duração — de 3 para 22 e de 8 segundos para 65. Numa build que amaldiçoa um grupo em vez de um monstro, uma maldição mais larga é melhoria real mesmo com os −100 nunca mudando.",
+      "**O Corpse Explosion é o único destino que você não pode comprar.** Ele já está no teto de vinte pontos no núcleo, então o raio restante vem de +skills — uma wand White, um Homunculus, um Arm of King Leoric — e nunca de outro ponto.",
+      "**Lower Resist e Life Tap não estão neste plano**, e acrescentar qualquer um dos dois é mais caro do que parece. O Lower Resist é destravado no nível 30. Ele exige Iron Maiden e Life Tap por baixo dele, além da cadeia de maldições que o plano central já tem, então são seis pontos de maldições antes do ponto que compra a skill. Ele reduz resistências elementais, e o dano desta build é físico e fogo — a metade de fogo do Corpse Explosion é a única coisa que ele ajudaria. Pegue se você estiver construindo em torno disso; não pegue porque a árvore parece incompleta sem ele.",
+      "**Revive é um ponto ou nenhum, e não é obrigatório.** A contagem é o nível efetivo da skill, então um único ponto mais +skills já levanta um grupo útil. O que ele não é: um exército. Cada revive dura três minutos fixos em qualquer nível, o relógio começa quando o monstro se levanta, e **não pode ser renovado** — então o grupo que você levantou anda para fora de um cronômetro que você não consegue zerar. O Summon Resist também não alcança eles, então um revive carrega as resistências do próprio tipo de monstro dele. É uma leva de corpos para uma sala difícil, e custa três pontos de pré-requisito: Blood Golem, Iron Golem e Raise Skeletal Mage. Pegue se tiver pontos sobrando e quiser a opção; não construa em torno disso, e não leia como a resposta desta build para uma luta para a qual ela não tem resposta verificada.",
+      "**O Iron Golem é opcional, e é o único ponto desta página que pode te custar um item.** Ele é o único lacaio que sobrevive a você sair de uma partida — guardado com o personagem e reconstruído quando você entra na próxima — e é isso que o torna digno de consideração. Todo o resto sobre ele é uma forma de perdê-lo: **ele some quando morre, quando o seu personagem morre, quando você invoca qualquer outro golem, e quando um respec remove o seu ponto na skill.** O item do qual ele foi feito é consumido no instante da conjuração e não é devolvido por nenhuma dessas. Então, se for construir um, construa a partir de algo **barato e substituível** — um raro qualquer, uma runeword baixa cuja perda não te incomode. Este site não manda você entregar a ele um Pride, um Beast, um Infinity nem qualquer outra coisa cuja perda te incomodaria, faça a aura o que fizer pelo exército: quatro das cinco formas de perdê-lo não estão sob o seu controle, e uma delas é morrer. **E confira os seus planos de respec antes de conjurar.** Se você ainda estiver decidindo entre esta build e a de Poison Nova ou a de Bone Spear, desfaça o golem de propósito primeiro — um token gasto com ele de pé leva ele e o item junto.",
+      "**Uber Tristram não é algo que esta página afirme.** Guias de Necromancer costumam apresentar Iron Maiden, ou Iron Maiden com Life Tap, como a resposta da classe para os Ubers, e muitas vezes acrescentam um plano envolvendo Crushing Blow ou um revive específico. Este site não pesquisou essa luta, então não classifica esta build como especialista em Uber e não publica estratégia para ela. **Iron Maiden e Life Tap não tornam uma build capaz de Uber sozinhos**, e três dos quinze monstros que carregam a marcação de dano contra invocações estão parados naquela mesma sala — que é justamente a parte do problema em que um exército é pior. Trate a nota de Ubers desta página como \"não verificado\", e não como um veredito medido.",
+    ],
+    statPlan: {
+      strength: "Só o suficiente para a sua armadura e o seu escudo, e nada além. Uma Heirophant Trophy pede 58, que é o maior requisito do plano.",
+      dexterity: "Base. Você bloqueia com uma shrunken head e nunca faz um ataque, então Dexterity não compra nada que esta build use.",
+      vitality: "Todo o resto. Você não leva pancada com frequência, mas as vezes em que levar serão as vezes em que o exército deixou algo passar.",
+      energy: "Nenhum, e esta é a única build em que isso é genuinamente discutível. Reconstruir dezesseis lacaios é a coisa mais cara que você faz — mas a resposta é um mercenário com Insight e uma reserva grande de mana vinda do equipamento, não pontos, porque um ponto de Energy são 2 de mana e um ponto de Vitality são 2 de vida.",
+      notes: [
+        "**Faster Cast Rate importa mais aqui do que os números sugerem.** Levantar um exército são dezesseis conjurações, e você faz isso depois de cada nível e de cada troca de equipamento. Uma taxa de conjuração baixa transforma uma reconstrução rotineira numa tarefa chata.",
+        "As resistências são problema seu, não do exército. As suas caem 40 no Nightmare e 100 no Hell; as dos lacaios não se mexem.",
+        "As resistências do seu mercenário *são* afetadas, e equipá-lo é um trabalho separado de equipar você.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-75":
+        "A meta realista de um Necromancer. Você conjura dezesseis vezes para reconstruir um exército e uma vez por grupo para a maldição, e 75% se alcança com um Homunculus e um anel de FCR sem abrir mão de nada.",
+      "fcr-125":
+        "Vale alcançar se um Enigma estiver no plano, porque um Summoner com Teleport chama o exército inteiro na hora e reconstruir vira algo rápido o bastante para fazer sem pensar.",
+      "fhr-48":
+        "Você fica perto da luta para lançar maldições e detonar cadáveres. Ficar preso em recuperação de golpe enquanto o exército está em outro lugar é a única forma de o jogador desta build morrer.",
+    },
+    skillNotes: {
+      "raise-skeleton":
+        "**A contagem é o que vinte pontos compram** — oito esqueletos com vinte pontos duros, e mais com +skills, porque a contagem lê o nível efetivo. A força deles vem da Skeleton Mastery, não daqui.",
+      "skeleton-mastery":
+        "**+8 de vida e +2 de dano por nível, para esqueletos, magos e revives igualmente.** É isso que transforma dezesseis corpos num exército que sobrevive ao Hell. Ela lê o nível efetivo, então uma wand com +3 nela vale três pontos duros — e é gravada na criação, então uma wand nova não faz nada até você levantar de novo.",
+      "corpse-explosion":
+        "**Pontos compram raio, não dano.** 8 meios quadrados com um ponto e 27 com vinte, e a faixa de 70–120% nunca se mexe. O raio é o que faz disto uma corrente em vez de uma conjuração só, e vale cada um dos vinte.",
+      teeth: "Pré-requisito do Corpse Explosion. Um ponto, e você nunca vai conjurá-la.",
+      "amplify-damage":
+        "**−100 de resistência a dano físico: o maior multiplicador físico do jogo, e um ponto é ele inteiro.** Também quebra uma imunidade física de 100%, onde os −50 do Decrepify viram −10 contra um imune e não quebram. Pontos extras compram só raio e duração.",
+      "clay-golem":
+        "Um ponto. Ele desacelera o que acerta, tem 25% de resistência física e 50% a frio próprias, e é pré-requisito da Golem Mastery. Reconjurá-lo também é a distração mais barata que você tem.",
+      "golem-mastery":
+        "+20% de vida do golem e +25 de chance de acerto por nível, e lê o nível efetivo. Um ponto aqui é pré-requisito do Summon Resist; mais é um destino flexível legítimo se o golem estiver morrendo.",
+      "summon-resist":
+        "**Um ponto, e o argumento por mais caiu junto com a questão da penalidade.** A curva vai de 20% em direção a 75% e só é íngreme no começo — e como criaturas invocadas não sofrem penalidade por dificuldade, isto é uma adição, não um conserto. Só fogo, raio, frio e veneno; não alcança nem físico nem mágico, e não alcança os revives.",
+      weaken: "No caminho para Terror e Decrepify. Útil por si só contra um grupo corpo a corpo, e a primeira maldição que você terá.",
+      terror:
+        "Pré-requisito do Decrepify. A duração dele é uma das duas que a dificuldade divide — 8 segundos no Normal e 2 no Hell — então trate como botão de pânico, não como plano.",
+      decrepify:
+        "**O Decrepify é destravado no nível 24**, não no 30 — a correção importa, porque 24 é também onde o Summon Resist chega, e uma rota montada em torno do 30 desperdiça seis níveis esperando. −50% de movimento, velocidade de ataque, dano causado e resistência física, tudo de uma vez, no único monstro que está prestes a virar problema.",
+      "raise-skeletal-mage":
+        "Um limite separado do dos esqueletos, então os magos são adicionais e não uma alternativa. Os projéteis elementais deles são a resposta do exército a um imune a físico. Um ponto já é um exército de verdade; mais é um destino flexível genuíno.",
+      "bone-armor":
+        "Um escudo que absorve uma quantidade fixa de dano físico e se renova ao ser reconjurado. Um ponto vale a pena em qualquer Necromancer; os pontos que o deixam grande são os do Bone Wall e do Bone Prison.",
+      "bone-wall":
+        "Sinergia do Bone Armor, e uma parede que você derruba num corredor. É para cá que vão os pontos flexíveis se você decidir que o Bone Armor deve ser uma defesa de verdade em vez de simbólica.",
+      "blood-golem":
+        "Só como pré-requisito do Iron Golem. Ele divide a vida com você nos dois sentidos, o que é um passivo num personagem que nunca quer levar dano — não o invoque de propósito.",
+      "iron-golem":
+        "**Opcional, e leia a seção do golem abaixo antes de gastar o ponto.** Ele persiste entre partidas, que é o atrativo, e é destruído por morrer, por qualquer outro golem, por um respec e por ser morto — que é o preço.",
+      revive:
+        "**Um ponto ou nenhum.** A contagem é o nível efetivo, então um único ponto mais +skills já dá um número útil. Três minutos fixos, sem renovação, e o relógio começa quando o monstro se levanta.",
+    },
+    immunityPlan:
+      "**A imunidade física é a que importa, e o Amplify Damage responde a ela.** Dezesseis esqueletos causam dano físico e oito áreas do catálogo deste site registram imunidade física; a maldição corta 100 pontos de resistência a dano físico, e contra um monstro parado em exatamente 100% a regra de um quinto deixa −20, que ainda quebra. O Decrepify não — os −50 dele viram −10 contra um imune e param antes. É o único caso em que as duas maldições não são intercambiáveis, e é o caso que esta build encontra o tempo todo.\n\n**O Corpse Explosion cobre o segundo tipo de graça.** Metade do dano é físico e metade é fogo, então um imune a físico ainda leva a metade de fogo e um imune a fogo ainda leva a metade física. Nada precisa ser gasto para isso; é como a skill é feita.\n\n**Os magos esqueletos são a terceira resposta** e o motivo de os pontos flexíveis normalmente irem para lá. O dano deles é elemental e sorteado da skill, não da linha de monstro, então continuam funcionando numa sala onde os esqueletos pararam.\n\nO que esta build **não** precisa é do Lower Resist. Ele reduz resistências elementais, e o único dano elemental do plano central é metade do Corpse Explosion. Seis pontos de pré-requisito de maldição para melhorar metade de uma skill é uma troca pior do que mais seis pontos de Raise Skeletal Mage.",
+    mercenaryNotes:
+      "**Um mercenário do Ato 2 com Might**, e a razão não é o dano dele: é que *alguém precisa produzir o primeiro cadáver*. O Raise Skeleton exige um corpo e não consegue criar um, então no começo de toda luta numa sala nova você, ele, ou outro jogador precisa matar algo primeiro. Ele é quem faz isso de forma confiável, e o Might aumenta o dano físico do exército além do dele — uma aura, dezessete lutadores.\n\nDê a ele um **Insight** assim que uma Ral, uma Tir, uma Tal e uma Sol estiverem juntas. O Meditation é o que transforma reconstruir um exército do zero em algo trivial em vez de uma barra de mana inteira. **Fortitude** ou **Treachery** com um **Vampire Gaze** o mantêm de pé.\n\n**As resistências dele não são as do exército.** Ele sofre os −40 inteiros no Nightmare e os −100 no Hell, e os lacaios não sofrem nenhum dos dois, então equipá-lo para resistência é um trabalho real e equipar \"as invocações\" para isso não é uma coisa que exista.\n\n**Infinity é uma opção de endgame e não um requisito.** A Conviction dele reduz resistência elemental, o que ajuda a metade de fogo do Corpse Explosion e os magos esqueletos, e não faz absolutamente nada pelo dano físico dos esqueletos — o Amplify Damage é o que faz isso, e custa um ponto.",
+    farmingWhy: {
+      "mausoleum-hell":
+        "Área de nível 85, densa, morta-viva, e rápida de alcançar pelo waypoint das Cold Plains. As imunidades registradas ali são veneno e frio, e esta build não causa nenhum dos dois — e uma sala de corpos é uma sala de Corpse Explosion.",
+      "chaos-sanctuary-hell":
+        "A zona mais densa do jogo, que é exatamente o formato que o Corpse Explosion quer. Imunidade física é registrada aqui e o Amplify Damage é a resposta a ela; os grupos dos selos ficam parados enquanto o exército chega.",
+      "pindleskin-hell":
+        "Trinta segundos por run, e os lacaios dele são os cadáveres. Imunidade a frio e a veneno são registradas e nenhuma das duas toca um exército físico. A única ressalva é que ele bate forte o bastante para apagar esqueletos, então levante de novo entre as runs, não durante.",
+      "travincal-hell":
+        "O Council é imune a fogo e raio, não a físico, eles ficam em grupo, e o primeiro a cair limpa o resto. Uma run curta que combina mais com um exército do que com a maioria dos conjuradores.",
+      "secret-cow-level-hell":
+        "Um rebanho é exatamente para o que uma corrente de Corpse Explosion serve. Imunidade física é registrada aqui — o Amplify Damage quebra, e a metade de fogo entra de qualquer jeito.",
+      "worldstone-keep-hell":
+        "Área de nível 85 e a melhor experiência do jogo. Quatro imunidades são registradas, incluindo física, então é a zona que mais precisa do Amplify Damage na barra e dos magos no exército.",
+      "lower-kurast-hell":
+        "Uma run de baús, não de matar, e um exército é lento nisso. Está na lista porque um Summoner consegue fazê-la com segurança num nível de equipamento em que outras builds não conseguem.",
+    },
+    levelingPath: {
+      summary:
+        "**Esta build é a própria rota de evolução e não precisa de respec em momento nenhum.** Raise Skeleton no nível 1, Skeleton Mastery no 2, Amplify Damage assim que sobrar um ponto, Clay Golem no 6, Corpse Explosion assim que Teeth e o nível 6 permitirem, Golem Mastery no 12, e Summon Resist e Decrepify juntos no 24. Todo ponto gasto no caminho é um ponto do plano final. O passo a passo completo está na página de evolução do Necromancer.",
+      respecAt:
+        "Não é necessário — mas guarde um token, e leia a seção do Iron Golem antes de gastar um. **Um respec que remova o seu ponto em Iron Golem destrói o golem e o item dentro dele.**",
+    },
+    selfFoundNotes:
+      "**O personagem solo self-found mais forte do jogo.** O plano central inteiro são skills, o Arm of King Leoric cai no Nightmare e é comum, o White são duas runas de nível Countess numa wand que cai no Ato 1, e o Homunculus é um unique comum de Nightmare. Nada nos quatro primeiros tiers de equipamento é item de troca. O exército mata, então uma arma ruim te custa raio e não mortes, e a penalidade de dificuldade que obriga toda outra classe a resolver resistências antes do Hell não se aplica ao que está lutando por você. A única parede de verdade é o Enigma, e o Enigma é conveniência.",
+    hardcoreNotes:
+      "**O melhor personagem de Hardcore deste site, e não é perto.** Você está atrás de dezesseis lacaios, um golem e um mercenário; nunca faz um ataque; e o exército não sofre penalidade de resistência por dificuldade, então o que está entre você e os monstros é tão forte no Hell quanto era no Normal. Alcance a meta de 48% de recuperação de golpe, mantenha Decrepify em qualquer coisa que pareça perigosa em vez de guardar, e trate os **chefes Prime Evil como a exceção** — Andariel, Duriel, Mephisto, Diablo, Baal e as variantes deles causam dano aumentado especificamente a invocações, então o exército que vinha te carregando evapora justamente nessas lutas. Leve cadáveres, espere reinvocar no meio da luta, e não ande à frente do exército.",
+    gearSets: {
+      starter: {
+        goal: "Um exército no nível 2, e Corpse Explosion no 8.",
+        nextUpgrade: "Nível 36 por um Arm of King Leoric, que é o maior salto isolado desta build.",
+        notes:
+          "**Guarde toda Bone Wand e Grim Wand de 2 sockets que aparecer.** São as bases de tier normal que aceitam um White no nível 35, e uma Wand comum ou Yew Wand não aceita — essas param em um socket.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer wand com +Raise Skeleton ou +Skeleton Mastery",
+            why: "Wands mágicas de vendedor carregam as duas, e ambas são contadas a partir do nível efetivo — então uma wand +3 no nível 10 vale três pontos duros que você ainda não gastou.",
+            lookFor: ["+2-3 to Raise Skeleton", "+2-3 to Skeleton Mastery", "+1 Necromancer Skills"],
+          },
+          "offhand-0": {
+            label: "Qualquer shrunken head de Necromancer com +skills",
+            why: "Uma shrunken head é um escudo que também carrega +Necromancer skills e + numa aba de skills. Nada mais no jogo coloca as duas coisas na mão secundária.",
+            lookFor: ["+2 Necromancer Skills", "+3 to Raise Skeleton", "2 sockets"],
+          },
+          "offhand-0-alt0": { why: "Resistências por três runas da Countess, se nenhuma head tiver caído." },
+          "body-0": { why: "Faster cast rate, recuperação de golpe e velocidade de corrida a partir do nível 17, por duas runas." },
+          "helm-0": { why: "+1 em Todas as Skills, que é um esqueleto e um pouco mais de raio de Corpse Explosion de uma vez." },
+        },
+      },
+      nightmare: {
+        goal: "Duas árvores de skill inteiras aumentadas pelo equipamento, e um exército que limpa o Nightmare sem ajuda.",
+        nextUpgrade: "Resistências em 75 antes do Hell, e um Spirit ou um segundo amuleto +2.",
+        notes:
+          "**Levante o exército de novo depois de cada um destes.** Os atributos dos lacaios são gravados na criação, então uma wand nova melhora o próximo esqueleto e nenhum dos oito já de pé.",
+        picks: {
+          "weapon-0": {
+            why: "**+2 em Summoning e +2 em Poison and Bone, mais +3 em Raise Skeleton e +3 em Skeleton Mastery.** As duas metades da build de uma vez, num item que cai no Nightmare e não custa nada.",
+          },
+          "weapon-0-alt0": {
+            why: "+3 em Poison and Bone e +4 em Skeleton Mastery. Mais raio de Corpse Explosion e esqueletos mais fortes, mas nada para a contagem — pegue se o Arm não tiver caído, e guarde os dois.",
+            sockets: "Dol e Io numa wand de 2 sockets. Uma Bone Wand ou Grim Wand é a base mais barata.",
+          },
+          "offhand-0": {
+            why: "**+2 skills de Necromancer, +2 em Curses, All Resistances +40 e +40% de bloqueio.** Quatro níveis de skill e quase um plano de resistência inteiro num slot só, a partir do nível 42.",
+          },
+          "offhand-0-alt0": {
+            why: "+1 em Todas as Skills e +10% de Faster Cast Rate numa shrunken head de 2 sockets, o que empilha com os +Necromancer skills da própria head. Mais barato, e disponível cinco níveis antes.",
+            sockets: "Eth e Lum em qualquer escudo de 2 sockets — uma shrunken head conta.",
+          },
+          "body-0": {
+            why: "+2 skills de Necromancer e +100-150 de mana, que é a linha que importa: reconstruir um exército é a coisa mais cara que você faz.",
+            sockets: "Sol, Um, Um em qualquer armadura de corpo de 3 sockets.",
+          },
+          "body-0-alt0": { why: "Até duas runas Um estarem sobrando." },
+          "helm-0": { why: "+1 skills e magic find enquanto nada melhor existe." },
+          "amulet-0": {
+            label: "Qualquer amuleto com +2 Necromancer Skills",
+            why: "Dois níveis de skill aumentam a contagem, a mastery e o raio da explosão juntos. Um amuleto raro ou mágico +2 é barato e é a última melhoria comum antes do endgame.",
+            lookFor: ["+2 Necromancer Skills", "Faster Cast Rate", "Resistances"],
+          },
+        },
+        charms: [{ why: "As suas, não as do exército — você é quem perde 40 e depois 100." }],
+      },
+      "early-hell": {
+        goal: "Resistências no teto, e um exército que segura uma sala do Hell sem você.",
+        nextUpgrade: "Um Call to Arms na troca, e depois a pergunta de se um Enigma vale as runas dele.",
+        picks: {
+          "weapon-0": {
+            why: "+3 Poison and Bone e +4 Skeleton Mastery. No Hell a mastery vale mais que a contagem, e a aba Poison and Bone é o raio do Corpse Explosion.",
+          },
+          "weapon-0-alt0": { why: "Mantenha na troca — os +2 em Summoning são com o que você levanta o exército de novo." },
+          "offhand-0": { why: "All Resistances +40 cobre a maior parte dos −100 do Hell num slot só, e os +2 em Curses são de onde vem o raio do Amplify Damage." },
+          "body-0": { why: "+1 skills, +30 de todas as resistências e 30% de Faster Cast Rate. A armadura padrão de entrada no Hell para todo conjurador." },
+          "body-0-alt0": { why: "Mantenha pela mana se as resistências estiverem cobertas em outro lugar." },
+          "helm-0": { why: "+2 skills, vida, mana e magic find, com 50 de Strength. Nada mais no slot compete." },
+          "amulet-0": { why: "+2 skills e +30 de todas as resistências, que são as duas coisas que esta build quer de um slot só." },
+          "gloves-0": { why: "+1 em skills de fogo — o que aumenta o nível efetivo do Corpse Explosion, porque o jogo marca a skill como fogo — mais 20% de Faster Cast Rate e regeneração de mana. Leia o artigo do Corpse Explosion antes de supor que isso aumenta o dano: compra raio." },
+          "belt-0": { why: "Redução de dano e roubo de vida num personagem que não quer nenhum dos dois com frequência e quer os dois muito quando acontece." },
+          "ring1-0": { why: "+1 em todas as skills e mana." },
+          "boots-0": { why: "Recuperação de golpe, Strength em direção à Heirophant Trophy, e redução de duração de veneno. **Marrowwalk** é o outro nome que você vai ouvir aqui — é uma bota de Necromancer com cargas e +1-2 em Skeleton Mastery, e este site não a catalogou." },
+        },
+        charms: [{ why: "75% em tudo, para você." }],
+      },
+      budget: {
+        goal: "Battle Orders no exército, e um mercenário que sobrevive a ser olhado.",
+        nextUpgrade: "Um Enigma, que é o único item que muda como esta build é jogada.",
+        picks: {
+          "weapon-0": { why: "Ainda a melhor wand barata. Uma wand rara com +3 numa skill de invocação e +2 skills de Necromancer é a melhoria, e é uma troca em vez de um achado." },
+          "offhand-0": { why: "Skills, resistências e bloqueio, e nenhuma shrunken head melhor existe neste orçamento." },
+          "body-0": { why: "Skills, resistências e taxa de conjuração de graça." },
+          "helm-0": { why: "+2 skills, e socke com uma Um ou uma joia de resistência." },
+          "amulet-0": { why: "+2 skills e +30 de todas as resistências." },
+          "gloves-0": { why: "Taxa de conjuração e um nível de skill de fogo em direção ao raio do Corpse Explosion." },
+          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate. Dezesseis conjurações por reconstrução é onde a taxa de conjuração merece o slot." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            label: "Um anel raro com 10% de Faster Cast Rate e resistências",
+            why: "O breakpoint de 75% de taxa de conjuração normalmente está a um anel de distância, e um anel raro é muito mais barato que um segundo Stone of Jordan.",
+            lookFor: ["10% Faster Cast Rate", "All resistances", "Life"],
+          },
+          "boots-0": { why: "Magic find numa build que limpa de forma constante." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, atributos e resistências." },
+          { why: "+3 skills de Necromancer, o que são três esqueletos em mastery e mais raio de explosão." },
+          { why: "Os únicos charms que aumentam Raise Skeleton e Skeleton Mastery juntos." },
+        ],
+        weaponSwap: [
+          { why: "**O Battle Orders aumenta a vida do exército inteiro, e a fixação na invocação faz a ordem importar** — conjure primeiro, depois levante. Um exército levantado antes do Battle Orders não recebe." },
+          { why: "A mão secundária da troca." },
+        ],
+      },
+      optimized: {
+        goal: "Teleport, e um exército que se remonta onde quer que você aterrisse.",
+        nextUpgrade: "Charms melhores, e uma wand com uma quarta linha útil.",
+        picks: {
+          "weapon-0": {
+            label: "Uma wand rara ou craftada com +3 numa skill de invocação e +2 Necromancer Skills",
+            why: "A arma de endgame de verdade e o único slot em que uma troca vence um item catalogado. +3 Raise Skeleton ou +3 Skeleton Mastery em cima de +2 skills de Necromancer são cinco níveis efetivos numa linha só.",
+            lookFor: ["+3 to Raise Skeleton", "+3 to Skeleton Mastery", "+2 Necromancer Skills", "20% Faster Cast Rate"],
+          },
+          "weapon-0-alt0": { why: "Ainda excelente, e de graça." },
+          "offhand-0": { why: "Nada o substituiu. **Boneflame** e **Darkforge Spawn** são os outros dois nomes de shrunken head que as pessoas citam aqui; nenhum dos dois está catalogado neste site." },
+          "body-0": {
+            why: "**O Teleport é o que um exército te custa, e isto compra de volta.** Teleportar chama todos os lacaios na hora, então o andar, o recolher em waypoint e o juntar em escada param todos. É a maior mudança de qualidade de vida disponível para a build.",
+            sockets: "Jah, Ith, Ber em qualquer armadura de corpo de 3 sockets.",
+          },
+          "body-0-alt0": { why: "+2 skills, +65 de todas as resistências e redução de dano, se a Ber não for acontecer." },
+          "helm-0": { why: "+2 skills e um socket." },
+          "amulet-0": { why: "+2 skills e resistências." },
+          "gloves-0": { why: "Taxa de conjuração, e um nível de skill de fogo em direção ao raio." },
+          "belt-0": { why: "+1 skills e 20% de taxa de conjuração." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "+1 em todas as skills, e mana para o Teleport de um Enigma." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills." },
+          { why: "+3 skills de Necromancer." },
+          { why: "Skills e vida numa fileira só." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders antes de você levantar, sempre." },
+          { why: "A mão secundária da troca." },
+        ],
+      },
+      bis: {
+        goal: "Nada mais a consertar.",
+        notes:
+          "**O teto desta build é baixo e chega cedo**, o que é uma qualidade e não uma reclamação. Tudo depois de um Homunculus e de uma boa wand é +skills, e +skills aumenta uma curva que já está achatada. O que um Enigma compra é velocidade, não poder, e ainda assim é o melhor item da lista.",
+        picks: {
+          "weapon-0": {
+            label: "Uma wand craftada: +3 Raise Skeleton, +3 Skeleton Mastery, +2 Necromancer Skills, 20% Faster Cast Rate",
+            why: "Oito níveis efetivos entre as duas skills que importam, num item só. É o teto, e é uma troca, não um drop.",
+          },
+          "offhand-0": { why: "Quatro níveis de skill, +40 de resistências e bloqueio. Socke com duas runas Um se as resistências ainda estiverem curtas." },
+          "body-0": { why: "Teleport, e os +0,75 de Strength por nível que pagam pela Heirophant Trophy." },
+          "helm-0": { why: "+2 skills, com uma Um no socket." },
+          "amulet-0": { why: "+2 skills, +30 de todas as resistências." },
+          "gloves-0": { why: "Taxa de conjuração e um nível de skill de fogo." },
+          "belt-0": { why: "+1 skills, 20% de taxa de conjuração." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { why: "+1 em todas as skills, 20 de atributos, 20 de resistências." },
+          { why: "+3 skills de Necromancer." },
+          { why: "Os últimos níveis efetivos." },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders, conjurado antes do exército e não depois." },
+          { why: "A mão secundária da troca." },
+        ],
+      },
+    },
+  },
 };

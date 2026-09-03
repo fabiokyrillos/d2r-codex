@@ -46,7 +46,7 @@ import {
 } from "../lib/labels";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
-import type { GearPick, ItemRef } from "../lib/types";
+import type { Build, GearPick, ItemRef, ProgressionJourney } from "../lib/types";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import {
   ELEMENTAL_ATTACK_MODELS,
@@ -101,6 +101,80 @@ import {
   checkRuneComposition,
   checkSkillTabLines,
 } from "./item-rules";
+import {
+  NEVER_FEED_TO_A_GOLEM,
+  UNLOCK_CLAIM_SKILLS,
+  checkIronGolemAdvice,
+  checkReviveSummonResist,
+  checkSummonPenaltyClaims,
+  checkUnlockLevelClaims,
+} from "./necromancer-claims";
+
+/**
+ * Every authored string on a build page, flattened.
+ *
+ * Shared by the claim rules below so a sentence cannot escape them by living in
+ * a gear pick's `lookFor` rather than in `playstyle`. Nested alternatives are
+ * walked, because "sacrifice a Pride to the Iron Golem" is exactly the kind of
+ * line that ends up in one.
+ */
+function buildProse(build: Build): string[] {
+  const out: string[] = [
+    build.summary,
+    build.playstyle,
+    ...build.strengths,
+    ...build.weaknesses,
+    ...(build.flexPoints ?? []),
+    build.stats.strength,
+    build.stats.dexterity,
+    build.stats.vitality,
+    build.stats.energy,
+    ...build.stats.notes,
+    build.immunityPlan ?? "",
+    build.mercenaryNotes ?? "",
+    build.hardcoreNotes ?? "",
+    build.selfFoundNotes ?? "",
+    build.levelingPath?.summary ?? "",
+    build.levelingPath?.respecAt ?? "",
+  ];
+  for (const allocation of build.skills) out.push(allocation.note ?? "");
+  for (const breakpoint of build.breakpoints) out.push(breakpoint.why);
+  for (const entry of build.farming) out.push(entry.why);
+  const walk = (pick: GearPick) => {
+    out.push(pick.why, pick.label ?? "", pick.sockets ?? "", ...(pick.lookFor ?? []));
+    for (const alternative of pick.alternatives ?? []) walk(alternative);
+  };
+  for (const set of build.gearSets) {
+    out.push(set.goal, set.nextUpgrade ?? "", set.notes ?? "");
+    for (const slot of set.slots) slot.picks.forEach(walk);
+    (set.charms ?? []).forEach(walk);
+    (set.weaponSwap ?? []).forEach(walk);
+  }
+  return out.filter((line) => line.length > 0);
+}
+
+/** The same, for a levelling journey. */
+function journeyProse(journey: ProgressionJourney): string[] {
+  const out: string[] = [journey.summary, ...journey.overview];
+  for (const respec of journey.respecPlan ?? []) out.push(respec.at, respec.why);
+  for (const stage of journey.stages) {
+    out.push(
+      stage.name,
+      stage.summary,
+      stage.location,
+      stage.goal,
+      stage.killingWith,
+      stage.exitCriteria ?? "",
+      ...stage.skillPoints,
+      ...stage.statPoints,
+    );
+    for (const action of stage.actions) out.push(action.text);
+    for (const target of stage.gearTargets ?? []) {
+      out.push(target.why, target.label ?? "", ...(target.lookFor ?? []));
+    }
+  }
+  return out.filter((line) => line.length > 0);
+}
 
 const SOURCE: Locale = DEFAULT_LOCALE;
 const TRANSLATED = LOCALES.filter((l) => l !== SOURCE);
@@ -788,6 +862,82 @@ console.log("\nCharges, skill tabs and rune composition:");
     `  ${CHARGE_CONTROLS.length} charge, ${SKILL_TAB_CONTROLS.length} skill-tab and ` +
       `${RUNE_MOD_CONTROLS.length} rune-composition controls`,
   );
+}
+
+// ---------------------------------------------------------------------------
+// What the Necromancer's own pages are allowed to claim
+// ---------------------------------------------------------------------------
+
+/*
+ * See `scripts/necromancer-claims.ts`. Three of these police claims the summons
+ * research retired and one polices a level the research that preceded it got
+ * wrong, and all four are prose rather than data — so they run over every
+ * Necromancer build and journey in **both locales**, because a corrected
+ * English sentence with a stale Portuguese twin is what an overlay invites.
+ *
+ * The unlock-level rule is the one that would have caught the actual mistake:
+ * the earlier research put Decrepify at 30, and a levelling route built on that
+ * wastes six levels waiting for a skill that arrived at 24.
+ */
+console.log("\nNecromancer page claims (both locales):");
+{
+  const nameOf = (slug: string) => getSkill(DEFAULT_LOCALE, slug)?.name ?? slug;
+  const levelByName = new Map<string, number>();
+  for (const [slug, node] of Object.entries(SKILL_GRAPH)) {
+    if (node.classSlug !== "necromancer") continue;
+    levelByName.set(nameOf(slug), node.requiredLevel);
+  }
+
+  const found = LOCALES.flatMap((locale) => {
+    const pages: { where: string; lines: string[] }[] = [];
+
+    for (const build of getBuilds(locale).filter((b) => b.classSlug === "necromancer")) {
+      pages.push({ where: `${locale} ${build.slug}`, lines: buildProse(build) });
+    }
+    for (const journey of getJourneys(locale).filter((j) => j.classSlug === "necromancer")) {
+      pages.push({ where: `${locale} ${journey.classSlug} journey`, lines: journeyProse(journey) });
+    }
+
+    return pages.flatMap(({ where, lines }) => [
+      // An Iron Golem section is allowed; an expensive item in it is not, and a
+      // page that discusses building one owes the reader every way to lose it.
+      ...checkIronGolemAdvice(
+        lines,
+        NEVER_FEED_TO_A_GOLEM,
+        where,
+        lines.some((l) => /Iron Golem/i.test(l)),
+      ),
+      // Silence on the penalty is only required of pages that raise the subject.
+      ...checkSummonPenaltyClaims(lines, where, false),
+      ...checkReviveSummonResist(lines, where),
+      ...checkUnlockLevelClaims(lines, (name) => levelByName.get(name), UNLOCK_CLAIM_SKILLS, where),
+    ]);
+  });
+
+  const rules = [
+    "unlock-level-wrong",
+    "summon-difficulty-penalty-claimed",
+    "revive-gets-summon-resist",
+    "golem-expensive-item-recommended",
+    "golem-losses-not-stated",
+  ] as const;
+  for (const rule of rules) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(34)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+
+  /*
+   * The same completeness contract the Amazon pass wrote for itself, applied to
+   * the class published in this one. Scoped by class on purpose — a gate that
+   * forces edits to already-approved content in order to go green is a gate
+   * that gets argued with rather than obeyed.
+   */
+  const incomplete = checkClassPagesComplete(getBuilds(SOURCE), "necromancer", tierOrder);
+  console.log(`  ${incomplete.length === 0 ? "ok" : " x"} ${"incomplete-class-page".padEnd(34)} ${incomplete.length}`);
+  for (const h of incomplete) problems.push(h.message);
+
+  console.log(`  ${levelByName.size} unlock levels read from the graph, ${LOCALES.length} locales`);
 }
 
 // ---------------------------------------------------------------------------

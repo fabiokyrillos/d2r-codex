@@ -310,11 +310,21 @@ export function checkReviveSummonResist(lines: readonly string[], where: string)
  * the reader would otherwise be told to wait. Lower Resist is the skill that
  * genuinely unlocks at 30, which is exactly how the two get swapped.
  *
- * A sentence counts as an unlock claim when it names the skill and carries an
- * unlock phrase with a number in it. Sentences that merely mention a skill next
- * to a number — "one point in Decrepify is enough" — name no level and are left
- * alone.
+ * A sentence counts as an unlock claim when it names the skill, carries an
+ * unlock verb, and states exactly one "level N". All three are needed:
+ *
+ * - Without the verb, "Corpse Explosion at level 20" — a perfectly ordinary
+ *   sentence about hard points — reads as a claim that it unlocks at 20.
+ * - Without the single-number condition, "Lower Resist unlocks at level 30,
+ *   six levels after Decrepify at level 24" is one sentence making two claims,
+ *   and the rule would attribute the first number to both skills.
+ *
+ * So an enumeration of several levels is skipped rather than guessed at, and
+ * prose that wants to be checked says one unlock per sentence.
  */
+const UNLOCK_VERB =
+  /\bunlocks?\b|\bunlocked\b|\bavailable\b|\barrives?\b|\bopens?\b|\bbecomes?\b|\bdestrava\b|\bdisponível\b|\bchega\b|\bexige\b|\babre\b|\bliberad[ao]\b|\bsurge\b/i;
+const LEVEL_NUMBER = /\blevel\s+(\d{1,2})\b|\bnível\s+(\d{1,2})\b/gi;
 export const UNLOCK_CLAIM_SKILLS: readonly string[] = [
   "Decrepify",
   "Lower Resist",
@@ -332,16 +342,6 @@ export const UNLOCK_CLAIM_SKILLS: readonly string[] = [
   "Bone Prison",
 ];
 
-const UNLOCK_PHRASE = new RegExp(
-  [
-    "(?:unlocks?|unlocked|available|arrives?|requires?|needs?|opens?)[^.]{0,40}?\\blevel\\s+(\\d{1,2})\\b",
-    "\\bat level\\s+(\\d{1,2})\\b",
-    "(?:destravad[ao]|disponível|chega|exige|precisa|abre)[^.]{0,40}?\\bnível\\s+(\\d{1,2})\\b",
-    "\\b(?:no|a partir do)\\s+nível\\s+(\\d{1,2})\\b",
-  ].join("|"),
-  "i",
-);
-
 export function checkUnlockLevelClaims(
   lines: readonly string[],
   requiredLevelOf: (name: string) => number | undefined,
@@ -350,10 +350,12 @@ export function checkUnlockLevelClaims(
 ): ClaimProblem[] {
   const found: ClaimProblem[] = [];
   for (const sentence of sentencesOf(lines)) {
-    const match = sentence.match(UNLOCK_PHRASE);
-    if (!match) continue;
-    const claimed = Number(match.slice(1).find((g) => g !== undefined));
-    if (!Number.isFinite(claimed)) continue;
+    if (!UNLOCK_VERB.test(sentence)) continue;
+    const levels = new Set(
+      [...sentence.matchAll(LEVEL_NUMBER)].map((m) => Number(m[1] ?? m[2])),
+    );
+    if (levels.size !== 1) continue;
+    const claimed = [...levels][0];
     for (const name of watched) {
       if (!new RegExp(`\\b${name}\\b`, "i").test(sentence)) continue;
       const actual = requiredLevelOf(name);
