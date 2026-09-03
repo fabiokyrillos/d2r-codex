@@ -87,10 +87,22 @@ for (const tree of cls.trees) {
       (e) => SKILL_GRAPH[e.from.slug]?.tree === tree && SKILL_GRAPH[e.to.slug]?.tree === tree,
     ),
   );
+  /*
+   * A prerequisite can never sit *below* the skill that needs it, because the
+   * row is the unlock tier: that would put the requirement out of reach at the
+   * level the skill becomes available.
+   *
+   * It can sit beside it, and the Necromancer is where that shows up. Skeleton
+   * Mastery and Raise Skeleton are both level-1 skills in row 1, and Skeleton
+   * Mastery requires Raise Skeleton — a horizontal connector, drawn across the
+   * empty middle cell. The three classes extracted before this one happen to
+   * have no same-row edge at all, which is how `<` passed for ninety nodes
+   * while meaning something narrower than the invariant.
+   */
   check(
-    `${tree}: every edge runs from a lower row to a higher one`,
-    edges.every((e) => e.from.row < e.to.row),
-    edges.filter((e) => e.from.row >= e.to.row).map((e) => `${e.from.slug}->${e.to.slug}`).join(", "),
+    `${tree}: no edge runs upward, from a higher row to a lower one`,
+    edges.every((e) => e.from.row <= e.to.row),
+    edges.filter((e) => e.from.row > e.to.row).map((e) => `${e.from.slug}->${e.to.slug}`).join(", "),
   );
 
   // Every prerequisite edge the graph declares must be one the renderer is
@@ -226,16 +238,66 @@ for (const build of classBuilds) {
   }
 }
 
-// Masteries take no prerequisite. An earlier draft of the graph chained them
-// behind their tree's damage skills, which would put a mastery out of reach at
-// the level that actually unlocks it.
-for (const mastery of skills.filter((s) => s.slug.endsWith("-mastery"))) {
+/*
+ * No skill requires something that unlocks after it does.
+ *
+ * This replaces a rule that read "a skill whose slug ends in -mastery takes no
+ * prerequisite", written when an earlier draft of the graph chained the
+ * Sorceress's masteries behind their tree's damage skills and put them out of
+ * reach at the level that unlocks them. The suffix was a proxy for the defect,
+ * and it is the wrong proxy: the Necromancer's Skeleton Mastery genuinely
+ * requires Raise Skeleton and Golem Mastery genuinely requires Clay Golem —
+ * both at or below their own unlock level, and both perfectly spendable.
+ *
+ * This is the invariant the old rule was reaching for, and it holds for every
+ * skill rather than for the ones with a particular name.
+ */
+for (const skill of skills) {
+  const node = SKILL_GRAPH[skill.slug];
+  const late = node.prerequisites.filter(
+    (pre) => SKILL_GRAPH[pre].requiredLevel > node.requiredLevel,
+  );
   check(
-    `${mastery.name} takes no prerequisite`,
-    SKILL_GRAPH[mastery.slug].prerequisites.length === 0,
-    SKILL_GRAPH[mastery.slug].prerequisites.join(", "),
+    `${skill.name}: every prerequisite is reachable by level ${node.requiredLevel}`,
+    late.length === 0,
+    late.map((pre) => `${pre} unlocks at ${SKILL_GRAPH[pre].requiredLevel}`).join(", "),
   );
 }
+}
+
+/*
+ * The historical defect, pinned by name.
+ *
+ * The general rule above cannot see it: chaining Fire Mastery behind Fire Bolt
+ * would satisfy "every prerequisite is reachable by my level" perfectly well,
+ * because Fire Bolt unlocks at 1 and Fire Mastery at 30. What made that draft
+ * wrong was the claim itself — the game gives the Sorceress's three elemental
+ * masteries no prerequisite at all — so the claim is what is checked.
+ */
+for (const mastery of ["fire-mastery", "cold-mastery", "lightning-mastery"]) {
+  check(
+    `${mastery} takes no prerequisite`,
+    SKILL_GRAPH[mastery].prerequisites.length === 0,
+    SKILL_GRAPH[mastery].prerequisites.join(", "),
+  );
+}
+
+/*
+ * A negative control for the rule that replaced it. A gate nobody has watched
+ * reject anything is a gate nobody has tested, and this one was loosened in the
+ * same commit that generalised it.
+ */
+{
+  const laterThanItsDependent = (prerequisiteLevel: number, skillLevel: number) =>
+    prerequisiteLevel > skillLevel;
+  check(
+    "control: a prerequisite unlocking after its dependent is rejected",
+    laterThanItsDependent(18, 12),
+  );
+  check(
+    "control: a prerequisite unlocking alongside its dependent is accepted",
+    !laterThanItsDependent(1, 1),
+  );
 }
 
 // The Hammerdin's Uber variant is the case the brief calls out by name.

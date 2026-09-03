@@ -316,17 +316,28 @@ export function synergiesFor(
     if (governing.length === 0) continue;
 
     /*
-     * A skill scaling itself. Blessed Aim's `skill('Blessed Aim'.blvl) * par8`
-     * is governed by "Attack Rating % passive synergy", and it is not an edge:
-     * the parameter describes how the skill's own passive grows with its own
-     * hard points. `checkSynergies` rejects a self-edge outright, so this is
-     * dropped here rather than emitted and rejected downstream.
+     * An edge needs a source, and these two shapes have none.
+     *
+     * A skill scaling itself: Blessed Aim's `skill('Blessed Aim'.blvl) * par8`,
+     * governed by "Attack Rating % passive synergy". The parameter describes how
+     * the skill's own passive grows with its own hard points, and
+     * `checkSynergies` rejects a self-edge outright — so it is dropped here
+     * rather than emitted and rejected downstream.
+     *
+     * A skill applying its own coefficient to its own level with no `skill()`
+     * reference at all: Clay Golem's `skill('Golem Mastery'.ln56) + (lvl*par8)`,
+     * where `par8` is Clay Golem's own "Clay Golem Attack Rating synergy" — the
+     * same 20 that Blood, Iron and Fire Golem read off its row. The golem gives
+     * that bonus to itself as well as to the others. Same non-edge, written
+     * without the self-reference.
      */
-    if (refs.length === 0 && allRefs.length > 0) continue;
+    if (refs.length === 0 && governing.every((g) => g.owner === me)) continue;
 
     /*
-     * A synergy-labelled parameter with nothing to scale. Either the expression
-     * reads a soft level (Revive) or the shape is new and wants a decision.
+     * A *donor's* synergy parameter with no base level to scale. The expression
+     * names another skill and reads its soft level, which +skills raise — Revive
+     * and Skeleton Mastery, and the Druid's three summons after it. This is the
+     * one shape that wants a human decision rather than a rule.
      */
     if (refs.length === 0) {
       if (SOFT_LEVEL_SYNERGIES.has(me)) continue;
