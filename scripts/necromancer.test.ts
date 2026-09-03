@@ -34,6 +34,13 @@ import {
   type NecromancerProblem,
   type PublishedValues,
 } from "./necromancer-rules";
+import {
+  NEVER_FEED_TO_A_GOLEM,
+  checkCorpseExplosionClaims,
+  checkIronGolemAdvice,
+  checkReviveSummonResist,
+  checkSummonPenaltyClaims,
+} from "./necromancer-claims";
 
 let passed = 0;
 const failures: string[] = [];
@@ -456,24 +463,67 @@ console.log("\nWhat the pages say about Corpse Explosion");
     );
 
     /*
-     * The claim this pass deliberately does not make. Whether the fire half
-     * picks up fire-skill modifiers is decided in the damage pipeline, which was
-     * not traced end to end — so an assertion either way must not appear, and the
-     * page must say so rather than being quietly silent.
+     * The three distinctions, replacing a ban.
+     *
+     * The foundation pass forbade the page from mentioning fire-skill modifiers
+     * at all, because it could not establish whether the fire half takes them.
+     * That banned the correct sentence along with the incorrect one: the skill's
+     * `EType` is `fire`, so `+to Fire Skills` genuinely raises its effective
+     * level, and the effective level is what buys radius. What the page owes the
+     * reader is the distinction between LEVEL, RADIUS and DAMAGE PERCENTAGE —
+     * and, still, no claim about the two modifiers that remain unestablished.
      */
-    const asserts = prose.filter(
-      (line) =>
-        /\+\s?Fire Skills|Fire Mastery|\+% Fire Skill Damage/i.test(line) &&
-        !/not asserted|deliberadamente|does not claim|não afirma/i.test(line),
+    const claims = checkCorpseExplosionClaims(prose, `${locale} corpse-explosion`);
+    for (const rule of [
+      "ce-radius-not-tied-to-level",
+      "ce-percentage-not-protected",
+      "ce-fire-tag-not-explained",
+      "ce-unsupported-fire-modifier-claim",
+    ] as const) {
+      const hits = claims.filter((p) => p.rule === rule);
+      check(`${locale}: ${rule}`, hits.length === 0, hits.map((h) => h.message).join(" | "));
+    }
+  }
+
+  // Planted mutations: each of the four rules must be able to fail.
+  {
+    const good = [
+      "The skill level buys radius: 8 half squares at level 1 plus 1 per level.",
+      "The 70–120% band does not move, whatever the skill level is.",
+      "An item with +to Fire Skills raises the effective level and therefore the radius.",
+      "Whether +% Fire Skill Damage raises the fire half is not asserted here.",
+    ];
+    check(
+      "control: a page carrying all four sentences passes",
+      checkCorpseExplosionClaims(good, "control").length === 0,
+      JSON.stringify(checkCorpseExplosionClaims(good, "control")),
+    );
+    const drop = (i: number) => good.filter((_, n) => n !== i);
+    check(
+      "control: dropping the radius sentence is caught",
+      checkCorpseExplosionClaims(drop(0), "c").some((p) => p.rule === "ce-radius-not-tied-to-level"),
     );
     check(
-      `${locale}: no unverified claim about fire-skill modifiers`,
-      asserts.length === 0,
-      asserts.join(" | "),
+      "control: dropping the fixed-band sentence is caught",
+      checkCorpseExplosionClaims(drop(1), "c").some((p) => p.rule === "ce-percentage-not-protected"),
     );
     check(
-      `${locale}: the gap is named rather than left silent`,
-      anywhere(/Fire Mastery/i),
+      "control: dropping the fire-tag sentence is caught",
+      checkCorpseExplosionClaims(drop(2), "c").some((p) => p.rule === "ce-fire-tag-not-explained"),
+    );
+    check(
+      "control: asserting +% Fire Skill Damage raises the fire half is caught",
+      checkCorpseExplosionClaims(
+        [...good, "A Bramble raises the fire half, because +% Fire Skill Damage increases it."],
+        "c",
+      ).some((p) => p.rule === "ce-unsupported-fire-modifier-claim"),
+    );
+    check(
+      "control: claiming a Fire Mastery multiplies it is caught",
+      checkCorpseExplosionClaims(
+        [...good, "A Fire Mastery multiplies the fire half of every explosion."],
+        "c",
+      ).some((p) => p.rule === "ce-unsupported-fire-modifier-claim"),
     );
   }
 }
@@ -612,32 +662,84 @@ console.log("\nWhat the pages say about minions");
     );
 
     /*
-     * The rule the brief names outright. Building an Iron Golem from an
-     * expensive runeword is standard advice and it rests on two things this
-     * pass could not establish — when one survives a new game, and what makes
-     * one vanish. Until both are settled the site must not recommend it.
+     * The Iron Golem rule, now that persistence is answered.
+     *
+     * The foundation pass forbade recommending one at all, because it could not
+     * say when a golem survived a new game or what destroyed it. Both are
+     * settled: it persists across games and it is destroyed by dying, by any
+     * other golem, and by a respec that removes the skill. So the rule changes
+     * shape — the golem is allowed, the loss conditions are mandatory, and the
+     * item may never be an expensive one.
      */
-    const recommends = prose.filter(
-      (line) =>
-        /Iron Golem/i.test(line) &&
-        /(sacrifice|feed|build one from|use a .*runeword|vale a pena (usar|sacrificar)|sacrifique|entregue)/i.test(line) &&
-        !/does not tell you|não manda|could not establish|não conseguiu estabelecer|safe reading|leitura segura/i.test(line),
+    const golem = checkIronGolemAdvice(prose, NEVER_FEED_TO_A_GOLEM, `${locale} minions`, true);
+    check(
+      `${locale}: no expensive item is offered to the Iron Golem`,
+      golem.filter((p) => p.rule === "golem-expensive-item-recommended").length === 0,
+      golem.map((p) => p.message).join(" | "),
     );
     check(
-      `${locale}: nothing recommends feeding an item to the Iron Golem`,
-      recommends.length === 0,
-      recommends.join(" | "),
+      `${locale}: every way of losing the golem is named`,
+      golem.filter((p) => p.rule === "golem-losses-not-stated").length === 0,
+      golem.filter((p) => p.rule === "golem-losses-not-stated").map((p) => p.message).join(" | "),
     );
     check(
-      `${locale}: the risk is stated rather than left out`,
-      anywhere(/consumed when the golem was made|consumido quando o golem foi criado/i) ||
-        anywhere(/treating the item as spent|tratar o item como gasto/i),
+      `${locale}: the item is stated to be consumed`,
+      anywhere(/consumed when the golem was made|consumido quando o golem foi criado/i),
+    );
+
+    /*
+     * The summons research, in the two directions it can go wrong: publishing
+     * the retired claim, and quietly dropping the correction so a reader who
+     * arrives believing it leaves believing it.
+     */
+    const penalty = checkSummonPenaltyClaims(prose, `${locale} minions`, true);
+    check(
+      `${locale}: nothing claims summons take the −40 / −100 penalty`,
+      penalty.filter((p) => p.rule === "summon-difficulty-penalty-claimed").length === 0,
+      penalty.map((p) => p.message).join(" | "),
     );
     check(
-      `${locale}: the unresolved questions are listed rather than answered`,
-      anywhere(/could not settle|não conseguiu resolver/i) &&
-        anywhere(/Skill Shrine/i) &&
-        anywhere(/Uber/i),
+      `${locale}: the correction is stated rather than implied`,
+      penalty.filter((p) => p.rule === "summon-penalty-not-corrected").length === 0,
+    );
+    check(
+      `${locale}: the mercenary is named as the one who does take it`,
+      anywhere(/mercenary|mercen[áa]rio/i) && anywhere(/−40|−100/),
+    );
+    check(
+      `${locale}: nothing extends Summon Resist to revives`,
+      checkReviveSummonResist(prose, `${locale} minions`).length === 0,
+      checkReviveSummonResist(prose, `${locale} minions`).map((p) => p.message).join(" | "),
+    );
+    check(
+      `${locale}: Summon Resist's four elements are named and physical is excluded`,
+      anywhere(/fire, lightning, cold and poison|fogo, raio, frio e veneno/i) &&
+        anywhere(/(?:not|não)[^]{0,60}(?:physical|física)/i),
+    );
+
+    // The four questions that are answered now, each stated on the page.
+    check(
+      `${locale}: per-difficulty base life is published`,
+      prose.includes("21 / 30 / 42") && prose.includes("306 / 595 / 980"),
+    );
+    check(
+      `${locale}: the Skill Shrine question is answered`,
+      anywhere(/Skill Shrine/i) &&
+        anywhere(/keeps the higher values|mantém os valores mais altos/i),
+    );
+    check(
+      `${locale}: Iron Golem persistence is stated`,
+      anywhere(/rebuilt when you next enter|reconstruído quando você entra/i),
+    );
+    check(
+      `${locale}: what remains open is still listed, including the Ubers`,
+      anywhere(/could not settle|não conseguiu resolver/i) && anywhere(/Uber/i),
+    );
+    check(
+      `${locale}: the Prime Evil flag is published without a multiplier`,
+      anywhere(/Prime Evil/i) &&
+        anywhere(/multiplier is not|multiplicador não/i) &&
+        !anywhere(/Prime Evil[^]{0,80}\bx\s?\d/i),
     );
     check(
       `${locale}: the reference implementation is named as the legacy engine`,
@@ -645,12 +747,60 @@ console.log("\nWhat the pages say about minions");
     );
   }
 
-  // Control: the recommendation detector must be able to reject something.
-  check(
-    "control: an actual recommendation would be caught",
-    /Iron Golem/i.test("Sacrifice a spare Iron runeword to the Iron Golem.") &&
-      /(sacrifice|feed|build one from)/i.test("Sacrifice a spare Iron runeword to the Iron Golem."),
-  );
+  // ---- Planted mutations: every rule above must be able to fail -----------
+  {
+    const feed = ["Sacrifice a spare Pride to the Iron Golem for its Concentration aura."];
+    check(
+      "control: feeding a Pride to the Iron Golem is caught",
+      checkIronGolemAdvice(feed, NEVER_FEED_TO_A_GOLEM, "c", false).some(
+        (p) => p.rule === "golem-expensive-item-recommended",
+      ),
+    );
+    check(
+      "control: the site's own refusal sentence is not caught",
+      checkIronGolemAdvice(
+        ["This site never suggests feeding an Insight or a Pride to the Iron Golem."],
+        NEVER_FEED_TO_A_GOLEM,
+        "c",
+        false,
+      ).length === 0,
+    );
+    check(
+      "control: an Iron Golem section that omits the respec is caught",
+      checkIronGolemAdvice(
+        ["The Iron Golem is lost when it dies, and when any other golem replaces it."],
+        NEVER_FEED_TO_A_GOLEM,
+        "c",
+        true,
+      ).some((p) => p.rule === "golem-losses-not-stated"),
+    );
+    check(
+      "control: the retired penalty claim is caught",
+      checkSummonPenaltyClaims(
+        ["Your skeletons take the −100 resistance penalty in Hell, so max Summon Resist."],
+        "c",
+        false,
+      ).some((p) => p.rule === "summon-difficulty-penalty-claimed"),
+    );
+    check(
+      "control: the mercenary sentence is not mistaken for it",
+      checkSummonPenaltyClaims(
+        ["Your mercenary takes the −100 resistance penalty in Hell and needs gearing for it."],
+        "c",
+        false,
+      ).length === 0,
+    );
+    check(
+      "control: a page silent on the penalty is caught",
+      checkSummonPenaltyClaims(["Skeletons are good."], "c", true).some(
+        (p) => p.rule === "summon-penalty-not-corrected",
+      ),
+    );
+    check(
+      "control: extending Summon Resist to revives is caught",
+      checkReviveSummonResist(["Summon Resist covers your revives too."], "c").length === 1,
+    );
+  }
 }
 
 // ===========================================================================
