@@ -286,7 +286,20 @@ export const CHAIN_TARGETS: readonly string[] = [
   "poison-nova",
 ];
 
-/** The names that must stay aliases. Shared by the checker and its tests. */
+/**
+ * The names that must stay aliases. Shared by the checker and its tests.
+ *
+ * The Necromancer entries were added by the build pass and are the larger half.
+ * Five community names point at the Summoner and three at the Bone Spear page,
+ * and each of them is the sort of name a later author would reasonably think
+ * deserved a page of its own — which is precisely the regression this list
+ * exists to make loud.
+ *
+ * Trang-Oul's is here for a different reason than the rest: it is a real set,
+ * and it is an equipment variant of the Poison Nova build rather than a build.
+ * The point plan does not change, so a second page would be the same character
+ * with its gear advice split in two.
+ */
 export const ALIAS_ONLY_NAMES: readonly string[] = [
   "javazon",
   "bowazon",
@@ -302,6 +315,29 @@ export const ALIAS_ONLY_NAMES: readonly string[] = [
   "plague javelin amazon",
   "mavinas",
   "mavinas amazon",
+  // Summoner
+  "fishymancer",
+  "summonmancer",
+  "skeletonmancer",
+  "skelemancer",
+  "skeleton summoner",
+  "skeleton summoner necromancer",
+  // Poison Nova
+  "poisonmancer",
+  "novamancer",
+  "pnova",
+  "poison nova",
+  "trangs",
+  "trang oul",
+  "trang ouls",
+  "trang ouls necromancer",
+  // Bone Spear
+  "bonemancer",
+  "bone spirit",
+  "bone spirit necromancer",
+  "bonespirit",
+  "teeth",
+  "teeth necromancer",
 ];
 
 /** How many of the catalogued areas record each immunity, as the prose claims. */

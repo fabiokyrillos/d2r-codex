@@ -52,7 +52,7 @@ export * from "./scoring";
  * `scripts/search-aliases.test.ts` asserts both halves of that: every alias
  * below finds its build in both locales, and no alias has become a page.
  */
-const NICKNAMES: Record<string, string> = {
+export const NICKNAMES: Record<string, string> = {
   "harlequin-crest": "shako harly",
   "heart-of-the-oak": "hoto",
   "chains-of-honor": "coh",
@@ -101,6 +101,41 @@ const NICKNAMES: Record<string, string> = {
     "plague javelin poisonzon poison javelin pj javazon veneno peste",
   "jab-fend-amazon":
     "spearazon fendazon jabazon jab fend impale spear lanceira lanca",
+
+  /*
+   * --- Necromancer builds, and the names that are not builds ---------------
+   *
+   * Same job as the Amazon block above, and a heavier one: the Necromancer has
+   * more community nicknames per build than any class on this site. Fishymancer
+   * alone would justify the mechanism — it is what most players type, it names
+   * the Summoner, and there is no page by that name anywhere.
+   *
+   * Deliberately absent, because they collide rather than resolve:
+   *   "ce"         Corpse Explosion, but also a two-letter substring of dozens
+   *                of item and area names
+   *   "osso"       "bone" in Portuguese, which would match Bone, Bone Spear,
+   *                Bone Spirit, Bone Armor and the runeword at once
+   *   "veneno"     the same problem for poison, across two builds and a tree
+   *   "exercito"   what a reader calls the army, not what they call the build
+   *   "esqueletos" ditto
+   * A nickname earns a place here by identifying ONE canonical page. A word
+   * that describes a family belongs in the article prose, where a search hit
+   * lands on something that explains the difference.
+   */
+  "summoner-necromancer":
+    "fishymancer summonmancer skeletonmancer skelemancer skeleton summoner summon necro necro invocador raise skeleton skeleton mastery",
+  "poison-nova-necromancer":
+    "poisonmancer novamancer pnova poison nova trangs trang oul trang ouls",
+  "bone-spear-necromancer":
+    "bonemancer bone spirit bonespirit teeth bone spear magic damage dano magico",
+
+  // --- Necromancer items and runewords -------------------------------------
+  homunculus: "homun necro head shrunken head",
+  "deaths-web": "deaths web dweb poison wand",
+  "arm-of-king-leoric": "leoric arm akl summon wand",
+  white: "white wand runeword bone necro",
+  splendor: "splendor shield escudo runeword",
+  bone: "bone armor runeword necro",
 
   // --- Amazon items --------------------------------------------------------
   "titans-revenge": "titans titan javelin",
