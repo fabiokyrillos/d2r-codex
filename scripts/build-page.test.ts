@@ -20,7 +20,7 @@ import { join } from "node:path";
 
 import { assertFreshBuild } from "./build-freshness";
 
-import { dictionaryFor } from "../lib/i18n";
+import { dictionaryFor, fmt } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { getBuilds, getFarmingArea, getSkill, resolveRef } from "../lib/registry";
 import type { ItemRef } from "../lib/types";
@@ -57,6 +57,9 @@ const pageFor = (locale: Locale, classSlug: string, slug: string) =>
   join(root, locale, "builds", classSlug, `${slug}.html`);
 
 const AMAZON = getBuilds("en-us").filter((b) => b.classSlug === "amazon");
+
+/** Every mandatory total the eight pages printed, collected as they are checked. */
+const totalsSeen = new Set<number>();
 
 // ---------------------------------------------------------------------------
 console.log(`\nEvery build page was prerendered (${LOCALES.length} locales)`);
@@ -106,10 +109,30 @@ for (const locale of LOCALES) {
     const mandatory = build.skills
       .filter((s) => s.role !== "flex" && s.points > 0)
       .reduce((sum, s) => sum + s.points, 0);
-    check(
-      `${where}: prints its mandatory point total (${mandatory}/${MAX_HARD_POINTS})`,
-      text.includes(String(mandatory)) && text.includes(String(MAX_HARD_POINTS)),
-    );
+    /*
+     * The whole legend phrase, not the two numbers in it.
+     *
+     * This assertion used to be `text.includes("109") && text.includes("110")`,
+     * and on the Lightning Fury page it could be satisfied without the legend
+     * rendering at all: Titan's Revenge asks 109 Dexterity, and 110 is
+     * Thundergod's Vigor's Strength requirement. Two gear numbers, on a page
+     * whose budget could then say anything. The block after this loop proves
+     * that, rather than asserting it.
+     */
+    const legend = fmt(t.skills.legendMandatory, {
+      points: mandatory,
+      cap: MAX_HARD_POINTS,
+    });
+    check(`${where}: prints "${legend}"`, text.includes(legend));
+    // And prints exactly one total: a neighbouring value in the same phrase is
+    // what a drifting plan would render.
+    for (const wrong of [mandatory - 1, mandatory + 1]) {
+      check(
+        `${where}: does not also claim ${wrong} of ${MAX_HARD_POINTS}`,
+        !text.includes(fmt(t.skills.legendMandatory, { points: wrong, cap: MAX_HARD_POINTS })),
+      );
+    }
+    totalsSeen.add(mandatory);
     const namesMissing = build.skills
       .map((a) => getSkill(locale, a.skill)?.name ?? a.skill)
       .filter((name) => !text.includes(name));
@@ -206,6 +229,51 @@ for (const source of AMAZON) {
     `${source.slug}: the pt-BR page does not reuse the en-US playstyle`,
     en.includes(sentence) && !pt.includes(sentence),
   );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nThe budget assertion is co-located, and the old one was not");
+// ---------------------------------------------------------------------------
+{
+  // Both totals the eight plans actually spend must have been exercised, or the
+  // loop above could have checked one shape of legend eight times.
+  check(
+    "both 108 and 109 of 110 were asserted across the eight pages",
+    totalsSeen.has(108) && totalsSeen.has(109),
+    [...totalsSeen].sort().join(", "),
+  );
+
+  /*
+   * The proof, on the real page rather than on a fixture. Delete the legend
+   * phrase from the rendered text and the old assertion still passes, because
+   * both of its numbers are gear requirements elsewhere on the same page. The
+   * new one fails, which is the entire point of the change.
+   */
+  for (const locale of LOCALES) {
+    const t = dictionaryFor(locale);
+    const build = getBuilds(locale).find((b) => b.slug === "lightning-fury-amazon")!;
+    const mandatory = build.skills
+      .filter((s) => s.role !== "flex" && s.points > 0)
+      .reduce((sum, s) => sum + s.points, 0);
+    const legend = fmt(t.skills.legendMandatory, { points: mandatory, cap: MAX_HARD_POINTS });
+    const text = visible(readFileSync(pageFor(locale, "amazon", build.slug), "utf8"));
+    const withoutLegend = text.split(legend).join(" ");
+
+    check(
+      `${locale}: removing the legend really removes it`,
+      text.includes(legend) && !withoutLegend.includes(legend),
+    );
+    check(
+      `${locale}: the old bare-number check passes on a page with no budget legend`,
+      withoutLegend.includes(String(mandatory)) && withoutLegend.includes(String(MAX_HARD_POINTS)),
+      `${mandatory} and ${MAX_HARD_POINTS} both still present as gear requirements`,
+    );
+    check(
+      `${locale}: and both numbers appear outside the legend, so that is not a fluke`,
+      new RegExp(`\\b${mandatory}\\b`).test(withoutLegend) &&
+        new RegExp(`\\b${MAX_HARD_POINTS}\\b`).test(withoutLegend),
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------

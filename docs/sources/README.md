@@ -50,6 +50,37 @@ eight that turns a raw `par=12` into "+1.5 to Life per Character Level" and the
 `hpadd`-style quirks that a spot-check of final values would not catch. Only
 after that did it decode anything new.
 
+#### What that does *not* mean
+
+The item numbers and the skill graph are both Tier 1, and their provenance is
+not equally strong. Saying otherwise would be the more flattering description
+and the wrong one.
+
+| | Skill graph | Item and runeword numbers |
+| --- | --- | --- |
+| Produced by | `scripts/generate-skill-graph.ts`, versioned here | A decoder written and run once, during the Amazon research pass |
+| Reproducible | `npm run gen:skill-graph` reproduces the committed file exactly or fails | **No.** Nothing in this repository regenerates them |
+| If the pin moves | The generator refuses, or emits a diff to read | Nothing happens; the values are transcribed prose |
+| Checked by | `check:content`, against the generated file | `check:content`, against a hand-written control set |
+
+So the item values were **decoded from Tier 1 in a research run, calibrated
+against four controls, and then transcribed**. What is committed is the result,
+not the process. A future contributor cannot re-derive a single item number from
+this repository, and a value that drifts drifts silently.
+
+The Amazon audit found exactly the failure that arrangement invites, and it is
+worth naming rather than filing away. Thunderstroke published "14% Chance to
+cast level 20 Lightning on striking" where the extraction gives `min=20 max=14`
+— chance and level exchanged. **None of the four calibration items carries a
+cast-on-striking line**, so the column's argument order was never exercised by
+the calibration, and no gate could see the result.
+
+`scripts/item-rules.ts` is the narrow answer to that: nine controls across six
+entities and all three trigger columns, pinning the one thing that went wrong.
+It is not a decoder and does not pretend to be. **A reproducible item generator
+is outstanding work**, and until it exists the honest summary is that item
+numbers carry Tier 1 *values* with Tier 3 *reproducibility*.
+
 Two rules came out of it that are worth stating once, because both are easy to
 get wrong from a database listing:
 
@@ -264,6 +295,16 @@ Recorded rather than resolved by guesswork.
 - Static Field floors: 33% in Nightmare, 50% in Hell
 - Difficulty penalties: −40 / −100 resistances, 5% / 10% experience on death
 - Quest reward totals: 4 skill points and 5 stat points per difficulty
+
+## Outstanding tooling
+
+Not a gap in what is published, but in how it can be checked.
+
+- **A reproducible item and runeword generator.** The values came from Tier 1;
+  the process did not survive the research pass that produced them. See
+  ["What that does *not* mean"](#what-that-does-not-mean) above. Until a
+  generator exists, `scripts/item-rules.ts` pins a control set rather than the
+  whole catalogue, and every other item number rests on a one-time transcription.
 
 ## Still unverified
 
