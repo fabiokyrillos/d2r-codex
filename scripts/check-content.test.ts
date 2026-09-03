@@ -45,7 +45,12 @@ import {
   unclassifiedElementalAttacks,
 } from "../lib/skills";
 import { MIN_PROSE_LENGTH, exitCodeFor, isUntranslatedProse } from "./content-rules";
-import { checkProcLines } from "./item-rules";
+import {
+  checkChargeLines,
+  checkProcLines,
+  checkRuneComposition,
+  checkSkillTabLines,
+} from "./item-rules";
 import {
   ALIAS_ONLY_NAMES,
   CHAIN_TARGETS,
@@ -984,6 +989,122 @@ console.log("\nProc lines — chance and level, in the order Tier 1 gives them")
   check(
     "the wrong trigger phrase is caught",
     checkProcLines(entity(["20% Chance to cast level 14 Lightning when struck"]), spec).length === 1,
+  );
+}
+
+// ===========================================================================
+console.log("\nCharges, skill tabs and rune composition");
+// ===========================================================================
+
+/*
+ * Three column semantics that invert as quietly as the proc columns did.
+ *
+ * `charged` is the same defect shape as `hit-skill`: min is the charge count
+ * and max is the skill level, so a swap turns "Level 3 Venom (20 Charges)" into
+ * "Level 20 Venom (3 Charges)" — both of which look like item lines.
+ *
+ * `skilltab` is worse, because its `par` is an index into the list of skill
+ * *trees* and those indices overlap the skill ids. Read as a skill id, tab 7
+ * would name an Amazon skill on a Necromancer wand, and the line would still
+ * read as a plausible item.
+ *
+ * And a runeword whose rune mods were dropped publishes a shorter stat block
+ * that is wrong only by omission, which is the hardest kind to see.
+ */
+{
+  const entity = (slug: string, lines: string[]) => [{ slug, name: slug, stats: lines.map((text) => ({ text })) }];
+
+  // -- charges -------------------------------------------------------------
+  const chargeSpec = [{ slug: "x", skill: "Venom", charges: 20, level: 3 }];
+  check(
+    "the correct charge line passes",
+    checkChargeLines(entity("x", ["Level 3 Venom (20 Charges)"]), chargeSpec).length === 0,
+  );
+  check(
+    "charges and level exchanged is caught, and named as a swap",
+    (() => {
+      const found = checkChargeLines(entity("x", ["Level 20 Venom (3 Charges)"]), chargeSpec);
+      return found.length === 1 && found[0].rule === "charge-line-swapped";
+    })(),
+  );
+  check(
+    "a missing charge line is caught",
+    checkChargeLines(entity("x", ["+2 to All Skills"]), chargeSpec)[0]?.rule ===
+      "charge-line-missing",
+  );
+
+  // -- skill tabs ----------------------------------------------------------
+  const tabs = { 6: "Curses", 7: "Poison and Bone Skills", 8: "Summoning Skills" };
+  const oneTab = [
+    { kind: "runeword" as const, slug: "y", tab: 7, tabName: "Poison and Bone Skills", min: 3, max: 3 },
+  ];
+  check(
+    "the correct skill-tab line passes",
+    checkSkillTabLines(entity("y", ["+3 to Poison and Bone Skills (Necromancer Only)"]), oneTab, tabs)
+      .length === 0,
+  );
+  check(
+    "a tab index read as a skill id is caught",
+    checkSkillTabLines(
+      entity("y", ["+3 to Poison and Bone Skills"]),
+      [{ ...oneTab[0], tabName: "Bone Armor" }],
+      tabs,
+    )[0]?.rule === "skilltab-read-as-skill",
+  );
+  check(
+    "a missing tab line is caught",
+    checkSkillTabLines(entity("y", ["+3 to All Skills"]), oneTab, tabs)[0]?.rule ===
+      "skilltab-line-missing",
+  );
+
+  /*
+   * The collapse case, which is the reason this rule exists at all. Arm of
+   * King Leoric carries two `skilltab` properties naming two different trees,
+   * and publishing only one of them leaves a line that reads as complete.
+   */
+  const twoTabs = [
+    { kind: "unique" as const, slug: "z", tab: 8, tabName: "Summoning Skills", min: 2, max: 2 },
+    { kind: "unique" as const, slug: "z", tab: 7, tabName: "Poison and Bone Skills", min: 2, max: 2 },
+  ];
+  check(
+    "two tabs on two lines pass",
+    checkSkillTabLines(
+      entity("z", ["+2 to Summoning Skills (Necromancer Only)", "+2 to Poison and Bone Skills (Necromancer Only)"]),
+      twoTabs,
+      tabs,
+    ).length === 0,
+  );
+  check(
+    "dropping the second tab is caught",
+    checkSkillTabLines(entity("z", ["+2 to Summoning Skills"]), twoTabs, tabs).some(
+      (p) => p.rule === "skilltab-line-missing",
+    ),
+  );
+  check(
+    "two tabs merged into one line is caught as a collapse",
+    checkSkillTabLines(
+      entity("z", ["+2 to Summoning Skills and +2 to Poison and Bone Skills"]),
+      twoTabs,
+      tabs,
+    ).some((p) => p.rule === "skilltab-collapsed"),
+  );
+
+  // -- rune composition ----------------------------------------------------
+  const runeSpec = [{ slug: "w", rune: "Io", contributes: "+10 to Vitality" }];
+  check(
+    "a runeword carrying its rune's mod passes",
+    checkRuneComposition(entity("w", ["+20% Faster Cast Rate", "+10 to Vitality"]), runeSpec)
+      .length === 0,
+  );
+  check(
+    "a runeword transcribed without its rune mods is caught",
+    checkRuneComposition(entity("w", ["+20% Faster Cast Rate"]), runeSpec)[0]?.rule ===
+      "rune-mod-absent",
+  );
+  check(
+    "a control naming an entity that does not exist is caught",
+    checkRuneComposition(entity("w", []), [{ ...runeSpec[0], slug: "absent" }])[0]?.rule ===
+      "column-entity-missing",
   );
 }
 

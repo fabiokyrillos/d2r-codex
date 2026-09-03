@@ -1613,4 +1613,141 @@ export const runewords: Runeword[] = [
     ],
     confidence: "verified",
   },
+
+  // -------------------------------------------------------------------------
+  // Necromancer runewords
+  //
+  // Composed the same way as the Amazon set: the runeword's own properties from
+  // `json/runes.json` at the pinned commit, plus each constituent rune's mod for
+  // the item type, from this repository's own rune data. Bone's "All Resistances
+  // +30" is two Um armor mods rather than a line the runeword carries.
+  //
+  // Two item-type facts decide where these go, and both come from
+  // `json/itemtypes.json` rather than from a database listing:
+  //
+  //   - A Necromancer shrunken head is a shield. `head` (Voodoo Heads) resolves
+  //     to `shld`, so every shield runeword — Splendor here, Rhyme and Spirit
+  //     already catalogued — can be made in one. That is not a footnote for this
+  //     class: a head carries +Necromancer skills of its own on top.
+  //   - Most normal wands cannot take White. `gemsockets` is 1 on the plain Wand
+  //     and the Yew Wand, and 1 on the exceptional Burnt Wand. Bone Wand and
+  //     Grim Wand are the two normal bases that reach 2, which is why a level-35
+  //     runeword is routinely made in a base that drops in Act 1.
+  // -------------------------------------------------------------------------
+  {
+    slug: "white",
+    name: "White",
+    summary:
+      "Two runes for +3 Poison and Bone Skills and nine effective levels spread across three named skills. The cheapest weapon a bone or Corpse Explosion Necromancer will ever hold.",
+    runes: ["dol", "io"],
+    sockets: 2,
+    requiredLevel: 35,
+    tier: "starter",
+    bases: {
+      categories: ["wand"],
+      display: "Any 2-socket Wand",
+      exclusions: [
+        "Wands only — not staves, not orbs, not scepters.",
+        "**The base must reach 2 sockets.** A plain Wand, a Yew Wand and a Burnt Wand cap at one and cannot hold this.",
+      ],
+    },
+    stats: [
+      { text: "+3 to Poison and Bone Skills (Necromancer Only)", notable: true },
+      { text: "+4 to Skeleton Mastery (Necromancer Only)", notable: true },
+      { text: "+3 to Bone Armor (Necromancer Only)" },
+      { text: "+2 to Bone Spear (Necromancer Only)", notable: true },
+      { text: "+20% Faster Cast Rate", notable: true },
+      { text: "Magic Damage Reduced by 4" },
+      { text: "+13 to Mana" },
+      { text: "Hit Causes Monster to Flee 25%" },
+      { text: "+10 to Vitality" },
+    ],
+    recommendedBases: [
+      "A **Bone Wand** or **Grim Wand**. Both are normal-tier, both reach 2 sockets, both require no level and no Strength, and both drop from the first act onward.",
+      "A Tomb Wand or Grave Wand if you would rather have the higher base damage — it is irrelevant to a caster, and the required level of 25 is not.",
+      "Larzuk's socket quest on a normal, un-socketed white base is the reliable way to get exactly 2.",
+    ],
+    usedBy:
+      "Bone Spear Necromancers before an elite wand exists, and Summoners for the +4 to Skeleton Mastery, which is worth more to an army than any single skill line on the list. **The +3 to Poison and Bone Skills also raises Corpse Explosion**, which lives in that tree — so this is a Summoner's weapon as much as a caster's.",
+    commonMistakes: [
+      "Making it in a 1-socket wand's worth of hope. Check `gemsockets` before you spend the runes: Bone Wand and Grim Wand are the normal bases that take two.",
+      "**Reading +4 to Skeleton Mastery as four more skeletons.** It raises what each one is worth, not how many there are — the count comes from Raise Skeleton's own level.",
+      "Wearing it to raise an army you already summoned. Minion stats are written at creation; the wand has to be in your hand *before* you raise them.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "splendor",
+    name: "Splendor",
+    summary:
+      "+1 to All Skills and +10% Faster Cast Rate for two runes, in a shield — and a Necromancer shrunken head is a shield.",
+    runes: ["eth", "lum"],
+    sockets: 2,
+    requiredLevel: 37,
+    tier: "starter",
+    bases: {
+      categories: ["shield", "paladin-shield", "necromancer-head"],
+      display: "Any 2-socket Shield",
+      exclusions: [
+        "**Necromancer shrunken heads and Paladin auric shields both count.** The game resolves each to the shield type, so either can hold this.",
+      ],
+    },
+    stats: [
+      { text: "+1 to All Skills", notable: true },
+      { text: "+10% Faster Cast Rate", notable: true },
+      { text: "20% Faster Block Rate" },
+      { text: "+60-100% Enhanced Defense", variable: true },
+      { text: "20% Better Chance of Getting Magic Items" },
+      { text: "50% Extra Gold from Monsters" },
+      { text: "+3 to Light Radius" },
+      { text: "Regenerate Mana 15%" },
+      { text: "+10 to Energy" },
+    ],
+    recommendedBases: [
+      "**A 2-socket Necromancer shrunken head**, which carries its own +Necromancer Skills and +to a skill tab before the runeword adds anything. This is the cheapest way a Necromancer reaches +3 or more from one slot.",
+      "Any light 2-socket shield for another class — the Strength requirement is the base's, and nothing here scales with defence enough to justify a heavy one.",
+    ],
+    usedBy:
+      "Any caster who cannot yet afford a Spirit, and Necromancers specifically, because the head it goes into is a class item that stacks skills of its own. A Spirit is two skill levels against this one, and needs four sockets and a 156-Strength Monarch to beat it.",
+    commonMistakes: [
+      "Comparing it to Spirit on skills alone and stopping there. In a shrunken head the comparison is +1 *plus the head's own* against +2, and the head usually wins on the total.",
+      "Rolling it for the 60% Enhanced Defense. The spread to 100% is real and it is the least valuable line on the item for the characters that want it.",
+    ],
+    confidence: "verified",
+  },
+  {
+    slug: "bone",
+    name: "Bone",
+    summary:
+      "+2 Necromancer skills, a mana pool and two procs, in a body armor made from three mid runes.",
+    runes: ["sol", "um", "um"],
+    sockets: 3,
+    requiredLevel: 47,
+    tier: "nightmare",
+    bases: {
+      categories: ["body-armor"],
+      display: "Any 3-socket Body Armor",
+      exclusions: ["Body armor only — not helms, not shields."],
+    },
+    stats: [
+      { text: "+2 to Necromancer Skill Levels", notable: true },
+      { text: "15% Chance to cast level 10 Bone Armor when struck", notable: true },
+      { text: "15% Chance to cast level 10 Bone Spear on striking" },
+      { text: "+100-150 to Mana", variable: true, notable: true },
+      { text: "All Resistances +30", notable: true },
+      { text: "Damage Reduced by 7" },
+    ],
+    recommendedBases: [
+      "The lightest 3-socket armor you can find. Nothing on the list scales with defence, so Strength spent on a heavy base is Strength wasted.",
+      "A Breast Plate or Light Plate keeps you in the Fast run speed at 30 to 41 Strength.",
+    ],
+    usedBy:
+      "Necromancers between level 47 and a Skin of the Vipermagi or a Chains of Honor. **The +100-150 mana is the line that matters most in practice** — a Summoner rebuilding an army or a bone caster spamming Bone Spear runs out of mana long before running out of anything else, and this is a bigger pool than any other armor at the tier.",
+    commonMistakes: [
+      "Expecting the Bone Spear proc to be damage. It is level 10 on a 15% trigger from *your* melee hits, which a caster almost never makes. The Bone Armor proc, which fires when you are struck, is the half that does work.",
+      "Making it before an Um is spare. Two Um runes is a real cost at level 47, and a Stealth or a Smoke covers the gap for a fraction of it.",
+      "**The +2 is to Necromancer Skill Levels, not to All Skills.** A mercenary wearing this gets the resistances, the mana and the damage reduction and nothing else.",
+    ],
+    confidence: "verified",
+  },
 ];

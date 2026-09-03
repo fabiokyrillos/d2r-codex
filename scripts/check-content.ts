@@ -88,9 +88,16 @@ import {
   checkChainClaims,
 } from "./amazon-rules";
 import {
+  CHARGE_CONTROLS,
   RUNEWORD_PROC_CONTROLS,
+  RUNE_MOD_CONTROLS,
+  SKILL_TABS,
+  SKILL_TAB_CONTROLS,
   UNIQUE_PROC_CONTROLS,
+  checkChargeLines,
   checkProcLines,
+  checkRuneComposition,
+  checkSkillTabLines,
 } from "./item-rules";
 
 const SOURCE: Locale = DEFAULT_LOCALE;
@@ -733,6 +740,50 @@ console.log("\nItem proc lines (Tier 1 column order):");
   console.log(
     `  ${controls} controls across ${new Set([...UNIQUE_PROC_CONTROLS, ...RUNEWORD_PROC_CONTROLS].map((s) => s.slug)).size} entities ` +
       `and all three trigger columns`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Charges, skill tabs and rune composition, against the same columns
+// ---------------------------------------------------------------------------
+
+/*
+ * Three more column semantics, added by the Necromancer build pass because its
+ * new entities exercise all three: `charged` inverts min and max exactly as
+ * `hit-skill` does, `skilltab`'s `par` is a tree index whose range overlaps the
+ * skill ids, and a runeword's stat block is its own properties plus each rune's
+ * mod for the item type.
+ *
+ * Each set is calibrated against content that was already published correctly —
+ * Andariel's Visage and Arachnid Mesh for charges, Thunderstroke for tabs,
+ * Faith for composition — so no rule is merely agreeing with the entries added
+ * alongside it.
+ */
+console.log("\nCharges, skill tabs and rune composition:");
+{
+  const catalogue = [...getUniques(SOURCE), ...getRunewords(SOURCE)];
+  const found = [
+    ...checkChargeLines(catalogue, CHARGE_CONTROLS),
+    ...checkSkillTabLines(catalogue, SKILL_TAB_CONTROLS, SKILL_TABS),
+    ...checkRuneComposition(getRunewords(SOURCE), RUNE_MOD_CONTROLS),
+  ];
+  const rules = [
+    "charge-line-swapped",
+    "charge-line-missing",
+    "skilltab-read-as-skill",
+    "skilltab-collapsed",
+    "skilltab-line-missing",
+    "rune-mod-absent",
+    "column-entity-missing",
+  ] as const;
+  for (const rule of rules) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(26)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+  console.log(
+    `  ${CHARGE_CONTROLS.length} charge, ${SKILL_TAB_CONTROLS.length} skill-tab and ` +
+      `${RUNE_MOD_CONTROLS.length} rune-composition controls`,
   );
 }
 

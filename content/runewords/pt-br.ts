@@ -611,4 +611,60 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "Ignorar o **Holy Freeze numa build de Freezing Arrow**. A aura aplica chill, a skill congela, e um monstro congelado não pode ser chillado ainda mais — as duas coisas se sobrepõem mais do que a lista de status sugere.",
     ],
   },
+  white: {
+    summary:
+      "Duas runas por +3 Poison and Bone Skills e nove níveis efetivos espalhados por três skills nomeadas. A arma mais barata que um Necromancer de osso ou de Corpse Explosion vai segurar.",
+    basesDisplay: "Qualquer Wand de 2 sockets",
+    basesExclusions: [
+      "Só wands — não funciona em staves, orbs nem scepters.",
+      "**A base precisa chegar a 2 sockets.** Wand comum, Yew Wand e Burnt Wand param em um e não seguram esta runeword.",
+    ],
+    recommendedBases: [
+      "Uma **Bone Wand** ou uma **Grim Wand**. As duas são de tier normal, as duas chegam a 2 sockets, nenhuma exige nível nem Strength, e as duas caem já no primeiro ato.",
+      "Uma Tomb Wand ou Grave Wand se você preferir o dano base maior — que é irrelevante para um conjurador, ao contrário do requisito de nível 25.",
+      "A quest de sockets do Larzuk numa base branca comum e sem socket é o jeito confiável de conseguir exatamente dois.",
+    ],
+    usedBy:
+      "Necromancers de Bone Spear antes de existir uma wand elite, e Summoners pelos +4 em Skeleton Mastery, que valem mais para um exército do que qualquer linha isolada da lista. **Os +3 em Poison and Bone Skills também aumentam o Corpse Explosion**, que vive nessa árvore — então esta é uma arma de Summoner tanto quanto de conjurador.",
+    commonMistakes: [
+      "Fazê-la numa wand de 1 socket na esperança de que dê certo. Confira quantos sockets a base aceita antes de gastar as runas: Bone Wand e Grim Wand são as bases normais que aceitam dois.",
+      "**Ler +4 em Skeleton Mastery como quatro esqueletos a mais.** Isso aumenta o quanto cada um vale, não quantos existem — a contagem vem do nível do próprio Raise Skeleton.",
+      "Vestir a wand para levantar um exército que você já invocou. Os atributos dos lacaios são gravados na criação; a wand precisa estar na sua mão *antes* de você levantá-los.",
+    ],
+  },
+  splendor: {
+    summary:
+      "+1 em todas as skills e +10% de Faster Cast Rate por duas runas, num escudo — e uma shrunken head de Necromancer é um escudo.",
+    basesDisplay: "Qualquer Escudo de 2 sockets",
+    basesExclusions: [
+      "**Shrunken heads de Necromancer e auric shields de Paladin contam.** O jogo resolve cada um deles para o tipo escudo, então qualquer um dos dois segura esta runeword.",
+    ],
+    recommendedBases: [
+      "**Uma shrunken head de Necromancer com 2 sockets**, que já carrega +Necromancer Skills e +numa aba de skills antes de a runeword acrescentar qualquer coisa. É o jeito mais barato de um Necromancer chegar a +3 ou mais num slot só.",
+      "Qualquer escudo leve de 2 sockets para outra classe — o requisito de Strength é o da base, e nada aqui escala com defesa o bastante para justificar uma pesada.",
+    ],
+    usedBy:
+      "Qualquer conjurador que ainda não possa pagar um Spirit, e Necromancers em particular, porque a head em que ela entra é um item de classe que soma skills por conta própria. Um Spirit dá dois níveis de skill contra o um daqui, e precisa de quatro sockets e de um Monarch de 156 de Strength para vencer.",
+    commonMistakes: [
+      "Comparar com o Spirit só pelos níveis de skill e parar por aí. Numa shrunken head a comparação é +1 *mais o que a head já dá* contra +2, e a head costuma ganhar no total.",
+      "Rolar a runeword atrás dos 60% de Enhanced Defense. A variação até 100% é real e é a linha menos valiosa do item para os personagens que o querem.",
+    ],
+  },
+  bone: {
+    summary:
+      "+2 em skills de Necromancer, uma reserva de mana e dois procs, numa armadura de corpo feita com três runas médias.",
+    basesDisplay: "Qualquer Armadura de 3 sockets",
+    basesExclusions: ["Só armadura de corpo — não funciona em elmos nem escudos."],
+    recommendedBases: [
+      "A armadura de 3 sockets mais leve que você achar. Nada na lista escala com defesa, então Strength gasto numa base pesada é Strength desperdiçado.",
+      "Uma Breast Plate ou Light Plate mantém você na velocidade de corrida Fast com 30 a 41 de Strength.",
+    ],
+    usedBy:
+      "Necromancers entre o nível 47 e uma Skin of the Vipermagi ou um Chains of Honor. **Os +100-150 de mana são a linha que mais importa na prática** — um Summoner reconstruindo o exército ou um conjurador de osso repetindo Bone Spear fica sem mana muito antes de ficar sem qualquer outra coisa, e esta é a maior reserva de qualquer armadura do tier.",
+    commonMistakes: [
+      "Esperar que o proc de Bone Spear seja dano. É nível 10 num gatilho de 15% a partir dos *seus* golpes corpo a corpo, que um conjurador quase nunca dá. O proc de Bone Armor, que dispara quando você é atingido, é a metade que trabalha.",
+      "Fazê-la antes de ter uma Um sobrando. Duas runas Um é um custo real no nível 47, e um Stealth ou um Smoke cobrem a lacuna por uma fração disso.",
+      "**O +2 é em Necromancer Skill Levels, não em All Skills.** Um mercenário usando esta armadura ganha as resistências, a mana e a redução de dano, e mais nada.",
+    ],
+  },
 };
