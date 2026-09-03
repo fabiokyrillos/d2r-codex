@@ -58,7 +58,12 @@ import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { allSkills } from "../content/classes";
-import { SLUG_OVERRIDES, capFromMinCalc } from "./skill-graph-rules";
+import {
+  capFromMinCalc,
+  slugFor,
+  synergiesFor,
+  type SkillRow,
+} from "./skill-graph-rules";
 
 const SOURCE_REPO = "blizzhackers/d2data";
 
@@ -104,6 +109,14 @@ const PATHS = {
 } as const;
 
 interface RawSkill {
+  /*
+   * Open on purpose. The calc columns this script reads are named by the data
+   * rather than by us -- `passivecalc4`, `sumsk1calc`, `*Param8 Description` --
+   * and enumerating them here would be a second list to keep in step with the
+   * extraction. The columns that decide anything structural are typed below; the
+   * rest are read by name and checked where they are read.
+   */
+  [column: string]: unknown;
   skill: string;
   charclass?: string;
   skilldesc?: string | number;
@@ -140,12 +153,6 @@ interface RawMissile {
   EType?: string;
 }
 
-const slugify = (name: string) =>
-  name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-/** The single place a game identifier becomes a published slug. */
-const slugFor = (name: string) => SLUG_OVERRIDES[name] ?? slugify(name);
-
 /**
  * Skills whose elemental duration does not grow with level, whatever `ELevLen`
  * still says.
@@ -167,103 +174,6 @@ const slugFor = (name: string) => SLUG_OVERRIDES[name] ?? slugify(name);
  * it, not noticing that a number looks large.
  */
 const FIXED_DURATION = new Set<string>(["Plague Javelin"]);
-
-/**
- * Synergies, read out of the game's own formulas.
- *
- * A skill's calc columns are expressions. Where one references another skill's
- * base level, `skill('Vigor'.blvl)`, that contribution is scaled by a `parN`,
- * and the matching `*ParamN Description` says what the parameter is for. The
- * game labels the synergy parameters itself:
- *
- *   Blessed Hammer  EDmgSymPerCalc  "(skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8"
- *                   *Param8 Description  "Damage synergy"
- *
- * So the rule is not a guess and not community consensus: an edge exists when
- * the referenced skill's contribution is governed by a parameter the game calls
- * a synergy.
- *
- * Exclusion is per *reference*, not per skill — a distinction worth stating,
- * because the same pair of skills can appear in two columns meaning two things:
- *
- *   Energy Shield reads Telekinesis in `calc2`, under par5, "Mana consumed per
- *   HP damage (in sixteenths)". That is a mana ratio. No edge, and Energy
- *   Shield receives no synergy anywhere else either.
- *
- *   Hydra reads Fire Bolt and Fire Ball in `sumsk2calc`/`sumsk3calc` with no
- *   parameter at all: those columns choose which missile to summon, and those
- *   two references are dropped. Hydra does still *receive* a damage synergy
- *   from both, because `EDmgSymPerCalc` references them again under par8,
- *   "Damage synergy". Both edges are in the graph. Only the summon columns are
- *   excluded.
- *
- * Concentration is a different case again, and is not excluded at all: it never
- * appears as a `skill()` reference anywhere in the extracted rows. Its boost
- * reaches Blessed Hammer through the aura state, and the only trace of it in
- * Blessed Hammer's row is `*Param1 Description`, "Damage % from Concentration
- * (in 8ths)" — a parameter description with no skill reference for it to
- * govern. There is nothing here for the rule to reject; an aura that does not
- * express itself as a formula reference is simply never a candidate.
- */
-const SYNERGY_KINDS: Record<string, string> = {
-  damage: "damage",
-  armor: "armor",
-  healing: "healing",
-  "buff duration": "duration",
-  "freeze length": "freeze",
-  // The Valkyrie's life scales with hard points in Decoy. First non-damage,
-  // non-duration synergy in the extraction, and the reason this table throws on
-  // an unknown label rather than defaulting: silently calling it "damage" would
-  // have put a life bonus in a damage sentence.
-  "hp %": "hp",
-};
-
-const SKILL_REF = /skill\('([^']+)'\.blvl\)/g;
-const PAR_REF = /par(\d+)/g;
-
-function synergiesFor(row: RawSkill & Record<string, unknown>): { from: string; kinds: string[] }[] {
-  const me = row.skill;
-  const found = new Map<string, Set<string>>();
-
-  // Every string field, not a chosen list: synergies are expressed in
-  // EDmgSymPerCalc, ELenSymPerCalc, auralencalc and the numbered calcN columns,
-  // and it is the parameter's description — not the column's name — that says
-  // whether a reference is a synergy.
-  for (const value of Object.values(row)) {
-    if (typeof value !== "string" || !value.includes("skill(")) continue;
-
-    const refs = [...value.matchAll(SKILL_REF)].map((m) => m[1]).filter((n) => n !== me);
-    if (refs.length === 0) continue;
-
-    // Every parameter this expression uses, and the kinds among them that the
-    // game describes as a synergy.
-    const kinds: string[] = [];
-    for (const m of value.matchAll(PAR_REF)) {
-      const described = row[`*Param${m[1]} Description`];
-      if (typeof described !== "string" || !/synerg/i.test(described)) continue;
-      const label = described.replace(/\s*synergy\s*/i, "").trim().toLowerCase();
-      const kind = SYNERGY_KINDS[label];
-      if (!kind) {
-        throw new Error(
-          `${me}: unknown synergy kind "${described}". Add it to SYNERGY_KINDS deliberately ` +
-            `— an unrecognised kind must not be silently dropped or mislabelled as damage.`,
-        );
-      }
-      kinds.push(kind);
-    }
-    if (kinds.length === 0) continue;
-
-    for (const ref of refs) {
-      const slug = slugFor(ref);
-      if (!found.has(slug)) found.set(slug, new Set());
-      for (const k of kinds) found.get(slug)!.add(k);
-    }
-  }
-
-  return [...found]
-    .map(([from, kinds]) => ({ from, kinds: [...kinds].sort() }))
-    .sort((x, y) => x.from.localeCompare(y.from));
-}
 
 /**
  * The quantities a skill's page publishes, and where in the row they live.
@@ -546,6 +456,17 @@ async function main() {
     return { base, perLevel: perLevel[0] };
   };
 
+  /*
+   * Every extracted row, keyed by the game's identifier, so a `skill('X'.parN)`
+   * reference can be resolved to the row that owns the parameter. Built from the
+   * whole table rather than from the classes in scope: the owner is always a
+   * skill of the same class today, and a rule that silently returned nothing for
+   * an out-of-scope owner would be a quiet wrong answer rather than a loud one.
+   */
+  const rowByName = new Map<string, SkillRow>(
+    current.map((s) => [s.skill, s]),
+  );
+
   const rows = mine
     .map((s) => {
       const slug = slugFor(s.skill);
@@ -562,9 +483,9 @@ async function main() {
         requiredLevel: s.reqlevel,
         maxLevel: s.maxlvl ?? 20,
         prerequisites: a.get(slug)!,
-        synergies: synergiesFor(s as RawSkill & Record<string, unknown>),
-        effects: EFFECTS[slug]?.(s as RawSkill & Record<string, unknown>) ?? [],
-        conversion: conversionFor(s as RawSkill & Record<string, unknown>),
+        synergies: synergiesFor(s, rowByName),
+        effects: EFFECTS[slug]?.(s) ?? [],
+        conversion: conversionFor(s),
         damage: hasDamage
           ? {
               element: s.EType!,
@@ -649,7 +570,11 @@ async function main() {
         `    requiredLevel: ${r.requiredLevel}, maxLevel: ${r.maxLevel},\n` +
         `    prerequisites: [${r.prerequisites.map((p) => `"${p}"`).join(", ")}],\n` +
         `    synergies: [${r.synergies
-          .map((s) => `{ from: "${s.from}", kinds: [${s.kinds.map((k) => `"${k}"`).join(", ")}] }`)
+          .map(
+            (s) =>
+              `{ from: "${s.from}", kinds: [${s.kinds.map((k) => `"${k}"`).join(", ")}]` +
+              `${s.magnitude === undefined ? "" : `, magnitude: ${s.magnitude}`} }`,
+          )
           .join(", ")}]${dmg(r.damage)}${conv(r.conversion)},${eff(r.effects)}\n` +
         `  },`,
     )
@@ -775,8 +700,19 @@ export interface SkillGraphNode {
    * \`kinds\` is what the bonus improves, as the game's own parameter labels
    * name it: damage, armor, healing, duration, freeze. A skill can receive two
    * kinds from one source, which is why this is a list.
+   *
+   * \`magnitude\` is present only where the game keeps the coefficient on the
+   * *source* skill's row — written \`skill('IronGolem'.par8)\` rather than a bare
+   * \`par8\` — so the number is a property of what that skill gives and is the
+   * same for everything that reads it. A receiver-owned coefficient governs a
+   * sum of several sources at once and belongs to the receiver, so it stays in
+   * authored prose; see docs/sources/README.md.
    */
-  readonly synergies: readonly { readonly from: Slug; readonly kinds: readonly string[] }[];
+  readonly synergies: readonly {
+    readonly from: Slug;
+    readonly kinds: readonly string[];
+    readonly magnitude?: number;
+  }[];
   /**
    * Base elemental damage before synergies. Absent for skills that deal none.
    * Final value = (base + banded per-level total) x 2^(hitShift - 8).

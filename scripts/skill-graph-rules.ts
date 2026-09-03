@@ -36,10 +36,29 @@ export { MAX_HARD_POINTS, TIER_LEVELS };
  */
 export const SLUG_OVERRIDES: Record<string, string> = {
   Dopplezon: "decoy",
+  /*
+   * The Necromancer's three named golems. `Clay Golem` is spelled with a space
+   * in the tables and the other three are not, which is an artifact of how the
+   * rows were typed rather than anything a player sees: the game's own UI, every
+   * database and every guide call them Blood Golem, Iron Golem and Fire Golem.
+   * Slugifying the identifier would publish `/classes/necromancer/skills/
+   * bloodgolem`.
+   *
+   * The identifiers stay the join key — Clay Golem's `passivecalc4` reads
+   * `skill('IronGolem'.blvl)` and resolves through this table like everything
+   * else — and `skill-page.test.ts` asserts none of them reaches a page, a URL
+   * or the sitemap.
+   */
+  BloodGolem: "blood-golem",
+  IronGolem: "iron-golem",
+  FireGolem: "fire-golem",
 };
 
-/** The single place a game identifier becomes a published slug. */
+const slugify = (name: string) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
+/** The single place a game identifier becomes a published slug. */
+export const slugFor = (name: string) => SLUG_OVERRIDES[name] ?? slugify(name);
 
 /**
  * The ceiling in a `min(expression, N)` calc column.
@@ -85,6 +104,278 @@ export function capFromMinCalc(raw: unknown, where: string): number {
     );
   }
   return Number(match[2]);
+}
+
+/**
+ * Synergies, read out of the game's own formulas.
+ *
+ * A skill's calc columns are expressions. Where one references another skill's
+ * base level, `skill('Vigor'.blvl)`, that contribution is scaled by a `parN`,
+ * and the matching `*ParamN Description` says what the parameter is for. The
+ * game labels the synergy parameters itself:
+ *
+ *   Blessed Hammer  EDmgSymPerCalc  "(skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8"
+ *                   *Param8 Description  "Damage synergy"
+ *
+ * So the rule is not a guess and not community consensus: an edge exists when
+ * the referenced skill's contribution is governed by a parameter the game calls
+ * a synergy.
+ *
+ * Exclusion is per *reference*, not per skill — a distinction worth stating,
+ * because the same pair of skills can appear in two columns meaning two things:
+ *
+ *   Energy Shield reads Telekinesis in `calc2`, under par5, "Mana consumed per
+ *   HP damage (in sixteenths)". That is a mana ratio. No edge, and Energy
+ *   Shield receives no synergy anywhere else either.
+ *
+ *   Hydra reads Fire Bolt and Fire Ball in `sumsk2calc`/`sumsk3calc` with no
+ *   parameter at all: those columns choose which missile to summon, and those
+ *   two references are dropped. Hydra does still *receive* a damage synergy
+ *   from both, because `EDmgSymPerCalc` references them again under par8,
+ *   "Damage synergy". Both edges are in the graph. Only the summon columns are
+ *   excluded.
+ *
+ * Concentration is a different case again, and is not excluded at all: it never
+ * appears as a `skill()` reference anywhere in the extracted rows. Its boost
+ * reaches Blessed Hammer through the aura state, and the only trace of it in
+ * Blessed Hammer's row is `*Param1 Description`, "Damage % from Concentration
+ * (in 8ths)" — a parameter description with no skill reference for it to
+ * govern. There is nothing here for the rule to reject; an aura that does not
+ * express itself as a formula reference is simply never a candidate.
+ *
+ * WHO OWNS THE PARAMETER
+ * ----------------------
+ * `parN` inside an expression is not always the *receiver's* parameter, and
+ * reading it as though it always were is a directional bug rather than a
+ * cosmetic one. Two shapes exist:
+ *
+ *   (skill('Vigor'.blvl)+skill('Blessed Aim'.blvl))*par8      receiver-owned
+ *   skill('IronGolem'.blvl)*skill('IronGolem'.par8)           source-owned
+ *
+ * In the second shape the description *and* the value live on Iron Golem's row.
+ * Clay Golem's own `*Param8 Description` reads "Clay Golem Attack Rating
+ * synergy" — what Clay Golem *gives* — so a rule that reads the receiver's row
+ * would have labelled the bonus Clay Golem receives from the Iron Golem as an
+ * attack-rating synergy when the game calls it armour, and taken 20 as its
+ * magnitude when the game says 35. It would in fact have thrown on the unknown
+ * label, which is the only reason it was not published quietly.
+ *
+ * So each `parN` is attributed to its owner before its description is read, and
+ * the owner's row supplies both the kind and the number.
+ */
+const SYNERGY_KINDS: Record<string, string> = {
+  damage: "damage",
+  armor: "armor",
+  healing: "healing",
+  "buff duration": "duration",
+  "freeze length": "freeze",
+  // The Valkyrie's life scales with hard points in Decoy. First non-damage,
+  // non-duration synergy in the extraction, and the reason this table throws on
+  // an unknown label rather than defaulting: silently calling it "damage" would
+  // have put a life bonus in a damage sentence.
+  "hp %": "hp",
+  // Bone Armor, whose absorbed-damage pool is raised by Bone Wall and Bone
+  // Prison. Not "armor": defence and a flat absorb pool are different stats, and
+  // the game names them differently.
+  "damage absorbed": "absorb",
+  /*
+   * The golem ring. Four source-owned parameters, each naming the skill that
+   * owns it, so the label carries the golem's name as well as the stat. Left
+   * spelled out rather than normalised by stripping a leading skill name: the
+   * whole point of this table is that an unrecognised label stops the generator,
+   * and a normaliser clever enough to fold these four is clever enough to fold
+   * something it should have refused.
+   */
+  "clay golem attack rating": "attack-rating",
+  "blood golem hp %": "hp",
+  "iron golem armor": "armor",
+  "fire golem damage %": "damage",
+};
+
+/**
+ * Skills whose synergy-labelled parameter governs a *soft* level reference.
+ *
+ * A synergy in this game reads `blvl`, the hard-point level: gear that grants
+ * +skills does not feed one. Revive is labelled like a synergy and does not
+ * behave like one — Skeleton Mastery reaches it through `skill('Skeleton
+ * Mastery'.lvl)`, the effective level, so +skills raise it. The game's own
+ * parameter names say "Revive Synergy HP % per level"; its formula says
+ * otherwise, and the formula is what runs.
+ *
+ * Listing it here is what keeps that a decision instead of an accident. An
+ * expression carrying a synergy-labelled parameter and no `blvl` reference stops
+ * the generator unless the skill is named here, so the same shape arriving with
+ * the Druid — Spirit Wolf, Fenris and Grizzly all read each other's `lvl` under
+ * parameters marked "(also used for synergy)" — has to be looked at rather than
+ * dropped in silence.
+ *
+ * These relationships are real and are explained in prose on the skill pages.
+ * What they are not is an edge in a graph whose whole meaning is "hard points
+ * here raise that number".
+ */
+const SOFT_LEVEL_SYNERGIES = new Set<string>(["Revive"]);
+
+const SKILL_REF = /skill\('([^']+)'\.blvl\)/g;
+/** `skill('X'.parN)` — a parameter belonging to another skill's row. */
+const DONOR_PAR_REF = /skill\('([^']+)'\.par(\d+)\)/g;
+const PAR_REF = /par(\d+)/g;
+
+/**
+ * One row of `skills.json`, as far as this rule cares.
+ *
+ * Structural rather than the generator's full `RawSkill`, so a test can hand
+ * `synergiesFor` two hand-written rows without inventing the twenty columns it
+ * never reads.
+ */
+export type SkillRow = { skill: string } & Record<string, unknown>;
+
+/** One parameter the game describes as a synergy, and the row it came from. */
+interface GoverningParam {
+  /** The game identifier of the skill whose row carries the parameter. */
+  owner: string;
+  index: number;
+  described: string;
+  value: number;
+}
+
+export interface ExtractedSynergy {
+  from: string;
+  kinds: string[];
+  /**
+   * Present only where the game keeps the coefficient on the *source* skill's
+   * row, so the number is a property of what that skill gives. A receiver-owned
+   * coefficient — Blessed Hammer's `par8`, governing a sum of several sources —
+   * is a property of the receiver instead and is left to the authored prose,
+   * where seventeen edges already carry one. See docs/sources/README.md.
+   */
+  magnitude?: number;
+}
+
+export function synergiesFor(
+  row: SkillRow,
+  rowByName: ReadonlyMap<string, SkillRow>,
+): ExtractedSynergy[] {
+  const me = row.skill;
+  const found = new Map<string, { kinds: Set<string>; magnitude?: number }>();
+
+  // Every string field, not a chosen list: synergies are expressed in
+  // EDmgSymPerCalc, ELenSymPerCalc, auralencalc and the numbered calcN columns,
+  // and it is the parameter's description — not the column's name — that says
+  // whether a reference is a synergy.
+  for (const value of Object.values(row)) {
+    if (typeof value !== "string" || !value.includes("skill(")) continue;
+
+    const allRefs = [...value.matchAll(SKILL_REF)].map((m) => m[1]);
+    const refs = allRefs.filter((n) => n !== me);
+
+    /*
+     * Every parameter this expression uses, attributed to its owner. Donor
+     * references are consumed first and removed, so what remains for the bare
+     * `parN` scan is exactly the receiver's own parameters — otherwise
+     * `skill('IronGolem'.par8)` would be counted twice, once correctly and once
+     * as though the receiver had written `par8` itself.
+     */
+    const governing: GoverningParam[] = [];
+    const readParam = (owner: string, index: number) => {
+      const ownerRow = owner === me ? row : rowByName.get(owner);
+      if (!ownerRow) {
+        throw new Error(
+          `${me}: reads Param${index} of "${owner}", which is not a skill in the extraction. ` +
+            `Either the identifier changed upstream or the reference is to a row this ` +
+            `generator does not load.`,
+        );
+      }
+      const described = ownerRow[`*Param${index} Description`];
+      if (typeof described !== "string" || !/synerg/i.test(described)) {
+        // Not a synergy parameter. A donor reference to a parameter that does
+        // not exist at all is a broken reference and must not pass as one.
+        if (owner !== me && described === undefined && ownerRow[`Param${index}`] === undefined) {
+          throw new Error(
+            `${me}: reads Param${index} of "${owner}", which that row does not have. ` +
+              `The columns moved, or the reference is to a parameter that was removed.`,
+          );
+        }
+        return;
+      }
+      const raw = ownerRow[`Param${index}`];
+      if (typeof raw !== "number") {
+        throw new Error(
+          `${owner}: Param${index} is described as a synergy ("${described}") but carries no ` +
+            `numeric value, so the magnitude of every edge it governs is unknown.`,
+        );
+      }
+      governing.push({ owner, index, described, value: raw });
+    };
+
+    const withoutDonors = value.replace(DONOR_PAR_REF, (_match, owner: string, n: string) => {
+      readParam(owner, Number(n));
+      return "";
+    });
+    for (const m of withoutDonors.matchAll(PAR_REF)) readParam(me, Number(m[1]));
+
+    if (governing.length === 0) continue;
+
+    /*
+     * A skill scaling itself. Blessed Aim's `skill('Blessed Aim'.blvl) * par8`
+     * is governed by "Attack Rating % passive synergy", and it is not an edge:
+     * the parameter describes how the skill's own passive grows with its own
+     * hard points. `checkSynergies` rejects a self-edge outright, so this is
+     * dropped here rather than emitted and rejected downstream.
+     */
+    if (refs.length === 0 && allRefs.length > 0) continue;
+
+    /*
+     * A synergy-labelled parameter with nothing to scale. Either the expression
+     * reads a soft level (Revive) or the shape is new and wants a decision.
+     */
+    if (refs.length === 0) {
+      if (SOFT_LEVEL_SYNERGIES.has(me)) continue;
+      throw new Error(
+        `${me}: "${value}" is governed by a parameter the game calls a synergy ` +
+          `(${governing.map((g) => `${g.owner}.par${g.index} "${g.described}"`).join(", ")}) ` +
+          `but references no skill's base level. A synergy reads \`blvl\`; a reference to ` +
+          `\`lvl\` is raised by +skills and is not one. Decide deliberately — add the skill to ` +
+          `SOFT_LEVEL_SYNERGIES with the reason, or teach this rule the new shape.`,
+      );
+    }
+
+    for (const ref of refs) {
+      const slug = slugFor(ref);
+      let entry = found.get(slug);
+      if (!entry) found.set(slug, (entry = { kinds: new Set() }));
+      for (const param of governing) {
+        entry.kinds.add(
+          SYNERGY_KINDS[param.described.replace(/\s*synergy\s*/i, "").trim().toLowerCase()] ??
+            (() => {
+              throw new Error(
+                `${param.owner}: unknown synergy kind "${param.described}". Add it to ` +
+                  `SYNERGY_KINDS deliberately — an unrecognised kind must not be silently ` +
+                  `dropped or mislabelled as damage.`,
+              );
+            })(),
+        );
+        // The magnitude travels only when the game stores it on the source's
+        // own row, which is what makes it that skill's contribution rather than
+        // this one's rate for all of its sources at once.
+        if (slugFor(param.owner) !== slug) continue;
+        if (entry.magnitude !== undefined && entry.magnitude !== param.value) {
+          throw new Error(
+            `${me} <- ${slug}: two different magnitudes (${entry.magnitude}, ${param.value}) ` +
+              `for one edge. Pick the governing parameter deliberately.`,
+          );
+        }
+        entry.magnitude = param.value;
+      }
+    }
+  }
+
+  return [...found]
+    .map(([from, entry]) => ({
+      from,
+      kinds: [...entry.kinds].sort(),
+      ...(entry.magnitude === undefined ? {} : { magnitude: entry.magnitude }),
+    }))
+    .sort((x, y) => x.from.localeCompare(y.from));
 }
 
 export interface GraphProblem {

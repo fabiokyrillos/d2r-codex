@@ -114,8 +114,19 @@ export interface SkillGraphNode {
    * `kinds` is what the bonus improves, as the game's own parameter labels
    * name it: damage, armor, healing, duration, freeze. A skill can receive two
    * kinds from one source, which is why this is a list.
+   *
+   * `magnitude` is present only where the game keeps the coefficient on the
+   * *source* skill's row — written `skill('IronGolem'.par8)` rather than a bare
+   * `par8` — so the number is a property of what that skill gives and is the
+   * same for everything that reads it. A receiver-owned coefficient governs a
+   * sum of several sources at once and belongs to the receiver, so it stays in
+   * authored prose; see docs/sources/README.md.
    */
-  readonly synergies: readonly { readonly from: Slug; readonly kinds: readonly string[] }[];
+  readonly synergies: readonly {
+    readonly from: Slug;
+    readonly kinds: readonly string[];
+    readonly magnitude?: number;
+  }[];
   /**
    * Base elemental damage before synergies. Absent for skills that deal none.
    * Final value = (base + banded per-level total) x 2^(hitShift - 8).
