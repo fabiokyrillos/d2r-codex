@@ -10,8 +10,8 @@
  * Run with `npm run test:necromancer`.
  */
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
-import { getSkills } from "../lib/registry";
-import { DEFAULT_LOCALE } from "../lib/i18n/config";
+import { getClasses, getMechanics, getSkills } from "../lib/registry";
+import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import {
   damageAtLevel,
   damagePresentation,
@@ -362,9 +362,122 @@ console.log("\nDamage models");
 }
 
 // ===========================================================================
+console.log("\nWhat the pages say about Corpse Explosion");
+// ===========================================================================
+
+/*
+ * A claim-level gate, in the shape `ancient-tunnels-why.test.ts` established.
+ *
+ * The class page said "Corpse Explosion deals damage based on the exploded
+ * corpse's maximum life". That is the sentence every guide uses, it is close
+ * enough to be useful, and it is wrong in the three ways that decide how the
+ * skill is played: the number comes from the monster *type's* table life, so a
+ * Champion explodes for what the trash beside it does and a full game changes
+ * nothing.
+ *
+ * Both locales, because prose is translated and a corrected English sentence
+ * with a stale Portuguese twin is the failure mode the overlay invites.
+ */
+{
+  /** Every piece of prose on the site that mentions the skill, per locale. */
+  const proseFor = (locale: Locale): string[] => {
+    const out: string[] = [];
+    const cls = getClasses(locale).find((c) => c.slug === "necromancer")!;
+    out.push(cls.overview, cls.summary, ...cls.strengths, ...cls.weaknesses);
+    for (const m of cls.coreMechanics) out.push(m.title, m.body);
+    const skill = getSkills(locale).find((s) => s.slug === "corpse-explosion")!;
+    out.push(skill.summary, ...(skill.mechanics ?? []));
+    const article = getMechanics(locale).find((a) => a.slug === "corpse-explosion");
+    if (article) {
+      out.push(article.summary, ...article.keyFacts);
+      for (const block of article.body) {
+        if (block.type === "paragraph" || block.type === "heading") out.push(block.text);
+        if (block.type === "callout") out.push(block.text, block.title ?? "");
+        if (block.type === "list") out.push(...block.items);
+        if (block.type === "table") out.push(...block.rows.flat(), ...block.headers);
+      }
+    }
+    return out;
+  };
+
+  for (const locale of LOCALES) {
+    const prose = proseFor(locale);
+    const anywhere = (pattern: RegExp) => prose.some((line) => pattern.test(line));
+
+    check(`${locale}: there is an article about Corpse Explosion`, prose.length > 30, `${prose.length}`);
+
+    /*
+     * The retracted claim, in both languages.
+     *
+     * A mention is allowed only where the same passage refutes it — the article
+     * opens by quoting the sentence everyone uses in order to take it apart, and
+     * a rule that forbade the words outright would forbid saying why they are
+     * wrong. The refutation has to sit in the same block, so a bare restatement
+     * elsewhere still fails; the control below proves it.
+     */
+    const claimsMaxLife = (line: string) =>
+      /corpse'?s?\s+(own\s+)?maximum life|vida máxima do cadáver/i.test(line) &&
+      !/wrong|does not read the corpse|errado|não lê o cadáver/i.test(line);
+    check(
+      `${locale}: nothing says the damage comes from the corpse's maximum life`,
+      !prose.some(claimsMaxLife),
+      prose.filter(claimsMaxLife).join(" | "),
+    );
+    check(
+      `${locale}: control — a bare restatement of that claim would fail`,
+      claimsMaxLife("Corpse Explosion deals damage based on the exploded corpse's maximum life.") &&
+        claimsMaxLife("Causa dano baseado na vida máxima do cadáver explodido."),
+    );
+    // The correction, stated rather than merely not-contradicted.
+    check(
+      `${locale}: the damage is attributed to the monster type's base life`,
+      anywhere(/type'?s?\*{0,2}\s+base life/i) || anywhere(/tipo\*{0,2} de monstro/i),
+    );
+    check(
+      `${locale}: the 70-120% band is published`,
+      anywhere(/70[–-]120\s?%/),
+    );
+    check(
+      `${locale}: the physical and fire split is stated`,
+      anywhere(/half.*physical.*half.*fire/i) || anywhere(/[Mm]etade do dano é físico e metade é fogo/),
+    );
+    check(
+      `${locale}: player count and rarity are excluded explicitly`,
+      (anywhere(/[Pp]layer count/) && anywhere(/Champion/)) ||
+        (anywhere(/[Qq]uantidade de jogadores/) && anywhere(/Champion/)),
+    );
+    check(
+      `${locale}: points are said to buy radius rather than damage`,
+      anywhere(/points?\b.*\bradius/i) || anywhere(/[Pp]ontos compram raio/),
+    );
+
+    /*
+     * The claim this pass deliberately does not make. Whether the fire half
+     * picks up fire-skill modifiers is decided in the damage pipeline, which was
+     * not traced end to end — so an assertion either way must not appear, and the
+     * page must say so rather than being quietly silent.
+     */
+    const asserts = prose.filter(
+      (line) =>
+        /\+\s?Fire Skills|Fire Mastery|\+% Fire Skill Damage/i.test(line) &&
+        !/not asserted|deliberadamente|does not claim|não afirma/i.test(line),
+    );
+    check(
+      `${locale}: no unverified claim about fire-skill modifiers`,
+      asserts.length === 0,
+      asserts.join(" | "),
+    );
+    check(
+      `${locale}: the gap is named rather than left silent`,
+      anywhere(/Fire Mastery/i),
+    );
+  }
+}
+
+// ===========================================================================
 console.log(
   failures.length === 0
-    ? `\n${passed} checks passed. The golem magnitudes are pinned in both directions.`
+    ? `\n${passed} checks passed. Magnitudes, poison, mana, damage models and the Corpse Explosion claims are pinned.`
     : `\n${failures.length} FAILED of ${passed + failures.length}:`,
 );
 if (failures.length > 0) {

@@ -225,23 +225,40 @@ export const classes: CharacterClass[] = [
     summary:
       "Summons, curses and bone magic. The Summoner is the most forgiving character in the game.",
     overview:
-      "The Necromancer fights through an army. A Summoner raises skeletons, a golem and revives, curses everything nearby, and lets the army do the work — which makes him extraordinarily safe and a common Hardcore choice. The Bone side offers magic damage, which almost nothing in the game is immune to, at the cost of much lower raw numbers.",
+      "The Necromancer fights through an army. A Summoner raises skeletons, a golem and revives, curses everything nearby, and lets the army do the work — which makes him extraordinarily safe and a common Hardcore choice. The Bone side offers magic damage, which almost nothing in the game is immune to, at the cost of much lower raw numbers. Both sides run on corpses, and on the fact that a monster can carry exactly one curse.",
     release: "classic",
     strengths: [
       "Skeleton army absorbs essentially all incoming damage",
       "Curses (Amplify Damage, Decrepify, Lower Resist) are powerful and help the whole party",
       "Bone Spear and Bone Spirit deal magic damage — almost nothing is immune",
-      "Corpse Explosion clears entire screens once the first monster dies",
+      "Corpse Explosion clears entire screens once the first monster dies, and does not care how geared you are",
     ],
     weaknesses: [
       "Summoner damage is low; clears are safe but slow",
       "Minion pathing is frequently frustrating",
       "Needs corpses, so the first kill in a pack is always the slowest",
+      "Minions do not update when your gear or skills change — the army has to be re-raised",
     ],
     coreMechanics: [
       {
-        title: "Corpse Explosion scales off monster life, not skill level",
-        body: "Corpse Explosion deals damage based on the exploded corpse's maximum life, so it stays relevant at every difficulty and gear level. Skill points only increase its radius.",
+        title: "Corpse Explosion does not read the corpse",
+        body: "It looks up what that **kind** of monster is worth at that monster's level and difficulty and takes 70–120% of it. So a Champion pack explodes for exactly what the trash beside it does, a full game changes nothing, and skill points buy radius rather than damage. Half the result is physical and half is fire. There is a full article on this — see Corpse Explosion under Game mechanics.",
+      },
+      {
+        title: "One curse per target, and that is the whole tree",
+        body: "Casting a curse replaces whatever curse was already on the monster. Ten curses, one slot, and Attract does not even allow a replacement while it runs. The question is never which curse is strongest but which one you are giving up — Amplify Damage doubles physical damage against an unresisting target, Decrepify does less of that and slows, weakens and hobbles as well.",
+      },
+      {
+        title: "Minions are fixed at the moment they are raised",
+        body: "A skeleton's life, damage, attack rating and resistances are written onto it when it is created and are not recalculated. Raising Skeleton Mastery, or putting on a helm with +3 to the tree, changes the next skeleton you raise and none of the ones already standing. The army has to be re-raised to collect anything.",
+      },
+      {
+        title: "One golem, whichever one it is",
+        body: "All four golem skills share a single pet type with a maximum of one, so summoning a second replaces the first. That matters most for the Iron Golem, which consumed an item to exist: replacing it does not give the item back.",
+      },
+      {
+        title: "Magic damage on one side, no Mastery on the other",
+        body: "Bone Spear and Bone Spirit deal magic damage, which only a handful of monsters in the game resist — the same reason the Hammerdin is considered a safe all-rounder. Poison has no Mastery at all: Lower Resist is the only thing in the class that reduces poison resistance, and against a poison immune it works at one fifth strength like every other resistance curse.",
       },
     ],
     trees: ["summoning", "poison-and-bone", "curses"],

@@ -613,4 +613,96 @@ export const mechanics: MechanicArticle[] = [
     related: ["resistances-and-immunities"],
     confidence: "verified",
   },
+  {
+    slug: "corpse-explosion",
+    name: "Corpse Explosion",
+    category: "combat",
+    summary:
+      "Where the damage actually comes from, why a Champion does not explode harder than the trash beside it, and what raises it.",
+    keyFacts: [
+      "The damage is 70–120% of the exploded monster **type's** base life, recomputed from the game's own table — not the corpse's own life.",
+      "Player count, and Champion, Unique and Super Unique life bonuses, do not raise it.",
+      "Half the damage is physical and half is fire, split from one rolled total.",
+      "Skill points buy radius. What raises the damage is your character level, and what you killed.",
+      "If your character level is below the corpse's monster level, the damage is scaled down in that proportion.",
+    ],
+    body: [
+      { type: "heading", text: "The sentence that is almost right" },
+      {
+        type: "paragraph",
+        text: "Corpse Explosion is usually described as dealing damage based on the corpse's maximum life. That is close enough to be useful and wrong in the ways that decide how you play it. The skill does not read the corpse. It looks up **what that kind of monster is worth** at that monster's level and difficulty, in the same table the game used to create it, and takes the average of the life range it finds there.",
+      },
+      {
+        type: "paragraph",
+        text: "Everything below follows from that one substitution, and each consequence is something a player can act on.",
+      },
+      { type: "heading", text: "What does not raise it" },
+      {
+        type: "list",
+        items: [
+          "**Player count.** Monsters have more life in a full game; the table the skill reads does not change, so the explosion does not either.",
+          "**Champion, Unique and Super Unique bonuses.** A Champion pack has several times the life of the monsters beside it and explodes for the same amount. There is no reason to save the boss of a pack for last.",
+          "**The skill's own level.** Points buy radius and nothing else. The 70–120% band does not move.",
+        ],
+      },
+      { type: "heading", text: "What does raise it" },
+      {
+        type: "list",
+        items: [
+          "**Killing something tougher.** A Baal-run minion is worth more than a Cow, and the difference is the whole of the skill's scaling.",
+          "**Difficulty.** The lookup is per difficulty, so the same monster explodes harder in Hell than in Normal.",
+          "**Your own character level**, but only as a penalty that stops applying. If your level is below the monster's, the damage is multiplied by yours over its. Level past it and the penalty is simply gone; there is no bonus beyond that point.",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "It is the first kill that costs you",
+        text: "Nothing about the explosion is worth optimising except getting the first corpse. Whatever you kill first sets the whole chain going, and the pack it clears would have exploded for the same amount whichever member you had killed first.",
+      },
+      { type: "heading", text: "Half physical, half fire" },
+      {
+        type: "paragraph",
+        text: "One total is rolled between 70% and 120%, and then split: half is dealt as physical damage and half as fire. Each half meets the target's resistance to its own type, which is why the skill keeps working against monsters that stop most things dead.",
+      },
+      {
+        type: "table",
+        headers: ["Against", "What happens"],
+        rows: [
+          ["A fire immune", "The fire half is reduced or stopped. The physical half lands normally."],
+          ["A physical immune", "The physical half is reduced or stopped. The fire half lands normally."],
+          ["Both immune", "Very little. Extremely rare, and the reason a second damage type is worth having."],
+          ["Amplify Damage on the target", "The physical half hits harder — the curse cuts physical damage resistance by 100 points, as it does for every other physical hit."],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        title: "What this site does not claim",
+        text: "Whether the fire half picks up **+Fire Skills**, a Fire Mastery or **+% Fire Skill Damage** is deliberately not asserted here. The split is computed inside the skill from the corpse's life; whether the resulting fire damage then passes through the modifiers a fire spell's damage passes through is decided further down the damage pipeline, which this pass did not trace end to end. A confident answer either way would be a guess dressed as a fact.",
+      },
+      { type: "heading", text: "Radius, and the unit problem" },
+      {
+        type: "paragraph",
+        text: "The game states the radius in a unit it names: **half squares**, starting at 8 and rising by 1 per skill level. The engine halves that number before using it, so the effective radius runs from about 4 at level 1 to about 13 at level 20. That is the whole of what points buy, and it is worth buying — a Corpse Explosion that reaches the next corpse is a chain, and one that does not is a single cast.",
+      },
+      {
+        type: "paragraph",
+        text: "The published radius on this site is the game's own parameter, with the halving stated rather than applied to it. Older documentation converts the same parameter to yards by dividing it by three, giving 2.6 at level 1 and 9 at level 20. Neither convention derives from the other, and this site does not pick one and call it a distance in yards. The number that is certain is the parameter and what the engine does with it.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "Curse radius is a different unit",
+        text: "A curse's radius parameters are named only \"Radius\", and the engine uses them as they stand — no halving. Applying Corpse Explosion's conversion to a curse, or the reverse, would be wrong by a factor of two in one direction or the other.",
+      },
+      { type: "heading", text: "Where this comes from" },
+      {
+        type: "paragraph",
+        text: "The 70%, the 120%, the 50% split and the radius parameters are the skill's own columns in the pinned game-data extraction this site reads. The substitution of the monster type's table life for the corpse's own, the halving of the radius, and the character-level penalty are read from the reference implementation of the legacy engine — which is the Diablo II that predates Resurrected, and is named as such rather than presented as the current build. Nothing here depends on a claim the two disagree about.",
+      },
+    ],
+    related: ["resistances-and-immunities"],
+    confidence: "verified",
+  },
 ];

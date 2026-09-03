@@ -499,4 +499,92 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
       },
     ],
   },
+  "corpse-explosion": {
+    name: "Corpse Explosion",
+    summary:
+      "De onde o dano vem de verdade, por que um Champion não explode mais forte que o lixo ao lado dele, e o que aumenta o número.",
+    keyFacts: [
+      "O dano é 70–120% da vida base do **tipo** de monstro explodido, recalculada a partir da tabela do próprio jogo — não da vida daquele cadáver.",
+      "Quantidade de jogadores e bônus de vida de Champion, Unique e Super Unique não aumentam o número.",
+      "Metade do dano é físico e metade é fogo, divididos a partir de um único total sorteado.",
+      "Pontos compram raio. O que aumenta o dano é o nível do seu personagem, e o que você matou.",
+      "Se o nível do seu personagem estiver abaixo do nível do monstro do cadáver, o dano é reduzido nessa proporção.",
+    ],
+    body: [
+      { type: "heading", text: "A frase que quase acerta" },
+      {
+        type: "paragraph",
+        text: "O Corpse Explosion costuma ser descrito como causando dano baseado na vida máxima do cadáver. Isso é próximo o bastante para ser útil e errado justamente nos pontos que decidem como você joga. A skill não lê o cadáver. Ela consulta **quanto aquele tipo de monstro vale** no nível e na dificuldade dele, na mesma tabela que o jogo usou para criá-lo, e tira a média da faixa de vida que encontra ali.",
+      },
+      {
+        type: "paragraph",
+        text: "Tudo abaixo decorre dessa única substituição, e cada consequência é algo sobre o que dá para agir.",
+      },
+      { type: "heading", text: "O que não aumenta o dano" },
+      {
+        type: "list",
+        items: [
+          "**Quantidade de jogadores.** Monstros têm mais vida num jogo cheio; a tabela que a skill lê não muda, então a explosão também não.",
+          "**Bônus de Champion, Unique e Super Unique.** Um grupo de Champions tem várias vezes a vida dos monstros ao lado e explode pelo mesmo valor. Não há motivo para guardar o chefe do grupo para o final.",
+          "**O nível da própria skill.** Os pontos compram raio e nada mais. A faixa de 70–120% não se mexe.",
+        ],
+      },
+      { type: "heading", text: "O que aumenta o dano" },
+      {
+        type: "list",
+        items: [
+          "**Matar algo mais duro.** Um lacaio de run de Baal vale mais que uma vaca, e essa diferença é toda a escala da skill.",
+          "**A dificuldade.** A consulta é por dificuldade, então o mesmo monstro explode mais forte no Hell do que no Normal.",
+          "**O seu nível de personagem**, mas só como uma penalidade que deixa de valer. Se o seu nível estiver abaixo do nível do monstro, o dano é multiplicado pelo seu dividido pelo dele. Passe desse ponto e a penalidade simplesmente some; não existe bônus além disso.",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "O que custa é a primeira morte",
+        text: "Nada na explosão vale ser otimizado além de conseguir o primeiro cadáver. O que você matar primeiro dá a partida na corrente inteira, e o grupo que ela limpa teria explodido pelo mesmo valor qualquer que fosse o membro morto primeiro.",
+      },
+      { type: "heading", text: "Metade físico, metade fogo" },
+      {
+        type: "paragraph",
+        text: "Um total é sorteado entre 70% e 120% e então dividido: metade sai como dano físico e metade como fogo. Cada metade encontra a resistência do alvo ao seu próprio tipo, e é por isso que a skill continua funcionando contra monstros que barram quase tudo.",
+      },
+      {
+        type: "table",
+        headers: ["Contra", "O que acontece"],
+        rows: [
+          ["Um imune a fogo", "A metade de fogo é reduzida ou barrada. A metade física entra normalmente."],
+          ["Um imune a físico", "A metade física é reduzida ou barrada. A metade de fogo entra normalmente."],
+          ["Imune aos dois", "Quase nada. Extremamente raro, e a razão de valer a pena ter um segundo tipo de dano."],
+          ["Amplify Damage no alvo", "A metade física bate mais forte — a maldição corta 100 pontos da resistência a dano físico, como faz para qualquer outro golpe físico."],
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        title: "O que este site não afirma",
+        text: "Se a metade de fogo aproveita **+Fire Skills**, uma Fire Mastery ou **+% Fire Skill Damage** é deliberadamente algo que não afirmamos aqui. A divisão é calculada dentro da skill a partir da vida do cadáver; se o dano de fogo resultante passa depois pelos modificadores por que passa o dano de uma magia de fogo é decidido mais adiante no pipeline de dano, que esta etapa não rastreou de ponta a ponta. Uma resposta confiante em qualquer direção seria um palpite vestido de fato.",
+      },
+      { type: "heading", text: "Raio, e o problema da unidade" },
+      {
+        type: "paragraph",
+        text: "O jogo declara o raio numa unidade que ele mesmo nomeia: **meios quadrados**, começando em 8 e subindo 1 por nível de skill. O motor divide esse número por dois antes de usá-lo, então o raio efetivo vai de cerca de 4 no nível 1 a cerca de 13 no nível 20. É isso que os pontos compram, e vale comprar — um Corpse Explosion que alcança o próximo cadáver é uma corrente, e um que não alcança é uma conjuração só.",
+      },
+      {
+        type: "paragraph",
+        text: "O raio publicado neste site é o parâmetro do próprio jogo, com a divisão por dois declarada em vez de aplicada. Documentação mais antiga converte o mesmo parâmetro para jardas dividindo por três, o que dá 2,6 no nível 1 e 9 no nível 20. Nenhuma das duas convenções deriva da outra, e este site não escolhe uma e a chama de distância em jardas. O que é certo é o parâmetro e o que o motor faz com ele.",
+      },
+      {
+        type: "callout",
+        variant: "info",
+        title: "O raio das maldições é outra unidade",
+        text: "Os parâmetros de raio de uma maldição se chamam apenas \"Radius\", e o motor os usa como estão — sem dividir. Aplicar a conversão do Corpse Explosion a uma maldição, ou o contrário, erraria por um fator de dois numa direção ou na outra.",
+      },
+      { type: "heading", text: "De onde isto vem" },
+      {
+        type: "paragraph",
+        text: "Os 70%, os 120%, a divisão de 50% e os parâmetros de raio são as colunas da própria skill na extração fixada de dados do jogo que este site lê. A substituição da vida do cadáver pela vida de tabela do tipo de monstro, a divisão do raio por dois e a penalidade por nível de personagem vêm da implementação de referência do motor antigo — que é o Diablo II anterior ao Resurrected, e é assim que ele é nomeado aqui em vez de ser apresentado como a build atual. Nada aqui depende de uma afirmação em que as duas fontes discordem.",
+      },
+    ],
+  },
 };

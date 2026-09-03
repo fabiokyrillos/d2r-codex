@@ -162,22 +162,39 @@ export const classesPtBr: Overlay<ClassCopy> = {
     summary:
       "Invocações, maldições e magia óssea. O Summoner é o personagem mais tolerante do jogo.",
     overview:
-      "O Necromancer luta através de um exército. Um Summoner ergue esqueletos, um golem e revives, amaldiçoa tudo por perto e deixa o exército trabalhar — o que o torna extraordinariamente seguro e uma escolha comum no Hardcore. O lado Bone oferece dano mágico, ao qual quase nada no jogo é imune, ao custo de números brutos bem menores.",
+      "O Necromancer luta através de um exército. Um Summoner ergue esqueletos, um golem e revives, amaldiçoa tudo por perto e deixa o exército trabalhar — o que o torna extraordinariamente seguro e uma escolha comum no Hardcore. O lado Bone oferece dano mágico, ao qual quase nada no jogo é imune, ao custo de números brutos bem menores. Os dois lados vivem de cadáveres, e do fato de que um monstro carrega exatamente uma maldição.",
     strengths: [
       "O exército de esqueletos absorve praticamente todo o dano recebido",
       "Maldições (Amplify Damage, Decrepify, Lower Resist) são poderosas e ajudam o grupo inteiro",
       "Bone Spear e Bone Spirit causam dano mágico — quase nada é imune",
-      "Corpse Explosion limpa telas inteiras assim que o primeiro monstro morre",
+      "Corpse Explosion limpa telas inteiras assim que o primeiro monstro morre, e não liga para o seu equipamento",
     ],
     weaknesses: [
       "O dano do Summoner é baixo; as limpezas são seguras, mas lentas",
       "O pathing dos minions é frequentemente frustrante",
       "Precisa de cadáveres, então a primeira morte de cada grupo é sempre a mais lenta",
+      "As criaturas invocadas não se atualizam quando o seu equipamento ou as suas skills mudam — o exército precisa ser levantado de novo",
     ],
     coreMechanics: [
       {
-        title: "Corpse Explosion escala com a vida do monstro, não com o nível da skill",
-        body: "O Corpse Explosion causa dano baseado na vida máxima do cadáver explodido, então continua relevante em qualquer dificuldade e nível de equipamento. Pontos de skill só aumentam o raio.",
+        title: "O Corpse Explosion não lê o cadáver",
+        body: "Ele consulta quanto aquele **tipo** de monstro vale no nível e na dificuldade dele e tira 70–120% disso. Então um grupo de Champions explode exatamente pelo mesmo valor que o lixo ao lado, um jogo cheio não muda nada, e os pontos de skill compram raio em vez de dano. Metade do resultado é físico e metade é fogo. Existe um artigo inteiro sobre isso — veja Corpse Explosion em Mecânicas do jogo.",
+      },
+      {
+        title: "Uma maldição por alvo, e é isso que define a árvore",
+        body: "Lançar uma maldição substitui a que já estava no monstro. Dez maldições, um espaço só, e o Attract nem sequer permite a substituição enquanto dura. A pergunta nunca é qual maldição é a mais forte, e sim qual você está abrindo mão de usar — o Amplify Damage dobra o dano físico contra um alvo que não resiste, o Decrepify faz menos disso e ainda desacelera, enfraquece e trava.",
+      },
+      {
+        title: "Os atributos dos lacaios são fixados no momento da invocação",
+        body: "Vida, dano, chance de acerto e resistências de um esqueleto são gravados nele quando ele é criado e não são recalculados. Aumentar o Skeleton Mastery, ou vestir um elmo com +3 na árvore, muda o próximo esqueleto que você levantar e nenhum dos que já estão de pé. O exército precisa ser levantado de novo para receber qualquer coisa.",
+      },
+      {
+        title: "Um golem, seja ele qual for",
+        body: "As quatro skills de golem dividem um único tipo de criatura invocada com máximo de um, então invocar o segundo substitui o primeiro. Isso pesa mais no Iron Golem, que consumiu um item para existir: substituí-lo não devolve o item.",
+      },
+      {
+        title: "Dano mágico de um lado, nenhuma Mastery do outro",
+        body: "Bone Spear e Bone Spirit causam dano mágico, que só um punhado de monstros do jogo resiste — o mesmo motivo pelo qual o Hammerdin é considerado um faz-tudo seguro. Veneno não tem Mastery nenhuma: o Lower Resist é a única coisa da classe que reduz resistência a veneno, e contra um imune a veneno ele entra com um quinto da força, como toda maldição de resistência.",
       },
     ],
     bestFor: "Jogadores de Hardcore, e qualquer um que queira um primeiro personagem bem seguro.",
