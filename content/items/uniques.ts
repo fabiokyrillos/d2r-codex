@@ -1642,9 +1642,11 @@ export const uniques: UniqueItem[] = [
   //   - `mana/lvl` carries a raw parameter over a divisor of eight, the same
   //     conversion that turns Harlequin Crest's par=12 into +1.5 life per level.
   //
-  // One entity's public name differs from the extraction's, and one entity's
-  // stat block differs from every database listing. Both are documented at the
-  // point of use rather than silently reconciled.
+  // One entity's public name differs from the extraction's — the table spells
+  // Death's Web "Deaths's Web" — and it is documented at the point of use
+  // rather than silently reconciled. Its five properties agree with the
+  // extraction and with the independent sources checked against them, and are
+  // pinned positively by `DEATHS_WEB_FIELDS`.
   // -------------------------------------------------------------------------
   {
     slug: "homunculus",
@@ -1709,7 +1711,7 @@ export const uniques: UniqueItem[] = [
       confidence: "verified",
     },
     notes:
-      "**−40-50% to Enemy Poison Resistance exists nowhere else.** Poison has no Mastery, so a poison build's only other reduction is Lower Resist — and the two stack, which is the whole reason a Poison Nova Necromancer is a build rather than a novelty. Against a merely resistant monster this is the difference between a slow kill and a fast one; against a poison immune it is cut to one fifth like every other reduction and does not break the immunity.\n\n**One caution on the stat block.** The pinned extraction gives +2 to All Skills flat and carries no \"+% to Poison Skill Damage\" line at all. Community databases list +1-2 to All Skills and +40-50% Poison Skill Damage. This site publishes the extraction, as it does everywhere the two disagree; the difference is recorded in `docs/sources/README.md` and pinned in both directions so neither side can drift. If you want +% Poison Skill Damage, it comes from a Bramble.",
+      "**−40-50% to Enemy Poison Resistance exists nowhere else.** Poison has no Mastery, so a poison build's only other reduction is Lower Resist — and the two stack, which is the whole reason a Poison Nova Necromancer is a build rather than a novelty. Against a merely resistant monster this is the difference between a slow kill and a fast one; against a poison immune it is cut to one fifth like every other reduction and does not break the immunity.\n\n**Read the two skill lines separately.** +2 to All Skills is flat rather than a range, and the +1-2 to Poison and Bone Skills sits on top of it as a second, tree-specific line — so a rolled wand gives a Poison Nova Necromancer three or four effective levels, not two. All five properties were checked against the pinned extraction and against independent sources, and they agree.\n\n**What it does not carry is +% to Poison Skill Damage.** That stat exists, and it comes from a Bramble rather than from here — a wand and a chest armor, so the two stack rather than compete.",
     confidence: "verified",
   },
   {

@@ -24,8 +24,14 @@ import { assertFreshBuild } from "./build-freshness";
 import { LOCALES } from "../lib/i18n/config";
 import { getRunewords, getUniques } from "../lib/registry";
 import {
+  DEATHS_WEB_ABSENT_LINES,
+  DEATHS_WEB_FIELDS,
+  DEATHS_WEB_PUBLIC_NAME,
+  DEATHS_WEB_TABLE_TYPO,
   RUNEWORD_PROC_CONTROLS,
   UNIQUE_PROC_CONTROLS,
+  checkAbsentLines,
+  checkPinnedFields,
   checkProcLines,
   procLine,
   swappedProcLine,
@@ -136,6 +142,139 @@ console.log("\nNegative controls: these assertions can fail");
       !text.includes("<script") &&
       text.includes("Thunderstroke"),
   );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nDeath's Web, pinned by what it has as well as by what it lacks");
+// ---------------------------------------------------------------------------
+
+/*
+ * This item used to be defended by a single negative rule and by an editorial
+ * claim — that every community database disagreed with the extraction — which
+ * had no source behind it and has been withdrawn. The claim was carrying more
+ * of the argument than the gates were: with it gone, nothing stopped the flat
+ * `+2 to All Skills` becoming a range, the tab line being folded into it, or a
+ * socketed roll being pasted over the base entity.
+ *
+ * So the five properties are pinned positively and the set is closed, and each
+ * mutation below is a plausible edit rather than an invented one.
+ */
+{
+  const bend = (mutate: (stats: { text: string; variable?: boolean }[]) => void) => {
+    const stats = DEATHS_WEB_FIELDS.map((f) => ({ text: f.text, variable: f.variable }));
+    mutate(stats);
+    return checkPinnedFields(
+      [{ slug: "deaths-web", name: DEATHS_WEB_PUBLIC_NAME, stats }],
+      "deaths-web",
+      DEATHS_WEB_PUBLIC_NAME,
+      DEATHS_WEB_FIELDS,
+    );
+  };
+  const fires = (
+    rule: string,
+    mutate: (stats: { text: string; variable?: boolean }[]) => void,
+  ) => bend(mutate).some((p) => p.rule === rule);
+
+  check("the unmutated five properties pass", bend(() => {}).length === 0);
+
+  // The withdrawn claim's own shape: +2 flat published as +1-2.
+  check(
+    "+2 to All Skills published as a range is rejected",
+    fires("field-roll-wrong", (s) => {
+      s.find((x) => x.text === "+2 to All Skills")!.variable = true;
+    }),
+  );
+  check(
+    "…and dropping the line entirely is rejected separately",
+    fires("field-line-missing", (s) => {
+      s.splice(s.findIndex((x) => x.text === "+2 to All Skills"), 1);
+    }),
+  );
+
+  // The tab line is a second, tree-scoped grant, not part of the All Skills one.
+  check(
+    "folding the Poison and Bone tab line away is rejected",
+    fires("field-line-missing", (s) => {
+      s.splice(
+        s.findIndex((x) => x.text.startsWith("+1-2 to Poison and Bone Skills")),
+        1,
+      );
+    }),
+  );
+  check(
+    "the tab line is pinned as a roll, not a fixed value",
+    fires("field-roll-wrong", (s) => {
+      s.find((x) => x.text.startsWith("+1-2 to Poison and Bone Skills"))!.variable = false;
+    }),
+  );
+
+  // The two lines the absent-line rule has always guarded.
+  for (const line of ["+40-50% to Poison Skill Damage", "+1-2 to All Skills"]) {
+    check(
+      `a "${line}" line is rejected by both rules`,
+      fires("field-set-widened", (s) => s.push({ text: line, variable: true })) &&
+        checkAbsentLines(
+          [
+            {
+              slug: "deaths-web",
+              name: DEATHS_WEB_PUBLIC_NAME,
+              stats: [...DEATHS_WEB_FIELDS, { text: line }],
+            },
+          ],
+          "deaths-web",
+          DEATHS_WEB_ABSENT_LINES,
+        ).length > 0,
+    );
+  }
+
+  // A socket filler, a facet's contribution, a variant's block: not this item.
+  for (const [note, line] of [
+    ["a jewel in a socket", "+5% to Poison Skill Damage"],
+    ["a facet's on-death half", "-5% to Enemy Poison Resistance"],
+    ["a base-type implicit", "+50% Damage to Undead"],
+  ] as const) {
+    check(
+      `${note} is not merged into the base item`,
+      fires("field-set-widened", (s) => s.push({ text: line, variable: false })),
+      line,
+    );
+  }
+
+  /*
+   * The pinned table spells it "Deaths's Web". `check:content` sweeps every
+   * published string for that token; this proves the name rule that backs the
+   * sweep can actually fail.
+   */
+  check(
+    "the table's own spelling is rejected as a public name",
+    checkPinnedFields(
+      [
+        {
+          slug: "deaths-web",
+          name: DEATHS_WEB_TABLE_TYPO,
+          stats: DEATHS_WEB_FIELDS.map((f) => ({ text: f.text, variable: f.variable })),
+        },
+      ],
+      "deaths-web",
+      DEATHS_WEB_PUBLIC_NAME,
+      DEATHS_WEB_FIELDS,
+    ).some((p) => p.rule === "public-name-wrong"),
+  );
+
+  // And the published entity, in both locales, is the one the controls describe.
+  for (const locale of LOCALES) {
+    const entity = getUniques(locale).find((u) => u.slug === "deaths-web")!;
+    check(
+      `${locale}: Death's Web publishes exactly the five pinned properties`,
+      entity.stats.length === DEATHS_WEB_FIELDS.length,
+      entity.stats.map((s) => s.text).join(" | "),
+    );
+    check(
+      `${locale}: the name is "${DEATHS_WEB_PUBLIC_NAME}"`,
+      entity.name === DEATHS_WEB_PUBLIC_NAME,
+      entity.name,
+    );
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -169,27 +169,37 @@ listing:
   two normal bases that reach 2, which is why a level-35 runeword is routinely
   made in a base that drops in Act 1.
 
-### Death's Web, where the extraction and every database disagree
+### Death's Web, and the divergence this pass claimed and could not source
 
 The pinned tables give it five properties:
 
 ```
-allskills    2 2                     +2 to All Skills
+allskills    2 2                     +2 to All Skills, flat
 pierce-pois  40 50                   -40-50% to Enemy Poison Resistance
 heal-kill    7 12                    +7-12 Life after each Kill
 mana-kill    7 12                    +7-12 Mana after each Kill
 skilltab     par=7  1 2              +1-2 to Poison and Bone Skills
 ```
 
-Community databases list two further things: `+1-2 To All Skills` as a range,
-and `+40-50% To Poison Skill Damage`. **Neither is in the extraction.**
+**This section originally said that every community database disagreed** — that
+they published `+1-2 To All Skills` as a range and a `+40-50% To Poison Skill
+Damage` line, and that the site was choosing the extraction over them. None of
+that was sourced. No database was named, quoted or dated, and the independent
+sources consulted since agree with the extraction on all five properties.
 
-The site publishes the extraction, as it does everywhere the two disagree, and
-the item's own page states the difference rather than leaving a reader to
-discover it. Pinned in both directions — `SKILL_TAB_CONTROLS` holds the tab line
-and `DEATHS_WEB_ABSENT_LINES` fails if either absent line reappears — because a
-poison build's gear advice turns on which is true, and "correcting" it back from
-a database is the quiet failure.
+The item's stat block never changed and does not change now; what is withdrawn
+is the editorial claim that surrounded it, here, on the item page and in
+`scripts/item-rules.ts`. The correction is recorded rather than deleted because
+the failure is worth keeping: a baseline divergence is the most expensive kind
+of claim a page can make, and this one was asserted from nothing.
+
+The two gates stay, for a reason that survives the withdrawal. `+% Poison Skill
+Damage` is Bramble's stat and is worn in the same build; a ranged `+1-2 to All
+Skills` is what the `skilltab` line looks like to someone who read the tree
+index as "all". Both are transcription errors an author reaches unaided, and a
+poison build's gear advice turns on the difference. `DEATHS_WEB_FIELDS` now
+pins all five properties positively as well, so the item is described by what
+it has rather than only by what it lacks.
 
 Two names were checked and one was wrong. The table spells it `Deaths's Web`;
 the public name is **Death's Web**. The same check gave **Darkforge Spawn**

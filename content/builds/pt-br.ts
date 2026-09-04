@@ -8191,7 +8191,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "Um Enigma, para que ficar no meio do grupo vire escolha em vez de compromisso.",
         picks: {
           "weapon-0": {
-            why: "**−40-50% de resistência a veneno do inimigo, e nada mais no jogo tem isso.** Com o Lower Resist por cima, um monstro resistente deixa de ser resistente. Repare no que ele não tem: as tabelas fixadas não dão nenhuma linha de +% Poison Skill Damage, diga o que disser um banco de dados — esse atributo vem do Bramble.",
+            why: "**−40-50% de resistência a veneno do inimigo, e nada mais no jogo tem isso.** Com o Lower Resist por cima, um monstro resistente deixa de ser resistente. Repare no que ele não tem: nenhuma linha de +% Poison Skill Damage — esse atributo vem do Bramble, que é outro slot, então os dois empilham.",
             lookFor: ["-50% to Enemy Poison Resistance", "+2 to Poison and Bone Skills"],
           },
           "weapon-0-alt0": { why: "Até existir um. Não é substituto — nada é — mas são três níveis de skill." },

@@ -327,7 +327,7 @@ export const poisonNovaNecromancer: Build = {
           picks: [
             {
               ref: { kind: "unique", slug: "deaths-web" },
-              why: "**−40-50% to Enemy Poison Resistance, and nothing else in the game has it.** With Lower Resist on top, a resistant monster stops being resistant. Note what it does not have: the pinned tables give no +% Poison Skill Damage line, whatever a database says — that stat comes from the Bramble.",
+              why: "**−40-50% to Enemy Poison Resistance, and nothing else in the game has it.** With Lower Resist on top, a resistant monster stops being resistant. Note what it does not have: no +% Poison Skill Damage line — that stat comes from the Bramble, which is a different slot, so the two stack.",
               lookFor: ["-50% to Enemy Poison Resistance", "+2 to Poison and Bone Skills"],
               tradeOnly: true,
               alternatives: [{ ref: { kind: "runeword", slug: "white" }, why: "Until one exists. It is not a substitute — nothing is — but it is three skill levels." }],

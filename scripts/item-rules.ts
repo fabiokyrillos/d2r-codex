@@ -260,7 +260,11 @@ export interface ColumnProblem {
     | "skilltab-read-as-skill"
     | "skilltab-collapsed"
     | "rune-mod-absent"
-    | "column-entity-missing";
+    | "column-entity-missing"
+    | "field-line-missing"
+    | "field-roll-wrong"
+    | "field-set-widened"
+    | "public-name-wrong";
   message: string;
 }
 
@@ -515,19 +519,21 @@ export const SKILL_TAB_CONTROLS: readonly SkillTabSpec[] = [
 ];
 
 /**
- * Death's Web, pinned in both directions.
+ * Death's Web's five properties, and the two lines that are not among them.
  *
- * The pinned tables give five properties: +2 to All Skills flat,
- * −40-50% to Enemy Poison Resistance, +7-12 life and mana after each kill, and
- * +1-2 to Poison and Bone Skills. Every community database lists two further
- * things — +1-2 to All Skills as a range, and +40-50% to Poison Skill Damage.
+ * The pinned tables give exactly five: `allskills 2 2` (+2 to All Skills,
+ * flat), `pierce-pois 40 50`, `heal-kill 7 12`, `mana-kill 7 12`, and
+ * `skilltab par=7 1 2` (+1-2 to Poison and Bone Skills). The independent
+ * sources this pass consulted agree with all five, so the item is published
+ * with no divergence attached to it — an earlier draft of this comment said
+ * every community database disagreed, and that claim had no source behind it.
  *
- * The site publishes the extraction, and that decision needs a gate in both
- * directions for the same reason the ten Necromancer number divergences do: one
- * rule catches the site drifting off Tier 1, and the other catches a future
- * author reading a database, deciding the site is wrong, and "correcting" it.
- * A poison build's gear advice turns on which of the two is true, so this is
- * not a cosmetic difference.
+ * The absent-line gate stays, and it is now guarding against a different
+ * thing. `+% Poison Skill Damage` belongs to Bramble, and `+1-2 to All Skills`
+ * is what the item's `skilltab` line looks like to someone who mistook the
+ * tree index for "all". Both are plausible transcription errors, and a poison
+ * build's gear advice turns on the difference, so both are checked. Neither is
+ * attributed to a database this pass did not read.
  */
 export const DEATHS_WEB_ABSENT_LINES: readonly string[] = [
   "Poison Skill Damage",
@@ -554,9 +560,123 @@ export function checkAbsentLines(
       rule: "rune-mod-absent" as const,
       message:
         `${entity.name}: publishes a "${fragment}" line, which the pinned extraction does not ` +
-        `carry. Community databases do. The site publishes the extraction — see the note on the ` +
-        `item and the live-disagreements table in docs/sources/README.md.`,
+        `carry. Check the entity's own properties in docs/sources/README.md before adding it — ` +
+        `a tree-specific skilltab line and a runeword's stat are the two things it is mistaken for.`,
     }));
+}
+
+/**
+ * The same item, pinned by what it **has** rather than by what it lacks.
+ *
+ * An absent-line rule is half a control. It stops two named lines reappearing
+ * and says nothing about the five that should be there, so an author could
+ * flatten the skill tab into the All Skills line, turn the flat +2 into a
+ * range, or paste a socketed roll over the base item, and every gate would
+ * stay green. The withdrawn "every database disagrees" claim had been carrying
+ * the other half of the argument, and once it went the item was under-covered.
+ *
+ * So each property is pinned with the column it came from and whether the item
+ * rolls it. `variable: false` on `+2 to All Skills` is the load-bearing one —
+ * `allskills 2 2` is a fixed value, and the whole shape of the withdrawn claim
+ * was that it ought to be a range.
+ *
+ * The set is closed. A line outside it fails, which is what keeps a socket
+ * filler, a facet's contribution or a variant's stat block from being merged
+ * into the base entity: those belong to the socketed item, not to this one.
+ */
+export interface PinnedField {
+  /** The published line, verbatim. */
+  readonly text: string;
+  /** True when the item rolls a range; false when the column is a fixed value. */
+  readonly variable: boolean;
+  /** The pinned-table property behind it, quoted in the failure message. */
+  readonly column: string;
+}
+
+export interface FieldEntity {
+  slug: string;
+  name: string;
+  stats: readonly { text: string; variable?: boolean }[];
+}
+
+export const DEATHS_WEB_PUBLIC_NAME = "Death's Web";
+
+/** The spelling in the pinned table, which must never reach a reader. */
+export const DEATHS_WEB_TABLE_TYPO = "Deaths's Web";
+
+export const DEATHS_WEB_FIELDS: readonly PinnedField[] = [
+  { text: "-40-50% to Enemy Poison Resistance", variable: true, column: "pierce-pois 40 50" },
+  { text: "+2 to All Skills", variable: false, column: "allskills 2 2" },
+  {
+    text: "+1-2 to Poison and Bone Skills (Necromancer Only)",
+    variable: true,
+    column: "skilltab par=7 1 2",
+  },
+  { text: "+7-12 Life after each Kill", variable: true, column: "heal-kill 7 12" },
+  { text: "+7-12 Mana after each Kill", variable: true, column: "mana-kill 7 12" },
+];
+
+export function checkPinnedFields(
+  entities: readonly FieldEntity[],
+  slug: string,
+  publicName: string,
+  fields: readonly PinnedField[],
+): ColumnProblem[] {
+  const entity = entities.find((e) => e.slug === slug);
+  if (!entity) {
+    return [
+      {
+        rule: "column-entity-missing",
+        message: `${slug}: named as a pinned-field control but is not in the catalogue.`,
+      },
+    ];
+  }
+
+  const found: ColumnProblem[] = [];
+
+  if (entity.name !== publicName) {
+    found.push({
+      rule: "public-name-wrong",
+      message:
+        `${slug}: published as "${entity.name}". The public name is "${publicName}" — the ` +
+        `pinned table's own spelling is not it.`,
+    });
+  }
+
+  for (const field of fields) {
+    const stat = entity.stats.find((s) => s.text === field.text);
+    if (!stat) {
+      found.push({
+        rule: "field-line-missing",
+        message:
+          `${entity.name}: does not publish "${field.text}", which \`${field.column}\` gives it.`,
+      });
+      continue;
+    }
+    if ((stat.variable ?? false) !== field.variable) {
+      found.push({
+        rule: "field-roll-wrong",
+        message:
+          `${entity.name}: "${field.text}" is marked ` +
+          `${stat.variable ? "variable" : "fixed"}, and \`${field.column}\` is ` +
+          `${field.variable ? "a range" : "a fixed value"}.`,
+      });
+    }
+  }
+
+  const pinned = new Set(fields.map((f) => f.text));
+  for (const stat of entity.stats) {
+    if (pinned.has(stat.text)) continue;
+    found.push({
+      rule: "field-set-widened",
+      message:
+        `${entity.name}: publishes "${stat.text}", which is not one of the ` +
+        `${fields.length} pinned properties. A socket filler, a facet or a variant's block ` +
+        `belongs to the item it is in rather than to this one.`,
+    });
+  }
+
+  return found;
 }
 
 /** Tab indices for every class whose items are controlled here. */

@@ -90,6 +90,9 @@ import {
 import {
   CHARGE_CONTROLS,
   DEATHS_WEB_ABSENT_LINES,
+  DEATHS_WEB_FIELDS,
+  DEATHS_WEB_PUBLIC_NAME,
+  DEATHS_WEB_TABLE_TYPO,
   RUNEWORD_PROC_CONTROLS,
   RUNE_MOD_CONTROLS,
   SKILL_TABS,
@@ -97,6 +100,7 @@ import {
   UNIQUE_PROC_CONTROLS,
   checkAbsentLines,
   checkChargeLines,
+  checkPinnedFields,
   checkProcLines,
   checkRuneComposition,
   checkSkillTabLines,
@@ -883,6 +887,19 @@ console.log("\nCharges, skill tabs and rune composition:");
     ...checkSkillTabLines(catalogue, SKILL_TAB_CONTROLS, SKILL_TABS),
     ...checkRuneComposition(getRunewords(SOURCE), RUNE_MOD_CONTROLS),
     ...checkAbsentLines(getUniques(SOURCE), "deaths-web", DEATHS_WEB_ABSENT_LINES),
+    /*
+     * Death's Web is pinned positively as well as negatively. The absent-line
+     * rule alone would let the five real properties be flattened, re-rolled or
+     * widened with a socketed roll and stay green, and the editorial claim that
+     * used to carry the other half of the argument has been withdrawn.
+     *
+     * Checked in **every** locale: an overlay replaces the name, and the pinned
+     * table spells the item "Deaths's Web" — a typo that reaches a reader only
+     * through a translation nobody re-read.
+     */
+    ...LOCALES.flatMap((locale) =>
+      checkPinnedFields(getUniques(locale), "deaths-web", DEATHS_WEB_PUBLIC_NAME, DEATHS_WEB_FIELDS),
+    ),
   ];
   const rules = [
     "charge-line-swapped",
@@ -892,15 +909,39 @@ console.log("\nCharges, skill tabs and rune composition:");
     "skilltab-line-missing",
     "rune-mod-absent",
     "column-entity-missing",
+    "field-line-missing",
+    "field-roll-wrong",
+    "field-set-widened",
+    "public-name-wrong",
   ] as const;
   for (const rule of rules) {
     const hits = found.filter((p) => p.rule === rule);
     console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(26)} ${hits.length}`);
     for (const h of hits) problems.push(h.message);
   }
+
+  /*
+   * And the typo must not reach a reader by any other route either — a note, a
+   * summary, an alias or a `lookFor` line. One string, swept over everything
+   * this locale publishes.
+   */
+  for (const locale of LOCALES) {
+    const published = JSON.stringify([
+      getUniques(locale),
+      getRunewords(locale),
+      getBuilds(locale),
+      getMechanics(locale),
+    ]);
+    if (published.includes(DEATHS_WEB_TABLE_TYPO)) {
+      fail(`${locale} items`, `the pinned table's "${DEATHS_WEB_TABLE_TYPO}" spelling is published`);
+    }
+  }
+  console.log(`  ok ${"table-typo-published".padEnd(26)} 0`);
+
   console.log(
-    `  ${CHARGE_CONTROLS.length} charge, ${SKILL_TAB_CONTROLS.length} skill-tab and ` +
-      `${RUNE_MOD_CONTROLS.length} rune-composition controls`,
+    `  ${CHARGE_CONTROLS.length} charge, ${SKILL_TAB_CONTROLS.length} skill-tab, ` +
+      `${RUNE_MOD_CONTROLS.length} rune-composition and ${DEATHS_WEB_FIELDS.length} ` +
+      `pinned-field controls`,
   );
 }
 

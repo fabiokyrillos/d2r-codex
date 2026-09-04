@@ -450,7 +450,46 @@ Recorded rather than resolved by guesswork.
 | Bone and poison damage figures | Pinned 3.3 tables | The Arreat Summit's 1.11 tables, consistently higher | The extraction is published; all ten differences are pinned in both directions so neither side can drift. See above. |
 | What unit is Corpse Explosion's radius in? | The game names it "half squares" and the engine halves it | The Arreat Summit publishes the same parameter divided by three, as yards | Neither converted. The site publishes the parameter and states the halving. A curse's radius is a different unit again and shares no conversion with it. |
 | Does the fire half of Corpse Explosion take +Fire Skills, Fire Mastery or +% Fire Skill Damage? | Community guides: yes | The skill's `EType` **is** `fire`, so +to Fire Skills raises its effective level — and the level buys radius, not the 70–120% band. Whether the fire damage then meets +% Fire Skill Damage is not established, and a Necromancer cannot have a Fire Mastery at all | **Split.** The `+to Fire Skills` half is now asserted and explained; the other two are still not asserted in either direction. `checkCorpseExplosionClaims` requires the three quantities to be distinguished and rejects an unsupported increase claim. |
-| Death's Web's stat block | Pinned tables: five properties — `allskills 2 2`, `pierce-pois 40 50`, `heal-kill 7 12`, `mana-kill 7 12`, `skilltab par=7 1 2` | Every community database: `+1-2 To All Skills` and a `+40-50% To Poison Skill Damage` line the extraction does not carry | **The extraction is published**, as everywhere else the two disagree, and pinned in both directions: `SKILL_TAB_CONTROLS` holds the tab line and `DEATHS_WEB_ABSENT_LINES` fails if either missing line reappears. The item's own page states the difference rather than hiding it, and points a reader wanting +% Poison Skill Damage at Bramble. |
+
+### Withdrawn: Death's Web's stat block
+
+This table carried a Death's Web row claiming that **every community database**
+published `+1-2 To All Skills` and a `+40-50% To Poison Skill Damage` line, and
+that the site was choosing the extraction over them. The disagreement was never
+sourced — no database was named, quoted or dated — and the independent sources
+consulted since agree with the extraction on all five properties:
+
+```
+allskills    2 2                     +2 to All Skills, flat
+pierce-pois  40 50                   -40-50% to Enemy Poison Resistance
+heal-kill    7 12                    +7-12 Life after each Kill
+mana-kill    7 12                    +7-12 Mana after each Kill
+skilltab     par=7  1 2              +1-2 to Poison and Bone Skills
+```
+
+So there is nothing here to record as a live disagreement. **The item's stat
+block did not change**; what was withdrawn is the editorial claim around it, on
+the item page, in `scripts/item-rules.ts` and here.
+
+The two gates stay, for the reason they are actually worth having rather than
+the one that was written on them. `SKILL_TAB_CONTROLS` holds `+1-2 to Poison
+and Bone Skills` as a tab line at `par=7`, and `DEATHS_WEB_ABSENT_LINES` fails
+if `+% Poison Skill Damage` or a ranged `+1-2 to All Skills` appears on the
+item. Both are transcription errors an author can make unaided — the first by
+reading Bramble's stat onto the wand it is worn beside, the second by reading
+the `skilltab` tree index as "all" — and a poison build's gear advice turns on
+the difference. `DEATHS_WEB_FIELDS` pins all five properties positively, so the
+absent-line rule is no longer the only thing standing between the item and a
+rewrite.
+
+**Base-type implicits are not duplicated into a unique's block.** `+50% Damage
+to Undead` belongs to the wand item-type rather than to Death's Web or Arm of
+King Leoric, so it appears on neither entity and is not being omitted by
+oversight. The site's item model has one stat array per entity and no separate
+place for a base's implicit properties; adding one is a change to the model
+rather than a change to an item, and it has not been made. A reader comparing
+against a source that folds the base into the unique will see one line more
+there than here, and that is the reason.
 
 ## Routing, aliases and redirects
 

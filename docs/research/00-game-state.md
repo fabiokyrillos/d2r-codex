@@ -263,8 +263,8 @@ verified" placeholders for the same reason.
 - [`05-necromancer-builds.md`](05-necromancer-builds.md) — the three builds, the
   Summoner journey, six dependency pages and the aliases; the summons research
   that answered four of those five questions and reshaped the point plan; the
-  three new item-column semantics; and Death's Web, where the extraction and
-  every community database disagree. **Executed.**
+  three new item-column semantics; and Death's Web, whose five properties are
+  pinned against the extraction and independent sources. **Executed.**
 
 ## Sources
 
