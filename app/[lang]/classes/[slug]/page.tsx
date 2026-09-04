@@ -16,6 +16,7 @@ import {
   StatGrid,
 } from "@/components/ui";
 import { ConfidenceNote, ElementBadge, RichText, SkillTree } from "@/components/game";
+import { FilterableBuildList } from "@/components/builds/filterable-build-list";
 import {
   getBreakpointsForClass,
   getBuildsForClass,
@@ -128,22 +129,32 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
 
         {(journey || builds.length > 0) && (
           <Section title={t.classes.startHere}>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {journey && (
-                <LinkCard href={r.levelingFor(cls.slug)}>
-                  <p className="text-xs font-semibold tracking-widest text-ember uppercase">
-                    {t.classes.levelingEyebrow}
-                  </p>
-                  <h3 className="mt-1.5 font-display text-lg text-ink group-hover:text-ember-bright">
-                    {t.classes.levelingCardTitle}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
-                    {journey.summary}
-                  </p>
-                </LinkCard>
-              )}
-              {builds.map((build) => (
-                <LinkCard key={build.slug} href={r.build(cls.slug, build.slug)}>
+            {/*
+              The class filter is deliberately absent here: every build on this
+              page is this class's, so the control could only ever be ticked or
+              not with the same result.
+            */}
+            <FilterableBuildList
+              builds={builds}
+              groups={["damage", "difficulty", "budget", "goodAt"]}
+              listClassName="grid gap-3 sm:grid-cols-2"
+              leading={
+                journey ? (
+                  <LinkCard href={r.levelingFor(cls.slug)}>
+                    <p className="text-xs font-semibold tracking-widest text-ember uppercase">
+                      {t.classes.levelingEyebrow}
+                    </p>
+                    <h3 className="mt-1.5 font-display text-lg text-ink group-hover:text-ember-bright">
+                      {t.classes.levelingCardTitle}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
+                      {journey.summary}
+                    </p>
+                  </LinkCard>
+                ) : undefined
+              }
+              cardFor={(build) => (
+                <LinkCard href={r.build(cls.slug, build.slug)} className="h-full">
                   <p className="text-xs font-semibold tracking-widest text-ember uppercase">
                     {t.classes.endgameEyebrow}
                   </p>
@@ -161,8 +172,8 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
                     <Badge tone="outline">{difficulties[build.difficulty]}</Badge>
                   </div>
                 </LinkCard>
-              ))}
-            </div>
+              )}
+            />
           </Section>
         )}
 

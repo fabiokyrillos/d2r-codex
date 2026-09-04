@@ -12,6 +12,7 @@ import {
   Section,
 } from "@/components/ui";
 import { ElementBadge } from "@/components/game";
+import { FilterableBuildList } from "@/components/builds/filterable-build-list";
 import { getBuilds, getClass, getClasses } from "@/lib/registry";
 import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
@@ -52,11 +53,12 @@ export default async function BuildsPage() {
 
       <div className="mt-8 space-y-10">
         <Section>
-          <ul className="grid gap-4 lg:grid-cols-2">
-            {builds.map((build) => {
+          <FilterableBuildList
+            builds={builds}
+            listClassName="grid gap-4 lg:grid-cols-2"
+            cardFor={(build) => {
               const cls = getClass(locale, build.classSlug);
               return (
-                <li key={build.slug}>
                   <LinkCard href={r.build(build.classSlug, build.slug)} className="h-full">
                     <p className="text-xs font-semibold tracking-widest text-ember uppercase">
                       {cls?.name}
@@ -107,10 +109,9 @@ export default async function BuildsPage() {
                       />
                     </div>
                   </LinkCard>
-                </li>
               );
-            })}
-          </ul>
+            }}
+          />
         </Section>
 
         <Callout variant="info" title={t.builds.whyFewTitle}>
