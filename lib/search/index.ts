@@ -103,6 +103,27 @@ export const NICKNAMES: Record<string, string> = {
     "spearazon fendazon jabazon jab fend impale spear lanceira lanca",
 
   /*
+   * --- Druid builds, and the names that are not builds ---------------------
+   *
+   * The Druid's two published builds are each known by more names than any
+   * other class's, because the community names them after the skill, the tree
+   * and the weather in roughly equal measure. "Windy Druid" and "Tornado Druid"
+   * are the same character; so are "Fissure Druid", "Fire Druid" and the
+   * Armageddon-first point order that some guides give its own name.
+   *
+   * Deliberately absent:
+   *   "wind"      one syllable that matches Windforce, Widowmaker and
+   *               Windhammer before it matches a build
+   *   "fogo"      "fire" in Portuguese, which collides with the fire tree, the
+   *               Fire Golem, Flame Rift and half the runeword list
+   *   "elemental" the tree, not a build, and both of these live in it
+   */
+  "wind-druid":
+    "windy druid tornado druid windmaster wind elemental tornado hurricane furacao vento tempestade",
+  "fire-druid":
+    "fissure druid fire elemental volcanic elementalist armageddon druid fissure volcano fissura vulcao",
+
+  /*
    * --- Necromancer builds, and the names that are not builds ---------------
    *
    * Same job as the Amazon block above, and a heavier one: the Necromancer has

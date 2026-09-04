@@ -8530,4 +8530,694 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "wind-druid": {
+    summary:
+      "Dano físico e de frio num mesmo personagem, vindos de uma mesma árvore, sem aura e sem Sunder Charm. A farmadora de Hell mais segura da classe.",
+    playstyle:
+      "Você conjura o Hurricane, esquece dele por quarenta segundos, e gasta esse tempo jogando Tornados dentro dos grupos enquanto um Grizzly segura a frente. A trajetória do Tornado é errática e você não mira — você fica onde o grupo precisa passar e conjura até parar de se mexer. O Cyclone Armor come o dano elemental que puniria ficar parado, e quando algo perigoso se aproxima, o Hurricane já o desacelerou. É uma build com quase nenhuma rotação e quase nenhuma forma de ser surpreendida, e é por isso que ela parece lenta e termina rápido.",
+    strengths: [
+      "Dois tipos de dano numa árvore só — físico e frio cobrem o Hell sem nada comprado",
+      "O Hurricane roda enquanto você conjura, anda e luta; é dano em que você não gasta tempo",
+      "Cyclone Armor é ao mesmo tempo a camada defensiva e a sinergia de duração do Hurricane, então nada se perde",
+      "Barata: a build funciona com um Spirit, um Lore e um Stealth, e cresce suavemente a partir daí",
+      "Muito perdoável no Hardcore — nunca em alcance corpo a corpo, um urso que bloqueia o caminho, e um escudo elemental de verdade",
+    ],
+    weaknesses: [
+      "A trajetória do Tornado é genuinamente errática; o dano por conjuração varia com a sorte",
+      "Precisa de 99% de Faster Cast Rate antes de parecer uma farmadora em vez de um trabalho",
+      "Faminta por mana — o Tornado é conjurado sem parar e esta classe não tem Warmth",
+      "Nenhuma skill de movimento sem um Enigma, e a classe não tem Teleport nativo",
+      "Dano em alvo único é mediano; chefes demoram",
+    ],
+    flexPoints: [
+      "Pontos sobrando depois das quatro skills maximizadas vão para o **Oak Sage** — o bônus de vida do grupo continua crescendo, e o totem é o que a build de fato não tem.",
+      "**Arctic Blast** é um segundo destino legítimo para eles se você gosta do Twister como botão de pânico: cada ponto ali são mais dois quadros de atordoamento.",
+      "Não coloque pontos na árvore de fogo. Nada do lado do vento recebe sinergia dela, e um Fissure pela metade não mata nada no Hell.",
+    ],
+    statPlan: {
+      strength: "Exatamente o suficiente para o seu equipamento, e nem um ponto a mais.",
+      dexterity: "Base, a menos que você esteja construindo para bloqueio máximo com escudo.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. Nem um ponto.",
+      notes: [
+        "O Druid ganha 2 de vida por ponto de Vitality — o mesmo que uma Sorceress — então cada ponto sobrando tem de ir para lá.",
+        "Energy é a armadilha especificamente nesta build, porque o problema de mana é real e Energy continua sendo a resposta errada para ele. Um mercenário com Insight, uma Solar Creeper ou um cinto de poções de mana custam nada do que você precisava.",
+        "A decisão de Strength é o escudo. Um Spirit numa Monarch pede 156 de Strength; a maioria dos Wind Druids usa uma base menor até que Sandstorm Trek ou um Enigma pague por ela.",
+        "Com Battle Orders de um Call to Arms, 1400 de vida ou mais é um número confortável de Hell para esta build.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-99":
+        "O breakpoint em torno do qual a build é planejada. O Tornado é conjurado sem parar e o dano dele é função de quantos você consegue soltar, então velocidade de conjuração é dano aqui de um jeito que não é para uma skill com cooldown.",
+      "fcr-68":
+        "O ponto de parada realista durante a evolução. Só uma Spirit sword já são 35%, e um anel de Faster Cast Rate cobre quase o resto.",
+      "fcr-163":
+        "Um quadro a mais, por muito equipamento. Só vale quando não falta mais nada.",
+      "fhr-56":
+        "Você conjura parado, então ficar preso em recuperação é como esta build morre. 56% é a meta usual na tabela compartilhada de Necromancer e Druid.",
+    },
+    skillNotes: {
+      tornado:
+        "Todo o dano físico da build. Maximizado primeiro, e é a única skill aqui cujo próprio nível aumenta o próprio dano.",
+      hurricane:
+        "Maximizado em segundo pelo dano de frio dele e porque é uma sinergia de 9% por ponto para o Tornado.",
+      "cyclone-armor":
+        "A sinergia de *duração* do Hurricane — 50 quadros por ponto — e uma sinergia de dano do Tornado, e o escudo elemental. Três funções, uma skill.",
+      twister:
+        "A última sinergia de 9% para o Tornado e de 10% para o Hurricane. Não sobrou mais nada para comprar.",
+      "arctic-blast":
+        "Exigido pelo Cyclone Armor. Ele também soma 2 quadros de atordoamento ao Twister, o que é de graça.",
+      "oak-sage":
+        "+30% de vida para você, o mercenário e o urso. Um ponto, e a escolha padrão no Hardcore.",
+      raven:
+        "Cinco aves que cegam, e o pré-requisito dos lobos. O controle de grupo mais barato da classe.",
+      "heart-of-wolverine":
+        "A alternativa de Softcore ao Oak Sage: +20% de dano para o mercenário e para o urso em vez de vida para você.",
+      "summon-grizzly":
+        "Um urso, e ele provoca. É a razão de você poder ficar parado conjurando.",
+    },
+    immunityPlan:
+      "**A resposta da build é que ela tem dois tipos de dano e eles não se sobrepõem.** O Tornado é inteiramente físico, o Hurricane inteiramente de frio, e os dois são maximizados pelo mesmo conjunto de pontos — então um imune a fogo, um imune a raio e um imune a veneno são simplesmente irrelevantes. Um imune a físico ainda recebe o frio do Hurricane; um imune a frio ainda recebe o físico do Tornado. O único monstro que realmente resiste a este personagem é imune aos dois ao mesmo tempo, e essa combinação é rara o bastante para que muitos Wind Druids terminem o jogo sem nunca ter carregado um Sunder Charm. **Bone Break** é a melhoria, não o conserto: ele torna os imunes a físico rápidos em vez de apenas possíveis.",
+    mercenaryNotes:
+      "Um Desert Mercenary do Ato 2 com **Insight**, e não é uma decisão apertada. O Tornado é conjurado sem parar e o Druid não tem Warmth; Meditation é a diferença entre conjurar e parar para beber. Pegue Might no Nightmare pela aura de dano físico, que não aumenta o Tornado em nada — auras não tocam dano de magia — mas aumenta as mortes do próprio mercenário e as do urso. Mais adiante, Infinity vale muito menos para esta build do que para um caster elemental, porque Conviction reduz resistência *elemental* e a maior parte do seu dano é físico.",
+    farmingWhy: {
+      "countess-nightmare":
+        "As runas que constroem os Spirits, e uma corrida curta que um Wind Druid meio equipado aguenta.",
+      "pit-hell":
+        "Nível 85, denso, e cheio exatamente dos grupos de imunidade mista que uma build de físico com frio atravessa sem mudar nada.",
+      "ancient-tunnels-hell":
+        "Nível 85 sem nenhum imune a frio, o que significa que o Hurricane contribui em cada morte em vez de na maioria delas.",
+      "mausoleum-hell":
+        "Denso, nível 85, e alcançável cedo. Uma boa primeira área de Hell para uma build que quer grupos em vez de chefes.",
+      "chaos-sanctuary-hell":
+        "Físico e frio juntos dão conta dos chefes dos selos sem Sunder Charm; os Oblivion Knights são o problema de verdade, e o Hurricane os desacelera antes de conjurarem.",
+      "worldstone-keep-hell":
+        "A melhor experiência do jogo e os grupos mais densos. Quer o breakpoint de 99% e resistências no teto antes.",
+      "secret-cow-level-hell":
+        "Nada lá é imune a físico, a densidade é absurda, e o Tornado é uma skill que recompensa densidade mais do que recompensa pontaria.",
+    },
+    levelingPath: {
+      summary:
+        "Suba de nível com Firestorm, Molten Boulder e Fissure, e depois respec para a árvore do vento quando o Tornado estiver disponível e o dano da árvore de fogo tiver parado de acompanhar. As duas metades da árvore elemental não compartilham sinergia nenhuma, então este é um respec de verdade e não um regasto.",
+      respecAt: "Ato 3 do Nightmare, antes do Mephisto — por volta do nível 38.",
+    },
+    selfFoundNotes:
+      "A melhor build de solo self-found que o Druid tem, e uma das melhores do jogo. Tudo nos conjuntos inicial e de Nightmare é uma runa da Countess, uma compra de vendedor ou um unique comum, e as skills centrais da build não precisam de item nenhum para funcionar. O imbue da Charsi num pelt branco de Druid depois do nível 30 é o único passo deliberado que vale planejar; é o elmo +2/+3 mais confiável que um personagem self-found vai ver.",
+    hardcoreNotes:
+      "Uma das duas ou três builds mais seguras do jogo e o Druid padrão de Hardcore. Você nunca entra em alcance corpo a corpo, o Grizzly provoca o que chegaria até você, o Cyclone Armor absorve o dano elemental que mata casters, e o Oak Sage soma 30% de vida por cima. Os riscos de verdade são os de todo caster: um grupo à distância com Fanaticism, e teleportar em cima de um Oblivion Knight com Iron Maiden usando um Enigma. Mantenha o Cyclone Armor ativo, feche as resistências antes do Hell e não teleporte às cegas.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 e colocar o Hurricane no ar. Nada aqui custa mais que três runas da Countess.",
+        nextUpgrade:
+          "Nível 30 e o vigésimo ponto no Tornado. Até o Hurricane subir você é um Fire Druid; veja a jornada de leveling.",
+        notes:
+          "**Guarde as runas da Countess em vez de gastá-las.** Tal, Thul, Ort e Amn constroem o Spirit que carrega este personagem do nível 25 até o fim do Nightmare, e queimar a Ort num Lore antes é o erro comum.",
+        picks: {
+          "weapon-0": {
+            why: "35% de Faster Cast Rate, +2 em todas as skills e uma reserva enorme de mana, numa espada de quatro soquetes que dá para comprar do estoque do Larzuk ou achar no Ato 3. É o item de melhor custo-benefício do jogo e esta build quer cada linha dele.",
+            sockets: "Tal + Thul + Ort + Amn, numa Crystal Sword ou Broad Sword de 4 soquetes.",
+          },
+          "weapon-0-alt0": {
+            why: "Se você ainda está no Normal: um cajado de duas runas com +3 numa árvore de fogo não vale nada aqui, então pule e guarde as runas do Spirit.",
+          },
+          "offhand-0": {
+            why: "Até um segundo Spirit, resistências valem mais que qualquer outra coisa que este slot possa carregar.",
+            lookFor: ["Todas as resistências", "Faster hit recovery", "2-3 soquetes"],
+          },
+          "offhand-0-alt0": {
+            why: "Não pode ser congelado e 25% de magic find por duas runas baratas. Barato e permanentemente útil.",
+          },
+          "helm-0": {
+            why: "+1 em todas as skills e resistência a raio por Ort + Sol. Num pelt de Druid ele soma com o +skills do próprio pelt.",
+            sockets: "Ort + Sol em qualquer elmo de 2 soquetes; um pelt de Druid é estritamente melhor que um comum.",
+          },
+          "body-0": {
+            why: "25% de Faster Cast Rate, 25% de Faster Hit Recovery e corrida mais rápida, a partir do nível 17, por Tal + Eth.",
+          },
+          "boots-0": {
+            why: "Nada exótico. Você anda a pé até o Enigma, então velocidade de corrida é real.",
+            lookFor: ["Faster run/walk", "Resistência a fogo e a raio"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "Nightmare terminado e Hell iniciado com as duas tempestades maximizadas o bastante para importar.",
+        nextUpgrade:
+          "O breakpoint de 99% de Faster Cast Rate, e depois as resistências do Hell. Os dois são problemas de equipamento, não de skill.",
+        notes:
+          "**Use a recompensa de resistência da Anya e o imbue da Charsi de propósito.** Fazer imbue num pelt branco de Druid depois do nível 30 é a forma mais confiável de esta build conseguir um elmo +2/+3 sem trocar com ninguém.",
+        picks: {
+          "weapon-0": {
+            why: "Inalterado, e ainda a melhor arma deste slot até o Heart of the Oak. Não existe nada no meio do caminho que valha as runas.",
+          },
+          "offhand-0": {
+            why: "Um segundo Spirit numa Monarch leva o par a 60% de Faster Cast Rate e +4 em todas as skills, o que é a maior parte do caminho até o breakpoint e a maior parte do caminho até o dano.",
+            sockets: "As mesmas quatro runas numa Monarch de 4 soquetes. 156 de Strength é o custo; uma base menor de 4 soquetes é um meio-termo legítimo.",
+          },
+          "offhand-0-alt0": {
+            why: "Se a Strength ainda não está lá: +50% em todas as resistências por três runas da Countess, o que importa mais no Nightmare do que velocidade de conjuração.",
+          },
+          "helm-0": {
+            why: "Pelts são os únicos elmos que rolam +numa skill de Druid diretamente. Um pelt +2/+3 em Tornado vale mais que qualquer elmo unique que você ache neste nível.",
+            lookFor: ["+2 Druid Skills", "+3 em Tornado", "+3 em Hurricane", "Faster hit recovery"],
+          },
+          "helm-0-alt0": {
+            why: "Se nada caiu. O imbue da Charsi num pelt branco depois do nível 30 é a forma deliberada de resolver este slot.",
+          },
+          "body-0": {
+            why: "+1 em todas as skills, 30% de Faster Cast Rate e até 35 de todas as resistências num unique comum. Para esta build fica bem perto de ser o melhor do slot até o Enigma.",
+            sockets: "Um soquete: um diamante perfeito para resistências, ou uma Um.",
+          },
+          "gloves-0": {
+            why: "20% de Faster Cast Rate e regeneração de mana, que são exatamente os dois problemas desta build.",
+          },
+          "belt-0": {
+            why: "Resistências e 50% do dano recebido tirado da mana — o que é uma linha defensiva de verdade num personagem com uma reserva de mana grande vinda de dois Spirits.",
+          },
+          "boots-0": {
+            why: "+65 de vida e 15 de Dexterity, e a vida é o que um Druid de Hardcore está comprando.",
+          },
+          "boots-0-alt0": {
+            why: "Se a Strength para a Monarch é o gargalo: +15 de Strength e +15 de Vitality resolvem direto.",
+          },
+          "ring1-0": {
+            why: "Os dez por cento mais baratos do jogo. Dois deles mais dois Spirits são 80%, que é o último degrau antes do breakpoint de 99%.",
+            lookFor: ["10% Faster Cast Rate", "Resistências", "Vida"],
+          },
+          "amulet-0": {
+            why: "Dois níveis de skill equivalem mais ou menos a dois pontos duros distribuídos por quatro skills maximizadas. Nada mais neste slot compete nesta fase.",
+            lookFor: ["+2 Druid Skills", "10% Faster Cast Rate", "Resistências"],
+          },
+        },
+      },
+      "early-hell": {
+        goal: "Resistências do Hell no teto e 99% de Faster Cast Rate alcançados.",
+        nextUpgrade:
+          "Heart of the Oak, e depois um Enigma. Entre os dois, eles mudam como a build se move tanto quanto o quanto ela bate.",
+        picks: {
+          "weapon-0": {
+            why: "Ainda aqui. A próxima arma é o Heart of the Oak e não há nada entre as duas.",
+          },
+          "offhand-0": {
+            why: "O segundo Spirit agora é obrigatório e não opcional: 60% dos 99% vêm do par.",
+          },
+          "helm-0": {
+            why: "+2 em todas as skills, vida, mana e magic find. Numa build com quatro skills maximizadas, dois níveis de skill são uma linha de dano grande, e a vida não é negociável no Hell.",
+            sockets: "Um rubi perfeito para vida, ou uma Um para resistências.",
+          },
+          "helm-0-alt0": {
+            why: "O unique de pelt de Druid: +2 em skills de Druid, +2 na aba de Shape Shifting e um bônus grande de Energy. Equivale a um Shako aqui e é melhor se a aba do próprio pelt cair em Elemental.",
+          },
+          "body-0": {
+            why: "Inalterado. Os 30% de velocidade de conjuração dele estão fazendo trabalho estrutural rumo ao breakpoint.",
+          },
+          "gloves-0": { why: "Inalterado — os 20% fazem parte da aritmética do breakpoint." },
+          "belt-0": {
+            why: "+1 em todas as skills e 20% de Faster Cast Rate num slot só. É a peça que transforma 80% no breakpoint de 99%.",
+          },
+          "boots-0": {
+            why: "Strength, Vitality, redução de duração de veneno e faster hit recovery. A Strength é o que finalmente paga pela Monarch.",
+          },
+          "ring1-0": {
+            why: "+1 em todas as skills e uma reserva grande de mana, que é o outro problema da build resolvido no mesmo slot.",
+          },
+          "ring1-0-alt0": {
+            why: "Mais barato, e a velocidade de conjuração é a parte de que o breakpoint precisa.",
+          },
+          "ring2-0": {
+            why: "Não pode ser congelado, o que numa build que fica parada conjurando é uma linha de sobrevivência e não uma conveniência.",
+          },
+          "amulet-0": {
+            why: "+2 em todas as skills e +20 em todas as resistências. As resistências são metade da razão de o Hell deixar de ser problema.",
+          },
+        },
+        charms: [
+          {
+            why: "O Sunder Charm físico. Um imune a físico é o único monstro do Hell em que o Tornado não encosta, e esta é a resposta — ele passa a imunidade para 95% de resistência.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Toda área do Hell farmável, com o breakpoint mantido e as resistências no teto.",
+        nextUpgrade:
+          "Chains of Honor se as resistências ainda forem o limite, ou uma segunda fileira de skillers. Nenhum dos dois muda a build, só as margens dela.",
+        picks: {
+          "weapon-0": {
+            why: "+3 em todas as skills, 40% de Faster Cast Rate, +30-40 em todas as resistências e uma reserva de mana muito grande. Ele substitui um Spirit e resolve a aritmética de velocidade de conjuração, o problema de resistência e o problema de mana num item só.",
+            sockets: "Ko + Vex + Pul + Thul num Flail ou Crystal Sword de 4 soquetes. A base não influencia a build; pegue a mais leve.",
+          },
+          "offhand-0": {
+            why: "O Spirit de escudo fica. Com o Heart of the Oak na mão, o par são +5 skills e 75% de velocidade de conjuração antes de qualquer outra coisa.",
+          },
+          "offhand-0-alt0": {
+            why: "Se a Strength da Monarch continuar inviável: +1 em todas as skills e 20% de Faster Cast Rate em qualquer base.",
+          },
+          "helm-0": {
+            why: "Inalterado, e agora com soquete de Um ou rubi perfeito dependendo de qual das duas, resistência ou vida, estiver faltando.",
+          },
+          "body-0": {
+            why: "Teleport. O Druid não tem skill de movimento própria, e esta é a maior mudança isolada em como o personagem joga — a velocidade de limpeza praticamente dobra porque você para de andar entre os grupos.",
+            sockets: "Jah + Ith + Ber em qualquer armadura de corpo com 3 soquetes. Uma base leve vale mais que uma pesada; você não está apanhando no corpo a corpo.",
+          },
+          "body-0-alt0": {
+            why: "Até a Ber e a Jah existirem. Nada mais neste slot chega perto para um caster com orçamento.",
+          },
+          "gloves-0": { why: "Ainda os 20% de velocidade de conjuração mais baratos do jogo." },
+          "gloves-0-alt0": {
+            why: "Se mana e não velocidade de conjuração for a restrição que aperta: +40% de mana máxima.",
+          },
+          "belt-0": {
+            why: "Inalterado. +1 skill e 20% de velocidade de conjuração não é substituível neste orçamento.",
+          },
+          "boots-0": {
+            why: "Com um Enigma pagando a conta de Strength, elas viram um slot de recuperação e Vitality.",
+          },
+          "boots-0-alt0": {
+            why: "Se o personagem está farmando itens em vez de limpando: 50% de magic find e +10 de Vitality.",
+          },
+          "ring1-0": { why: "+1 skill e a reserva de mana." },
+          "ring2-0": { why: "Não pode ser congelado. Nesta build isso não é opcional." },
+          "amulet-0": { why: "+2 skills e +20 de resistências." },
+        },
+        charms: [
+          {
+            why: "Sunder físico. Com ele, a última categoria de monstro que atrasava esta build deixa de existir.",
+          },
+          {
+            why: "Grand charms elementais carregam +1 na árvore Elemental, o que é +1 em quatro skills maximizadas de uma vez. São o dano mais denso por quadrado de inventário que esta build tem.",
+            lookFor: ["+1 Elemental Skills", "+vida", "+resistências em small charms"],
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders num swap são +35-50% de vida e mana para o grupo inteiro. Numa classe cuja vida por Vitality é 2, é o maior item defensivo do jogo.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Terror Zones em players 8, e a velocidade de limpeza de que a build é capaz.",
+        nextUpgrade:
+          "Chains of Honor no lugar do Enigma quando outro personagem puder emprestar o Teleport, ou um pelt perfeito. A build já está pronta antes disso.",
+        picks: {
+          "weapon-0": {
+            why: "Inalterado e insubstituído. Nada no jogo bate +3 skills, 40% de velocidade de conjuração e 40 de todas as resistências para um caster Druid.",
+          },
+          "offhand-0": {
+            why: "Ainda o escudo de melhor custo-benefício aqui; a alternativa é uma Monarch rara focada em resistência com uma boa rolagem de bloqueio.",
+          },
+          "helm-0": {
+            why: "É aqui que um pelt finalmente ganha de um Shako. +3 em Tornado e +2 em skills de Druid são cinco níveis efetivos num slot só, e os soquetes ainda aceitam joias de resistência.",
+            lookFor: ["+3 em Tornado", "+2 Druid Skills", "Faster hit recovery", "2 soquetes"],
+          },
+          "helm-0-alt0": {
+            why: "A resposta segura, e nunca uma ruim. Duas skills, vida, mana e magic find sem nada para rolar.",
+          },
+          "body-0": {
+            why: "Teleport, +2 skills e Strength que paga o requisito de todos os outros slots.",
+          },
+          "gloves-0": { why: "20% de velocidade de conjuração. O slot não tem opção melhor para um Druid." },
+          "belt-0": { why: "+1 skill e 20% de velocidade de conjuração." },
+          "boots-0": {
+            why: "Recuperação, Vitality e duração de veneno. A alternativa é War Traveler quando a corrida é de magic find.",
+          },
+          "ring1-0": { why: "+1 skill e mana." },
+          "ring2-0": {
+            why: "Não pode ser congelado, +Dexterity e +pontaria de que você não precisa mas não se importa em ter.",
+          },
+          "amulet-0": { why: "+2 skills, +20 em todas as resistências." },
+          "amulet-0-alt0": {
+            why: "Melhor que o Mara quando as resistências já estão no teto, porque a rolagem específica da classe vale mais que a genérica.",
+          },
+        },
+        charms: [
+          {
+            why: "Sunder físico, para o grupo raro que é imune a físico e não vale a pena matar de frio.",
+          },
+          {
+            why: "Sunder de frio, e o uso honesto dele: é para os monstros imunes a *frio*, para que o Hurricane continue contribuindo onde o Tornado já está fazendo o trabalho. Só um Sunder Charm pode ser carregado por vez.",
+          },
+          {
+            why: "+9 níveis efetivos em quatro skills maximizadas. Nada mais preenche melhor um inventário nesta build.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders. Conjure, volte para o set principal, e o personagem tem um terço a mais de vida pelos próximos quatro minutos.",
+          },
+        ],
+      },
+      bis: {
+        goal: "Nada mais a comprar.",
+        notes:
+          "**Não existe upgrade de arma depois do Heart of the Oak nesta build, e isso é incomum.** A maioria das classes termina num runeword que troca resistências por dano bruto. O dano de um Wind Druid é todo níveis de skill e velocidade de conjuração, e o Heart of the Oak é a melhor fonte dos dois numa mão só.",
+        picks: {
+          "weapon-0": {
+            why: "Numa base com os menores requisitos disponíveis. Não há upgrade.",
+          },
+          "offhand-0": { why: "Numa Monarch, rolado com 35% de velocidade de conjuração e 112 de mana." },
+          "offhand-0-alt0": {
+            why: "A resposta de Hardcore: 35% de redução de dano e o maior bloqueio do jogo, ao custo de toda linha ofensiva de um Spirit.",
+          },
+          "helm-0": {
+            why: "Cinco níveis efetivos de skill e 30 de resistências num slot só. O maior upgrade que resta.",
+          },
+          "body-0": {
+            why: "Teleport não é substituível numa classe sem skill de movimento.",
+          },
+          "body-0-alt0": {
+            why: "+2 skills, +65 em todas as resistências e 8% de redução de dano. Estritamente melhor que o Enigma em tudo, menos naquilo que mais importa.",
+          },
+          "gloves-0": { why: "20% de velocidade de conjuração; nada mais serve." },
+          "belt-0": { why: "+1 skill, 20% de velocidade de conjuração." },
+          "boots-0": {
+            why: "Recuperação e Vitality, ou War Traveler quando magic find for o objetivo da corrida.",
+          },
+          "ring1-0": { why: "+1 skill e mana." },
+          "ring2-0": { why: "Não pode ser congelado." },
+          "amulet-0": {
+            why: "O melhor amuleto do jogo para esta build, e o item isolado mais difícil de achar.",
+          },
+          "amulet-0-alt0": { why: "Nunca é errado." },
+        },
+        charms: [
+          { why: "Sunder físico para imunes a físico." },
+          {
+            why: "O inventário padrão de endgame. Os +3 em skills de Druid da Torch são três níveis efetivos em quatro skills maximizadas.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders, sempre." }],
+      },
+    },
+  },
+  "fire-druid": {
+    summary:
+      "Fogo no chão que cobre uma sala e não precisa ser mirado, com um componente físico embaixo dele que imunes a fogo não conseguem desligar.",
+    playstyle:
+      "Você coloca dano no chão e deixa as coisas andarem para dentro dele. O Fissure abre fendas num raio e elas disparam em intervalos, então um grupo que atravessa recebe várias; o Volcano vai embaixo do que estiver parado; o Armageddon chove ao seu redor o tempo todo e não precisa de alvo nenhum. Não há mira e não há canalização — a skill é escolher a porta. Contra um chefe você empilha os três no mesmo quadrado e dá um passo atrás. É a build menos frenética da classe e a que mais pune ficar em campo aberto, porque nenhum dano seu segue você.",
+    strengths: [
+      "Dano em área enorme que não custa precisão — o chão faz o trabalho",
+      "O Armageddon não precisa de alvo e continua rodando enquanto você conjura, anda ou luta",
+      "Toda skill de chão carrega dano físico além do de fogo, então um imune a fogo é atrasado, não barrado",
+      "O Fissure está disponível no nível 12 e carrega o personagem pelo Normal e quase todo o Nightmare",
+      "A melhor velocidade de limpeza pura da classe assim que Infinity ou um Flame Rift entra em cena",
+    ],
+    weaknesses: [
+      "Fogo é o elemento mais resistido no Hell; sem uma resposta, áreas inteiras ficam fechadas",
+      "Toda skill é estacionária — o dano não segue um monstro que se afasta",
+      "Precisa de cinco skills maximizadas para estar pronta, o que é um plano de nível 90 e não de 75",
+      "Nenhuma skill de movimento sem um Enigma",
+      "A duração do Armageddon vem do Fissure, então os dois não podem ser trocados um pelo outro",
+    ],
+    flexPoints: [
+      "Sobram seis pontos no nível 99. O destino habitual é a **linha de invocação** — Spirit Wolf, Dire Wolf e Grizzly, um ponto cada — para um urso que segura a porta que o seu Fissure está cobrindo.",
+      "**Cyclone Armor** é a alternativa: cada ponto são 12 a mais absorvidos, e esta build fica mais perto do perigo que um Wind Druid.",
+      "Não gaste em Hurricane ou Tornado. Nenhum dos dois recebe sinergia do que você maximizou, e nenhum dá sinergia de volta.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento. Uma Monarch para um Spirit é a única exigência grande.",
+      dexterity: "Base.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum.",
+      notes: [
+        "Esta build fica mais perto das próprias mortes que um Wind Druid — o Fissure tem raio 7 e você normalmente está dentro dele — então Vitality trabalha mais aqui do que as notas sugerem.",
+        "Mana é menos problema que do lado do vento: o Fissure custa 15 e é conjurado a cada poucos segundos, não continuamente. Um mercenário com Insight ainda cobre tudo.",
+        "Resistência a fogo no seu próprio equipamento importa mais que o normal, porque as áreas que servem a esta build são as quentes.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-99":
+        "A meta padrão de caster Druid. Importa menos aqui que num Wind Druid — o Fissure é posicionado, não repetido sem parar — mas a diferença entre 12 e 11 quadros ainda é sentida ao reposicionar sob um grupo em movimento.",
+      "fcr-68":
+        "A meta prática pela maior parte do jogo. Dois Spirits e um Magefist passam disso sem planejamento.",
+      "fhr-56":
+        "Você posiciona o seu dano e fica dentro dele. Ficar preso em recuperação ao lado do seu próprio Volcano é como esta build morre no Hell.",
+    },
+    skillNotes: {
+      fissure:
+        "A skill de limpeza a partir do nível 12, e a sinergia de duração do Armageddon a cinquenta quadros por ponto. Nada mais disputa os primeiros vinte.",
+      volcano:
+        "Uma sinergia de fogo de 12% para o Fissure, uma skill de dano por direito próprio, e a maior sinergia isolada da classe — 18% do físico do Armageddon por ponto.",
+      firestorm:
+        "Os outros 12% do Fissure, e 14% do fogo do Armageddon. Uma skill de nível 1 que continua relevante até o fim.",
+      armageddon:
+        "Maximizado antes do Molten Boulder porque é dano e não sinergia. A duração dele já é de cinquenta segundos pelos vinte pontos no Fissure.",
+      "molten-boulder":
+        "Os últimos vinte. Ele dá 14% de fogo ao Armageddon por ponto e 16% de físico ao Volcano por ponto, e dá nada ao Fissure — e é por isso que ele é o quinto e não o quarto.",
+      "arctic-blast": "Um ponto, só para chegar ao Cyclone Armor.",
+      "cyclone-armor":
+        "40 pontos de fogo, frio e raio absorvidos, reabastecendo com o tempo. Um ponto vale a pena numa build que fica perto do próprio dano.",
+      "oak-sage": "+30% de vida para você, o mercenário e o que você invocar.",
+      raven:
+        "Cinco aves que cegam por um ponto, e a entrada da linha de invocação se você quiser o urso.",
+    },
+    immunityPlan:
+      "**Imunidade a fogo é o problema definidor da build e ela tem três respostas, nesta ordem.** Primeiro, o dano físico por baixo: Molten Boulder, Volcano e Armageddon carregam uma tabela física além da de fogo, então um imune a fogo é atrasado e não barrado — esta build nunca fica *incapaz* de matar, só lenta. Segundo, um Sunder Charm **Flame Rift**, que passa uma imunidade a fogo para 95% de resistência e é a resposta completa mais barata. Terceiro, **Infinity** no mercenário, que baixa a resistência de tudo em vez de só da imunidade, se aplica com um quinto da força por cima de uma imunidade já quebrada, e libera o slot de charm. Imunes a frio, raio e veneno são irrelevantes para este personagem.",
+    mercenaryNotes:
+      "Desert Mercenary do Ato 2, Insight durante a evolução e **Infinity** como meta de endgame. Conviction baixa muito a resistência a fogo do inimigo e, crucialmente, se aplica com um quinto da força a um monstro cuja imunidade já foi quebrada — então Infinity com um Flame Rift é muito mais que qualquer um dos dois sozinho. Might é a aura alternativa no Nightmare e não faz nada pelo seu dano de fogo; só pegue se as mortes do próprio mercenário importarem para você. Um mercenário de Holy Freeze é a escolha de Hardcore, e desacelerar um grupo que está entrando num Fissure vale mais aqui do que na maioria das builds.",
+    farmingWhy: {
+      "countess-nightmare":
+        "As runas que constroem Leaf, Lore, Stealth, Ancients' Pledge e por fim o Spirit. Um Fissure no corredor da torre mata tudo antes de chegar em você.",
+      "mausoleum-hell":
+        "Nível 85, denso e alcançável cedo. Os esqueletos e zumbis daqui não são imunes a fogo, o que faz dela a primeira área de Hell natural para esta build.",
+      "pit-hell":
+        "Nível 85 e a melhor densidade de itens do Ato 1. O Fissure cobre a sala inteira; os imunes a fogo dali são a razão de o Flame Rift estar na lista de charms.",
+      "secret-cow-level-hell":
+        "Um único tipo de monstro, nenhuma imunidade a fogo, e uma densidade que nenhuma outra área alcança. É a expressão mais pura do que esta build faz.",
+      "worldstone-keep-hell":
+        "A melhor experiência do jogo, e três andares de corredores lotados para os quais o dano de chão foi feito. Quer um Sunder Charm ou um Infinity antes.",
+      "chaos-sanctuary-hell":
+        "A imunidade a fogo é mais densa aqui, então esta é a área que mede se o plano de imunidade é real. Com Infinity é uma das corridas mais rápidas que a build tem.",
+    },
+    levelingPath: {
+      summary:
+        "Esta *é* a build de leveling da classe. Firestorm desde o nível 1, Molten Boulder no 6, Fissure no 12, e isso carrega um Druid até o Ato 3 do Nightmare sem equipamento além de um cajado Leaf. A maioria dos jogadores depois faz respec para a árvore do vento; ficar no fogo é uma escolha legítima que custa um Sunder Charm.",
+      respecAt:
+        "Opcional. Se você vai ficar no fogo, nenhum — os pontos de leveling são os pontos da build. Se vai para a árvore do vento, Ato 3 do Nightmare por volta do nível 38.",
+    },
+    selfFoundNotes:
+      "Forte, porque os dois itens que mais importam são um cajado de duas runas e um runeword da Countess. O Leaf carrega o personagem pelo Normal, o Ancients' Pledge pelo Nightmare, e o Fissure não precisa de nada para funcionar. A parede é a imunidade a fogo do Hell: sem um Flame Rift ou um Infinity, um Fire Druid self-found tem áreas que simplesmente não deveria correr. Essa é a razão honesta de esta build ficar abaixo do Wind Druid em solo self-found apesar de limpar mais rápido.",
+    hardcoreNotes:
+      "Jogável, mas menos perdoável que o Wind Druid, por uma razão estrutural: o seu dano não se move e você precisa estar perto dele. O Cyclone Armor vale mais do que o seu único ponto sugere, o Oak Sage não é opcional, e um mercenário de Holy Freeze compra a distância que um Wind Druid ganha do congelamento do Hurricane. Não limpe o Chaos Sanctuary antes de a imunidade a fogo ter uma resposta de verdade — uma morte lenta numa sala cheia de Oblivion Knights é como esta build acaba.",
+    gearSets: {
+      starter: {
+        goal: "Nível 12 para o Fissure, e então o Normal terminado com ele.",
+        nextUpgrade:
+          "Nível 24 para o Volcano, que é a primeira vez que o dano da build deixa de ser uma curiosidade de leveling.",
+        notes:
+          "**O Leaf é o item mais eficiente que esta build veste em toda a sua vida.** Duas runas comuns por três níveis em três skills, exatamente no ponto do jogo em que três níveis são uma duplicação.",
+        picks: {
+          "weapon-0": {
+            why: "+3 em Fire Skills num cajado de duas runas que dá para comprar da Akara. Nesta build são +3 Fissure, +3 Firestorm e +3 Molten Boulder de uma vez, num nível em que você tem cinco pontos duros no total.",
+            sockets: "Tir + Ral em qualquer cajado de 2 soquetes. Compre a base; não espere uma cair.",
+          },
+          "helm-0": { why: "+1 em todas as skills e resistência a raio por Ort + Sol." },
+          "body-0": {
+            why: "Velocidade de conjuração, recuperação e corrida a partir do nível 17, por Tal + Eth.",
+          },
+          "boots-0": {
+            why: "Você anda a pé em tudo e passa o jogo inteiro perto do fogo. As duas linhas valem mais do que parecem.",
+            lookFor: ["Faster run/walk", "Resistência a fogo"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "Nightmare terminado, com o Volcano maximizado e o Armageddon liberado no 30.",
+        nextUpgrade:
+          "Uma resposta à imunidade a fogo. Enquanto não existir uma, o Hell fica meio fechado — veja o plano de imunidades.",
+        notes:
+          "**O marco é o nível 30, não o 24.** O Armageddon muda o que a build é: dano que segue você, numa classe cujas outras skills de fogo ficam onde você as coloca.",
+        picks: {
+          "weapon-0": {
+            why: "35% de Faster Cast Rate, +2 em todas as skills e uma reserva grande de mana. Ele substitui o Leaf assim que +2 em tudo passa a valer mais que +3 numa árvore, o que acontece no momento em que Armageddon e Cyclone Armor entram na barra.",
+            sockets: "Tal + Thul + Ort + Amn numa Crystal Sword de 4 soquetes.",
+          },
+          "weapon-0-alt0": {
+            why: "Fique com ele até o Spirit existir. +3 em Fire Skills ainda é mais dano de Fissure do que +2 em todas as skills.",
+          },
+          "offhand-0": {
+            why: "+50% em todas as resistências por três runas da Countess. O dano de fogo do Nightmare é o que mata um personagem parado dentro do próprio Fissure.",
+          },
+          "offhand-0-alt0": {
+            why: "Se a Strength para uma Monarch estiver disponível: 35% a mais de velocidade de conjuração e +2 skills a mais.",
+          },
+          "helm-0": {
+            why: "Pelts rolam +numa skill de Druid diretamente. Um pelt +3 em Fissure nesta fase vale três pontos duros que você ainda não ganhou.",
+            lookFor: ["+2 Druid Skills", "+3 em Fissure", "+3 em Volcano", "Faster hit recovery"],
+          },
+          "helm-0-alt0": {
+            why: "Até um pelt existir. O imbue da Charsi num pelt branco depois do nível 30 é o conserto deliberado.",
+          },
+          "body-0": {
+            why: "+1 em todas as skills, 30% de Faster Cast Rate e até 35 de todas as resistências. A linha de resistência trabalha tanto quanto a de skill nesta build.",
+            sockets: "Um diamante perfeito, ou uma Um assim que existir uma.",
+          },
+          "gloves-0": {
+            why: "20% de Faster Cast Rate e +1 em Fire Skills — o único unique comum do jogo que dá a esta build as duas coisas que ela quer.",
+          },
+          "belt-0": { why: "Resistências e dano recebido tirado da mana. Barato e útil na hora." },
+          "boots-0": { why: "+65 de vida, e vida é o atributo que mais falta nesta build." },
+          "amulet-0": {
+            why: "Dois níveis distribuídos por cinco skills maximizadas. Nada mais no slot chega perto.",
+            lookFor: ["+2 Druid Skills", "10% Faster Cast Rate", "Resistência a fogo"],
+          },
+        },
+      },
+      "early-hell": {
+        goal: "Hell iniciado, resistências no teto e uma primeira resposta aos imunes a fogo.",
+        nextUpgrade:
+          "Um Infinity para o mercenário, que faz o mesmo trabalho do Sunder Charm sem ocupar o slot de charm — e faz também com imunes a raio e a frio.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de conjuração e skills. A próxima arma é o Heart of the Oak e não há nada no meio que valha as runas.",
+          },
+          "offhand-0": {
+            why: "O par são +4 skills e 70% de velocidade de conjuração, o que em cinco skills maximizadas é um aumento grande de dano.",
+          },
+          "offhand-0-alt0": {
+            why: "+1 em todas as skills e 20% de velocidade de conjuração em qualquer base, quando os 156 de Strength da Monarch não cabem.",
+          },
+          "helm-0": {
+            why: "+2 skills, vida, mana e magic find. A vida é o que mantém você de pé ao lado do seu próprio Volcano.",
+            sockets: "Um rubi perfeito para vida, ou uma Um.",
+          },
+          "helm-0-alt0": {
+            why: "O unique de pelt de Druid. Equivale a um Shako aqui e é melhor quando a aba de Shape Shifting dele é irrelevante para você de qualquer forma.",
+          },
+          "body-0": { why: "Inalterado. Resistências e velocidade de conjuração num unique comum." },
+          "gloves-0": {
+            why: "+1 em Fire Skills e 20% de velocidade de conjuração. Continua imbatível especificamente para esta build.",
+          },
+          "belt-0": {
+            why: "+1 em todas as skills e 20% de Faster Cast Rate. A peça que leva a velocidade de conjuração além da linha.",
+          },
+          "boots-0": {
+            why: "Strength, Vitality e faster hit recovery — e a meta de recuperação é obrigatória nesta build.",
+          },
+          "ring1-0": { why: "+1 em todas as skills e mana." },
+          "ring1-0-alt0": {
+            why: "Mais barato, e resistência a fogo é a que sempre falta nesta build.",
+          },
+          "ring2-0": {
+            why: "Não pode ser congelado. Um caster congelado dentro de um Fissure é um caster morto.",
+          },
+          "amulet-0": { why: "+2 skills e +20 em todas as resistências." },
+        },
+        charms: [
+          {
+            why: "O Sunder Charm de fogo, e o item mais importante que esta build vai segurar. Ele passa uma imunidade a fogo para 95% de resistência, o que transforma cerca de um terço do Hell de fechado em aberto. Só um Sunder Charm pode ser carregado por vez.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Toda área do Hell aberta, com a imunidade a fogo respondida duas vezes.",
+        nextUpgrade:
+          "Infinity no mercenário. Ele substitui o Sunder Charm, libera o slot de charm, e baixa a resistência de tudo em vez de só da imunidade.",
+        picks: {
+          "weapon-0": {
+            why: "+3 skills, 40% de velocidade de conjuração e +30-40 em todas as resistências. Três níveis de skill em cinco skills maximizadas é o maior aumento de dano que resta.",
+            sockets: "Ko + Vex + Pul + Thul num Flail de 4 soquetes.",
+          },
+          "offhand-0": {
+            why: "O Spirit de escudo fica; +2 skills e 35% de velocidade de conjuração por quatro runas comuns não é batido neste orçamento.",
+          },
+          "helm-0": { why: "+2 skills, vida e magic find." },
+          "helm-0-alt0": {
+            why: "Cinco níveis efetivos na skill principal da build. Melhor que um Shako quando existir.",
+          },
+          "body-0": {
+            why: "Teleport. Numa build cujo dano é estacionário, poder reposicionar na hora vale mais do que vale para quase qualquer outra.",
+            sockets: "Jah + Ith + Ber numa armadura leve de 3 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "+2 skills, +65 em todas as resistências e 8% de redução de dano, por um conjunto de runas mais barato. A resposta certa se outro personagem carrega o Teleport.",
+          },
+          "gloves-0": { why: "+1 em Fire Skills e 20% de velocidade de conjuração." },
+          "belt-0": { why: "+1 skill, 20% de velocidade de conjuração." },
+          "boots-0": { why: "Recuperação e Vitality." },
+          "boots-0-alt0": { why: "Quando a corrida é por itens e não por limpeza." },
+          "ring1-0": { why: "+1 skill e mana." },
+          "ring2-0": { why: "Não pode ser congelado." },
+          "amulet-0": {
+            why: "+2 skills e as resistências que mantêm você de pé dentro do seu próprio dano.",
+          },
+        },
+        charms: [
+          { why: "Sunder de fogo. Carregado até um Infinity existir, e muitas vezes depois também." },
+          {
+            why: "+1 na árvore Elemental é +1 em cinco skills maximizadas de uma vez. Esta build tem mais skills maximizadas numa mesma árvore do que qualquer outra do site, então um skiller vale mais aqui do que em qualquer lugar.",
+            lookFor: ["+1 Elemental Skills", "+vida", "+resistência a fogo em small charms"],
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders. A vida por Vitality da classe é 2; um terço a mais dela não é opcional no Hell.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Terror Zones em players 8 com a imunidade a fogo resolvida pelo mercenário e não por um charm.",
+        nextUpgrade: "Nada estrutural. As melhorias restantes são rolagens, não itens.",
+        picks: {
+          "weapon-0": { why: "Inalterado. Skills, velocidade de conjuração e resistências numa mão só." },
+          "offhand-0": { why: "Numa Monarch, com rolagem alta de velocidade de conjuração." },
+          "helm-0": {
+            why: "Cinco níveis efetivos na skill principal mais duas joias de resistência. O maior upgrade isolado que resta à build.",
+          },
+          "helm-0-alt0": { why: "Nunca é um erro." },
+          "body-0": {
+            why: "Teleport, numa build que precisa se reposicionar para reposicionar o dano.",
+          },
+          "gloves-0": { why: "+1 em Fire Skills, 20% de velocidade de conjuração." },
+          "belt-0": { why: "+1 skill, 20% de velocidade de conjuração." },
+          "boots-0": { why: "Recuperação e Vitality." },
+          "ring1-0": { why: "+1 skill e mana." },
+          "ring2-0": { why: "Não pode ser congelado." },
+          "amulet-0": {
+            why: "A rolagem específica da classe ganha do Mara quando as resistências já estão fechadas em outro lugar.",
+          },
+          "amulet-0-alt0": { why: "A resposta segura." },
+        },
+        charms: [
+          {
+            why: "Com Infinity no mercenário, o Sunder Charm sai e é isto que o substitui. Os +3 em skills de Druid da Torch são três níveis em cinco skills maximizadas.",
+          },
+          {
+            why: "Guardado no baú e não no inventário. O Infinity cobre a imunidade enquanto o mercenário está vivo; o charm cobre quando ele não está.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders antes de cada corrida." }],
+      },
+      bis: {
+        goal: "Nada mais a comprar.",
+        notes:
+          "**O último upgrade é o do mercenário, não o seu.** Um Infinity vale mais para esta build do que qualquer mudança restante no seu próprio equipamento, porque ele baixa a resistência de tudo em vez de aumentar o dano contra o que já estava morrendo.",
+        picks: {
+          "weapon-0": { why: "Na base de 4 soquetes mais leve disponível." },
+          "offhand-0": { why: "Numa Monarch com 35% de velocidade de conjuração." },
+          "offhand-0-alt0": {
+            why: "A troca de Hardcore: 35% de redução de dano e bloqueio máximo, por toda linha ofensiva do Spirit.",
+          },
+          "helm-0": { why: "Cinco níveis efetivos e trinta de resistências num slot só." },
+          "body-0": { why: "Teleport." },
+          "body-0-alt0": {
+            why: "+65 em todas as resistências e 8% de redução de dano, quando um grupo carrega o movimento.",
+          },
+          "gloves-0": { why: "+1 em Fire Skills, 20% de velocidade de conjuração." },
+          "belt-0": { why: "+1 skill, 20% de velocidade de conjuração." },
+          "boots-0": { why: "Recuperação, Vitality, duração de veneno." },
+          "ring1-0": { why: "+1 skill e mana." },
+          "ring2-0": { why: "Não pode ser congelado." },
+          "amulet-0": {
+            why: "O item mais difícil da lista de achar e o último a chegar.",
+          },
+        },
+        charms: [
+          {
+            why: "Doze níveis efetivos de skill em cinco skills maximizadas, mais a vida que falta à build.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+    },
+  },
 };
