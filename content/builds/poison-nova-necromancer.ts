@@ -26,10 +26,22 @@ import type { Build } from "@/lib/types";
  * --------------------------------------------------
  * Ten of the twenty areas in this site's catalogue record poison immunity — the
  * second most resisted element in Hell — and this build has exactly one
- * element. Death's Web and Lower Resist together are a large reduction and
- * neither breaks an immunity, because reduction against an already-immune
- * target works at one fifth. Corpse Explosion is half physical and half fire,
- * costs no synergies, and is the reason the build has an answer at all.
+ * element. Its two reductions are large together and they are not
+ * interchangeable against an immune, which is the distinction the page has to
+ * keep:
+ *
+ * **Lower Resist is a curse, so it breaks a poison immunity — shallowly.** Cut
+ * to one fifth while the immunity stands, it is worth −5 from a bare point and
+ * −14 at the skill's −70% ceiling, so it reaches 104% and 113% respectively.
+ * Above that it does nothing.
+ *
+ * **Death's Web never breaks one, at any roll.** −% to Enemy Poison Resistance
+ * is applied after the immunity check and is skipped entirely while the
+ * immunity stands. What it does is land at full value on whatever Lower Resist
+ * or a Rotting Fissure has already opened.
+ *
+ * So the build's answer above 113% is Corpse Explosion: half physical and half
+ * fire, costing no synergies, and the reason the build has an answer at all.
  */
 export const poisonNovaNecromancer: Build = {
   slug: "poison-nova-necromancer",
@@ -95,14 +107,14 @@ export const poisonNovaNecromancer: Build = {
       points: 20,
       role: "main",
       order: 4,
-      note: "**The second damage type, and not optional on a single-element build.** Half physical and half fire, so it answers the poison immunes that Death's Web and Lower Resist cannot. Points buy radius; the 70–120% damage band never moves.",
+      note: "**The second damage type, and not optional on a single-element build.** Half physical and half fire, so it answers the poison immunes sitting above Lower Resist's 113% reach — which is every one Death's Web was never going to touch either. Points buy radius; the 70–120% damage band never moves.",
     },
     {
       skill: "lower-resist",
       points: 1,
       role: "utility",
       order: 5,
-      note: "**One point, and it is the only skill in the game that lowers poison resistance.** It stacks with Death's Web. Against a monster that is already poison immune it is cut to one fifth and does not break the immunity — that is Corpse Explosion's job.",
+      note: "**One point, and it is the only skill in the game that lowers poison resistance.** It stacks with Death's Web, and it is the half of that pair that can break an immunity: cut to one fifth it is worth −5 from a bare point and −14 at the skill's −70% ceiling, so it reaches 104% and 113%. Death's Web reaches none of them, and lands at full value on whatever this opens. Above 113% the job is Corpse Explosion's.",
     },
     { skill: "teeth", points: 1, role: "prerequisite", note: "Corpse Explosion's prerequisite." },
     {
@@ -571,7 +583,7 @@ export const poisonNovaNecromancer: Build = {
   ],
 
   immunityPlan:
-    "**Poison is the second most resisted element in Hell**: ten of the twenty catalogued areas here record poison immunity, against thirteen for fire and eight for lightning. This build has one element, and the plan is two-layered.\n\n**Against something merely resistant, stack the reductions.** Death's Web is −40-50% to Enemy Poison Resistance and Lower Resist is a further −25% to −70%, and the two apply together. That is enough to turn a resistant monster into an ordinary one and it is the whole reason the build works in Hell.\n\n**Against something actually immune, neither helps.** Reduction against a target whose base resistance is already 100 or more works at one fifth, which does not break it — the same rule that stops a Sorceress's mastery from breaking a cold immune. So the answer is **Corpse Explosion**, which is why it is core rather than flex here: half physical and half fire, twenty points of radius, and no synergies to pay for. Amplify Damage is on the bar for the physical half.\n\n**A Rotting Fissure sunder charm is the third answer** and the only one that makes poison itself work on an immune, by putting it at 95% resistance instead. Its penalty costs you poison resistance, which this build over-caps anyway.\n\n**Uber Mephisto and Uber Andariel are not this build's targets**, whatever the elemental match-up suggests. This site has not researched Uber Tristram, three of the fifteen monsters carrying the Prime Evil pet-damage flag stand in that room, and a two-second damage-over-time effect against enormous life pools on a timer is the least favourable version of this build's argument. Nothing here should be read as a plan for that fight.",
+    "**Poison is the second most resisted element in Hell**: ten of the twenty catalogued areas here record poison immunity, against thirteen for fire and eight for lightning. This build has one element, and the plan is two-layered.\n\n**Against something merely resistant, stack the reductions.** Death's Web is −40-50% to Enemy Poison Resistance and Lower Resist is a further −25% to −70%, and the two apply together. That is enough to turn a resistant monster into an ordinary one and it is the whole reason the build works in Hell.\n\n**Against something actually immune the two behave differently, and the difference is the plan.** Lower Resist is a curse, so it is cut to one fifth against a target already at 100% or more — and it still breaks the immunity if that fifth is enough. From a bare point it is −5 and reaches 104%; at the skill's −70% ceiling it is −14 and reaches 113%. **Death's Web breaks nothing, at any roll**: a −% to Enemy Poison Resistance line is applied after the immunity check and skipped entirely while the immunity stands. What it does is land at full value the moment Lower Resist has opened the door — which is why the pair is worth carrying together and why they are not two grades of the same thing.\n\n**Above 113% neither reaches, and the answer is Corpse Explosion**, which is why it is core rather than flex here: half physical and half fire, twenty points of radius, and no synergies to pay for. Amplify Damage is on the bar for the physical half.\n\n**A Rotting Fissure sunder charm is the third answer** and the only one that makes poison itself work on an immune, by putting it at 95% resistance instead. Its penalty costs you poison resistance, which this build over-caps anyway.\n\n**Uber Mephisto and Uber Andariel are not this build's targets**, whatever the elemental match-up suggests. This site has not researched Uber Tristram, three of the fifteen monsters carrying the Prime Evil pet-damage flag stand in that room, and a two-second damage-over-time effect against enormous life pools on a timer is the least favourable version of this build's argument. Nothing here should be read as a plan for that fight.",
 
   hardcoreNotes:
     "**The hardest of the three Necromancers to play safely**, because the nova is centred on you: clearing a room means standing in it. Take the block route seriously — a Homunculus is +40% Increased Chance of Blocking before you spend a point of Dexterity — reach the 48% hit-recovery target, and keep **Decrepify** for anything that reaches you rather than saving it for a boss. A one-point skeleton wall plus a Clay Golem is a doorway you can put between yourself and a charge, and it is why the utility summons are in the core plan rather than the flex list. An Enigma changes the risk profile more than any defensive item, because leaving is always better than surviving.",

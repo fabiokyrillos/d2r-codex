@@ -408,6 +408,49 @@ table is available to us, so game proper nouns stay in English in both locales.
 2. **"Blapshemous" vs "Blasphemous" Grimoire.** Spelled both ways on the same
    page. Treated as a typo; the site uses "Blasphemous".
 
+### The immunity model, and the two rules the site used to conflate
+
+**Checked:** 2026-09-04. The site had one rule where the game has two, and the
+single rule was false for half of what it covered.
+
+Resistance reduction is applied in a fixed order — Sunder Charms, then curses,
+then auras, then `-% to Enemy Resistance`, then Pierce, which is Cold Mastery's
+own category. The immunity is decided before the last two run.
+
+| Source | Can it break an immunity? | Against a target still immune | After the immunity is broken |
+| --- | --- | --- | --- |
+| Curses that lower a resistance (Amplify Damage, Decrepify, Lower Resist) | **Yes** | Applied at one fifth | Stays at the one-fifth value that broke it |
+| Conviction | **Yes** | Applied at one fifth | One fifth |
+| Sunder Charms | **Yes** — supersede the rule and set the resistance to 95% | — | Everything below lands on 95% |
+| `-% to Enemy Resistance` on items (Death's Web, Griffon's Eye, facets) | **No, at any total** | **Not applied at all** | Full value |
+| Cold Mastery (Pierce) | **No, at any level** | **Not applied at all** | One fifth, since Patch 2.6 |
+
+Two consequences the site had backwards, and now states:
+
+1. **Masteries and item pierce are not "cut to a fifth" against an immune.**
+   They are skipped. The distinction matters because the old wording implied a
+   large enough stack would eventually break through, and no total ever does.
+2. **Fire Mastery and Lightning Mastery do not lower enemy resistance at all** —
+   they raise the player's damage. Only Cold Mastery is a pierce effect.
+   `sorceress/skills.ts` had this right; the class page and the resistances
+   article did not.
+
+| Claim | Source | Tier |
+| --- | --- | --- |
+| "Cold Mastery is now applied at 1/5 effectiveness after an immunity is broken" | Patch 2.6 notes (16 Feb 2023), reproduced in [Maxroll's final 2.6 notes](https://maxroll.gg/d2/news/patch-2-6-final-patch-notes) and quoted verbatim in the [Blizzard forum thread that followed](https://us.forums.blizzard.com/en/d2r/t/25-26-cold-mastery-and-conviction/155284) | 2 |
+| Order of application; that Pierce and `-% to Enemy Resistance` cannot break an immunity and are not applied to one; that a sundered monster takes Cold Mastery, Conviction and Lower Resist at a fifth and everything else at full | [Maxroll — Monster Immunities](https://maxroll.gg/d2/resources/immunities) | 4 |
+
+**Tier 4 is not carrying a number here.** The magnitudes the site publishes —
+Amplify Damage's -100, Decrepify's -50, Lower Resist's -25 to -70, the Sunder
+Charms' 95% — all come from the pinned extraction and are unchanged by this
+pass. What Maxroll supplied is the *shape* of the rule, and the load-bearing
+half of that (the Cold Mastery change) is Tier 2.
+
+**The reaches are derived, not transcribed.** `deepestBreakable` in
+`necromancer-claims.ts` computes them from the divisor: Amplify Damage 119%,
+Decrepify 109%, Lower Resist 104% from a bare point and 113% at its ceiling. No
+page states one of these numbers that the function does not produce.
+
 ## Tier 3 — Structured community databases
 
 Cross-checked against each other and against Tier 1 where the data overlaps.

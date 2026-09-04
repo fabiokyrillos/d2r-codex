@@ -132,6 +132,16 @@ resistance being lowered. Terror on a fire immune lasts exactly as long as
 Terror on anything else. Lower Resist on a monster immune to fire but not cold
 is cut against one and full against the other — one cast, two outcomes.
 
+**And it was later found to be too broadly stated in the other direction too.**
+It does not reach masteries or `-% to Enemy Resistance` at all: those are
+applied after the immunity check and skipped entirely while an immunity stands,
+so Death's Web is not "cut to a fifth" against a poison immune — it is absent.
+Lower Resist, being a curse, is cut to a fifth and still breaks the immunity if
+that fifth is enough, which is -5 and 104% from a bare point and -14 and 113%
+at the skill's -70% ceiling. The two halves of this build's reduction are
+therefore not interchangeable against an immune, and the page no longer says
+they are. Sourced in [`../sources/README.md`](../sources/README.md).
+
 ## The Corpse Explosion gate was written the wrong way round
 
 The foundation pass could not establish whether the fire half takes fire-skill
