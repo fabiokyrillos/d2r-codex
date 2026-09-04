@@ -11,7 +11,6 @@ import {
   filterBuilds,
   filterQueryString,
   isEmptyState,
-  normalizeQuery,
   parseFilterState,
   toggleValue,
   type BuildFilterState,
@@ -19,6 +18,7 @@ import {
   type FilterGroup,
   type OptionSets,
 } from "@/lib/builds/filter";
+import { draftForUrl, echoOf, needsWrite } from "@/lib/builds/query-draft";
 
 /**
  * Filters for any listing of build cards.
@@ -121,20 +121,21 @@ export function BuildFilters({
    * a pasted link — flows the other way, which is why this resyncs whenever the
    * URL's own query changes underneath it.
    *
-   * **The comparison is against the normalised draft, not the raw one.** The
-   * URL trims, so writing "cold " produces `?q=cold`, and a resync that
-   * compared the raw draft with what came back saw a difference that was the
-   * trim rather than a new URL — and helpfully replaced the box's contents with
-   * the trimmed value while the reader was still typing. Typing "cold " then
-   * pausing left "cold", so the next word arrived as "coldsorceress".
+   * The three decisions that tell those two writers apart live in
+   * `lib/builds/query-draft.ts`, driven by `scripts/query-draft.test.ts`. They
+   * are here as function calls rather than as inline comparisons because
+   * getting one of them wrong is invisible in the markup and only shows up
+   * between two keystrokes — comparing the *raw* draft with what the URL handed
+   * back once deleted the space out of "cold " mid-typing, and the next word
+   * arrived as "coldsorceress".
    */
   const [draft, setDraft] = useState(urlState.q);
-  const lastPushedQuery = useRef(urlState.q);
+  const echo = useRef(urlState.q);
   useEffect(() => {
-    if (urlState.q !== lastPushedQuery.current) {
-      lastPushedQuery.current = urlState.q;
-      setDraft(urlState.q);
-    }
+    const next = draftForUrl(urlState.q, echo.current);
+    if (next === null) return;
+    echo.current = urlState.q;
+    setDraft(next);
   }, [urlState.q]);
 
   const state: BuildFilterState = useMemo(
@@ -145,7 +146,7 @@ export function BuildFilters({
   const write = useCallback((next: BuildFilterState, mode: "push" | "replace") => {
     // What the URL will hand back, so the resync above can tell "the reader
     // moved" apart from "the URL trimmed what I just wrote".
-    lastPushedQuery.current = normalizeQuery(next.q);
+    echo.current = echoOf(next.q);
     const url = `${window.location.pathname}${filterQueryString(next)}`;
     if (mode === "push") window.history.pushState(null, "", url);
     else window.history.replaceState(null, "", url);
@@ -160,7 +161,7 @@ export function BuildFilters({
    * `draft === urlState.q` and the next run returns immediately.
    */
   useEffect(() => {
-    if (normalizeQuery(draft) === urlState.q) return;
+    if (!needsWrite(draft, urlState.q)) return;
     const id = window.setTimeout(() => write({ ...urlState, q: draft }, "replace"), 250);
     return () => window.clearTimeout(id);
   }, [draft, urlState, write]);
