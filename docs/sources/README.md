@@ -492,6 +492,8 @@ Recorded rather than resolved by guesswork.
 | How many statues open the Colossal Ancients? | Blizzard: "all five other statues" (six) | Blizzard: "all five statues" (five) | Neither asserted. Described as "one statue from each terrorized Act boss". |
 | Bone and poison damage figures | Pinned 3.3 tables | The Arreat Summit's 1.11 tables, consistently higher | The extraction is published; all ten differences are pinned in both directions so neither side can drift. See above. |
 | What unit is Corpse Explosion's radius in? | The game names it "half squares" and the engine halves it | The Arreat Summit publishes the same parameter divided by three, as yards | Neither converted. The site publishes the parameter and states the halving. A curse's radius is a different unit again and shares no conversion with it. |
+| Kingslayer's Open Wounds chance | Pinned extraction: 25% | [D2Runewizard](https://d2runewizard.com/runewords/Kingslayer) and the [Diablo Wiki](https://diablo.fandom.com/wiki/Kingslayer_Rune_Word): 50%, the wiki marking it current from 1.10 | Extraction published, disagreement recorded on the runeword in both locales. Both sources agree with the site on every other line of the runeword, so the divergence is one stat wide. |
+| Last Wish's Crushing Blow chance | Pinned extraction: 40-50% | [D2Runewizard](https://d2runewizard.com/runewords/Last%20Wish): 60-70% | Same handling. One stat wide; every other line agrees. |
 | Does the fire half of Corpse Explosion take +Fire Skills, Fire Mastery or +% Fire Skill Damage? | Community guides: yes | The skill's `EType` **is** `fire`, so +to Fire Skills raises its effective level — and the level buys radius, not the 70–120% band. Whether the fire damage then meets +% Fire Skill Damage is not established, and a Necromancer cannot have a Fire Mastery at all | **Split.** The `+to Fire Skills` half is now asserted and explained; the other two are still not asserted in either direction. `checkCorpseExplosionClaims` requires the three quantities to be distinguished and rejects an unsupported increase claim. |
 
 ### Withdrawn: Death's Web's stat block
@@ -533,6 +535,41 @@ place for a base's implicit properties; adding one is a change to the model
 rather than a change to an item, and it has not been made. A reader comparing
 against a source that folds the base into the unique will see one line more
 there than here, and that is the reason.
+
+### Reformulated: the two "several community databases" notes
+
+Kingslayer and Last Wish each carried a note of the same shape as the withdrawn
+Death's Web one:
+
+> …reads 25% in the game's own data. **Several community databases** still list
+> 50%, which appears to be a stale figure.
+
+Three things were wrong with it and only one of them was the number.
+
+1. **No database was named, quoted or dated.** "Several" is not a source, and a
+   reader who wanted to check had nowhere to go.
+2. **"Stale" was asserted, not established.** Nothing in this repository had
+   ever dated the other figure or found the patch that changed it.
+3. **It was checkable, and the check went the other way.** Consulted on
+   2026-09-04, D2Runewizard's Kingslayer page (dated May 2026) publishes 50%,
+   and the Diablo Wiki's entry publishes 50% and marks it current from 1.10
+   onward. D2Runewizard's Last Wish page publishes 60-70%. None of them looks
+   abandoned, and all of them agree with this site on every other line of both
+   runewords — so the divergence is exactly one stat wide in each case.
+
+**Unlike Death's Web, this is a real disagreement**, so it is recorded in the
+table above rather than withdrawn. The published values are unchanged: the
+extraction wins where the two conflict, which is the rule this file already
+states, and no Tier 3 source overrides Tier 1 here. What changed is that the
+site now names who disagrees, when they were read, and how wide the gap is,
+instead of waving at "several databases" and calling them stale.
+
+**What is still unverified**, and worth saying plainly: this repository has
+never independently recorded the `runes.txt` rows behind these two figures the
+way it did for Death's Web's five properties. The extraction is trusted on
+policy, not on a transcript. `checkSourcedDivergence` stops the vague form from
+coming back; it cannot confirm the number. Re-reading those two rows is on the
+outstanding list below.
 
 ## Routing, aliases and redirects
 
@@ -618,6 +655,11 @@ Not a gap in what is published, but in how it can be checked.
   ["What that does *not* mean"](#what-that-does-not-mean) above. Until a
   generator exists, `scripts/item-rules.ts` pins a control set rather than the
   whole catalogue, and every other item number rests on a one-time transcription.
+- **Kingslayer's Open Wounds row and Last Wish's Crushing Blow row.** Two named
+  databases publish higher figures than the site does, recorded as live
+  disagreements above. Deciding them means re-reading those two `runes.txt`
+  rows at the pin, which is the same missing generator as the entry above. Until
+  then the site publishes the extraction and says who disagrees.
 
 ## Still unverified
 

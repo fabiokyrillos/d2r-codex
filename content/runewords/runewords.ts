@@ -1038,7 +1038,7 @@ export const runewords: Runeword[] = [
     usedBy:
       "Melee characters who cannot yet afford Grief. The +1 to Vengeance also makes it the natural first weapon for an Avenger, since it supplies the skill before any point investment.",
     notes:
-      "Open Wounds reads 25% in the game's own data. Several community databases still list 50%, which appears to be a stale figure.",
+      "**Open Wounds reads 25% in the pinned game-data extraction, and two named databases disagree.** D2Runewizard's Kingslayer page and the Diablo Wiki's rune word entry both publish 50%, and the wiki marks that value as current from 1.10 onward; both were consulted on 2026-09-04 and both agree with every other line of this runeword. This site publishes the extraction, because that is the rule it follows wherever the two conflict, and records the disagreement rather than dismissing it — the earlier note here called the databases stale without naming one, and nothing established that they were.",
     confidence: "verified",
   },
   {
@@ -1086,7 +1086,7 @@ export const runewords: Runeword[] = [
       "Building it in a polearm. Last Wish does not accept polearms, which is the base most mercenary weapons use.",
     ],
     notes:
-      "Crushing Blow reads 40-50% in the game's own data. Several community databases still list 60-70%, which appears to be a stale figure.",
+      "**Crushing Blow reads 40-50% in the pinned game-data extraction, and a named database disagrees.** D2Runewizard's Last Wish page publishes 60-70%, consulted on 2026-09-04, and agrees with every other line of this runeword. This site publishes the extraction, because that is the rule it follows wherever the two conflict, and records the disagreement rather than dismissing it — the earlier note here called the database stale without naming it, and nothing established that it was.",
     confidence: "verified",
   },
 

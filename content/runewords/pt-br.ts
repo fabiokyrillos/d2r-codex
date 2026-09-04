@@ -322,7 +322,7 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     usedBy:
       "Personagens de corpo a corpo que ainda não podem pagar um Grief. O +1 em Vengeance também faz dela a primeira arma natural de um Avenger, já que fornece a skill antes de qualquer investimento de pontos.",
     notes:
-      "Open Wounds aparece como 25% nos dados do próprio jogo. Várias bases da comunidade ainda listam 50%, o que parece ser um número desatualizado.",
+      "**Open Wounds aparece como 25% na extração fixada de dados do jogo, e duas bases nomeadas discordam.** A página do Kingslayer no D2Runewizard e o verbete de rune word da Diablo Wiki publicam 50%, e a wiki marca esse valor como vigente desde a 1.10; as duas foram consultadas em 2026-09-04 e concordam com todas as outras linhas desta runeword. Este site publica a extração, porque é a regra que ele segue sempre que as duas conflitam, e registra a divergência em vez de descartá-la — a nota anterior chamava as bases de defasadas sem nomear nenhuma, e nada estabelecia que fossem.",
   },
   "last-wish": {
     summary:
@@ -342,7 +342,7 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "Montar numa polearm. Last Wish não aceita polearms, que é justamente a base usada pela maioria das armas de mercenário.",
     ],
     notes:
-      "Crushing Blow aparece como 40-50% nos dados do próprio jogo. Várias bases da comunidade ainda listam 60-70%, o que parece ser um número desatualizado.",
+      "**Crushing Blow aparece como 40-50% na extração fixada de dados do jogo, e uma base nomeada discorda.** A página do Last Wish no D2Runewizard publica 60-70%, consultada em 2026-09-04, e concorda com todas as outras linhas desta runeword. Este site publica a extração, porque é a regra que ele segue sempre que as duas conflitam, e registra a divergência em vez de descartá-la — a nota anterior chamava a base de defasada sem nomeá-la, e nada estabelecia que fosse.",
   },
   doom: {
     summary:
