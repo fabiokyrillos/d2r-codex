@@ -883,4 +883,206 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
       },
     },
   },
+  druid: {
+    summary:
+      "Suba de nível no fogo, faça um respec no Ato 3 do Nightmare, e termine no vento. As duas metades da árvore elemental não compartilham sinergia nenhuma, então isso é uma mudança real de personagem e não um regasto.",
+    overview: [
+      "**Você não evolui como Wind Druid.** O Tornado abre no 24 e o Hurricane no 30, e nenhum dos dois vale nada até Cyclone Armor e Twister estarem atrás deles — sessenta pontos depois. Tentar jogar a árvore do vento a partir do nível 24 é o motivo mais comum de um Druid novo concluir que a classe é fraca.",
+      "Suba de nível no fogo. O Firestorm funciona desde o nível 1, o Molten Boulder no 6, e o Fissure no 12 carrega o personagem até o meio do Nightmare sem equipamento além de um cajado de duas runas. Depois faça respec, uma vez, para a árvore do vento — a Den of Evil dá um token grátis em toda dificuldade, então não custa nada.",
+      "**O respec é no Ato 3 do Nightmare, antes do Mephisto, por volta do nível 38.** Isso não é intuição: 43 pontos é exatamente o que a abertura do vento custa, e 43 é exatamente o que um personagem de nível 38 com as recompensas da Den of Evil e do Radament do Nightmare tem. Faça antes e o Hurricane não fica maximizado; faça depois e você gastou níveis numa árvore que está prestes a abandonar.",
+      "Se você preferir ficar no fogo, essa é uma escolha real e este site a documenta como build. Ela custa um Sunder Charm Flame Rift ou um Infinity, porque fogo é o elemento mais resistido no Hell. A rota do vento não custa nenhum dos dois, e é por isso que ela é o padrão aqui.",
+      "A outra coisa para internalizar cedo: **o que te trava são as resistências, não o dano**. O Nightmare aplica -40% em todas as suas e o Hell aplica -100%. Planeje para isso antes do Ato 5 do Nightmare, não depois.",
+    ],
+    respecPlan: [
+      {
+        at: "Ato 3 do Nightmare, por volta do nível 38 — o token da Den of Evil",
+        why: "O único respec de que a rota precisa. Fogo para fora, vento para dentro, e o total de pontos cai exatamente em Tornado 20 mais Hurricane 20 mais três pré-requisitos.",
+      },
+      {
+        at: "Opcional — Ato 1 do Hell",
+        why: "Guarde o token da Den of Evil do Hell de reserva. Se o respec do nível 38 te deixou dividido de forma estranha, esta é uma segunda tentativa limpa, e o token do Normal continua intocado.",
+      },
+    ],
+    stages: {
+      "druid-act-1-normal": {
+        name: "Três ondas de fogo",
+        summary: "Níveis 1-13. Firestorm desde o primeiro ponto, e Fissure até o fim do ato.",
+        location: "Ato 1 — Blood Moor até as Catacombs",
+        goal: "Limpar a Den of Evil, comprar um cajado Leaf, e chegar ao Fissure no 12.",
+        killingWith: "Firestorm, conjurado por um corredor e deixado rastejando.",
+        skillPoints: [
+          "**Firestorm até 10** — um ponto por nível do 2 ao 11, mais a recompensa da Den of Evil.",
+          "**Molten Boulder 1** no nível 6. Só um ponto. Ele é pré-requisito e empurrão, não dano.",
+          "**Fissure 2** nos níveis 12 e 13. Tudo daqui em diante vai para ele.",
+          "São 13 pontos: 12 dos níveis 2-13, e 1 da Den of Evil.",
+        ],
+        statPoints: [
+          "Tudo em **Vitality** até que algo que você queira vestir diga o contrário.",
+          "Nada de Energy. O Druid não tem Warmth e poções de mana são de graça.",
+        ],
+        actions: [
+          "Limpe a **Den of Evil** pelo ponto de skill e pelo token de respec grátis. Guarde o token.",
+          "Compre um cajado de 2 soquetes da Akara e faça **Leaf** nele: +3 em Fire Skills por duas runas comuns. Nesta build são +3 Fissure, +3 Firestorm e +3 Molten Boulder de uma vez.",
+          "Corra **a Countess** por Tal, Eth, Ith, Ral, Ort e Sol. Elas constroem Leaf, Stealth, Lore e, mais adiante, Ancients' Pledge.",
+          "O empurrão do Molten Boulder vale mais que o dano dele neste nível. Use-o para comprar a distância de continuar conjurando.",
+          "Não gaste um ponto em Werewolf ou Werebear \"por precaução\". Um único ponto numa forma que você não está construindo é um ponto de que o Fissure precisava.",
+        ],
+        gearTargets: [
+          {
+            why: "O item mais eficiente que este personagem veste na vida, e ele está disponível no nível 19 num cajado que você compra.",
+          },
+          {
+            why: "Velocidade de conjuração, recuperação e corrida a partir do nível 17, por duas runas da Countess.",
+          },
+        ],
+        exitCriteria: "A Andariel está morta e o Fissure está na barra.",
+      },
+      "druid-acts-2-5-normal": {
+        name: "O chão faz o trabalho",
+        summary: "Níveis 13-26. Fissure até 18, e o Normal terminado com ele.",
+        location: "Atos 2 a 5 — Lut Gholein até a Worldstone Keep",
+        goal: "Maximizar o Fissure até onde o nível permite, e contratar o mercenário que você vai manter.",
+        killingWith: "Fissure em cada porta, e Firestorm no que sobreviver.",
+        skillPoints: [
+          "**Tudo no Fissure**, de 2 até 18.",
+          "São 16 pontos: 13 dos níveis 14-26, mais Radament e Izual.",
+          "Nada vai para o Volcano ainda — ele abre no 24, e o Fissure continua sendo o ponto melhor até estar maximizado.",
+        ],
+        statPoints: [
+          "**Vitality**, com apenas a Strength necessária para a armadura que você está de fato usando.",
+          "Dexterity fica na base.",
+        ],
+        actions: [
+          "Contrate o **Desert Mercenary do Ato 2** com a aura Defiance no Normal. É ele que você mantém pelo resto do jogo.",
+          "**Radament** no Ato 2 e **Izual** no Ato 4 são mais três pontos de skill. Não pule.",
+          "**Lam Esen's Tome** no Ato 3 são cinco pontos de atributo, em toda dificuldade.",
+          "Faça **Lore** num elmo de 2 soquetes assim que uma Ort e uma Sol existirem. Num pelt de Druid ele soma com o +skills do próprio pelt.",
+          "O Fissure abre fendas num raio de 7 e elas disparam em intervalos. Coloque onde um grupo precisa passar, não onde o grupo está parado.",
+        ],
+        exitCriteria: "O Baal está morto e o Fissure está em 18.",
+      },
+      "druid-nightmare-early": {
+        name: "Volcano, e o último do fogo",
+        summary: "Níveis 26-38. Fissure maximizado, Volcano até 12, e o respec esperando no fim.",
+        location: "Atos 1 a 3 do Nightmare — até os portões de Travincal",
+        goal: "Chegar ao nível 38 com as resistências firmes, e parar antes do Mephisto.",
+        killingWith: "Fissure, com Volcano embaixo do que ficar parado.",
+        skillPoints: [
+          "**Fissure de 18 para 20** — dois pontos.",
+          "**Volcano até 12** com os doze restantes.",
+          "São 14 pontos: 12 dos níveis 27-38, mais a Den of Evil e o Radament do Nightmare.",
+          "Não faz muita diferença onde eles caem, porque todos os 43 voltam na etapa seguinte. O Volcano é simplesmente a coisa mais forte para se estar segurando quando isso acontecer.",
+        ],
+        statPoints: [
+          "**Vitality**, e Strength suficiente para uma Monarch se você pretende usar dois Spirits depois do respec — 156 é uma conta grande e é mais barato começar a pagá-la agora.",
+        ],
+        actions: [
+          "**O Nightmare aplica -40% em todas as suas resistências.** Resolva isso no Ato 1, não no Ato 5. Ancients' Pledge num escudo são +50% em todas as resistências por três runas da Countess.",
+          "Faça **Spirit** numa espada de 4 soquetes no momento em que Tal, Thul, Ort e Amn existirem. 35% de velocidade de conjuração e +2 em todas as skills é o item sobre o qual toda a segunda metade desta jornada é construída.",
+          "Depois do nível 30, use o **Imbue da Charsi num pelt branco de Druid**. É o elmo +2 em skills de Druid mais confiável que um personagem self-found vai ver.",
+          "Pegue a recompensa da **Den of Evil do Nightmare** mas guarde o token de respec — você está prestes a precisar dele.",
+          "Não lute contra o Mephisto ainda. A próxima etapa é um personagem diferente.",
+        ],
+        exitCriteria:
+          "Nível 38, parado em Kurast, com o token de respec da Den of Evil do Nightmare por gastar.",
+      },
+      "druid-the-respec": {
+        name: "O respec",
+        summary: "Nível 38. Quarenta e três pontos saem da árvore de fogo e entram na do vento.",
+        location: "Ato 3 do Nightmare — as Docas de Kurast, antes do Mephisto",
+        goal: "Gastar todos os 43 pontos na abertura do vento, exatamente.",
+        killingWith: "Tornado, desde a primeira conjuração.",
+        skillPoints: [
+          "**Arctic Blast 1** — o pré-requisito do Cyclone Armor, e 2 quadros de atordoamento no Twister.",
+          "**Cyclone Armor 1** — o pré-requisito do Twister.",
+          "**Twister 1** — o pré-requisito do Tornado.",
+          "**Tornado 20** — todo o dano físico da build.",
+          "**Hurricane 20** — o dano de frio dela, e uma sinergia de 9% por ponto para o Tornado.",
+          "1 + 1 + 1 + 20 + 20 = **43**, que é exatamente o que um personagem de nível 38 com as quests do Normal e as recompensas da Den of Evil e do Radament do Nightmare tem. Não sobra nada.",
+        ],
+        statPoints: [
+          "Nada muda. Atributos não são devolvidos por um token de respec e não precisavam ser.",
+        ],
+        actions: [
+          "Use o **token da Den of Evil do Nightmare**. O do Normal fica no baú, e o do Hell também quando você o receber.",
+          "Não espalhe os 43 pontos. Hurricane em 20 e Tornado em 20 é o plano inteiro; um Wind Druid com 10 em cada não mata nada.",
+          "O Hurricane dura dez segundos no nível duro 20 e no nível duro 1 igualmente — o próprio nível dele não compra duração. Até o Cyclone Armor estar maximizado você vai reconjurar sem parar, e isso está certo.",
+          "Mate o Mephisto agora. Ele é imune a frio no Hell mas não no Nightmare, e o dano físico do Tornado não se importa de todo jeito.",
+        ],
+        exitCriteria: "Mephisto no chão, e o personagem matando mais rápido do que matava uma hora atrás.",
+      },
+      "druid-nightmare-late-hell-early": {
+        name: "O Cyclone Armor paga pela tempestade",
+        summary:
+          "Níveis 38-60. Cyclone Armor maximizado, que é o que transforma o Hurricane num buff em vez de uma obrigação.",
+        location: "Atos 4 e 5 do Nightmare, depois Atos 1 e 2 do Hell",
+        goal: "Maximizar o Cyclone Armor, fechar as resistências, e entrar no Hell.",
+        killingWith: "Tornado, com o Hurricane no ar por quarenta segundos de cada vez.",
+        skillPoints: [
+          "**Cyclone Armor de 1 para 20** — dezenove pontos, e o trecho mais valioso da jornada. Cada um são cinquenta quadros a mais de Hurricane e 9% a mais de dano de Tornado.",
+          "**Oak Sage 1** e **Raven 1** — dois pontos de utilidade que nunca precisam de mais.",
+          "**Twister de 1 para 6** com os últimos cinco.",
+          "São 26 pontos: 22 dos níveis 39-60, mais o Izual do Nightmare e a Den of Evil e o Radament do Hell.",
+        ],
+        statPoints: [
+          "**Vitality** com tudo que não estiver pagando por uma Monarch.",
+          "Mire em 1000 de vida ou mais antes do Ato 3 do Hell.",
+        ],
+        actions: [
+          "**O Hell aplica -100% em todas as suas resistências.** Feche fogo, frio e raio antes do Ato 3, não durante.",
+          "Um segundo **Spirit** numa Monarch de 4 soquetes. O par são 60% de velocidade de conjuração e +4 em todas as skills.",
+          "**Skin of the Vipermagi** se uma cair: +1 skills, 30% de velocidade de conjuração e até 35 de todas as resistências fica perto de ser o melhor do slot até um Enigma.",
+          "**Insight** para o mercenário. O Tornado é conjurado sem parar e o Druid não tem Warmth; Meditation é a diferença entre conjurar e beber.",
+          "A recompensa da Anya no Ato 5 são +10 em todas as resistências por dificuldade. Pegue as três.",
+        ],
+        exitCriteria:
+          "Ato 2 do Hell limpo, resistências em 75, e o Hurricane se segurando por quarenta segundos.",
+      },
+      "druid-hell-late": {
+        name: "Twister, e um urso atrás de quem se esconder",
+        summary: "Níveis 60-75. A última sinergia maximizada, e a linha de invocação pega por um ponto cada.",
+        location: "Atos 3 a 5 do Hell",
+        goal: "Terminar as quatro skills maximizadas e chegar ao nível 75.",
+        killingWith: "Tornado dentro dos grupos, com um Grizzly segurando a porta.",
+        skillPoints: [
+          "**Twister de 6 para 20** — catorze pontos, a última sinergia de 9% do Tornado.",
+          "**Summon Spirit Wolf 1**, **Summon Dire Wolf 1**, **Summon Grizzly 1** — três pontos por um urso que provoca.",
+          "São 17 pontos: 15 dos níveis 61-75, mais o Izual do Hell.",
+          "No nível 75 você gastou 86 dos 110 que um personagem de nível 99 terá, e as quatro skills que importam estão todas em 20.",
+        ],
+        statPoints: ["**Vitality**, tudo. 1400 de vida com Battle Orders é o número a mirar."],
+        actions: [
+          "**Arachnid Mesh** leva a velocidade de conjuração além do breakpoint de 99%. Até ela existir, dois anéis de 10% e um Magefist chegam perto.",
+          "**Raven Frost** para não poder ser congelado. Numa build que fica parada conjurando, esta é uma linha de sobrevivência e não uma conveniência.",
+          "Corra **o Pit** e o **Mausoleum** no Hell. Os dois são de nível de área 85, os dois são densos, e nenhum tem uma imunidade que barre físico e frio ao mesmo tempo.",
+          "O Grizzly não pode ser reinvocado enquanto vive. Perdê-lo no meio da luta custa uma conjuração inteira de 40 de mana, então invoque antes da porta e não depois.",
+        ],
+        exitCriteria: "Nível 75, Baal morto no Hell, e toda área de nível 85 farmável.",
+      },
+      "druid-endgame": {
+        name: "Vinte e quatro pontos e um Sunder Charm",
+        summary: "Níveis 75-99. A build está pronta; o que resta é equipamento e os últimos pontos livres.",
+        location: "Terror Zones, o Pit, o Chaos Sanctuary e a Worldstone Keep",
+        goal: "Alcançar o breakpoint de 99% de velocidade de conjuração, e então gastar os pontos restantes.",
+        killingWith: "Tornado e Hurricane, e por fim Teleport entre os grupos.",
+        skillPoints: [
+          "**Heart of Wolverine 1** se você for Softcore — +20% de dano para o mercenário e para o urso.",
+          "**Todo o resto no Oak Sage.** O bônus de vida do grupo continua crescendo e a build não tem mais nada para comprar.",
+          "São os últimos 24 pontos: 110 no total no nível 99, dos quais 86 já tinham sido gastos no nível 75.",
+        ],
+        statPoints: [
+          "**Vitality**, menos o que os requisitos de uma Monarch e de um Enigma ainda quiserem.",
+        ],
+        actions: [
+          "**Heart of the Oak** substitui o Spirit de arma: +3 skills, 40% de velocidade de conjuração e 40 de todas as resistências numa mão só.",
+          "**Enigma** é a maior mudança que o personagem faz na vida. O Druid não tem skill de movimento, e o Teleport praticamente dobra a velocidade de limpeza.",
+          "**Bone Break** é o acabamento opcional: um Sunder Charm físico para o grupo raro que o Hurricane sozinho demoraria demais para matar de frio.",
+          "**Call to Arms** num swap de arma. Battle Orders é um terço a mais de vida numa classe com 2 de vida por Vitality.",
+          "O personagem agora é a build Wind Druid por completo. Nada mais nesta jornada muda o plano de skills.",
+        ],
+        exitCriteria:
+          "99% de velocidade de conjuração, resistências no teto, e Terror Zones em players 8.",
+      },
+    },
+  },
 };
