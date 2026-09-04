@@ -88,7 +88,7 @@ export const skillTreesPtBr: Overlay<SkillTreeCopy> = {
     name: "Elemental",
     summary: "Fogo de um lado, vento e frio do outro, e nenhuma sobreposição entre eles.",
     theme:
-      "Duas escolas de dano que dividem uma árvore e mais nada. A metade de fogo — Firestorm, Molten Boulder, Fissure, Volcano, Armageddon — age pelo chão e faz sinergia consigo mesma. A metade de vento — Twister, Tornado, Hurricane — é dano quase todo **físico** com uma tempestade de frio por cima, e é a única razão de o Druid lidar com as imunidades do Hell melhor que qualquer outro caster. Cyclone Armor fica entre as duas e pertence às duas.",
+      "Duas escolas de dano que dividem uma árvore e mais nada. A metade de fogo — Firestorm, Molten Boulder, Fissure, Volcano, Armageddon — age pelo chão e faz sinergia consigo mesma. A metade de vento — Twister, Tornado, Hurricane — é dano quase todo físico com uma tempestade de frio por cima, e é a única razão de o Druid lidar com as imunidades do Hell melhor que qualquer outro caster. Cyclone Armor fica entre as duas e pertence às duas.",
   },
   "shape-shifting": {
     name: "Shape Shifting",
