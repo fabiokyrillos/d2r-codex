@@ -6,10 +6,12 @@ import { useSearchParams } from "next/navigation";
 import { Badge, cn } from "@/components/ui";
 import {
   FILTER_GROUPS,
+  MAX_QUERY_LENGTH,
   activeCount,
   filterBuilds,
   filterQueryString,
   isEmptyState,
+  normalizeQuery,
   parseFilterState,
   toggleValue,
   type BuildFilterState,
@@ -68,6 +70,12 @@ export interface BuildFilterStrings {
   showFilters: string;
   hideFilters: string;
   searchChipPrefix: string;
+  /**
+   * What "Good at" means, already interpolated. Omitted when the surface does
+   * not offer that group, because a note explaining a control the page does not
+   * render is worse than no note.
+   */
+  goodAtNote?: string;
 }
 
 export interface BuildFilterItem {
@@ -112,6 +120,13 @@ export function BuildFilters({
    * caught up on a trailing edge. Everything else — including Back, Forward and
    * a pasted link — flows the other way, which is why this resyncs whenever the
    * URL's own query changes underneath it.
+   *
+   * **The comparison is against the normalised draft, not the raw one.** The
+   * URL trims, so writing "cold " produces `?q=cold`, and a resync that
+   * compared the raw draft with what came back saw a difference that was the
+   * trim rather than a new URL — and helpfully replaced the box's contents with
+   * the trimmed value while the reader was still typing. Typing "cold " then
+   * pausing left "cold", so the next word arrived as "coldsorceress".
    */
   const [draft, setDraft] = useState(urlState.q);
   const lastPushedQuery = useRef(urlState.q);
@@ -128,7 +143,9 @@ export function BuildFilters({
   );
 
   const write = useCallback((next: BuildFilterState, mode: "push" | "replace") => {
-    lastPushedQuery.current = next.q;
+    // What the URL will hand back, so the resync above can tell "the reader
+    // moved" apart from "the URL trimmed what I just wrote".
+    lastPushedQuery.current = normalizeQuery(next.q);
     const url = `${window.location.pathname}${filterQueryString(next)}`;
     if (mode === "push") window.history.pushState(null, "", url);
     else window.history.replaceState(null, "", url);
@@ -143,7 +160,7 @@ export function BuildFilters({
    * `draft === urlState.q` and the next run returns immediately.
    */
   useEffect(() => {
-    if (draft === urlState.q) return;
+    if (normalizeQuery(draft) === urlState.q) return;
     const id = window.setTimeout(() => write({ ...urlState, q: draft }, "replace"), 250);
     return () => window.clearTimeout(id);
   }, [draft, urlState, write]);
@@ -192,6 +209,7 @@ export function BuildFilters({
               onChange={(e) => setDraft(e.target.value)}
               placeholder={strings.searchPlaceholder}
               autoComplete="off"
+              maxLength={MAX_QUERY_LENGTH}
               className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-subtle focus:border-border-strong"
             />
           </div>
@@ -254,6 +272,14 @@ export function BuildFilters({
             </fieldset>
           ))}
         </div>
+
+        {/*
+          Directly under the group it defines. It used to sit after the whole
+          listing — four screens below the "Good at" checkboxes on the
+          unfiltered catalogue, and in the no-JS HTML, where it explained a
+          control that is not rendered at all.
+        */}
+        {strings.goodAtNote && <p className="text-xs text-ink-subtle">{strings.goodAtNote}</p>}
 
         {showChips && (
           <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">

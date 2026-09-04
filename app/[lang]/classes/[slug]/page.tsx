@@ -17,6 +17,7 @@ import {
 } from "@/components/ui";
 import { ConfidenceNote, ElementBadge, RichText, SkillTree } from "@/components/game";
 import { FilterableBuildList } from "@/components/builds/filterable-build-list";
+import { CLASS_PAGE_FILTER_GROUPS } from "@/lib/builds/filter";
 import {
   getBreakpointsForClass,
   getBuildsForClass,
@@ -136,7 +137,7 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
             */}
             <FilterableBuildList
               builds={builds}
-              groups={["damage", "difficulty", "budget", "goodAt"]}
+              groups={CLASS_PAGE_FILTER_GROUPS}
               listClassName="grid gap-3 sm:grid-cols-2"
               leading={
                 journey ? (

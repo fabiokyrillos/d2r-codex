@@ -11,7 +11,7 @@ import {
   GOOD_AT_THRESHOLD,
   RATING_AXES,
   isDiscriminating,
-  optionsFor,
+  narrowingOptionsFor,
   shouldOfferFilters,
   type FilterGroup,
 } from "@/lib/builds/filter";
@@ -52,7 +52,7 @@ export async function FilterableBuildList({
   builds: readonly Build[];
   cardFor: (build: Build) => ReactNode;
   listClassName: string;
-  groups?: FilterGroup[];
+  groups?: readonly FilterGroup[];
   leading?: ReactNode;
 }) {
   const { locale, t } = await getI18n();
@@ -120,55 +120,56 @@ export async function FilterableBuildList({
     }
   };
 
+  /*
+   * `narrowingOptionsFor` drops the options that cannot change anything — the
+   * ones every build in *this* listing carries. That is a per-option rule, not
+   * a per-group one, because the group can be perfectly useful while one of its
+   * boxes is inert: seven of the Paladin page's eight "Good at" axes narrow,
+   * and `Survivability (7)` did not.
+   */
   const views: FilterGroupView[] = groups
     .map((group) => ({
       group,
       legend: legends[group],
-      options: optionsFor(rows, group, orders[group]).map((o) => ({
+      options: narrowingOptionsFor(rows, group, orders[group]).map((o) => ({
         value: o.value,
         label: labelFor(group, o.value),
         count: o.count,
       })),
     }))
-    // A group that cannot narrow this listing is not offered: one option, or
-    // an option every build carries, is a checkbox whose only effect is to say
-    // "yes, all of them".
     .filter((view) => isDiscriminating(rows, view.group));
 
   return (
-    <div className="space-y-4">
-      <Suspense fallback={plainList}>
-        <BuildFilters
-          items={items}
-          groups={views}
-          listClassName={listClassName}
-          leading={leading}
-          strings={{
-            regionLabel: t.builds.filters.regionLabel,
-            searchLabel: t.builds.filters.searchLabel,
-            searchPlaceholder: t.builds.filters.searchPlaceholder,
-            resultsOne: t.builds.filters.resultsOne,
-            resultsMany: t.builds.filters.resultsMany,
-            activeLabel: t.builds.filters.activeLabel,
-            removeOne: t.builds.filters.removeOne,
-            clearAll: t.builds.filters.clearAll,
-            emptyTitle: t.builds.filters.emptyTitle,
-            emptyBody: t.builds.filters.emptyBody,
-            showFilters: t.builds.filters.showFilters,
-            hideFilters: t.builds.filters.hideFilters,
-            searchChipPrefix: t.builds.filters.searchChipPrefix,
-          }}
-        />
-      </Suspense>
-
-      {views.some((v) => v.group === "goodAt") && (
-        <p className="text-xs text-ink-subtle">
-          {fmt(t.builds.filters.goodAtNote, {
-            threshold: GOOD_AT_THRESHOLD,
-            label: ratingLabels(t)[GOOD_AT_THRESHOLD],
-          })}
-        </p>
-      )}
-    </div>
+    <Suspense fallback={plainList}>
+      <BuildFilters
+        items={items}
+        groups={views}
+        listClassName={listClassName}
+        leading={leading}
+        strings={{
+          regionLabel: t.builds.filters.regionLabel,
+          searchLabel: t.builds.filters.searchLabel,
+          searchPlaceholder: t.builds.filters.searchPlaceholder,
+          resultsOne: t.builds.filters.resultsOne,
+          resultsMany: t.builds.filters.resultsMany,
+          activeLabel: t.builds.filters.activeLabel,
+          removeOne: t.builds.filters.removeOne,
+          clearAll: t.builds.filters.clearAll,
+          emptyTitle: t.builds.filters.emptyTitle,
+          emptyBody: t.builds.filters.emptyBody,
+          showFilters: t.builds.filters.showFilters,
+          hideFilters: t.builds.filters.hideFilters,
+          searchChipPrefix: t.builds.filters.searchChipPrefix,
+          // Interpolated here, where the dictionary and the threshold both
+          // live; the client component only has to place it.
+          goodAtNote: views.some((v) => v.group === "goodAt")
+            ? fmt(t.builds.filters.goodAtNote, {
+                threshold: GOOD_AT_THRESHOLD,
+                label: ratingLabels(t)[GOOD_AT_THRESHOLD],
+              })
+            : undefined,
+        }}
+      />
+    </Suspense>
   );
 }

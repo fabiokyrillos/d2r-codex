@@ -153,6 +153,19 @@ export const REFUSED_FILTERS: readonly { readonly id: string; readonly why: stri
 export const FILTER_GROUPS = ["class", "damage", "difficulty", "budget", "goodAt"] as const;
 export type FilterGroup = (typeof FILTER_GROUPS)[number];
 
+/**
+ * What a page about one class offers: everything except the class.
+ *
+ * Derived rather than typed out, and exported rather than inlined at the call
+ * site, so that "the class page has no class filter" is a fact about a named
+ * constant a test can hold — the class page passes *this*, and the test asserts
+ * both that it excludes `class` and that the page uses it. Written out as a
+ * literal in the page, the rule was only enforceable by reading the page.
+ */
+export const CLASS_PAGE_FILTER_GROUPS: readonly FilterGroup[] = FILTER_GROUPS.filter(
+  (g) => g !== "class",
+);
+
 export interface BuildFilterState {
   /** Free text. Matched against name, summary, class name and aliases. */
   q: string;
@@ -209,11 +222,14 @@ function valuesFor(row: BuildRow, group: FilterGroup): string[] {
 }
 
 /**
- * The options for one group, ordered by `order` where the model has a canonical
- * sequence and by first appearance otherwise.
+ * Every option present in these rows, ordered by `order` where the model has a
+ * canonical sequence and by first appearance otherwise.
  *
  * An option with no rows behind it is never offered: a class filter on a page
  * that lists one class's builds would be a control that cannot change anything.
+ *
+ * This is the *inventory*, not the offer. `narrowingOptionsFor` is what a
+ * surface renders; the two differ by the options that cannot change anything.
  */
 export function optionsFor(
   rows: readonly BuildRow[],
@@ -237,16 +253,41 @@ export function optionsFor(
 }
 
 /**
+ * The options a surface actually offers: the ones that leave at least one row
+ * out.
+ *
+ * An option every row carries cannot change anything. Ticking "Survivability"
+ * on a Paladin page where all seven builds are good at it re-selects all seven
+ * — a control whose only possible effect is to say "yes, all of them", which
+ * reads as broken the first time a reader tries it.
+ *
+ * The rule is per *option*, not per group, and that is the whole point. Judging
+ * only the group let a constant option ride along inside a group that was
+ * otherwise fine: the Paladin "Good at" group offers eight axes, seven of which
+ * narrow, so the group passed and `Survivability (7)` was rendered anyway.
+ *
+ * Dropping an option also drops it from the parse allow-list, so a stale
+ * `?goodAt=survivability` link is ignored rather than honoured — which is the
+ * same listing either way, because the option matched everything.
+ */
+export function narrowingOptionsFor(
+  rows: readonly BuildRow[],
+  group: FilterGroup,
+  order?: readonly string[],
+): FilterOption[] {
+  return optionsFor(rows, group, order).filter((o) => o.count < rows.length);
+}
+
+/**
  * Whether a group can actually narrow this set of rows.
  *
- * Two options is not enough. A group where every option is carried by every row
- * — eight "good at" axes on two builds with identical ratings — offers a choice
- * that changes nothing, and a control that changes nothing reads as broken. The
- * test is whether *some* option leaves at least one row out.
+ * One option that narrows is enough — it still removes a row when ticked. What
+ * is never enough is a group whose every option is carried by every row: eight
+ * "good at" axes on two builds with identical ratings offer a choice that
+ * changes nothing.
  */
 export function isDiscriminating(rows: readonly BuildRow[], group: FilterGroup): boolean {
-  const options = optionsFor(rows, group);
-  return options.length >= 2 && options.some((o) => o.count < rows.length);
+  return narrowingOptionsFor(rows, group).length > 0;
 }
 
 /**
@@ -339,6 +380,27 @@ export const QUERY_KEYS: Readonly<Record<"q" | FilterGroup, string>> = {
 export type OptionSets = Readonly<Partial<Record<FilterGroup, readonly string[]>>>;
 
 /**
+ * The longest query the URL carries.
+ *
+ * One number, used in three places that must agree: the input's `maxLength`,
+ * the parse, and the trailing-edge write. When they disagreed, a query longer
+ * than the cap round-tripped to something the box had not been typed with.
+ */
+export const MAX_QUERY_LENGTH = 120;
+
+/**
+ * What a query becomes once the URL has carried it.
+ *
+ * `serializeFilterState` trims and `parseFilterState` truncates, so this is the
+ * value a written query comes *back* as. The search box has to compare against
+ * this rather than against the raw draft — see `build-filters.tsx`, where
+ * comparing against the raw draft deleted the space out of "cold " mid-typing.
+ */
+export function normalizeQuery(q: string): string {
+  return q.trim().slice(0, MAX_QUERY_LENGTH);
+}
+
+/**
  * Reads state out of any `URLSearchParams`-alike.
  *
  * Everything unrecognised is dropped rather than carried: an unknown key, an
@@ -346,22 +408,30 @@ export type OptionSets = Readonly<Partial<Record<FilterGroup, readonly string[]>
  * value, an empty segment. The page renders; it never throws and never shows a
  * control for something it cannot filter by. That is what makes a hand-edited
  * or stale link safe.
+ *
+ * A repeated parameter — `?damage=cold&damage=fire`, which no control here
+ * writes but a hand-edited or third-party link may — is read as the union of
+ * its values rather than as its first one. `get()` would silently discard
+ * "fire"; there is no reading of that link on which the reader wanted it
+ * dropped. `getAll` is optional on the interface so a plain `{get}` still
+ * works.
  */
 export function parseFilterState(
-  params: { get(key: string): string | null },
+  params: { get(key: string): string | null; getAll?(key: string): string[] },
   options: OptionSets,
 ): BuildFilterState {
   const state: BuildFilterState = { ...EMPTY_FILTER_STATE };
-  state.q = (params.get(QUERY_KEYS.q) ?? "").slice(0, 120);
+  state.q = (params.get(QUERY_KEYS.q) ?? "").slice(0, MAX_QUERY_LENGTH);
+
+  const raws = (key: string): string[] =>
+    params.getAll ? params.getAll(key) : [params.get(key) ?? ""];
 
   for (const group of FILTER_GROUPS) {
     const allowed = options[group];
     if (!allowed || allowed.length === 0) continue;
-    const raw = params.get(QUERY_KEYS[group]);
-    if (!raw) continue;
     const chosen = new Set(
-      raw
-        .split(",")
+      raws(QUERY_KEYS[group])
+        .flatMap((raw) => raw.split(","))
         .map((v) => v.trim())
         .filter((v) => v.length > 0 && allowed.includes(v)),
     );
