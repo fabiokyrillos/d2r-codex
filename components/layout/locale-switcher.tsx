@@ -102,6 +102,23 @@ export function LocaleSwitcher({
             title={switchToTemplate.replace("{language}", LOCALE_NAMES[locale])}
             onClick={(event) => {
               persistLocale(locale);
+              /*
+               * Only a plain left click is ours to take over. Ctrl, Cmd and
+               * Shift clicks are the reader asking for a new tab or window, and
+               * calling `preventDefault` on one would silently turn that into a
+               * same-tab navigation — the link would stop behaving like a link
+               * on exactly the filtered pages this exists to serve.
+               */
+              if (
+                event.button !== 0 ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey ||
+                event.defaultPrevented
+              ) {
+                return;
+              }
               const search = globalThis.location.search;
               if (!search) return; // Nothing to carry; let the link do its job.
               event.preventDefault();
