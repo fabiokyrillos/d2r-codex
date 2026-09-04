@@ -242,12 +242,33 @@ export function BuildFilters({
               <legend className="text-xs font-semibold tracking-widest text-ink-subtle uppercase">
                 {group.legend}
               </legend>
-              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
+              {/*
+                The row *is* the label, rather than a wrapper holding a box and
+                a label side by side. That is what makes the whole strip —
+                checkbox, the gap between them, the option name and its count —
+                one target: `<label>` activation covers its own padding, so
+                there is no dead space inside the row, and no second handler to
+                fire twice. The `for` and the nesting resolve to the same
+                control, which is one labelled control either way.
+
+                The drawn checkbox stays 14×14; what had to change is the target
+                it sits in. `py-1` around a 20px line makes each row 28px tall,
+                so the rule these rows satisfy is the 24×24 minimum itself
+                rather than the spacing exception they were leaning on at 20px.
+              */}
+              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5">
                 {group.options.map((option) => {
                   const id = `${panelId}-${group.group}-${option.value}`;
                   const checked = state[group.group].includes(option.value);
                   return (
-                    <div key={option.value} className="flex items-center gap-1.5">
+                    <label
+                      key={option.value}
+                      htmlFor={id}
+                      className={cn(
+                        "flex min-h-6 cursor-pointer items-center gap-1.5 py-1 text-sm",
+                        checked ? "text-ink" : "text-ink-muted",
+                      )}
+                    >
                       <input
                         id={id}
                         type="checkbox"
@@ -255,17 +276,11 @@ export function BuildFilters({
                         onChange={() => onToggle(group.group, option.value)}
                         className="size-3.5 shrink-0 accent-[var(--color-ember)]"
                       />
-                      <label
-                        htmlFor={id}
-                        className={cn(
-                          "cursor-pointer text-sm",
-                          checked ? "text-ink" : "text-ink-muted",
-                        )}
-                      >
+                      <span>
                         {option.label}{" "}
                         <span className="text-xs text-ink-subtle">({option.count})</span>
-                      </label>
-                    </div>
+                      </span>
+                    </label>
                   );
                 })}
               </div>
