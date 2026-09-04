@@ -66,7 +66,7 @@ import {
   checkSynergyKindLabels,
   MAX_HARD_POINTS,
 } from "./skill-graph-rules";
-import { exitCodeFor, isUntranslatedProse } from "./content-rules";
+import { checkSourcedDivergence, exitCodeFor, isUntranslatedProse } from "./content-rules";
 import { TREES_NOT_YET_AUTHORED, checkClassTrees } from "./class-tree-rules";
 import {
   CORROBORATED,
@@ -116,6 +116,13 @@ import {
   checkUnlockLevelClaims,
   recommendsBuildingAGolem,
 } from "./necromancer-claims";
+import {
+  IMMUNITY_AGENTS,
+  IMMUNITY_RULES,
+  LOWER_RESIST_CEILING,
+  LOWER_RESIST_FLOOR,
+  checkImmunityModelClaims,
+} from "./immunity-claims";
 
 /**
  * Every authored string on a build page, flattened.
@@ -1071,6 +1078,84 @@ console.log("\nNecromancer page claims (both locales):");
   for (const h of incomplete) problems.push(h.message);
 
   console.log(`  ${levelByName.size} unlock levels read from the graph, ${LOCALES.length} locales`);
+}
+
+// ---------------------------------------------------------------------------
+// The immunity model, everywhere on the site rather than on one class
+// ---------------------------------------------------------------------------
+
+/*
+ * See `scripts/immunity-claims.ts`. The Necromancer rules above are scoped to
+ * that class because the mistake they correct was a Necromancer mistake. This
+ * one was not: the claim that "all resistance reduction is applied at one fifth
+ * against an already-immune monster" had reached the resistances article, the
+ * curses article, the Sorceress class page, one Sorceress skill, four Sorceress
+ * builds, an Amazon build, a runeword and the Death's Web page — in both
+ * locales — and every copy of it was false about masteries and item pierce.
+ *
+ * So these run over **everything published**, walked field by field rather than
+ * through a per-type prose helper. A new field on a build, an item or an
+ * article cannot quietly fall outside the gate, which is how the claim spread
+ * this far in the first place: it lived in `commonMistakes`, in a gear pick's
+ * `why`, and in a file header comment, none of which the Necromancer collectors
+ * look at.
+ *
+ * `checkSourcedDivergence` rides along on the same sweep. It is a different
+ * subject with the same failure mode — a claim nobody can check — and the
+ * cheapest place to run it is over every string the site publishes.
+ */
+console.log("\nImmunity model and sourced divergence (everything, both locales):");
+{
+  /** Every string anywhere in an entity, however deeply nested. */
+  const allStrings = (value: unknown, out: string[] = []): string[] => {
+    if (typeof value === "string") out.push(value);
+    else if (Array.isArray(value)) for (const v of value) allStrings(v, out);
+    else if (value && typeof value === "object") for (const v of Object.values(value)) allStrings(v, out);
+    return out;
+  };
+
+  const pages: { where: string; lines: string[] }[] = [];
+  for (const locale of LOCALES) {
+    const catalogue: [string, readonly unknown[]][] = [
+      ["mechanics", getMechanics(locale)],
+      ["build", getBuilds(locale)],
+      ["journey", getJourneys(locale)],
+      ["class", getClasses(locale)],
+      ["skill", getSkills(locale)],
+      ["item", getUniques(locale)],
+      ["runeword", getRunewords(locale)],
+    ];
+    for (const [kind, entities] of catalogue) {
+      for (const entity of entities) {
+        const slug =
+          (entity as { slug?: string; classSlug?: string }).slug ??
+          (entity as { classSlug?: string }).classSlug ??
+          "?";
+        pages.push({ where: `${locale} ${kind} ${slug}`, lines: allStrings(entity) });
+      }
+    }
+  }
+
+  const found = pages.flatMap(({ where, lines }) => checkImmunityModelClaims(lines, where));
+  for (const rule of IMMUNITY_RULES) {
+    const hits = found.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+
+  const divergence = pages.flatMap(({ where, lines }) => checkSourcedDivergence(lines, where));
+  for (const rule of ["unsourced-divergence-claim", "undated-divergence-claim"] as const) {
+    const hits = divergence.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+
+  const inert = IMMUNITY_AGENTS.filter((a) => !a.breaksImmunity);
+  console.log(
+    `  ${pages.length} pages swept; ${IMMUNITY_AGENTS.length - inert.length} agents break an ` +
+      `immunity and ${inert.length} are inert against one; Lower Resist ${LOWER_RESIST_FLOOR.nominal}` +
+      `-${LOWER_RESIST_CEILING.nominal} nominal`,
+  );
 }
 
 // ---------------------------------------------------------------------------

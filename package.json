@@ -33,7 +33,8 @@
     "test:attributes": "tsx scripts/attributes.test.ts",
     "test:damage": "tsx scripts/damage.test.ts",
     "test:search": "tsx scripts/search-aliases.test.ts",
-    "check": "npm run check:content && npm run check:graph-drift && npm run test:graph && npm run test:class-trees && npm run test:necromancer && npm run test:synergy-owner && npm run test:attributes && npm run test:damage && npm run test:search && npm run test:tree && npm run test:nav && npm run test:hygiene && npm run lint && npm run typecheck",
+    "test:immunity": "tsx scripts/immunity.test.ts",
+    "check": "npm run check:content && npm run check:graph-drift && npm run test:graph && npm run test:class-trees && npm run test:necromancer && npm run test:synergy-owner && npm run test:attributes && npm run test:damage && npm run test:search && npm run test:immunity && npm run test:tree && npm run test:nav && npm run test:hygiene && npm run lint && npm run typecheck",
     "check:built": "npm run test:a11y && npm run test:markup && npm run test:page && npm run test:build-page && npm run test:tunnels && npm run test:items && npm run test:crawl && npm run test:synergy && npm run test:contrast && npm run test:sheet && npm run test:client",
     "verify": "npm run build && npm run check && npm run check:built && npm run check:site-url",
     "predeploy": "npm run verify && npm run check:site-url -- --production"
