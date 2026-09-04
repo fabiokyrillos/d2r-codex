@@ -174,8 +174,40 @@ console.log("\nNo overridden game identifier reaches any built artifact");
  * more places than one.
  */
 {
-  const identifiers = Object.keys(SLUG_OVERRIDES);
+  /*
+   * Two of the Druid's identifiers are ordinary English, and the sweep is a
+   * case-insensitive substring search, so both match text that has nothing to
+   * do with a skill slug.
+   *
+   *   "Vines"           the game's identifier for Solar Creeper. It also
+   *                     matches the word "vines", which the Poison Creeper page
+   *                     uses to say that all three of them share one slot.
+   *   "Shape Shifting"  the game's identifier for Lycanthropy, and also the
+   *                     real, published name of the tree the skill sits in.
+   *                     Every build page that draws the Druid's trees prints it.
+   *
+   * Neither is the failure this rule exists to catch, which is a *URL or a
+   * skill name* built from an identifier no player has seen. So they are
+   * checked the narrow way instead: the slug must never appear in a path, and
+   * the identifier must never be published as the skill's name. The broad
+   * sweep still runs for every other identifier, where a substring hit can only
+   * be the real thing.
+   *
+   * Exempting is deliberate and costs coverage, so it is two entries with two
+   * reasons rather than a rule about capital letters.
+   */
+  const AMBIGUOUS: Record<string, string> = {
+    Vines: 'also the plain English word, used on the Poison Creeper page',
+    "Shape Shifting": "also the published name of the Druid's second tree",
+  };
+
+  const identifiers = Object.keys(SLUG_OVERRIDES).filter((i) => !(i in AMBIGUOUS));
   check("there is an override table to enforce", identifiers.length > 0);
+  check(
+    "the ambiguous identifiers are still overridden",
+    Object.keys(AMBIGUOUS).every((i) => i in SLUG_OVERRIDES),
+    Object.keys(AMBIGUOUS).filter((i) => !(i in SLUG_OVERRIDES)).join(", "),
+  );
   const walk = (dir: string): string[] =>
     readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
       e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
@@ -191,6 +223,26 @@ console.log("\nNo overridden game identifier reaches any built artifact");
       `"${identifier}" appears in no built artifact`,
       hits.length === 0,
       hits.slice(0, 3).map((h) => h.slice(root.length + 1)).join(", "),
+    );
+  }
+
+  /*
+   * The narrow check for the two exempted above. An identifier that is also
+   * ordinary prose can still fail in the way that matters -- by reaching a file
+   * path, which is what a published URL is -- and that is checkable without the
+   * substring sweep.
+   */
+  for (const identifier of Object.keys(AMBIGUOUS)) {
+    const slugged = identifier.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const inPath = artifacts.filter((f) => f.toLowerCase().includes(`skills\u005c${slugged}.`) || f.toLowerCase().includes(`skills/${slugged}.`));
+    check(
+      `"${identifier}" is not a published URL`,
+      inPath.length === 0,
+      inPath.slice(0, 3).map((h) => h.slice(root.length + 1)).join(", "),
+    );
+    check(
+      `"${identifier}" is not published as a skill name`,
+      skills.every((skill) => skill.name !== identifier),
     );
   }
 }
