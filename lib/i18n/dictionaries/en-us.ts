@@ -266,6 +266,30 @@ export const enUS = {
     priorityRequired: "required",
     priorityRecommended: "recommended",
     priorityLuxury: "luxury",
+
+    filters: {
+      regionLabel: "Filter builds",
+      searchLabel: "Search builds",
+      searchPlaceholder: "Name, class or nickname…",
+      resultsOne: "{count} build",
+      resultsMany: "{count} builds",
+      activeLabel: "Filtering by",
+      removeOne: "Remove filter: {filter}",
+      clearAll: "Clear all",
+      emptyTitle: "No builds match these filters",
+      emptyBody:
+        "Try removing a filter, or clearing them all. Every build on the site is documented at six gear tiers, so the narrower the question the fewer answers there are.",
+      showFilters: "Filters",
+      hideFilters: "Hide filters",
+      searchChipPrefix: "Search:",
+      groupClass: "Class",
+      groupDamage: "Damage type",
+      groupDifficulty: "Difficulty",
+      groupBudget: "Budget",
+      groupGoodAt: "Good at",
+      goodAtNote:
+        "“Good at” means {threshold} out of 5 or better on that axis — the point where this site's own scale starts calling a rating {label}.",
+    },
   },
 
   leveling: {

@@ -273,6 +273,30 @@ export const ptBR: Dictionary = {
     priorityRequired: "obrigatório",
     priorityRecommended: "recomendado",
     priorityLuxury: "luxo",
+
+    filters: {
+      regionLabel: "Filtrar builds",
+      searchLabel: "Buscar builds",
+      searchPlaceholder: "Nome, classe ou apelido…",
+      resultsOne: "{count} build",
+      resultsMany: "{count} builds",
+      activeLabel: "Filtrando por",
+      removeOne: "Remover filtro: {filter}",
+      clearAll: "Limpar tudo",
+      emptyTitle: "Nenhuma build corresponde a estes filtros",
+      emptyBody:
+        "Tente remover um filtro, ou limpar todos. Toda build do site é documentada em seis níveis de equipamento, então quanto mais estreita a pergunta, menos respostas existem.",
+      showFilters: "Filtros",
+      hideFilters: "Ocultar filtros",
+      searchChipPrefix: "Busca:",
+      groupClass: "Classe",
+      groupDamage: "Tipo de dano",
+      groupDifficulty: "Dificuldade",
+      groupBudget: "Orçamento",
+      groupGoodAt: "Boa para",
+      goodAtNote:
+        "“Boa para” significa {threshold} de 5 ou mais naquele eixo — o ponto em que a própria escala deste site começa a chamar uma nota de {label}.",
+    },
   },
 
   leveling: {
