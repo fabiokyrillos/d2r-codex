@@ -44,7 +44,7 @@
  *   Critical Strike under no parameter at all -- those columns set the summon's
  *   own skill levels. Neither produces an edge. The Valkyrie's one real synergy
  *   is Decoy, under a parameter the game itself labels "HP % synergy".
- *   Extracted   120 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer)
+ *   Extracted   150 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer, 30 druid)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces
  *   this file exactly, or fails; it never silently follows the source forward.
@@ -54,7 +54,7 @@
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —
  *   the current D2R tables and the pre-D2R Lord of Destruction tables under
- *   `json/base/` — for 120 of 120 skills.
+ *   `json/base/` — for 150 of 150 skills.
  *
  *   These are two snapshots of different game versions from one extraction
  *   project, not two independent publishers. Their agreement shows the values
@@ -93,7 +93,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "amazon" | "necromancer" | "paladin" | "sorceress">;
+  readonly classSlug: Extract<ClassSlug, "amazon" | "druid" | "necromancer" | "paladin" | "sorceress">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of `tree`. */
@@ -159,6 +159,31 @@ export interface SkillGraphNode {
      * its damage lands at once, so multiplying it would be a fabrication.
      */
     readonly overTime?: boolean;
+  };
+  /**
+   * Physical damage the skill deals in its own right, alongside `damage`
+   * rather than instead of it.
+   *
+   * The Druid's elemental tree is where this earns its keep and why it exists.
+   * Tornado and Twister carry nothing but physical -- no `EType`, no `EMin` --
+   * so a graph reading only the elemental columns publishes a damage table of
+   * nothing for the class's flagship skill. Armageddon carries both at once,
+   * 18-26 physical and 25-75 fire, and the two are separately synergised: it
+   * takes its physical from Volcano and its fire from Molten Boulder and
+   * Firestorm.
+   *
+   * Scaled by the same `hitShift` as elemental damage, which is not an
+   * assumption but a check: Twister's `MinDam` of 12 at `HitShift` 7 is the
+   * 6 the game shows, and Tornado's 25 at 8 is 25.
+   *
+   * Present only for the skills `PUBLISHES_PHYSICAL` names. These columns carry
+   * a minion's damage, a bonus to a different skill, and a damage-return share
+   * on other rows, and the generator refuses a row it cannot place.
+   */
+  readonly physical?: {
+    readonly hitShift: number;
+    readonly min: BandedScale;
+    readonly max: BandedScale;
   };
   /**
    * Physical damage the skill turns into an element rather than adding to it.
@@ -395,6 +420,215 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     prerequisites: ["plague-javelin"],
     synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [20, 30, 40, 50, 50] } },
     effects: [{ labelKey: "effectBolts", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1 } }],
+  },
+  "raven": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "summon-dire-wolf", kinds: ["damage"] }, { from: "summon-grizzly", kinds: ["damage"] }, { from: "summon-spirit-wolf", kinds: ["damage"] }],
+    effects: [{ labelKey: "effectMinions", unit: "count", shape: { kind: "linear", base: 1, perLevel: 1, cap: 5 } }, { labelKey: "effectSummonHits", unit: "count", shape: { kind: "linear", base: 12, perLevel: 1 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 6, perLevel: 0 } }],
+  },
+  "poison-creeper": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "rabies", kinds: ["damage"] }], damage: { element: "pois", hitShift: 1, min: { base: 16, bands: [16, 16, 32, 64, 80] }, max: { base: 24, bands: [16, 18, 36, 68, 84] }, duration: { base: 100, perLevel: 0 }, overTime: true },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 8, perLevel: 0 } }],
+  },
+  "oak-sage": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+    effects: [{ labelKey: "effectPartyLife", unit: "percent", shape: { kind: "linear", base: 30, perLevel: 5 } }, { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 30, perLevel: 2 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 15, perLevel: 1 } }],
+  },
+  "summon-spirit-wolf": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["raven"],
+    synergies: [], damage: { element: "cold", hitShift: 8, min: { base: 2, bands: [1, 3, 4, 5, 8] }, max: { base: 6, bands: [1, 3, 4, 5, 8] } },
+    effects: [{ labelKey: "effectMinions", unit: "count", shape: { kind: "linear", base: 1, perLevel: 1, cap: 5 } }, { labelKey: "effectMinionResist", unit: "percent", shape: { kind: "linear", base: 5, perLevel: 5, cap: 85 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 15, perLevel: 0 } }],
+  },
+  "carrion-vine": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["poison-creeper"],
+    synergies: [],
+    effects: [{ labelKey: "effectLifeSteal", unit: "percent", shape: { kind: "linear", base: 4, perLevel: 1 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 10, perLevel: 0 } }],
+  },
+  "heart-of-wolverine": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["oak-sage"],
+    synergies: [],
+    effects: [{ labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: 20, perLevel: 7 } }, { labelKey: "effectAttackRating", unit: "percent", shape: { kind: "linear", base: 25, perLevel: 7 } }, { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 30, perLevel: 2 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 20, perLevel: 1 } }],
+  },
+  "summon-dire-wolf": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["oak-sage", "summon-spirit-wolf"],
+    synergies: [],
+    effects: [{ labelKey: "effectMinions", unit: "count", shape: { kind: "linear", base: 1, perLevel: 1, cap: 3 } }, { labelKey: "effectMinionResist", unit: "percent", shape: { kind: "linear", base: 5, perLevel: 5, cap: 85 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 20, perLevel: 0 } }],
+  },
+  "solar-creeper": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["carrion-vine"],
+    synergies: [],
+    effects: [{ labelKey: "effectManaSteal", unit: "percent", shape: { kind: "linear", base: 4, perLevel: 1 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 14, perLevel: 1 } }],
+  },
+  "spirit-of-barbs": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["heart-of-wolverine"],
+    synergies: [],
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 25, perLevel: 1 } }],
+  },
+  "summon-grizzly": {
+    classSlug: "druid", tree: "druid-summoning", page: 1, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["summon-dire-wolf"],
+    synergies: [],
+    effects: [{ labelKey: "effectMinionDamageBonus", unit: "percent", shape: { kind: "linear", base: 25, perLevel: 10 } }, { labelKey: "effectMinionResist", unit: "percent", shape: { kind: "linear", base: 5, perLevel: 5, cap: 85 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 40, perLevel: 0 } }],
+  },
+  "werewolf": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+    effects: [{ labelKey: "effectAttackSpeed", unit: "percent", shape: { kind: "range", min: 10, max: 80 } }, { labelKey: "effectLifeBonus", unit: "percent", shape: { kind: "linear", base: 25, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 15, perLevel: 0 } }],
+  },
+  "lycanthropy": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: ["werewolf"],
+    synergies: [],
+    effects: [{ labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 1000, perLevel: 500 } }, { labelKey: "effectLifeBonus", unit: "percent", shape: { kind: "linear", base: 20, perLevel: 5 } }],
+  },
+  "werebear": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+    effects: [{ labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: 55, perLevel: 15 } }, { labelKey: "effectDefenseBonus", unit: "percent", shape: { kind: "linear", base: 40, perLevel: 10 } }, { labelKey: "effectLifeBonus", unit: "percent", shape: { kind: "linear", base: 75, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 15, perLevel: 0 } }],
+  },
+  "feral-rage": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["werewolf"],
+    synergies: [],
+    effects: [{ labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: 50, perLevel: 5 } }, { labelKey: "effectMoveSpeed", unit: "percent", shape: { kind: "range", min: 10, max: 70 } }, { labelKey: "effectCharges", unit: "count", shape: { kind: "step", base: 3, per: 2 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 3, perLevel: 0 } }],
+  },
+  "maul": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["werebear"],
+    synergies: [],
+    effects: [{ labelKey: "effectStun", unit: "percent", shape: { kind: "range", min: 10, max: 100 } }, { labelKey: "effectCharges", unit: "count", shape: { kind: "step", base: 3, per: 2 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 3, perLevel: 0 } }],
+  },
+  "rabies": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["feral-rage"],
+    synergies: [{ from: "poison-creeper", kinds: ["damage"] }], damage: { element: "pois", hitShift: 3, min: { base: 6, bands: [4, 5, 7, 11, 16] }, max: { base: 14, bands: [4, 5, 7, 11, 16] }, duration: { base: 100, perLevel: 10 }, overTime: true },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 10, perLevel: 0 } }],
+  },
+  "fire-claws": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["feral-rage", "maul"],
+    synergies: [{ from: "firestorm", kinds: ["damage"] }, { from: "molten-boulder", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 32, bands: [16, 24, 32, 40, 48] }, max: { base: 48, bands: [17, 25, 33, 41, 49] } },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 4, perLevel: 0 } }],
+  },
+  "hunger": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["fire-claws"],
+    synergies: [],
+    effects: [{ labelKey: "effectLifeSteal", unit: "percent", shape: { kind: "range", min: 50, max: 200 } }, { labelKey: "effectManaSteal", unit: "percent", shape: { kind: "range", min: 50, max: 200 } }, { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: -75, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 3, perLevel: 0 } }],
+  },
+  "shock-wave": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["maul"],
+    synergies: [{ from: "maul", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 10, bands: [3, 5, 7, 7, 7] }, max: { base: 20, bands: [3, 5, 7, 7, 7] } },
+    effects: [{ labelKey: "effectStun", unit: "frames", shape: { kind: "linear", base: 40, perLevel: 15 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 7, perLevel: 0 } }],
+  },
+  "fury": {
+    classSlug: "druid", tree: "shape-shifting", page: 2, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["rabies"],
+    synergies: [],
+    effects: [{ labelKey: "effectHits", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1, cap: 5 } }, { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: 100, perLevel: 17 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 4, perLevel: 0 } }],
+  },
+  "firestorm": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "fissure", kinds: ["damage"] }, { from: "molten-boulder", kinds: ["damage"] }], damage: { element: "fire", hitShift: 2, min: { base: 3, bands: [3, 5, 7, 14, 21] }, max: { base: 6, bands: [3, 6, 8, 15, 23] } },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 4, perLevel: 0 } }],
+  },
+  "molten-boulder": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["firestorm"],
+    synergies: [{ from: "firestorm", kinds: ["fire"] }, { from: "volcano", kinds: ["physical"] }], damage: { element: "fire", hitShift: 8, min: { base: 6, bands: [4, 7, 10, 13, 16] }, max: { base: 12, bands: [5, 8, 11, 14, 17] } }, physical: { hitShift: 8, min: { base: 6, bands: [4, 7, 10, 13, 16] }, max: { base: 12, bands: [5, 8, 11, 14, 17] } },
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 7, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 10, perLevel: 0.5 } }],
+  },
+  "arctic-blast": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "cyclone-armor", kinds: ["damage"] }], damage: { element: "cold", hitShift: 3, min: { base: 32, bands: [20, 26, 28, 32, 36] }, max: { base: 64, bands: [21, 27, 29, 33, 37] } },
+  },
+  "fissure": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["molten-boulder"],
+    synergies: [{ from: "firestorm", kinds: ["damage"] }, { from: "volcano", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 15, bands: [6, 12, 16, 18, 22] }, max: { base: 25, bands: [6, 12, 16, 19, 23] } },
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 7, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 15, perLevel: 0 } }],
+  },
+  "cyclone-armor": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["arctic-blast"],
+    synergies: [{ from: "hurricane", kinds: ["absorb"] }, { from: "tornado", kinds: ["absorb"] }, { from: "twister", kinds: ["absorb"] }],
+    effects: [{ labelKey: "effectAbsorbed", unit: "units", shape: { kind: "linear", base: 40, perLevel: 12 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 5, perLevel: 1 } }],
+  },
+  "twister": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["cyclone-armor"],
+    synergies: [{ from: "arctic-blast", kinds: ["duration"] }, { from: "hurricane", kinds: ["damage"] }, { from: "tornado", kinds: ["damage"] }], physical: { hitShift: 7, min: { base: 12, bands: [7, 11, 15, 18, 21] }, max: { base: 16, bands: [7, 11, 15, 18, 21] } },
+    effects: [{ labelKey: "effectMissiles", unit: "count", shape: { kind: "linear", base: 3, perLevel: 0 } }, { labelKey: "effectStun", unit: "frames", shape: { kind: "linear", base: 10, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 7, perLevel: 0 } }],
+  },
+  "volcano": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["fissure"],
+    synergies: [{ from: "armageddon", kinds: ["fire"] }, { from: "fissure", kinds: ["fire"] }, { from: "molten-boulder", kinds: ["physical"] }], damage: { element: "fire", hitShift: 8, min: { base: 8, bands: [2, 4, 6, 8, 11] }, max: { base: 10, bands: [2, 4, 6, 8, 13] } }, physical: { hitShift: 8, min: { base: 8, bands: [2, 4, 6, 8, 10] }, max: { base: 10, bands: [2, 4, 6, 8, 10] } },
+    effects: [{ labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 25, perLevel: 0 } }],
+  },
+  "tornado": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["twister"],
+    synergies: [{ from: "cyclone-armor", kinds: ["damage"] }, { from: "hurricane", kinds: ["damage"] }, { from: "twister", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 25, bands: [8, 14, 20, 24, 28] }, max: { base: 35, bands: [8, 15, 21, 25, 29] } },
+    effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 3, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 10, perLevel: 0 } }],
+  },
+  "armageddon": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["volcano"],
+    synergies: [{ from: "firestorm", kinds: ["fire"] }, { from: "fissure", kinds: ["duration"] }, { from: "molten-boulder", kinds: ["fire"] }, { from: "volcano", kinds: ["physical"] }], damage: { element: "fire", hitShift: 8, min: { base: 25, bands: [15, 20, 25, 31, 38] }, max: { base: 75, bands: [16, 22, 27, 34, 40] } }, physical: { hitShift: 8, min: { base: 18, bands: [10, 12, 15, 18, 22] }, max: { base: 26, bands: [11, 13, 16, 19, 23] } },
+    effects: [{ labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 250, perLevel: 0 } }, { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 8, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 35, perLevel: 0 } }],
+  },
+  "hurricane": {
+    classSlug: "druid", tree: "elemental", page: 3, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["tornado"],
+    synergies: [{ from: "cyclone-armor", kinds: ["duration"] }, { from: "tornado", kinds: ["damage"] }, { from: "twister", kinds: ["damage"] }], damage: { element: "cold", hitShift: 8, min: { base: 25, bands: [7, 10, 12, 14, 16] }, max: { base: 50, bands: [7, 10, 12, 14, 16] } },
+    effects: [{ labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 250, perLevel: 0 } }, { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 9, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 30, perLevel: 0 } }],
   },
   "amplify-damage": {
     classSlug: "necromancer", tree: "curses", page: 1, row: 1, column: 2,

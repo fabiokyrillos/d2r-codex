@@ -33,6 +33,7 @@ import { getBuilds, getFarmingAreas, getSkills } from "../lib/registry";
 import { DEFAULT_LOCALE } from "../lib/i18n/config";
 import type { Build, Skill, Slug } from "../lib/types";
 import {
+  petMaxFromColumn,
   capFromMinCalc,
   checkSkillGraph,
   requiredClosure,
@@ -42,6 +43,8 @@ import {
 import {
   ELEMENTAL_ATTACK_MODELS,
   damagePresentation,
+  damageAtLevel,
+  physicalAtLevel,
   unclassifiedElementalAttacks,
 } from "../lib/skills";
 import { MIN_PROSE_LENGTH, exitCodeFor, isUntranslatedProse } from "./content-rules";
@@ -1106,6 +1109,127 @@ console.log("\nCharges, skill tabs and rune composition");
     checkRuneComposition(entity("w", []), [{ ...runeSpec[0], slug: "absent" }])[0]?.rule ===
       "column-entity-missing",
   );
+}
+
+// ===========================================================================
+console.log("\nPhysical damage — the Druid's half of the elemental tree");
+// ===========================================================================
+{
+  /*
+   * Tornado's real row: 25-35 at HitShift 8, growing 8 a level through the
+   * first band. Written out rather than imported so a change to the graph moves
+   * the assertion and is seen, instead of the assertion following it.
+   */
+  const tornado = {
+    physical: {
+      hitShift: 8,
+      min: { base: 25, bands: [8, 14, 20, 24, 28] },
+      max: { base: 35, bands: [8, 15, 21, 25, 29] },
+    },
+  } as const;
+
+  check("a physical-only node has no elemental damage to read", damageAtLevel(
+    { ...tornado, requiredLevel: 24, maxLevel: 20 } as unknown as SkillGraphNode,
+    1,
+  ) === undefined);
+
+  check("physical damage at level 1 is the base", (() => {
+    const d = physicalAtLevel(tornado, 1);
+    return d?.min === 25 && d?.max === 35;
+  })());
+
+  /*
+   * Level 9 is the first level of the second band, so it is the level a
+   * boundary error moves. Eight levels of the first band (2-8 inclusive, seven
+   * of them) plus one of the second: 25 + 7*8 + 14 = 95.
+   */
+  check("physical damage crosses the first band boundary at level 9", (() => {
+    const d = physicalAtLevel(tornado, 9);
+    return d?.min === 95 && d?.max === 106;
+  })());
+
+  // The mutation: a table whose bands are all zero must not still climb.
+  check("a mutated node with no bands stops growing", (() => {
+    const flat = { physical: { ...tornado.physical, min: { base: 25, bands: [0, 0, 0, 0, 0] }, max: { base: 35, bands: [0, 0, 0, 0, 0] } } };
+    return physicalAtLevel(flat, 20)?.min === 25;
+  })());
+
+  /*
+   * HitShift is not decoration. Twister's 12 at HitShift 7 is the 6 the game
+   * shows; reading the column raw doubles the class's stun skill.
+   */
+  check("HitShift halves a physical table below 8", (() => {
+    const twister = { physical: { hitShift: 7, min: { base: 12, bands: [7, 11, 15, 18, 21] }, max: { base: 16, bands: [7, 11, 15, 18, 21] } } };
+    const d = physicalAtLevel(twister, 1);
+    return d?.min === 6 && d?.max === 8;
+  })());
+
+  check("a node with no physical table returns nothing", physicalAtLevel({}, 12) === undefined);
+
+  /*
+   * The presentation bug this slice fixes. Before `physical` was read,
+   * `damagePresentation` saw no elemental table on Tornado, found it was not an
+   * attack either, and answered "none" -- a page telling the reader the class's
+   * best skill deals no damage.
+   */
+  check(
+    "a spell with only a physical table presents a table",
+    damagePresentation({ kind: "spell" }, tornado) === "table",
+  );
+  check(
+    "a spell with neither table still presents none",
+    damagePresentation({ kind: "spell" }, {}) === "none",
+  );
+  check(
+    "an authored model still outranks both tables",
+    damagePresentation({ kind: "attack", damageModel: "weapon-plus-element" }, tornado) ===
+      "weapon-plus-element",
+  );
+}
+
+// ===========================================================================
+console.log("\nMinion counts — the shape the Druid's wolves and ravens use");
+// ===========================================================================
+{
+  // Raven: min(lvl, par2) with par2 = 5. One per level to a ceiling of five.
+  const raven = petMaxFromColumn("min(lvl,par2)", "Raven petmax", (n) => (n === 2 ? 5 : 0));
+  check(
+    "min(lvl, parN) reads its ceiling from the row",
+    raven.kind === "linear" && raven.base === 1 && raven.perLevel === 1 && raven.cap === 5,
+  );
+
+  // The ceiling is a parameter, so a different row gives a different ceiling.
+  const direWolf = petMaxFromColumn("min(lvl,par3)", "Summon Dire Wolf petmax", (n) =>
+    n === 3 ? 3 : 0,
+  );
+  check(
+    "...and a different parameter gives a different ceiling",
+    direWolf.kind === "linear" && direWolf.cap === 3,
+  );
+
+  // The mutation: without a reader the ceiling would have to be invented.
+  check("the shape refuses when no parameter reader is supplied", (() => {
+    try {
+      petMaxFromColumn("min(lvl,par2)", "Raven petmax");
+      return false;
+    } catch {
+      return true;
+    }
+  })());
+
+  // The shapes already in use must keep working unchanged.
+  check("the plain `lvl` shape is untouched", (() => {
+    const revive = petMaxFromColumn("lvl", "Revive petmax");
+    return revive.kind === "linear" && revive.base === 1 && revive.perLevel === 1 && revive.cap === undefined;
+  })());
+  check("an unknown shape still refuses", (() => {
+    try {
+      petMaxFromColumn("min(lvl,7)", "made up");
+      return false;
+    } catch {
+      return true;
+    }
+  })());
 }
 
 // ===========================================================================

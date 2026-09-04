@@ -207,6 +207,46 @@ export function synergyEdges(): {
  * Validated against Blessed Hammer, whose level 20 minimum works out to 196 —
  * matching the value published for the skill without synergies.
  */
+/**
+ * One banded quantity at a level, before any element-specific handling.
+ *
+ * Shared by the elemental and physical tables because the game shares it: the
+ * five bands are the same five, and `HitShift` divides both. Twister's physical
+ * `MinDam` of 12 at `HitShift` 7 is the 6 the game shows, exactly as Firestorm's
+ * `EMin` of 3 at `HitShift` 2 is a fraction of a point.
+ *
+ * Exported so a test can plant a mutation against the boundaries rather than
+ * against a copy of them.
+ */
+export function bandedTotal(base: number, bands: readonly number[], level: number): number {
+  let total = base;
+  for (let l = 2; l <= level; l++) {
+    const band = l <= 8 ? 0 : l <= 16 ? 1 : l <= 22 ? 2 : l <= 28 ? 3 : 4;
+    total += bands[band] ?? 0;
+  }
+  return total;
+}
+
+/**
+ * The skill's own physical damage at a level, where it has any.
+ *
+ * Separate from `damageAtLevel` rather than folded into it, because a skill can
+ * have both and they are two different numbers: Armageddon deals 18-26 physical
+ * *and* 25-75 fire at level 1, and adding them would publish a number the game
+ * never shows. There is no duration case here — the over-time reading belongs to
+ * poison, and no physical table in the extraction carries one.
+ */
+export function physicalAtLevel(
+  node: Pick<SkillGraphNode, "physical">,
+  level: number,
+): { min: number; max: number } | undefined {
+  const p = node.physical;
+  if (!p) return undefined;
+  const scale = (base: number, bands: readonly number[]) =>
+    Math.floor(bandedTotal(base, bands, level) * Math.pow(2, p.hitShift - 8));
+  return { min: scale(p.min.base, p.min.bands), max: scale(p.max.base, p.max.bands) };
+}
+
 export function damageAtLevel(
   node: SkillGraphNode,
   level: number,
@@ -214,11 +254,7 @@ export function damageAtLevel(
   if (!node.damage) return undefined;
   const frames = durationAtLevel(node, level)?.frames;
   const scale = (base: number, bands: readonly number[]) => {
-    let total = base;
-    for (let l = 2; l <= level; l++) {
-      const band = l <= 8 ? 0 : l <= 16 ? 1 : l <= 22 ? 2 : l <= 28 ? 3 : 4;
-      total += bands[band] ?? 0;
-    }
+    const total = bandedTotal(base, bands, level);
     // HitShift is a power-of-two divisor expressed as an exponent around 8.
     const perHit = total * Math.pow(2, node.damage!.hitShift - 8);
     /*
@@ -417,13 +453,21 @@ export const ELEMENTAL_ATTACK_MODELS = [
 
 export function damagePresentation(
   skill: Pick<Skill, "kind" | "damageModel">,
-  node: Pick<SkillGraphNode, "damage">,
+  node: Pick<SkillGraphNode, "damage" | "physical">,
 ): DamagePresentation {
   // Authored first, unconditionally. This used to sit behind `node.damage`,
   // which was harmless while the only two models belonged to skills with no
   // table — and would have silently outranked every model that does have one.
   if (skill.damageModel) return skill.damageModel;
-  if (node.damage) return "table";
+  /*
+   * Either table counts, and the physical one has to be here rather than
+   * implied. Tornado carries no `EType` and no `EMin` at all — every point of
+   * its damage is in the physical columns — so a check on `node.damage` alone
+   * sends the class's best skill down to `kind === "attack"`, misses that too
+   * because it is cast rather than swung, and publishes "none" on a page whose
+   * whole subject is how much damage it does.
+   */
+  if (node.damage || node.physical) return "table";
   if (skill.kind === "attack") return "weapon";
   return "none";
 }

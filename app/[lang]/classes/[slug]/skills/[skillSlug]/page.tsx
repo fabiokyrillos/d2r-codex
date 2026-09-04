@@ -28,6 +28,7 @@ import {
   CLASSES_WITH_SKILL_PAGES,
   SKILL_GRAPH,
   damageAtLevel,
+  physicalAtLevel,
   damagePresentation,
   dependents,
   durationAtLevel,
@@ -313,24 +314,45 @@ export default async function SkillPage(
         )}
 
         <Section title={t.skills.progressionTitle} description={t.skills.progressionBody}>
-          {node.damage ? (
+          {node.damage || node.physical ? (
             <>
+              {/*
+               * Up to two damage columns, because a skill can deal two damages
+               * at once and they are not addable. Armageddon lands 18-26
+               * physical and 25-75 fire on the same meteor; Tornado lands
+               * nothing but physical and carries no elemental table at all, so
+               * a table hard-wired to one column would print an em dash for
+               * every level of the class's best skill.
+               */}
               <DataTable
-                headers={
-                  node.damage.overTime
-                    ? [t.skills.colLevel, t.skills.colDamage, t.skills.colDuration]
-                    : [t.skills.colLevel, t.skills.colDamage]
-                }
+                headers={[
+                  t.skills.colLevel,
+                  ...(node.physical ? [t.skills.colPhysical] : []),
+                  ...(node.damage ? [t.skills.colDamage] : []),
+                  ...(node.damage?.overTime ? [t.skills.colDuration] : []),
+                ]}
                 rows={levels.map((level) => {
                   const d = damageAtLevel(node, level);
+                  const ph = physicalAtLevel(node, level);
                   const window = durationAtLevel(node, level);
                   return [
                     <span key="l" className="font-mono">
                       {level}
                     </span>,
-                    <span key="d" className="font-mono">
-                      {d ? `${d.min}–${d.max}` : "—"}
-                    </span>,
+                    ...(node.physical
+                      ? [
+                          <span key="p" className="font-mono">
+                            {ph ? `${ph.min}–${ph.max}` : "—"}
+                          </span>,
+                        ]
+                      : []),
+                    ...(node.damage
+                      ? [
+                          <span key="d" className="font-mono">
+                            {d ? `${d.min}–${d.max}` : "—"}
+                          </span>,
+                        ]
+                      : []),
                     // Poison's damage means nothing without the window it lands
                     // across, and the window grows with the skill.
                     ...(window
@@ -343,7 +365,7 @@ export default async function SkillPage(
                   ];
                 })}
               />
-              {node.damage.overTime && (
+              {node.damage?.overTime && (
                 <p className="mt-3 text-sm leading-relaxed text-pretty text-ink-muted">
                   <RichText>
                     {node.damage.duration?.perLevel === 0

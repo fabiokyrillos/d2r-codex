@@ -78,7 +78,7 @@ const SOURCE_REPO = "blizzhackers/d2data";
  * the tree on the class page, the tree on every build page, the sitemap entries
  * and the search index at once -- there is no second list to keep in step.
  */
-const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer" } as const;
+const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer", dru: "druid" } as const;
 
 /**
  * The exact commit the shipped graph was extracted from.
@@ -395,6 +395,169 @@ const EFFECTS: Record<string, (s: RawSkill) => EffectSpec[]> = {
     { labelKey: "effectMinions", unit: "count", shape: petMaxFromColumn(s.petmax, `${s.skill} petmax`) },
     { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
   ],
+  // -- Druid ---------------------------------------------------------------
+  /*
+   * Three trees, three habits.
+   *
+   * The elemental tree publishes what a reader positions with: how wide the
+   * effect is and how long it stands. Firestorm's wave count and Volcano's
+   * missile range are left out -- both are flat parameters that never move with
+   * a point, and a row reading the same at level 1 and level 20 is noise on a
+   * page whose whole subject is what a point buys.
+   *
+   * The shapeshifting tree publishes percentages, and the two charge skills
+   * publish the charge count as a `step`: `calc2` is `lvl/par7 + par8` with
+   * integer division, three charges at level 1 and one more every two levels.
+   * Reading that as a slope gives three and a half charges at level 2, which
+   * the game never grants.
+   *
+   * The summoning tree publishes counts and the aura numbers. What it does not
+   * publish is the mutual bonus between the wolves and the bear: those read
+   * each other's *effective* level, are named in SOFT_LEVEL_SYNERGIES for that
+   * reason, and are on the pages in prose.
+   */
+  // ln12 = Param1 plus Param2 per level, the absorbed pool. Synergised by the
+  // three wind skills, which the graph carries as edges.
+  "cyclone-armor": (s) => [
+    { labelKey: "effectAbsorbed", unit: "units", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+  ],
+  // aurarangecalc: par1 -- the explosion, not the roll.
+  "molten-boulder": (s) => [
+    { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 1), perLevel: 0 } },
+  ],
+  // calc1: par1
+  fissure: (s) => [
+    { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 1), perLevel: 0 } },
+  ],
+  /*
+   * calc1: par1 missiles. calc2: par2 + par7 * Arctic Blast, so the stun has a
+   * flat base and everything above it comes from the synergy the graph already
+   * draws. Publishing par2 with a slope would count that synergy twice.
+   */
+  twister: (s) => [
+    { labelKey: "effectMissiles", unit: "count", shape: { kind: "linear", base: par(s, 1), perLevel: 0 } },
+    { labelKey: "effectStun", unit: "frames", shape: { kind: "linear", base: par(s, 2), perLevel: 0 } },
+  ],
+  // aurarangecalc: par2, the radius the funnel damages as it travels.
+  tornado: (s) => [
+    { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 2), perLevel: 0 } },
+  ],
+  /*
+   * auralencalc: ln12 plus Fissure times par7 for Armageddon, and plus Cyclone
+   * Armor times par7 for Hurricane. Param2 is zero on both: the duration does
+   * not grow with the skill's own level at all, only with the synergy. That is
+   * the number worth publishing -- a reader who maxes Hurricane and expects it
+   * to last longer is the mistake this row prevents.
+   */
+  armageddon: (s) => [
+    { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+    { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 3), perLevel: 0 } },
+  ],
+  hurricane: (s) => [
+    { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+    { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 3), perLevel: 0 } },
+  ],
+
+  // aurastatcalc2: dm34, a diminishing curve from Param3 to Param4.
+  // aurastatcalc4: par2 plus Lycanthropy's ln34 -- the flat share is this one's.
+  werewolf: (s) => [
+    { labelKey: "effectAttackSpeed", unit: "percent", shape: { kind: "range", min: par(s, 3), max: par(s, 4) } },
+    { labelKey: "effectLifeBonus", unit: "percent", shape: { kind: "linear", base: par(s, 2), perLevel: 0 } },
+  ],
+  // auralencalc on both forms is 1000 plus this skill's ln12, and both read its
+  // ln34 for life. One skill, two forms, and the only place either number grows.
+  lycanthropy: (s) => [
+    { labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+    { labelKey: "effectLifeBonus", unit: "percent", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+  ],
+  // aurastatcalc1: ln12, aurastatcalc2: ln34, aurastatcalc3: par5 plus Lycanthropy.
+  werebear: (s) => [
+    { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+    { labelKey: "effectDefenseBonus", unit: "percent", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+    { labelKey: "effectLifeBonus", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: 0 } },
+  ],
+  /*
+   * The two charge skills, and the line this table draws through them.
+   *
+   * Published: what a level buys outright. Feral Rage's own damage bonus
+   * (`calc1 = ln56`, the same shape as Fury's), its velocity (`aurastatcalc1 =
+   * dm34`, a diminishing curve in the level), Maul's stun (`dm56`) and both
+   * charge counts (`calc2 = lvl/par7 + par8`).
+   *
+   * Not published: the per-charge numbers. Maul's `aurastatcalc1` is
+   * `lvl * par3` under a parameter the game calls "Damage % per Charge", and
+   * Feral Rage's `aurastatcalc2` is `par2 * lvl` under "Lifesteal % per Charge".
+   * Both are a value *for one charge*, and how the state stacks charges is in
+   * the engine and in no column read here. A row headed "Damage dealt" reading
+   * 600% at level 20 would be either a sixth of the truth or six times it,
+   * depending on a fact this generator does not have. The pages say what the
+   * charges do in a sentence instead.
+   */
+  "feral-rage": (s) => [
+    { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+    { labelKey: "effectMoveSpeed", unit: "percent", shape: { kind: "range", min: par(s, 3), max: par(s, 4) } },
+    { labelKey: "effectCharges", unit: "count", shape: { kind: "step", base: par(s, 8), per: par(s, 7) } },
+  ],
+  maul: (s) => [
+    { labelKey: "effectStun", unit: "percent", shape: { kind: "range", min: par(s, 5), max: par(s, 6) } },
+    { labelKey: "effectCharges", unit: "count", shape: { kind: "step", base: par(s, 8), per: par(s, 7) } },
+  ],
+  // calc2 and calc3: dm12 and dm34. calc1: par5, and it is negative on purpose
+  // -- Hunger trades three quarters of the hit for the steal.
+  hunger: (s) => [
+    { labelKey: "effectLifeSteal", unit: "percent", shape: { kind: "range", min: par(s, 1), max: par(s, 2) } },
+    { labelKey: "effectManaSteal", unit: "percent", shape: { kind: "range", min: par(s, 3), max: par(s, 4) } },
+    { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: 0 } },
+  ],
+  // calc4: ln12, the stun. calc1 is a literal five waves and does not move.
+  "shock-wave": (s) => [
+    { labelKey: "effectStun", unit: "frames", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+  ],
+  // calc1: min(par5 + lvl - 1, par6). The cap is a parameter, so it is read from
+  // the row the way Strafe's is -- not through capFromMinCalc, which takes only
+  // a literal.
+  fury: (s) => [
+    { labelKey: "effectHits", unit: "count", shape: { kind: "linear", base: par(s, 5), perLevel: 1, cap: par(s, 6) } },
+    { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+  ],
+
+  // petmax: min(lvl, par2). calc3: ln56 -- a raven leaves after that many hits.
+  raven: (s) => [
+    { labelKey: "effectMinions", unit: "count", shape: petMaxFromColumn(s.petmax, `${s.skill} petmax`, (n) => par(s, n)) },
+    { labelKey: "effectSummonHits", unit: "count", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+  ],
+  // The two totems that buff. Param1 and Param2 must match the aura's own row,
+  // and the game says so in the parameter names.
+  "oak-sage": (s) => [
+    { labelKey: "effectPartyLife", unit: "percent", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+    { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 7), perLevel: par(s, 8) } },
+  ],
+  "heart-of-wolverine": (s) => [
+    { labelKey: "effectDamageDealt", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+    { labelKey: "effectAttackRating", unit: "percent", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+    { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: par(s, 7), perLevel: par(s, 8) } },
+  ],
+  // petmax: min(lvl, par3) on both wolves -- five spirit wolves, three dire.
+  // aurastatcalc1 to 4: min(par8 times lvl, 85), one entry per element.
+  "summon-spirit-wolf": (s) => [
+    { labelKey: "effectMinions", unit: "count", shape: petMaxFromColumn(s.petmax, `${s.skill} petmax`, (n) => par(s, n)) },
+    { labelKey: "effectMinionResist", unit: "percent", shape: { kind: "linear", base: par(s, 8), perLevel: par(s, 8), cap: 85 } },
+  ],
+  "summon-dire-wolf": (s) => [
+    { labelKey: "effectMinions", unit: "count", shape: petMaxFromColumn(s.petmax, `${s.skill} petmax`, (n) => par(s, n)) },
+    { labelKey: "effectMinionResist", unit: "percent", shape: { kind: "linear", base: par(s, 8), perLevel: par(s, 8), cap: 85 } },
+  ],
+  "summon-grizzly": (s) => [
+    { labelKey: "effectMinionDamageBonus", unit: "percent", shape: { kind: "linear", base: par(s, 1), perLevel: par(s, 2) } },
+    { labelKey: "effectMinionResist", unit: "percent", shape: { kind: "linear", base: par(s, 8), perLevel: par(s, 8), cap: 85 } },
+  ],
+  // The two harvesting vines. Param5 and Param6 must match the cycler's own row.
+  "carrion-vine": (s) => [
+    { labelKey: "effectLifeSteal", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+  ],
+  "solar-creeper": (s) => [
+    { labelKey: "effectManaSteal", unit: "percent", shape: { kind: "linear", base: par(s, 5), perLevel: par(s, 6) } },
+  ],
 };
 
 /**
@@ -418,7 +581,95 @@ const PUBLISHES_MANA = new Set<string>([
   "poison-explosion", "bone-spear", "bone-prison", "poison-nova", "bone-spirit",
   "raise-skeleton", "clay-golem", "raise-skeletal-mage", "blood-golem",
   "iron-golem", "fire-golem", "revive",
+  /*
+   * The Druid, twenty-eight of thirty. Mana is the whole of the Wind Druid's
+   * sustain question -- Tornado is cast continuously and Hurricane re-cast on a
+   * timer -- so the cost belongs on the page rather than in prose.
+   *
+   * Two rows are left off deliberately.
+   *
+   * Lycanthropy costs nothing at all: `mana`, `lvlmana` and `minmana` are every
+   * one of them zero, and `manaFromRow` returns undefined rather than a cost of
+   * nought.
+   *
+   * Arctic Blast costs 0.375 mana at `manashift` 2 -- which is correct, and is
+   * per *frame*, because the skill is channelled. A row reading "Mana: 0.4"
+   * under the same heading as Hurricane's 30 reads as cheap when it is roughly
+   * nine mana a second. The shapes here carry no per-second unit, so the number
+   * stays in prose where a sentence can say what it is.
+   */
+  "firestorm", "molten-boulder", "fissure", "cyclone-armor", "twister",
+  "volcano", "tornado", "armageddon", "hurricane",
+  "werewolf", "werebear", "feral-rage", "maul", "rabies", "fire-claws",
+  "hunger", "shock-wave", "fury",
+  "raven", "poison-creeper", "oak-sage", "summon-spirit-wolf", "carrion-vine",
+  "heart-of-wolverine", "summon-dire-wolf", "solar-creeper", "spirit-of-barbs",
+  "summon-grizzly",
 ]);
+
+/**
+ * Skills whose `MinDam`/`MaxDam` columns are physical damage the skill itself
+ * deals, and which therefore publish a physical table beside the elemental one.
+ *
+ * An allow-list, for the same reason `EFFECTS` is one: nothing in the columns
+ * says what the number *is*. Four different meanings share this pair of columns
+ * across the rows in scope, and only the first is the skill's own damage:
+ *
+ *   the skill's damage      Tornado's 25-35, Armageddon's 18-26 alongside its
+ *                           fire. Published.
+ *   a minion's damage       Raven 2-4, Summon Dire Wolf 7-12, Summon Grizzly
+ *                           30-60. Real numbers, but they belong to the pet, and
+ *                           every other minion figure on this site is prose read
+ *                           from `monstats`. Excluded.
+ *   a bonus to another      Holy Shield's 3-6, which is added to Smite. A buff
+ *   skill                   that deals no damage would publish a damage range.
+ *                           Excluded.
+ *   something that is not   Spirit of Barbs' 32, the share of damage the totem
+ *   a range at all          returns. The row has no `MaxDam` whatsoever, which
+ *                           is the tell. Excluded.
+ *
+ * Magic Arrow is excluded by rule rather than by name: its missile declares
+ * `EType = mag`, so those columns are delivered as magic damage and the site
+ * already models the skill as `weapon-converted-to-element`. Calling them
+ * physical would contradict the page above them.
+ *
+ * `assertPhysicalClassified` below refuses any in-scope row carrying both
+ * columns that appears in neither list, so a class added later cannot publish
+ * silence where a damage table belongs, or a damage table where a bonus does.
+ */
+const PUBLISHES_PHYSICAL = new Set<string>([
+  "molten-boulder", "twister", "shock-wave", "volcano", "tornado", "armageddon",
+]);
+
+/** Rows whose `MinDam`/`MaxDam` is deliberately not published, and why. */
+const PHYSICAL_IS_NOT_THE_SKILLS_OWN: Record<string, string> = {
+  "holy-shield": "a damage bonus written onto Smite, not damage the buff deals",
+  raven: "the raven's damage per hit, which belongs to the pet",
+  "summon-dire-wolf": "the wolf's damage per hit, which belongs to the pet",
+  "summon-grizzly": "the bear's damage per hit, which belongs to the pet",
+  "spirit-of-barbs": "the share of damage the totem returns; the row has no MaxDam at all",
+};
+
+/**
+ * Stops the generator on a row whose physical columns nobody has classified.
+ *
+ * The two lists above are decisions. This is what keeps them decisions: a new
+ * class, or a re-pinned extraction that adds these columns to a row that did
+ * not have them, fails here rather than quietly picking one of the four
+ * meanings and being wrong three times out of four.
+ */
+function assertPhysicalClassified(slug: string, s: RawSkill, missileEType: string | undefined): void {
+  const has = (c: string) => typeof s[c] === "number" && s[c] !== 0;
+  if (!has("MinDam") && !has("MaxDam")) return;
+  if (missileEType) return; // delivered as that element; see Magic Arrow above.
+  if (PUBLISHES_PHYSICAL.has(slug)) return;
+  if (slug in PHYSICAL_IS_NOT_THE_SKILLS_OWN) return;
+  throw new Error(
+    `${s.skill}: carries MinDam/MaxDam and is in neither PUBLISHES_PHYSICAL nor ` +
+      `PHYSICAL_IS_NOT_THE_SKILLS_OWN. Those columns mean four different things across the ` +
+      `rows in scope; decide which one this is rather than letting it default.`,
+  );
+}
 
 const asArray = <T,>(j: unknown): T[] => (Array.isArray(j) ? j : Object.values(j as object)) as T[];
 
@@ -528,6 +779,23 @@ async function main() {
       .map((k) => s[k])
       .filter((v): v is string => typeof v === "string" && v.length > 0);
 
+  /**
+   * The element a skill's missile delivers, where it declares one.
+   *
+   * Read for one purpose: deciding whether `MinDam`/`MaxDam` is physical. A
+   * missile with an `EType` carries the skill's flat damage as that element
+   * instead — Magic Arrow's 1-1 is magic, not physical — and the physical table
+   * must not be published beside it.
+   */
+  const eTypeByMissile = new Map<string, string>();
+  for (const m of missiles) {
+    if (m.EType) eTypeByMissile.set(String(m.Missile).toLowerCase(), m.EType);
+  }
+  const missileETypeFor = (s: RawSkill & Record<string, unknown>) =>
+    missilesOf(s)
+      .map((name) => eTypeByMissile.get(name.toLowerCase()))
+      .find((e) => e !== undefined);
+
   const conversionFor = (s: RawSkill & Record<string, unknown>) => {
     const found = missilesOf(s)
       .map((name) => conversionByMissile.get(name.toLowerCase()))
@@ -586,6 +854,23 @@ async function main() {
   /** D2 adds a different amount per level inside five bands. */
   const bands = (s: RawSkill, k: "EMin" | "EMax") =>
     [1, 2, 3, 4, 5].map((i) => (s[`${k}Lev${i}` as keyof RawSkill] as number | undefined) ?? 0);
+
+  /**
+   * The same five bands for physical damage, whose columns are spelled
+   * differently: `MinDam` grows through `MinLevDam1..5`, not `MinDamLev1..5`.
+   * Two helpers rather than one clever one, so neither can silently read the
+   * wrong family of columns and return five zeroes.
+   */
+  const physBands = (s: RawSkill, k: "MinLevDam" | "MaxLevDam") =>
+    [1, 2, 3, 4, 5].map((i) => (s[`${k}${i}`] as number | undefined) ?? 0);
+
+  const num = (s: RawSkill, column: "MinDam" | "MaxDam") => {
+    const v = s[column];
+    if (typeof v !== "number") {
+      throw new Error(`${s.skill}: ${column} is missing, and the physical table is read from it`);
+    }
+    return v;
+  };
 
   /*
    * Elemental duration, taken only where it decides the damage.
@@ -662,6 +947,7 @@ async function main() {
       const cell = cellByDesc.get(String(s.skilldesc))!;
       const classSlug = classOf[s.charclass as keyof typeof classOf];
       const hasDamage = s.EType !== undefined && s.EType !== "" && s.EMin !== undefined;
+      assertPhysicalClassified(slug, s, missileETypeFor(s));
       return {
         slug,
         classSlug,
@@ -687,6 +973,13 @@ async function main() {
               min: { base: s.EMin ?? 0, bands: bands(s, "EMin") },
               max: { base: s.EMax ?? s.EMin ?? 0, bands: bands(s, s.EMax === undefined ? "EMin" : "EMax") },
               duration: duration(s),
+            }
+          : undefined,
+        physical: PUBLISHES_PHYSICAL.has(slug)
+          ? {
+              hitShift: s.HitShift ?? 8,
+              min: { base: num(s, "MinDam"), bands: physBands(s, "MinLevDam") },
+              max: { base: num(s, "MaxDam"), bands: physBands(s, "MaxLevDam") },
             }
           : undefined,
       };
@@ -758,6 +1051,13 @@ async function main() {
         ` }`
       : "";
 
+  const phys = (ph: (typeof rows)[number]["physical"]) =>
+    ph
+      ? `, physical: { hitShift: ${ph.hitShift}, ` +
+        `min: { base: ${ph.min.base}, bands: [${ph.min.bands.join(", ")}] }, ` +
+        `max: { base: ${ph.max.base}, bands: [${ph.max.bands.join(", ")}] } }`
+      : "";
+
   const body = rows
     .map(
       (r) =>
@@ -771,7 +1071,7 @@ async function main() {
               `{ from: "${s.from}", kinds: [${s.kinds.map((k) => `"${k}"`).join(", ")}]` +
               `${s.magnitude === undefined ? "" : `, magnitude: ${s.magnitude}`} }`,
           )
-          .join(", ")}]${dmg(r.damage)}${conv(r.conversion)},${eff(r.effects)}\n` +
+          .join(", ")}]${dmg(r.damage)}${phys(r.physical)}${conv(r.conversion)},${eff(r.effects)}\n` +
         `  },`,
     )
     .join("\n");
@@ -941,6 +1241,31 @@ export interface SkillGraphNode {
      * its damage lands at once, so multiplying it would be a fabrication.
      */
     readonly overTime?: boolean;
+  };
+  /**
+   * Physical damage the skill deals in its own right, alongside \`damage\`
+   * rather than instead of it.
+   *
+   * The Druid's elemental tree is where this earns its keep and why it exists.
+   * Tornado and Twister carry nothing but physical -- no \`EType\`, no \`EMin\` --
+   * so a graph reading only the elemental columns publishes a damage table of
+   * nothing for the class's flagship skill. Armageddon carries both at once,
+   * 18-26 physical and 25-75 fire, and the two are separately synergised: it
+   * takes its physical from Volcano and its fire from Molten Boulder and
+   * Firestorm.
+   *
+   * Scaled by the same \`hitShift\` as elemental damage, which is not an
+   * assumption but a check: Twister's \`MinDam\` of 12 at \`HitShift\` 7 is the
+   * 6 the game shows, and Tornado's 25 at 8 is 25.
+   *
+   * Present only for the skills \`PUBLISHES_PHYSICAL\` names. These columns carry
+   * a minion's damage, a bonus to a different skill, and a damage-return share
+   * on other rows, and the generator refuses a row it cannot place.
+   */
+  readonly physical?: {
+    readonly hitShift: number;
+    readonly min: BandedScale;
+    readonly max: BandedScale;
   };
   /**
    * Physical damage the skill turns into an element rather than adding to it.

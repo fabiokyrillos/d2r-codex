@@ -81,6 +81,27 @@ export const skillTreesPtBr: Overlay<SkillTreeCopy> = {
     theme:
       "Um monstro carrega exatamente uma maldição: lançar a segunda substitui a primeira. É essa regra que transforma a árvore num conjunto de escolhas em vez de um empilhamento, e é por isso que a discussão nunca é qual maldição é a mais forte, e sim qual você está abrindo mão de usar.",
   },
+  // -------------------------------------------------------------------------
+  // Druid
+  // -------------------------------------------------------------------------
+  elemental: {
+    name: "Elemental",
+    summary: "Fogo de um lado, vento e frio do outro, e nenhuma sobreposição entre eles.",
+    theme:
+      "Duas escolas de dano que dividem uma árvore e mais nada. A metade de fogo — Firestorm, Molten Boulder, Fissure, Volcano, Armageddon — age pelo chão e faz sinergia consigo mesma. A metade de vento — Twister, Tornado, Hurricane — é dano quase todo *físico* com uma tempestade de frio por cima, e é a única razão de o Druid lidar com as imunidades do Hell melhor que qualquer outro caster. Cyclone Armor fica entre as duas e pertence às duas.",
+  },
+  "shape-shifting": {
+    name: "Shape Shifting",
+    summary: "Duas formas, e a troca que cada uma faz.",
+    theme:
+      "Werewolf compra velocidade de ataque e Werebear compra dano, defesa e o direito de não ser interrompido. Tudo acima delas é um ataque corpo a corpo que só funciona numa forma ou na outra, e Lycanthropy — a skill mais barata da classe — alimenta as duas. O custo é que transformar-se tranca você fora das conjurações, e é por isso que a resposta de um shapeshifter a uma imunidade tem de estar na arma.",
+  },
+  "druid-summoning": {
+    name: "Summoning",
+    summary: "Cinco corvos, cinco lobos, um urso, duas vinhas e um totem — mas só alguns de cada vez.",
+    theme:
+      "Três grupos que não dividem limite: aves, lobos, e um de cada um dos demais. Os totens são a razão de a árvore aparecer em builds que não invocam nada — Oak Sage é um bônus fixo de vida para o grupo inteiro e Heart of Wolverine um bônus fixo de dano, e ambos custam um ponto mais o pré-requisito.",
+  },
 };
 
 export const skillsPtBr: Overlay<SkillCopy> = {
@@ -1037,6 +1058,324 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "Ela cobre **veneno além dos três elementos**, o que nenhuma aura e nenhuma outra maldição faz — e veneno não tem Mastery, então esta é toda a resposta de resistência de uma build de veneno.",
       "Contra um monstro *imune* ao elemento ela entra com um quinto da força — e, ao contrário de uma mastery ou de um −% to Enemy Resistance, ainda assim quebra a imunidade se um quinto bastar. No teto de −70% da skill esse quinto é −14, que alcança 113%; com um ponto seco é −5, que alcança 104%.",
       "É uma maldição como qualquer outra: substitui o Amplify Damage no alvo em vez de se somar a ele.",
+    ],
+  },
+  // -------------------------------------------------------------------------
+  // Druid — Elemental
+  // -------------------------------------------------------------------------
+  firestorm: {
+    summary: "Três ondas de fogo que rastejam pelo chão para longe de você.",
+    mechanics: [
+      "Ela cria **três** ondas e essa contagem nunca muda — o parâmetro por trás dela não tem termo por nível, então um Firestorm maximizado lança exatamente tantas quanto um de um ponto.",
+      "As ondas seguem pelo piso e se afastam uma da outra conforme viajam, o que a torna forte num corredor e ruim contra um alvo único parado à distância.",
+      "É a única skill de dano de nível 1 da classe com um par de sinergias que compensa depois, e é nela que um Fire Druid sobe de nível antes de Molten Boulder chegar no 6.",
+    ],
+    synergyBonuses: ["+23% de dano de fogo por nível", "+23% de dano de fogo por nível"],
+  },
+  "molten-boulder": {
+    summary: "Uma rocha que rola, empurra inimigos para trás e explode em fogo quando para.",
+    mechanics: [
+      "Ela causa **dano físico e de fogo separadamente**, e o jogo faz sinergia com os dois separadamente — Volcano aumenta o físico, Firestorm o fogo. Ler como um número só é como um ponto acaba na skill errada.",
+      "A rocha **empurra para trás** tudo por onde passa. É a maior parte do valor dela enquanto se sobe de nível: compra distância para um personagem frágil continuar conjurando.",
+      "Ela explode com um raio de **7** quando para ou encosta em algo sólido.",
+    ],
+    synergyBonuses: ["+12% de dano físico por nível", "+8% de dano de fogo por nível"],
+  },
+  "arctic-blast": {
+    summary: "Um cone canalizado de gelo que congela o que toca.",
+    mechanics: [
+      "Ela é **canalizada**, e o custo é cobrado por quadro em vez de por conjuração — uma fração de ponto de mana vinte e cinco vezes por segundo, o que dá perto de nove de mana por segundo e é a razão de o site não imprimir isso na mesma coluna dos trinta do Hurricane.",
+      "O jato **congela**, e congelar é o que um personagem de nível 6 realmente quer dela. O dano nunca fica competitivo.",
+      "Um ponto nela é uma consideração real num Wind Druid por um motivo sem relação: ela soma **2 quadros de atordoamento ao Twister** por ponto duro, e essa é uma sinergia que o grafo desenha.",
+    ],
+    synergyBonuses: ["+15% de dano por nível"],
+  },
+  fissure: {
+    summary: "Racha o chão num raio e libera fogo de cada abertura, uma de cada vez.",
+    mechanics: [
+      "As aberturas surgem num raio de **7** e disparam em intervalos em vez de todas de uma vez, então o dano chega ao longo de um ou dois segundos e um monstro que atravessa pega várias delas.",
+      "É a skill de limpeza do Fire Druid do nível 12 até o fim do jogo, e a razão de a build funcionar num corredor.",
+      "Ela também é a **sinergia de duração do Armageddon** — cinquenta quadros de tempestade por ponto duro — e é por isso que um Fire Druid a maximiza mesmo depois de Volcano chegar.",
+    ],
+    synergyBonuses: ["+12% de dano por nível", "+12% de dano por nível"],
+  },
+  "cyclone-armor": {
+    summary: "Uma casca de vento que absorve uma reserva fixa de dano de fogo, frio e raio.",
+    mechanics: [
+      "Ela absorve uma **reserva**, não uma porcentagem: **40 pontos no nível 1 e mais 12 por nível**, reabastecida com o tempo. Contra um único golpe elemental grande vale pouco; contra uma horda do Hell jogando golpes pequenos sem parar vale muito.",
+      "Ela absorve apenas fogo, frio e raio. **Veneno, físico e mágico passam direto por ela.**",
+      "É a única skill que toda build de Druid tem motivo para possuir, e um Wind Druid a maximiza duas vezes — uma pela casca, outra porque ela é a **sinergia de duração do Hurricane**.",
+    ],
+    synergyBonuses: [
+      "+7% de absorção por nível",
+      "+7% de absorção por nível",
+      "+7% de absorção por nível",
+    ],
+  },
+  twister: {
+    summary: "Três funis pequenos que atordoam o que atravessam.",
+    mechanics: [
+      "O dano dela é **físico** e não carrega nada da sua arma — a totalidade dele está na tabela, e o `HitShift` de 7 divide a coluna bruta pela metade, e é por isso que o nível 1 marca 6-8 em vez de 12-16.",
+      "Três funis saem a cada conjuração e viajam de forma independente, então uma porta recebe os três e um campo aberto costuma receber um.",
+      "O **atordoamento** é o objetivo, não o dano. A base é de 10 quadros fixos e só cresce por Arctic Blast; um Wind Druid que gasta um ponto aqui a caminho do Tornado ganha uma skill de controle de verdade por isso.",
+    ],
+    synergyBonuses: [
+      "+10% de dano por nível",
+      "+10% de dano por nível",
+      "+2 quadros de atordoamento por nível",
+    ],
+  },
+  volcano: {
+    summary: "Levanta um vulcão que entra em erupção no lugar enquanto durar.",
+    mechanics: [
+      "Como Molten Boulder, ela causa **físico e fogo juntos**, e os dois recebem sinergia de skills diferentes.",
+      "Ela é estacionária. Tudo em jogá-la bem é sobre onde você a coloca — numa porta, nos pés de um chefe, no ponto que um grupo precisa cruzar.",
+      "Ela é a **sinergia física do Armageddon** com 18% por ponto duro, o maior coeficiente de sinergia único da classe.",
+    ],
+    synergyBonuses: [
+      "+16% de dano físico por nível",
+      "+12% de dano de fogo por nível",
+      "+12% de dano de fogo por nível",
+    ],
+  },
+  tornado: {
+    summary: "Um funil único de dano puramente físico. A melhor skill de limpeza da classe.",
+    mechanics: [
+      "**Todo o dano dela é físico.** Nenhum monstro do jogo é imune a físico *e* a frio ao mesmo tempo com frequência suficiente para importar, e é por isso que Tornado com Hurricane cobre o Hell sem Sunder Charm e sem aura de mercenário.",
+      "Ela causa dano num raio de **3** enquanto viaja, e volta a atingir o mesmo alvo só depois de um intervalo de **15 quadros**, então deixar um alvo dentro do funil vale mais do que cruzá-lo.",
+      "A trajetória dela é famosamente errática. Isso não é um defeito que se resolve com equipamento — é por isso que a skill quer Faster Cast Rate e volume em vez de precisão, e por que 99% de FCR é o breakpoint de destaque do Wind Druid.",
+      "Três sinergias de 9% cada, e uma delas — Cyclone Armor — é um buff defensivo que você já queria. Essa sobreposição é o que torna a build barata.",
+    ],
+    synergyBonuses: [
+      "+9% de dano por nível",
+      "+9% de dano por nível",
+      "+9% de dano por nível",
+    ],
+  },
+  armageddon: {
+    summary: "Meteoros caem ao seu redor por dez segundos. O finalizador do Fire Druid.",
+    mechanics: [
+      "Ela dura **250 quadros — dez segundos — e isso não muda com o nível dela própria**. Cada segundo a mais vem de Fissure, a cinquenta quadros por ponto duro, então vinte pontos ali a levam a cinquenta segundos.",
+      "Os meteoros caem ao redor de **você**, num raio de 8, num intervalo de seis quadros. É uma skill com a qual se caminha, não uma que se mira.",
+      "Cada meteoro causa **físico e fogo**, e a parte física é a razão de um Druid de Armageddon não ser barrado por um imune a fogo do jeito que um de Fissure sozinho é.",
+      "Ela pode ser mantida na forma de **Werewolf**, o que é toda a base do híbrido Fury/Armageddon: a tempestade continua caindo enquanto você ataca.",
+    ],
+    synergyBonuses: [
+      "+18% de dano físico por nível",
+      "+14% de dano de fogo por nível",
+      "+14% de dano de fogo por nível",
+      "+50 quadros de duração por nível",
+    ],
+  },
+  hurricane: {
+    summary: "Uma tempestade de dez segundos centrada em você que congela e fere tudo por perto.",
+    mechanics: [
+      "Como Armageddon, ela dura **250 quadros — dez segundos — independentemente do nível dela própria**, e cada segundo a mais vem de **Cyclone Armor**, a cinquenta quadros por ponto duro. Um Wind Druid que maximiza Cyclone Armor a segura por cinquenta segundos.",
+      "Ela cobre um raio de **9** ao seu redor e volta a ferir o mesmo alvo a cada 20 quadros.",
+      "O dano dela é de **frio**, e ela desacelera. Junto com o físico do Tornado, dá a um personagem dois tipos de dano sem nenhum equipamento e sem aura de mercenário por trás de nenhum dos dois.",
+      "Ela continua ativa enquanto você conjura outras coisas e enquanto caminha, e é por isso que a rotação do Wind Druid é *conjure e esqueça por quarenta segundos*.",
+    ],
+    synergyBonuses: [
+      "+9% de dano por nível",
+      "+9% de dano por nível",
+      "+50 quadros de duração por nível",
+    ],
+  },
+
+  // -------------------------------------------------------------------------
+  // Druid — Shape Shifting
+  // -------------------------------------------------------------------------
+  werewolf: {
+    summary: "Transforma você em lobo: ataques bem mais rápidos, mais vida, nenhuma conjuração.",
+    mechanics: [
+      "A velocidade de ataque sobe de **10% até um teto de 80%** numa curva decrescente, então os primeiros pontos valem muito mais que os últimos.",
+      "Ela soma **25% de vida** própria, por cima do que Lycanthropy estiver dando.",
+      "A forma dura **1000 quadros — quarenta segundos — mais vinte por ponto duro em Lycanthropy**, e reconjurar renova em vez de cancelar.",
+      "Transformado você não pode conjurar nem usar a maioria das skills que não são da forma. O que você *pode* manter é qualquer coisa já ativa, e é isso que torna o híbrido de Armageddon legítimo.",
+    ],
+  },
+  lycanthropy: {
+    summary: "Aumenta a duração das duas formas e soma vida às duas. Não custa nada para usar.",
+    mechanics: [
+      "**+20% de vida no nível 1 e mais 5% por nível**, aplicado na forma em que você estiver. Em vinte pontos são +115% de vida, o maior bônus de vida único disponível a qualquer classe.",
+      "Ela também soma **vinte segundos de duração de forma por ponto duro** sobre os quarenta da base.",
+      "Ela não tem custo de mana nem ativação — a linha carrega zero nas três colunas de mana. É uma passiva que o jogo por acaso arquiva ao lado das duas formas.",
+      "Toda build de shapeshifting a maximiza, e é a primeira coisa em que um shapeshifter subindo de nível gasta pontos depois de um em Werewolf.",
+    ],
+  },
+  werebear: {
+    summary: "Transforma você em urso: muito mais dano, defesa e vida, e mais lento.",
+    mechanics: [
+      "**+55% de dano e mais 15% por nível**, **+40% de defesa e mais 10% por nível**, e **+75% de vida** fixos antes de Lycanthropy.",
+      "Os ataques dela **não podem ser interrompidos** — a linha concede 100% de chance disso — e essa é a razão real para escolher o urso. Um lobo que apanha para de golpear; um urso não.",
+      "Ele é mais lento que o lobo e não ganha o bônus de velocidade de ataque do lobo, então as duas formas chegam a um dano por segundo parecido por caminhos diferentes: o lobo bate muito, o urso bate forte e nunca vacila.",
+      "Ela **não tem pré-requisito** — não exige Werewolf, apesar de ficar atrás dele na árvore.",
+    ],
+  },
+  "feral-rage": {
+    summary: "Um ataque de lobo que acumula cargas: mais velocidade e vida roubada a cada uma.",
+    mechanics: [
+      "Cada acerto soma uma carga, até **3 mais uma a cada dois pontos duros** — divisão inteira, então um Feral Rage de nível 2 ainda segura três e um de nível 3 segura quatro.",
+      "As cargas somam **velocidade de movimento**, subindo de 10% em direção a um teto de 70%, e **vida roubada por carga**. O site não publica o roubo por carga porque a forma como o estado empilha cargas está no motor do jogo e em nenhuma das colunas extraídas.",
+      "O bônus de dano do próprio ataque é de **+50%, e mais 5% por nível** — modesto, e não é por isso que alguém a escolhe.",
+      "As cargas expiram após vinte segundos sem um acerto, então é uma skill para atravessar uma área e não para ficar parado num chefe.",
+    ],
+  },
+  maul: {
+    summary: "Um ataque de urso que acumula cargas e atordoa o que atinge.",
+    mechanics: [
+      "Cada acerto soma uma carga, até **3 mais uma a cada dois pontos duros**, exatamente como em Feral Rage. As cargas somam dano e velocidade de ataque; como em Feral Rage, os valores por carga não são publicados aqui, porque o empilhamento está no motor do jogo.",
+      "O **atordoamento** sobe de 10 em direção a um teto de 100 numa curva decrescente, e um monstro atordoado é um monstro que não está batendo no seu urso.",
+      "Ela é a **única sinergia do Shock Wave**, a 10% por ponto duro, então um urso que atordoa para viver gasta pontos aqui duas vezes.",
+      "As cargas duram vinte segundos.",
+    ],
+  },
+  rabies: {
+    summary: "Uma mordida que envenena, e cujo veneno se espalha do mordido para tudo em volta.",
+    mechanics: [
+      "O dano total da arma acerta **e** o veneno acerta junto — a linha não adiciona conversão elemental, então nada é tirado do golpe para pagar por ele.",
+      "O veneno **se espalha**. Um monstro mordido infecta o grupo em volta, e é isso que transforma um ataque corpo a corpo de alvo único numa skill de limpeza, e é todo o argumento da build.",
+      "Ele corre por **100 quadros — quatro segundos — mais dez quadros por ponto duro**, e o dano de veneno é distribuído por essa janela em vez de aplicado no golpe.",
+      "**Poison Creeper é a única sinergia dela**, a 20% por ponto, e é por isso que uma build de Rabies gasta de dez a vinte pontos na árvore de invocação que de resto ignora.",
+      "Veneno é o único elemento sem nenhuma mastery no jogo inteiro para aumentá-lo, então o teto aqui é mais baixo que o de uma build de fogo ou frio e é alcançado mais cedo.",
+    ],
+    synergyBonuses: ["+20% de dano por nível"],
+  },
+  "fire-claws": {
+    summary: "Um ataque corpo a corpo que soma um bloco grande de dano de fogo ao da arma.",
+    mechanics: [
+      "O dano da arma acerta por inteiro e o fogo acerta por cima. É o único ataque de shapeshifting que dá à classe uma resposta elemental sem sair do corpo a corpo.",
+      "As duas sinergias dela são de **22% por ponto duro**, o par mais alto da classe, e ambas ficam na árvore elemental — então a build é um shapeshifter que gasta metade dos pontos em outro lugar.",
+      "Ela funciona em **qualquer uma das formas**, o que é incomum: Fury é só de lobo, e Maul e Shock Wave são só de urso.",
+      "Fogo é o elemento mais resistido no Hell, então a build vive ou morre por -resistência a fogo do inimigo vinda do equipamento, e não por mais pontos.",
+    ],
+    synergyBonuses: ["+22% de dano por nível", "+22% de dano por nível"],
+  },
+  hunger: {
+    summary: "Uma mordida fraca que rouba uma quantidade enorme de vida e mana.",
+    mechanics: [
+      "Ela causa **75% menos dano** que um ataque normal, e rouba vida e mana a taxas que sobem de 50% em direção a um teto de 200%.",
+      "O roubo escapa menos da redução usual de vida roubada por golpe nas dificuldades mais altas do que os jogadores esperam, então é um botão de emergência e não um plano de sustentação.",
+      "Um ponto é o investimento normal, numa build que já tem os pré-requisitos. É a resposta a um grupo que queima mana ou a um momento ruim no Hardcore.",
+      "Ela funciona em **qualquer uma das formas**.",
+    ],
+  },
+  "shock-wave": {
+    summary: "O urso golpeia o chão e atordoa tudo num cone à sua frente.",
+    mechanics: [
+      "**Ela não rola pontaria e não pode errar.** A linha dela não carrega `ToHit` nem `LevToHit`, enquanto todo ataque corpo a corpo da árvore carrega os dois — então, diferente de Maul ou Fury, ela funciona perfeitamente num urso sem nenhum equipamento de pontaria.",
+      "Cinco ondas saem num cone. O dano dela é **físico e inteiramente próprio**; sua arma não contribui em nada.",
+      "O atordoamento dura **40 quadros no nível 1 e 15 quadros a mais por nível** — 1,6 segundo, chegando a cerca de 13 segundos em vinte pontos, o que é mais longo que a maioria das lutas.",
+      "É o controle de grupo mais forte da classe e a razão de um urso de Maul conseguir segurar um grupo do Hell no lugar enquanto trabalha.",
+    ],
+    synergyBonuses: ["+10% de dano por nível"],
+  },
+  fury: {
+    summary: "O finalizador do lobo: uma rajada de até cinco golpes num único ataque.",
+    mechanics: [
+      "**Dois golpes no nível 1, mais um por nível, com teto de cinco a partir do nível 4.** Pontos depois do quarto compram dano, não golpes.",
+      "**+100% de dano de ataque, e mais 17% por nível** — o maior multiplicador de dano de qualquer ataque de Druid.",
+      "A animação recua 70% de um quadro por golpe, e é por isso que a rajada é tão mais rápida que cinco golpes separados e por que a build vive de Increased Attack Speed.",
+      "Cada golpe é uma rolagem de ataque separada, então vida roubada, crushing blow e open wounds ganham cinco chances em vez de uma. É isso que torna o lobisomem um matador de chefes viável com uma arma comum.",
+    ],
+  },
+
+  // -------------------------------------------------------------------------
+  // Druid — Summoning
+  // -------------------------------------------------------------------------
+  raven: {
+    summary: "Aves que bicam por pouco dano e cegam o que atingem.",
+    mechanics: [
+      "**Um corvo por ponto duro, até cinco.** Eles não podem ser mortos por monstros — cada um vai embora sozinho depois de **12 acertos mais um por nível**.",
+      "A cegueira que eles aplicam é a razão de tê-los: um monstro cego perde você de vista, e cinco aves mantêm muita coisa cega.",
+      "Eles herdam a **perfuração de imunidade física do jogador** — a linha lê a estatística acumulada do personagem, e é assim que um Sunder Charm chega a um servo.",
+      "Um ponto é o investimento habitual em qualquer Druid, invocador ou não. É o controle de grupo mais barato da classe.",
+    ],
+    synergyBonuses: [
+      "+12% de dano por nível",
+      "+12% de dano por nível",
+      "+12% de dano por nível",
+    ],
+  },
+  "poison-creeper": {
+    summary: "Uma vinha que se enterra e envenena quem estiver sobre ela.",
+    mechanics: [
+      "**Uma vinha por vez**, e as três vinhas dividem essa única vaga — invocar uma Carrion Vine substitui esta.",
+      "O veneno dela corre por **100 quadros — quatro segundos** — e o dano é distribuído por essa janela em vez de aplicado no contato.",
+      "Ela é a **única sinergia do Rabies**, a 20% por ponto duro, e é por isso que um lobisomem de Rabies gasta vinte pontos numa vinha que nunca observa.",
+      "Em qualquer outra build ela é, na melhor das hipóteses, uma conveniência de um ponto.",
+    ],
+    synergyBonuses: ["+10% de dano por nível"],
+  },
+  "oak-sage": {
+    summary: "Um totem que soma vida a você e a todos por perto.",
+    mechanics: [
+      "**+30% de vida máxima no nível 1 e mais 5% por nível**, para o Druid, o mercenário, cada servo e cada membro do grupo dentro de um raio de **30, crescendo 2 por nível**.",
+      "**Um espírito por vez.** Oak Sage, Heart of Wolverine e Spirit of Barbs dividem uma vaga, então a escolha entre eles é definitiva enquanto a luta durar.",
+      "Ele é um totem e pode ser morto. Perdê-lo no meio de uma luta leva o bônus de vida junto, e no Hardcore essa é a forma específica como esta skill mata gente.",
+      "É a escolha padrão para um Druid de Hardcore e para qualquer build cujo problema seja continuar viva em vez de matar mais rápido.",
+    ],
+  },
+  "summon-spirit-wolf": {
+    summary: "Até cinco lobos espectrais que mordem causando dano de frio.",
+    mechanics: [
+      "**Um lobo por ponto duro, até cinco.** Eles são a metade numerosa da árvore de invocação; os dire wolves são a metade resistente, e as duas não dividem limite.",
+      "Cada um carrega **resistência elemental de 5% por nível, com teto de 85%**, muito mais do que qualquer esqueleto de Necromancer jamais recebe, e é por isso que o exército de um Druid sobrevive ao Hell.",
+      "Eles são fortalecidos pelo resto da árvore por nível **efetivo**, não por pontos duros: Summon Dire Wolf soma vida a eles e Summon Grizzly soma dano, e os dois leem o nível que seu equipamento dá. Um pelt de +3 em Summoning aumenta esses bônus; uma sinergia não aumentaria.",
+      "O dano de frio deles desacelera, o que atrasa um grupo para quem quer que esteja matando.",
+    ],
+  },
+  "carrion-vine": {
+    summary: "Uma vinha que come cadáveres e devolve vida a você por cada um.",
+    mechanics: [
+      "Ela cura você em **4% do cadáver no nível 1, mais 1% por nível**, cada vez que consome um.",
+      "**Uma vinha por vez**, dividida com Poison Creeper e Solar Creeper.",
+      "Comer cadáveres tem um segundo efeito que ninguém planeja e todo mundo percebe: remove os cadáveres que um Necromancer do seu grupo queria explodir.",
+      "Um ponto é o investimento inteiro. É a cura passiva mais confiável da classe e não custa nada manter.",
+    ],
+  },
+  "heart-of-wolverine": {
+    summary: "Um totem que soma dano e pontaria a você e a todos por perto.",
+    mechanics: [
+      "**+20% de dano e mais 7% por nível**, mais **+25% de pontaria e mais 7% por nível**, dentro de um raio de **30 crescendo 2 por nível**.",
+      "O bônus é dano aprimorado, então ele multiplica o que a arma já tem — o que o torna muito mais valioso para uma build física do que para um caster.",
+      "**Um espírito por vez**, dividido com Oak Sage e Spirit of Barbs. Builds físicas de Softcore escolhem este; builds de Hardcore normalmente ficam com Oak Sage.",
+      "Ele carrega um `Bonus Level` de 3, então o totem é invocado três níveis acima do nível da própria skill — um detalhe que só importa para quanto tempo ele sobrevive.",
+    ],
+  },
+  "summon-dire-wolf": {
+    summary: "Até três lobos grandes, muito mais resistentes que os lobos espectrais.",
+    mechanics: [
+      "**Um lobo por ponto duro, até três**, num limite próprio — os cinco lobos espectrais ficam ao lado deles.",
+      "Eles carregam **+50% de vida e mais 15% por nível**, e esse bônus é dado **também aos lobos espectrais**, por nível efetivo em vez de pontos duros.",
+      "Como os lobos espectrais, eles ganham **5% de resistência elemental por nível até 85%**, e herdam a perfuração de imunidade física do jogador.",
+      "Eles também **uivam**, o que faz monstros fugirem — útil e, de vez em quando, irritante, porque um monstro que foge é um monstro que o seu urso tem de perseguir.",
+    ],
+  },
+  "solar-creeper": {
+    summary: "Uma vinha que come cadáveres e devolve mana a você por cada um.",
+    mechanics: [
+      "Ela restaura **4% do cadáver como mana no nível 1, mais 1% por nível**. A mesma forma da Carrion Vine, no outro recurso.",
+      "**Uma vinha por vez**, dividida com as outras duas, então escolher esta significa abrir mão da cura.",
+      "É a melhor escolha numa build cujo limite é mana em vez de vida — um Wind Druid conjurando Tornado sem parar é a óbvia — e a pior escolha em quase todo o resto.",
+    ],
+  },
+  "spirit-of-barbs": {
+    summary: "Um totem que devolve parte do dano corpo a corpo a quem o causou.",
+    mechanics: [
+      "Ele devolve **32% do dano corpo a corpo no nível 1**, subindo em faixas até **347% no nível 20** — o site lê essas faixas nas mesmas colunas de onde vem uma tabela de dano.",
+      "O dano devolvido é **físico**, então ele não faz nada contra um imune a físico e faz tudo contra uma horda de atacantes corpo a corpo do Hell.",
+      "**Um espírito por vez**, dividido com Oak Sage e Heart of Wolverine, e é o menos escolhido dos três: abrir mão de um bônus de vida ou de dano por dano refletido raramente é a melhor troca.",
+      "O uso principal é um grupo em que outra pessoa segura a frente, e corridas de Uber em que os atacantes são corpo a corpo e numerosos.",
+    ],
+  },
+  "summon-grizzly": {
+    summary: "Um urso grande que bate mais forte que qualquer outra coisa que a classe invoca.",
+    mechanics: [
+      "**Um urso**, e ele é o dano da árvore. O bônus de dano próprio dele é de **+25% e mais 10% por nível**, e esse mesmo bônus é dado **aos dois tipos de lobo** por nível efetivo em vez de pontos duros — e é por isso que um Summoner o maximiza mesmo invocando um único servo.",
+      "Ele ganha **5% de resistência elemental por nível até 85%** e herda a perfuração de imunidade física do jogador.",
+      "Ele provoca. O urso puxa os monstros para si, o que é todo o plano defensivo de um Summon Druid e a razão de a build parecer segura.",
+      "Ele não pode ser reinvocado enquanto vive, então perdê-lo no meio da luta custa uma conjuração inteira de 40 de mana em vez de um reforço.",
     ],
   },
 };

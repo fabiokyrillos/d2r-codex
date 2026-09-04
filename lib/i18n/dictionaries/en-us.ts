@@ -694,6 +694,11 @@ export const enUS = {
     synergyKindFreeze: "freeze length",
     synergyKindHp: "life",
     synergyKindAbsorb: "damage absorbed",
+    // The Druid's elemental tree is the only place a source raises one of a
+    // receiver's two damages rather than its damage. "damage" alone on
+    // Armageddon, which deals both, would not say which.
+    synergyKindPhysical: "physical damage",
+    synergyKindFire: "fire damage",
     synergyKindAttackRating: "attack rating",
     synergyKindJoin: "and",
     effectsTitle: "Values by level",
@@ -730,6 +735,23 @@ export const enUS = {
     effectMinionResist: "Minion resistance",
     effectFireAbsorb: "Fire absorbed",
     effectAuraLevel: "Aura level",
+    // The Druid's quantities. `effectStun` is a length of time in two units --
+    // frames on Shock Wave and Twister, a diminishing percentage on Maul -- and
+    // the row's own unit decides which, so the word stays unqualified.
+    // A second damage column, not a replacement for the first. Armageddon
+    // deals physical and fire at once and the table shows both.
+    colPhysical: "Physical",
+    effectAttackSpeed: "Attack speed",
+    effectLifeBonus: "Life bonus",
+    effectDefenseBonus: "Defence bonus",
+    effectMoveSpeed: "Movement speed",
+    effectCharges: "Maximum charges",
+    effectStun: "Stun",
+    effectHits: "Hits per attack",
+    effectManaSteal: "Mana stolen",
+    effectPartyLife: "Party life bonus",
+    effectSummonHits: "Hits before leaving",
+    effectMinionDamageBonus: "Minion damage bonus",
     effectRangeFrom: "{value}% at level 1",
     effectRangeTo: "up to {value}%",
     effectRangeNote:

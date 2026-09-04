@@ -121,6 +121,8 @@ export const synergyKindLabels = (t: Dictionary): Record<string, string> => ({
   hp: t.skills.synergyKindHp,
   absorb: t.skills.synergyKindAbsorb,
   "attack-rating": t.skills.synergyKindAttackRating,
+  physical: t.skills.synergyKindPhysical,
+  fire: t.skills.synergyKindFire,
 });
 
 /**
@@ -141,6 +143,8 @@ export const SYNERGY_KINDS_LABELLED: readonly string[] = [
   "hp",
   "absorb",
   "attack-rating",
+  "physical",
+  "fire",
 ];
 
 /**
@@ -181,6 +185,17 @@ export const effectLabels = (t: Dictionary): Record<string, string> => ({
   effectMinionResist: t.skills.effectMinionResist,
   effectFireAbsorb: t.skills.effectFireAbsorb,
   effectAuraLevel: t.skills.effectAuraLevel,
+  effectAttackSpeed: t.skills.effectAttackSpeed,
+  effectLifeBonus: t.skills.effectLifeBonus,
+  effectDefenseBonus: t.skills.effectDefenseBonus,
+  effectMoveSpeed: t.skills.effectMoveSpeed,
+  effectCharges: t.skills.effectCharges,
+  effectStun: t.skills.effectStun,
+  effectHits: t.skills.effectHits,
+  effectManaSteal: t.skills.effectManaSteal,
+  effectPartyLife: t.skills.effectPartyLife,
+  effectSummonHits: t.skills.effectSummonHits,
+  effectMinionDamageBonus: t.skills.effectMinionDamageBonus,
 });
 
 /** "damage", or "buff duration and damage" — never an untranslated slug. */

@@ -381,6 +381,15 @@ console.log("\nThe shipped effect data");
   const expectedPerClass: Record<string, number> = {
     amazon: 11,
     necromancer: 30,
+    /*
+     * Twenty-nine of the Druid's thirty. The one that publishes nothing is
+     * Arctic Blast, and it is a decision rather than an oversight: it is
+     * channelled, so its cost is charged per frame and reads as 0.4 mana beside
+     * Hurricane's 30, and the row's remaining parameters are a missile's flight
+     * time. Both are in prose on the page, where a sentence can carry the unit
+     * the table has no column for.
+     */
+    druid: 29,
   };
   for (const [classSlug, expected] of Object.entries(expectedPerClass)) {
     check(

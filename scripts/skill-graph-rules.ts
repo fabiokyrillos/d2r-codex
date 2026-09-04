@@ -52,6 +52,46 @@ export const SLUG_OVERRIDES: Record<string, string> = {
   BloodGolem: "blood-golem",
   IronGolem: "iron-golem",
   FireGolem: "fire-golem",
+  /*
+   * The Druid, where the gap between identifier and name is widest of any class
+   * in the game. Eight of his thirty rows are named one thing in `skills.txt`
+   * and another everywhere a player looks — the skill window, every database,
+   * every guide. `Wearwolf` and `Wearbear` are misspellings that survived
+   * twenty-five years in the table and were never shown to anyone; `Plague
+   * Poppy`, `Cycle of Life`, `Vines`, `Summon Fenris`, `Shape Shifting` and
+   * `Eruption` are working titles the shipped game replaced.
+   *
+   * Each is pinned by its own row rather than by resemblance, which is what
+   * makes the mapping checkable instead of a guess:
+   *
+   *   Plague Poppy    page 1, level 1, `pettype = vine`, poison damage over
+   *                   100 frames -> Poison Creeper
+   *   Cycle of Life   page 1, level 12, requires Plague Poppy, life steal
+   *                   4% + 1% per level -> Carrion Vine
+   *   Vines           page 1, level 24, requires Cycle of Life, mana steal
+   *                   4% + 1% per level -> Solar Creeper
+   *   Summon Fenris   page 1, level 18, `petmax = min(lvl, par3)` with par3 = 3
+   *                   -> Summon Dire Wolf
+   *   Wearwolf        page 2, level 1 -> Werewolf
+   *   Shape Shifting  page 2, level 1, requires Wearwolf, no mana cost, grants
+   *                   form duration and life -> Lycanthropy
+   *   Wearbear        page 2, level 6 -> Werebear
+   *   Eruption        page 3, level 12, requires Molten Boulder -> Fissure
+   *
+   * The identifiers stay the join key -- Rabies reads
+   * `skill('Plague Poppy'.blvl)` and Twister reads `skill('Arctic Blast'.blvl)`,
+   * and both resolve through this table -- while nothing public carries them.
+   * `skill-page.test.ts` asserts no override's identifier reaches a page, a URL
+   * or the sitemap.
+   */
+  "Plague Poppy": "poison-creeper",
+  "Cycle of Life": "carrion-vine",
+  Vines: "solar-creeper",
+  "Summon Fenris": "summon-dire-wolf",
+  Wearwolf: "werewolf",
+  "Shape Shifting": "lycanthropy",
+  Wearbear: "werebear",
+  Eruption: "fissure",
 };
 
 const slugify = (name: string) =>
@@ -190,6 +230,28 @@ const SYNERGY_KINDS: Record<string, string> = {
   "blood golem hp %": "hp",
   "iron golem armor": "armor",
   "fire golem damage %": "damage",
+  /*
+   * The Druid's elemental tree, where one source can raise two different
+   * damages on the same receiver. Molten Boulder deals physical and fire at
+   * once and is fed by Volcano under "Physical Damage synergy" and by Firestorm
+   * under "Fire Damage synergy"; Armageddon and Volcano are the same shape.
+   *
+   * Kept apart from the bare "damage" above rather than folded into it. An edge
+   * that says only "damage" on a skill dealing two of them tells the reader to
+   * invest and does not say in what, and on this tree that is the whole
+   * question: a Wind Druid's Tornado wants physical, a Fire Druid's Armageddon
+   * wants both, and the two answers point at different skills.
+   */
+  "physical damage": "physical",
+  "fire damage": "fire",
+  /*
+   * Hurricane and Armageddon hold their form 50 frames longer per hard point in
+   * Cyclone Armor and Fissure respectively, and Twister's stun grows with
+   * Arctic Blast. The game writes this one "Duration synergy" and the Paladin's
+   * "Buff duration synergy" already maps to the same kind; both are a length of
+   * time a thing lasts.
+   */
+  duration: "duration",
 };
 
 /**
@@ -213,7 +275,26 @@ const SYNERGY_KINDS: Record<string, string> = {
  * What they are not is an edge in a graph whose whole meaning is "hard points
  * here raise that number".
  */
-const SOFT_LEVEL_SYNERGIES = new Set<string>(["Revive"]);
+const SOFT_LEVEL_SYNERGIES = new Set<string>([
+  "Revive",
+  /*
+   * The Druid's three animal summons, which is the case the paragraph above
+   * anticipated. Each reads the other two through `lvl` rather than `blvl`:
+   * Summon Dire Wolf raises the Spirit Wolf's life by its own *effective*
+   * level, the Grizzly raises both wolves' damage the same way, and the Spirit
+   * Wolf feeds attack rating and defence back. A Ravenlore that grants +3 to
+   * Summoning skills therefore does raise these bonuses, which is exactly what
+   * a synergy does not do.
+   *
+   * So they are relationships, and they are on the skill pages in prose. They
+   * are not edges in a graph whose meaning is "hard points here raise that
+   * number", and drawing them as such would tell a reader to spend points that
+   * a +skills item would have bought more cheaply.
+   */
+  "Summon Spirit Wolf",
+  "Summon Fenris",
+  "Summon Grizzly",
+]);
 
 const SKILL_REF = /skill\('([^']+)'\.blvl\)/g;
 /** `skill('X'.parN)` — a parameter belonging to another skill's row. */
@@ -400,6 +481,11 @@ export function synergiesFor(
  *                              level for the first three, then two plus one for
  *                              every three levels — integer division, so a step
  *                              rather than a slope.
+ *   min(lvl,parN)              Raven and the Druid's two wolves. One per level
+ *                              until the row's own ceiling — five ravens, five
+ *                              spirit wolves, three dire wolves. The ceiling is
+ *                              a parameter rather than a literal, so it is read
+ *                              off the row instead of being written here.
  *
  * The piecewise branch is the reason this is parsed rather than approximated.
  * `2 + floor(lvl/3)` alone gives two skeletons at level 1 and two at level 2,
@@ -415,8 +501,14 @@ export function synergiesFor(
 export function petMaxFromColumn(
   raw: unknown,
   where: string,
+  /**
+   * Reads `ParamN` off the same row. Required only by the `min(lvl,parN)`
+   * shape, whose ceiling the game keeps in a parameter; passing it is how that
+   * ceiling stays extracted rather than transcribed.
+   */
+  param?: (index: number) => number,
 ):
-  | { kind: "linear"; base: number; perLevel: number }
+  | { kind: "linear"; base: number; perLevel: number; cap?: number }
   | { kind: "petmax"; threshold: number; base: number; per: number } {
   if (typeof raw !== "string" || raw.trim() === "") {
     throw new Error(`${where}: petmax is missing or empty, and the count published comes from it`);
@@ -432,10 +524,20 @@ export function petMaxFromColumn(
       per: Number(piecewise[3]),
     };
   }
+  const capped = expression.match(/^min\(lvl,par(\d+)\)$/);
+  if (capped) {
+    if (!param) {
+      throw new Error(
+        `${where}: petmax reads "${expression}", whose ceiling is a parameter, but no reader ` +
+          `for the row's parameters was supplied.`,
+      );
+    }
+    return { kind: "linear", base: 1, perLevel: 1, cap: param(Number(capped[1])) };
+  }
   throw new Error(
-    `${where}: petmax reads "${expression}", which is neither \`lvl\` nor the piecewise ` +
-      `\`(lvl < N) ? lvl : (B + lvl / P)\` shape. A new shape means a new count formula; wire ` +
-      `it up deliberately rather than approximating it.`,
+    `${where}: petmax reads "${expression}", which is none of \`lvl\`, the piecewise ` +
+      `\`(lvl < N) ? lvl : (B + lvl / P)\` shape, or \`min(lvl, parN)\`. A new shape means a ` +
+      `new count formula; wire it up deliberately rather than approximating it.`,
   );
 }
 

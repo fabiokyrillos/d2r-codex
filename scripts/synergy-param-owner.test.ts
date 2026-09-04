@@ -310,12 +310,26 @@ console.log("\nShapes that are deliberately not edges");
     JSON.stringify(found),
   );
 
-  // The same shape on a skill nobody has ruled on must stop the generator
-  // rather than disappear — this is what will meet the Druid's summons.
+  /*
+   * The same shape on a skill nobody has ruled on must stop the generator
+   * rather than disappear.
+   *
+   * The stand-in is deliberately not a real skill, and that is the correction
+   * this line carries. It used to be "Summon Grizzly", written when the Druid
+   * was out of scope and named because this is the shape his summons were
+   * expected to arrive in. They did arrive in it, they were ruled on, and the
+   * moment the Grizzly joined SOFT_LEVEL_SYNERGIES this control started
+   * asserting that a listed skill is unlisted — passing right up to the commit
+   * that disarmed it, then failing for a reason that had nothing to do with the
+   * rule.
+   *
+   * A name no skill can ever have cannot be listed, so the control cannot be
+   * turned off by a decision made somewhere else.
+   */
   const unlisted = rows.map((r) =>
-    r.skill === "Revive" ? { ...r, skill: "Summon Grizzly" } : r,
+    r.skill === "Revive" ? { ...r, skill: "No Skill By This Name" } : r,
   );
-  const message = threw(() => extract(unlisted, "Summon Grizzly"));
+  const message = threw(() => extract(unlisted, "No Skill By This Name"));
   check(
     "the same shape on an unlisted skill fails loudly",
     message !== undefined && message.includes("SOFT_LEVEL_SYNERGIES"),
