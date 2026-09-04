@@ -26,15 +26,20 @@
  *
  * Run with `npm run test:build-filters`.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { getBuilds } from "../lib/registry";
 import { LOCALES, DEFAULT_LOCALE, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import { ratingLabels } from "../lib/labels";
 import { BUDGET_LEVELS, DIFFICULTY_RATINGS, ELEMENTS } from "../lib/types/core";
 import {
+  CLASS_PAGE_FILTER_GROUPS,
   EMPTY_FILTER_STATE,
   FILTER_GROUPS,
   GOOD_AT_THRESHOLD,
+  MAX_QUERY_LENGTH,
   QUERY_KEYS,
   RATING_AXES,
   REFUSED_FILTERS,
@@ -45,6 +50,8 @@ import {
   isDiscriminating,
   isEmptyState,
   matchesQuery,
+  narrowingOptionsFor,
+  normalizeQuery,
   optionsFor,
   parseFilterState,
   serializeFilterState,
@@ -428,6 +435,128 @@ console.log("\nQuery parameters: round trip, and everything invalid dropped");
     trusting("damage=cold,plasma").includes("plasma") &&
       !parse("damage=cold,plasma").damage.includes("plasma"),
   );
+
+  /*
+   * Repeated parameters. Nothing here writes one — the serialiser joins a group
+   * into a single comma-separated value — but a hand-edited link, a form, or
+   * another site's idea of how to encode a multi-select will, and reading only
+   * the first would silently drop half of what the link asked for.
+   */
+  check(
+    "a repeated parameter is the union of its values",
+    parse("damage=cold&damage=fire").damage.join() ===
+      parse("damage=cold,fire").damage.join(),
+    parse("damage=cold&damage=fire").damage.join(),
+  );
+  check(
+    "…across the comma form too",
+    parse("damage=cold,fire&damage=lightning").damage.length === 3,
+    parse("damage=cold,fire&damage=lightning").damage.join(),
+  );
+  check(
+    "a repeated parameter still drops unknown values",
+    parse("damage=cold&damage=plasma").damage.join() === "cold",
+    parse("damage=cold&damage=plasma").damage.join(),
+  );
+  check("an empty repeated parameter contributes nothing", parse("damage=&damage=").damage.length === 0);
+  check(
+    "a duplicate of the same value is not counted twice",
+    parse("damage=cold&damage=cold").damage.length === 1,
+  );
+  check(
+    "a repeated q takes the first, which is what `get` means",
+    parse("q=cold&q=fire").q === "cold",
+    parse("q=cold&q=fire").q,
+  );
+  // Mutation: reading only the first value loses the second half of the link.
+  check(
+    "control: a get-only parser drops the repeated value",
+    parseFilterState(
+      { get: (k) => new URLSearchParams("damage=cold&damage=fire").get(k) },
+      options,
+    ).damage.join() === "cold",
+  );
+
+  /*
+   * Whitespace, which is where the search box and the URL disagreed.
+   *
+   * `serializeFilterState` trims and `parseFilterState` truncates, so a written
+   * query comes back normalised. The box compares against that normalised form;
+   * comparing against the raw draft made the trim look like a URL change and
+   * deleted the space out of "cold " while the reader was still typing.
+   */
+  check("normalizeQuery trims", normalizeQuery("  cold  ") === "cold");
+  check(
+    "normalizeQuery truncates at the one cap the input also uses",
+    normalizeQuery("x".repeat(500)).length === MAX_QUERY_LENGTH,
+  );
+  check(
+    "a query with a trailing space round-trips to its normalised form",
+    parseFilterState(serializeFilterState(state({ q: "cold " })), options).q ===
+      normalizeQuery("cold "),
+  );
+  check(
+    "…and the normalised form is stable, so the second write is a no-op",
+    normalizeQuery(normalizeQuery("cold ")) === normalizeQuery("cold "),
+  );
+  check(
+    "leading whitespace round-trips the same way",
+    parseFilterState(serializeFilterState(state({ q: "  hammer" })), options).q === "hammer",
+  );
+  check(
+    "whitespace does not change which builds match",
+    slugs(filterBuilds(rows, state({ q: "cold " }))).join() ===
+      slugs(filterBuilds(rows, state({ q: "cold" }))).join(),
+  );
+  // Mutation: the comparison the component used to make.
+  {
+    const draft = "cold ";
+    const backFromUrl = parseFilterState(serializeFilterState(state({ q: draft })), options).q;
+    check(
+      "control: comparing the raw draft to the URL reports a change that never happened",
+      draft !== backFromUrl && normalizeQuery(draft) === backFromUrl,
+      `${JSON.stringify(draft)} vs ${JSON.stringify(backFromUrl)}`,
+    );
+  }
+}
+
+// ===========================================================================
+// The locale switcher, which shares this URL contract
+// ===========================================================================
+
+/*
+ * The parameters are language-independent so that a filtered link means the
+ * same thing in both languages. The header's language switch is the one place
+ * on the site that rewrites the path under a reader who may be holding such a
+ * link, and it dropped the query — switching language on a filtered catalogue
+ * silently reset it to all 29 builds.
+ *
+ * Two invariants, both structural, because the fix has a trap in it: reading
+ * the query with `useSearchParams` in a header component would make *every*
+ * page on the site client-render up to its nearest Suspense boundary and cost
+ * the static HTML its header. The query has to come from `window.location` in
+ * the click handler instead, leaving the `href` a bare, crawlable path.
+ */
+console.log("\nThe language switch carries the filters, without de-statifying the site");
+{
+  const src = readFileSync(join(process.cwd(), "components", "layout", "locale-switcher.tsx"), "utf8");
+  // The import, not the prose — the comment above the component names the hook
+  // it must not use, and a bare `includes` cannot tell the two apart.
+  const imports = [...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*["']next\/navigation["']/g)]
+    .flatMap((m) => m[1].split(",").map((s) => s.trim()));
+  check(
+    "the switcher does not import useSearchParams, which would client-render every page",
+    !imports.includes("useSearchParams"),
+    imports.join(","),
+  );
+  check(
+    "…and reads the query from location in the handler instead",
+    /location\.search/.test(src),
+  );
+  check(
+    "the href stays the bare locale path, so crawlers and no-JS readers get one URL per page",
+    /href=\{href\}/.test(src) && /const href = localePath\(/.test(src),
+  );
 }
 
 // ===========================================================================
@@ -459,7 +588,47 @@ console.log("\nCount, active filters, clear and empty");
 
 console.log("\nThe class page and the catalogue");
 {
-  const classGroups: FilterGroup[] = ["damage", "difficulty", "budget", "goodAt"];
+  /*
+   * The groups the class page actually passes, not a copy of them.
+   *
+   * This assertion used to compare a literal declared two lines above itself,
+   * which is true no matter what the page does — adding the class filter back
+   * to the page would not have failed anything. The page now passes the
+   * exported constant, so there is one list, and the source check below is what
+   * stops the page quietly going back to a literal of its own.
+   */
+  const classGroups = CLASS_PAGE_FILTER_GROUPS;
+  check(
+    "the class page's groups exclude 'class'",
+    !classGroups.includes("class"),
+    classGroups.join(","),
+  );
+  check(
+    "…and are otherwise every group the catalogue offers",
+    classGroups.length === FILTER_GROUPS.length - 1 &&
+      classGroups.every((g) => (FILTER_GROUPS as readonly string[]).includes(g)),
+    classGroups.join(","),
+  );
+  {
+    const page = readFileSync(
+      join(process.cwd(), "app", "[lang]", "classes", "[slug]", "page.tsx"),
+      "utf8",
+    );
+    check(
+      "the class page passes that constant rather than a list of its own",
+      /groups=\{CLASS_PAGE_FILTER_GROUPS\}/.test(page),
+      page.match(/groups=\{[^}]*\}/)?.[0] ?? "no groups prop found",
+    );
+  }
+  {
+    const catalogue = readFileSync(join(process.cwd(), "app", "[lang]", "builds", "page.tsx"), "utf8");
+    check(
+      "the catalogue passes no groups prop at all, so it gets every group",
+      !/groups=\{/.test(catalogue),
+      catalogue.match(/groups=\{[^}]*\}/)?.[0] ?? "",
+    );
+  }
+
   for (const classSlug of classOrderOf(rows)) {
     const classRows = rows.filter((r) => r.classSlug === classSlug);
     check(
@@ -467,8 +636,8 @@ console.log("\nThe class page and the catalogue");
       optionsFor(classRows, "class").length === 1,
     );
     check(
-      `${classSlug}: the groups the class page offers exclude 'class'`,
-      !classGroups.includes("class" as FilterGroup),
+      `${classSlug}: that one option is carried by every build, so it is not offered`,
+      narrowingOptionsFor(classRows, "class").length === 0,
     );
     if (classRows.length >= 2) {
       check(
@@ -503,6 +672,110 @@ console.log("\nThe class page and the catalogue");
     FILTER_GROUPS.filter((g) => !isDiscriminating(rows, g)).join(","),
   );
   check("the catalogue itself is given filters", shouldOfferFilters(rows, [...FILTER_GROUPS]));
+}
+
+// ===========================================================================
+// No option that cannot change anything
+// ===========================================================================
+
+/*
+ * The audit that produced this section found `Survivability (7)` offered on the
+ * Paladin class page, which lists seven builds — a checkbox whose only possible
+ * effect is to re-select every build already on the page.
+ *
+ * The old rule asked whether the *group* could narrow, and the Paladin "Good
+ * at" group could: seven of its eight axes narrow. A group-level rule cannot
+ * see one inert box inside a useful group, so the rule is now per option.
+ */
+console.log("\nNo offered option selects the whole listing");
+{
+  const surfaces: { label: string; rows: BuildRow[]; groups: FilterGroup[] }[] = [
+    { label: "the catalogue", rows, groups: [...FILTER_GROUPS] },
+    ...classOrderOf(rows).map((classSlug) => ({
+      label: `the ${classSlug} page`,
+      rows: rows.filter((r) => r.classSlug === classSlug),
+      groups: ["damage", "difficulty", "budget", "goodAt"] as FilterGroup[],
+    })),
+  ];
+
+  for (const surface of surfaces) {
+    const offered = surface.groups
+      .filter((g) => isDiscriminating(surface.rows, g))
+      .flatMap((g) => narrowingOptionsFor(surface.rows, g).map((o) => ({ g, ...o })));
+    const inert = offered.filter((o) => o.count >= surface.rows.length);
+    check(
+      `${surface.label}: no offered option is carried by every build`,
+      inert.length === 0,
+      inert.map((o) => `${o.g}:${o.value}(${o.count}/${surface.rows.length})`).join(","),
+    );
+    check(
+      `${surface.label}: every offered option still matches at least one build`,
+      offered.every((o) => o.count > 0),
+    );
+  }
+
+  /*
+   * The specific regression, named. Anti-vacuity comes free: the same option is
+   * asserted to be *present* in the raw inventory, so this fails if the Paladin
+   * ratings ever change rather than passing on an empty set.
+   */
+  const paladin = rows.filter((r) => r.classSlug === "paladin");
+  const inventory = optionsFor(paladin, "goodAt").map((o) => `${o.value}(${o.count})`);
+  const offeredGoodAt = narrowingOptionsFor(paladin, "goodAt").map((o) => o.value);
+  check(
+    `control: every one of the ${paladin.length} paladin builds is good at survivability, so the raw inventory offers it`,
+    inventory.includes(`survivability(${paladin.length})`),
+    inventory.join(" "),
+  );
+  check(
+    "…and the offered set does not",
+    !offeredGoodAt.includes("survivability"),
+    offeredGoodAt.join(","),
+  );
+  check(
+    "…while the seven axes that do narrow are still offered",
+    offeredGoodAt.length === optionsFor(paladin, "goodAt").length - 1,
+    `${offeredGoodAt.length}`,
+  );
+  check(
+    "…and the group itself is still worth offering",
+    isDiscriminating(paladin, "goodAt"),
+  );
+
+  // Mutation: the old group-level rule passes on exactly the case that was wrong.
+  const groupLevelRule = (rs: readonly BuildRow[], g: FilterGroup) => {
+    const o = optionsFor(rs, g);
+    return o.length >= 2 && o.some((x) => x.count < rs.length);
+  };
+  check(
+    "control: a group-level rule calls that group fine, which is how the inert box shipped",
+    groupLevelRule(paladin, "goodAt") &&
+      optionsFor(paladin, "goodAt").some((o) => o.count === paladin.length),
+  );
+
+  // Dropping an option must also drop it from what a URL may select.
+  const paladinOptions = Object.fromEntries(
+    (["damage", "difficulty", "budget", "goodAt"] as FilterGroup[]).map((g) => [
+      g,
+      narrowingOptionsFor(paladin, g).map((o) => o.value),
+    ]),
+  ) as Record<FilterGroup, string[]>;
+  const stale = parseFilterState(new URLSearchParams("goodAt=survivability"), paladinOptions);
+  check(
+    "a stale link naming a dropped option is ignored rather than honoured",
+    stale.goodAt.length === 0,
+    stale.goodAt.join(","),
+  );
+  check(
+    "…and lists the same builds either way, because the option matched all of them",
+    filterBuilds(paladin, stale).length === paladin.length,
+  );
+
+  const clones = [rows[0], { ...rows[0], slug: "clone", name: "Clone" }];
+  check(
+    "identical builds produce no narrowing option in any group",
+    FILTER_GROUPS.every((g) => narrowingOptionsFor(clones, g).length === 0),
+  );
 }
 
 // ===========================================================================

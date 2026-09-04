@@ -21,13 +21,14 @@
  *
  * Requires `npm run build`. Run with `npm run test:build-filters-html`.
  */
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 import { assertFreshBuild } from "./build-freshness";
 import { getBuilds, getBuildsForClass, getClasses } from "../lib/registry";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
+import { REFUSED_FILTERS } from "../lib/builds/filter";
 import { SITE_URL } from "../lib/site-url";
 
 let passed = 0;
@@ -144,6 +145,19 @@ for (const locale of LOCALES) {
       `${locale} ${listing.label}: no filter legend rendered`,
       !body.includes(t.builds.filters.groupDamage) && !body.includes(t.builds.filters.clearAll),
     );
+
+    /*
+     * Including the note that defines "Good at". It explains one of the
+     * checkbox groups, so it belongs with them — it used to render outside the
+     * boundary, which put it in this file, defining a control the no-JS reader
+     * cannot see, and four screens below the group for everyone else.
+     */
+    const noteHead = t.builds.filters.goodAtNote.split("{")[0];
+    check(
+      `${locale} ${listing.label}: the "Good at" note is not in the no-JS HTML either`,
+      !body.includes(noteHead),
+      noteHead.slice(0, 40),
+    );
   }
 }
 
@@ -175,6 +189,57 @@ console.log("\nControl: the markers are real");
   check(
     "…and not in the rendered markup",
     catalogue !== null && !markup(catalogue).includes(dictionaryFor("en-us").builds.filters.clearAll),
+  );
+}
+
+// ===========================================================================
+// What the browser is asked to download
+// ===========================================================================
+
+/*
+ * `REFUSED_FILTERS` lives in `lib/builds/filter.ts`, which the Client Component
+ * imports. It is documentation and test material — seven paragraphs of prose
+ * about filters that do not exist — and nothing in the browser reads it, so it
+ * must not be in the browser.
+ *
+ * That is a claim about tree-shaking, not about the source, so it is checked
+ * against the chunks rather than argued from the import list. The control below
+ * proves the scan can find this chunk at all, so an absence means absence
+ * rather than a mistyped path.
+ */
+console.log("\nThe refusals are documentation, not payload");
+{
+  const chunkDir = join(process.cwd(), ".next", "static", "chunks");
+  const chunks: string[] = [];
+  (function walk(dir: string) {
+    if (!existsSync(dir)) return;
+    for (const entry of readdirSync(dir)) {
+      const full = join(dir, entry);
+      if (statSync(full).isDirectory()) walk(full);
+      else if (entry.endsWith(".js")) chunks.push(full);
+    }
+  })(chunkDir);
+  check("the build produced client chunks to look at", chunks.length > 0, `${chunks.length}`);
+
+  const text = chunks.map((c) => readFileSync(c, "utf8"));
+  const leaked = REFUSED_FILTERS.filter((r) =>
+    text.some((t) => t.includes(r.why.slice(0, 40))),
+  );
+  check(
+    "no refusal prose reaches any client chunk",
+    leaked.length === 0,
+    leaked.map((r) => r.id).join(","),
+  );
+  check(
+    "no refused filter id is shipped either",
+    !text.some((t) => t.includes("REFUSED_FILTERS")),
+  );
+
+  // Control: the filter component itself *is* in these chunks, so the scan is
+  // looking in the right place and an empty result means something.
+  check(
+    "control: the filter component's own strings are in the chunks the scan read",
+    text.some((t) => t.includes("goodAt") && t.includes("difficulty")),
   );
 }
 
