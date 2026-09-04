@@ -57,7 +57,7 @@ export const druidTrees: SkillTree[] = [
     order: 1,
     summary: "Fire on one side, wind and cold on the other, and no overlap between them.",
     theme:
-      "Two damage schools that share a tree and nothing else. The fire half — Firestorm, Molten Boulder, Fissure, Volcano, Armageddon — is ground-based and synergises into itself. The wind half — Twister, Tornado, Hurricane — is mostly *physical* damage with a cold storm on top, which is the single reason the Druid handles Hell immunities better than any other caster. Cyclone Armor sits between them and belongs to both.",
+      "Two damage schools that share a tree and nothing else. The fire half — Firestorm, Molten Boulder, Fissure, Volcano, Armageddon — is ground-based and synergises into itself. The wind half — Twister, Tornado, Hurricane — is mostly **physical** damage with a cold storm on top, which is the single reason the Druid handles Hell immunities better than any other caster. Cyclone Armor sits between them and belongs to both.",
   },
   {
     slug: "shape-shifting",

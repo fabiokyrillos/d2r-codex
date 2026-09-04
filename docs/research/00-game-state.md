@@ -244,7 +244,8 @@ verified" placeholders for the same reason.
 | Paladin | 30, with pages | 8 | Yes | Complete |
 | **Amazon** | **30, with pages** | **8** | **Yes** | **Complete as of 2026-09-02** |
 | **Necromancer** | **30, with pages** | **3** | **Yes** | **Complete as of 2026-09-03; see [`04-necromancer-foundation.md`](04-necromancer-foundation.md) and [`05-necromancer-builds.md`](05-necromancer-builds.md)** |
-| Assassin, Barbarian, Druid | — | — | — | Overview pages only |
+| **Druid** | **30, with pages** | **2** | **Yes** | **As of 2026-09-04; see [`06-druid.md`](06-druid.md). Five further build families researched and not yet written** |
+| Assassin, Barbarian | — | — | — | Overview pages only |
 | Warlock | — | — | — | Attributes only; see the exception above |
 
 ## Related research
@@ -260,6 +261,11 @@ verified" placeholders for the same reason.
   Necromancer's trees, skills, extraction and mechanics articles; the synergy
   parameter-ownership bug; the Tier 2 cross-check and its ten divergences; and
   the five summons questions that blocked the builds. **Executed.**
+- [`06-druid.md`](06-druid.md) — the Druid's thirty skills and the physical
+  damage table they forced into the graph; the soft-level summon bonuses and the
+  control they disarmed; the eight slug overrides; the seven build families,
+  the two published and the reasons for the five that are not; and the
+  arithmetic that fixes the fire-to-wind respec at level 38. **Executed.**
 - [`05-necromancer-builds.md`](05-necromancer-builds.md) — the three builds, the
   Summoner journey, six dependency pages and the aliases; the summons research
   that answered four of those five questions and reshaped the point plan; the
