@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import {
   BCP47,
@@ -34,6 +34,20 @@ import {
  * It renders real `<a>` elements rather than buttons, so the alternate-language
  * URLs are crawlable and the links work with JavaScript disabled — the cookie
  * is a convenience, not the mechanism.
+ *
+ * 3. **It must preserve the query.** The build filters put their state in the
+ *    URL as language-independent slugs precisely so that a filtered link means
+ *    the same thing in either language — and then this component dropped it,
+ *    so switching language on a filtered catalogue silently reset it to all 29
+ *    builds.
+ *
+ *    The query is read in the click handler from `window.location`, never
+ *    through `useSearchParams`. This component is in the site header, so
+ *    reading search params during render would make every page on the site
+ *    client-render up to its nearest Suspense boundary and cost the static
+ *    HTML its header. The `href` therefore stays the bare path — which is what
+ *    a crawler should follow and what a reader without JavaScript gets — and
+ *    the query is added only when there is one to add.
  */
 /**
  * Writes the locale cookie.
@@ -66,6 +80,7 @@ export function LocaleSwitcher({
   switchToTemplate: string;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const { rest } = splitLocalePath(pathname ?? "/");
 
   return (
@@ -76,15 +91,22 @@ export function LocaleSwitcher({
     >
       {LOCALES.map((locale) => {
         const isCurrent = locale === current;
+        const href = localePath(locale, rest);
         return (
           <Link
             key={locale}
-            href={localePath(locale, rest)}
+            href={href}
             hrefLang={BCP47[locale]}
             lang={BCP47[locale]}
             aria-current={isCurrent ? "true" : undefined}
             title={switchToTemplate.replace("{language}", LOCALE_NAMES[locale])}
-            onClick={() => persistLocale(locale)}
+            onClick={(event) => {
+              persistLocale(locale);
+              const search = globalThis.location.search;
+              if (!search) return; // Nothing to carry; let the link do its job.
+              event.preventDefault();
+              router.push(`${href}${search}`);
+            }}
             className={
               isCurrent
                 ? "rounded px-2 py-1 text-xs font-semibold text-ink bg-surface-overlay"
