@@ -1606,9 +1606,9 @@ export const runewords: Runeword[] = [
       "The Holy Freeze aura already chills everything nearby, so a base with its own cold damage adds nothing you do not have.",
     ],
     usedBy:
-      "Freezing Arrow Amazons. The −20% enemy cold resistance is applied before the immunity check, and stacked with cold facets it is what keeps a single-element bow build relevant deep into Hell.",
+      "Freezing Arrow Amazons. The −20% enemy cold resistance is applied only to targets that are not immune, and stacked with cold facets it is what keeps a single-element bow build relevant deep into Hell.",
     commonMistakes: [
-      "Expecting −20% enemy cold resistance to break a cold immune on its own. It does not; against an already-immune monster all resistance reduction works at one fifth effectiveness. It is a damage line against everything that is merely resistant.",
+      "Expecting −20% enemy cold resistance to break a cold immune on its own. It does not, and no total of it ever will: a −% to Enemy Resistance line is not applied to an immune monster at all. It is a damage line against everything that is merely resistant, and it lands at full value once something else has broken the immunity.",
       "Ignoring **Holy Freeze on a Freezing Arrow build**. The aura chills, the skill freezes, and a frozen monster cannot be chilled further — the two overlap more than the stat block suggests.",
     ],
     confidence: "verified",

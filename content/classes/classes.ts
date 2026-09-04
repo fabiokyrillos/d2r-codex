@@ -36,7 +36,7 @@ export const classes: CharacterClass[] = [
     coreMechanics: [
       {
         title: "Masteries do not break immunity",
-        body: "Cold, Fire and Lightning Mastery each lower enemy resistance to their element, but against a monster that is *immune* (100%+ resistance) they operate at one fifth effectiveness and cannot break the immunity by themselves. This is the single most important thing to understand before committing to a Sorceress build in Hell.",
+        body: "Only Cold Mastery lowers enemy resistance at all — Fire and Lightning Mastery raise your own damage instead. And against a monster that is *immune* (100%+ resistance) Cold Mastery does not apply at all: it is not cut down to a fraction, it is skipped, and no level of it breaks the immunity. Something else has to break it first — a Sunder Charm, a mercenary's Conviction, a Necromancer's Lower Resist — and only then does the mastery land, at one fifth of its value. This is the single most important thing to understand before committing to a Sorceress build in Hell.",
       },
       {
         title: "Teleport is the build",

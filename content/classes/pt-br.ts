@@ -29,7 +29,7 @@ export const classesPtBr: Overlay<ClassCopy> = {
     coreMechanics: [
       {
         title: "Masteries não quebram imunidade",
-        body: "Cold, Fire e Lightning Mastery reduzem a resistência do inimigo ao elemento delas, mas contra um monstro *imune* (100%+ de resistência) elas operam com um quinto da eficácia e não conseguem quebrar a imunidade sozinhas. Esta é a coisa mais importante de entender antes de se comprometer com uma build de Sorceress no Hell.",
+        body: "Só a Cold Mastery reduz resistência do inimigo — a Fire e a Lightning Mastery aumentam o seu próprio dano. E contra um monstro *imune* (100%+ de resistência) a Cold Mastery não se aplica de forma alguma: ela não é cortada para uma fração, ela é ignorada, e nível nenhum dela quebra a imunidade. Outra coisa precisa quebrá-la antes — um Sunder Charm, a Conviction de um mercenário, o Lower Resist de um Necromancer — e só então a mastery entra, com um quinto do valor. Esta é a coisa mais importante de entender antes de se comprometer com uma build de Sorceress no Hell.",
       },
       {
         title: "Teleport é a build",

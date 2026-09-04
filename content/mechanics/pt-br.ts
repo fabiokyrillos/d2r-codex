@@ -146,7 +146,7 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
       "O Nightmare aplica −40 em todas as suas resistências. O Hell aplica −100.",
       "Suas resistências têm teto em 75% por padrão; alguns itens elevam esse teto.",
       "Um monstro é imune com 100% de resistência ou mais.",
-      "Redução de resistência contra um monstro imune funciona com um quinto da eficácia — e normalmente não quebra a imunidade.",
+      "Só uma maldição, uma aura ou um Sunder Charm quebra imunidade, e os três são cortados a um quinto enquanto ela estiver de pé. Uma mastery e um −% to Enemy Resistance não quebram imunidade com valor nenhum.",
     ],
     body: [
       { type: "heading", text: "A penalidade de dificuldade" },
@@ -189,15 +189,15 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
         type: "callout",
         variant: "danger",
         title: "Masteries não quebram imunidade",
-        text: "Cold Mastery, Lightning Mastery e equivalentes reduzem a resistência do inimigo — mas contra um monstro já imune, toda redução de resistência é aplicada com um quinto da eficácia. Uma Cold Mastery nível 20, nominalmente valendo −100% de resistência a frio, vale só −20% contra um alvo imune a frio, o que está longe de bastar para levar 110% de resistência abaixo de 100%.",
+        text: "A Cold Mastery é a única mastery que mexe na resistência do inimigo — a Fire Mastery e a Lightning Mastery aumentam o seu próprio dano, o que se comporta de outro jeito aqui e é uma distinção que vale manter. E a Cold Mastery não quebra imunidade a frio, em nível nenhum e com qualquer quantidade de +skills atrás dela. Ela é aplicada na última etapa do cálculo de resistência, depois de o jogo já ter decidido se o monstro é imune, e essa etapa é pulada enquanto a imunidade estiver de pé: contra um imune a frio a mastery não é reduzida, ela está ausente. Quem quebra a imunidade é um dos efeitos listados abaixo. A mastery então cai sobre o resultado — com um quinto do valor, desde que o Patch 2.6 a alinhou com as reduções que fazem a quebra. Todo −% to Enemy Resistance do seu equipamento funciona igual, com a diferença de que ele cai com o valor cheio.",
       },
       { type: "heading", text: "O que realmente quebra imunidade" },
       {
         type: "list",
         items: [
-          "Sunder Charms — colocam a resistência de um monstro imune em 95%, convertendo imunidade numa resistência grande, mas finita. A resposta mais confiável nos patches atuais.",
+          "Sunder Charms — colocam a resistência de um monstro imune em 95%, convertendo imunidade numa resistência grande, mas finita. A resposta mais confiável nos patches atuais, e a que abre a porta mais larga: contra um monstro sunderizado o −% to Enemy Resistance do seu equipamento cai com o valor cheio, enquanto Cold Mastery, Conviction e Lower Resist caem com um quinto.",
           "Conviction (de uma runeword Infinity num mercenário) — redução grande o bastante para quebrar muitas imunidades, embora não todas.",
-          "Lower Resist (maldição de Necromancer, ou uma wand com cargas) — efeito parecido.",
+          "Lower Resist (maldição de Necromancer, ou uma wand com cargas) — a única desta lista que também cobre veneno. A regra de um quinto vale para ela como vale para as outras maldições, então no teto de −70% da skill ela vale −14 e alcança 113%, e com um ponto seco vale −5 e alcança 104%.",
           "Amplify Damage e Decrepify — quebram imunidade física especificamente, e só uma rasa. A regra de um quinto deixa os dois com 20 e 10 pontos, então o Amplify Damage alcança 119% e o Decrepify alcança 109%.",
           "Um segundo tipo de dano. A resposta mais barata de todas: um mercenário de dano físico lida com o que o seu elemento não alcança.",
         ],
@@ -650,7 +650,7 @@ export const mechanicsPtBr: Overlay<MechanicCopy> = {
       { type: "heading", text: "A regra de um quinto, e exatamente onde ela vale" },
       {
         type: "paragraph",
-        text: "Três maldições reduzem uma resistência: Amplify Damage e Decrepify reduzem a resistência a dano físico, e Lower Resist reduz as quatro elementais. **Para essas três, e só contra um alvo cujo valor base da resistência que está sendo reduzida já seja 100 ou mais, o jogo divide o efeito da maldição por cinco.** É a mesma regra de um quinto que as masteries da Sorceress encontram, e ela é aplicada por atributo, não por skill.",
+        text: "Três maldições reduzem uma resistência: Amplify Damage e Decrepify reduzem a resistência a dano físico, e Lower Resist reduz as quatro elementais. **Para essas três, e só contra um alvo cujo valor base da resistência que está sendo reduzida já seja 100 ou mais, o jogo divide o efeito da maldição por cinco.** Ela é aplicada por atributo, não por skill. **Não é a regra que a Cold Mastery da Sorceress encontra**, e vale manter as duas separadas: uma maldição é cortada a um quinto e ainda assim quebra a imunidade, enquanto uma mastery não é aplicada a um alvo imune de forma alguma e não quebra imunidade com valor nenhum.",
       },
       {
         type: "callout",

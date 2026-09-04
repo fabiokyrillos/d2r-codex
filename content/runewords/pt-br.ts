@@ -605,9 +605,9 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "A aura de Holy Freeze já aplica chill em tudo por perto, então uma base com dano de frio próprio não acrescenta nada que você já não tenha.",
     ],
     usedBy:
-      "Amazons de Freezing Arrow. Os −20% de resistência a frio do inimigo são aplicados antes da checagem de imunidade, e empilhados com cold facets é o que mantém uma build de arco de elemento único relevante fundo no Hell.",
+      "Amazons de Freezing Arrow. Os −20% de resistência a frio do inimigo são aplicados só a alvos que não são imunes, e empilhados com cold facets é o que mantém uma build de arco de elemento único relevante fundo no Hell.",
     commonMistakes: [
-      "Esperar que −20% de resistência a frio do inimigo quebre um imune a frio sozinho. Não quebra; contra um monstro já imune toda redução de resistência opera com um quinto da eficácia. É uma linha de dano contra tudo que é apenas resistente.",
+      "Esperar que −20% de resistência a frio do inimigo quebre um imune a frio sozinho. Não quebra, e total nenhum vai quebrar: uma linha de −% to Enemy Resistance não é aplicada a um monstro imune de forma alguma. É uma linha de dano contra tudo que é apenas resistente, e entra com valor cheio depois que outra coisa quebrar a imunidade.",
       "Ignorar o **Holy Freeze numa build de Freezing Arrow**. A aura aplica chill, a skill congela, e um monstro congelado não pode ser chillado ainda mais — as duas coisas se sobrepõem mais do que a lista de status sugere.",
     ],
   },

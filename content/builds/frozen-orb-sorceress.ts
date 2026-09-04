@@ -16,8 +16,8 @@ import type { Build } from "@/lib/types";
  *   level.** That is the opposite of Fire and Lightning Mastery, which raise
  *   your damage instead. It is the reason cold builds are the least
  *   immunity-troubled casters in the game — but it still does not break a true
- *   immunity, because resistance reduction applies at one fifth effectiveness
- *   against an already-immune monster.
+ *   immunity, because a mastery is applied after the game has decided the
+ *   monster is immune, and that step is skipped while the immunity stands.
  *
  * Uses the standard Sorceress cast table.
  */
@@ -585,7 +585,7 @@ export const frozenOrbSorceress: Build = {
   ],
 
   immunityPlan:
-    "Cold builds meet fewer walls than fire or lightning ones and it is worth understanding why. **Cold Mastery reduces the enemy's cold resistance by 20% at level 1 and 5% more per level**, where Fire and Lightning Mastery instead raise your own damage. Against anything not actually immune, that means your damage keeps landing deep into Hell without a single item bought for the purpose. **It does not break true immunity**, though: resistance reduction applies at one fifth effectiveness against an already-immune monster, so a maxed Cold Mastery is worth about −20% against something at 110% and that is nowhere near enough. The answers to genuine cold immunes are a **Cold Rupture** sunder charm at the cost of 70 to 90 points of your own cold resistance, **your mercenary's physical damage**, or **skipping them** — which for a farming build is usually correct. The Pit and the Worldstone Keep are where that choice costs you, and the farming list above is rated accordingly.",
+    "Cold builds meet fewer walls than fire or lightning ones and it is worth understanding why. **Cold Mastery reduces the enemy's cold resistance by 20% at level 1 and 5% more per level**, where Fire and Lightning Mastery instead raise your own damage. Against anything not actually immune, that means your damage keeps landing deep into Hell without a single item bought for the purpose. **It does not break true immunity**, though: a mastery is applied after the game has already decided the monster is immune, and that step is skipped while the immunity stands — so against something at 110% a maxed Cold Mastery is worth nothing at all, not a reduced amount. The answers to genuine cold immunes are a **Cold Rupture** sunder charm at the cost of 70 to 90 points of your own cold resistance, **your mercenary's physical damage**, or **skipping them** — which for a farming build is usually correct. The Pit and the Worldstone Keep are where that choice costs you, and the farming list above is rated accordingly.",
 
   hardcoreNotes:
     "One of the safest casters in the game, and the reason is the freeze rather than the damage. Everything the orb touches is chilled, so packs approach slowly and in pieces; Frost Nova and Glacial Spike give you two panic buttons that stop a room outright. Take Chains of Honor over Enigma, treat 60% Faster Hit Recovery as required, and keep a Call to Arms swap. The genuine danger is the same as every Sorceress's — cold immune packs that close the distance while you have nothing to slow them with.",

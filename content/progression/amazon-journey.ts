@@ -360,7 +360,7 @@ export const amazonJourney: ProgressionJourney = {
       ],
       gearTargets: [
         { ref: { kind: "runeword", slug: "fortitude" }, why: "+300% Enhanced Damage for every build whose damage is the weapon's." },
-        { ref: { kind: "unique", slug: "griffons-eye" }, why: "−15-20% enemy lightning resistance, applied before the immunity check." },
+        { ref: { kind: "unique", slug: "griffons-eye" }, why: "−15-20% enemy lightning resistance, applied only to targets that are not immune." },
         { ref: { kind: "runeword", slug: "faith" }, why: "A Fanaticism aura in a bow — attack speed, attack rating and damage at once." },
       ],
       exitCriteria:

@@ -368,7 +368,7 @@ export const lightningFuryAmazon: Build = {
           picks: [
             {
               ref: { kind: "unique", slug: "griffons-eye" },
-              why: "**−15-20% enemy lightning resistance**, applied before the immunity check, plus lightning skill damage. The largest single damage upgrade the build makes.",
+              why: "**−15-20% enemy lightning resistance**, applied only to targets that are not immune, plus lightning skill damage. The largest single damage upgrade the build makes.",
               lookFor: ["-20% Enemy Lightning Resistance", "+15% Lightning Skill Damage"],
             },
           ],
@@ -658,7 +658,7 @@ export const lightningFuryAmazon: Build = {
   ],
 
   immunityPlan:
-    "Lightning immunity is the build's only real problem and the Amazon has **no mastery to reduce enemy resistance** — the whole answer has to come from gear, from the mercenary, or from a second damage type. In order of what most players actually reach: **Griffon's Eye** gives −15-20% enemy lightning resistance, applied before the immunity check; **Thunderstroke** gives another −15% and stacks with it; **Infinity on the mercenary** is the one that actually breaks immunity, through Conviction, and is what turns Travincal and the Worldstone Keep from bad zones into good ones. Before any of those, the honest answer is **Jab** — one physical attack, on the bar from level 1, with a Valkyrie holding the target while it works. A **Crack of the Heavens** sunder charm is the direct fix and the most expensive of the six to carry: it removes 70 to 90 points of the resistance that protects you from lightning enchanted packs, which are the thing most likely to kill this build.",
+    "Lightning immunity is the build's only real problem and the Amazon has **no mastery to reduce enemy resistance** — the whole answer has to come from gear, from the mercenary, or from a second damage type. In order of what most players actually reach: **Griffon's Eye** gives −15-20% enemy lightning resistance, applied only to targets that are not immune; **Thunderstroke** gives another −15% and stacks with it; **Infinity on the mercenary** is the one that actually breaks immunity, through Conviction, and is what turns Travincal and the Worldstone Keep from bad zones into good ones. Before any of those, the honest answer is **Jab** — one physical attack, on the bar from level 1, with a Valkyrie holding the target while it works. A **Crack of the Heavens** sunder charm is the direct fix and the most expensive of the six to carry: it removes 70 to 90 points of the resistance that protects you from lightning enchanted packs, which are the thing most likely to kill this build.",
 
   hardcoreNotes:
     "Better than it looks. Real block, a Valkyrie, a Decoy and the Dodge passives make this one of the sturdier characters in the game — and Slow Missiles for one point is close to unfair against Hell's ranged packs. The specific danger is **lightning enchanted**, because your own lightning resistance is what saves you and no aura protects you from it. Take **Thundergod's Vigor** for the raised maximum lightning resistance and the absorb, hold 75% everywhere before Hell, and do not carry a Crack of the Heavens. Prefer Holy Freeze on the mercenary over Might.",

@@ -39,7 +39,7 @@ export const freezingArrowAmazon: Build = {
     "Cold is among the least-resisted elements in Hell, so the immunity problem is smaller than a fire or lightning build's",
     "Guided Arrow on the same bar is a pure physical answer to the cold immunes that do appear",
     "One damage synergy means the skill plan is short and the mistakes are few",
-    "Ice, Nightwing's Veil and cold facets all stack −enemy cold resistance, which is applied before the immunity check",
+    "Ice, Nightwing's Veil and cold facets all stack −enemy cold resistance, which is applied only to targets that are not immune",
   ],
   weaknesses: [
     "**36 mana at level 1 and 55 at level 20**, which is the most expensive skill in the class and a real gear constraint",
@@ -552,7 +552,7 @@ export const freezingArrowAmazon: Build = {
   ],
 
   immunityPlan:
-    "Cold is among the least-resisted elements in Hell, so this build meets fewer walls than a fire or lightning one — and it still has two answers rather than none. **Guided Arrow is pure physical**, on the same bar, maxed, and unable to miss; against a cold immune it is not a fallback so much as a second main skill, which is why the plan spends twenty points on it. **−enemy cold resistance stacks and is applied before the immunity check**: an Ice runeword is −20%, a Nightwing's Veil is more, and cold facets add further. That will not break a true immunity — all resistance reduction works at one fifth effectiveness against an already-immune monster — but it keeps the burst relevant against everything merely resistant, which is most of Hell. A **Cold Rupture** sunder charm is the direct fix and the cheapest of the six to carry, because cold damage in Hell mostly arrives as a chill rather than as the thing that kills you.",
+    "Cold is among the least-resisted elements in Hell, so this build meets fewer walls than a fire or lightning one — and it still has two answers rather than none. **Guided Arrow is pure physical**, on the same bar, maxed, and unable to miss; against a cold immune it is not a fallback so much as a second main skill, which is why the plan spends twenty points on it. **−enemy cold resistance stacks, and it is applied after the immunity check rather than before it**: an Ice runeword is −20%, a Nightwing's Veil is more, and cold facets add further. That cannot break a true immunity at any total — against a monster that is still immune the whole stack is skipped rather than reduced — but it keeps the burst relevant against everything merely resistant, which is most of Hell, and it lands at full value the moment a Cold Rupture or a Conviction has broken the immunity for it. A **Cold Rupture** sunder charm is the direct fix and the cheapest of the six to carry, because cold damage in Hell mostly arrives as a chill rather than as the thing that kills you.",
 
   hardcoreNotes:
     "**The safest Amazon on the site, and one of the safest characters in the game.** A frozen monster is not attacking anybody, and the radius is wide enough that a whole pack stops at once. The two things that still kill this build are cold immunes, which do not freeze, and mana — running dry mid-pack means standing in a room full of unfrozen monsters with no button to press. Carry an Insight mercenary, keep mana potions in the belt, and treat a cold-immune pack as a reason to leave rather than a puzzle to solve. Might on the mercenary rather than Holy Freeze; you are already the source of the chill.",

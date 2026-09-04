@@ -190,7 +190,7 @@ export const mechanics: MechanicArticle[] = [
       "Nightmare applies −40 to all your resistances. Hell applies −100.",
       "Your resistances cap at 75% by default; some items raise the cap.",
       "A monster is immune at 100% resistance or above.",
-      "Resistance reduction against an immune monster works at one fifth effectiveness — and usually cannot break the immunity.",
+      "Only a curse, an aura or a Sunder Charm can break an immunity, and they are cut to one fifth while it stands. A mastery and a −% to Enemy Resistance cannot break one at any value.",
     ],
     body: [
       {
@@ -242,7 +242,7 @@ export const mechanics: MechanicArticle[] = [
         type: "callout",
         variant: "danger",
         title: "Masteries do not break immunity",
-        text: "Cold Mastery, Lightning Mastery and their equivalents reduce enemy resistance — but against an already-immune monster, all resistance reduction is applied at one fifth effectiveness. A level 20 Cold Mastery nominally worth −100% cold resistance is worth only −20% against a cold-immune target, which is nowhere near enough to bring 110% resistance below 100%.",
+        text: "Cold Mastery is the only mastery that touches enemy resistance at all — Fire Mastery and Lightning Mastery raise your own damage instead, which behaves differently here and is a distinction worth keeping. And Cold Mastery cannot break a cold immunity, at any level and with any amount of +skills behind it. It is applied at the last stage of the resistance calculation, after the game has already decided whether the monster is immune, and that stage is skipped while the immunity stands: against a cold immune the mastery is not cut down, it is absent. What breaks the immunity is one of the effects listed below. The mastery then lands on the result — at one fifth of its value, since Patch 2.6 brought it in line with the reductions that do the breaking. Every −% to Enemy Resistance on your gear works the same way, except that it lands at full value.",
       },
       {
         type: "heading",
@@ -251,9 +251,9 @@ export const mechanics: MechanicArticle[] = [
       {
         type: "list",
         items: [
-          "Sunder Charms — set an immune monster's resistance to 95%, converting immunity into a large but finite resistance. The most reliable answer in current patches.",
+          "Sunder Charms — set an immune monster's resistance to 95%, converting immunity into a large but finite resistance. The most reliable answer in current patches, and the one that opens the widest door: against a sundered monster your gear's −% to Enemy Resistance lands at full value, while Cold Mastery, Conviction and Lower Resist land at a fifth.",
           "Conviction (from an Infinity runeword on a mercenary) — a large enough reduction to break many, though not all, immunities.",
-          "Lower Resist (Necromancer curse, or a charged wand) — similar effect.",
+          "Lower Resist (Necromancer curse, or a charged wand) — the only one of these that also covers poison. The one-fifth rule applies to it as it does to the other curses, so at the skill's −70% ceiling it is worth −14 and reaches 113%, and from a bare point it is worth −5 and reaches 104%.",
           "Amplify Damage and Decrepify — break physical immunity specifically, and only a shallow one. The one-fifth rule leaves them 20 and 10 points, so Amplify Damage reaches 119% and Decrepify reaches 109%.",
           "A second damage type. The cheapest answer of all: a physical-damage mercenary handles what your element cannot.",
         ],
@@ -770,7 +770,7 @@ export const mechanics: MechanicArticle[] = [
       { type: "heading", text: "The one-fifth rule, and exactly where it applies" },
       {
         type: "paragraph",
-        text: "Three curses lower a resistance: Amplify Damage and Decrepify lower physical damage resistance, and Lower Resist lowers the four elemental ones. **For those three, and only against a target whose base value of the resistance being lowered is already 100 or more, the game divides the curse's effect by five.** It is the same one-fifth rule the Sorceress's masteries run into, and it is applied per stat rather than per skill.",
+        text: "Three curses lower a resistance: Amplify Damage and Decrepify lower physical damage resistance, and Lower Resist lowers the four elemental ones. **For those three, and only against a target whose base value of the resistance being lowered is already 100 or more, the game divides the curse's effect by five.** It is applied per stat rather than per skill. **It is not the rule a Sorceress's Cold Mastery runs into**, and the two are worth keeping apart: a curse is cut to a fifth and can still break the immunity, while a mastery is not applied to an immune target at all and cannot break one at any value.",
       },
       {
         type: "callout",

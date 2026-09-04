@@ -160,7 +160,8 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "Reduz a resistência a frio do inimigo. O maior multiplicador de dano disponível para qualquer build de frio.",
     mechanics: [
       "Contra monstros não imunes, subtrai diretamente da resistência a frio deles, e pode levá-la ao negativo.",
-      "Contra monstros *imunes* a frio, funciona com um quinto da eficácia e não consegue quebrar a imunidade.",
+      "Contra monstros *imunes* a frio, não faz absolutamente nada. Não quebra a imunidade em nível nenhum, e enquanto a imunidade estiver de pé ela não é reduzida a uma fração — ela é ignorada.",
+      "Depois que outra coisa quebrar a imunidade — um Cold Rupture, a Conviction de um mercenário, o Lower Resist de um Necromancer — ela passa a valer sobre o que sobrou, com um quinto do valor desde o Patch 2.6.",
       "Como +skills a elevam, a maioria das builds coloca menos pontos aqui do que os 20 que a descrição sugere — nível 17 depois do equipamento é um alvo comum.",
     ],
   },
@@ -1034,7 +1035,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "A redução sobe de **25% em direção a um teto de 70%** numa curva de retornos decrescentes, então o primeiro ponto vale muito mais que o vigésimo.",
       "Ela cobre **veneno além dos três elementos**, o que nenhuma aura e nenhuma outra maldição faz — e veneno não tem Mastery, então esta é toda a resposta de resistência de uma build de veneno.",
-      "Contra um monstro *imune* ao elemento ela entra com um quinto da força, do mesmo jeito que toda redução de resistência.",
+      "Contra um monstro *imune* ao elemento ela entra com um quinto da força — e, ao contrário de uma mastery ou de um −% to Enemy Resistance, ainda assim quebra a imunidade se um quinto bastar. No teto de −70% da skill esse quinto é −14, que alcança 113%; com um ponto seco é −5, que alcança 104%.",
       "É uma maldição como qualquer outra: substitui o Amplify Damage no alvo em vez de se somar a ele.",
     ],
   },

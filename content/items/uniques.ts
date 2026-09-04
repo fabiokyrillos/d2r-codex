@@ -508,7 +508,7 @@ export const uniques: UniqueItem[] = [
       confidence: "verified",
     },
     notes:
-      "The −15% enemy lightning resistance is applied before the immunity check, exactly as Griffon's Eye is, which makes this the one piece of Amazon gear that helps against lightning immunity rather than merely against resistance. It carries **no Replenishes Quantity**, so a Thunderstroke Amazon either buys the perfect-roll version and accepts refilling by hand, or keeps a Titan's Revenge on the swap for clearing. That trade-off is the whole decision between the two javelins.",
+      "The −15% enemy lightning resistance is applied only to targets that are not immune, exactly as Griffon's Eye is, which makes this the one piece of Amazon gear that helps against lightning immunity rather than merely against resistance. It carries **no Replenishes Quantity**, so a Thunderstroke Amazon either buys the perfect-roll version and accepts refilling by hand, or keeps a Titan's Revenge on the swap for clearing. That trade-off is the whole decision between the two javelins.",
     alternatives: [{ kind: "unique", slug: "titans-revenge" }],
     confidence: "verified",
   },

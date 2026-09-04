@@ -198,7 +198,8 @@ export const sorceressSkills: Skill[] = [
       "Lowers enemy cold resistance. The largest damage multiplier available to any cold build.",
     mechanics: [
       "Against non-immune monsters it subtracts directly from their cold resistance, and can push it negative.",
-      "Against cold-*immune* monsters it works at one fifth effectiveness and cannot break the immunity.",
+      "Against cold-*immune* monsters it does nothing at all. It cannot break the immunity at any level, and while the immunity stands it is not reduced to a fraction — it is skipped.",
+      "Once something else has broken the immunity — a Cold Rupture, a mercenary's Conviction, a Necromancer's Lower Resist — it applies to what is left, at one fifth of its value since Patch 2.6.",
       "Because +skills raise it, most builds put fewer hard points here than the 20 the tooltip suggests — level 17 after gear is a common target.",
     ],
     confidence: "verified",

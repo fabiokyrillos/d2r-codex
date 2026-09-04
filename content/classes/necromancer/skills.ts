@@ -648,7 +648,7 @@ export const necromancerSkills: Skill[] = [
     mechanics: [
       "The reduction climbs from **25% toward a 70% ceiling** on a diminishing curve, so the first point is worth far more than the twentieth.",
       "It covers **poison as well as the three elements**, which no aura and no other curse does — and poison has no Mastery, so this is the whole of a poison build's resistance answer.",
-      "Against a monster that is *immune* to the element it works at reduced effect, the same way every resistance reduction does.",
+      "Against a monster that is *immune* to the element it works at one fifth strength — and, unlike a mastery or a −% to Enemy Resistance, it still breaks the immunity if a fifth is enough. At the skill's −70% ceiling that fifth is −14, which reaches 113%; from a bare point it is −5, which reaches 104%.",
       "It is a curse like any other: it replaces Amplify Damage on the target rather than stacking with it.",
     ],
     confidence: "verified",

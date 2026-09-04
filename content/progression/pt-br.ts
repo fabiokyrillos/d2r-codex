@@ -681,7 +681,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         ],
         gearTargets: [
           { why: "+300% de Enhanced Damage para toda build cujo dano seja o da arma." },
-          { why: "−15-20% de resistência a raio do inimigo, aplicados antes da checagem de imunidade." },
+          { why: "−15-20% de resistência a raio do inimigo, aplicados só a alvos que não são imunes." },
           { why: "Uma aura de Fanaticism num arco — velocidade de ataque, attack rating e dano de uma vez." },
         ],
         exitCriteria:

@@ -397,7 +397,7 @@ export const lightningStrikeAmazon: Build = {
           picks: [
             {
               ref: { kind: "unique", slug: "griffons-eye" },
-              why: "−20% enemy lightning resistance and +15% lightning skill damage, applied before the immunity check.",
+              why: "−20% enemy lightning resistance and +15% lightning skill damage, applied only to targets that are not immune.",
               sockets: "A lightning Rainbow Facet.",
               alternatives: [{ ref: { kind: "unique", slug: "andariels-visage" }, why: "Keep it if the life steal and attack speed are still carrying you." }],
             },
@@ -583,7 +583,7 @@ export const lightningStrikeAmazon: Build = {
   ],
 
   immunityPlan:
-    "This build handles lightning immunity better than the thrown one, and the reason is a difference in how the two skills are built. **Lightning Strike delivers the weapon's full physical damage as well as its own lightning**, so a lightning immune still takes the weapon half — with a Fortitude, a Gore Rider and a Might mercenary, that half is substantial. **Charged Strike delivers no weapon damage at all**; against a lightning immune it does literally nothing, which is why Jab stays on the bar. The upgrades are the same as every lightning Amazon's: **Griffon's Eye** and **Thunderstroke** for −enemy resistance applied before the immunity check, and **Infinity on the mercenary** for the Conviction that actually breaks it. A **Crack of the Heavens** works and costs 70 to 90 points of the resistance protecting you from lightning enchanted packs — a worse trade in melee range than at distance.",
+    "This build handles lightning immunity better than the thrown one, and the reason is a difference in how the two skills are built. **Lightning Strike delivers the weapon's full physical damage as well as its own lightning**, so a lightning immune still takes the weapon half — with a Fortitude, a Gore Rider and a Might mercenary, that half is substantial. **Charged Strike delivers no weapon damage at all**; against a lightning immune it does literally nothing, which is why Jab stays on the bar. The upgrades are the same as every lightning Amazon's: **Griffon's Eye** and **Thunderstroke** for −enemy resistance applied only to targets that are not immune, and **Infinity on the mercenary** for the Conviction that actually breaks it. A **Crack of the Heavens** works and costs 70 to 90 points of the resistance protecting you from lightning enchanted packs — a worse trade in melee range than at distance.",
 
   hardcoreNotes:
     "Playable and demanding. You are in melee range with the smallest health pool of any melee character, so the whole plan is block, hit recovery and leech: reach 32% Faster Block Rate and 32% Faster Hit Recovery before Hell, hold a Stormshield, and get Dracul's Grasp on as early as you can — Life Tap on striking is worth more than any amount of raw defence. **Iron Maiden is the specific killer.** The Oblivion Knights in the Chaos Sanctuary reflect physical damage, and Lightning Strike carries a physical half, so a cursed pack can end the character. Watch for the curse and walk out of it. Holy Freeze on the mercenary, not Might.",

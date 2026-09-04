@@ -352,7 +352,7 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     dropSummary:
       "Um drop exclusivo do Hell, e genuinamente raro. A maioria das Amazons compra em vez de encontrar.",
     notes:
-      "Os −15% de resistência a raio do inimigo são aplicados antes da checagem de imunidade, exatamente como no Griffon's Eye, o que faz desta a única peça de equipamento de Amazon que ajuda contra a imunidade a raio, e não apenas contra a resistência. Ela **não tem Replenishes Quantity**, então uma Amazon de Thunderstroke ou compra a versão com rolagem perfeita e aceita reabastecer na mão, ou mantém uma Titan's Revenge no swap para limpar. Esse é todo o dilema entre as duas javelins.",
+      "Os −15% de resistência a raio do inimigo são aplicados só a alvos que não são imunes, exatamente como no Griffon's Eye, o que faz desta a única peça de equipamento de Amazon que ajuda contra a imunidade a raio, e não apenas contra a resistência. Ela **não tem Replenishes Quantity**, então uma Amazon de Thunderstroke ou compra a versão com rolagem perfeita e aceita reabastecer na mão, ou mantém uma Titan's Revenge no swap para limpar. Esse é todo o dilema entre as duas javelins.",
   },
   windforce: {
     summary:
