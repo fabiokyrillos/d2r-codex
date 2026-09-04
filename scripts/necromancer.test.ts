@@ -10,7 +10,7 @@
  * Run with `npm run test:necromancer`.
  */
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
-import { getClasses, getMechanics, getSkills } from "../lib/registry";
+import { getClasses, getJourneys, getMechanics, getSkills } from "../lib/registry";
 import { buildSearchIndex } from "../lib/search";
 import { SLUG_OVERRIDES } from "./skill-graph-rules";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
@@ -35,12 +35,22 @@ import {
   type PublishedValues,
 } from "./necromancer-rules";
 import {
+  AMPLIFY_DAMAGE,
+  DECREPIFY,
+  IMMUNITY_THRESHOLD,
   NEVER_FEED_TO_A_GOLEM,
+  PHYSICAL_IMMUNITY_CONTROLS,
+  applyResistanceCurse,
   checkCorpseExplosionClaims,
+  checkImmunityBreakClaims,
   checkIronGolemAdvice,
+  checkQuestPointBudget,
   checkReviveSummonResist,
   checkSummonPenaltyClaims,
   checkUnlockLevelClaims,
+  deepestBreakable,
+  questPointLedger,
+  type ClaimProblem,
 } from "./necromancer-claims";
 
 let passed = 0;
@@ -932,6 +942,377 @@ for (const locale of LOCALES) {
   const serialised = JSON.stringify(index).toLowerCase();
   const leaked = Object.keys(SLUG_OVERRIDES).filter((id) => serialised.includes(id.toLowerCase()));
   check(`${locale}: no overridden identifier reaches the index`, leaked.length === 0, leaked.join(", "));
+}
+
+// ===========================================================================
+// Physical immunity: the arithmetic, then the sentences that contradicted it
+// ===========================================================================
+
+/*
+ * The site published "Decrepify never breaks a physical immunity" on four
+ * pages in two languages, and its own model says the opposite. An immune sits
+ * at 100 or more; a resistance-lowering curse works at one fifth against one;
+ * Decrepify's −50 is therefore −10, and 100 − 10 is 90.
+ *
+ * Every page had copied the same worked example instead of doing the
+ * subtraction, so the checks below do the subtraction first and check prose
+ * against it second. The four control rows are the ones that decide the
+ * wording: 100 and 109 are where Decrepify works and the old prose denied it,
+ * 110 is the first row where the two curses differ, and 120 is where both stop
+ * — the row that stops the correction from overshooting into "Decrepify breaks
+ * physical immunity" with no ceiling.
+ */
+console.log("\nPhysical immunity arithmetic");
+{
+  for (const row of PHYSICAL_IMMUNITY_CONTROLS) {
+    const dec = applyResistanceCurse(row.before, DECREPIFY);
+    const amp = applyResistanceCurse(row.before, AMPLIFY_DAMAGE);
+
+    check(
+      `Decrepify on ${row.before}% leaves ${row.decrepify.after}%`,
+      dec.after === row.decrepify.after,
+      `${dec.after}`,
+    );
+    check(
+      `Decrepify on ${row.before}%: ${row.decrepify.breaks ? "breaks" : "does not break"}`,
+      dec.breaks === row.decrepify.breaks && dec.stillImmune === !row.decrepify.breaks,
+      `breaks=${dec.breaks} stillImmune=${dec.stillImmune}`,
+    );
+    check(
+      `Amplify Damage on ${row.before}% leaves ${row.amplify.after}%`,
+      amp.after === row.amplify.after,
+      `${amp.after}`,
+    );
+    check(
+      `Amplify Damage on ${row.before}%: ${row.amplify.breaks ? "breaks" : "does not break"}`,
+      amp.breaks === row.amplify.breaks && amp.stillImmune === !row.amplify.breaks,
+      `breaks=${amp.breaks} stillImmune=${amp.stillImmune}`,
+    );
+
+    // The one-fifth rule is the reason the numbers are 10 and 20 rather than
+    // 50 and 100, so it is asserted rather than left implicit in the totals.
+    check(
+      `${row.before}% is immune, so both curses are cut to a fifth`,
+      dec.wasImmune && amp.wasImmune && dec.applied === 10 && amp.applied === 20,
+      `${dec.applied} / ${amp.applied}`,
+    );
+    // …and the same curses are worth their full value against anything else.
+    check(
+      `the fifth applies only above ${IMMUNITY_THRESHOLD - 1}%`,
+      applyResistanceCurse(99, DECREPIFY).applied === 50 &&
+        applyResistanceCurse(99, AMPLIFY_DAMAGE).applied === 100,
+      `${applyResistanceCurse(99, DECREPIFY).applied}`,
+    );
+  }
+
+  // The two ceilings the prose names, derived rather than transcribed.
+  check(
+    "Decrepify reaches 109% and no further",
+    deepestBreakable(DECREPIFY) === 109,
+    `${deepestBreakable(DECREPIFY)}`,
+  );
+  check(
+    "Amplify Damage reaches 119% and no further",
+    deepestBreakable(AMPLIFY_DAMAGE) === 119,
+    `${deepestBreakable(AMPLIFY_DAMAGE)}`,
+  );
+  check(
+    "Amplify Damage penetrates exactly twice as deep past the threshold",
+    deepestBreakable(AMPLIFY_DAMAGE) - IMMUNITY_THRESHOLD ===
+      2 * (deepestBreakable(DECREPIFY) - IMMUNITY_THRESHOLD) + 1,
+    `${deepestBreakable(AMPLIFY_DAMAGE)} vs ${deepestBreakable(DECREPIFY)}`,
+  );
+}
+
+/*
+ * Planted mutations, and these are not invented sentences: every one is the
+ * text this repository actually shipped at 7fa9583, in the locale it shipped
+ * in. If a rule cannot reject the sentence it was written for, it would not
+ * have caught the mistake it exists to catch.
+ */
+console.log("\nPlanted mutations: the immunity sentences that shipped");
+{
+  const fires = (line: string, rule: ClaimProblem["rule"]) =>
+    checkImmunityBreakClaims([line], "c").some((p) => p.rule === rule);
+
+  const SHIPPED: readonly { line: string; rule: ClaimProblem["rule"]; note: string }[] = [
+    {
+      note: "curses article, the table cell — the 100% example itself",
+      line: "−10, which does not break a 100% immunity",
+      rule: "immunity-arithmetic-wrong",
+    },
+    {
+      note: "curses article, the pt-BR table cell",
+      line: "−10, o que não quebra uma imunidade de 100%",
+      rule: "immunity-arithmetic-wrong",
+    },
+    {
+      note: "curses article, key fact",
+      line:
+        "**Amplify Damage and Decrepify are not two grades of the same curse.** Against a " +
+        "physical immune only Amplify Damage breaks it, and no amount of Decrepify substitutes.",
+      rule: "only-amplify-breaks-immunity",
+    },
+    {
+      note: "curses article, pt-BR key fact",
+      line:
+        "**Amplify Damage e Decrepify não são dois graus da mesma maldição.** Contra um imune a " +
+        "físico só Amplify Damage quebra a imunidade, e nenhuma quantidade de Decrepify substitui.",
+      rule: "only-amplify-breaks-immunity",
+    },
+    {
+      note: "curses article, the callout",
+      line:
+        "Against a physical immune, Amplify Damage breaks the immunity and Decrepify does not",
+      rule: "decrepify-cannot-break-immunity",
+    },
+    {
+      note: "curses article, which-one-and-when",
+      line: "Decrepify's cut becomes 10 points and does not break it.",
+      rule: "decrepify-cannot-break-immunity",
+    },
+    {
+      note: "curses article, pt-BR which-one-and-when",
+      line: "O corte do Decrepify vira 10 pontos e não quebra a imunidade.",
+      rule: "decrepify-cannot-break-immunity",
+    },
+    {
+      note: "Summoner build, the Amplify Damage allocation note",
+      line:
+        "It also breaks a 100% physical immunity, where Decrepify's −50 becomes −10 against one " +
+        "and does not.",
+      rule: "decrepify-cannot-break-immunity",
+    },
+    {
+      note: "Necromancer journey, Hell",
+      line:
+        "Decrepify does not break physical immunity — its cut is halved to begin with and " +
+        "reduced to a fifth against an immune.",
+      rule: "decrepify-cannot-break-immunity",
+    },
+    {
+      note: "Necromancer journey, pt-BR Hell",
+      line: "O Decrepify não quebra imunidade física — o corte dele já é metade.",
+      rule: "decrepify-cannot-break-immunity",
+    },
+    {
+      note: "pt-BR which-one-and-when, the exclusivity form without the name",
+      line: "**Um imune a físico** — Amplify Damage, e só ele.",
+      rule: "only-amplify-breaks-immunity",
+    },
+  ];
+
+  for (const { line, rule, note } of SHIPPED) {
+    check(`rejects the shipped sentence — ${note}`, fires(line, rule), line.slice(0, 60));
+  }
+
+  /*
+   * The other half of the contract. A rule that rejects the corrected sentence
+   * is not a rule, it is a ban on the subject — and these sentences are built
+   * from the same words as the ones above, which is what makes them the test.
+   */
+  const CORRECTED: readonly string[] = [
+    "Both curses break a physical immunity; they do not reach equally far into one.",
+    "−10, which breaks 100% up to 109% and stops there",
+    "−10, o que quebra de 100% até 109% e para aí",
+    "Its cut becomes 20 points and Decrepify's becomes 10, so Decrepify does break one sitting " +
+      "at 100% to 109% and nothing beyond that.",
+    "O corte dele vira 20 pontos e o do Decrepify vira 10, então o Decrepify quebra sim um que " +
+      "esteja entre 100% e 109%, e nada além disso.",
+    "A monster at 110% is the first that separates them, and a monster at 120% is immune to both.",
+    "Decrepify's −50 becomes −10, which breaks the same monster at 100% but stops at 109%.",
+    "it penetrates twice as deep, and it is the only one of the two that can be relied on " +
+      "without knowing the monster's exact number",
+    "ele penetra o dobro, e é o único dos dois em que dá para confiar sem saber o número exato " +
+      "do monstro",
+  ];
+  for (const line of CORRECTED) {
+    const problems = checkImmunityBreakClaims([line], "c");
+    check(
+      `accepts the corrected sentence — "${line.slice(0, 52)}…"`,
+      problems.length === 0,
+      problems.map((p) => p.rule).join(", "),
+    );
+  }
+
+  /*
+   * A 120% denial is true, so the arithmetic rule must let it through — the
+   * rule measures the claim rather than banning the phrase.
+   */
+  check(
+    "a denial at 120% is left alone, because it is correct",
+    checkImmunityBreakClaims(["Neither curse breaks a 120% physical immunity."], "c").length === 0,
+  );
+  check(
+    "a denial at 105% is rejected, because it is not",
+    checkImmunityBreakClaims(["It does not break a 105% immunity."], "c").some(
+      (p) => p.rule === "immunity-arithmetic-wrong",
+    ),
+  );
+}
+
+// ===========================================================================
+// Quest skill points, counted against what the route spends them on
+// ===========================================================================
+
+/*
+ * The level-24 stage promised four banked quest points on a route that had
+ * already directed all four elsewhere. Both halves were on the same page, so
+ * the rule reads both halves off the page: grants from the `kind: "quest"`
+ * actions, allocations from those same actions naming a skill.
+ */
+console.log("\nQuest skill point ledger");
+{
+  /** Every authored line of a journey, flattened the way the checker sees it. */
+  const journeyLines = (journey: ReturnType<typeof getJourneys>[number]): string[] => {
+    const out: string[] = [journey.summary, ...journey.overview];
+    for (const respec of journey.respecPlan ?? []) out.push(respec.at, respec.why);
+    for (const stage of journey.stages) {
+      out.push(stage.name, stage.summary, stage.goal, stage.exitCriteria ?? "", ...stage.skillPoints);
+      for (const action of stage.actions) out.push(action.text);
+    }
+    return out.filter((line) => line.length > 0);
+  };
+
+  const skillNames = Object.entries(SKILL_GRAPH)
+    .filter(([, node]) => node.classSlug === "necromancer")
+    .map(([slug]) => getSkills(DEFAULT_LOCALE).find((s) => s.slug === slug)?.name ?? slug);
+
+  for (const locale of LOCALES) {
+    const journey = getJourneys(locale).find((j) => j.classSlug === "necromancer")!;
+    const questActions = journey.stages.flatMap((s) =>
+      s.actions.filter((a) => a.kind === "quest").map((a) => a.text),
+    );
+    const ledger = questPointLedger(questActions, skillNames);
+
+    check(
+      `${locale}: the route grants four Normal quest skill points`,
+      ledger.granted === 4,
+      `${ledger.granted}`,
+    );
+    check(
+      `${locale}: all four are directed into a skill`,
+      ledger.allocated === 4,
+      `${ledger.allocated}`,
+    );
+    check(`${locale}: none are left banked`, ledger.free === 0, `${ledger.free}`);
+    check(
+      `${locale}: the three grants are Den of Evil 1, Radament 1 and Izual 2`,
+      ledger.entries.map((e) => e.granted).join(",") === "1,1,2",
+      ledger.entries.map((e) => `${e.granted}->${e.directedTo.join("/")}`).join(" | "),
+    );
+    check(
+      `${locale}: the page claims no banked quest points`,
+      checkQuestPointBudget(journeyLines(journey), questActions, skillNames, locale).length === 0,
+      checkQuestPointBudget(journeyLines(journey), questActions, skillNames, locale)
+        .map((p) => p.message)
+        .join(" | "),
+    );
+  }
+
+  /*
+   * The planted mutations are the two sentences that shipped, in both
+   * languages, checked against the real ledger rather than an invented one.
+   */
+  const journey = getJourneys(DEFAULT_LOCALE).find((j) => j.classSlug === "necromancer")!;
+  const questActions = journey.stages.flatMap((s) =>
+    s.actions.filter((a) => a.kind === "quest").map((a) => a.text),
+  );
+  const plant = (line: string) =>
+    checkQuestPointBudget([line], questActions, skillNames, "c").some(
+      (p) => p.rule === "quest-points-banked-but-spent",
+    );
+
+  const SHIPPED_BANKING: readonly [string, string][] = [
+    [
+      "overview, en-US",
+      "By the time you reach 24 you will have four quest skill points banked from the Den of " +
+        "Evil, Radament and Izual, so taking both in the same session is realistic.",
+    ],
+    [
+      "overview, pt-BR",
+      "Quando você chegar no 24 vai ter quatro pontos de skill de quest guardados da Den of " +
+        "Evil, do Radament e do Izual.",
+    ],
+    [
+      "stage summary, en-US",
+      "Summon Resist and Decrepify both unlock here, and you will have quest points banked for both.",
+    ],
+    [
+      "stage summary, pt-BR",
+      "Summon Resist e Decrepify destravam os dois aqui, e você vai ter pontos de quest guardados para os dois.",
+    ],
+    [
+      "level 24 skill points, en-US",
+      "Level 24 also opens Decrepify, and by now you have four quest skill points from the Den " +
+        "of Evil, Radament and Izual.",
+    ],
+    [
+      "level 24 skill points, pt-BR",
+      "O nível 24 também abre o Decrepify, e a esta altura você tem quatro pontos de skill de " +
+        "quest da Den of Evil, do Radament e do Izual.",
+    ],
+  ];
+  for (const [note, line] of SHIPPED_BANKING) {
+    check(`rejects the shipped banking claim — ${note}`, plant(line), line.slice(0, 60));
+  }
+
+  /*
+   * The Portuguese sentence that shipped says "chegar **no** 24", and the
+   * shared `REFUTES` list treats `no` as a negation. It is an article here, and
+   * reading it as a denial left the pt-BR half of this rule inert — caught by
+   * running the mutation in both languages rather than only in the source one.
+   */
+  check(
+    "Portuguese 'no' as an article does not read as a denial",
+    plant("Quando você chegar no 24 vai ter quatro pontos de quest guardados."),
+  );
+  check(
+    "Portuguese 'nenhum' as a denial still does",
+    !plant("Nenhum ponto de quest fica guardado no 24."),
+  );
+
+  // "By the time you reach 24" carries a number that is not a point count.
+  check(
+    "a level number in the same sentence is not read as a point count",
+    checkQuestPointBudget(
+      ["By the time you reach 24 you will have one quest skill point banked."],
+      questActions,
+      skillNames,
+      "c",
+    )[0]?.message.includes("has 1 quest skill point") === true,
+  );
+
+  // The corrected sentences deny the banking, and must survive.
+  for (const line of [
+    "**No quest point needs to be saved for either**: the four this route earns in Normal are " +
+      "spent on the way there.",
+    "**Nenhum ponto de quest precisa ser guardado para nenhum dos dois**: os quatro que esta " +
+      "rota ganha no Normal são gastos no caminho até lá.",
+    "You do not need both in the same instant and no quest point is being held back for either.",
+  ]) {
+    check(
+      `accepts the corrected sentence — "${line.slice(0, 46)}…"`,
+      checkQuestPointBudget([line], questActions, skillNames, "c").length === 0,
+    );
+  }
+
+  /*
+   * And the ledger has to be able to move. A route that granted a point without
+   * directing it would be allowed to say so — otherwise this is a ban on the
+   * words rather than a count of the points.
+   */
+  const looseLedger = questPointLedger([...questActions, "**Anya** gives +1 skill point."], skillNames);
+  check("an undirected grant leaves a point free", looseLedger.free === 1, `${looseLedger.free}`);
+  check(
+    "and the claim it licenses is then accepted",
+    checkQuestPointBudget(
+      ["You will have one quest skill point banked."],
+      [...questActions, "**Anya** gives +1 skill point."],
+      skillNames,
+      "c",
+    ).length === 0,
+  );
 }
 
 // ===========================================================================

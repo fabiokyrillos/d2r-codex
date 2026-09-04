@@ -46,7 +46,7 @@ import {
 } from "../lib/labels";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
-import type { Build, GearPick, ItemRef, ProgressionJourney } from "../lib/types";
+import type { Build, GearPick, ItemRef, MechanicArticle, ProgressionJourney } from "../lib/types";
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import {
   ELEMENTAL_ATTACK_MODELS,
@@ -104,7 +104,9 @@ import {
 import {
   NEVER_FEED_TO_A_GOLEM,
   UNLOCK_CLAIM_SKILLS,
+  checkImmunityBreakClaims,
   checkIronGolemAdvice,
+  checkQuestPointBudget,
   checkReviveSummonResist,
   checkSummonPenaltyClaims,
   checkUnlockLevelClaims,
@@ -172,6 +174,42 @@ function journeyProse(journey: ProgressionJourney): string[] {
     for (const action of stage.actions) out.push(action.text);
     for (const target of stage.gearTargets ?? []) {
       out.push(target.why, target.label ?? "", ...(target.lookFor ?? []));
+    }
+  }
+  return out.filter((line) => line.length > 0);
+}
+
+/**
+ * The same, for a mechanics article.
+ *
+ * Table cells are flattened into lines of their own. That is what a reader
+ * sees — "−10, which does not break a 100% immunity" was a cell, not a
+ * sentence in a paragraph — and a prose rule that only walked the paragraphs
+ * would have missed the plainest statement of the error.
+ */
+function articleProse(article: MechanicArticle): string[] {
+  const out: string[] = [article.summary, ...article.keyFacts];
+  for (const block of article.body) {
+    switch (block.type) {
+      case "paragraph":
+      case "heading":
+        out.push(block.text);
+        break;
+      case "callout":
+        out.push(block.title ?? "", block.text);
+        break;
+      case "list":
+        out.push(...block.items);
+        break;
+      case "table":
+        out.push(...block.headers, ...block.rows.flat(), block.caption ?? "");
+        break;
+      case "formula":
+        out.push(block.caption ?? "");
+        break;
+      case "refs":
+        out.push(block.title ?? "");
+        break;
     }
   }
   return out.filter((line) => line.length > 0);
@@ -889,6 +927,10 @@ console.log("\nNecromancer page claims (both locales):");
     if (node.classSlug !== "necromancer") continue;
     levelByName.set(nameOf(slug), node.requiredLevel);
   }
+  const necromancerSkillNames = [...levelByName.keys()];
+
+  const immunityPages: { where: string; lines: string[] }[] = [];
+  const questLedgers: { where: string; lines: string[]; questActions: string[] }[] = [];
 
   const found = LOCALES.flatMap((locale) => {
     const pages: { where: string; lines: string[]; owesLosses: boolean }[] = [];
@@ -916,6 +958,29 @@ console.log("\nNecromancer page claims (both locales):");
         lines,
         owesLosses: recommendsBuildingAGolem(lines),
       });
+
+      /*
+       * The quest-point ledger is the journey's alone. A build page has no
+       * quest actions to grant from, so running it there would compare a claim
+       * against an empty ledger and reject every mention of the subject.
+       */
+      questLedgers.push({
+        where: `${locale} ${journey.classSlug} journey`,
+        lines,
+        questActions: journey.stages.flatMap((s) =>
+          s.actions.filter((a) => a.kind === "quest").map((a) => a.text),
+        ),
+      });
+    }
+
+    /*
+     * The immunity rules also run over the two articles that carry the claim.
+     * The curses article is where the mistake was stated most plainly, and the
+     * resistances article is where a reader arrives from any other class.
+     */
+    for (const slug of ["curses", "resistances-and-immunities"]) {
+      const article = getMechanics(locale).find((a) => a.slug === slug);
+      if (article) immunityPages.push({ where: `${locale} ${slug}`, lines: articleProse(article) });
     }
 
     return pages.flatMap(({ where, lines, owesLosses }) => [
@@ -926,8 +991,16 @@ console.log("\nNecromancer page claims (both locales):");
       ...checkSummonPenaltyClaims(lines, where, false),
       ...checkReviveSummonResist(lines, where),
       ...checkUnlockLevelClaims(lines, (name) => levelByName.get(name), UNLOCK_CLAIM_SKILLS, where),
+      ...checkImmunityBreakClaims(lines, where),
     ]);
   });
+
+  found.push(
+    ...immunityPages.flatMap(({ where, lines }) => checkImmunityBreakClaims(lines, where)),
+    ...questLedgers.flatMap(({ where, lines, questActions }) =>
+      checkQuestPointBudget(lines, questActions, [...necromancerSkillNames], where),
+    ),
+  );
 
   const rules = [
     "unlock-level-wrong",
@@ -935,6 +1008,10 @@ console.log("\nNecromancer page claims (both locales):");
     "revive-gets-summon-resist",
     "golem-expensive-item-recommended",
     "golem-losses-not-stated",
+    "decrepify-cannot-break-immunity",
+    "only-amplify-breaks-immunity",
+    "immunity-arithmetic-wrong",
+    "quest-points-banked-but-spent",
   ] as const;
   for (const rule of rules) {
     const hits = found.filter((p) => p.rule === rule);

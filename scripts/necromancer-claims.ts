@@ -40,7 +40,11 @@ export interface ClaimProblem {
     | "summon-difficulty-penalty-claimed"
     | "summon-penalty-not-corrected"
     | "revive-gets-summon-resist"
-    | "unlock-level-wrong";
+    | "unlock-level-wrong"
+    | "decrepify-cannot-break-immunity"
+    | "only-amplify-breaks-immunity"
+    | "immunity-arithmetic-wrong"
+    | "quest-points-banked-but-spent";
   message: string;
 }
 
@@ -403,6 +407,303 @@ export function checkUnlockLevelClaims(
           `unlocks it at ${actual}.`,
       });
     }
+  }
+  return found;
+}
+
+// ===========================================================================
+// Physical immunity, as arithmetic rather than as a remembered example
+// ===========================================================================
+
+/**
+ * The one-fifth rule, applied instead of described.
+ *
+ * The site had four pages saying Decrepify cannot break a physical immunity,
+ * and the site's own model says otherwise. Immunity is resistance at 100 or
+ * more; a resistance-lowering curse against an immune target works at one
+ * fifth; Decrepify's −50 therefore becomes −10, and 100 − 10 is 90. **That
+ * breaks it.** The error survived four pages and two locales because every one
+ * of them repeated the same worked example rather than doing the subtraction.
+ *
+ * So the subtraction lives here, and the prose is checked against it. The two
+ * curses reach different depths and that is the honest claim:
+ *
+ *   Amplify Damage  −100 → −20 against an immune → breaks 100 through 119
+ *   Decrepify        −50 → −10 against an immune → breaks 100 through 109
+ *
+ * Both numbers matter. "Decrepify never breaks one" is the error being
+ * corrected; "Decrepify breaks physical immunity" with no ceiling is the same
+ * error mirrored, and a page that says it would send a reader at a 115% monster
+ * to the wrong curse. `PHYSICAL_IMMUNITY_CONTROLS` pins one row on each side of
+ * both ceilings for exactly that reason.
+ *
+ * Scoped to physical immunity and to these two curses on purpose. Whether the
+ * same arithmetic redeems a mastery or an elemental reduction is a separate
+ * question about separate sources, and a gate that answered it here would be
+ * asserting something this pass did not verify.
+ */
+export const IMMUNITY_THRESHOLD = 100;
+export const IMMUNE_EFFECTIVENESS_DIVISOR = 5;
+
+export interface ResistanceCurse {
+  readonly name: string;
+  /** Points of physical damage resistance removed at full effect. */
+  readonly nominal: number;
+}
+
+export const AMPLIFY_DAMAGE: ResistanceCurse = { name: "Amplify Damage", nominal: 100 };
+export const DECREPIFY: ResistanceCurse = { name: "Decrepify", nominal: 50 };
+
+export interface ReductionOutcome {
+  readonly before: number;
+  /** What the curse was actually worth here — the one-fifth rule's output. */
+  readonly applied: number;
+  readonly after: number;
+  readonly wasImmune: boolean;
+  readonly stillImmune: boolean;
+  /** Immune before and not immune after. The only thing "breaks" can mean. */
+  readonly breaks: boolean;
+}
+
+export function applyResistanceCurse(before: number, curse: ResistanceCurse): ReductionOutcome {
+  const wasImmune = before >= IMMUNITY_THRESHOLD;
+  const applied = wasImmune ? curse.nominal / IMMUNE_EFFECTIVENESS_DIVISOR : curse.nominal;
+  const after = before - applied;
+  const stillImmune = after >= IMMUNITY_THRESHOLD;
+  return { before, applied, after, wasImmune, stillImmune, breaks: wasImmune && !stillImmune };
+}
+
+/** The deepest resistance each curse still breaks, derived rather than typed. */
+export function deepestBreakable(curse: ResistanceCurse, ceiling = 200): number {
+  let deepest = IMMUNITY_THRESHOLD - 1;
+  for (let r = IMMUNITY_THRESHOLD; r <= ceiling; r++) {
+    if (applyResistanceCurse(r, curse).breaks) deepest = r;
+  }
+  return deepest;
+}
+
+/**
+ * The four rows the correction turns on, each with both curses' outcome.
+ *
+ * 100 and 109 are where Decrepify works and the old prose said it did not.
+ * 110 is the first row that separates the two curses, and 120 is where both
+ * stop — the row that keeps the correction from becoming "Decrepify breaks
+ * physical immunity" full stop.
+ */
+export const PHYSICAL_IMMUNITY_CONTROLS: readonly {
+  readonly before: number;
+  readonly decrepify: { readonly after: number; readonly breaks: boolean };
+  readonly amplify: { readonly after: number; readonly breaks: boolean };
+}[] = [
+  { before: 100, decrepify: { after: 90, breaks: true }, amplify: { after: 80, breaks: true } },
+  { before: 109, decrepify: { after: 99, breaks: true }, amplify: { after: 89, breaks: true } },
+  { before: 110, decrepify: { after: 100, breaks: false }, amplify: { after: 90, breaks: true } },
+  { before: 120, decrepify: { after: 110, breaks: false }, amplify: { after: 100, breaks: false } },
+];
+
+/**
+ * "Decrepify cannot break it", in the four shapes the site actually wrote.
+ *
+ * Anchored on a negation that governs a break verb, in that order, because the
+ * corrected prose says "Decrepify **does** break one sitting at 100% to 109%
+ * and nothing beyond that" — a sentence with a break verb, a negative word and
+ * both curses in it, which a looser rule would reject.
+ */
+const DECREPIFY_CANNOT_BREAK: readonly RegExp[] = [
+  // "Decrepify does not break physical immunity" / "o Decrepify não quebra…"
+  /\bDecrepify\b[^]{0,40}?\b(?:does not|doesn't|cannot|can't|will not|won't|never)\s+(?:\w+\s+){0,2}breaks?\b/i,
+  /\bDecrepify\b[^]{0,40}?\b(?:não|nunca)\s+(?:\w+\s+){0,2}quebra\w*/i,
+  // "…breaks it, and Decrepify does not" / "…que ainda quebra. O Decrepify não —"
+  /\bbreaks?\b[^]{0,140}?\bDecrepify\b[^]{0,60}?\b(?:does not|doesn't|cannot|can't)\b/i,
+  /\bquebra\w*\b[^]{0,140}?\bDecrepify\b[^]{0,60}?\b(?:não|nunca)\b(?!\s+(?:só|apenas))/i,
+  // "no amount of Decrepify substitutes" — inability said without the verb.
+  /\bno amount of\s+Decrepify\b|\bnenhuma quantidade de\s+Decrepify\b/i,
+];
+
+/** "Amplify Damage, and only Amplify Damage." */
+const ONLY_AMPLIFY_BREAKS: readonly RegExp[] = [
+  /\bonly\s+Amplify Damage\b/i,
+  /\bAmplify Damage\b\s*,?\s*(?:and|e)\s+only\s+(?:Amplify Damage|it)\b/i,
+  /\b(?:só|apenas|somente)\s+(?:o\s+)?Amplify Damage\b/i,
+  /\bAmplify Damage\b\s*,?\s*e\s+(?:só|apenas|somente)\s+ele\b/i,
+];
+
+/** A "does not break" claim carrying the resistance figure it is wrong about. */
+const NO_BREAK_WITH_FIGURE =
+  /\b(?:does not|doesn't|cannot|can't|will not|won't|never)\s+break\w*\b|\b(?:não|nunca)\s+quebra\w*/i;
+const RESISTANCE_FIGURE = /(\d{2,3})\s*%/g;
+
+/**
+ * Three ways the same mistake was written, checked in both locales.
+ *
+ * The third rule is the arithmetic one: any sentence that denies a break and
+ * names the resistance it is denying it for is measured against
+ * `applyResistanceCurse`, using the *weaker* curse. If even Decrepify breaks
+ * that figure, the sentence is false whichever curse it meant.
+ */
+export function checkImmunityBreakClaims(
+  lines: readonly string[],
+  where: string,
+): ClaimProblem[] {
+  const found: ClaimProblem[] = [];
+  for (const sentence of sentencesOf(lines)) {
+    const snippet = sentence.slice(0, 110);
+
+    if (DECREPIFY_CANNOT_BREAK.some((p) => p.test(sentence))) {
+      found.push({
+        rule: "decrepify-cannot-break-immunity",
+        message:
+          `${where}: "${snippet}…" says Decrepify cannot break a physical immunity. Against an ` +
+          `immune its −50 becomes −10, which takes 100% to 90% — it breaks 100% through 109% and ` +
+          `stops there. Amplify Damage reaches 119%.`,
+      });
+    }
+
+    if (ONLY_AMPLIFY_BREAKS.some((p) => p.test(sentence))) {
+      found.push({
+        rule: "only-amplify-breaks-immunity",
+        message:
+          `${where}: "${snippet}…" makes Amplify Damage the only curse that breaks a physical ` +
+          `immunity. It is the one that reaches deepest — 119% against Decrepify's 109% — which ` +
+          `is a difference of depth rather than of kind.`,
+      });
+    }
+
+    if (!NO_BREAK_WITH_FIGURE.test(sentence)) continue;
+    for (const match of sentence.matchAll(RESISTANCE_FIGURE)) {
+      const figure = Number(match[1]);
+      const weakest = applyResistanceCurse(figure, DECREPIFY);
+      if (!weakest.breaks) continue;
+      found.push({
+        rule: "immunity-arithmetic-wrong",
+        message:
+          `${where}: "${snippet}…" denies a break at ${figure}%. Even Decrepify, the weaker of ` +
+          `the two, is worth −${weakest.applied} there and leaves ${weakest.after}% — which is ` +
+          `not immune.`,
+      });
+    }
+  }
+  return found;
+}
+
+// ===========================================================================
+// Quest skill points, counted rather than mentioned
+// ===========================================================================
+
+/**
+ * A route may not promise points it has already spent.
+ *
+ * The bug this replaces was not a wrong number in isolation. Level 24 told the
+ * reader they would arrive with four quest skill points banked, and the same
+ * page had already directed all four elsewhere — Den of Evil into Teeth,
+ * Radament into Corpse Explosion, Izual twice into Skeleton Mastery. Each
+ * sentence was true on its own and the page was false as a whole, which is the
+ * failure a rule that greps for numbers cannot see.
+ *
+ * So this counts. Both sides come off the page rather than out of this file:
+ *
+ * - **Granted** is read from the `kind: "quest"` actions, whose "+1 skill
+ *   point" is a game string and appears in that shape in both locales.
+ * - **Allocated** is a grant whose own action also names a skill. Skill names
+ *   are untranslated proper nouns by ADR 0003, so the caller's list of class
+ *   skills works unchanged in either language — no verb list to keep in sync.
+ *
+ * A page that stops directing its quest points stops being counted as spending
+ * them, and the claim it is then allowed to make grows to match. That is the
+ * property worth having: the ledger follows the route rather than pinning it.
+ */
+const QUEST_GRANT = /\+\s?(\d+)\s+(?:skill points?|pontos? de skill)/gi;
+
+const QUEST_POINT_PHRASE =
+  /\bquest\s+(?:skill\s+)?points?\b|\bpontos?\s+de\s+(?:skill\s+de\s+)?quest\b/i;
+
+/** Words that turn "quest points" into a claim of having some in hand. */
+const BANKED_VERB =
+  /\bbanked\b|\bsaved\b|\bhoarded\b|\bin reserve\b|\bspare\b|\bwill have\b|\byou have\b|\bguardad[oa]s?\b|\bpoupad[oa]s?\b|\breservad[oa]s?\b|\bde reserva\b|\bvoc[êe] tem\b|\bvoc[êe] vai ter\b/i;
+
+/** The count must sit against the phrase; a nearby level number is not one. */
+const BANKED_COUNT =
+  /\b(\d{1,2}|one|two|three|four|five|um|uma|dois|duas|tr[êe]s|quatro|cinco)\s+(?:quest\s+(?:skill\s+)?points?|pontos?\s+de\s+(?:skill\s+de\s+)?quest)\b/i;
+
+/**
+ * Denial of the banking claim — and deliberately **not** the shared `REFUTES`.
+ *
+ * `REFUTES` lists `\bno\b`, which in Portuguese is the contraction of *em o*.
+ * The sentence this rule exists to reject reads "Quando você chegar **no** 24
+ * vai ter quatro pontos de skill de quest guardados", so `REFUTES` read the
+ * article as a negation and waved the claim through — the Portuguese half of
+ * the rule inert while the English half worked, which is the same failure the
+ * unlock rule's `destrava` / `destravado` note records.
+ *
+ * So English `no` is required to govern the noun it negates, and the
+ * Portuguese negations are the ones that only ever negate.
+ */
+const DENIES_BANKING =
+  /\bno\s+quest\b|\bdo(?:es)?\s+not\b|\bnothing\b|\bnever\b|\bwithout\b|\bnenhum[ao]?s?\b|\bnão\b|\bnada\b|\bsem\b/i;
+
+const COUNT_WORDS: Readonly<Record<string, number>> = {
+  one: 1, two: 2, three: 3, four: 4, five: 5,
+  um: 1, uma: 1, dois: 2, duas: 2, três: 3, tres: 3, quatro: 4, cinco: 5,
+};
+
+export interface QuestPointLedger {
+  readonly granted: number;
+  readonly allocated: number;
+  readonly free: number;
+  readonly entries: readonly {
+    readonly text: string;
+    readonly granted: number;
+    readonly directedTo: readonly string[];
+  }[];
+}
+
+export function questPointLedger(
+  questActions: readonly string[],
+  skillNames: readonly string[],
+): QuestPointLedger {
+  const entries = questActions
+    .map((text) => {
+      const granted = [...text.matchAll(QUEST_GRANT)].reduce((sum, m) => sum + Number(m[1]), 0);
+      const directedTo = skillNames.filter((n) => new RegExp(`\\b${n}\\b`, "i").test(text));
+      return { text, granted, directedTo };
+    })
+    .filter((e) => e.granted > 0);
+
+  const granted = entries.reduce((sum, e) => sum + e.granted, 0);
+  const allocated = entries
+    .filter((e) => e.directedTo.length > 0)
+    .reduce((sum, e) => sum + e.granted, 0);
+  return { granted, allocated, free: granted - allocated, entries };
+}
+
+export function checkQuestPointBudget(
+  lines: readonly string[],
+  questActions: readonly string[],
+  skillNames: readonly string[],
+  where: string,
+): ClaimProblem[] {
+  const ledger = questPointLedger(questActions, skillNames);
+  const found: ClaimProblem[] = [];
+
+  for (const sentence of sentencesOf(lines)) {
+    if (!QUEST_POINT_PHRASE.test(sentence)) continue;
+    if (!BANKED_VERB.test(sentence)) continue;
+    // "No quest point needs to be saved for either" is the corrected sentence,
+    // and it is built from the same words as the claim it replaced.
+    if (DENIES_BANKING.test(sentence)) continue;
+
+    const match = BANKED_COUNT.exec(sentence);
+    const token = match?.[1]?.toLowerCase();
+    const claimed = token ? (COUNT_WORDS[token] ?? Number(token)) : 1;
+    if (claimed <= ledger.free) continue;
+
+    found.push({
+      rule: "quest-points-banked-but-spent",
+      message:
+        `${where}: "${sentence.slice(0, 110)}…" has ${claimed} quest skill point` +
+        `${claimed === 1 ? "" : "s"} in hand. The route grants ${ledger.granted} and directs ` +
+        `${ledger.allocated} of them into skills before this point, leaving ${ledger.free}.`,
+    });
   }
   return found;
 }

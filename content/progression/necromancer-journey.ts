@@ -14,13 +14,28 @@ import type { ProgressionJourney } from "@/lib/types";
  * -------------------------------------------
  * The research that came before this pass put **Decrepify at level 30**. It
  * unlocks at **24** — and Summon Resist unlocks at 24 too, so a route built on
- * 30 tells the reader to wait six levels for a skill they already have while
- * saving quest points they should have spent. **Lower Resist** is the skill
- * that genuinely unlocks at 30, which is exactly how the two get swapped.
+ * 30 tells the reader to wait six levels for a skill they already have.
+ * **Lower Resist** is the skill that genuinely unlocks at 30, which is exactly
+ * how the two get swapped.
  *
  * `checkUnlockLevelClaims` reads every unlock level out of the generated graph
  * and checks it against this prose in both locales, so the correction cannot be
  * un-made by an edit.
+ *
+ * AND THE POINTS THE CORRECTION THEN MIS-COUNTED
+ * ----------------------------------------------
+ * Fixing the level introduced a second error one layer down. The first draft
+ * of level 24 said four quest skill points would be **banked** for Summon
+ * Resist and Decrepify — and this route spends all four before it gets there:
+ * the Den of Evil's into Teeth, Radament's into Corpse Explosion, and both of
+ * Izual's into Skeleton Mastery. The reassurance was true of a character who
+ * had hoarded them and false of the one this page describes.
+ *
+ * It did not need to be true. Both skills want one point, level 24 and level
+ * 25 are one kill apart, and a route with no respec has no reason to buy them
+ * in the same instant. So the page states the order and its reason instead,
+ * and `checkQuestPointBudget` counts grants against allocations rather than
+ * reading numbers out of the prose.
  *
  * THE THING EVERY SUMMONER GUIDE GLOSSES
  * --------------------------------------
@@ -39,7 +54,7 @@ export const necromancerJourney: ProgressionJourney = {
   overview: [
     "**This is the only class journey on the site with no decision in it.** The Summoner's core is Raise Skeleton, Skeleton Mastery and Corpse Explosion. All three are in your hands by the eighth level-up, and all three are still what you are maxing at 99. There is no level at which you stop being what you were.",
     "**The first corpse is the one problem the route has.** Raise Skeleton needs a body and cannot produce one, so at level 1 you kill the first monster yourself with a wand. From there the army feeds itself: skeletons kill, bodies drop, Corpse Explosion turns bodies into more bodies. An Act 2 mercenary hired in the middle of the second act removes the problem for good, and until then you are the one who opens each fight.",
-    "**Decrepify unlocks at level 24, not 30.** So does Summon Resist. By the time you reach 24 you will have four quest skill points banked from the Den of Evil, Radament and Izual, so taking both in the same session is realistic rather than a plan for later. Lower Resist is the skill that arrives at 30, and this route does not take it.",
+    "**Decrepify unlocks at level 24, not 30.** So does Summon Resist, and both are one-point skills — take one at 24 and the other at 25 rather than trying for both at once. **No quest point needs to be saved for either**: the four this route earns in Normal are spent on the way there, on Teeth, on Corpse Explosion and twice into Skeleton Mastery. Lower Resist is the skill that arrives at 30, and this route does not take it.",
     "**Summons do not take the difficulty resistance penalty.** You lose 40 resistance in Nightmare and 100 in Hell; your mercenary loses the same; the army loses nothing at all. That changes what you gear for at every transition — the resistance charms are for you and for him, and the army only ever needs to be re-raised.",
     "If you want to try the Poison Nova or Bone Spear builds later, the Den of Evil gives one free respec token per difficulty and you will not have used any of them. **Read the Iron Golem warning in the respec plan before you spend one.**",
   ],
@@ -234,9 +249,9 @@ export const necromancerJourney: ProgressionJourney = {
 
     {
       slug: "nec-act-5-normal",
-      name: "Twenty-four, and both skills at once",
+      name: "Twenty-four and twenty-five, one skill each",
       classSlug: "necromancer",
-      summary: "Levels 24-29. Summon Resist and Decrepify both unlock here, and you will have quest points banked for both.",
+      summary: "Levels 24-29. Summon Resist and Decrepify both unlock here, and one level-up each is all either of them needs.",
       levels: [24, 29],
       difficulty: "normal",
       location: "Act 5 — Harrogath to the Worldstone Chamber",
@@ -245,7 +260,7 @@ export const necromancerJourney: ProgressionJourney = {
       order: 4,
       skillPoints: [
         "Level 24: **Summon Resist**. One point, and one point is most of the skill — the curve runs from 20% toward a 75% ceiling and flattens immediately. It raises fire, lightning, cold and poison resistance on skeletons, mages and golems, and reaches neither physical nor magic.",
-        "Level 24 also opens **Decrepify**, and by now you have four quest skill points from the Den of Evil, Radament and Izual — so take both rather than choosing. Decrepify is −50% movement, attack speed, damage dealt and physical resistance, all at once.",
+        "Level 25: **Decrepify**. It unlocks at level 24 alongside Summon Resist, and one of the two waits a level. **You do not need both in the same instant and no quest point is being held back for either** — the four this route earns in Normal are spent before you arrive, on Teeth, on Corpse Explosion and twice into Skeleton Mastery. Two consecutive level-ups buy both, and the order is the only decision: **Summon Resist first if the army is what keeps dying, Decrepify first if it is you.** Decrepify is −50% movement, attack speed, damage dealt and physical resistance, all at once.",
         "**Iron Golem is available at level 24 and is optional.** Read the warning below before spending the point.",
         "Everything else: **Raise Skeleton**, **Skeleton Mastery**, **Corpse Explosion**.",
       ],
@@ -339,7 +354,7 @@ export const necromancerJourney: ProgressionJourney = {
         },
         {
           kind: "tip",
-          text: "**Physical immunes start appearing here, and Amplify Damage is the answer.** It cuts 100 points of physical damage resistance, and against a monster sitting at exactly 100% the immunity rule leaves −20 — which still breaks it. Decrepify's −50 becomes −10 against the same monster and does not. That is the one situation where the two curses are not interchangeable.",
+          text: "**Physical immunes start appearing here, and Amplify Damage is the answer.** It cuts 100 points of physical damage resistance, and against an immune the one-fifth rule leaves −20 — enough to break anything up to 119%. Decrepify's −50 becomes −10, which breaks the same monster at 100% but stops at 109%. Reach for Amplify Damage on an immune because it goes twice as deep; Decrepify simply runs out sooner.",
         },
       ],
       exitCriteria: "Nightmare Baal dead, level 50+, resistances capped, and a wand from this stage in hand.",
@@ -371,7 +386,7 @@ export const necromancerJourney: ProgressionJourney = {
         },
         {
           kind: "tip",
-          text: "**Physical immunity is the problem and you have two answers to it.** Amplify Damage breaks it outright for the skeletons; Corpse Explosion's fire half lands on a physical immune regardless of any curse. Decrepify does not break physical immunity — its cut is halved to begin with and reduced to a fifth against an immune — so it stays the survival curse rather than becoming the immunity answer.",
+          text: "**Physical immunity is the problem and you have two answers to it.** Amplify Damage breaks it for the skeletons anywhere below 120%; Corpse Explosion's fire half lands on a physical immune regardless of any curse. Decrepify reaches half as far — its cut is halved to begin with and then reduced to a fifth against an immune, leaving 10 points — so it breaks a 100% to 109% immune and nothing deeper. It stays the survival curse, and Amplify Damage stays the immunity answer.",
         },
         {
           kind: "tip",
