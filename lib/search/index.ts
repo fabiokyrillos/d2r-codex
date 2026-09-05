@@ -105,11 +105,13 @@ export const NICKNAMES: Record<string, string> = {
   /*
    * --- Druid builds, and the names that are not builds ---------------------
    *
-   * The Druid's two published builds are each known by more names than any
-   * other class's, because the community names them after the skill, the tree
-   * and the weather in roughly equal measure. "Windy Druid" and "Tornado Druid"
-   * are the same character; so are "Fissure Druid", "Fire Druid" and the
-   * Armageddon-first point order that some guides give its own name.
+   * The Druid's seven builds are each known by more names than any other
+   * class's, because the community names them after the skill, the tree, the
+   * animal and the weather in roughly equal measure. "Windy Druid" and "Tornado
+   * Druid" are the same character; so are "Fissure Druid", "Fire Druid" and the
+   * Armageddon-first point order that some guides give its own name; so are
+   * "Flamebear", "Fire Claws Werewolf" and "Werewolf Armageddon", which are one
+   * page with a form variant and a hybrid note rather than three builds.
    *
    * Deliberately absent:
    *   "wind"      one syllable that matches Windforce, Widowmaker and

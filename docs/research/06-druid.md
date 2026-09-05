@@ -2,11 +2,12 @@
 
 **Researched:** 2026-09-04
 **Baseline:** D2R Patch 3.3 / Ladder Season 15 — see [`00-game-state.md`](00-game-state.md)
-**Status:** Executed. Thirty skills with pages, two builds, one journey.
+**Status:** Executed in two passes. Thirty skills with pages, **seven builds**,
+one journey. The class is complete.
 
 ---
 
-## 0. What this pass added
+## 0. What the two passes added
 
 | Thing | Where |
 | --- | --- |
@@ -15,6 +16,28 @@
 | A **physical** damage table in the graph | `scripts/generate-skill-graph.ts`, `lib/skills.ts` |
 | Wind Druid, Fire Druid | `content/builds/wind-druid.ts`, `content/builds/fire-druid.ts` |
 | The fire-to-wind journey | `content/progression/druid-journey.ts` |
+| Fury, Summon, Maul, Fire Claws, Rabies | `content/builds/{fury,summon,maul,fire-claws,rabies}-druid.ts` |
+| `Build.breakpointNotes`, so an empty table can say why | `lib/types/build.ts`, `lib/types/copy.ts` |
+| The completeness contract, extended to the Druid | `scripts/build-page.test.ts` |
+| Comparative claims, derived rather than remembered | `scripts/superlative-claims.ts` |
+| Build-page claims about areas, gear tiers and poison | `scripts/build-claims.ts` |
+
+### 0.1 What the second pass found in the first
+
+An adversarial audit of `6716d1f` checked ten structural claims and every one
+held: the thirty skills, the physical tables on Tornado and Twister, the soft-
+level handling of the three summons, the eight slug overrides, both builds'
+point budgets, 146 gear references, the journey's arithmetic, the filters'
+derivation, pt-BR coverage, and the untouched 90-node baseline.
+
+What it found instead were **comparative** claims, which nothing on the site
+checked. Three superlatives were false, each refuted by data the site itself
+publishes, and the sweep written to catch them found a fourth on its first run.
+A second sweep, written for this pass's own pages, then found that five build
+pages told a reader nothing in the Secret Cow Level is immune to physical while
+that area's own entry lists exactly that immunity — including the Wind Druid
+page from the first pass. Both rules now derive their answer from the data the
+prose is quoting.
 
 ---
 
@@ -147,7 +170,8 @@ holds in a parameter (five ravens, five spirit wolves, three dire wolves).
 
 ## 3. Build inventory
 
-Seven families are real and distinct. Two are published in this pass.
+Seven families are real and distinct. All seven are now published: two in
+the first pass, five in the second.
 
 ### 3.1 Consolidated
 
@@ -155,11 +179,11 @@ Seven families are real and distinct. Two are published in this pass.
 | --- | --- | --- |
 | **Wind Druid** | Tornado Druid, Windy Druid, Windmaster, Wind Elemental, Tornado Hurricane Druid | **Published** |
 | **Fire Druid** | Fissure Druid, Fire Elemental, Volcanic Elementalist, **Armageddon Druid** | **Published** |
-| Fury Druid | Werewolf Druid, Fury Werewolf | Researched, not yet written |
-| Maul Druid | Werebear Druid | Researched, not yet written |
-| Fire Claws Druid | Flamebear, Fire Claws Werebear, Fire Claws Werewolf, Werewolf Armageddon | Researched, not yet written |
-| Summon Druid | Summoner, Beastmaster | Researched, not yet written |
-| Rabies Druid | Rabies Wolf | Researched, not yet written — niche |
+| **Fury Druid** | Werewolf Druid, Fury Werewolf, Wolf Druid | **Published** |
+| **Maul Druid** | Werebear Druid, Shock Wave Druid | **Published** |
+| **Fire Claws Druid** | Flamebear, Fire Claws Werebear, Fire Claws Werewolf, **Werewolf Armageddon** | **Published** |
+| **Summon Druid** | Summoner, Beastmaster | **Published** |
+| **Rabies Druid** | Rabies Wolf | **Published** — niche |
 
 ### 3.2 Rejected, with reasons
 
@@ -175,13 +199,54 @@ Seven families are real and distinct. Two are published in this pass.
   Maul build.
 - **"Hunger Druid".** Hunger is a one-point sustain skill, never a build.
 
-### 3.3 Why these two first
+### 3.3 Why the two elemental builds came first
 
-The journey needs both. The route is fire to level 38 and wind afterwards, so
+The journey needed both. The route is fire to level 38 and wind afterwards, so
 both ends of it had to exist before the journey could reference them — the Wind
 Druid's `levelingPath.viaBuild` resolves to the Fire Druid, and the journey's
 `targetBuild` resolves to the Wind Druid. Publishing either alone would have
 left a route pointing at a page that does not exist.
+
+The five that followed need no such ordering: not one of them respecs, and not
+one references another build. That is itself a finding rather than a
+convenience. Every melee and summoning Druid on this site levels into the
+character it finishes as, because the prerequisites of each are skills the
+finished build maxes anyway — Poison Creeper is a level-1 skill and Rabies' only
+synergy; Firestorm is a level-1 skill and half of Fire Claws' synergy pair;
+Werebear has no prerequisite at all. The elemental pair, which needs a respec at
+Nightmare Act 3, is the exception on this class rather than the rule.
+
+### 3.3.1 What each of the five rests on
+
+One column per page, and in each case it is the column that decided the point
+plan rather than a fact added afterwards.
+
+| Build | Points | The column |
+| --- | --- | --- |
+| Fury | 106 | Fury receives no synergy and gives none — the only maxed skill on any Druid build with both lists empty. Forty of its points therefore go to a tree it never otherwise touches |
+| Summon | 103 (+2 flex) | The tree buffs itself through *effective* level, so a +3 pelt raises three separate bonuses and a hard point raises one. Raven is the only skill in it that takes real synergies |
+| Maul | 106 | Maul is Shock Wave's only synergy, and the only synergy between two shape-shifting skills anywhere in the class |
+| Fire Claws | 109 | Its prerequisites are Feral Rage **and** Maul, so they run through both forms' chains at once. The tightest plan of the seven |
+| Rabies | 107 | Poison Creeper's synergy reads hard points, not whether the vine is summoned — so the twenty points feed the bite while Carrion Vine is the vine actually out |
+
+### 3.3.2 Two things the pages refuse to say
+
+**No wereform frame table.** Four of the five carry an empty breakpoint table
+and a sentence explaining it, delivered through a new optional
+`Build.breakpointNotes`. The site already publishes werewolf and werebear
+*cast rate* tables, so the fact that the forms use their own tables is
+established here; what does not exist at an acceptable tier is hit recovery or
+attack speed. Printing the human-form numbers would repeat exactly the mistake
+the cast-rate table's own guidance warns about.
+
+The Amazon pass's rule that a page mentioning `IAS` must publish an `ias`
+breakpoint row fired on the Fury page's explanation of why it cannot. The rule
+was obeyed rather than loosened: the pages write attack speed out in full.
+
+**No per-charge numbers.** Maul's charge count and stun are published; how the
+state stacks charges is in the engine and in none of the extracted columns, so
+the per-charge damage stays in prose. That decision was made in the first pass
+and is unchanged.
 
 ### 3.4 Point plans, and where they diverge from the community
 
@@ -205,14 +270,18 @@ ranking from the authored coefficients so the next one cannot drift.
 
 ## 4. Open questions
 
-1. The five unwritten build families. Each has a research basis; none has a
-   page.
-2. Whether a wereform IAS frame table can ever be sourced to Tier 1 or Tier 2.
-   Until it can, no melee Druid build on this site can carry an IAS breakpoint,
-   which is a real gap in the Fury and Maul pages when they are written.
-3. Metamorphosis (the 2.6 shapeshifter runeword) is not in this repository's
-   runeword registry and its stat lines are not verified here. It will need an
-   entry before a shapeshifting build can name it.
+1. Whether a wereform hit-recovery or attack-speed frame table can ever be
+   sourced to Tier 1 or Tier 2. Until it can, four of the seven Druid builds
+   carry an empty breakpoint table. They say so rather than guessing, which is
+   the best available answer and not a good one.
+2. Metamorphosis (the 2.6 shapeshifter runeword) is not in this repository's
+   runeword registry and its stat lines are not verified here. Four
+   shapeshifting builds are now published without naming it, which is correct
+   and is also a gap: it will need an entry before any of them is finished.
+3. Nine gear picks on seven pages outside this class sit above their tier's
+   stated `levelRange`. `build-claims.ts` reports them on every run and fails
+   only on the Druid, because each is an editorial call belonging to whoever
+   owns that page — see the `OWNED_BY_THIS_PASS` block for the reasoning.
 4. Whether the `json/base/` extraction is genuinely pre-2.4. All 30 Druid rows
    are byte-identical across the two extractions, and 2.4's Druid balance pass
    was substantial — which suggests the "agreement" figure in the generated
