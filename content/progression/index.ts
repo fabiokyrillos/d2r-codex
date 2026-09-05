@@ -4,5 +4,6 @@ import { paladinJourney } from "./paladin-journey";
 import { amazonJourney } from "./amazon-journey";
 import { necromancerJourney } from "./necromancer-journey";
 import { druidJourney } from "./druid-journey";
+import { assassinJourney } from "./assassin-journey";
 
-export const journeys: ProgressionJourney[] = [sorceressJourney, paladinJourney, amazonJourney, necromancerJourney, druidJourney];
+export const journeys: ProgressionJourney[] = [sorceressJourney, paladinJourney, amazonJourney, necromancerJourney, druidJourney, assassinJourney];

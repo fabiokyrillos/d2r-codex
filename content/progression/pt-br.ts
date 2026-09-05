@@ -589,7 +589,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
           "Dexterity e Vitality. Se você estiver usando escudo, Dexterity suficiente para a chance de bloqueio valer a pena.",
         ],
         actions: [
-          "**The Golden Bird** dá +20 de vida permanente. **Lam Esen's Tome** dá um ponto de skill. Os dois são rápidos.",
+          "**The Golden Bird** dá +20 de vida permanente. **Lam Esen's Tome** dá +5 pontos de atributo, e não um ponto de skill. Os dois são rápidos.",
           "Faça um **Edge** se encontrar um arco de 3 sockets no 25 — Tir, Tal, Amn, e ele te carrega até a Melody no 39.",
           "Um **Peace** no 29 são +2 skills de Amazon por três runas baratas, e é a melhor armadura que a maioria das Amazons vai usar antes do Hell.",
           "**Não gaste o respec da Den of Evil ainda.** Se você for de javelin, o nível 30 é onde você vai querer, e o token do Normal é o mais barato dos três.",
@@ -922,7 +922,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         ],
         actions: [
           "Limpe a **Den of Evil** pelo ponto de skill e pelo token de respec grátis. Guarde o token.",
-          "Compre um cajado de 2 soquetes da Akara e faça **Leaf** nele: +3 em Fire Skills por duas runas comuns. Nesta build são +3 Fissure, +3 Firestorm e +3 Molten Boulder de uma vez.",
+          "Compre um cajado de 2 soquetes da Akara e faça **Leaf** nele: +3 em Fire Skills por duas runas comuns. Nesta build são +3 Fissure, +3 Firestorm e +3 Molten Boulder de uma vez. Faça assim que as runas caírem, mas note que você só consegue empunhar no nível 19.",
           "Corra **a Countess** por Tal, Eth, Ith, Ral, Ort e Sol. Elas constroem Leaf, Stealth, Lore e, mais adiante, Ancients' Pledge.",
           "O empurrão do Molten Boulder vale mais que o dano dele neste nível. Use-o para comprar a distância de continuar conjurando.",
           "Não gaste um ponto em Werewolf ou Werebear \"por precaução\". Um único ponto numa forma que você não está construindo é um ponto de que o Fissure precisava.",
@@ -1082,6 +1082,266 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         ],
         exitCriteria:
           "99% de velocidade de conjuração, resistências no teto, e Terror Zones em players 8.",
+      },
+    },
+  },
+  assassin: {
+    summary:
+      "Evolua com fogo desde o primeiro ponto, faça um respec no Ato 4 do Nightmare por volta do nível 45, e termine com traps de raio. As duas metades da árvore de traps não compartilham sinergia nenhuma, então isso é uma troca de personagem de verdade, e não um re-gasto.",
+    overview: [
+      "**Você não evolui como Lightning Trapsin.** O Lightning Sentry só abre no 24 e o Death Sentry no 30, e os dois são quase inúteis enquanto Shock Web e Charged Bolt Sentry não estiverem atrás deles — quarenta pontos depois. Toda trap de raio tem dano mínimo 1 em todo nível, então uma trap com metade do investimento não dá metade do dano; ela dá um número entre 1 e alguma coisa, quase sempre mais perto de 1.",
+      "Evolua com fogo. O Fire Blast funciona desde o nível 1 e é pré-requisito dos dois ramos de qualquer forma, então os onze primeiros pontos são obrigatórios, não uma escolha. O Wake of Fire chega no 12 e **o Fire Blast alimenta ele em 10% por ponto duro**, o que significa que nada do que você já gastou é desperdiçado no momento em que você troca.",
+      "**O respec é no Ato 4 do Nightmare, depois do Izual, no nível 45.** Isso não é intuição. Cinquenta e dois pontos é exatamente o que a abertura de raio custa, e cinquenta e dois é exatamente o que um personagem nível 45 com todas as recompensas de quest do Normal e do Nightmare tem. Respec antes e o Charged Bolt Sentry não fica maximizado; respec depois e você gastou níveis numa árvore que está prestes a abandonar.",
+      "A coisa a internalizar sobre o personagem pronto: **cinco traps, no total, compartilhadas entre todas as skills de sentry que você tem.** Não são cinco de cada. Uma barra rodando Lightning Sentry e Death Sentry juntos está dividindo as mesmas cinco, e é por isso que a rotação de endgame é quatro e uma, e não cinco e cinco.",
+      "A outra coisa: **o que te trava são as resistências, não o dano.** O Nightmare aplica -40% em todas as suas e o Hell aplica -100%. O Fade é a resposta da Assassin e nesta rota ele fica em um ponto durante quase todo o jogo — mas Fade e Burst of Speed não podem estar ativos juntos, então a partir do momento em que você pega o Fade você escolhe um por luta.",
+    ],
+    respecPlan: [
+      {
+        at: "Ato 4 do Nightmare, nível 45 — depois do Izual, usando o token da Den of Evil do Nightmare",
+        why: "O único respec de que a rota precisa, e a aritmética é a razão do nível. Voltam 52 pontos e a abertura de raio custa exatamente 52: Charged Bolt Sentry 20, Lightning Sentry 20, três pontos de corrente e o conjunto de nove pontos da Shadow.",
+      },
+      {
+        at: "Guarde o token do Normal sem gastar",
+        why: "Nada nesta rota precisa dele, e um respec sobrando vale mais do que qualquer coisa que você faria com ele no nível 20. Ele também é a rede de segurança se você levar a rota de fogo mais longe do que o planejado e quiser corrigir no Hell em vez de no Nightmare.",
+      },
+      {
+        at: "Opcional — Ato 1 do Hell",
+        why: "O token da Den of Evil do Hell é a segunda tentativa se o respec do nível 45 te deixou dividido de forma estranha. Aí você já sabe se quer Fade, Shadow Master ou Fire Blast nos últimos vinte pontos, e é aqui que dá para mudar essa resposta de graça.",
+      },
+    ],
+    stages: {
+      "ass-act-1-normal": {
+        name: "Uma bomba em cada mão",
+        summary:
+          "Níveis 1-13. Fire Blast desde o primeiro ponto, e os dois pré-requisitos da Shadow em que tudo depois se apoia.",
+        location: "Ato 1 — Blood Moor até as Catacombs",
+        goal: "Limpar a Den of Evil, chegar a Fire Blast 11, e guardar o token de respec.",
+        killingWith: "Fire Blast, jogado no meio de um grupo.",
+        skillPoints: [
+          "**Fire Blast até 11** — um ponto no nível 1, um por nível até o 11, mais a recompensa da Den of Evil.",
+          "**Claw Mastery 1** e **Burst of Speed 1** nos níveis 6 e 7. Dois pontos, e eles não são opcionais: o Claw Mastery é o portão de tudo que você vai querer na árvore Shadow, e o Burst of Speed é o pré-requisito do Fade — que substitui ele, porque conjurar um derruba o outro.",
+          "São 13 pontos: 12 dos níveis 2-13, e 1 da Den of Evil.",
+          "**Não coloque ponto no Shock Web no 6.** Ele é do ramo de raio, e o respec do 45 é onde esse ramo começa.",
+        ],
+        statPoints: [
+          "Tudo em **Vitality**. A Assassin começa com 20 de Strength, Dexterity e Vitality e 25 de Energy, e ganha 3 de vida por ponto de Vitality.",
+          "Nada de Energy. O Fire Blast custa quase nada e poções de mana são de graça.",
+          "Strength só quando uma peça específica de armadura pedir, e só o exato necessário.",
+        ],
+        actions: [
+          "Limpe a **Den of Evil** por completo pelo ponto de skill e pelo token de respec grátis. Fale com a Akara depois — o ponto não é automático.",
+          "**O Fire Blast é arremessado, não colocado.** Ele faz um arco até onde você mira e explode num raio de 5, então é uma granada e não uma trap. Jogue no meio do grupo, não no bicho mais perto.",
+          "**O Burst of Speed faz você arremessar mais rápido, não só correr mais rápido.** O Fire Blast usa a taxa de ataque, e o Burst of Speed acrescenta 15% a ela com um ponto. É por isso que um ponto cedo nele vale mais do que parece.",
+          "Qualquer garra com **+ em Traps** ou **+ em Fire Blast** ganha de qualquer garra com dano melhor. Charsi e Gheed renovam o estoque toda vez que você volta à cidade, e uma garra mágica com +2 Traps é um resultado comum cedo.",
+          "Rode a **Countess** por Tal, Eth, Ral e Ort. Elas montam Stealth e Leaf, que são os dois itens que carregam este personagem pelo Normal.",
+          "Mate a **Blood Raven** e pegue a Rogue Scout grátis da Kashya. Um corpo à distância que atira em coisas vale a pena mesmo que o mercenário do Ato 2 substitua ela depois.",
+          "Não gaste ponto em Tiger Strike, Dragon Talon nem em nada da árvore Martial Arts \"por via das dúvidas\". Nada nesta rota usa isso, e o respec do 45 está calculado no ponto.",
+        ],
+        gearTargets: [
+          {
+            why: "25% de corrida, conjuração e recuperação a partir do nível 17, por duas runas da Countess. A recuperação é a metade que te mantém vivo.",
+          },
+          {
+            why: "**+3 em Fire Skills** numa staff de dois sockets no nível 19 — isto é, +3 Fire Blast e, a partir do nível 12, +3 Wake of Fire, por uma Tir e uma Ral.",
+          },
+        ],
+        exitCriteria: "A Andariel está morta, o Fire Blast está em 11, e você tem um token de respec sem gastar.",
+      },
+      "ass-acts-2-5-normal": {
+        name: "O chão pega fogo",
+        summary: "Níveis 13-26. Wake of Fire a partir do 12, e o Normal terminado nele.",
+        location: "Atos 2 a 5 — Lut Gholein até a Worldstone Keep",
+        goal: "Levar o Wake of Fire a 16, contratar o mercenário que você vai manter, e terminar o Normal.",
+        killingWith: "Wake of Fire colocado em corredores, e Fire Blast no que andar em volta.",
+        skillPoints: [
+          "**Tudo no Wake of Fire**, de 1 no nível 12 até 16 no nível 26.",
+          "São 29 pontos gastos no total: 25 dos níveis, mais Den of Evil, Radament e Izual. Fire Blast 11, Claw Mastery 1, Burst of Speed 1, Wake of Fire 16.",
+          "**O Fire Blast fica em 11 por enquanto.** Ele alimenta o Wake of Fire em 10% por ponto duro e o Wake of Fire devolve na mesma taxa, então os dois sobem juntos depois — mas o Wake of Fire é o que luta por você, e é uma trap.",
+        ],
+        statPoints: [
+          "**Vitality**, ainda. A única exceção é Strength suficiente para uma armadura de corpo que você realmente queira usar.",
+          "**O Lam Esen's Tome no Ato 3 dá 5 pontos de atributo** e é fácil de perder. Faça o desvio.",
+          "Nada de Dexterity. O Weapon Block não lê Dexterity, e nada neste plano precisa acertar nada com arma.",
+        ],
+        actions: [
+          "**O Wake of Fire é uma trap, e o Fire Blast não é.** Daqui em diante seu dano é colocado no chão com antecedência e disparado pelo que passar por cima, o que é um jeito completamente diferente de jogar em relação aos doze primeiros níveis. Coloque primeiro, puxe depois.",
+          "**Cinco traps por vez, compartilhadas entre todas as skills de sentry.** Nesta altura isso quer dizer cinco Wake of Fire e mais nada, que é exatamente o que você quer: elas se somam, então cinco num corredor é cinco vezes o fogo.",
+          "Contrate um **Desert Mercenary do Ato 2** no Nightmare quando chegar lá, ou o do Normal agora se preferir. Pegue a variante com aura **Defiance** — o mercenário de uma trapper é uma parede, não fonte de dano.",
+          "Faça o **Radament** no Ato 2 e o **Izual** no Ato 4. São três dos quatro pontos de skill que esta dificuldade te deve, e a aritmética da rota assume os quatro.",
+          "Faça o **Leaf** numa staff de dois sockets assim que tiver uma Tir e uma Ral. +3 em Fire Skills é +3 Wake of Fire e +3 Fire Blast ao mesmo tempo, e é o maior upgrade único que este personagem recebe antes do Nightmare.",
+          "Uma staff te custa o **Weapon Block**, que exige uma garra em cada mão. Nesta rota essa troca é a certa — você não está em corpo a corpo e +3 em Fire Skills vale mais do que uma chance de bloqueio que você não vai usar — mas é uma troca, não algo de graça.",
+          "**Ancients' Pledge** num escudo de três sockets se você preferir resistências às skills da staff. A Assassin pode usar escudo; ela só não consegue bloquear com garras enquanto faz isso.",
+        ],
+        gearTargets: [
+          {
+            why: "+1 em All Skills num elmo de dois sockets por uma Ort e uma Sol. Barato, e nunca deixa de valer a pena até um Shako.",
+          },
+          {
+            why: "**+2 em All Skills e até 35% de conjuração** num escudo de quatro sockets no nível 25. A velocidade de conjuração é para Mind Blast e Fade depois, não para colocar traps.",
+          },
+        ],
+        exitCriteria: "O Baal está morto, o Wake of Fire está em 16, e os quatro pontos de quest do Normal estão gastos.",
+      },
+      "ass-nightmare-early": {
+        name: "As duas metades do fogo",
+        summary: "Níveis 26-40. Fire Blast e Wake of Fire os dois em 20, e os últimos três pré-requisitos da Shadow.",
+        location: "Nightmare, Atos 1 a 3 — Rogue Encampment até Travincal",
+        goal: "Maximizar o par de fogo, pegar os três pontos de Shadow que o respec vai precisar de qualquer jeito, e subir resistência antes do Ato 4.",
+        killingWith: "Cinco Wake of Fire empilhados num corredor, com Fire Blast para o que não quiser entrar neles.",
+        skillPoints: [
+          "**Wake of Fire 16 → 20** (+4), depois **Fire Blast 11 → 20** (+9). Treze pontos, e eles se multiplicam: cada um alimenta o outro em 10% por ponto duro, então o par maximizado vale muito mais do que qualquer um dos dois sozinho.",
+          "**Psychic Hammer 1, Cloak of Shadows 1, Weapon Block 1** — três pontos. Todos eles são pré-requisitos que o plano pós-respec paga de qualquer forma, então pegá-los agora não custa nada à rota.",
+          "São 45 pontos no nível 40: 39 dos níveis, mais 4 pontos de quest do Normal e a Den of Evil e o Radament do Nightmare.",
+          "**Não gaste o token de respec da Den of Evil do Nightmare aqui.** É o que o plano usa no 45.",
+        ],
+        statPoints: [
+          "**Vitality**, e agora importa. O Nightmare aplica -40% em toda resistência que você tem.",
+          "Strength suficiente para uma base de **Treachery** se você estiver indo atrás de uma — uma armadura de corpo de três sockets, e o Treachery chega no nível 43.",
+          "Lam Esen's Tome de novo no Ato 3 do Nightmare: mais 5 pontos de atributo.",
+        ],
+        actions: [
+          "**O Cloak of Shadows cega uma tela inteira e corta a defesa dela.** Um ponto, e é o botão que torna o Ato 3 do Nightmare sobrevivível para um personagem sem roubo de vida e sem bloqueio.",
+          "**-40% em todas as resistências no momento em que você entra no Nightmare.** Um personagem com 75% de resistência a fogo no Normal entra com 35%. Resolva isso com charms e um Ancients' Pledge antes do Ato 3, não depois.",
+          "Faça o **Treachery** numa armadura de corpo de três sockets quando tiver Shael, Thul e Lem. **+2 em Assassin Skill Levels**, 45% de velocidade de ataque, e 5% de chance de conjurar Fade nível 15 ao ser atingida — que é Fade sem você ter que apertar.",
+          "**Countess no Nightmare** pelas runas médias, e **Lower Kurast** assim que conseguir limpar. As duas são rodadas baratas para um personagem cujo dano é colocado e não mirado.",
+          "O Wake of Fire lança uma **linha** de ondas de fogo saindo da trap, não uma poça. Aponte para o corredor de onde o grupo vem; uma trap virada para a parede não faz nada.",
+          "Coloque **Insight** no mercenário do Ato 2 se ainda não colocou. A Meditation resolve a mana da Assassin por completo, e são quatro runas baixas numa polearm de quatro sockets.",
+        ],
+        gearTargets: [
+          {
+            why: "+2 em Assassin Skill Levels por três runas médias, e um proc de Fade de graça. A armadura de melhor custo-benefício que esta classe já vestiu, e ela chega dois níveis antes do respec.",
+          },
+          {
+            why: "+1 em skills, 30% de conjuração e até +35 em todas as resistências se as runas do Treachery ainda não apareceram.",
+          },
+        ],
+        exitCriteria: "Fire Blast e Wake of Fire os dois em 20, Travincal limpo, e o token da Den do Nightmare sem gastar.",
+      },
+      "ass-the-respec": {
+        name: "Cinquenta e dois pontos, exatos",
+        summary: "Nível 45, Ato 4 do Nightmare. Fogo fora, raio dentro, e o total cai na conta certa.",
+        location: "Ato 4 do Nightmare — Outer Steppes até o Chaos Sanctuary",
+        goal: "Matar o Izual, pegar os dois pontos de skill, e fazer o respec com exatamente 52.",
+        killingWith: "Fogo, até o instante em que você fala com a Akara. Depois, cinco Charged Bolt Sentries.",
+        skillPoints: [
+          "**Mate o Izual primeiro.** Ele dá 2 pontos de skill e o plano precisa deles: 44 dos níveis mais 8 das quests dá 52, e 52 é o que a abertura custa.",
+          "**Faça o respec com o token da Den of Evil do Nightmare.** Os 52 voltam inteiros.",
+          "Gaste assim: **Charged Bolt Sentry 20, Lightning Sentry 20**, depois **Fire Blast 1, Shock Web 1, Death Sentry 1** — essa é a corrente, um ponto por degrau, 43 no total.",
+          "Depois o conjunto Shadow, um ponto em cada: **Claw Mastery, Burst of Speed, Fade, Weapon Block, Psychic Hammer, Cloak of Shadows, Shadow Warrior, Mind Blast, Shadow Master**. Nove pontos. 43 + 9 = 52. O Burst of Speed é comprado como pré-requisito do Fade e não para usar — conjurar um derruba o outro.",
+          "**Charged Bolt Sentry antes de Shock Web**, mesmo os dois alimentando o Lightning Sentry em 18% por ponto. O Charged Bolt Sentry é uma trap que dispara sozinha enquanto você coloca Lightning Sentries; o Shock Web só faz algo se você apertar.",
+        ],
+        statPoints: [
+          "Sem mudança — um token de respec devolve pontos de skill e de atributo juntos, então dá para regastar os dois. Devolva para Vitality e para o tanto de Strength que sua armadura pedir.",
+          "Se você pegou Strength por causa de uma base pesada que não quer mais, este é o momento de tirar de volta.",
+        ],
+        actions: [
+          "**Fale com a Akara no Ato 1 do Nightmare** depois de limpar a Den of Evil de lá. O token é dela, e funciona de qualquer lugar da dificuldade assim que a quest estiver feita.",
+          "**O personagem que você está jogando agora não é o de antes.** O Fire Blast era uma granada que você mirava; o Lightning Sentry é uma torre que você coloca e abandona. A primeira hora depois do respec parece pior do que a hora antes dele, e isso é esperado.",
+          "**O Mind Blast é o botão que faz isso funcionar.** Ele atordoa tudo num raio de 4 por 50 frames com um ponto, que é exatamente o tempo de colocar cinco traps num grupo que não pode se mexer.",
+          "**Fade e Burst of Speed não podem estar ativos juntos.** Daqui em diante o Fade é o que você usa — resistências, redução de duração de maldição e 1% de redução de dano físico por nível. O Burst of Speed é para as builds de chute, não para esta.",
+          "**O Charged Bolt Sentry são vinte pontos que você vai acabar deixando de conjurar.** Agora ele é dano de verdade; no fim do Hell o teto de cinco traps pertence a Lightning e Death Sentry e ele vira sinergia pura. Isso não é desperdício — 20 pontos de Charged Bolt Sentry são +360% de dano no Lightning Sentry — mas vale saber antes de acontecer.",
+          "Troque a staff Leaf por **garras**. Daqui em diante nada do que você conjura é fogo, o +3 não faz nada, e uma garra com **+3 Lightning Sentry** ou **+2 Traps** é o item para caçar.",
+        ],
+        gearTargets: [
+          {
+            why: "Num escudo de quatro sockets: +2 em todas as skills e até 35% de conjuração. A conjuração é para Mind Blast e Fade — colocar trap roda em velocidade de ataque, não em velocidade de conjuração.",
+          },
+          {
+            label: "Garra mágica ou rara: +3 Lightning Sentry, +2 Traps",
+            why: "Os afixos de skill em garra são a maior fonte de níveis de Lightning Sentry do jogo e são baratos. Uma garra com +3 Lightning Sentry / +3 Death Sentry vale mais do que qualquer unique do tier.",
+            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps"],
+          },
+        ],
+        exitCriteria: "A tela de skills mostra 52 gastos, 0 livres, Lightning Sentry 20, e você já colocou cinco deles em cima de alguma coisa.",
+      },
+      "ass-nightmare-late-hell-early": {
+        name: "A segunda sinergia, e os cadáveres",
+        summary: "Níveis 45-70. Shock Web até 20, Death Sentry até 9, e o Hell até Travincal.",
+        location: "Ato 5 do Nightmare até o Ato 3 do Hell",
+        goal: "Terminar a segunda sinergia do Lightning Sentry, colocar o Death Sentry para rodar, e chegar a 75% de resistência.",
+        killingWith: "Quatro Lightning Sentries e um Death Sentry, com Mind Blast para segurar o grupo parado.",
+        skillPoints: [
+          "**Shock Web 1 → 20** (+19). A segunda sinergia de 18% por ponto. Com as duas maximizadas o Lightning Sentry fica em +720%, que é a diferença entre 4-1500 por raio e 8-2574.",
+          "**Death Sentry 1 → 9** (+8). Vinte e sete pontos no total, e 52 + 27 = 79 — que é o que um personagem nível 70 com a Den of Evil e o Radament do Hell tem.",
+          "**A explosão de cadáver do Death Sentry já estava na força máxima com um ponto.** Ela causa 40-80% da vida base do tipo de monstro e não escala com a skill. O que estes oito pontos compram é raio de alcance e a metade de raio.",
+        ],
+        statPoints: [
+          "**Vitality com tudo** que o equipamento não exigir.",
+          "O Hell aplica **-100%** em todas as resistências. O Lam Esen's Tome no Ato 3 do Hell dá mais 5 pontos de atributo e é o terceiro e último.",
+          "Strength suficiente para uma base de **Chains of Honor** se for para lá que você vai; nada mais nesta rota precisa.",
+        ],
+        actions: [
+          "**O Hell aplica -100% em toda resistência.** Um personagem no teto de 75% no Nightmare entra no Hell com -25%. Este é o motivo mais comum de uma trapper morrer no Ato 1 do Hell, e o Fade com um ponto vale só 10%.",
+          "**Os raios do Lightning Sentry perfuram.** É por isso que cinco sentries vão no mesmo ponto em vez de espalhados pela sala, e por que um corredor mata mais rápido que uma caverna aberta.",
+          "**Um Death Sentry, não cinco.** A explosão de cadáver dele encadeia por uma sala inteira a partir de uma morte, e as outras quatro vagas valem mais como Lightning Sentry. Esta é a rotação que o resto do jogo usa.",
+          "**Imunes a raio são uma parede, não uma luta lenta.** Não existe maestria de raio nesta classe e os raios do Death Sentry também são raio. Até você ter uma resposta, a atitude honesta no Hell é passar direto — e a metade de explosão de cadáver do Death Sentry continua funcionando, porque aquilo é fogo e físico.",
+          "**Countess, Lower Kurast e Travincal** no Hell. Travincal é área de trapper: densa, fechada, e tudo entra num corredor.",
+          "Mantenha o **Insight** no mercenário do Ato 2 e acrescente um corpo de **Treachery** ou **Fortitude** quando puder. O trabalho dele é segurar um corredor enquanto as traps trabalham.",
+        ],
+        gearTargets: [
+          {
+            why: "+2 em todas as skills, vida, mana e redução de dano. O melhor elmo que esta build já usou até um Griffon's, e ele cai do Mephisto e do Pit.",
+          },
+          {
+            label: "Small charms: dano de raio e resistências",
+            why: "O caminho mais barato até 75% no Hell, e os de raio sobem o dano das traps direto.",
+          },
+        ],
+        exitCriteria: "Shock Web em 20, Death Sentry em 9, resistências em 75%, e Travincal no Hell virou rotina.",
+      },
+      "ass-hell-late": {
+        name: "Noventa pontos, e uma decisão",
+        summary: "Níveis 70-85. Death Sentry até 20, o núcleo fechado, e os seis primeiros pontos do pacote que termina o personagem.",
+        location: "Ato 4 do Hell até a Worldstone Keep",
+        goal: "Fechar o núcleo de noventa pontos e começar os vinte que sobram.",
+        killingWith: "Quatro Lightning Sentries, um Death Sentry, Mind Blast entre as colocações, e Fade rodando o tempo todo.",
+        skillPoints: [
+          "**Death Sentry 9 → 20** (+11). Isso fecha o núcleo: Fire Blast 1, Shock Web 20, Charged Bolt Sentry 20, Lightning Sentry 20, Death Sentry 20, mais nove pontos de Shadow. **Noventa.**",
+          "**Mate o Izual no Hell** pelos últimos 2 pontos de quest. Um personagem nível 85 com os doze tem 96, então seis dos vinte que sobram já estão na mão.",
+          "**Sobram vinte pontos e eles são uma decisão de verdade.** Três rotas valem o orçamento inteiro e nenhuma vale pela metade: **Fade até 20** por resistência, duração de maldição e 1% de redução de dano físico por nível; **Fire Blast até 20** por um segundo tipo de dano que responde a imunes a raio; **Shadow Master até 20** por um corpo que luta na sua frente com resistência acima do teto do jogador. Dezenove pontos cada, e um sobrando.",
+        ],
+        statPoints: [
+          "Vitality, ainda. Não existe breakpoint de dexterity nesta build e nenhum bloqueio que valha financiar.",
+          "O único Strength que vale acrescentar agora é o que uma base de **Chains of Honor** ou **Enigma** pedir.",
+        ],
+        actions: [
+          "**A redução de dano físico do Fade é 1% por nível**, em cima de resistências que sobem em direção a 75% e duração de maldição cortada em até 90%. Mais dezenove pontos nele é a razão de trappers de Hardcore chegarem ao nível 95.",
+          "**Fire Blast até 20 é a resposta para imunidade a raio.** Ele recebe 11% por ponto duro de todas as cinco traps e esta build maximiza três delas, então dezenove pontos ali compram uma bomba arremessada causando 646-859 — um segundo tipo de dano sem pré-requisito novo e sem trocar equipamento.",
+          "**O Pit, o Chaos Sanctuary e a Worldstone Keep.** Os três são fechados o bastante para sentries empilhadas, e os três dropam o que a build ainda quer.",
+          "**Não espalhe os vinte pontos entre as três.** Cada uma das três rotas vale pega inteira; um personagem com sete pontos em cada não tem nenhuma delas.",
+        ],
+        gearTargets: [
+          {
+            why: "+2 em todas as skills e +65 em todas as resistências. Numa build cuja única fraqueza real é morrer para o que ela não consegue matar, esta é a armadura.",
+          },
+          {
+            why: "Teleport, que transforma uma trapper de uma build que caminha até corredores numa que chega neles.",
+          },
+        ],
+        exitCriteria: "Noventa pontos de núcleo gastos, o pacote escolhido, e o Baal no Hell virou morte de rotina.",
+      },
+      "ass-endgame": {
+        name: "Cento e dez",
+        summary: "Níveis 85-99. O pacote terminado, e o personagem fechado em exatamente 110.",
+        location: "Terror Zones, o Pit, o Chaos Sanctuary, o Throne of Destruction",
+        goal: "Terminar os vinte, e parar.",
+        killingWith: "A rotação pronta. Nada nela muda daqui em diante.",
+        skillPoints: [
+          "**Dezenove pontos no pacote que você escolheu**, e um sobrando. 90 + 19 + 1 = 110, que é o que um personagem nível 99 com todas as recompensas de quest tem.",
+          "**O último ponto vai para um lugar diferente em cada rota.** Na rota do Fade ele é um segundo ponto de Shadow Master, que vale mais do que um vigésimo primeiro ponto de qualquer coisa. Na rota do Fire Blast ele é Wake of Fire, que alimenta o Fire Blast em mais 10%. Na rota do Shadow Master ele é Fade, porque essa rota comprou um guarda-costas e não uma resistência.",
+          "**Não existe nada depois de 110.** Níveis além do 99 não existem e o plano não finge que existem; daqui em diante é tudo equipamento.",
+        ],
+        statPoints: [
+          "Vitality. Não sobrou breakpoint de atributo para alcançar.",
+          "Se um Enigma está no plano, os +0,75 de Strength por nível de personagem pagam por uma base mais pesada do que os seus pontos jamais pagariam.",
+        ],
+        actions: [
+          "**Uma garra com +3 Lightning Sentry, +3 Death Sentry e +2 Traps** continua sendo o maior item de dano do jogo para esta build, e é um item mágico ou raro, não uma runeword.",
+          "**Griffon's Eye** e facetas de raio são a pilha de redução de resistência inimiga. Facetas no elmo e no escudo, e os -20% de resistência a raio inimiga do Griffon's, se somam a todo o resto.",
+          "**Terror Zones e o Throne of Destruction.** A velocidade de limpeza da build em terreno fechado é para isso que serve.",
+          "O teto de cinco traps nunca muda. Se uma rodada parece lenta, a resposta quase sempre é que você está colocando trap onde as coisas não vão passar, e não que faltam pontos.",
+        ],
+        exitCriteria: "110 de 110, com o pacote terminado em vez de dividido em três.",
       },
     },
   },

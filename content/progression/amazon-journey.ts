@@ -172,7 +172,7 @@ export const amazonJourney: ProgressionJourney = {
       actions: [
         {
           kind: "quest",
-          text: "**The Golden Bird** gives a permanent +20 life. **Lam Esen's Tome** gives a skill point. Both are quick.",
+          text: "**The Golden Bird** gives a permanent +20 life. **Lam Esen's Tome** gives +5 stat points, not a skill point. Both are quick.",
         },
         {
           kind: "gear",

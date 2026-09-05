@@ -74,7 +74,7 @@ export const druidJourney: ProgressionJourney = {
         },
         {
           kind: "shop",
-          text: "Buy a 2-socket staff from Akara and make **Leaf** in it: +3 to Fire Skills for two common runes. On this build that is +3 Fissure, +3 Firestorm and +3 Molten Boulder at once.",
+          text: "Buy a 2-socket staff from Akara and make **Leaf** in it: +3 to Fire Skills for two common runes. On this build that is +3 Fissure, +3 Firestorm and +3 Molten Boulder at once. Make it the moment the runes drop, but note you cannot wield it until level 19.",
           refs: [{ kind: "runeword", slug: "leaf" }],
           atLevel: 12,
         },

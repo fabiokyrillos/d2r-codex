@@ -193,9 +193,18 @@ const NEEDS_A_SHIELD =
 const DENIES_THE_SHIELD =
   /\b(not|without|no)\b[^.]{0,30}\bshield\b|\b(não|sem|nenhum)\b[^.]{0,30}\bescudo\b/i;
 
-/** Fade and Burst of Speed presented as simultaneous. */
+/**
+ * Fade and Burst of Speed presented as simultaneous.
+ *
+ * Two branches rather than one alternation on each side. Written as
+ * `(Fade|Burst of Speed) … (Burst of Speed|Fade)` the pattern also matches
+ * "Fade … Fade", so it fires on any sentence naming one buff twice — and a
+ * Treachery line reading "a 5% chance to cast level 15 Fade when struck, which
+ * is Fade you did not have to press" is correct and has nothing to do with the
+ * pairing. The rule has to see two *different* names.
+ */
 const BOTH_BUFFS_UP =
-  /\b(Fade|Burst of Speed)\b[^.]{0,80}\b(Burst of Speed|Fade)\b/i;
+  /\bFade\b[^.]{0,80}\bBurst of Speed\b|\bBurst of Speed\b[^.]{0,80}\bFade\b/i;
 const SAYS_EXCLUSIVE =
   /\b(mutually exclusive|cannot|can't|replaces?|drops? the other|instead of|either|not both|one or the other)\b|\b(mutuamente exclusiv|não pode|derruba o outro|substitui|em vez de|ou o)\w*/i;
 
