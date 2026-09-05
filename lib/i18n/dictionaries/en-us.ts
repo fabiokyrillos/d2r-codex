@@ -746,6 +746,11 @@ export const enUS = {
     effectRadius: "Radius",
     effectRadiusHalfSquares: "Radius (half squares)",
     effectDuration: "Duration",
+    // Named for the difficulty on purpose, and the only effect label that is.
+    // Every other duration on the site is the same length wherever it is cast;
+    // a freeze is divided by `MonsterFreezeDivisor` -- 1, 2 and 4 -- so the
+    // unqualified word would publish the Normal figure as though it were Hell's.
+    effectFreezeLength: "Freeze length (Normal)",
     effectMana: "Mana",
     effectMissiles: "Projectiles",
     effectAbsorbed: "Damage absorbed",

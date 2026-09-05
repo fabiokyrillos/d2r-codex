@@ -144,7 +144,7 @@ export const frozenOrbSorceress: Build = {
               points: 20,
               role: "main",
               order: 1,
-              note: "**Its freeze runs 50 frames at one point and three more per level**, so a maxed Glacial Spike holds a pack still for over four seconds. And it is not a cold spell you are starting from scratch: **Frozen Orb and Ice Bolt both feed it**, and this plan already has twenty in each.",
+              note: "**Its freeze runs 50 frames at one point and three more per level**, so a maxed Glacial Spike is 107 frames — and that is the Normal number. Freeze length is divided by the difficulty, halved in Nightmare and quartered in Hell, so what you actually get where you will use it is **a little over a second**. Still the longest hard stop in the tree, and not the four seconds the frame count reads as. It is also not a cold spell you are starting from scratch: **Frozen Orb and Ice Bolt both feed it**, and this plan already has twenty in each.",
             },
             {
               skill: "frost-nova",

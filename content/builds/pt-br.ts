@@ -3252,7 +3252,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
               "Você mantém a pior qualidade da build: bosses. O Static Field para em 4 em vez de 20, então um boss com muita vida continua sendo uma luta lenta que você ganha com o mercenário. Pegue A Resposta para Bosses se essa é a luta que você vem perdendo.",
             skillNotes: {
               "glacial-spike":
-                "**O congelamento dele dura 50 frames com um ponto e mais três por nível**, então um Glacial Spike maximizado segura um grupo parado por mais de quatro segundos. E não é uma magia de frio começando do zero: **tanto o Frozen Orb quanto o Ice Bolt alimentam ele**, e este plano já tem vinte em cada.",
+                "**O congelamento dele dura 50 frames com um ponto e mais três por nível**, então um Glacial Spike maximizado dá 107 frames — e esse é o número do Normal. A duração do congelamento é dividida pela dificuldade, pela metade no Nightmare e por quatro no Hell, então o que você realmente recebe onde vai usar é **pouco mais de um segundo**. Ainda é a parada mais longa da árvore, e não os quatro segundos que a contagem de frames sugere. E também não é uma magia de frio começando do zero: **tanto o Frozen Orb quanto o Ice Bolt alimentam ele**, e este plano já tem vinte em cada.",
               "frost-nova":
                 "**O Frozen Orb também alimenta ele.** Um Frost Nova maximizado é o botão para o que já está encostando em você — congela tudo num anel ao seu redor de uma vez, que é a única situação que o congelamento de alvo único do Glacial Spike não resolve.",
               "static-field":
@@ -4736,7 +4736,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "**Vinte e dois pontos estão livres.** Frost Nova, Cold Mastery, Blizzard e Frozen Orb são oitenta e as oito skills de um ponto são oito, o que dá 88 de 110. O Frost Nova tem duas sinergias e as duas já estão maximizadas, então **não sobra nada na árvore de frio que aumente o anel** — os vinte e dois compram utilidade ou sobrevivência.",
-      "**Glacial Spike, até 20 dos 22.** Não é sinergia do anel, mas o congelamento dele dura 50 frames com um ponto e mais três por nível, e os seus pontos de Blizzard o alongam ainda mais. É daqui que vem mais controle de grupo quando o anel não basta.",
+      "**Glacial Spike, até 20 dos 22.** Não é sinergia do anel, mas o congelamento dele dura 50 frames com um ponto e mais três por nível, e cada ponto *duro* de Blizzard soma 3% em cima — equipamento que dá níveis de skill não soma, porque a duração lê o nível base do Blizzard. O Hell divide por quatro o que der nisso, então vinte pontos compram pouco mais de um segundo, e não quatro. Ainda é daqui que vem mais controle de grupo quando o anel não basta.",
       "**Static Field, até 20 dos 22.** O raio cresce a cada ponto, e numa build que já fica no meio, o raio é todo o custo de usá-lo.",
       "**Abaixo do nível 99 a ordem importa mais que o total.** Frost Nova e Cold Mastery primeiro, depois Blizzard, depois Frozen Orb. Cada um dos dois últimos é +200% e nenhum rende muito pela metade, então termine um antes de começar o outro.",
       "**Variante de magic find:** mesmo plano de skills, equipamento trocado por magic find. A build limpa rápido o bastante para bancar.",
@@ -4768,7 +4768,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "O primeiro elo da cadeia até o Blizzard. Um ponto: ele alimenta o Blizzard e o Frozen Orb, não o anel, e os vinte pontos deles valem muito mais que os dele.",
       "ice-blast": "O segundo elo.",
       "glacial-spike":
-        "O terceiro elo, e um congelamento de emergência de verdade com um ponto — o congelamento dele dura 50 frames sem investimento nenhum.",
+        "O terceiro elo, e um botão de emergência de verdade com um ponto — 50 frames de congelamento sem investimento nenhum. Leia isso como dois segundos no Normal e meio segundo no Hell: lá a duração é dividida por quatro, o que é curto mas ainda dá para sair de perto de alguma coisa.",
       blizzard: "**Uma das duas sinergias do Frost Nova, a 10% por ponto duro.** Vinte pontos são +200% no anel, e ele é uma magia de frio forte por si só para os alvos únicos em que o anel é ruim.",
       "frozen-orb": "**A outra sinergia, também a 10% por ponto duro.** Mais +200%, e um projétil que viaja para os grupos dentro dos quais você preferiria não ficar. Juntas, essas duas são a diferença entre um Frost Nova que funciona no Hell e um que não funciona.",
       warmth: "Regeneração de mana desde o nível 1.",

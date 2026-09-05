@@ -101,7 +101,7 @@ export const frostNovaSorceress: Build = {
     },
     { skill: "ice-bolt", points: 1, role: "prerequisite", note: "The first link in the chain to Blizzard. One point: it feeds Blizzard and Frozen Orb rather than the ring, and their own twenty points are worth far more than its." },
     { skill: "ice-blast", points: 1, role: "prerequisite", note: "The second link." },
-    { skill: "glacial-spike", points: 1, role: "prerequisite", note: "The third link, and a genuine emergency freeze at one point — its freeze runs 50 frames before any investment at all." },
+    { skill: "glacial-spike", points: 1, role: "prerequisite", note: "The third link, and a real emergency button at one point — 50 frames of freeze before any investment at all. Read that as two seconds in Normal and half a second in Hell: freeze length is quartered there, which is short but still long enough to walk out of something." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1." },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever**, and it is how you get into the middle." },
@@ -111,7 +111,7 @@ export const frostNovaSorceress: Build = {
   ],
   flexPoints: [
     "**Twenty-two points are free.** Frost Nova, Cold Mastery, Blizzard and Frozen Orb are eighty and the eight one-point skills are eight, which is 88 of 110. Frost Nova has two synergies and both are already maxed, so **nothing left in the cold tree raises the ring** — the twenty-two buy utility or survival instead.",
-    "**Glacial Spike, up to 20 of the 22.** Not a synergy for the ring, but its freeze runs 50 frames at one point and three more per level, and your Blizzard points lengthen it further. This is where more crowd control comes from once the ring is not enough.",
+    "**Glacial Spike, up to 20 of the 22.** Not a synergy for the ring, but its freeze runs 50 frames at one point and three more per level, and each *hard* point of Blizzard adds 3% on top — gear that adds skill levels does not, because the length reads Blizzard's base level. Hell quarters whatever that comes to, so twenty points buy a little over a second rather than four. This is still where more crowd control comes from once the ring is not enough.",
     "**Static Field, up to 20 of the 22.** Its radius grows with every point, and on a build that already stands in the middle, radius is the whole cost of using it.",
     "**Below level 99 the order matters more than the total.** Frost Nova and Cold Mastery first, then Blizzard, then Frozen Orb. Each of the last two is +200% and neither does much half-finished, so complete one before starting the other.",
     "**Magic find variant:** same skill plan, gear swapped for magic find. The build clears fast enough to afford it.",

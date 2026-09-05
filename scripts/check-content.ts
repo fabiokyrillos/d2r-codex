@@ -67,6 +67,7 @@ import {
   MAX_HARD_POINTS,
 } from "./skill-graph-rules";
 import { checkSourcedDivergence, exitCodeFor, isUntranslatedProse } from "./content-rules";
+import { FREEZE_RULES, checkFreezeLengthClaims } from "./freeze-length-claims";
 import { TREES_NOT_YET_AUTHORED, checkClassTrees } from "./class-tree-rules";
 import {
   CORROBORATED,
@@ -1154,6 +1155,19 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
   const divergence = pages.flatMap(({ where, lines }) => checkSourcedDivergence(lines, where));
   for (const rule of ["unsourced-divergence-claim", "undated-divergence-claim"] as const) {
     const hits = divergence.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+
+  /*
+   * Freeze length rides the same sweep, and for the same reason the immunity
+   * rules do: the claim it guards was published in a build's `flexPoints`, in a
+   * skill plan's `note` and in a package's `skillNotes`, none of which a
+   * per-type collector would have looked at together.
+   */
+  const freeze = pages.flatMap(({ where, lines }) => checkFreezeLengthClaims(lines, where));
+  for (const rule of FREEZE_RULES) {
+    const hits = freeze.filter((p) => p.rule === rule);
     console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
     for (const h of hits) problems.push(h.message);
   }

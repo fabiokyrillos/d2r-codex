@@ -6,6 +6,23 @@ import type { Skill, SkillTree } from "@/lib/types";
  * Skill names and unlock levels verified against The Arreat Summit's Sorceress
  * skill pages. Synergy percentages verified against current build guides
  * (Maxroll, D2Runewizard, DiabloBytes) — see `docs/research/04-sorceress.md`.
+ *
+ * One thing is worth stating once, because a plausible reading of it was
+ * published and wrong.
+ *
+ * Glacial Spike's freeze length is the only figure on these pages that is not
+ * the same number in every difficulty. `difficultylevels.txt` carries
+ * `MonsterFreezeDivisor` — 1, 2 and 4 in Normal, Nightmare and Hell — and the
+ * engine divides the length by it. The extracted row is the Normal figure, the
+ * label says so, and the skill's own prose gives the Hell number, because Hell
+ * is where the builds quoting it are played. Three build pages once turned 107
+ * frames into "over four seconds" of crowd control; it is a little over one.
+ *
+ * The same row's growth has a second trap in it. `auralencalc` is
+ * `ln34 * (100 + skill('Blizzard'.blvl) * par7) / 100`, and `blvl` is the
+ * hard-point level: Blizzard *points* lengthen the freeze by 3% each, and
+ * +skills from gear do not. That is the opposite of how the damage columns
+ * behave, and it is why the pages say "points" rather than "level".
  */
 
 export const sorceressTrees: SkillTree[] = [
@@ -125,6 +142,8 @@ export const sorceressSkills: Skill[] = [
     synergies: [{ skill: "ice-bolt", bonus: "+damage per level" }],
     mechanics: [
       "Freezes everything in the blast radius, which is why a Blizzard Sorceress rarely gets hit.",
+      "**The freeze length above is the Normal figure.** The game divides it by difficulty — halved in Nightmare, quartered in Hell — so a maxed Glacial Spike holds a pack for a little over a second where you will actually be using it, not the four seconds the frame count suggests.",
+      "Each **hard point** of Blizzard lengthens the freeze by 3%. Skill levels from gear do not: the length reads Blizzard's base level, unlike the damage, which reads the level gear gives you.",
       "This is what you cast while Blizzard is on cooldown.",
     ],
     confidence: "verified",

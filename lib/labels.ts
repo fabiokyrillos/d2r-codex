@@ -167,6 +167,7 @@ export const effectLabels = (t: Dictionary): Record<string, string> => ({
   effectRadius: t.skills.effectRadius,
   effectRadiusHalfSquares: t.skills.effectRadiusHalfSquares,
   effectDuration: t.skills.effectDuration,
+  effectFreezeLength: t.skills.effectFreezeLength,
   effectMana: t.skills.effectMana,
   effectMissiles: t.skills.effectMissiles,
   effectAbsorbed: t.skills.effectAbsorbed,

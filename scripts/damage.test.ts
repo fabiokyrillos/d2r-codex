@@ -369,9 +369,9 @@ console.log("\nThe shipped effect data");
    * This read "exactly the eleven mapped skills carry effects" — true when the
    * Amazon was the only class with a mapping, and a count that says nothing
    * about which class lost coverage when it changes. Every Necromancer skill
-   * publishes at least one quantity; every Paladin and Sorceress skill still
-   * publishes none, and that is a scope fact worth failing on rather than a
-   * total worth updating.
+   * publishes at least one quantity; every Paladin skill still publishes none,
+   * and that is a scope fact worth failing on rather than a total worth
+   * updating.
    */
   const perClass = new Map<string, number>();
   for (const node of Object.values(SKILL_GRAPH)) {
@@ -390,6 +390,19 @@ console.log("\nThe shipped effect data");
      * the table has no column for.
      */
     druid: 29,
+    /*
+     * One of the Sorceress's thirty, and it is deliberately one rather than
+     * thirty. Glacial Spike's freeze length was extracted because prose got it
+     * wrong: three build pages quoted 50 frames and three per level — which is
+     * right — and concluded "over four seconds", which is right only in Normal.
+     * Freeze length is divided by `MonsterFreezeDivisor`, so the row is
+     * published under `effectFreezeLength` rather than `effectDuration` and the
+     * label names the difficulty.
+     *
+     * The rest of the tree stays in prose. Moving ninety Paladin and Sorceress
+     * rows onto extraction is a pass of its own, and the generator says so.
+     */
+    sorceress: 1,
   };
   for (const [classSlug, expected] of Object.entries(expectedPerClass)) {
     check(

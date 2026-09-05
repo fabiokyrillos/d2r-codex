@@ -1206,6 +1206,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 18, maxLevel: 20,
     prerequisites: ["ice-blast"],
     synergies: [{ from: "blizzard", kinds: ["freeze"] }, { from: "frozen-orb", kinds: ["damage"] }, { from: "ice-blast", kinds: ["damage"] }, { from: "ice-bolt", kinds: ["damage"] }], damage: { element: "cold", hitShift: 7, min: { base: 32, bands: [14, 26, 28, 30, 32] }, max: { base: 48, bands: [15, 27, 29, 31, 33] } },
+    effects: [{ labelKey: "effectFreezeLength", unit: "frames", shape: { kind: "linear", base: 50, perLevel: 3 } }],
   },
   "blizzard": {
     classSlug: "sorceress", tree: "cold-spells", page: 3, row: 5, column: 1,

@@ -284,6 +284,35 @@ const EFFECTS: Record<string, (s: RawSkill) => EffectSpec[]> = {
   // calc2: ln34
   "lightning-strike": (s) => [{ labelKey: "effectJumps", unit: "count", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } }],
 
+  // -- Sorceress -----------------------------------------------------------
+  /*
+   * One row, and it is here because prose got it wrong.
+   *
+   * Three build pages said Glacial Spike's freeze "runs 50 frames at one point
+   * and three more per level" and concluded that a maxed one "holds a pack
+   * still for over four seconds". The 50 and the 3 are right -- they are
+   * `Param3` and `Param4`, named "Freeze Length baseline" and "Freeze Length
+   * per level", read through `auralencalc = ln34 * (100 + Blizzard.blvl * par7)
+   * / 100`. The four seconds is right only in Normal. `MonsterFreezeDivisor` in
+   * difficultylevels.txt is 1, 2 and 4, so the same 107 frames at level 20 is
+   * 4.3s in Normal, 2.1s in Nightmare and 1.1s in Hell -- and Hell is where
+   * every build quoting the number is played.
+   *
+   * So the number is extracted rather than retyped, and it is *not* published
+   * under `effectDuration`. Bone Wall's duration is the same length in every
+   * difficulty; this one is not, and a shared heading would flatten exactly the
+   * difference that produced the error. `effectFreezeLength` names the
+   * difficulty in the label for the same reason `effectRadiusHalfSquares` names
+   * its unit: the generic word is the one a reader gets wrong.
+   *
+   * The explosion radius is `aurarangecalc = ln12` with `Param2` zero, so it
+   * never moves with a point. Left out, on the rule the Druid tree already
+   * follows -- a row reading the same at 1 and 20 is noise.
+   */
+  "glacial-spike": (s) => [
+    { labelKey: "effectFreezeLength", unit: "frames", shape: { kind: "linear", base: par(s, 3), perLevel: par(s, 4) } },
+  ],
+
   // -- Necromancer ---------------------------------------------------------
   /*
    * Curses share two columns, `aurarangecalc = ln12` and `auralencalc = ln34`,

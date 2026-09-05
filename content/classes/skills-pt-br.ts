@@ -142,6 +142,8 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "Um projétil de gelo que explode e congela uma área pequena. O controle da build de Blizzard e a segunda maior sinergia dela.",
     mechanics: [
       "Congela tudo no raio da explosão, e é por isso que uma Blizzard Sorceress raramente apanha.",
+      "**A duração do congelamento acima é a do Normal.** O jogo a divide pela dificuldade — pela metade no Nightmare, por quatro no Hell — então um Glacial Spike maximizado segura um grupo por pouco mais de um segundo onde você de fato vai usá-lo, e não os quatro segundos que a contagem de frames sugere.",
+      "Cada **ponto duro** de Blizzard alonga o congelamento em 3%. Níveis de skill vindos de equipamento não alongam: a duração lê o nível base do Blizzard, diferente do dano, que lê o nível que o equipamento te dá.",
       "É isto que você conjura enquanto o Blizzard está em cooldown.",
     ],
     synergyBonuses: ["+dano por nível"],

@@ -735,6 +735,7 @@ export const ptBR: Dictionary = {
     effectRadius: "Raio",
     effectRadiusHalfSquares: "Raio (meios quadrados)",
     effectDuration: "Duração",
+    effectFreezeLength: "Duração do congelamento (Normal)",
     effectMana: "Mana",
     effectMissiles: "Projéteis",
     effectAbsorbed: "Dano absorvido",
