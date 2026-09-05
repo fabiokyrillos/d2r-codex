@@ -74,16 +74,16 @@ export const meleeSorceress: Build = {
     {
       skill: "telekinesis",
       points: 20,
-      role: "synergy",
+      role: "utility",
       order: 2,
-      note: "Improves Energy Shield's mana-to-damage ratio, which is worth more than any amount of raw mana. Max it second.",
+      note: "**Every hard point here takes one sixteenth off what Energy Shield charges you**, from 32/16ths of mana per point of damage down towards 12/16ths at twenty. **Not a synergy** — the game reads your *hard* points in Telekinesis, so a +3 Lightning Skills amulet does nothing for the ratio and cannot substitute for the twenty points. Max it second anyway.",
     },
     {
       skill: "warmth",
       points: 20,
-      role: "synergy",
+      role: "utility",
       order: 3,
-      note: "Refills the pool Energy Shield is spending. On a build whose health is mana, regeneration is healing.",
+      note: "Refills the pool Energy Shield is spending. On a build whose health is mana, regeneration is healing. It is also Enchant's damage synergy at 9% per hard point — but Enchant is the skippable half of this plan, so the mana is the reason to buy it.",
     },
     {
       skill: "enchant",

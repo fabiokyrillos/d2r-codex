@@ -6,9 +6,17 @@ import type { Build } from "@/lib/types";
  * The only ranged Paladin the site documents, and the only Paladin build that
  * deals two damage types at once.
  *
- * Verified against the game's own skills.txt:
+ * Verified against the game's own skills.txt and missiles.txt:
  * - Fist of the Heavens is `EType = ltng` — the bolt itself is lightning.
- * - Holy Bolt is `EType = mag` — the waves that spread out are magic damage.
+ * - The waves are the `fistoftheheavensbolt` missile, `EType = mag`, and it
+ *   carries its own `EDmgSymPerCalc` of `skill('Holy Bolt'.blvl) * 15`. That is
+ *   where this build's Holy Bolt points are collected: **+15% to the waves per
+ *   hard point**, and nothing at all to the lightning bolt.
+ * - Fist of the Heavens' own synergy is `skill('Holy Shock'.blvl) * par8` with
+ *   `par8 = 7` — the lightning half, and the one the skill row declares.
+ * - Holy Bolt's row runs the other way: `skill('Fist of the Heavens'.blvl) * 50`.
+ *   The two skills feed each other, which is why both directions are stated
+ *   here rather than one of them being assumed from the other.
  * - Fist of the Heavens requires **level 30**, and so does Conviction. This
  *   build genuinely cannot exist before 30, which is why the levelling section
  *   is not optional advice.
@@ -71,7 +79,7 @@ export const fohdin: Build = {
       points: 20,
       role: "synergy",
       order: 2,
-      note: "The damage synergy, and it is also the magic-damage half of what you fire. Max it second.",
+      note: "**+15% per hard point to the magic waves**, which is the half of Fist of the Heavens that clears the room. It does nothing for the lightning bolt — that half is Holy Shock's — and it is hard points only, so +skills gear does not buy it. Max it second.",
     },
     {
       skill: "conviction",

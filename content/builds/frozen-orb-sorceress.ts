@@ -18,6 +18,12 @@ import type { Build } from "@/lib/types";
  *   immunity-troubled casters in the game — but it still does not break a true
  *   immunity, because a mastery is applied after the game has decided the
  *   monster is immune, and that step is skipped while the immunity stands.
+ * - **Frozen Orb has exactly one synergy.** Its row reads
+ *   `EDmgSymPerCalc = (skill('Ice Bolt'.blvl))*par8` with `par8 = 2`, and that
+ *   is the whole list. Ice Blast and Glacial Spike feed Blizzard, Glacial Spike
+ *   and each other — not the Orb. A plan that maxes them for the Orb's sake is
+ *   spending forty points on nothing, which is the mistake this page used to
+ *   make and the reason the skill plan below is short.
  *
  * Uses the standard Sorceress cast table.
  */
@@ -78,16 +84,15 @@ export const frozenOrbSorceress: Build = {
       points: 20,
       role: "synergy",
       order: 3,
-      note: "A Frozen Orb synergy, and your damage for the first eleven levels. Nothing spent here is wasted.",
-    },
-    {
-      skill: "ice-blast",
-      points: 20,
-      role: "synergy",
-      order: 4,
-      note: "The second synergy. Also a usable single-target spell while you wait for level 30.",
+      note: "**Frozen Orb's only synergy**, at 2% per hard point, and your damage for the first eleven levels. Nothing spent here is wasted — and nothing else in the tree does the same job.",
     },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1." },
+    {
+      skill: "ice-blast",
+      points: 1,
+      role: "prerequisite",
+      note: "**On the chain to Frozen Orb** — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Orb — and a usable single-target spell while you wait for level 30. One point: it feeds Blizzard and Glacial Spike, and neither of those is what you cast.",
+    },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever.** More points only cut the mana cost." },
     { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life, which is how a cold build handles a boss it cannot burst." },
@@ -103,9 +108,12 @@ export const frozenOrbSorceress: Build = {
 
   ],
   flexPoints: [
-    "**Remaining points go to Glacial Spike**, which is both a third synergy and the best emergency button the cold tree has.",
+    "**Forty-one points are genuinely free, and that is this build's defining fact.** Frozen Orb, Cold Mastery and Ice Bolt are sixty; the nine one-point skills are nine; a level 99 character has 110. Frozen Orb has one synergy and it is already maxed, so **there is nothing left in the cold tree that raises Orb damage** — the remaining forty-one buy utility, survival or a second element instead. The entries below are where they honestly go.",
+    "**Glacial Spike, up to 20 of the 41.** Not a synergy — it feeds Blizzard and Ice Bolt, neither of which you cast — but its freeze runs 50 frames at one point and three more per level, so a maxed Glacial Spike holds a pack still for over four seconds. The best of the four if you want the build to stay cold.",
+    "**Static Field, up to 20 of the 41.** Its radius is the only thing limiting it, and the radius grows with every point. On a build whose single-target damage is poor by design, that is the difference between a boss you can kill and one you cannot.",
+    "**Telekinesis and Energy Shield.** A different answer to the same spare budget: a second health bar rather than more crowd control. It costs three points this plan does not otherwise spend — Charged Bolt, Lightning and Chain Lightning are the chain to the shield — and then as many as you want in Telekinesis, because **each hard point there lowers what the shield charges you** and no amount of +skills gear does the same. Take it deliberately or not at all.",
     "**The Blizzard question.** Blizzard is the other cold build and it has its own page; it trades this build's forgiving aim for higher single-target damage and a cooldown to play around. They are not variants of each other and the skill plans barely overlap.",
-    "**The Meteorb split** — Frozen Orb plus Meteor rather than Frozen Orb plus its cold synergies — is a separate build with its own page. It buys a second damage type and pays for it with a much thinner point budget.",
+    "**The Meteorb split** — Frozen Orb plus Meteor rather than a cold tree with forty-one points and nothing left to buy — is a separate build with its own page. It is the most productive answer to the spare budget, and it pays for the second damage type with a much thinner one.",
     "**Magic find variant:** this build has the best magic find profile of any starter, because it clears fast and needs almost nothing from its gear. Swap damage charms for magic find and take War Traveler and a Harlequin Crest. The skill plan does not change.",
   ],
   stats: {
@@ -158,7 +166,7 @@ export const frozenOrbSorceress: Build = {
               alternatives: [
                 {
                   label: "Any staff or orb with +Ice Bolt or +Ice Blast",
-                  why: "Vendor stock refreshes each time you enter town. A +3 staff on a synergy is free damage that keeps paying after level 30.",
+                  why: "Vendor stock refreshes each time you enter town, and until level 30 Ice Bolt *is* your damage. **+3 Ice Bolt stops paying the moment Frozen Orb arrives** — a synergy counts hard points only, so the staff raises the bolt you no longer cast and not the Orb you do. Buy it for the first thirty levels and expect to replace it.",
                   lookFor: ["+3 Ice Bolt", "+3 Ice Blast", "+2 Cold Skills"],
                 },
               ],
@@ -185,7 +193,7 @@ export const frozenOrbSorceress: Build = {
       nextUpgrade:
         "Level 30. Frozen Orb and Cold Mastery arrive together and the character changes completely in one level.",
       notes:
-        "Level with Ice Bolt and Ice Blast. Both are synergies, so every point spent before 30 is still working at 90. Static Field from level 6 handles anything with too much life.",
+        "Level with Ice Bolt and Ice Blast. **Ice Bolt is the synergy** and every point in it is still working at 90; Ice Blast is the next link in the chain and one point is all it ever needs, so put the rest into Ice Bolt. Static Field from level 6 handles anything with too much life.",
     },
 
     {
@@ -595,7 +603,7 @@ export const frozenOrbSorceress: Build = {
 
   levelingPath: {
     summary:
-      "Frozen Orb and Cold Mastery both arrive at **level 30**, so the first thirty levels are played as an Ice Bolt and Ice Blast Sorceress — and both of those are synergies, so nothing is wasted. Static Field from level 6 handles anything with too much life, and Teleport at 18 changes how you move. **No respec is required**, which together with the Fire Ball Meteor Sorceress makes these the two most forgiving starts on the site.",
+      "Frozen Orb and Cold Mastery both arrive at **level 30**, so the first thirty levels are played as an Ice Bolt and Ice Blast Sorceress — and Ice Bolt is the Orb's one synergy, so those twenty points are the same twenty points you finish with. Static Field from level 6 handles anything with too much life, and Teleport at 18 changes how you move. **No respec is required**, which together with the Fire Ball Meteor Sorceress makes these the two most forgiving starts on the site.",
   },
 
   confidence: "verified",

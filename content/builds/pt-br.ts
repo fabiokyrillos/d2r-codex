@@ -1624,7 +1624,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "fist-of-the-heavens":
         "Nível 30. Seis ondas de Holy Bolt com um ponto e mais uma por nível, então cada ponto amplia a limpeza além de subir o dano.",
       "holy-bolt":
-        "A sinergia de dano, e também é a metade de dano mágico do que você dispara. Maximize em segundo.",
+        "**+15% por ponto duro nas ondas mágicas**, que são a metade do Fist of the Heavens que limpa a sala. Não faz nada pelo raio — essa metade é do Holy Shock — e conta apenas pontos duros, então equipamento com +skills não compra isso. Maximize em segundo.",
       conviction:
         "A sua aura ativa. 30% de redução de resistência no nível 1 e mais 5% por nível — no 20 isso é 125%, e o equipamento empurra mais. É isso que quebra imunidade a raio.",
       "holy-shield":
@@ -3239,9 +3239,12 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Um tipo de dano só, então um imune a frio de verdade é uma parede e não uma lentidão — o Pit e o Worldstone Keep são onde este site os registra",
     ],
     flexPoints: [
-      "**Os pontos restantes vão para o Glacial Spike**, que é ao mesmo tempo uma terceira sinergia e o melhor botão de emergência da árvore de frio.",
+      "**Quarenta e um pontos são genuinamente livres, e esse é o fato que define esta build.** Frozen Orb, Cold Mastery e Ice Bolt são sessenta; as nove skills de um ponto são nove; um personagem nível 99 tem 110. O Frozen Orb tem uma sinergia e ela já está maximizada, então **não sobra nada na árvore de frio que aumente o dano do Orb** — os quarenta e um restantes compram utilidade, sobrevivência ou um segundo elemento. As entradas abaixo são para onde eles honestamente vão.",
+      "**Glacial Spike, até 20 dos 41.** Não é sinergia — ele alimenta o Blizzard e o Ice Bolt, e você não conjura nenhum dos dois — mas o congelamento dele dura 50 frames com um ponto e mais três por nível, então um Glacial Spike maximizado segura um grupo parado por mais de quatro segundos. A melhor das opções se você quiser que a build continue sendo de frio.",
+      "**Static Field, até 20 dos 41.** O raio é a única coisa que o limita, e o raio cresce a cada ponto. Numa build cujo dano de alvo único é fraco por projeto, essa é a diferença entre um boss que você mata e um que você não mata.",
+      "**Telekinesis e Energy Shield.** Uma resposta diferente para o mesmo orçamento livre: uma segunda barra de vida em vez de mais controle de grupo. Custa três pontos que este plano não gasta de outra forma — Charged Bolt, Lightning e Chain Lightning são a corrente até o escudo — e depois quantos você quiser em Telekinesis, porque **cada ponto duro ali reduz o que o escudo cobra de você** e nenhuma quantidade de equipamento com +skills faz o mesmo. Escolha deliberadamente ou não escolha.",
       "**A questão do Blizzard.** O Blizzard é a outra build de frio e tem página própria; ele troca a mira perdoável desta build por dano de alvo único maior e um cooldown para administrar. Não são variantes uma da outra e os planos de skill mal se sobrepõem.",
-      "**A divisão Meteorb** — Frozen Orb mais Meteor em vez de Frozen Orb mais as sinergias de frio — é uma build separada com página própria. Ela compra um segundo tipo de dano e paga com um orçamento de pontos bem mais apertado.",
+      "**A divisão Meteorb** — Frozen Orb mais Meteor em vez de uma árvore de frio com quarenta e um pontos e nada mais para comprar — é uma build separada com página própria. É a resposta mais produtiva para o orçamento livre, e paga o segundo tipo de dano com um orçamento bem mais apertado.",
       "**Variante de magic find:** esta build tem o melhor perfil de magic find entre as starters, porque limpa rápido e quase não precisa de nada do equipamento. Troque charms de dano por magic find e use War Traveler e um Harlequin Crest. O plano de skills não muda.",
     ],
     statPlan: {
@@ -3267,9 +3270,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "cold-mastery":
         "**Reduz a resistência a frio do inimigo em 20% no nível 1 e mais 5% por nível.** Não é multiplicador de dano — é o motivo de o seu dano ainda acertar no Hell.",
       "ice-bolt":
-        "Sinergia do Frozen Orb, e o seu dano nos primeiros onze níveis. Nada gasto aqui é desperdiçado.",
+        "**A única sinergia do Frozen Orb**, a 2% por ponto duro, e o seu dano nos primeiros onze níveis. Nada gasto aqui é desperdiçado — e nada mais na árvore faz o mesmo trabalho.",
       "ice-blast":
-        "A segunda sinergia. Também é uma magia de alvo único utilizável enquanto você espera o nível 30.",
+        "**Na corrente até o Frozen Orb** — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Orb — e uma magia de alvo único utilizável enquanto você espera o nível 30. Um ponto: ele alimenta o Blizzard e o Glacial Spike, e não é nenhum dos dois que você conjura.",
       warmth: "Regeneração de mana desde o nível 1.",
       teleport: "**Um ponto para sempre.** Mais pontos só cortam o custo de mana.",
       "static-field":
@@ -3301,7 +3304,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     levelingPath: {
       summary:
-        "Frozen Orb e Cold Mastery chegam os dois no **nível 30**, então os primeiros trinta níveis são jogados como uma Sorceress de Ice Bolt e Ice Blast — e as duas são sinergias, então nada é desperdiçado. O Static Field a partir do nível 6 lida com qualquer coisa com vida demais, e o Teleport no 18 muda como você se move. **Nenhum respec é necessário**, o que junto com a Fire Ball Meteor Sorceress faz destas as duas partidas mais perdoáveis do site.",
+        "Frozen Orb e Cold Mastery chegam os dois no **nível 30**, então os primeiros trinta níveis são jogados como uma Sorceress de Ice Bolt e Ice Blast — e o Ice Bolt é a única sinergia do Orb, então aqueles vinte pontos são os mesmos vinte com que você termina. O Static Field a partir do nível 6 lida com qualquer coisa com vida demais, e o Teleport no 18 muda como você se move. **Nenhum respec é necessário**, o que junto com a Fire Ball Meteor Sorceress faz destas as duas partidas mais perdoáveis do site.",
     },
     selfFoundNotes:
       "Junto com a Fire Ball Meteor, o melhor personagem de self-found do site. Tudo de que ela precisa abaixo do endgame é runeword da Countess ou compra de vendedor, ela não tem nenhum item que seja requisito duro, e a Cold Mastery significa que ela não precisa de um Infinity para continuar funcionando no Hell. Uma Frozen Orb Sorceress self-found farmando o Mephisto é como muita gente banca todos os outros personagens que tem.",
@@ -3313,7 +3316,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade:
           "Nível 30. Frozen Orb e Cold Mastery chegam juntos e o personagem muda por completo num nível só.",
         notes:
-          "Evolua com Ice Bolt e Ice Blast. As duas são sinergias, então todo ponto gasto antes do 30 ainda está trabalhando no 90. O Static Field a partir do nível 6 lida com qualquer coisa com vida demais.",
+          "Evolua com Ice Bolt e Ice Blast. **O Ice Bolt é a sinergia** e todo ponto nele ainda está trabalhando no 90; o Ice Blast é o próximo elo da corrente e um ponto é tudo de que ele precisa, então ponha o resto no Ice Bolt. O Static Field a partir do nível 6 lida com qualquer coisa com vida demais.",
         picks: {
           "weapon-0": {
             why: "+2 skills e até 35% de Faster Cast Rate no nível 25.",
@@ -3321,7 +3324,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "weapon-0-alt0": {
             label: "Qualquer staff ou orb com +Ice Bolt ou +Ice Blast",
-            why: "O estoque dos vendedores é renovado cada vez que você entra na cidade. Uma staff com +3 numa sinergia é dano grátis que continua pagando depois do nível 30.",
+            why: "O estoque dos vendedores é renovado cada vez que você entra na cidade, e até o nível 30 o Ice Bolt *é* o seu dano. **+3 Ice Bolt para de pagar no instante em que o Frozen Orb chega** — uma sinergia conta apenas pontos duros, então a staff aumenta o bolt que você não conjura mais e não o Orb que você conjura. Compre para os primeiros trinta níveis e conte em trocar.",
             lookFor: ["+3 Ice Bolt", "+3 Ice Blast", "+2 Cold Skills"],
           },
           "offhand-0": { why: "Resistências por três runas da Countess." },
@@ -4862,9 +4865,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "energy-shield":
         "**Dois de mana por ponto de dano na base**, melhorado pela Telekinesis. Num personagem com reserva de vida de Sorceress parado em alcance corpo a corpo, esta é a barra de vida da build.",
       telekinesis:
-        "Melhora a taxa de mana por dano do Energy Shield, o que vale mais que qualquer quantidade de mana bruta. Maximize em segundo.",
+        "**Cada ponto duro aqui tira um dezesseis avos do que o Energy Shield cobra de você**, de 32/16 de mana por ponto de dano em direção a 12/16 aos vinte. **Não é sinergia** — o jogo lê os seus pontos *duros* em Telekinesis, então um amuleto de +3 Lightning Skills não faz nada pela taxa e não substitui os vinte pontos. Ainda assim, maximize em segundo.",
       warmth:
-        "Reabastece a reserva que o Energy Shield está gastando. Numa build cuja vida é mana, regeneração é cura.",
+        "Reabastece a reserva que o Energy Shield está gastando. Numa build cuja vida é mana, regeneração é cura. Também é a sinergia de dano do Enchant, 9% por ponto duro — mas o Enchant é a metade dispensável deste plano, então a mana é o motivo de comprá-la.",
       enchant:
         "**A única skill de dano que vale pegar.** Ela adiciona dano de fogo aos seus ataques, dura minutos, e pode ser lançada antes de virar urso. Pule se preferir armaduras mais profundas.",
       teleport:
