@@ -10617,4 +10617,335 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "rabies-druid": {
+    summary:
+      "Um lobisomem cuja mordida é contagiosa: infecte um monstro do grupo e o veneno encontra o resto enquanto você anda até o próximo.",
+    playstyle:
+      "Você se transforma, corre para dentro de um grupo, morde uma coisa, e vai embora. O veneno se espalha do que você mordeu para tudo que estiver perto, então o grupo morre atrás de você enquanto você já está infectando o próximo — a build é jogada como um trajeto, não como uma sequência de lutas. O Feral Rage é a outra metade do ritmo: as cargas dele compram velocidade de movimento e roubam vida, então você o usa para se deslocar e para se recuperar entre grupos. O que você não pode fazer é continuar mordendo o mesmo monstro. Veneno de uma mesma fonte não se acumula consigo mesmo; uma segunda mordida reinicia o relógio em vez de somar uma segunda dose, então cada mordida a mais num alvo já infectado é dano que você deixou de causar em outro lugar.",
+    strengths: [
+      "O veneno se espalha, e é o único ataque corpo a corpo da classe que limpa um grupo a partir de um único acerto",
+      "O dano da arma acerta por inteiro junto com o veneno — a mordida não é enfraquecida para pagar por ele",
+      "Muito barata de montar: todo o motor são vinte pontos numa skill de nível 18 e vinte numa vinha de nível 1",
+      "Veneno ignora imunidade a físico por completo, e imunidade a físico é o que trava os outros Druids corpo a corpo",
+      "As cargas do Feral Rage fazem dele o shapeshifter que mais se desloca, que é o que uma build de trajeto quer",
+    ],
+    weaknesses: [
+      "**Veneno não tem mastery em lugar nenhum do jogo**, então o teto de dano é baixo e é alcançado cedo",
+      "Nada morre rápido — o veneno roda por onze segundos e um chefe simplesmente espera passar",
+      "Imunidade a veneno é comum justamente nas zonas cheias de mortos-vivos de que as builds corpo a corpo gostam",
+      "Morder um monstro já infectado reinicia o veneno dele em vez de somar, então é fácil desperdiçar dano",
+      "Não existe breakpoint publicado de velocidade de ataque para nenhuma das formas animais, então o equipamento não pode ser planejado até o quadro",
+    ],
+    flexPoints: [
+      "Sobram três pontos. O **Feral Rage** é o melhor destino para eles — mais cargas são mais velocidade de movimento e mais vida roubada, e é a skill que você aperta entre todos os grupos.",
+      "**O Hunger custa três pontos a partir daqui** (Werebear, Maul, Fire Claws) e não vale numa build que já rouba vida pelo Feral Rage.",
+      "**Não coloque pontos no Fury.** É a mesma cadeia de pré-requisitos e é outro personagem: o Fury são cinco rolagens de ataque num alvo, e todo o desenho desta build é uma rolagem de ataque num alvo por grupo.",
+      "**Solar Creeper e Poison Creeper são o mesmo espaço.** Pegar a vinha de mana significa abrir mão da cura, e nenhuma das duas muda os vinte pontos duros que alimentam o Rabies.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento. Não há arma pesada para habilitar.",
+      dexterity: "O suficiente para a arma.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. O Rabies custa dez de mana e o Feral Rage três.",
+      notes: [
+        "**Dano de arma importa menos aqui do que em qualquer outro Druid corpo a corpo, e attack rating importa mais.** O veneno é uma quantidade fixa por infecção, então a pancada que acerta vale muito mais que a pancada que bate forte — e uma pancada que erra não infecta nada.",
+        "Faster run/walk é um atributo de dano nesta build de um jeito que não é em nenhuma outra, porque velocidade de limpeza é quão rápido você chega ao próximo grupo, não quão rápido o atual morre.",
+        "Vida é comprada como em todo shapeshifter: Vitality multiplicada pelos +115% da Lycanthropy.",
+        "Redução de duração de veneno no *seu* equipamento é um atributo defensivo e não faz nada pelo seu próprio veneno. Vale ter mesmo assim nas áreas em que esta build é boa.",
+      ],
+    },
+    breakpointWhy: {},
+    breakpointNotes:
+      "**Vazia, como nos outros Druids de transformação.** O Werewolf não usa as tabelas de quadros da forma humana — o site publica uma tabela de conjuração separada para werewolf e diz isso — e não existe tabela de recuperação de golpe nem de velocidade de ataque em forma animal num nível de fonte que este projeto aceite. Velocidade de ataque vale ser comprada aqui, mas ela compra grupos infectados por minuto e não dano por golpe, e é comprada continuamente, não até um limiar. **Faster run/walk é o atributo que esta build colocaria numa tabela se velocidade de corrida tivesse breakpoints.** Ela não tem; é linear, e não há nada a mirar.",
+    skillNotes: {
+      rabies:
+        "924–996 de veneno com vinte pontos duros, causados ao longo de 290 quadros — onze segundos e meio — em vez de no golpe. O dano cheio da arma acerta junto.",
+      "poison-creeper":
+        "**A única sinergia do Rabies, a 20% por ponto duro — então vinte pontos aqui são +400%.** Sinergias leem pontos duros e não se a skill está ativa, o que significa que estes vinte funcionam enquanto outra vinha é a que você invocou.",
+      werewolf:
+        "Velocidade de ataque, que nesta build é grupos infectados por minuto e não dano por pancada. O bônus sobe de 10% em direção a um teto de 80% numa curva decrescente.",
+      lycanthropy:
+        "+115% de vida. Uma build que corre para o meio de um grupo para morder um monstro precisa disso mais do que parece.",
+      "heart-of-wolverine":
+        "+158% de attack rating, e é por isso que ele está aqui, não pelos +153% de dano aprimorado. Uma mordida que erra não infecta nada, e toda a build se apoia na primeira mordida acertar.",
+      "feral-rage":
+        "Exigido pelo Rabies, e o botão de deslocamento da build: as cargas compram velocidade de movimento subindo em direção a 70% e roubam vida a cada acerto. Você vai apertá-lo tanto quanto aperta o Rabies.",
+      "carrion-vine":
+        "**Esta é a vinha que você de fato invoca.** Ela cura você em 4% de cada cadáver mais 1% por nível, e pegá-la não custa nada — os vinte pontos do Poison Creeper continuam alimentando o Rabies a partir da árvore, independentemente de qual vinha está em campo.",
+      "oak-sage": "Exigido pelo Heart of Wolverine e pelos lobos.",
+      "summon-grizzly":
+        "O urso mantém o grupo junto enquanto o veneno trabalha, o que importa mais aqui do que em qualquer outro Druid: um grupo espalhado é um grupo que a infecção não atravessa.",
+    },
+    immunityPlan:
+      "**Veneno é o único elemento do jogo sem mastery e sem nenhuma aura que reduza a resistência a ele, e isso molda tudo abaixo.** Tome as quatro coisas que tocam resistência a veneno do inimigo na ordem certa. O **Rotting Fissure**, o Sunder Charm de veneno, quebra uma imunidade a veneno de vez — e ele não tem substituto, porque a alternativa habitual não existe aqui. O **Lower Resist**, de um Necromancer no seu grupo, é a única outra coisa capaz de quebrar uma: é uma maldição, então é cortada a um quinto contra um alvo que ainda está imune e mesmo assim quebra a imunidade quando um quinto basta. O **Death's Web e os facets de veneno** carregam −% to Enemy Poison Resistance, que é pierce de item: aplicado depois da verificação de imunidade, e essa etapa é pulada enquanto a imunidade está de pé — então contra um imune a veneno eles estão ausentes, não fracos, e incidem com valor cheio no instante em que o charm ou a maldição tiver quebrado a imunidade. O **+% to Poison Skill Damage do Bramble não é redução de resistência**; ele sobe o seu dano antes de a resistência deles ser aplicada, então ajuda contra tudo que não é imune e não ajuda em nada contra tudo que é. E o **Conviction não aparece nesta lista**, porque ele reduz resistência a fogo, frio e raio e deixa o veneno em paz — que é o erro mais caro disponível nesta build. A metade da arma de cada mordida acerta por inteiro de qualquer forma, então um imune a veneno ainda morre, devagar, de um ataque corpo a corpo comum.",
+    mercenaryNotes:
+      "**Um Act 2 Desert Mercenary com Might, e o motivo é que não existe nada melhor para uma build de veneno.** O dano aprimorado do Might sobe a metade da arma da sua mordida e as mortes do próprio mercenário; no topo, o Concentration do Pride faz o mesmo, maior. O que importa mais é o que evitar: **o Infinity não faz nada por esta build.** A aura Conviction dele reduz resistência a fogo, frio e raio e não toca em veneno, então a arma de mercenário mais cara do jogo vale menos aqui do que um Fortitude que mantenha o mercenário vivo. Uma **Act 1 Rogue Scout com Faith** é a alternativa que vale considerar — a velocidade de ataque do Fanaticism são grupos infectados por minuto — e só compensa se a sua própria mão não estiver carregando um Beast.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "A casa da build, e a lista de áreas diz por quê: a única imunidade registrada aqui é físico, que o veneno ignora por completo. Densidade cinco, um mapa plano, e uma manada que se infecta sozinha no momento em que você morde dentro dela.",
+      "pit-hell":
+        "Nível 85 com a melhor densidade de itens do Ato 1, e as imunidades registradas dela são físico, frio e raio — nenhuma de veneno. Os imunes a físico custam a você a metade menor da mordida e nada mais.",
+      "chaos-sanctuary-hell":
+        "Densidade cinco, e nenhum veneno nas imunidades registradas. Os chefes dos selos é que são o problema, não a população: um chefe simplesmente sobrevive a um veneno de onze segundos, então esta é uma corrida pelos monstros comuns e pela experiência.",
+      "worldstone-keep-hell":
+        "Quatro imunidades registradas e nenhuma delas é veneno, o que torna a melhor área de experiência do jogo incomumente amigável ao único elemento que não tem mastery.",
+      "stony-tomb-hell":
+        "Nível 85, rápida de alcançar, e as imunidades registradas dela são fogo e físico. Um trajeto curto para uma build que é jogada como trajeto.",
+      "travincal-hell":
+        "Imune a fogo e raio, o que não é nada para você, e o Conselho fica junto o bastante para uma mordida alcançar os três. Curta, e os drops são bons.",
+      "mephisto-hell":
+        "Não é imune a veneno, e dá para chegar nele em menos de um minuto. Ele também aguenta os onze segundos inteiros e mais um pouco, então esta é uma corrida de paciência, não de velocidade.",
+    },
+    levelingPath: {
+      summary:
+        "Sem respec, e sem ponto desperdiçado. O Poison Creeper é uma skill de nível 1 e a única sinergia do Rabies, então os pontos que você gasta na vinha no nível 5 são os mesmos que alimentam a mordida no nível 99; Werewolf e Lycanthropy são maximizados pela build pronta; e o Feral Rage, o pré-requisito, é o botão de deslocamento que você continua usando.",
+      respecAt: "Nenhum. A vinha que você invoca no nível 2 é a sinergia de que você depende no nível 90.",
+    },
+    selfFoundNotes:
+      "Barata de montar e difícil de terminar. O motor não custa nada — vinte pontos numa skill de nível 18 e vinte numa vinha de nível 1, com Steel e Lore carregando os primeiros cinquenta níveis — e a build é jogável no Hell com equipamento que um personagem iniciante consegue montar. O que ela não consegue fazer sozinha é responder a um imune a veneno: o Rotting Fissure vem de uma Terror Zone e não existe segunda rota até ele, porque nenhuma aura e nenhuma mastery reduz resistência a veneno. O Bramble precisa de um Sur. Enquanto nenhum dos dois existir, um grupo imune a veneno é morto só pela sua arma, e é por isso que as áreas acima foram escolhidas a partir dos dados de imunidade do próprio site, e não pela densidade.",
+    hardcoreNotes:
+      "Mais arriscada do que parece, e o risco é estrutural: o dano da build chega onze segundos depois da mordida, então um grupo que vai matar você ainda está vivo quando isso acontece. Você não consegue sair de um problema no dano. O que você consegue é ir embora — as cargas do Feral Rage fazem dele o shapeshifter mais rápido da classe, e correr é uma resposta de verdade aqui de um jeito que não é para um urso. Pegue o **Oak Sage** em vez do Heart of Wolverine e aceite que a mordida vai errar mais; mantenha o Grizzly em campo para segurar o grupo que você já infectou; e trate os Oblivion Knights do Chaos Sanctuary com o mesmo cuidado que todo Druid corpo a corpo tem. Acima de tudo, não fique parado assistindo ao veneno trabalhar.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 18 e ao Rabies. Antes disso você é um lobisomem com uma mordida e sem motivo para ser um.",
+        nextUpgrade:
+          "Nível 18 e o primeiro ponto no Rabies, e então vinte pontos divididos entre ele e uma vinha que você nunca vai invocar.",
+        notes:
+          "**Coloque os pontos iniciais no Poison Creeper sem hesitar.** É uma skill de nível 1 e a única sinergia do Rabies, então pontos gastos ali no nível 5 continuam trabalhando no nível 99 — esta build não tem nenhum investimento de leveling desperdiçado.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque e attack rating por duas das runas mais baratas do jogo. Attack rating é o atributo que falta a esta build do nível 18 ao 99.",
+            sockets: "Tir + El em qualquer Sword, Axe ou Mace de 2 soquetes. Rápida vence grande; o veneno não liga.",
+          },
+          "helm-0": {
+            why: "+1 em todas as skills por Ort + Sol, num pelt de Druid para somar com a rolagem do próprio pelt.",
+            sockets: "Ort + Sol num pelt de Druid de 2 soquetes.",
+          },
+          "body-0": {
+            why: "Faster run/walk a partir do nível 17, e velocidade de corrida está mais perto de um atributo de dano nesta build do que em qualquer outra.",
+          },
+          "boots-0": {
+            label: "Quaisquer botas com 30% de faster run/walk",
+            why: "A build é um trajeto. Tudo que encurta o trajeto é dano.",
+            lookFor: ["30% Faster run/walk", "Resistência a fogo e raio"],
+          },
+          "ring1-0": { why: "Attack rating, de um drop do Ato 1." },
+        },
+      },
+      nightmare: {
+        goal: "Nightmare terminado com Rabies e Poison Creeper bem adiantados, e um trajeto em vez de uma luta.",
+        nextUpgrade: "O Bramble, e o único multiplicador grande que o veneno desta build vai receber de um item.",
+        notes:
+          "**Morda uma vez e siga.** O jeito mais comum de jogar esta build mal é continuar atacando o monstro que você acabou de infectar: veneno de uma mesma fonte não se acumula consigo mesmo, então a segunda mordida reinicia o cronômetro em vez de somar uma segunda dose.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque e um bônus muito grande de attack rating no nível 43. Numa build cujo dano não vem da arma, attack rating é quase todo o motivo de existir uma arma.",
+            sockets: "Dol + Ort + Eld + Lem numa arma rápida de 4 soquetes.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +2 Druid Skills e +3 em Shape Shifting Skills",
+            why: "+3 em Shape Shifting sobe o próprio Rabies. Ele **não** sobe a contribuição de sinergia do Poison Creeper, porque sinergias leem pontos duros — então um pelt de +3 em Summoning valeria quase nada aqui.",
+            lookFor: ["+3 to Shape Shifting Skills", "+2 Druid Skills", "Faster hit recovery", "2 soquetes"],
+          },
+          "helm-0-alt0": { why: "+1 em todas as skills também sobe o Rabies, e está disponível agora." },
+          "body-0": {
+            why: "45% de velocidade de ataque e um Fade ao ser atingido. Você passa a luta correndo por dentro dos grupos em vez de parado neles, e o Fade dispara mesmo assim.",
+            sockets: "Shael + Thul + Lem em qualquer armadura de 3 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "+50 em todas as resistências por duas runas baratas, a partir do nível 37. Correr para o meio de um grupo para morder um monstro é um problema de resistência antes de ser qualquer outra coisa.",
+          },
+          "gloves-0": {
+            label: "Quaisquer luvas com 20% de increased attack speed",
+            why: "Mais mordidas são mais grupos, não mais dano num alvo que você já infectou.",
+            lookFor: ["20% Increased Attack Speed", "+ de attack rating", "Resistências"],
+          },
+          "belt-0": {
+            why: "Vida roubada por golpe e redução de dano físico. O roubo funciona a partir da metade da arma, que acerta por inteiro em cada mordida.",
+          },
+          "boots-0": {
+            why: "+65 de vida e faster run/walk. O crushing blow do Gore Rider vale menos aqui do que em qualquer outro Druid corpo a corpo, porque você não fica parado batendo em nada.",
+          },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": {
+            label: "Um anel raro com attack rating e resistências",
+            why: "Attack rating primeiro, sempre.",
+            lookFor: ["+ de attack rating", "Todas as resistências", "Life stolen per hit"],
+          },
+        },
+      },
+      "early-hell": {
+        goal: "Hell iniciado, com as áreas escolhidas e não aceitas. Imunidade a veneno decide onde esta build farma.",
+        nextUpgrade: "O Bramble. É a maior melhoria de dano da página.",
+        picks: {
+          "weapon-0": {
+            why: "Continua correto. Não existe melhoria de arma que suba o veneno, então o trabalho da arma segue sendo velocidade de ataque e attack rating.",
+          },
+          "weapon-0-alt0": {
+            why: "Crushing blow, open wounds e −25% na defesa do alvo para a metade da arma. Uma melhoria real do dano físico, e nenhuma mudança no veneno.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills e dois soquetes",
+            why: "Três níveis efetivos no Rabies, e dois soquetes para facets de veneno quando as resistências estiverem fechadas em outro lugar.",
+            lookFor: ["+3 to Shape Shifting Skills", "+2 Druid Skills", "2 soquetes"],
+            sockets:
+              "Dois rainbow facets de veneno, ou duas joias de 15% em todas as resistências enquanto as resistências ainda estiverem curtas. Um facet carrega tanto +% de dano de skill de veneno quanto −% de resistência a veneno do inimigo, e só uma dessas duas linhas funciona num alvo que ainda está imune.",
+          },
+          "body-0": {
+            why: "+50 em todas as resistências por Nef + Lum. Fique com ele até o Bramble; não há nada no meio que valha as runas nesta build.",
+          },
+          "body-0-alt0": {
+            why: "Crushing blow e open wounds para a metade da arma, se as resistências já estiverem resolvidas.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de increased attack speed e attack rating",
+            why: "Velocidade e a precisão para usá-la.",
+            lookFor: ["20% Increased Attack Speed", "+ de attack rating", "Todas as resistências"],
+          },
+          "belt-0": { why: "Redução de dano físico, e roubo de vida." },
+          "boots-0": { why: "Faster run/walk e magic find. Velocidade de corrida é o atributo de limpeza aqui." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills, que é +1 no Rabies." },
+          "amulet-0": {
+            why: "30% de faster run/walk, 20% de velocidade de ataque e +25 de Dexterity — os três atributos que uma build de trajeto de fato gasta.",
+          },
+        },
+        charms: [
+          {
+            why: "**Sunder de veneno, e é a única coisa que abre um imune a veneno para esta build.** Nenhuma aura reduz resistência a veneno e nenhuma mastery existe, então este charm não tem substituto. Só se carrega um Sunder Charm por vez, e veneno é o único que vale a pena aqui.",
+          },
+          {
+            label: "Skillers de Shape Shifting com vida",
+            why: "+1 nível efetivo no Rabies em cada um. Um skiller de Summoning sobe o dano próprio do Poison Creeper, não a sinergia dele — então vale quase nada nesta build.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Hell farmado nos trajetos que combinam com ela, com o veneno multiplicado pelo único item que o multiplica.",
+        nextUpgrade:
+          "Uma decisão, não um item: se vale abrir mão da arma inteira pelo Death's Web. Leia o plano de imunidades.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism: velocidade de ataque e attack rating, que são as duas armas reais desta build. O dano aprimorado dele sobe a mordida e não o veneno, e tudo bem.",
+            sockets: "Ber + Tir + Um + Mal + Lum numa Axe, Scepter ou Hammer de 5 soquetes.",
+          },
+          "weapon-0-alt0": {
+            why: "Uma fração do custo por quase toda a velocidade de ataque. Esta build precisa do Beast menos que qualquer outro Druid corpo a corpo.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills e dois rainbow facets de veneno",
+            why: "Três níveis efetivos de Rabies, e duas doses de +% de dano de skill de veneno.",
+          },
+          "helm-0-alt0": {
+            why: "Roubo de vida e redução de dano físico, para um personagem sem escudo.",
+          },
+          "body-0": {
+            why: "**+25–50% to Poison Skill Damage, e é o único item do jogo que multiplica o dano desta build.** Não existe mastery de veneno nem aura que reduza resistência a veneno, então uma armadura que sobe o dano da própria skill faz um trabalho que nada mais faz. A aura Thorns dela é um bônus que ninguém planeja.",
+            sockets: "Ral + Ohm + Sur + Eth em qualquer armadura de 4 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "As resistências, até o Sur existir. O Bramble é caro e esta build é barata no resto.",
+          },
+          "gloves-0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed e attack rating",
+            why: "Velocidade e precisão, barato e repetível.",
+            lookFor: ["20% Increased Attack Speed", "+ de attack rating", "Life stolen per hit"],
+          },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Velocidade de corrida, e magic find num trajeto." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": { why: "Velocidade de corrida e de ataque." },
+          "amulet-0-alt0": {
+            label: "Um amuleto raro com +2 Druid Skills e attack rating",
+            why: "Dois níveis efetivos de Rabies, quando a velocidade já estiver coberta em outro lugar.",
+          },
+        },
+        charms: [
+          { why: "Sunder de veneno. Nada mais abre um imune a veneno." },
+          {
+            label: "Skillers de Shape Shifting com vida",
+            why: "Níveis efetivos no Rabies; skillers de Summoning não fazem nada pela sinergia.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Todos os trajetos em que esta build é boa, corridos rápido, com o veneno no máximo que os itens conseguem.",
+        nextUpgrade: "Nada estrutural. O teto aqui é o do jogo, não o do equipamento.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism, pela velocidade de ataque e pelo attack rating. A mordida precisa acertar antes de qualquer outra coisa importar.",
+          },
+          "weapon-0-alt0": {
+            why: "**A decisão mais interessante da build, e uma troca de verdade, não uma melhoria.** O Death's Web carrega −40–50% to Enemy Poison Resistance, que é o maior multiplicador de veneno do jogo — e ele é uma varinha, então a metade de arma de cada mordida e quase todo o roubo de vida vão junto. Pegue se você farmar os trajetos abaixo e nunca enfrentar um chefe; fique com o Beast se quiser que o personagem consiga fazer qualquer outra coisa.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com dois rainbow facets de veneno",
+            why: "Cinco níveis efetivos de Rabies e dois facets. A maior melhoria isolada que resta.",
+          },
+          "body-0": { why: "+25–50% to Poison Skill Damage. Nada mais faz isso." },
+          "gloves-0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed e attack rating",
+            why: "O Dracul's Grasp é a escolha errada aqui: o Life Tap devolve uma fração do dano causado, e a maior parte do dano desta build chega onze segundos depois do golpe.",
+            lookFor: ["20% Increased Attack Speed", "+ de attack rating", "Life stolen per hit"],
+          },
+          "belt-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Velocidade de corrida e magic find." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills, attack rating e duas resistências",
+            why: "Dois níveis efetivos de Rabies e a precisão para acertar a mordida.",
+          },
+          "amulet-0-alt0": { why: "Velocidade de corrida e de ataque." },
+        },
+        charms: [
+          { why: "Sunder de veneno." },
+          {
+            label: "Anni, Torch e nove skillers de Shape Shifting",
+            why: "Os +3 em skills de Druid do Torch são três níveis efetivos de Rabies.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders antes de se transformar." }],
+      },
+      bis: {
+        goal: "Não sobrou nada para comprar, o que acontece mais cedo nesta build do que em qualquer outro Druid.",
+        notes:
+          "**Esta build alcança o teto dela mais cedo que qualquer outra do site, e isso é uma propriedade do elemento, não do plano.** Fogo, frio e raio têm cada um uma mastery, uma aura que reduz a resistência correspondente, ou as duas coisas. Veneno não tem nenhuma das duas. Uma vez que Bramble, um Sunder Charm e um pelt estejam no lugar, não há mais nada a comprar que suba o número, e é por isso que a página é curta nesta ponta e honesta sobre isso.",
+        picks: {
+          "weapon-0": {
+            why: "−40–50% to Enemy Poison Resistance, aplicado com valor cheio assim que um Sunder Charm ou um Lower Resist tiver quebrado a imunidade. Num personagem pronto farmando os trajetos abaixo, abrir mão da metade de arma da mordida é a troca certa.",
+          },
+          "weapon-0-alt0": {
+            why: "Fanaticism, e um personagem que ainda consegue matar algo que o veneno não alcança.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com dois rainbow facets de veneno",
+            why: "O item mais difícil da página.",
+          },
+          "body-0": { why: "+25–50% to Poison Skill Damage — o multiplicador, e nada mais." },
+          "gloves-0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed e attack rating",
+            why: "Velocidade e precisão.",
+          },
+          "belt-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Velocidade de corrida e magic find." },
+          "ring1-0": { why: "Não pode ser congelado." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills e duas resistências",
+            why: "Dois níveis efetivos de Rabies.",
+          },
+        },
+        charms: [
+          { why: "Sunder de veneno." },
+          {
+            label: "Anni, Torch e nove skillers de Shape Shifting com vida",
+            why: "O inventário pronto.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders antes de se transformar." }],
+      },
+    },
+  },
 };

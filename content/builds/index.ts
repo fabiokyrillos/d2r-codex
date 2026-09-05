@@ -34,6 +34,7 @@ import { furyDruid } from "./fury-druid";
 import { summonDruid } from "./summon-druid";
 import { maulDruid } from "./maul-druid";
 import { fireClawsDruid } from "./fire-claws-druid";
+import { rabiesDruid } from "./rabies-druid";
 
 /**
  * Build registry.
@@ -42,4 +43,4 @@ import { fireClawsDruid } from "./fire-claws-druid";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon, jabFendAmazon, summonerNecromancer, poisonNovaNecromancer, boneSpearNecromancer, windDruid, fireDruid, furyDruid, summonDruid, maulDruid, fireClawsDruid];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon, jabFendAmazon, summonerNecromancer, poisonNovaNecromancer, boneSpearNecromancer, windDruid, fireDruid, furyDruid, summonDruid, maulDruid, fireClawsDruid, rabiesDruid];
