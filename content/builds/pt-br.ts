@@ -9600,4 +9600,360 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "summon-druid": {
+    summary:
+      "Um urso que provoca, oito lobos que não morrem, e um Druid parado atrás deles. A resposta da classe para jogar o Hell sem apanhar.",
+    playstyle:
+      "Você invoca um urso, três lobos gigantes, cinco lobos espirituais e cinco corvos, coloca um espírito no chão, e então anda para a frente. O Grizzly provoca, então o grupo vai até ele; os lobos gigantes uivam, o que espalha o que o urso não pegou; os lobos espirituais desaceleram tudo o que mordem. O seu trabalho é posicionamento e reinvocação — você decide onde a luta acontece escolhendo onde ficar, e passa a luta olhando para uma barra de vida que não é a sua. É a build menos frenética do site e a mais paciente. Nada morre rápido, e quase nada mata você.",
+    strengths: [
+      "A build mais segura que o Druid tem, e uma das mais seguras do jogo — o urso fica entre você e tudo",
+      "Os minions carregam até 85% de resistência elemental, algo que nenhum esqueleto de Necromancer alcança",
+      "Toda invocação herda a sua perfuração de imunidade a físico, então um Sunder Charm arma o exército inteiro",
+      "Dois tipos de dano sem esforço: os lobos e o urso são físicos, os lobos espirituais somam frio",
+      "Cresce com +skills e não com pontos, então uma troca de pelt vale mais que um nível",
+    ],
+    weaknesses: [
+      "Lenta. Não há nada de rápido em oito minions mastigando um grupo do Hell",
+      "Você quase não tem dano próprio — perder o exército no meio da luta significa correr",
+      "O Grizzly não pode ser reinvocado enquanto estiver vivo, então um urso morrendo não pode ser reposto",
+      "Metade da árvore é mutuamente exclusiva com a outra metade; um espírito e duas vinhas ficam sem uso",
+      "O pathing dos minions é o verdadeiro ajuste de dificuldade, e corredores estreitos são onde isso aparece",
+    ],
+    flexPoints: [
+      "Cinco pontos sobram no nível 99, e o **Raven é onde eles rendem mais**. É a única skill desta árvore que recebe sinergias de verdade, e um Summoner pronto já maximizou as três fontes — então um ponto no Raven chega em cima de 36% por nível de sinergia que já está paga.",
+      "**Se você preferir não gastar vinte pontos num espírito que não está usando**, deixe o Oak Sage em um e coloque esses vinte no Raven. É uma build coerente e mais barata, e troca um bônus grande de vida por aves que cegam.",
+      "**O Spirit of Barbs não é uma terceira opção, é uma opção de grupo.** Com um único espaço de espírito, pegá-lo significa abrir mão da vida ou do dano, e nenhuma das duas trocas compensa sozinho.",
+      "Não gaste pontos num ataque seu. Um Firestorm ou um Tornado pela metade não é plano em 110 pontos que já têm cinco destinos.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento. Esta build usa a armadura mais leve de qualquer Druid porque nada bate nela.",
+      dexterity: "Base. Não há ataque para acertar nem bloqueio que valha a compra.",
+      vitality: "Todo o resto, e o Oak Sage multiplica isso.",
+      energy: "Nenhum. Reinvocar é ocasional, não contínuo.",
+      notes: [
+        "Esta é a única build de Druid cuja página de atributos é genuinamente sem graça, e isso é uma qualidade: sem requisito de arma e sem meta de velocidade de conjuração, Strength e Dexterity param no que a armadura pedir.",
+        "**Níveis de skill são o atributo que importa, e eles são comprados com itens.** Os bônus mútuos dentro desta árvore leem o nível efetivo, então +3 em Summoning num pelt sobe o bônus de dano do Grizzly, o bônus de vida dos lobos gigantes e as resistências dos minions de uma vez — três números separados vindos de um afixo.",
+        "Vida ainda importa, porque um Druid cujo urso morreu é um Druid em alcance corpo a corpo sem nenhuma skill de corpo a corpo. Os +125% do Oak Sage valem para o personagem tanto quanto para o exército.",
+        "Faster Cast Rate vale um pouco e só um pouco: é a velocidade com que você reconstrói o exército depois de uma luta ruim, não um número com que você luta.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-68":
+        "O breakpoint de reinvocação. Não é um número de dano — é quanto tempo você passa parado depois que o urso morre, que nesta build é o momento mais perigoso de qualquer luta.",
+      "fcr-30":
+        "Um ponto de parada realista durante a evolução. Só um Stealth já são 25% e qualquer anel de conjuração fecha o resto.",
+      "fhr-56":
+        "A meta usual na tabela de Necromancer e Druid. Você não deveria estar apanhando, e recuperação de golpe é o que cobre as vezes em que está.",
+    },
+    breakpointNotes:
+      "As duas tabelas aqui são as da **forma humana**, o que está correto nesta build e não estaria nos Druids de transformação: este personagem nunca se transforma. Não há linha de velocidade de ataque porque você nunca ataca.",
+    skillNotes: {
+      "summon-grizzly":
+        "Um urso, e ele é o dano da árvore. Os +25% e mais 10% por nível dele são dados **também aos dois tipos de lobo**, por nível efetivo — que é por que uma skill que invoca um único minion é a primeira a ser maximizada.",
+      "summon-dire-wolf":
+        "Três lobos num teto próprio, e +50% de vida e mais 15% por nível entregues também aos lobos espirituais. Maximizá-la deixa oito minions mais duros, não três.",
+      "summon-spirit-wolf":
+        "Cinco lobos com dano de frio que desacelera, e 5% de resistência elemental por nível até um teto de 85%. É essa resistência que faz este exército sobreviver ao Hell onde um exército de esqueletos não sobrevive.",
+      "heart-of-wolverine":
+        "+153% de dano aprimorado e +158% de attack rating para cada minion com vinte pontos. É o dano do exército, e é por isso que ele é maximizado antes do segundo espírito.",
+      "oak-sage":
+        "+125% de vida máxima para você, para o mercenário e para cada minion. **Só um espírito pode ficar em campo por vez**, então estes vinte pontos compram uma troca e não um acúmulo — leia os pontos flexíveis antes de gastá-los.",
+      raven:
+        "Cinco aves que cegam e que os monstros não conseguem matar; cada uma vai embora depois de 12 acertos mais um por nível. A única skill desta árvore que recebe sinergias — 12% por ponto de cada uma das três invocações animais.",
+      "poison-creeper": "A primeira das três vinhas, e o caminho para as duas que importam.",
+      "carrion-vine":
+        "Cura você em 4% de cada cadáver que ela come, mais 1% por nível. Esta é a vinha que fica em campo normalmente: numa build sem roubo de vida e sem skill de cura, vida de graça vinda de cadáveres é todo o plano de sustento.",
+      "solar-creeper":
+        "A versão de mana da mesma vinha, e pior aqui — o limite de um Summoner não é mana. Um ponto só para que a escolha exista.",
+      "spirit-of-barbs":
+        "Devolve 32% do dano corpo a corpo no nível 1. O terceiro espírito, e aquele que você quase nunca deixa em campo; ele ganha o ponto num grupo em que outra pessoa está segurando a frente.",
+    },
+    immunityPlan:
+      "**O exército causa dano físico, então imunidade a físico é a pergunta — e a resposta alcança os minions, o que é incomum.** Toda invocação de Druid lê o atributo acumulado de perfuração de imunidade do personagem, então um **Bone Break** no *seu* inventário é o que faz os ataques *deles* acertarem um imune a físico. Esse é o plano inteiro, e ele é um charm. O dano de frio dos lobos espirituais cobre um pouco mais de terreno por conta própria, e um monstro imune a físico e a frio ao mesmo tempo é um monstro para contornar, não para se equipar contra. O que não ajuda é uma linha de −% to Enemy Resistance no seu próprio equipamento: o pierce de item é aplicado depois da verificação de imunidade, e essa etapa é pulada enquanto a imunidade está de pé, então contra um imune ele está ausente, não fraco. Depois que o Sunder Charm tiver quebrado a imunidade, todo o resto incide sobre o resultado com valor cheio.",
+    mercenaryNotes:
+      "Um **Act 2 Desert Mercenary com Might**, porque a aura de um mercenário alcança os minions e o dano aprimorado do Might é a única aura que sobe o que oito atacantes físicos já fazem. Ela se soma ao Heart of Wolverine — são fontes separadas de dano aprimorado, e o exército recebe as duas. **O Insight é a alternativa e encaixa pior aqui do que em quase qualquer lugar**: esta build não conjura sem parar e não fica sem mana. No topo, o mercenário carrega **Pride**, cuja aura Concentration é um número de dano aprimorado maior que o do Might. Dê **Fortitude** a ele e o mantenha vivo; um mercenário morto é uma aura que o exército inteiro deixa de receber.",
+    farmingWhy: {
+      "countess-nightmare":
+        "As runas para dois Spirits, numa corrida curta que um exército de oito atravessa sem que você precise ser bom em nada ainda.",
+      "mausoleum-hell":
+        "Nível 85, denso e cheio de mortos-vivos — exatamente o tipo de grupo que um urso que provoca transforma numa fila. A primeira área de Hell que esta build deveria dominar.",
+      "pit-hell":
+        "Nível 85 com a melhor densidade de itens do Ato 1, e os grupos mistos de lá são onde 85% de resistência nos minions deixa de ser uma estatística.",
+      "ancient-tunnels-hell":
+        "Nível 85 sem imunes a frio, o que significa que a desaceleração dos lobos espirituais pega em tudo e o grupo chega devagar até o urso.",
+      "secret-cow-level-hell":
+        "Nada ali é imune a físico e a densidade é absurda. O único cuidado é a própria densidade: uma manada que cerca o urso vai chegar em você.",
+      "lower-kurast-hell":
+        "Baús em vez de monstros, o que combina com uma build que farma devagar. O exército dá conta do pouco que revida.",
+      "worldstone-keep-hell":
+        "A melhor experiência do jogo, e segura aqui de um jeito que não é para a maioria das builds. Lenta — é aqui que a velocidade de limpeza da build é sentida.",
+    },
+    levelingPath: {
+      summary:
+        "Não há respec e não há desvio. Raven no 1, Spirit Wolf no 6, Oak Sage no 6, Dire Wolf no 18, Heart of Wolverine no 18 e Grizzly no 30 formam uma linha reta em que cada skill é pré-requisito da seguinte — então o personagem que você evolui é o personagem com que você termina, e pontos gastos no nível 6 ainda estão trabalhando no nível 99.",
+      respecAt: "Nenhum. Esta é a única build de Druid do site que nunca precisa de um.",
+    },
+    selfFoundNotes:
+      "A melhor build solo que o Druid tem, e uma das duas ou três melhores do jogo. Nada no plano de skills precisa de item para funcionar: oito minions com resistência elemental no teto existem no nível 30 com equipamento zero. Tudo nos três primeiros níveis de equipamento é runa da Countess, compra de vendedor ou único comum, e o único item que vale planejar — um pelt de Druid com +3 em Summoning — vem do imbue da Charsi num pelt branco depois do nível 30, e não da sorte. A única lacuna real é o Sunder Charm: sem um, um imune a físico é um grupo que você deixa para trás, e as Terror Zones são onde você vai achar um.",
+    hardcoreNotes:
+      "O Druid padrão do Hardcore, e possivelmente o personagem padrão do Hardcore. Você nunca está em alcance corpo a corpo, o urso provoca o que chegaria em você, e os minions carregam mais resistência elemental do que você. Pegue o **Oak Sage** como espírito em vez do Heart of Wolverine — os +125% de vida valem para você tanto quanto para o exército, e esta build tem dano de sobra e nenhuma margem. Os dois riscos reais são sobre o exército não existir mais: um Grizzly que morre no meio da luta não pode ser reinvocado até que morra de fato, e um Iron Maiden de um Oblivion Knight mata os seus próprios minions com o dano deles mesmos. Mantenha um portal aberto e trate um urso morto como motivo para sair, não como motivo para reconjurar.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 e ao Grizzly. Tudo antes disso são três lobos e muita paciência.",
+        nextUpgrade:
+          "Nível 30. O Grizzly é o momento em que isto deixa de ser um personagem lento e passa a ser um personagem seguro.",
+        notes:
+          "**Gaste os primeiros trinta níveis descendo pela coluna do meio e não se deixe levar para os lados.** Raven no 1, Spirit Wolf no 6, Oak Sage no 6, Dire Wolf no 18, Grizzly no 30 — cada um deles é pré-requisito do seguinte, então não há ponto desperdiçado no caminho nem respec no fim.",
+        picks: {
+          "weapon-0": {
+            why: "Duas runas num cajado por +3 em skills de fogo — inútil aqui. Está mencionado só para você não fazer: esta build quer +Summoning, e um cajado comprado com +Summoning vence qualquer palavra de duas runas antes do nível 25.",
+          },
+          "weapon-0-alt0": {
+            label: "Um cajado ou varinha comprado com +3 numa skill de Summoning",
+            why: "A Akara e o Drognan vendem isso. +3 em Summon Spirit Wolf no nível 12 são três lobos que você só teria seis níveis depois.",
+            lookFor: ["+3 to Summon Spirit Wolf", "+3 to Summon Dire Wolf", "+2 Druid Skills"],
+          },
+          "helm-0": {
+            why: "+1 em todas as skills por Ort + Sol, e num pelt de Druid ele se soma à rolagem do próprio pelt. Nesta build um nível de skill vale mais do que em qualquer outro Druid, porque três dos bônus da árvore leem o nível efetivo.",
+            sockets: "Ort + Sol num pelt de Druid de 2 soquetes.",
+          },
+          "body-0": {
+            why: "Velocidade de conjuração, recuperação e corrida a partir do nível 17 por duas runas comuns. A corrida é a que importa: você passa o jogo andando até onde o exército está vencendo.",
+          },
+          "boots-0": {
+            label: "Quaisquer botas com faster run/walk e resistências",
+            why: "Nada exótico, e nada de que esta build vá sentir falta quando trocar.",
+            lookFor: ["Faster run/walk", "Resistência a fogo e raio"],
+          },
+        },
+      },
+      nightmare: {
+        goal: "Nightmare terminado com o exército inteiro em campo e um mercenário que não está morrendo.",
+        nextUpgrade:
+          "Um Sunder Charm físico, e o pelt. Esses dois juntos são a maior parte da distância entre o Nightmare e um Hell confortável.",
+        notes:
+          "**Invoque nesta ordem: corvos, lobos espirituais, lobos gigantes, Grizzly, espírito, vinha.** O Grizzly não pode ser reinvocado enquanto estiver vivo, então ele vem por último — se você o conjurar primeiro e depois perder um lobo, você reconstrói em volta de um urso que já está machucado.",
+        picks: {
+          "weapon-0": {
+            why: "+2 em todas as skills, 35% de velocidade de conjuração e uma reserva grande de mana por quatro runas da Countess. +2 em todas as skills são +2 em cinco skills de invocação maximizadas ao mesmo tempo, que é o maior salto que esta build ganha antes do Hell.",
+            sockets: "Tal + Thul + Ort + Amn numa Crystal Sword ou Broad Sword de 4 soquetes.",
+          },
+          "offhand-0": {
+            why: "+50% em todas as resistências por três runas da Countess. Esta build não tem nenhum problema de dano que um escudo resolva, então o trabalho do escudo é resistência.",
+          },
+          "offhand-0-alt0": {
+            why: "Um segundo Spirit numa Monarch são +4 em todas as skills no par. Os 156 de Strength são reais, e esta build tem menos disputas por atributos do que qualquer outro Druid.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +2 Druid Skills e +3 em Summoning Skills",
+            why: "O item mais valioso desta página. Uma rolagem de +3 em Summoning sobe o bônus de dano do Grizzly, o bônus de vida dos lobos gigantes e todas as resistências dos minions ao mesmo tempo, porque os três leem nível efetivo.",
+            lookFor: ["+2 Druid Skills", "+3 to Summoning Skills", "+3 to Summon Grizzly", "Vida"],
+          },
+          "helm-0-alt0": {
+            why: "Até um cair. O imbue da Charsi num pelt branco depois do nível 30 é o jeito deliberado de conseguir um, em vez de torcer.",
+          },
+          "body-0": {
+            why: "+1 em todas as skills, velocidade de conjuração e até 35 em todas as resistências num único comum. Fica perto do melhor do espaço por muito tempo numa build que quer exatamente essas três linhas.",
+            sockets: "Um soquete: um diamante perfeito, ou um Um.",
+          },
+          "belt-0": {
+            why: "Resistências e 50% do dano recebido tirado da mana. Numa build com a reserva de mana de um Spirit e nada em que gastá-la, isso é uma linha defensiva de verdade.",
+          },
+          "boots-0": {
+            why: "+65 de vida e 15 de Dexterity. Vida é o que mantém você de pé nos segundos depois de o urso morrer.",
+          },
+          "ring1-0": {
+            why: "+1 em todas as skills e mana. Um nível de skill nesta build são cinco bônus ao mesmo tempo.",
+          },
+          "amulet-0": {
+            label: "Um amuleto raro ou craftado com +2 Druid Skills",
+            why: "+2 em skills de Druid vale mais aqui do que +2 numa árvore só em outro lugar, porque as cinco skills maximizadas desta build estão todas na mesma árvore.",
+            lookFor: ["+2 Druid Skills", "+3 to Summoning Skills", "Todas as resistências", "Vida"],
+          },
+        },
+      },
+      "early-hell": {
+        goal: "Hell iniciado. As resistências dos minions já estão no teto pelas skills; as suas não, e esse é o trabalho aqui.",
+        nextUpgrade: "Os últimos níveis de skill: um Torch, um Anni, e um pelt que rolou bem.",
+        picks: {
+          "weapon-0": {
+            why: "Sem mudança. Não existe melhoria de arma para um personagem que nunca ataca até o Heart of the Oak, e aquele é um luxo, não um degrau.",
+          },
+          "offhand-0": {
+            why: "O segundo Spirit. +4 em todas as skills no par são quatro níveis efetivos em cada bônus da árvore.",
+            sockets:
+              "As mesmas quatro runas numa Monarch de 4 soquetes. Uma base menor de 4 soquetes é um meio-termo legítimo se a Strength não estiver lá.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Summoning Skills e dois soquetes",
+            why: "Duas joias de 15% em todas as resistências é como esta build fecha as próprias resistências sem abrir mão da rolagem de skill.",
+            lookFor: ["+2 Druid Skills", "+3 to Summoning Skills", "2 soquetes"],
+            sockets: "Duas joias de 15% em todas as resistências.",
+          },
+          "body-0": {
+            why: "Continua correto, e continua barato. Troque só quando existir um Chains of Honor ou um Enigma.",
+          },
+          "gloves-0": {
+            label: "Quaisquer luvas com +2 em Summoning Skills",
+            why: "Luvas de Druid não rolam skills de classe, então isto é uma luva rara ou mágica com a rolagem genérica — vale caçar justamente porque é um dos poucos espaços que ainda podem carregar uma.",
+            lookFor: ["+2 to Summoning Skills", "Todas as resistências", "Vida"],
+          },
+          "belt-0": {
+            why: "Redução de dano físico, para os momentos em que algo passou pelo urso.",
+          },
+          "boots-0": {
+            why: "Magic find e Strength. Esta build farma em vez de matar rápido, e magic find é o objetivo de farmar.",
+          },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            why: "Não pode ser congelado. Um Summoner congelado é um Summoner que não consegue reconjurar o urso.",
+          },
+          "amulet-0": {
+            why: "+2 skills e +20 em todas as resistências, que são os dois trabalhos deste nível num espaço só.",
+          },
+        },
+        charms: [
+          {
+            why: "**Sunder físico, e ele arma o exército inteiro.** Toda invocação lê o atributo acumulado de perfuração do personagem, então um charm no seu inventário é o que permite a oito minions machucar um imune a físico. Só se carrega um Sunder Charm por vez.",
+          },
+          {
+            label: "Skillers de Summoning com vida",
+            why: "+1 nível efetivo em cinco skills maximizadas em cada um. Nenhuma outra classe tem um afixo de inventário tão eficiente.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Hell farmado em série. O exército aguenta, e você está atrás de magic find e não de sobrevivência.",
+        nextUpgrade: "Enigma, e a capacidade de colocar o exército onde você quer em vez de onde ele andou.",
+        picks: {
+          "weapon-0": {
+            why: "Dois Spirits são +4 em todas as skills por oito runas comuns, e esta build converte níveis de skill em três bônus separados.",
+          },
+          "offhand-0": { why: "O par, numa Monarch." },
+          "offhand-0-alt0": {
+            why: "+1 em todas as skills e mana, num escudo cujo requisito de Strength não vale menção. Uma alternativa real quando a Monarch está fora de alcance.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Summoning Skills, +2 Druid Skills e dois soquetes",
+            why: "Cinco níveis efetivos em cada skill do exército, vindos de um espaço só.",
+          },
+          "helm-0-alt0": {
+            why: "+2 em todas as skills, vida, mana e 50% de magic find. Numa build que farma, é um concorrente sério de um pelt e é muito mais fácil de achar.",
+          },
+          "body-0": {
+            why: "+2 em todas as skills, +65 em todas as resistências e 8% de redução de dano. É a armadura que esta build quer acima de qualquer outra, porque duas das três linhas dela são coisas que a build não consegue comprar em outro lugar.",
+            sockets: "Dol + Um + Ber + Ist em qualquer armadura de 4 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "Continua servindo. O Ber é a parte cara do Chains of Honor e esta build sobrevive sem ele.",
+          },
+          "gloves-0": {
+            label: "Luvas raras com +2 em Summoning Skills e resistências",
+            why: "Mais dois níveis efetivos. Continue caçando este espaço; é o +skills mais barato que sobrou.",
+            lookFor: ["+2 to Summoning Skills", "Todas as resistências"],
+          },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Magic find, e Strength que você pode gastar." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Não pode ser congelado." },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills e duas resistências",
+            why: "Vence o Mara assim que as resistências estiverem no teto, porque a rolagem de classe vale mais que a genérica.",
+          },
+          "amulet-0-alt0": { why: "Nunca está errado." },
+        },
+        charms: [
+          { why: "Sunder físico, herdado por cada minion." },
+          {
+            label: "Anni, Torch e skillers de Summoning",
+            why: "Os +3 em skills de Druid do Torch são três níveis efetivos nas cinco skills maximizadas ao mesmo tempo.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "O exército está pronto. O que sobra é movê-lo mais rápido e achar mais coisa.",
+        nextUpgrade: "Nada estrutural. Daqui em diante são rolagens melhores dos mesmos itens.",
+        picks: {
+          "weapon-0": {
+            why: "+3 em todas as skills, 40% de velocidade de conjuração e +30–40 em todas as resistências. Três níveis de skill vencem dois, e as resistências liberam o elmo para voltar a ser um pelt.",
+          },
+          "weapon-0-alt0": {
+            why: "Um nível de skill a menos, por uma diferença de preço enorme. Esta é uma melhoria de luxo, não uma obrigatória.",
+          },
+          "offhand-0": { why: "+2 skills e velocidade de conjuração, numa Monarch." },
+          "helm-0": {
+            label: "Um pelt de +3 Summoning e +2 Druid Skills com duas joias de 15% em todas as resistências",
+            why: "A maior melhoria isolada que resta, e a mais difícil de achar.",
+          },
+          "body-0": {
+            why: "Teleport. Numa build cujo custo real é andar até a luta, é a maior mudança de conforto disponível — e o exército acompanha você quando teleporta.",
+          },
+          "body-0-alt0": {
+            why: "+2 skills e +65 de resistências no lugar. Estritamente mais poderoso e estritamente mais lento.",
+          },
+          "gloves-0": {
+            label: "Luvas raras com +2 em Summoning Skills",
+            why: "Dois níveis efetivos; nada catalogado compete.",
+            lookFor: ["+2 to Summoning Skills", "Todas as resistências", "Vida"],
+          },
+          "belt-0": { why: "+1 em todas as skills, e velocidade de conjuração." },
+          "boots-0": { why: "Magic find numa build de farm." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Não pode ser congelado." },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills, velocidade de conjuração e duas resistências",
+            why: "O melhor amuleto do jogo para esta build.",
+          },
+          "amulet-0-alt0": { why: "+2 skills, +20 de resistências." },
+        },
+        charms: [
+          { why: "Sunder físico, herdado por cada minion." },
+          {
+            label: "Anni, Torch e nove skillers de Summoning com vida",
+            why: "Doze níveis efetivos no exército só a partir do inventário.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders sobe a sua vida e a do mercenário. Ele **não** alcança os minions — a vida deles vem das skills e do Oak Sage.",
+          },
+        ],
+      },
+      bis: {
+        goal: "Não sobrou nada para comprar.",
+        notes:
+          "**Dois Stone of Jordan não é engano.** O não-pode-ser-congelado do Raven Frost tem valor real, mas numa build cujos números são todos função do nível de skill, dois anéis que dão um nível cada valem mais que um anel que dá um nível e uma imunidade a congelamento que você pode comprar num charm.",
+        picks: {
+          "weapon-0": {
+            why: "+3 em todas as skills e velocidade de conjuração, na base de menor requisito disponível.",
+          },
+          "offhand-0": { why: "Numa Monarch, com rolagem alta." },
+          "helm-0": {
+            label: "Um pelt de +3 Summoning e +2 Druid Skills com duas joias de 15% em todas as resistências",
+            why: "Cinco níveis efetivos e trinta de resistência. Não há elmo único que compita nesta build.",
+          },
+          "body-0": { why: "Teleport, e o exército vai junto." },
+          "gloves-0": {
+            label: "Luvas raras com +2 em Summoning Skills e 20 em todas as resistências",
+            why: "Dois níveis efetivos e um espaço de resistência.",
+          },
+          "belt-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": {
+            why: "Um segundo. Nada mais no espaço dá um nível de skill.",
+          },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills, 10% de velocidade de conjuração e duas resistências",
+            why: "O último item da lista, e o mais difícil.",
+          },
+        },
+        charms: [
+          { why: "Sunder físico." },
+          { label: "Anni, Torch e nove skillers de Summoning com vida", why: "O inventário pronto." },
+        ],
+        weaponSwap: [{ why: "Battle Orders para você e para o mercenário." }],
+      },
+    },
+  },
 };
