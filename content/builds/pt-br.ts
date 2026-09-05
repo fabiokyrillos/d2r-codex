@@ -9956,4 +9956,329 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "maul-druid": {
+    summary:
+      "Um urso lobisomem que não pode ser interrompido, prendendo um grupo do Hell no lugar com uma skill que não rola attack rating e não erra.",
+    playstyle:
+      "Você abre com o Shock Wave, porque ele atordoa um cone de monstros por mais tempo do que a luta vai durar e não tem como errar. Depois entra andando e usa o Maul, e a primeira pancada é a mais fraca que você vai dar — cada acerto acrescenta uma carga, as cargas somam dano e velocidade de ataque, e na quarta ou quinta pancada o urso está batendo num ritmo completamente diferente do que começou. Nada do que você está enfrentando consegue interromper isso, e esse é o ponto: você não está desviando, bloqueando nem reposicionando, está parado no meio e durando mais. O ritmo é Shock Wave para congelar a sala, Maul até esvaziá-la, Shock Wave de novo quando algo novo entrar.",
+    strengths: [
+      "Não pode ser interrompido — o urso continua batendo através de dano que para qualquer outro personagem corpo a corpo",
+      "O Shock Wave não rola attack rating e não erra, então o controle de grupo funciona sem nenhum equipamento por trás",
+      "+340% de dano e +230% de defesa só da forma com vinte pontos, antes de um único item",
+      "Maximizar o Maul é também maximizar a única sinergia do Shock Wave — os mesmos pontos comprados duas vezes",
+      "A maior reserva efetiva de vida do jogo: +75% do urso, +115% da Lycanthropy, e defesa por cima",
+    ],
+    weaknesses: [
+      "Lento, e monstros que fogem ou atiram são um problema real que a build tem de resolver com equipamento",
+      "A primeira pancada de cada luta é a mais fraca, porque as cargas ainda não foram construídas",
+      "Não existe breakpoint publicado de velocidade de ataque para nenhuma das formas animais, então o equipamento não pode ser planejado até o quadro",
+      "Um único tipo de dano, e o do Shock Wave também é físico — nada aqui responde sozinho a um imune a físico",
+      "Você não conjura enquanto transformado, então o espírito e o urso são decisões tomadas antes de a luta começar",
+    ],
+    flexPoints: [
+      "Quatro pontos sobram no nível 99. O **Hunger custa três deles** — Feral Rage, Fire Claws, depois Hunger — e compra uma mordida de emergência que rouba vida e mana a 50% subindo em direção a 200%, em qualquer uma das formas. Numa build que pretende ficar cercada, são os três melhores pontos disponíveis.",
+      "**O Feral Rage não vale mais do que o único ponto de que o Hunger precisa.** É um ataque de lobo e este personagem é um urso.",
+      "**Oak Sage no lugar do Heart of Wolverine** é a troca do Hardcore, não um acréscimo: um espírito por vez.",
+      "Não coloque pontos no **Fire Claws** a menos que você pretenda construir em torno dele. As duas sinergias dele estão na árvore elemental e comprá-las é outra build — veja o Fire Claws Druid.",
+    ],
+    statPlan: {
+      strength: "O suficiente para uma arma pesada de duas mãos, e esta é a única build de Druid em que isso é um número de verdade.",
+      dexterity: "O suficiente para a arma. Não há plano de bloqueio que valha ser financiado num personagem que já não pode ser interrompido.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. O Maul custa três de mana e o Shock Wave sete.",
+      notes: [
+        "**Defesa vale a compra nesta build e em quase nenhuma outra**, porque a forma multiplica: +230% com vinte pontos transforma uma armadura comum numa armadura de verdade. Todo outro Druid trata defesa como erro de arredondamento.",
+        "Vida se acumula duas vezes — os +75% fixos do urso e os +115% da Lycanthropy valem os dois — então Vitality rende mais por ponto aqui do que em qualquer lugar exceto no lobo do Fury.",
+        "O urso é lento e não recebe o bônus de velocidade de ataque do lobo, então Strength para uma arma grande de duas mãos é uma troca legítima e não uma armadilha. Uma pancada lenta e pesada num personagem que não pode ser interrompido é outra proposta.",
+        "Attack rating limita o Maul e não o Shock Wave. Se você está errando o tempo todo, o conserto é Heart of Wolverine, uma aura Fanaticism e anéis — não mais pontos no Maul.",
+      ],
+    },
+    breakpointWhy: {},
+    breakpointNotes:
+      "**Vazia, e pelo mesmo motivo dos outros Druids de transformação.** O Werebear não usa as tabelas de quadros da forma humana — o site publica uma tabela de conjuração separada para werebear e diz isso — e não existe tabela de recuperação de golpe nem de velocidade de ataque em forma animal num nível de fonte que este projeto aceite. Há um segundo motivo pelo qual isso importa menos aqui do que importaria em outro lugar: **o urso não pode ser interrompido**, então recuperação de golpe, o atributo que essas tabelas normalmente governam, é algo que não acontece com ele. Velocidade de ataque continua importando e o equipamento abaixo a persegue, mas continuamente e não até um limiar.",
+    skillNotes: {
+      maul: "Treze cargas com vinte pontos — três mais uma a cada duas, por divisão inteira, então um Maul de nível 2 ainda tem três. As cargas somam dano e velocidade de ataque; os valores por carga estão no motor do jogo e em nenhuma coluna extraída, então este site não os imprime.",
+      werebear:
+        "+340% de dano, +230% de defesa e +75% de vida fixos com vinte pontos. Ele não tem pré-requisito nenhum, apesar de ficar atrás do Werewolf na árvore.",
+      "shock-wave":
+        "O atordoamento dura 40 quadros no nível 1 e 15 quadros a mais por nível — de 1,6 segundo até cerca de 13, que é mais que a maioria das lutas. O Maul é a única sinergia dele, a 10% por ponto, então esta é a segunda coisa que os pontos de Maul compraram.",
+      lycanthropy:
+        "+115% de vida, aplicado na forma em que você estiver, por cima dos +75% do próprio urso. Não custa mana e não tem conjuração.",
+      "heart-of-wolverine":
+        "+153% de dano aprimorado e +158% de attack rating. O Maul rola attack rating e erra sem isso; o Shock Wave não rola nenhum e não se importa.",
+      werewolf: "Exigido pela Lycanthropy, e mais nada. Você nunca vai usar a forma.",
+      "oak-sage": "Exigido pelo Heart of Wolverine e pelos lobos, e é a alternativa de Hardcore a ele.",
+      raven: "Cinco aves que cegam. Exigidas pelos lobos.",
+      "summon-dire-wolf":
+        "Três lobos que uivam — o que é útil e às vezes irritante, porque um monstro em fuga é um monstro que o seu urso vai ter de perseguir.",
+      "summon-grizzly":
+        "Um segundo urso, e ele provoca. Nesta build ele não é a linha de frente — você é —, então o trabalho dele é segurar os monstros que você ainda não alcançou.",
+    },
+    immunityPlan:
+      "**As duas fontes de dano desta build são físicas — a do Maul é a da arma e a do Shock Wave é dele mesmo — então imunidade a físico é a única questão, e o fato de o Shock Wave não poder errar não ajuda em nada nisso.** As duas respostas são o mesmo par que toda build física tem, e elas não são intercambiáveis. O **Amplify Damage** do Atma's Scarab é uma maldição: contra um alvo que ainda está imune ele é cortado a um quinto, e a um quinto ele ainda quebra a imunidade sempre que um quinto for suficiente. O **Bone Break**, o Sunder Charm físico, quebra de vez, e só se pode carregar um Sunder Charm por vez. Uma linha de −% to Enemy Resistance não faz nem uma coisa nem outra: o pierce de item é aplicado depois da verificação de imunidade e essa etapa é pulada enquanto a imunidade está de pé, então contra um imune a físico ele está ausente, não fraco. Depois que a maldição ou o charm tiver quebrado, todo o resto incide sobre o resultado com valor cheio. Note também o que o Doom **não** faz aqui — os −40–60% de resistência a frio do inimigo dele são reais e esta build não causa frio nenhum.",
+    mercenaryNotes:
+      "**Uma Act 1 Rogue Scout, e o motivo são as flechas de frio antes de ser a runeword.** O modo de falhar desta build não é morrer, é os monstros irem embora — o uivo dos lobos gigantes os espalha, grupos à distância a mantêm à distância, e um urso que não alcança nada não causa dano nenhum. Uma rogue de Cold Arrow desacelera tudo o que acerta, o que mantém o grupo na frente do urso. Dê **Faith** a ela quando o Ohm e o Jah existirem: o Fanaticism dela é velocidade de ataque, attack rating e dano aprimorado para você, e é o que libera a sua própria mão para carregar o **Doom** e o Holy Freeze dele. Antes do Faith, qualquer arco serve — as flechas é que são o ponto. **O Act 2 Desert Mercenary com Might é a alternativa e é o correto enquanto você ainda estiver com o Beast**, porque o Beast já fornece Fanaticism e uma segunda cópia seria desperdício. **Infinity é inútil aqui**: Conviction reduz resistência a fogo, frio e raio, e cada ponto de dano desta build é físico.",
+    farmingWhy: {
+      "mausoleum-hell":
+        "Nível 85, denso, morto-vivo e fechado. Um atordoamento em cone num corredor vale mais do que em qualquer lugar aberto, e nada ali corre mais que o urso.",
+      "pindleskin-hell":
+        "Um alvo grande a trinta segundos de um portal, e crushing blow é uma fração da vida atual dele. As cargas do urso têm tempo de crescer porque a luta dura o bastante.",
+      "travincal-hell":
+        "O Conselho é corpo a corpo, grande e não é imune a físico, e eles vêm até você — o que elimina o único problema que esta build de fato tem.",
+      "secret-cow-level-hell":
+        "Nada é imune a físico e tudo entra em alcance corpo a corpo. O Shock Wave segura uma manada no lugar melhor do que segura qualquer outra coisa.",
+      "pit-hell":
+        "Nível 85 e a melhor densidade do Ato 1, mas o terreno aberto e os grupos à distância são onde uma build lenta parece lenta. Traga o Holy Freeze.",
+      "worldstone-keep-hell":
+        "Denso, fechado e com a melhor experiência do jogo. Pede resistências no teto e um Sunder Charm antes de ficar confortável.",
+      "chaos-sanctuary-hell":
+        "Os chefes dos selos ficam parados e lutam, o que combina com uma rampa. Os Oblivion Knights não, e o Iron Maiden deles é a coisa específica que mata um urso.",
+    },
+    levelingPath: {
+      summary:
+        "O Werebear não tem pré-requisito e abre no 6, o Maul no 12 e o Shock Wave no 24, então a build se monta sozinha em ordem, sem desvio e sem ponto perdido. O único ponto no Werewolf de que a Lycanthropy precisa é o único que este personagem gasta no lobo.",
+      respecAt: "Nenhum. O personagem que evolui é o personagem pronto.",
+    },
+    selfFoundNotes:
+      "Razoável, e melhor que o lobo do Fury, porque mais do dano desta build vem da forma do que da arma: +340% com vinte pontos no Werebear é pago com pontos de skill e não com runas. Steel, Lore e Stealth carregam o Normal; Duress e um pelt imbuído pela Charsi carregam o Nightmare; Gore Rider e String of Ears caem com facilidade. A lacuna é a mesma de todo Druid corpo a corpo — o Fanaticism só tem duas casas, Beast e Faith, e nenhuma delas se acha sozinho de forma realista. Planeje **Might num mercenário do Ato 2**, ou aceite que o espaço de aura fica vazio e se apoie mais no Shock Wave, que não precisa de attack rating e portanto não precisa de equipamento.",
+    hardcoreNotes:
+      "O personagem corpo a corpo mais seguro do jogo, e o motivo é uma única coluna: **os ataques do urso não podem ser interrompidos**, então a espiral de morte que mata toda outra build corpo a corpo — apanhar, cambalear, apanhar de novo, nunca golpear — não começa. Pegue o **Oak Sage** em vez do Heart of Wolverine e aceite o dano menor; compre defesa, que é a única build em que a forma faz valer a pena comprá-la; e mantenha o Grizzly em campo como um segundo corpo. As duas coisas que realmente matam um Maul bear são o **Iron Maiden** de um Oblivion Knight, que devolve o seu próprio dano a você enquanto você é incapaz de parar de golpear, e queima de mana, que tira o Shock Wave no pior momento. Os dois se resolvem indo embora, não com equipamento: abra um portal antes do Chaos Sanctuary, e leia a sala antes da segunda pancada.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 12 e ao Maul, depois ao 24 e ao Shock Wave. Nada aqui custa mais que duas runas da Countess.",
+        nextUpgrade: "Nível 24 e o Shock Wave. Até lá o urso não tem controle de grupo, e isso aparece.",
+        notes:
+          "**O Werebear não tem pré-requisito, então ele está disponível no nível 6 sem nenhum ponto gasto acima dele.** Pegue-o, coloque um ponto no Werewolf e alimente a Lycanthropy, e comece o Maul no 12. O ponto único no Werewolf é o único que esta build gasta no lobo.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque, attack rating e open wounds por Tir + El. Antes de as cargas existirem o urso golpeia devagar e acerta uma vez, então um sangramento que não liga para o seu dano é o tipo certo de barato.",
+            sockets: "Tir + El em qualquer Mace ou Axe de 2 soquetes.",
+          },
+          "helm-0": {
+            why: "+1 em todas as skills por Ort + Sol, num pelt de Druid para somar com a rolagem do próprio pelt.",
+            sockets: "Ort + Sol num pelt de Druid de 2 soquetes.",
+          },
+          "body-0": {
+            why: "Corrida mais rápida, e a recuperação de golpe é desperdiçada num urso — o que vale saber, porque significa que esta armadura é um quebra-galho aqui de um jeito que não é em outras builds.",
+          },
+          "ring1-0": {
+            why: "Attack rating de um anel que cai no Ato 1. O Maul erra muito antes de o Heart of Wolverine existir.",
+          },
+        },
+      },
+      nightmare: {
+        goal: "Nightmare terminado com Maul e Shock Wave maximizados e a forma fazendo o trabalho pesado.",
+        nextUpgrade:
+          "Um jeito de manter os monstros ao alcance. A fraqueza real do urso não é o dano que ele leva, são os monstros que vão embora.",
+        notes:
+          "**Shock Wave primeiro, toda luta.** Ele não erra e não liga para o seu attack rating, então funciona perfeitamente neste nível enquanto o Maul ainda está errando. Abrir com ele também significa que as cargas começam a crescer contra um alvo que não pode revidar.",
+        picks: {
+          "weapon-0": {
+            why: "Increased attack speed e um bônus muito grande de attack rating no nível 43. Velocidade de ataque importa mais para um urso do que para a maioria dos personagens corpo a corpo justamente porque a forma não dá nenhuma.",
+            sockets: "Dol + Ort + Eld + Lem em qualquer arma de 4 soquetes.",
+          },
+          "weapon-0-alt0": {
+            why: "Open wounds e −35% de resistência a raio do inimigo num machado de 3 soquetes. A linha de raio não faz nada por você; o open wounds e a contagem de soquetes fazem.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +2 Druid Skills e +3 em Shape Shifting Skills",
+            why: "Uma rolagem de +3 em Shape Shifting sobe Werebear, Maul e Shock Wave juntos — três das quatro skills maximizadas vindas de um afixo.",
+            lookFor: ["+2 Druid Skills", "+3 to Shape Shifting Skills", "Vida", "Defesa"],
+          },
+          "helm-0-alt0": { why: "Até um pelt cair ou a Charsi imbuir um depois do nível 30." },
+          "body-0": {
+            why: "15% de crushing blow, 33% de open wounds e uma rolagem grande de dano aprimorado — e o dano aprimorado é multiplicado pelos +340% da própria forma.",
+            sockets: "Shael + Um + Thul em qualquer armadura de 3 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "Seis níveis antes e muito mais barato: +20 em cada atributo, o que paga a arma de duas mãos que esta build quer.",
+          },
+          "gloves-0": {
+            label: "Quaisquer luvas com 20% de increased attack speed",
+            why: "A velocidade de ataque mais barata do jogo, na forma que não tem nenhuma própria.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "Resistências"],
+          },
+          "belt-0": {
+            why: "Vida roubada por golpe e redução de dano físico. Um urso parado dentro de um grupo apanha mais que qualquer outro personagem deste site, de propósito.",
+          },
+          "boots-0": {
+            why: "Crushing blow, open wounds e deadly strike. Crushing blow é uma fração da vida atual do alvo, que é o que torna uma build lenta viável contra monstros grandes.",
+          },
+          "ring1-0": {
+            why: "Não pode ser congelado, e attack rating. Um urso congelado é um urso que parou, que é exatamente aquilo de que esta forma deveria ser imune.",
+          },
+          "ring2-0": {
+            label: "Um anel raro com attack rating e vida roubada por golpe",
+            why: "Attack rating limita o Maul. Compre onde estiver barato.",
+            lookFor: ["+ de attack rating", "Life stolen per hit", "Todas as resistências"],
+          },
+        },
+      },
+      "early-hell": {
+        goal: "Hell iniciado. Resistências no teto, uma resposta à imunidade a físico, e um mercenário que desacelera a sala.",
+        nextUpgrade: "O Beast, e os +3 em Werebear que vêm junto com a aura.",
+        picks: {
+          "weapon-0": {
+            why: "Crushing blow, open wounds e −25% na defesa do alvo numa espada ou machado de 4 soquetes. É a última arma antes das duas que de fato mudam a build.",
+            sockets: "Mal + Um + Gul + Fal. Uma base de duas mãos serve aqui; o urso não pode ser interrompido de qualquer forma.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills e dois soquetes",
+            why: "Três skills maximizadas de uma rolagem só, e dois soquetes para as resistências que o resto da build não tem onde colocar.",
+            lookFor: ["+2 Druid Skills", "+3 to Shape Shifting Skills", "2 soquetes"],
+            sockets: "Duas joias de 15% em todas as resistências.",
+          },
+          "body-0": {
+            why: "Crushing blow e open wounds, e o dano de frio desacelera — o que nesta build é um pedaço pequeno da resposta a monstros indo embora.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de increased attack speed e vida roubada por golpe",
+            why: "Uma luva de sangue craftada rola as duas coisas e é a resposta padrão neste nível.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "Todas as resistências"],
+          },
+          "belt-0": { why: "Redução de dano físico, e roubo de vida." },
+          "boots-0": { why: "Crushing blow, open wounds e deadly strike — os três, num espaço só." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills — um nível efetivo em quatro skills maximizadas." },
+          "amulet-0": {
+            why: "**Amplify Damage ao golpear, e este é o plano de imunidade da build.** É uma maldição: cortada a um quinto contra um imune a físico, e ainda assim quebra a imunidade quando um quinto basta.",
+          },
+          "amulet-0-alt0": {
+            why: "Velocidade de ataque e de corrida no lugar, assim que um Sunder Charm assumir o plano de imunidade. Velocidade de corrida não é pouca coisa numa build que precisa fechar a distância.",
+          },
+        },
+        charms: [
+          {
+            label: "Skillers de Shape Shifting com vida",
+            why: "+1 nível efetivo em Werebear, Maul e Shock Wave em cada um. O melhor afixo de inventário que esta build pode carregar.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Hell farmado com conforto, com Fanaticism da própria mão e um urso três níveis acima do total de pontos dele.",
+        nextUpgrade: "O Doom, e a aura que finalmente mantém os monstros onde o urso alcança.",
+        picks: {
+          "weapon-0": {
+            why: "**Fanaticism e +3 em Werebear na mesma arma.** A aura é velocidade de ataque, attack rating e dano aprimorado — as três carências do urso — e os +3 são três níveis a mais dos +15% de dano e +10% de defesa por nível da forma. Nenhuma outra build deste site aproveita as duas metades de uma runeword.",
+            sockets: "Ber + Tir + Um + Mal + Lum numa Axe, Scepter ou Hammer de 5 soquetes.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills, +2 Druid Skills e dois soquetes",
+            why: "Cinco níveis efetivos em três skills maximizadas.",
+          },
+          "helm-0-alt0": {
+            why: "Vida e mana roubadas por golpe e 15–20% de redução de dano físico. A resposta barata para um personagem sem escudo.",
+          },
+          "body-0": {
+            why: "+300% de dano aprimorado e um bônus de defesa muito grande — e esta é a única build de Druid em que a metade da defesa vale tanto quanto a do dano, porque a forma a multiplica por 230%.",
+            sockets: "El + Sol + Dol + Lo em qualquer armadura de 4 soquetes.",
+          },
+          "gloves-0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed e vida roubada por golpe",
+            why: "Velocidade de ataque e roubo num item só, repetível e barato.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "+ de vida"],
+          },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Três efeitos por golpe." },
+          "ring1-0": { why: "Não pode ser congelado." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            why: "Deadly strike que cresce com o nível do personagem, e 20% de increased attack speed.",
+          },
+          "amulet-0-alt0": {
+            why: "Fique com ele até o Bone Break existir. O Amplify Damage é o plano de imunidade e o Highlord's não é.",
+          },
+        },
+        charms: [
+          {
+            why: "Sunder físico. O Maul e o Shock Wave são os dois físicos, então este é o único Sunder Charm que esta build carregaria — e só se pode ter um por vez.",
+          },
+          {
+            label: "Skillers de Shape Shifting com vida, e charms pequenos com attack rating",
+            why: "Attack rating limita o Maul e não o Shock Wave, e é por isso que os charms pequenos importam menos aqui do que no lobo do Fury.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Duas auras ao mesmo tempo: Holy Freeze da sua mão, Fanaticism do mercenário.",
+        nextUpgrade: "Rolagens melhores, e o pelt. Não sobrou melhoria estrutural.",
+        picks: {
+          "weapon-0": {
+            why: "**Holy Freeze, e ele é a resposta ao problema real desta build.** O urso não morre e não é interrompido; o que ele faz é não alcançar as coisas. Uma aura que desacelera cada monstro no raio transforma grupos em fuga e atiradores à distância em alvos. Pegue-o só quando o mercenário puder carregar o Fanaticism — os −40–60% de resistência a frio do inimigo não fazem nada por uma build física, e tudo bem.",
+            sockets: "Hel + Ohm + Um + Lo + Cham numa Axe, Polearm ou Hammer de 5 soquetes.",
+          },
+          "weapon-0-alt0": {
+            why: "Se o mercenário não tiver Faith, fique com o Beast. Fanaticism de algum lugar não é opcional, e duas cópias da mesma aura não se somam.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com duas joias de 15% em todas as resistências",
+            why: "Cinco níveis efetivos e trinta de resistência.",
+          },
+          "helm-0-alt0": {
+            why: "+1 em todas as skills, 30% de redução de dano e dois soquetes. A resposta de Hardcore.",
+          },
+          "body-0": { why: "+300% de dano aprimorado e a defesa que a forma multiplica." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências no lugar. Dois níveis efetivos em quatro skills maximizadas chegam mais perto do Fortitude do que parece.",
+          },
+          "gloves-0": {
+            why: "Life Tap ao golpear. Numa build que golpeia sem parar dentro de um grupo atordoado, é uma fonte de sustento maior que qualquer rolagem de roubo.",
+          },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Crushing blow, open wounds e deadly strike. Continua insubstituível." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": { why: "Deadly strike, velocidade de ataque e +1 em todas as skills." },
+        },
+        charms: [
+          { why: "Sunder físico." },
+          {
+            label: "Anni, Torch e skillers de Shape Shifting",
+            why: "Os +3 em skills de Druid do Torch são três níveis efetivos em Werebear, Maul e Shock Wave ao mesmo tempo.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders antes de se transformar. O urso multiplica o resultado por 75% e a Lycanthropy por 115% em cima.",
+          },
+        ],
+      },
+      bis: {
+        goal: "Não sobrou nada para comprar.",
+        notes:
+          "**A pergunta de fim de jogo desta build é quais duas auras você usa, não qual arma você segura.** O Holy Freeze para a sala e o Fanaticism acelera você; um vem de uma arma e o outro de um arco de mercenário, e nenhum se soma a uma segunda cópia de si mesmo. Doom mais uma rogue com Faith é a configuração; Beast mais um mercenário com Might é a que você monta primeiro.",
+        picks: {
+          "weapon-0": {
+            why: "Holy Freeze, com Fanaticism no mercenário. Duas auras é a configuração de fim de jogo e a razão de a seção de mercenário desta página não ser formalidade.",
+          },
+          "weapon-0-alt0": {
+            why: "Might, 60–70% de crushing blow e Life Tap ao golpear. Mais dano, sem desaceleração — uma resposta diferente e legítima se você preferir perseguir o que foge em vez de pará-lo.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com duas joias de 15% em todas as resistências",
+            why: "O item mais difícil da página.",
+          },
+          "body-0": { why: "+300% de dano aprimorado, e a defesa." },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Três efeitos por golpe." },
+          "ring1-0": { why: "Não pode ser congelado." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills, 20% de increased attack speed e duas resistências",
+            why: "Dois níveis efetivos e a velocidade de ataque que a forma não dá.",
+          },
+          "amulet-0-alt0": { why: "Nunca está errado." },
+        },
+        charms: [
+          { why: "Sunder físico." },
+          {
+            label: "Anni, Torch e nove skillers de Shape Shifting com vida",
+            why: "O inventário pronto de um shapeshifter.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders antes de se transformar, sempre." }],
+      },
+    },
+  },
 };
