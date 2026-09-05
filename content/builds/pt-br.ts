@@ -10281,4 +10281,340 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "fire-claws-druid": {
+    summary:
+      "O único ataque corpo a corpo da classe que entrega dois tipos de dano ao mesmo tempo, movido por quarenta pontos numa árvore elemental de onde ele nunca conjura.",
+    playstyle:
+      "Você se buffa, vira lobo, e bate nas coisas. Existe um ataque só e ele faz duas coisas ao mesmo tempo: o dano da arma acerta por inteiro e um bloco grande de fogo acerta por cima, então a mesma pancada que mata devagar um imune a fogo mata rápido um imune a físico. A build inteira gira em torno do número de golpes — cada acerto entrega o bloco de fogo, sendo a sua arma boa ou não, então velocidade de ataque vale mais que dano por golpe, e uma arma rápida e barata vence uma lenta e cara. Contra os grupos que o Hell realmente coloca na sua frente, o padrão é sem glamour: entrar andando, segurar o ataque, e deixar o fogo fazer o trabalho que a sua arma não faz.",
+    strengths: [
+      "Dois tipos de dano num ataque só — um imune a fogo e um imune a físico são resolvidos pelo mesmo botão",
+      "O fogo é um bloco fixo por golpe, então ele não liga se a sua arma é boa",
+      "Funciona em qualquer uma das formas, o que nenhum outro ataque de Druid faz",
+      "22% por ponto duro em cada uma de duas sinergias — o segundo maior par da classe",
+      "Os próprios pré-requisitos dele dão o Hunger por um único ponto a mais, o que nenhuma outra build consegue",
+    ],
+    weaknesses: [
+      "Fogo é o elemento mais resistido do Hell, e a metade maior desta build é o fogo",
+      "O plano de pontos mais apertado das sete builds de Druid — os pré-requisitos passam pelas *duas* formas",
+      "+skills sobe o ataque mas não as sinergias, então equipamento ajuda esta build menos do que ajuda os outros Druids",
+      "Não existe breakpoint publicado de velocidade de ataque para nenhuma das formas animais, então o equipamento não pode ser planejado até o quadro",
+      "Quarenta pontos ficam em skills que você nunca conjura, o que é um custo real em como o personagem parece durante a evolução",
+    ],
+    flexPoints: [
+      "**Um ponto sobra no nível 99, e isso não é erro de arredondamento — é o plano mais apertado das sete builds de Druid.** O Fire Claws exige Feral Rage *e* Maul, então os pré-requisitos dele passam pela cadeia do lobo e pela do urso ao mesmo tempo, e quatro pontos já se foram antes de a build começar.",
+      "O ponto que sobra vai para o **Heart of Wolverine**, que não custa nada a mais porque o Oak Sage já está no chão. O attack rating dele importa mais que o dano aprimorado aqui, já que dano aprimorado não toca no fogo.",
+      "**A variante Werebear** é legítima e são outros vinte pontos: maximize o Werebear no lugar do Werewolf, e aceite que os +340% da forma multiplicam a sua arma e não o seu fogo. Você ganha o ataque que não pode ser interrompido e muita defesa, e perde velocidade de golpe — que é justamente aquilo com que o fogo cresce.",
+      "**A variante Armageddon** — às vezes chamada de Werewolf Armageddon — é real e é cara. O Armageddon pode ser conjurado em forma humana e continua rodando depois que você se transforma, e esta build já maximizou duas das quatro sinergias dele. Chegar lá custa Fissure, Volcano e vinte pontos no próprio Armageddon, que têm de sair do Werewolf ou da Lycanthropy. É um híbrido, não um acréscimo de graça.",
+    ],
+    statPlan: {
+      strength: "O suficiente para o seu equipamento. Prefira uma arma leve e rápida a uma pesada — o fogo não liga para o que você está segurando.",
+      dexterity: "O suficiente para a arma.",
+      vitality: "Todo o resto.",
+      energy: "Nenhum. O Fire Claws custa quatro de mana.",
+      notes: [
+        "**Este é o único Druid corpo a corpo em que uma arma barata é uma escolha defensável**, porque cerca de metade do dano é um bloco fixo que a skill fornece. Uma base rápida de quatro soquetes que você consegue pagar vence uma elite lenta que você não consegue.",
+        "Attack rating ainda limita o ataque — o Fire Claws rola attack rating, como toda skill corpo a corpo da árvore exceto o Shock Wave — então o fogo não sai numa pancada que errou.",
+        "Vida é comprada do mesmo jeito que em todo shapeshifter: Vitality, multiplicada pelos +115% da Lycanthropy.",
+        "Resistências importam mais que o normal porque você fica em alcance corpo a corpo de coisas que estão pegando fogo. Resistência a fogo em particular vale passar do teto nas áreas em que esta build quer farmar.",
+      ],
+    },
+    breakpointWhy: {},
+    breakpointNotes:
+      "**Vazia, como nos outros Druids de transformação, e aqui custa mais que na maioria.** Velocidade de ataque é o multiplicador de dano desta build de um jeito muito direto — o bloco de fogo sai uma vez por golpe, então uma pancada que você não deu é fogo que você não causou — e mesmo assim não existe tabela de velocidade de ataque em forma animal num nível de fonte que este projeto aceite. A Blizzard nunca publicou uma; o patch 2.4 subiu o teto de velocidade de ataque das formas de +75% para +150% e passou as formas para o cálculo da forma humana, e esses dois fatos são citáveis onde uma tabela de quadros não é. Então: compre Increased Attack Speed sem parar, e trate qualquer página que lhe dê um limiar de forma animal como citando uma fonte que esta aqui não conseguiu verificar.",
+    skillNotes: {
+      "fire-claws":
+        "464–499 de fogo com vinte pontos duros, somados ao dano cheio da arma em vez de convertidos dele. As duas sinergias dele são de 22% por ponto — o segundo maior par da classe, atrás dos 23% do Firestorm.",
+      firestorm:
+        "22% por ponto duro, e nunca mais conjurado depois do nível 6. É uma skill de nível 1, então esses pontos estão disponíveis muito antes do ataque que eles alimentam.",
+      "molten-boulder":
+        "Os outros 22%. Juntos, o par são +880% com vinte pontos em cada, que é a maior parte do que o fogo desta build de fato é.",
+      werewolf:
+        "**Velocidade de ataque é o multiplicador das duas metades do dano**, porque o bloco de fogo sai uma vez por golpe. O +dano do Werebear é dano aprimorado e multiplica só a metade da arma — que é o argumento a favor do lobo especificamente nesta build.",
+      lycanthropy: "+115% de vida, e a duração de forma que impede o personagem de ser um trabalho chato de jogar.",
+      "feral-rage":
+        "Exigido pelo Fire Claws, junto com o Maul. Esta build é a única que precisa pagar pré-requisitos nas duas formas.",
+      werebear:
+        "Exigido pelo Maul. Um ponto numa forma em que você talvez nunca entre — a menos que pegue a variante do urso, e aí é para onde vinte deles vão.",
+      maul: "Exigido pelo Fire Claws.",
+      hunger:
+        "**Um ponto, e só nesta build.** O Fire Claws é o pré-requisito dele e já está maximizado, então o Hunger custa um ponto único aqui onde custa três ou quatro em qualquer outro lugar. Ele rouba vida e mana a 50% subindo em direção a 200%, com 75% menos dano — um botão de emergência, não um plano de sustento.",
+      "oak-sage": "+30% de vida para você, para o mercenário e para o urso.",
+      raven: "Exigido pelos lobos.",
+      "summon-grizzly":
+        "Um urso, e ele provoca. Numa build cujo dano precisa de tempo em alcance corpo a corpo, a provocação é o que compra esse tempo.",
+    },
+    immunityPlan:
+      "**Dois tipos de dano, mas não dois tipos iguais — e essa assimetria é o plano inteiro.** O Fire Claws entrega o dano cheio da arma *e* o fogo dele mesmo, então um imune a fogo ainda leva o físico da arma e um imune a físico ainda leva o fogo. A diferença em relação à versão que o Wind Druid faz do mesmo truque é que as metades não têm o mesmo tamanho: o fogo são vinte pontos com duas sinergias de 22% maximizadas atrás dele, e o físico é qualquer arma que você esteja segurando. Um imune a fogo é, portanto, uma lentidão de verdade e não uma irrelevância, e o Hell distribui imunidade a fogo mais generosamente que qualquer outra. Três coisas respondem a isso e elas não são intercambiáveis. O **Conviction**, de um Infinity no mercenário, é uma aura: cortada a um quinto contra um alvo que ainda está imune, e ainda assim quebra a imunidade quando um quinto basta. O **Flame Rift**, o Sunder Charm de fogo, quebra de vez, e só se pode carregar um Sunder Charm por vez. Um **rainbow facet de fogo** não faz nem uma coisa nem outra — uma linha de −% to Enemy Resistance é aplicada depois da verificação de imunidade, e essa etapa é pulada enquanto a imunidade está de pé, então contra um imune a fogo um facet está ausente, não fraco. Depois que o Conviction ou o charm tiver quebrado, cada facet que você tem incide sobre o resultado com valor cheio, que é exatamente por que vale soquetá-los.",
+    mercenaryNotes:
+      "**Um Act 2 Desert Mercenary, e no topo este é o item mais importante da página: o Infinity.** A aura Conviction dele reduz resistência a fogo, frio e raio, que é a única aura do jogo que ajuda a metade maior desta build — e, ao contrário de um facet, uma aura *pode* quebrar uma imunidade. Enquanto o Infinity não existir, pegue **Might** no Nightmare pela metade física, e dê **Fortitude** ao mercenário para ele sobreviver o bastante para manter a aura de pé. Os dois mercenários que esta build não deve contratar são justamente os que os outros Druids corpo a corpo querem: uma rogue do Ato 1 com Faith dá Fanaticism, o que é real, mas o Conviction vale mais aqui que velocidade de ataque no momento em que os imunes a fogo aparecem; e o dano de fogo de um Iron Wolf do Ato 3 não faz nada pelo seu.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "Nada ali é imune a fogo nem a físico, a densidade é alta, e um bloco de fogo por golpe rende mais quando há muita coisa para acertar.",
+      "mausoleum-hell":
+        "Nível 85, denso e morto-vivo. Os esqueletos e zumbis daqui são a coisa mais amigável do Hell para uma build de fogo.",
+      "pindleskin-hell":
+        "Trinta segundos por corrida contra um único alvo grande que não é imune a fogo. O crushing blow das suas botas faz o resto.",
+      "travincal-hell":
+        "O Conselho é imune a fogo, e esta é a entrada que prova o desenho da build: a metade da arma mata mesmo assim, devagar. Traga o Sunder Charm e ela deixa de ser devagar.",
+      "pit-hell":
+        "Nível 85 e a melhor densidade de itens do Ato 1. As imunidades mistas daqui são exatamente para o que um ataque corpo a corpo de dois tipos de dano foi feito.",
+      "ancient-tunnels-hell":
+        "Nível 85 e sem imunes a frio — o que importa aqui só porque os Sand Maggots também não são imunes a fogo. Uma corrida confiável assim que o Conviction estiver de pé.",
+      "worldstone-keep-hell":
+        "A melhor experiência do jogo, e o lugar onde imunidade a fogo é mais comum. Pede Infinity e o Sunder Charm, os dois.",
+    },
+    levelingPath: {
+      summary:
+        "Não há respec, e isso é incomum numa build com quarenta pontos numa árvore de onde ela nunca conjura — porque ela *conjura* dali, nos primeiros dezoito níveis. Você evolui no Firestorm e no Molten Boulder, que são as duas skills que a build pronta maximiza de qualquer forma, e no nível 18 os mesmos pontos deixam de ser o seu ataque e viram as sinergias dele.",
+      respecAt: "Nenhum. O fogo que você conjura no nível 10 é o fogo com que você morde no nível 90.",
+    },
+    selfFoundNotes:
+      "A mais difícil das builds de Druid para jogar sozinho, e o motivo é estrutural e não azar. A resposta desta build à imunidade a fogo é o Infinity — quatro runas, incluindo dois Bers — e a segunda resposta é um Sunder Charm de Terror Zone. Nenhum dos dois é um alvo realista sozinho, e sem nenhum deles um imune a fogo é morto só pela sua arma. O que funciona sozinho são os dois primeiros terços: o Leaf carrega a evolução honestamente, o Passion é uma arma realista, e um pelt de +3 Shape Shifting imbuído pela Charsi é o único item que vale planejar. Além disso, espere passar ao largo de grupos que outro Druid teria matado.",
+    hardcoreNotes:
+      "Jogável, mas não é o Druid que você deve levar para o Hardcore primeiro — o urso do Maul e o Summoner são os dois mais seguros, e o dano desta build exige ficar em alcance corpo a corpo por mais tempo que qualquer um dos dois. Pegue o **Oak Sage** em vez do Heart of Wolverine, mantenha o Grizzly em campo, e passe do teto de resistência a fogo em vez de apenas alcançá-lo: você passa a luta cercado de coisas que você mesmo incendiou, e os grupos imunes a fogo do Hell normalmente também são grupos que *causam* fogo. O assassino específico é um grupo físico com Fanaticism enquanto o seu roubo de vida está magro, porque o roubo funciona só sobre a metade física do seu dano e essa metade é a menor. Carregue mais poções do que um lobo de Fury carregaria.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 18 e ao Fire Claws. Até lá você é um conjurador de Firestorm, o que está tudo bem e também é por que os pontos de sinergia chegam cedo.",
+        nextUpgrade: "Nível 18, e a troca de conjurar por morder. É a mudança de identidade mais brusca de qualquer build de Druid.",
+        notes:
+          "**Evolua como um conjurador de fogo e leve isso a sério.** O Firestorm e o Molten Boulder são maximizados pela build pronta de qualquer jeito, então cada ponto que você gasta neles antes do nível 18 é um ponto que o fim de jogo queria. Esta é a build rara em que o desvio de leveling não é desvio.",
+        picks: {
+          "weapon-0": {
+            why: "+3 em skills de fogo num cajado de duas runas que dá para comprar da Akara. **Esta é a única build de Druid em que o Leaf é genuinamente correto** — você está conjurando Firestorm para evoluir, e +3 no Firestorm no nível 19 é uma fração grande do seu dano.",
+            sockets: "Tir + Ral em qualquer cajado de 2 soquetes. Compre a base; não espere uma cair.",
+          },
+          "weapon-0-alt0": {
+            why: "Assim que o Fire Claws existir no 18, o cajado deixa de ser arma e vira estorvo. A velocidade de ataque do Steel é a substituição.",
+          },
+          "helm-0": {
+            why: "+1 em todas as skills por Ort + Sol. Num pelt de Druid ele se soma à rolagem do pelt.",
+            sockets: "Ort + Sol num pelt de Druid de 2 soquetes.",
+          },
+          "body-0": {
+            why: "Velocidade de conjuração enquanto você ainda é um conjurador, velocidade de corrida quando deixar de ser.",
+          },
+          "ring1-0": { why: "Attack rating, a partir do momento em que o Fire Claws substitui o Firestorm." },
+        },
+      },
+      nightmare: {
+        goal: "Nightmare terminado com o Fire Claws maximizado e as duas sinergias bem adiantadas.",
+        nextUpgrade:
+          "Uma resposta à imunidade a fogo, e ela é um mercenário e não um item. Leia o plano de imunidades antes do Hell.",
+        notes:
+          "**Soquete para fogo, não para resistência, assim que as resistências estiverem no teto.** Um rainbow facet de fogo num elmo ou escudo carrega tanto −% de resistência a fogo do inimigo quanto +% de dano de skill de fogo, e esta build é uma das pouquíssimas corpo a corpo que quer qualquer um dos dois.",
+        picks: {
+          "weapon-0": {
+            why: "Increased attack speed e um bônus grande de attack rating no nível 43. Velocidade de ataque é o multiplicador do bloco de fogo e attack rating é o que impede a pancada de errar — esta arma resolve os dois problemas da build de uma vez.",
+            sockets: "Dol + Ort + Eld + Lem numa arma rápida de 4 soquetes.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +2 Druid Skills e +3 em Shape Shifting Skills",
+            why: "**+3 em Shape Shifting, não +3 em Elemental.** Sinergias leem pontos duros, então uma rolagem de +3 em Elemental sobe o dano próprio do Firestorm — que você nunca conjura — e não acrescenta nada ao Fire Claws. Este é o erro mais comum no equipamento desta build.",
+            lookFor: ["+3 to Shape Shifting Skills", "+2 Druid Skills", "Faster hit recovery", "2 soquetes"],
+          },
+          "helm-0-alt0": {
+            why: "+1 em todas as skills também é +1 no Fire Claws, e está disponível agora.",
+          },
+          "body-0": {
+            why: "45% de increased attack speed e um Fade que dispara ao ser atingido. As duas metades encaixam: a velocidade é dano e o Fade é resistência no lugar em que você está parado.",
+            sockets: "Shael + Thul + Lem em qualquer armadura de 3 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "Crushing blow e open wounds no lugar da velocidade de ataque. Os dois são efeitos da metade física, então valem menos aqui do que no lobo do Fury.",
+          },
+          "gloves-0": {
+            label: "Quaisquer luvas com 20% de increased attack speed",
+            why: "Cada 20% é um aumento direto de quanto fogo você entrega por segundo.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "Resistências"],
+          },
+          "belt-0": {
+            why: "Vida roubada por golpe e redução de dano físico. Note que roubo funciona a partir da metade *física* do seu dano, então vale menos nesta build do que no lobo do Fury — planeje poções também.",
+          },
+          "boots-0": {
+            why: "Crushing blow e open wounds, que agem sobre a metade física. Deadly strike também. Este espaço é inteiramente sobre a contribuição da arma.",
+          },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": {
+            label: "Um anel raro com attack rating e resistências",
+            why: "Attack rating primeiro. Uma pancada que erra não entrega fogo nenhum.",
+            lookFor: ["+ de attack rating", "Todas as resistências", "Life stolen per hit"],
+          },
+        },
+      },
+      "early-hell": {
+        goal: "Hell iniciado. Resistências no teto, e o problema da imunidade a fogo nomeado em vez de resolvido.",
+        nextUpgrade:
+          "Infinity no mercenário. É a maior melhoria isolada que esta build tem e não é um item que você veste.",
+        picks: {
+          "weapon-0": {
+            why: "Crushing blow, open wounds e −25% na defesa do alvo. Os três ajudam a metade física; a velocidade de ataque que você abre mão em relação ao Passion é o custo, e ele é real.",
+            sockets: "Mal + Um + Gul + Fal na base de 4 soquetes mais rápida que você conseguir usar.",
+          },
+          "weapon-0-alt0": {
+            why: "Ficar com o Passion pela velocidade de ataque é uma escolha defensável nesta build de um jeito que não seria numa puramente física.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills e dois soquetes",
+            why: "Três níveis efetivos no Fire Claws, e dois soquetes para facets de fogo quando as resistências estiverem fechadas em outro lugar.",
+            lookFor: ["+3 to Shape Shifting Skills", "+2 Druid Skills", "2 soquetes"],
+            sockets:
+              "Dois rainbow facets de fogo, ou duas joias de 15% em todas as resistências enquanto as resistências ainda estiverem curtas.",
+          },
+          "body-0": {
+            why: "Crushing blow, open wounds e uma rolagem grande de dano aprimorado — todos agindo só sobre a metade da arma.",
+            sockets: "Shael + Um + Thul em qualquer armadura de 3 soquetes.",
+          },
+          "gloves-0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed e vida roubada por golpe",
+            why: "Velocidade de ataque, e roubo para a metade física se pagar.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "Todas as resistências"],
+          },
+          "belt-0": { why: "Redução de dano físico, e roubo de vida." },
+          "boots-0": { why: "Crushing blow, open wounds e deadly strike — tudo na metade física." },
+          "ring1-0": { why: "Não pode ser congelado." },
+          "ring2-0": { why: "+1 em todas as skills, o que aqui é +1 no Fire Claws." },
+          "amulet-0": {
+            why: "20% de increased attack speed e 30% de faster run/walk. Velocidade numa build cujo dano é por golpe, e mobilidade numa build que precisa alcançar as coisas.",
+          },
+          "amulet-0-alt0": {
+            label: "Um amuleto raro com +2 Druid Skills e attack rating",
+            why: "Dois níveis efetivos de Fire Claws. Melhor quando a velocidade de ataque já estiver coberta em outro lugar.",
+          },
+        },
+        charms: [
+          {
+            why: "**Sunder de fogo, e é a metade do plano de imunidade que você consegue carregar.** Ele quebra uma imunidade a fogo de vez; só se pode ter um Sunder Charm por vez, e fogo é o único que esta build escolheria.",
+          },
+          {
+            label: "Skillers de Shape Shifting com vida",
+            why: "+1 nível efetivo no Fire Claws em cada um. Um skiller da árvore elemental subiria o dano próprio do Firestorm e não acrescentaria nada aqui — a mesma armadilha do pelt.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Hell farmado, com o Conviction reduzindo resistência a fogo e um Sunder Charm cobrindo o que ele não alcança.",
+        nextUpgrade: "Infinity, se ele ainda não estiver no mercenário. Nada que você vista compete com ele.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism — velocidade de ataque, attack rating e dano aprimorado. A velocidade de ataque é a parte que mais importa, porque é a única das três que sobe o fogo.",
+            sockets: "Ber + Tir + Um + Mal + Lum numa Axe, Scepter ou Hammer de 5 soquetes.",
+          },
+          "weapon-0-alt0": {
+            why: "Muito mais barato, e a velocidade de ataque dele é a maior parte do que o Beast está dando aqui. Esta build precisa menos do Beast do que o lobo do Fury.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills e dois rainbow facets de fogo",
+            why: "Três níveis efetivos e duas doses de −% de resistência a fogo do inimigo e +% de dano de skill de fogo.",
+          },
+          "helm-0-alt0": {
+            why: "Roubo de vida e 15–20% de redução de dano físico. A resposta barata para um personagem sem escudo.",
+          },
+          "body-0": {
+            why: "+300% de dano aprimorado e uma rolagem grande de defesa — mas seja claro sobre o que está comprando: dano aprimorado multiplica a metade da arma e não faz nada com o fogo.",
+            sockets: "El + Sol + Dol + Lo em qualquer armadura de 4 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "45% de increased attack speed no lugar, que *sobe* o fogo. Especificamente nesta build, a armadura barata fica mais perto da cara do que parece.",
+          },
+          "gloves-0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed",
+            why: "Velocidade, roubo e vida.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "+ de vida"],
+          },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Três efeitos por golpe na metade física." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            why: "20% de increased attack speed e deadly strike que cresce com o nível.",
+          },
+          "amulet-0-alt0": { why: "Velocidade de ataque e de corrida, mais barato." },
+        },
+        charms: [
+          { why: "Sunder de fogo. Um charm por vez, e fogo é o certo." },
+          {
+            label: "Skillers de Shape Shifting com vida",
+            why: "Níveis efetivos no Fire Claws. Skillers de Elemental não fazem nada aqui.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Conviction rodando, resistências acima do teto, e cada soquete carregando fogo.",
+        nextUpgrade: "Rolagens melhores de facet e um pelt melhor. A build está estruturalmente pronta aqui.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism, pela velocidade de ataque acima de tudo. Se o mercenário está carregando o Infinity, ele não pode carregar também o Faith, então esta mão é de onde o Fanaticism precisa vir.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com dois rainbow facets de fogo",
+            why: "Cinco níveis efetivos no Fire Claws, e os dois únicos soquetes de facet que a maior parte desta build vai ter.",
+          },
+          "body-0": { why: "+300% de dano aprimorado na metade da arma, e a defesa." },
+          "body-0-alt0": {
+            why: "+2 skills e +65 em todas as resistências. Dois níveis efetivos de Fire Claws e um problema de resistência resolvido — um concorrente sério aqui de um jeito que não é numa build puramente física.",
+          },
+          "gloves-0": {
+            why: "Life Tap ao golpear, que devolve uma fração do dano causado — e nesta build o dano causado inclui o fogo.",
+          },
+          "gloves-0-alt0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed",
+            why: "O Dracul's não carrega velocidade de ataque, e velocidade de ataque é o multiplicador desta build. Esta é uma escolha de verdade, não uma piora.",
+          },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Crushing blow, open wounds e deadly strike, os três de uma vez." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": { why: "Velocidade de ataque, deadly strike e +1 em todas as skills." },
+        },
+        charms: [
+          { why: "Sunder de fogo, para o que o Conviction não quebrar." },
+          {
+            label: "Anni, Torch e nove skillers de Shape Shifting",
+            why: "Os +3 em skills de Druid do Torch são três níveis efetivos no Fire Claws.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders antes de se transformar, multiplicado pela Lycanthropy depois." },
+        ],
+      },
+      bis: {
+        goal: "Não sobrou nada para comprar.",
+        notes:
+          "**O teto desta build é mais baixo que o dos outros Druids corpo a corpo e o motivo não é equipamento.** Fogo é o elemento mais resistido do Hell, metade do dano dela é fogo, e as duas coisas que reduzem resistência a fogo do inimigo são uma aura de mercenário e um charm, e não algo que dê para empilhar. Passado este ponto, não sobra nada a comprar que mude isso.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism. Não existe arma que dê mais a esta build do que uma aura de velocidade de ataque.",
+          },
+          "weapon-0-alt0": {
+            why: "A aura Holy Fire dele acrescenta dano de fogo próprio e ele carrega uma rolagem grande de velocidade de ataque. Uma alternativa real quando o mercenário está fornecendo o Fanaticism.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com dois rainbow facets de fogo",
+            why: "O item mais difícil da página, e o que mais importa.",
+          },
+          "body-0": {
+            why: "+2 skills e +65 em todas as resistências. Dois níveis efetivos de Fire Claws vencem dano aprimorado que só toca metade do que você produz.",
+          },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Três efeitos por golpe." },
+          "ring1-0": { why: "Não pode ser congelado." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills, 20% de increased attack speed e duas resistências",
+            why: "Dois níveis efetivos e a velocidade.",
+          },
+          "amulet-0-alt0": { why: "Nunca está errado, e é muito mais fácil de achar." },
+        },
+        charms: [
+          { why: "Sunder de fogo." },
+          {
+            label: "Anni, Torch e nove skillers de Shape Shifting com vida",
+            why: "O inventário pronto.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders antes de se transformar." }],
+      },
+    },
+  },
 };
