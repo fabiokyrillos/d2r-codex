@@ -152,7 +152,7 @@ export const ptBR: Dictionary = {
     levelingGuide: "Guia de evolução",
     coverageTitle: "Cobertura",
     coverageBody:
-      "Sorceress, Paladin e Amazon estão totalmente documentados — skills, uma página para cada skill, jornadas completas de evolução e builds de endgame com progressão de equipamento em seis níveis. As outras cinco classes têm páginas de visão geral, e o Warlock tem atributos iniciais verificados e nada além disso. A profundidade é adicionada uma classe por vez, em vez de publicar guias rasos de todas de uma vez.",
+      "Cinco classes estão totalmente documentadas — Sorceress, Paladin, Amazon, Necromancer e Druid têm skills, uma página para cada skill, uma jornada completa de evolução e builds de endgame com progressão de equipamento em seis níveis. A Assassin tem as trinta skills dela e uma página para cada uma; as builds e a jornada de evolução dela são a próxima coisa a ser escrita, e nenhuma página aqui promete isso ainda. O Barbarian tem uma página de visão geral, e o Warlock tem atributos iniciais verificados e nada além disso. A profundidade é adicionada uma classe por vez, em vez de publicar guias rasos de todas de uma vez.",
     coverageLink: "Ver a implementação de referência →",
 
     dlcCalloutTitle: "Expansão paga necessária",

@@ -145,7 +145,7 @@ export const enUS = {
     levelingGuide: "Leveling guide",
     coverageTitle: "Coverage",
     coverageBody:
-      "The Sorceress, Paladin and Amazon are fully documented — skills, a page for every skill, complete leveling journeys and endgame builds with six-tier gear progression. The remaining five classes have overview pages, and the Warlock has verified starting attributes and nothing else. Depth is added one class at a time rather than publishing shallow guides for all of them at once.",
+      "Five classes are fully documented — the Sorceress, Paladin, Amazon, Necromancer and Druid have skills, a page for every skill, a complete leveling journey and endgame builds with six-tier gear progression. The Assassin has her thirty skills and a page for each of them; her builds and her leveling journey are the next thing written, and no page here promises them yet. The Barbarian has an overview page, and the Warlock has verified starting attributes and nothing else. Depth is added one class at a time rather than publishing shallow guides for all of them at once.",
     coverageLink: "See the reference implementation →",
 
     dlcCalloutTitle: "Paid expansion required",
