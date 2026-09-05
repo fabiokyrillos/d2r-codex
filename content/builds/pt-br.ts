@@ -8562,7 +8562,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Dano em alvo único é mediano; chefes demoram",
     ],
     flexPoints: [
-      "Pontos sobrando depois das quatro skills maximizadas vão para o **Oak Sage** — o bônus de vida do grupo continua crescendo, e o totem é o que a build de fato não tem.",
+      "**Vinte e três pontos sobram no nível 99, a maior folga entre as sete builds de Druid.** As quatro skills maximizadas e as oito de um ponto são 87 de 110, e nada na árvore de vento recebe outra sinergia. O **Oak Sage** é o primeiro destino deles — o bônus de vida do grupo continua crescendo, e o totem é o que a build de fato não tem — mas ele para no vinte, então três continuam sendo seus depois que ele encher.",
       "**Arctic Blast** é um segundo destino legítimo para eles se você gosta do Twister como botão de pânico: cada ponto ali são mais dois quadros de atordoamento.",
       "Não coloque pontos na árvore de fogo. Nada do lado do vento recebe sinergia dela, e um Fissure pela metade não mata nada no Hell.",
     ],

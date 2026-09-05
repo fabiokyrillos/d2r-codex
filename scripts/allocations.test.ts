@@ -32,6 +32,7 @@ import { MAX_HARD_POINTS, SKILL_GRAPH } from "../content/classes/skill-graph";
 import { getBuilds } from "../lib/registry";
 import {
   checkPointBudget,
+  checkStatedRemainders,
   checkStatedTotals,
   checkSynergyRoles,
   pointBudgetOf,
@@ -92,6 +93,7 @@ console.log("\nThe live sweep: every build, every class, both locales");
       ...checkSynergyRoles(builds, SKILL_GRAPH, locale),
       ...checkPointBudget(builds, SKILL_GRAPH, locale),
       ...checkStatedTotals(builds, runtimeLines, locale),
+      ...checkStatedRemainders(builds, locale),
     ];
   });
   for (const problem of problems) console.log(`       ${problem.message}`);
@@ -457,6 +459,59 @@ console.log("\nPlanted mutation: a sentence that states the wrong total");
   check(
     "a percentage that happens to end in 110 is not a total",
     stated(wind, "Conviction reaches 125 of 110% and stops there.").length === 0,
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: a flex point that names the wrong remainder");
+// ---------------------------------------------------------------------------
+{
+  const wind = by("wind-druid");
+  const withBullet = (bullet: string): Build => ({ ...wind, flexPoints: [bullet] });
+  const fires = (bullet: string) => checkStatedRemainders([withBullet(bullet)], "control").length;
+
+  check("the real remainder passes, spelled out", fires("Twenty-three points are spare.") === 0);
+  check("and in digits", fires("23 points are spare at level 99.") === 0);
+  check("and in Portuguese", fires("Vinte e três pontos sobram no nível 99.") === 0);
+
+  check("one off, spelled out, is rejected", fires("Twenty-two points are spare.") === 1);
+  check("one off in digits is rejected", fires("22 points remain.") === 1);
+  check("pt-br: one off is rejected", fires("Vinte e dois pontos sobram no nível 99.") === 1);
+  check("pt-br: a different phrasing is read too", fires("Vinte pontos estão livres.") === 1);
+
+  check(
+    "a sentence about something other than spare points is not a claim",
+    fires("Oak Sage caps at twenty and its points keep scaling.") === 0,
+  );
+  check(
+    "and neither is a sentence about charges",
+    fires("Feral Rage holds fifteen charges and they are free to refresh.") === 0,
+  );
+
+  check(
+    "the rejection names the number the plan actually leaves",
+    checkStatedRemainders([withBullet("22 points remain.")], "control")[0]?.message.includes(
+      "leaves 23",
+    ) === true,
+  );
+
+  /*
+   * The rule reporting nothing is only meaningful if it can see the sentences.
+   * Move every plan by one point and every page that states its remainder has
+   * to contradict itself — which is a floor on how many the regular expression
+   * is actually reading, not on how many exist.
+   */
+  const shifted = enBuilds.map(
+    (build): Build => ({
+      ...build,
+      skills: build.skills.map((a, i) => (i === 0 ? { ...a, points: a.points - 1 } : a)),
+    }),
+  );
+  const readable = checkStatedRemainders(shifted, "control").length;
+  check(
+    "and it reads the remainders the site already publishes, rather than none of them",
+    readable >= 7,
+    `${readable} pages state a remainder this rule can read`,
   );
 }
 

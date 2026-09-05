@@ -311,3 +311,95 @@ export const ROLES_FOR_MUTATION: readonly AllocationRole[] = [
   "prerequisite",
   "flex",
 ];
+
+// ===========================================================================
+// The remainder a page promises to account for
+// ===========================================================================
+
+/**
+ * Number words, because build pages spell small numbers out.
+ *
+ * Only the forms that appear in a sentence about spare points: units, teens,
+ * tens, and the hyphenated or "e"-joined compounds between them. A number this
+ * table cannot read is not treated as a claim, which is the safe direction —
+ * the rule's job is to catch a *wrong* stated remainder, and a remainder stated
+ * in a form nobody uses is not one.
+ */
+const NUMBER_WORDS: Record<string, number> = {
+  zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8,
+  nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15,
+  sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20, thirty: 30,
+  forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90,
+  zero_pt: 0, um: 1, uma: 1, dois: 2, duas: 2, "três": 3, quatro: 4, cinco: 5,
+  seis: 6, sete: 7, oito: 8, nove: 9, dez: 10, onze: 11, doze: 12, treze: 13,
+  catorze: 14, quatorze: 14, quinze: 15, dezesseis: 16, dezessete: 17, dezoito: 18,
+  dezenove: 19, vinte: 20, trinta: 30, quarenta: 40, cinquenta: 50, sessenta: 60,
+  setenta: 70, oitenta: 80, noventa: 90,
+};
+
+/** `forty-one`, `vinte e dois`, `41`. Returns undefined for anything else. */
+function readNumber(raw: string): number | undefined {
+  const text = raw.trim().toLowerCase();
+  if (/^\d{1,3}$/.test(text)) return Number(text);
+
+  const parts = text.split(/\s*(?:-|\se\s)\s*/).filter(Boolean);
+  if (parts.length === 0 || parts.length > 2) return undefined;
+  let total = 0;
+  for (const part of parts) {
+    const value = NUMBER_WORDS[part];
+    if (value === undefined) return undefined;
+    total += value;
+  }
+  return total;
+}
+
+/**
+ * A sentence claiming how many points a plan leaves over.
+ *
+ * Anchored on "point(s)" or "pontos" followed, within a short window, by a word
+ * that means left over. Narrow on purpose: this reads flex-point bullets, which
+ * is where a page states its remainder, and a wider net over every string on
+ * the page would start reading sentences about item levels and charges.
+ */
+const STATED_REMAINDER =
+  /\b([\p{L}\d]+(?:(?:-|\s+e\s+)[\p{L}\d]+)?)\s+(?:points?|pontos?)\b[^.!?]{0,40}?\b(?:spare|free|remain|remaining|left over|sobram|sobrando|livres|restam|restantes)\b/giu;
+
+/**
+ * Every flex-point bullet that names a remainder the plan does not have.
+ *
+ * The Wind Druid is why. Six of the seven Druid pages open their flex points
+ * with the exact number of spare points — "Four points are genuinely spare",
+ * "One point is spare at level 99" — and the seventh said only "spare points
+ * after the four maxed skills", over the largest remainder of the seven at
+ * twenty-three. A reader cannot plan around "some".
+ *
+ * A page that states no number is not failed here: `checkClassPagesComplete`
+ * already requires flex points to exist, and requiring a specific sentence
+ * shape would be a rule about prose rather than about arithmetic. What this
+ * catches is a number that is wrong, which is the failure that survives review
+ * — nobody re-adds up 110 points to check a parenthetical.
+ */
+export function checkStatedRemainders(
+  builds: readonly Build[],
+  where: string,
+): AllocationProblem[] {
+  const found: AllocationProblem[] = [];
+  for (const build of builds) {
+    const { mandatory, flex, remaining } = pointBudgetOf(build);
+    for (const bullet of build.flexPoints ?? []) {
+      for (const match of bullet.matchAll(STATED_REMAINDER)) {
+        const stated = readNumber(match[1]);
+        if (stated === undefined || stated === remaining) continue;
+        found.push({
+          rule: "stated-total-disagrees",
+          message:
+            `${where}/${build.slug}: a flex point says "${match[0].trim()}", and the plan ` +
+            `leaves ${remaining} — ${MAX_HARD_POINTS} less ${mandatory} mandatory` +
+            (flex > 0 ? ` and ${flex} optional` : "") +
+            `. A reader who spends the stated number ends up somewhere else.`,
+        });
+      }
+    }
+  }
+  return found;
+}

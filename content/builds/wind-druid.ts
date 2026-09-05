@@ -120,7 +120,7 @@ export const windDruid: Build = {
     },
   ],
   flexPoints: [
-    "Spare points after the four maxed skills go to **Oak Sage** — its party life bonus keeps scaling, and the totem is what the build actually lacks.",
+    "**Twenty-three points are spare at level 99, which is the largest slack of the seven Druid builds.** The four maxed skills and the eight one-point ones are 87 of 110, and nothing in the wind tree takes another synergy. **Oak Sage** is the first home for them — its party life bonus keeps scaling and the totem is what the build actually lacks — but it caps at twenty, so three are still yours after it is full.",
     "**Arctic Blast** is a legitimate second home for them if you like Twister as a panic button: every point there is two more frames of stun.",
     "Do not put points in the fire tree. Nothing on the wind side takes a synergy from it, and a half-levelled Fissure kills nothing in Hell.",
   ],
