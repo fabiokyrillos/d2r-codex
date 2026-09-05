@@ -22,7 +22,9 @@ import type { Build } from "@/lib/types";
  *   Boulder, Volcano and Armageddon all carry a `MinDam` table, and the two
  *   damages are synergised separately. It is why a fire immune slows this build
  *   down rather than stopping it, and why Volcano's 18% physical contribution
- *   to Armageddon is the largest single synergy coefficient in the class.
+ *   to Armageddon is the largest physical-damage synergy in the class. It is not
+ *   the largest of any kind: Firestorm receives a 23% pair, and Fire Claws a
+ *   22% one. `superlative-claims.ts` derives that ranking now.
  */
 export const fireDruid: Build = {
   slug: "fire-druid",
@@ -74,7 +76,7 @@ export const fireDruid: Build = {
       points: 20,
       role: "synergy",
       order: 2,
-      note: "A 12% fire synergy to Fissure, a damage skill in its own right, and the largest single synergy in the class — 18% of Armageddon's physical per point.",
+      note: "A 12% fire synergy to Fissure, a damage skill in its own right, and — at 18% of Armageddon's physical per point — the source of the class's largest physical-damage synergy.",
     },
     {
       skill: "firestorm",

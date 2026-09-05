@@ -223,7 +223,7 @@ export const druidSkills: Skill[] = [
     mechanics: [
       "Like Molten Boulder it deals **physical and fire together**, and the two take their synergies from different skills.",
       "It is stationary. Everything about playing it well is about where you put it — in a doorway, on a boss's feet, on the spot a pack has to cross.",
-      "It is **Armageddon's physical synergy** at 18% per hard point, the largest single synergy coefficient in the class.",
+      "It is **Armageddon's physical synergy** at 18% per hard point, the largest physical-damage synergy in the class — Firestorm's 23% pair is the largest of any kind.",
     ],
     confidence: "verified",
   },
@@ -327,7 +327,7 @@ export const druidSkills: Skill[] = [
     prerequisites: ["werewolf"],
     summary: "Lengthens both forms and adds life to both. Costs nothing to use.",
     mechanics: [
-      "**+20% life at level 1 and 5% more per level**, applied in whichever form you are in. At twenty points that is +115% life, which is the largest single life bonus available to any class.",
+      "**+20% life at level 1 and 5% more per level**, applied in whichever form you are in. At twenty points that is +115% life — only a maxed Oak Sage gives this class more, at 125%, and that one is a totem that can be killed.",
       "It also adds **twenty seconds of form duration per hard point** on top of the base forty.",
       "It has no mana cost and no activation — the row carries zeroes for all three mana columns. It is a passive that the game happens to file next to the two forms.",
       "Every shapeshifting build maxes it, and it is the first thing a levelling shapeshifter puts points into after one in Werewolf.",
@@ -422,7 +422,7 @@ export const druidSkills: Skill[] = [
     ],
     mechanics: [
       "The weapon's damage lands in full and the fire lands on top of it. It is the only shapeshifting attack that gives the class an elemental answer without leaving melee.",
-      "Its two synergies are both **22% per hard point**, the highest pair on the class, and both sit in the elemental tree — so the build is a shapeshifter that spends half its points somewhere else.",
+      "Its two synergies are both **22% per hard point**, the second-highest pair on the class after Firestorm's 23%, and both sit in the elemental tree — so the build is a shapeshifter that spends half its points somewhere else.",
       "It works in **either form**, which is unusual: Fury is wolf-only and Maul and Shock Wave are bear-only.",
       "Fire is the most commonly resisted element in Hell, so the build lives or dies on -enemy fire resistance from gear rather than on more points.",
     ],

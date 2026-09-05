@@ -1130,7 +1130,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "Como Molten Boulder, ela causa **físico e fogo juntos**, e os dois recebem sinergia de skills diferentes.",
       "Ela é estacionária. Tudo em jogá-la bem é sobre onde você a coloca — numa porta, nos pés de um chefe, no ponto que um grupo precisa cruzar.",
-      "Ela é a **sinergia física do Armageddon** com 18% por ponto duro, o maior coeficiente de sinergia único da classe.",
+      "Ela é a **sinergia física do Armageddon** com 18% por ponto duro, a maior sinergia de dano físico da classe — o par de 23% do Firestorm é o maior de qualquer tipo.",
     ],
     synergyBonuses: [
       "+16% de dano físico por nível",
@@ -1197,7 +1197,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   lycanthropy: {
     summary: "Aumenta a duração das duas formas e soma vida às duas. Não custa nada para usar.",
     mechanics: [
-      "**+20% de vida no nível 1 e mais 5% por nível**, aplicado na forma em que você estiver. Em vinte pontos são +115% de vida, o maior bônus de vida único disponível a qualquer classe.",
+      "**+20% de vida no nível 1 e mais 5% por nível**, aplicado na forma em que você estiver. Em vinte pontos são +115% de vida — só um Oak Sage maximizado dá mais que isso a esta classe, com 125%, e aquele é um totem que pode morrer.",
       "Ela também soma **vinte segundos de duração de forma por ponto duro** sobre os quarenta da base.",
       "Ela não tem custo de mana nem ativação — a linha carrega zero nas três colunas de mana. É uma passiva que o jogo por acaso arquiva ao lado das duas formas.",
       "Toda build de shapeshifting a maximiza, e é a primeira coisa em que um shapeshifter subindo de nível gasta pontos depois de um em Werewolf.",
@@ -1245,7 +1245,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     summary: "Um ataque corpo a corpo que soma um bloco grande de dano de fogo ao da arma.",
     mechanics: [
       "O dano da arma acerta por inteiro e o fogo acerta por cima. É o único ataque de shapeshifting que dá à classe uma resposta elemental sem sair do corpo a corpo.",
-      "As duas sinergias dela são de **22% por ponto duro**, o par mais alto da classe, e ambas ficam na árvore elemental — então a build é um shapeshifter que gasta metade dos pontos em outro lugar.",
+      "As duas sinergias dela são de **22% por ponto duro**, o segundo par mais alto da classe, atrás dos 23% do Firestorm, e ambas ficam na árvore elemental — então a build é um shapeshifter que gasta metade dos pontos em outro lugar.",
       "Ela funciona em **qualquer uma das formas**, o que é incomum: Fury é só de lobo, e Maul e Shock Wave são só de urso.",
       "Fogo é o elemento mais resistido no Hell, então a build vive ou morre por -resistência a fogo do inimigo vinda do equipamento, e não por mais pontos.",
     ],

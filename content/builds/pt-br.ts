@@ -8956,7 +8956,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       fissure:
         "A skill de limpeza a partir do nível 12, e a sinergia de duração do Armageddon a cinquenta quadros por ponto. Nada mais disputa os primeiros vinte.",
       volcano:
-        "Uma sinergia de fogo de 12% para o Fissure, uma skill de dano por direito próprio, e a maior sinergia isolada da classe — 18% do físico do Armageddon por ponto.",
+        "Uma sinergia de fogo de 12% para o Fissure, uma skill de dano por direito próprio, e — com 18% do físico do Armageddon por ponto — a origem da maior sinergia de dano físico da classe.",
       firestorm:
         "Os outros 12% do Fissure, e 14% do fogo do Armageddon. Uma skill de nível 1 que continua relevante até o fim.",
       armageddon:

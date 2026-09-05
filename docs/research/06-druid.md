@@ -193,8 +193,13 @@ own right. Molten Boulder's contribution is 14% of Armageddon's fire and 16% of
 Volcano's physical, both of which are worth having and neither of which is worth
 having before the skill they feed.
 
-Volcano's 18% contribution to Armageddon's physical is the largest single
-synergy coefficient in the class.
+Volcano's 18% contribution to Armageddon's physical is the largest **physical**
+synergy coefficient in the class. It is not the largest of any kind, which is
+what this document and two skill pages said until an adversarial audit of the
+pass checked it: Firestorm receives **23%** from each of Molten Boulder and
+Fissure, and Fire Claws **22%** from each of Molten Boulder and Firestorm. Three
+sentences were corrected, and `scripts/superlative-claims.ts` now derives the
+ranking from the authored coefficients so the next one cannot drift.
 
 ---
 
