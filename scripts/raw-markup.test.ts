@@ -109,11 +109,23 @@ console.log("\nPoint counts are pluralised on every page");
  */
 const BAD_PLURALS = ["1 pts", "1 points", "1 pontos", "1 ponto s"];
 {
+  /*
+   * Anchored on a word boundary, because a substring match calls "41 points"
+   * the defect. Nothing rendered a count ending in 1 until a build page printed
+   * the cost of a forty-one point package, and then this failed on correct
+   * English — the failure a check has to be trusted not to produce.
+   *
+   * `\b` before the digit is what does it: it matches at the start of "1" only
+   * when what precedes is not a digit or letter.
+   */
+  const patterns = BAD_PLURALS.map(
+    (bad) => [bad, new RegExp(String.raw`\b${bad.replace(/ /g, String.raw`\s`)}`)] as const,
+  );
   const hits: Record<string, string[]> = {};
   for (const file of htmlFiles) {
     const text = visibleText(readFileSync(file, "utf8"));
-    for (const bad of BAD_PLURALS) {
-      if (text.includes(bad)) (hits[bad] ??= []).push(file.slice(root.length + 1));
+    for (const [bad, pattern] of patterns) {
+      if (pattern.test(text)) (hits[bad] ??= []).push(file.slice(root.length + 1));
     }
   }
   for (const bad of BAD_PLURALS) {
@@ -154,6 +166,19 @@ const BAD_PLURALS = ["1 pts", "1 points", "1 pontos", "1 ponto s"];
         visibleText(readFileSync(f, "utf8")).includes(want),
     );
     check(`"${want}" is rendered somewhere in ${locale}`, pages.length > 0, `${pages.length} pages`);
+  }
+
+  /*
+   * The word boundary is a loosening, and a loosening has to prove it did not
+   * loosen past the defect. Two planted strings: the bug the sweep exists for,
+   * and the correct sentence it used to fail on.
+   */
+  for (const [bad, pattern] of patterns) {
+    check(`the "${bad}" sweep still catches "${bad}" in a sentence`, pattern.test(`spends ${bad}.`));
+    check(
+      `and no longer calls "4${bad}" a defect`,
+      !pattern.test(`spends 4${bad}.`),
+    );
   }
 }
 

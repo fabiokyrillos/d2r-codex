@@ -235,7 +235,7 @@ export const ptBR: Dictionary = {
     packageChooseOne: "Escolha exatamente 1 de {total}",
     packageChooseAny: "Pegue quantos quiser de {total}",
     packageOptionOf: "Opção {index} de {total}",
-    packageCost: "{points} pontos",
+    packageCost: { one: "{points} ponto", other: "{points} pontos" },
     packageArithmetic: "{core} do núcleo + {cost} do pacote = {total} de {cap}.",
     packageFree: "Sobram {points}.",
     packageFromTo: "{from} → {to}",

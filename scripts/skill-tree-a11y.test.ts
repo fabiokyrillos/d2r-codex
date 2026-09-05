@@ -439,9 +439,12 @@ for (const [label, file, buildSlug] of pages) {
     );
   }
 
-  // The defect itself, on every page this suite reads.
+  // The defect itself, on every page this suite reads. Anchored on a word
+  // boundary: a bare substring match calls "41 points" the bug, which a build
+  // page printing a forty-one point package cost does say correctly.
   for (const bad of ["1 pts", "1 points", "1 pontos"]) {
-    check(`${label}: no "${bad}" anywhere in the HTML`, !html.includes(bad));
+    const pattern = new RegExp(String.raw`\b${bad.replace(/ /g, String.raw`\s`)}`);
+    check(`${label}: no "${bad}" anywhere in the HTML`, !pattern.test(html));
   }
 
   // A single point does not make a tile mandatory. Every role that has its own

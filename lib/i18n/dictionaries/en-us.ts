@@ -228,7 +228,7 @@ export const enUS = {
     packageChooseOne: "Choose exactly 1 of {total}",
     packageChooseAny: "Take any of {total}",
     packageOptionOf: "Option {index} of {total}",
-    packageCost: "{points} points",
+    packageCost: { one: "{points} point", other: "{points} points" },
     packageArithmetic: "{core} core + {cost} package = {total} of {cap}.",
     packageFree: "{points} left over.",
     packageFromTo: "{from} → {to}",

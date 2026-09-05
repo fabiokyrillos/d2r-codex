@@ -28,6 +28,7 @@ import { LOCALES, type Locale } from "../lib/i18n/config";
 import { getBuilds, getFarmingArea, getJourneys, getSkill, resolveRef } from "../lib/registry";
 import type { ItemRef } from "../lib/types";
 import { MAX_HARD_POINTS } from "../lib/skills";
+import { packageMath } from "../lib/builds/packages";
 
 let passed = 0;
 const failures: string[] = [];
@@ -299,6 +300,146 @@ console.log("\nThe budget assertion is co-located, and the old one was not");
         new RegExp(`\\b${MAX_HARD_POINTS}\\b`).test(withoutLegend),
     );
   }
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nOptional packages survive rendering, in both locales and with no JavaScript");
+// ---------------------------------------------------------------------------
+{
+  /*
+   * A package is arithmetic that a reader spends real points on, and every
+   * number of it is derived at render time. Which means the failure mode is not
+   * a wrong number in the data — the allocation tests cover that — it is a
+   * correct model wired to a prop that does not render, or rendered only once
+   * the client bundle arrives.
+   *
+   * So this reads the prerendered HTML with every `<script>` stripped: what is
+   * left is what a reader with no JavaScript, or a crawler, or a screen reader
+   * on a slow connection actually receives.
+   */
+  let pagesWithPackages = 0;
+  let routesChecked = 0;
+
+  for (const locale of LOCALES) {
+    const t = dictionaryFor(locale);
+    for (const build of getBuilds(locale)) {
+      const groups = build.skillPackages ?? [];
+      if (groups.length === 0) continue;
+      const file = pageFor(locale, build.classSlug, build.slug);
+      if (!existsSync(file)) {
+        check(`${locale}/${build.slug}: the page was prerendered`, false, file);
+        continue;
+      }
+      pagesWithPackages++;
+      const text = visible(readFileSync(file, "utf8"));
+      const label = `${locale}/${build.slug}`;
+
+      for (const group of groups) {
+        check(`${label}: the group is on the page`, text.includes(group.name), group.name);
+
+        // The exclusivity has to be *stated*, not implied by layout. Without it
+        // three alternatives read as three things to buy, which is the exact
+        // failure the model exists to stop.
+        const exclusivity =
+          group.choose === "one"
+            ? fmt(t.builds.packageChooseOne, { total: group.packages.length })
+            : fmt(t.builds.packageChooseAny, { total: group.packages.length });
+        check(`${label}: and says in words that it is a choice`, text.includes(exclusivity), exclusivity);
+
+        for (const pkg of group.packages) {
+          routesChecked++;
+          const math = packageMath(build, pkg);
+          const sums = fmt(t.builds.packageArithmetic, {
+            core: math.core,
+            cost: math.cost,
+            total: math.total,
+            cap: MAX_HARD_POINTS,
+          });
+
+          check(`${label}/${pkg.id}: the route is named`, text.includes(pkg.name), pkg.name);
+          // The visible total is the model's total, character for character.
+          // A page that prints its own arithmetic and a model that computes a
+          // different one is the divergence nothing else here would see.
+          check(`${label}/${pkg.id}: and prints the arithmetic the model derives`, text.includes(sums), sums);
+          check(
+            `${label}/${pkg.id}: and says how much is left, including when it is none`,
+            text.includes(fmt(t.builds.packageFree, { points: math.free })),
+            `${math.free}`,
+          );
+          // Through `longestPlainRun`, because `**bold**` renders as a
+          // `<strong>` and `visible()` turns every tag into a space — a slice
+          // taken across a marker never matches its own source.
+          check(
+            `${label}/${pkg.id}: and gives the case for it and the case against`,
+            text.includes(longestPlainRun(pkg.when)) &&
+              text.includes(longestPlainRun(pkg.tradeoff)),
+          );
+
+          // Every allocation, with the points a reader will see on their own
+          // skill screen and the cost they pay to get there.
+          for (const delta of math.deltas) {
+            const skill = getSkill(locale, delta.skill);
+            check(
+              `${label}/${pkg.id}: ${delta.skill} shows ${delta.from} to ${delta.to}`,
+              text.includes(skill?.name ?? delta.skill) &&
+                text.includes(fmt(t.builds.packageFromTo, { from: delta.from, to: delta.to })),
+            );
+          }
+        }
+      }
+
+      /*
+       * The core tree keeps its own meaning. Every package skill drawn onto it
+       * at package strength would be the "max everything" tree in a different
+       * shape, so the legend must still report the core, and only the core.
+       */
+      const core = build.skills.reduce((sum, a) => sum + a.points, 0);
+      check(
+        `${label}: the tree legend still reports the core alone`,
+        text.includes(fmt(t.skills.legendMandatory, { points: core, cap: MAX_HARD_POINTS })),
+        `${core}`,
+      );
+      const anyTotal = groups
+        .flatMap((g) => g.packages)
+        .map((p) => packageMath(build, p).total);
+      check(
+        `${label}: and never as though a package were mandatory`,
+        anyTotal.every(
+          (total) =>
+            total === core ||
+            !text.includes(fmt(t.skills.legendMandatory, { points: total, cap: MAX_HARD_POINTS })),
+        ),
+      );
+    }
+  }
+
+  check(
+    "the sweep read the pages that publish packages, in both locales",
+    pagesWithPackages === 4 && routesChecked === 12,
+    `${pagesWithPackages} pages, ${routesChecked} routes`,
+  );
+
+  /*
+   * The control. Everything above reads text with `<script>` removed, so it
+   * would pass identically on a page that shipped the packages only in the RSC
+   * payload — unless the stripping is real and the section is genuinely in the
+   * server-rendered markup.
+   */
+  const html = readFileSync(pageFor("en-us", "sorceress", "nova-sorceress"), "utf8");
+  const scriptless = html.replace(/<script[\s\S]*?<\/script>/g, " ");
+  check(
+    "and they are in the markup with every script element removed",
+    scriptless.includes("The Hydra hybrid") && scriptless.includes("Choose exactly 1 of 3"),
+  );
+  check(
+    "which is a claim about the page, because removing the scripts removed most of it",
+    scriptless.length < html.length * 0.6,
+    `${Math.round((scriptless.length / html.length) * 100)}% left`,
+  );
+  check(
+    "a package name that does not exist is reported as absent",
+    !visible(html).includes("The Zzyzx Route"),
+  );
 }
 
 // ---------------------------------------------------------------------------

@@ -4,7 +4,7 @@ import { Badge, Callout, DataTable } from "@/components/ui";
 import { RichText } from "@/components/game/rich-text";
 import { SkillSigil } from "@/components/game/skill-sigil";
 import { packageMath } from "@/lib/builds/packages";
-import { fmt } from "@/lib/i18n";
+import { fmt, formatPoints } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { allocationRoleLabels } from "@/lib/labels";
 import { getSkill } from "@/lib/registry";
@@ -97,7 +97,7 @@ async function PackageCard({
             {fmt(t.builds.packageOptionOf, { index: index + 1, total: group.packages.length })}
           </Badge>
         )}
-        <Badge tone="ember">{fmt(t.builds.packageCost, { points: math.cost })}</Badge>
+        <Badge tone="ember">{formatPoints(t.builds.packageCost, math.cost)}</Badge>
       </div>
 
       {/*
