@@ -687,6 +687,14 @@ export const enUS = {
       "Synergy identities are extracted from the game's own skill formulas, not from community consensus. Magnitudes, where given, are verified separately.",
     feedsTitle: "Skills this feeds",
     feedsBody: "Skills whose numbers this one raises. The same edges, read the other way.",
+    missileSynergiesTitle: "Synergies received by its missiles",
+    missileSynergiesBody:
+      "Hard points in these raise part of what this skill does rather than all of it — the game keeps the bonus on a missile the skill creates, not on the skill.",
+    missileSynergiesNote:
+      "One component, not the whole skill. Fist of the Heavens deals lightning and throws magic bolts; Holy Bolt raises the bolts and nothing else.",
+    missileFeedsTitle: "Missiles this feeds",
+    missileFeedsBody: "Skills whose missiles this one raises. The same edges, read the other way.",
+    missileSynergyLine: "+{magnitude}% {element} per hard point",
     synergyKindDamage: "damage",
     synergyKindArmor: "defence",
     synergyKindHealing: "healing",

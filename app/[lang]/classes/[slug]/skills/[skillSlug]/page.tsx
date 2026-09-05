@@ -22,7 +22,7 @@ import {
 import { fmt, formatPoints, isLocale } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import { pageMetadata } from "@/lib/metadata";
-import { effectLabels, skillKindLabels, synergyKinds } from "@/lib/labels";
+import { effectLabels, elementLabels, skillKindLabels, synergyKinds } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 import {
   CLASSES_WITH_SKILL_PAGES,
@@ -36,6 +36,8 @@ import {
   formatEffect,
   splitEffects,
   progressionLevels,
+  elementOfEType,
+  missileSynergyReceivers,
   synergyReceivers,
 } from "@/lib/skills";
 
@@ -108,6 +110,33 @@ export default async function SkillPage(
   const feeds = synergyReceivers(skillSlug).flatMap((rec) => {
     const to = byslug(rec.slug);
     return to ? [{ skill: to, kinds: rec.kinds }] : [];
+  });
+
+  /*
+   * The second kind of edge, kept in its own two sections rather than folded
+   * into the lists above.
+   *
+   * A missile synergy raises one damage component and not the skill's whole
+   * output — Fist of the Heavens is lightning and the bolts it throws are
+   * magic — so printing "Holy Bolt: damage" beside "Holy Shock: damage" would
+   * tell a reader the two buy the same thing. Naming the element is what makes
+   * the difference visible, and the element comes from the missile's own row.
+   */
+  const elements = elementLabels(t);
+  const missileLine = (etype: string, magnitude: number) => {
+    const element = elementOfEType(etype);
+    return fmt(t.skills.missileSynergyLine, {
+      magnitude,
+      element: element ? elements[element] : etype,
+    });
+  };
+  const receivesViaMissile = (node.missileSynergies ?? []).flatMap((s) => {
+    const from = byslug(s.from);
+    return from ? [{ skill: from, line: missileLine(s.element, s.magnitude) }] : [];
+  });
+  const feedsViaMissile = missileSynergyReceivers(skillSlug).flatMap((rec) => {
+    const to = byslug(rec.slug);
+    return to ? [{ skill: to, line: missileLine(rec.element, rec.magnitude) }] : [];
   });
   const builds = getBuildsUsingSkill(locale, skillSlug);
   const presentation = damagePresentation(skill, node);
@@ -250,6 +279,47 @@ export default async function SkillPage(
                     <SkillSigil kind={f.skill.kind} element={f.skill.element} size={14} />
                     {f.skill.name}
                     <span className="text-xs text-ink-muted">{synergyKinds(f.kinds, t)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
+
+        {receivesViaMissile.length > 0 && (
+          <Section
+            title={t.skills.missileSynergiesTitle}
+            description={t.skills.missileSynergiesBody}
+          >
+            <ul className="space-y-2">
+              {receivesViaMissile.map((syn) => (
+                <li key={syn.skill.slug} className="flex flex-wrap items-baseline gap-x-2 text-sm">
+                  <Link
+                    href={r.skill(slug, syn.skill.slug)}
+                    className="font-medium text-ember hover:text-ember-bright"
+                  >
+                    {syn.skill.name}
+                  </Link>
+                  <span className="text-ink-muted">{syn.line}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-3 text-xs text-ink-muted">{t.skills.missileSynergiesNote}</p>
+          </Section>
+        )}
+
+        {feedsViaMissile.length > 0 && (
+          <Section title={t.skills.missileFeedsTitle} description={t.skills.missileFeedsBody}>
+            <ul className="flex flex-wrap gap-2">
+              {feedsViaMissile.map((f) => (
+                <li key={f.skill.slug}>
+                  <Link
+                    href={r.skill(slug, f.skill.slug)}
+                    className="inline-flex items-center gap-1.5 rounded border border-border bg-surface-raised px-2.5 py-1 text-sm text-ink hover:border-ember"
+                  >
+                    <SkillSigil kind={f.skill.kind} element={f.skill.element} size={14} />
+                    {f.skill.name}
+                    <span className="text-xs text-ink-muted">{f.line}</span>
                   </Link>
                 </li>
               ))}

@@ -164,6 +164,69 @@ check(
 );
 
 // ===========================================================================
+console.log("\nA synergy the game keeps on a missile is published as one");
+// ===========================================================================
+/*
+ * The graph carries `missileSynergies` for three skills, and a field nothing
+ * renders is a field that quietly rots. The FoHdin's twenty points in Holy Bolt
+ * are the reason it exists: they raise the magic waves at fifteen percent each,
+ * the Fist of the Heavens skill row says nothing about it, and before this
+ * section the build page called those points a synergy while the skill page it
+ * links to listed only Holy Shock.
+ *
+ * Read off the rendered HTML rather than the graph, because a correct field
+ * wired to no JSX renders nothing and passes every data check.
+ */
+{
+  const withMissileSynergies = Object.entries(SKILL_GRAPH).filter(
+    ([, node]) => (node.missileSynergies ?? []).length > 0,
+  );
+  check(
+    "the graph carries missile synergies to publish",
+    withMissileSynergies.length >= 3,
+    `${withMissileSynergies.length} skills`,
+  );
+
+  for (const locale of LOCALES) {
+    const t = dictionaryFor(locale);
+    const foh = visible(readFileSync(pageFor(locale, "paladin", "fist-of-the-heavens"), "utf8"));
+    const bolt = visible(readFileSync(pageFor(locale, "paladin", "holy-bolt"), "utf8"));
+
+    check(
+      `${locale}: Fist of the Heavens publishes the synergy its missile carries`,
+      foh.includes(marker(t.skills.missileSynergiesTitle)),
+    );
+    check(
+      `${locale}: and names the rate and the element, which is not the skill's own`,
+      foh.includes("15%") && foh.includes(t.elements.magic),
+      foh.slice(foh.indexOf(marker(t.skills.missileSynergiesTitle)), foh.indexOf(marker(t.skills.missileSynergiesTitle)) + 160),
+    );
+    check(
+      `${locale}: and says it is one component rather than the whole skill`,
+      foh.includes(marker(t.skills.missileSynergiesNote)),
+    );
+    check(
+      `${locale}: Holy Bolt publishes the same edge read the other way`,
+      bolt.includes(marker(t.skills.missileFeedsTitle)) && bolt.includes("15%"),
+    );
+    check(
+      `${locale}: and the ordinary synergy section still says what it said`,
+      foh.includes(marker(t.skills.synergiesTitle)) && foh.includes(marker(t.skills.feedsTitle)),
+    );
+
+    /*
+     * The negative control. A skill with no missile synergy must not grow the
+     * section, or the check above is satisfied by a heading that always renders.
+     */
+    const blizzard = visible(readFileSync(pageFor(locale, "sorceress", "blizzard"), "utf8"));
+    check(
+      `${locale}: a skill whose missiles carry none does not print the section`,
+      !blizzard.includes(marker(t.skills.missileSynergiesTitle)),
+    );
+  }
+}
+
+// ===========================================================================
 console.log("\nNo overridden game identifier reaches any built artifact");
 // ===========================================================================
 /*

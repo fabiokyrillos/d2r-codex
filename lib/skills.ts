@@ -5,7 +5,7 @@ import {
   type SkillGraphNode,
 } from "@/content/classes/skill-graph";
 import { formatPoints, type Plural } from "@/lib/i18n";
-import type { AllocationRole, ClassSlug, Skill, SkillAllocation, Slug } from "@/lib/types";
+import type { AllocationRole, ClassSlug, Element, Skill, SkillAllocation, Slug } from "@/lib/types";
 
 /**
  * Presentation helpers shared by the skill tree, the class page and the
@@ -183,6 +183,46 @@ export function synergyReceivers(slug: Slug): { slug: Slug; kinds: readonly stri
       node.synergies
         .filter((s) => s.from === slug)
         .map((s) => ({ slug: receiver, kinds: s.kinds })),
+    )
+    .sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
+/**
+ * The game's damage-type codes, as the extraction leaves them.
+ *
+ * The graph stores `EType` verbatim — `mag`, `ltng` — because the generator's
+ * job is to move columns without editorialising them. Rendering one to a reader
+ * needs the site's own vocabulary, and this is the only place the two meet.
+ */
+const ELEMENT_BY_ETYPE: Record<string, Element> = {
+  mag: "magic",
+  fire: "fire",
+  cold: "cold",
+  ltng: "lightning",
+  pois: "poison",
+};
+
+/** The site's element for a graph `EType`, or undefined for one it does not know. */
+export function elementOfEType(etype: string): Element | undefined {
+  return ELEMENT_BY_ETYPE[etype];
+}
+
+/**
+ * Skills whose *missiles* this one raises through hard points.
+ *
+ * The mirror of `missileSynergies`, which is stored on the receiver. Holy Bolt
+ * has no synergies of its own to give on its skill row and still feeds Fist of
+ * the Heavens' magic waves at fifteen percent a point, so without this a reader
+ * on the Holy Bolt page is told the twenty points buy nothing.
+ */
+export function missileSynergyReceivers(
+  slug: Slug,
+): { slug: Slug; element: string; magnitude: number }[] {
+  return Object.entries(SKILL_GRAPH)
+    .flatMap(([receiver, node]) =>
+      (node.missileSynergies ?? [])
+        .filter((s) => s.from === slug)
+        .map((s) => ({ slug: receiver as Slug, element: s.element, magnitude: s.magnitude })),
     )
     .sort((a, b) => a.slug.localeCompare(b.slug));
 }

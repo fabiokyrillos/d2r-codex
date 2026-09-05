@@ -681,6 +681,15 @@ export const ptBR: Dictionary = {
       "A identidade das sinergias é extraída das próprias fórmulas de skill do jogo, não de consenso da comunidade. As magnitudes, quando informadas, são verificadas à parte.",
     feedsTitle: "Skills que esta alimenta",
     feedsBody: "Skills cujos números esta aumenta. As mesmas arestas, lidas na outra direção.",
+    missileSynergiesTitle: "Sinergias recebidas pelos projéteis dela",
+    missileSynergiesBody:
+      "Pontos duros nestas aumentam parte do que esta skill faz, e não tudo — o jogo guarda o bônus num projétil que a skill cria, não na skill.",
+    missileSynergiesNote:
+      "Um componente, não a skill inteira. O Fist of the Heavens causa dano de raio e lança bolts mágicos; o Holy Bolt aumenta os bolts e mais nada.",
+    missileFeedsTitle: "Projéteis que esta alimenta",
+    missileFeedsBody:
+      "Skills cujos projéteis esta aumenta. As mesmas arestas, lidas na outra direção.",
+    missileSynergyLine: "+{magnitude}% de {element} por ponto duro",
     synergyKindDamage: "dano",
     synergyKindArmor: "defesa",
     synergyKindHealing: "cura",
