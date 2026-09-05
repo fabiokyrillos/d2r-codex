@@ -300,27 +300,27 @@ console.log("\nPlanted mutation: a poison total restated as a rate");
 console.log("\nThe live sweep: every build, both locales");
 // ---------------------------------------------------------------------------
 /*
- * The gear-level rule is reported for every class and *failed* only for the
- * class this pass owns.
+ * Every rule here fails on every class, in both locales.
  *
- * That is the judgement `amazon-rules.ts` records in its own header: a gate
- * that forces edits to already-approved content in order to go green gets
- * argued with rather than obeyed. Nine picks on seven older pages sit above
- * their tier's stated band — Dracul's Grasp at 76 in a tier ending at 75 is one
- * level out, Melody at 39 in a starter tier ending at 30 is nine — and each is
- * an editorial call between moving the pick and widening the band, belonging to
- * whoever owns that page.
+ * It did not start that way. The gear-level rule shipped reported-not-failed
+ * outside the class its pass owned, on the judgement — recorded in
+ * `amazon-rules.ts` — that a gate forcing edits to already-approved content
+ * gets argued with rather than obeyed. Nine picks on seven older pages sat
+ * above their tier's band under that arrangement, printed on every run so the
+ * number could only go down.
  *
- * They are printed on every run rather than suppressed, so the number can only
- * go down. The immunity and poison rules are hard failures on every class,
- * because those are contradictions rather than judgements: the area's own data
- * says one thing and the build page says the opposite, and no editorial call
- * reconciles that.
+ * It went down by being fixed, and the arrangement went with it. All nine were
+ * the same defect: an item the tier cannot equip, already listed in a later
+ * tier where it can be. None of them needed an editorial call, and the
+ * softening had cost more than it bought — a reported-not-failed rule reads as
+ * a list of known problems, and a list is a thing a reader of the test output
+ * learns to scroll past.
+ *
+ * If a future pick genuinely belongs above its band, the answer is a change to
+ * this rule that says what that shape is, not a class name that exempts it.
  */
-const OWNED_BY_THIS_PASS = "druid";
 {
   const failing: string[] = [];
-  const warnings: string[] = [];
   let entries = 0;
   let picks = 0;
 
@@ -336,13 +336,11 @@ const OWNED_BY_THIS_PASS = "druid";
     );
 
     for (const build of builds) {
-      const owned = build.classSlug === OWNED_BY_THIS_PASS;
-
       for (const p of checkFarmingImmunityDenials([build], localAreaOf, locale)) {
         failing.push(p.message);
       }
       for (const p of checkGearLevelFeasibility([build], resolve, locale)) {
-        (owned ? failing : warnings).push(p.message);
+        failing.push(p.message);
       }
 
       const lines = [
@@ -363,8 +361,8 @@ const OWNED_BY_THIS_PASS = "druid";
 
   for (const message of failing) console.log(`       ${message}`);
   check(
-    `no build page contradicts an area, rates a poison total, or over-levels a Druid tier ` +
-      `(${entries} farming entries, ${picks} gear picks)`,
+    `no build page contradicts an area, rates a poison total, or lists gear above its tier ` +
+      `(${entries} farming entries, ${picks} gear picks, every class)`,
     failing.length === 0,
     `${failing.length} problems, listed above`,
   );
@@ -376,12 +374,12 @@ const OWNED_BY_THIS_PASS = "druid";
       .every((slug) => getFarmingAreas("en-us").some((a) => a.slug === slug)),
   );
 
-  const distinct = [...new Set(warnings.map((w) => w.slice(w.indexOf("/") + 1)))];
-  console.log(
-    `\n  ${distinct.length} pre-existing gear picks above their tier's band, on classes this pass` +
-      ` does not own — reported, not failed:`,
+  const classes = new Set(getBuilds("en-us").map((b) => b.classSlug));
+  check(
+    "and the sweep covers every class, with nothing reported-not-failed",
+    classes.size === 5,
+    [...classes].join(", "),
   );
-  for (const message of distinct) console.log(`    ! ${message}`);
 }
 
 // ---------------------------------------------------------------------------

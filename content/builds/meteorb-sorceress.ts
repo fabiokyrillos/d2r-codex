@@ -11,10 +11,11 @@ import type { Build } from "@/lib/types";
  * - Meteor 20, Fire Mastery 20, Frozen Orb 20, Cold Mastery 20 = **80 points**
  * - Fire prerequisites (Fire Bolt, Fire Ball) = 2
  * - Cold prerequisites (Ice Bolt, Ice Blast, Glacial Spike, Blizzard) = 4
- * - Teleport, Warmth, Static Field and defensive utility = 6
+ * - Fire Mastery's own chain (Inferno, Blaze, Fire Wall) = 3
+ * - Teleport, Telekinesis, Warmth, Static Field, Frozen Armor, Frost Nova = 6
  *
- * That is 92 of the 110 a level 99 character has — leaving roughly 18 points
- * for synergies that a specialist spends 40 on. Both halves therefore hit for
+ * That is 95 of the 110 a level 99 character has — leaving 15 points for
+ * synergies that a specialist spends 40 on. Both halves therefore hit for
  * substantially less than the single-element build they came from, and that
  * trade is the whole page.
  *

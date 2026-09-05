@@ -46,15 +46,20 @@ export interface AmazonProblem {
 // ---------------------------------------------------------------------------
 
 /**
- * Scoped by class on purpose. This is the completeness contract for a class
- * added in a single pass, not a retroactive standard applied to pages written
- * before it — a gate that forces edits to already-approved content in order to
- * go green is a gate that will be argued with rather than obeyed.
- *
  * Everything below is something a reader needs and an author forgets on the
  * eighth page rather than the first: the gear progression's last tier, the
  * plan for the immunity the build cannot get past, and the two mode-specific
  * sections that are the difference between a guide and a build list.
+ *
+ * It was scoped by class when it was written — a completeness contract for a
+ * class added in a single pass rather than a retroactive standard, on the
+ * judgement that a gate forcing edits to already-approved content gets argued
+ * with rather than obeyed. The scoping has since been checked rather than
+ * assumed: the Paladin and Sorceress pages, written before the contract
+ * existed, satisfy every clause of it, and `check-content.ts` now runs it over
+ * all five classes. The one clause they did not all satisfy was the breakpoint
+ * table, and the fix was to say what the contract actually means rather than to
+ * exempt anyone from it — see below.
  */
 export function checkClassPagesComplete(
   builds: readonly Build[],
@@ -79,7 +84,20 @@ export function checkClassPagesComplete(
     if (!build.flexPoints || build.flexPoints.length === 0) {
       fail(build.slug, "spends fewer than 110 points and says nothing about the rest");
     }
-    if (build.breakpoints.length === 0) fail(build.slug, "publishes no breakpoint targets at all");
+    /*
+     * An empty table is a legitimate answer and a silent one is not.
+     *
+     * The four shape-shifting Druids publish nothing here because Werewolf and
+     * Werebear use their own frame tables and no wereform hit-recovery or
+     * attack-speed table exists at a source tier this project accepts.
+     * Printing the human-form numbers would be the exact mistake the
+     * breakpoints page warns about. So the contract is not "publish a table",
+     * it is "publish a table or say why there is none" — which is what
+     * `breakpointNotes` exists for, and which is checkable.
+     */
+    if (build.breakpoints.length === 0 && !build.breakpointNotes) {
+      fail(build.slug, "publishes no breakpoint targets and does not say why there are none");
+    }
     if (!build.skills.some((s) => s.skill === build.primarySkill)) {
       fail(build.slug, `is named after ${build.primarySkill}, which its plan never allocates`);
     }

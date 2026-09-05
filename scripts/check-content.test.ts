@@ -676,11 +676,21 @@ console.log("\nAmazon-pass rules, each planted against the real content");
   const TIERS = ["starter", "nightmare", "early-hell", "budget", "optimized", "bis"] as const;
 
   // -- incomplete-class-page ----------------------------------------------
-  check(
-    "every Amazon build page is complete",
-    checkClassPagesComplete(realBuilds, "amazon", TIERS).length === 0,
-    JSON.stringify(checkClassPagesComplete(realBuilds, "amazon", TIERS).map((p) => p.message)),
-  );
+  /*
+   * Every class, not the one whose pass wrote the contract. The Paladin and
+   * Sorceress pages predate it and satisfy it, which is what made widening the
+   * scope a check rather than a project.
+   */
+  const publishedClasses = [...new Set(realBuilds.map((b) => b.classSlug))];
+  for (const classSlug of publishedClasses) {
+    const found = checkClassPagesComplete(realBuilds, classSlug, TIERS);
+    check(
+      `every ${classSlug} build page is complete`,
+      found.length === 0,
+      JSON.stringify(found.map((p) => p.message)),
+    );
+  }
+  check("and that is five classes, not one", publishedClasses.length === 5);
   {
     const victim = realBuilds.find((b) => b.classSlug === "amazon");
     if (!victim) throw new Error("no Amazon build to mutate");
@@ -690,7 +700,7 @@ console.log("\nAmazon-pass rules, each planted against the real content");
       ["the hardcore notes", { ...victim, hardcoreNotes: undefined }],
       ["the self-found notes", { ...victim, selfFoundNotes: undefined }],
       ["the mercenary", { ...victim, mercenary: undefined }],
-      ["every breakpoint", { ...victim, breakpoints: [] }],
+      ["every breakpoint and the note that would explain it", { ...victim, breakpoints: [], breakpointNotes: undefined }],
       [
         "the skill it is named after",
         { ...victim, skills: victim.skills.filter((s) => s.skill !== victim.primarySkill) },
@@ -704,6 +714,28 @@ console.log("\nAmazon-pass rules, each planted against the real content");
         JSON.stringify(found),
       );
     }
+    /*
+     * An empty breakpoint table is allowed when the page says why it is empty,
+     * and only then. The shape-shifting Druids are the reason: no wereform
+     * frame table exists at a source tier this project accepts, so the honest
+     * page publishes nothing and explains it. Dropping the explanation and
+     * keeping the emptiness is the failure.
+     */
+    check(
+      "an empty breakpoint table with a note explaining it passes",
+      checkClassPagesComplete(
+        [{ ...victim, breakpoints: [], breakpointNotes: "No table exists at an acceptable tier." }],
+        "amazon",
+        TIERS,
+      ).length === 0,
+    );
+    check(
+      "the four shape-shifting Druids are exactly that shape",
+      realBuilds
+        .filter((b) => b.classSlug === "druid" && b.breakpoints.length === 0)
+        .every((b) => Boolean(b.breakpointNotes)),
+    );
+
     // Negative control: the rule is scoped, so a Paladin page cannot trip it.
     check(
       "the rule is scoped by class and ignores other classes entirely",

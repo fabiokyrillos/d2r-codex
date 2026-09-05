@@ -110,7 +110,7 @@ export const frostNovaSorceress: Build = {
 
   ],
   flexPoints: [
-    "**Twenty-two points are free.** Frost Nova, Cold Mastery, Blizzard and Frozen Orb are eighty; the eight one-point skills are eight; a level 99 character has 110. Frost Nova has two synergies and both are already maxed, so **nothing left in the cold tree raises the ring** — the twenty-two buy utility or survival instead.",
+    "**Twenty-two points are free.** Frost Nova, Cold Mastery, Blizzard and Frozen Orb are eighty and the eight one-point skills are eight, which is 88 of 110. Frost Nova has two synergies and both are already maxed, so **nothing left in the cold tree raises the ring** — the twenty-two buy utility or survival instead.",
     "**Glacial Spike, up to 20 of the 22.** Not a synergy for the ring, but its freeze runs 50 frames at one point and three more per level, and your Blizzard points lengthen it further. This is where more crowd control comes from once the ring is not enough.",
     "**Static Field, up to 20 of the 22.** Its radius grows with every point, and on a build that already stands in the middle, radius is the whole cost of using it.",
     "**Below level 99 the order matters more than the total.** Frost Nova and Cold Mastery first, then Blizzard, then Frozen Orb. Each of the last two is +200% and neither does much half-finished, so complete one before starting the other.",

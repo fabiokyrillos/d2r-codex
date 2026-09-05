@@ -807,7 +807,15 @@ console.log("\nAmazon pass rules:");
     }),
   );
   const found = [
-    ...checkClassPagesComplete(getBuilds(SOURCE), "amazon", tierOrder),
+    /*
+     * Every class that has a published build, derived rather than listed: a
+     * hand-kept list of "the classes the contract applies to" is exactly the
+     * scoping this contract used to carry, and the reason it went unchecked for
+     * the two classes written before it existed.
+     */
+    ...[...new Set(getBuilds(SOURCE).map((b) => b.classSlug))].flatMap((classSlug) =>
+      checkClassPagesComplete(getBuilds(SOURCE), classSlug, tierOrder),
+    ),
     ...checkNoIasBreakpoints(getBuilds(SOURCE)),
     ...checkImmunityCensus(areas, EXPECTED_IMMUNITY_CENSUS),
     ...checkAliasesAreNotPages(getBuilds(SOURCE), ALIAS_ONLY_NAMES),

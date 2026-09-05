@@ -17,8 +17,10 @@ import type { Build } from "@/lib/types";
  * So a fully realised Avenger wants Vengeance 20, all three resistance skills
  * at 20, and Conviction at 20 — 100 points — plus seven for the prerequisite
  * chains: Sacrifice and Zeal to reach Vengeance, and Might, Holy Fire, Holy
- * Freeze, Thorns and Sanctuary to reach Conviction. That is 107 of the 110 a
- * level 99 character has.
+ * Freeze, Thorns and Sanctuary to reach Conviction. One more goes into
+ * Salvation, the fourth synergy: two percent a point is not worth twenty, and
+ * it is worth one. That is 108 of the 110 a level 99 character has, and the
+ * two that remain go wherever the flex points say.
  *
  * What it cannot afford is Holy Shield. The game requires Blessed Hammer and
  * Charge for it, and Charge requires Smite — a five-point detour into a tree

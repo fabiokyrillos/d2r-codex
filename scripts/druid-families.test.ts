@@ -85,22 +85,30 @@ console.log("\nA 'synergy' role is a claim, and the graph is asked to confirm it
 // ---------------------------------------------------------------------------
 {
   /*
-   * Failed on the Druid, reported elsewhere — the same call `build-claims.ts`
-   * and `amazon-rules.ts` make, and for the same reason. Two older pages label
-   * an aura and a mana-ratio reference as synergies; the graph's own header
-   * records that neither produces an edge, and correcting them is an editorial
-   * call belonging to whoever owns those pages.
+   * Failed on the Druid here, and on every class in `allocations.test.ts`.
+   *
+   * This call used to fail on the Druid and merely *report* elsewhere, because
+   * the pass that wrote the rule owned the Druid and eleven allocations on four
+   * other classes could not be confirmed. Seven of those were real defects and
+   * are fixed; the other four were correct allocations the rule could not see,
+   * and they are why `receiverSkillsOf` admits a maxed utility and a build's
+   * own primary skill, and why the graph now reads missile-borne synergies.
+   *
+   * The Druid assertion stays because this file is the Druid's, and the number
+   * it is held to is zero for everyone.
    */
-  const all = checkSynergyRoles(getBuilds("en-us"), SKILL_GRAPH, "en-us");
   const druidOnly = checkSynergyRoles(builds, SKILL_GRAPH, "en-us");
   check(
     "no Druid build calls something a synergy that the graph does not draw",
     druidOnly.length === 0,
     druidOnly.map((p) => p.message).join(" | "),
   );
-  for (const p of all.filter((x) => !druidOnly.includes(x))) console.log(`       ! ${p.message}`);
-  console.log(
-    `       (${all.length - druidOnly.length} pre-existing on classes this pass does not own)`,
+  const all = checkSynergyRoles(getBuilds("en-us"), SKILL_GRAPH, "en-us");
+  for (const p of all) console.log(`       ! ${p.message}`);
+  check(
+    "and neither does any other class, so there is nothing left to report-not-fail",
+    all.length === 0,
+    `${all.length} outside the Druid`,
   );
 
   /*
