@@ -241,6 +241,7 @@ export const ptBR: Dictionary = {
     packageFromTo: "{from} → {to}",
     packageDelta: "+{points}",
     packageColCost: "Custo",
+    packageRoleMain: "Principal",
     packageWhen: "Escolha este quando",
     packageTradeoff: "Do que você abre mão",
     packageRotation: "O que você aperta",
@@ -248,7 +249,8 @@ export const ptBR: Dictionary = {
     packageStats: "O que muda nos atributos",
     packageContent: "Para que serve",
     packageRemainder: "Pontos que ainda sobram",
-    packageTableCaption: "Pontos de skill adicionados por {name}",
+    packageTableCaption:
+      "Pontos é o total com que você termina em cada skill. Custo é o que esta rota acrescenta ao núcleo, então uma skill que o núcleo já abriu é cobrada só pela diferença.",
     colOrder: "#",
     colSkill: "Skill",
     colPoints: "Pontos",

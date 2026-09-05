@@ -234,6 +234,7 @@ export const enUS = {
     packageFromTo: "{from} → {to}",
     packageDelta: "+{points}",
     packageColCost: "Cost",
+    packageRoleMain: "Main",
     packageWhen: "Take this when",
     packageTradeoff: "What you give up",
     packageRotation: "What you press",
@@ -241,7 +242,8 @@ export const enUS = {
     packageStats: "What changes in your stats",
     packageContent: "What it is for",
     packageRemainder: "Points still spare",
-    packageTableCaption: "Skill points added by {name}",
+    packageTableCaption:
+      "Points is the total you end with in each skill. Cost is what this route adds to the core, so a skill the core already opened is charged only the difference.",
     colOrder: "#",
     colSkill: "Skill",
     colPoints: "Points",

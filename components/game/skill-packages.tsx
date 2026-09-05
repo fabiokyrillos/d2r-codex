@@ -41,7 +41,15 @@ async function PackageCard({
 }) {
   const { locale, t } = await getI18n();
   const r = routes(locale);
-  const roles = allocationRoleLabels(t);
+  /*
+   * The shared role labels, with one word replaced. `main` reads as "Core" on
+   * the build page, which is right in the one-point table and a contradiction
+   * here: the core is the sixty-nine points above, and a package row calling
+   * itself part of it is the one label on this card that could mislead. Every
+   * other role keeps the shared wording, so there is still one place a role is
+   * named and one word that differs on purpose.
+   */
+  const roles = { ...allocationRoleLabels(t), main: t.builds.packageRoleMain };
   const math = packageMath(build, pkg);
   const linkSkills = hasSkillPages(build.classSlug);
   const headingId = `package-${group.id}-${pkg.id}`;
@@ -130,7 +138,10 @@ async function PackageCard({
 
       <div className="mt-4">
         <DataTable
-          caption={fmt(t.builds.packageTableCaption, { name: pkg.name })}
+          // The caption explains the convention rather than restating the
+          // heading above it: "1 → 20, +19" is the one thing on this card a
+          // reader can misread, and the card is already named.
+          caption={t.builds.packageTableCaption}
           headers={[
             t.builds.colSkill,
             t.builds.colPoints,

@@ -159,6 +159,7 @@ export class Page {
   private pending = new Map<number, Pending>();
   private sessionId?: string;
   private loaded?: () => void;
+  private problems: string[] = [];
 
   static async launch(): Promise<Page> {
     const page = new Page();
@@ -229,6 +230,7 @@ export class Page {
     const msg = JSON.parse(raw) as {
       id?: number;
       method?: string;
+      params?: Record<string, unknown>;
       result?: Record<string, unknown>;
       error?: { message: string };
     };
@@ -241,6 +243,37 @@ export class Page {
       return;
     }
     if (msg.method === "Page.loadEventFired") this.loaded?.();
+
+    // Anything the page complained about, kept so a caller can assert on it.
+    // A hydration mismatch is a console error and nothing else: the DOM still
+    // renders, the markup still matches a text assertion, and the only place
+    // it shows up is here.
+    if (msg.method === "Runtime.exceptionThrown") {
+      const d = (msg.params?.exceptionDetails ?? {}) as { text?: string; exception?: { description?: string } };
+      this.problems.push(`exception: ${d.exception?.description ?? d.text ?? "unknown"}`);
+    }
+    if (msg.method === "Runtime.consoleAPICalled") {
+      const p = msg.params as { type?: string; args?: { value?: unknown; description?: string }[] };
+      if (p.type === "error" || p.type === "warning" || p.type === "assert") {
+        const text = (p.args ?? [])
+          .map((a) => String(a.value ?? a.description ?? ""))
+          .join(" ")
+          .trim();
+        this.problems.push(`${p.type}: ${text}`);
+      }
+    }
+  }
+
+  /**
+   * Console errors, warnings and uncaught exceptions since the last call.
+   *
+   * Draining rather than reading, so a caller can attribute what it finds to
+   * the navigation it just made instead of to everything before it.
+   */
+  drainConsole(): string[] {
+    const found = this.problems;
+    this.problems = [];
+    return found;
   }
 
   private send(method: string, params: Record<string, unknown> = {}): Promise<Record<string, unknown>> {
@@ -266,6 +299,18 @@ export class Page {
       screenWidth: width,
       screenHeight: height,
     });
+  }
+
+  /**
+   * Turns JavaScript off for the next navigation.
+   *
+   * The site's fallbacks are checked by reading `<noscript>` out of the
+   * prerendered HTML, which proves the markup exists and not that the page is
+   * usable without a bundle. Driving a real browser with scripting disabled is
+   * the only way to see the second thing, and it is one CDP call.
+   */
+  async setScriptsEnabled(enabled: boolean): Promise<void> {
+    await this.send("Emulation.setScriptExecutionDisabled", { value: !enabled });
   }
 
   /** Emulates the OS-level light/dark preference. */
