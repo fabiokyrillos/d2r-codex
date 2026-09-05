@@ -3286,13 +3286,13 @@ export const buildsPtBr: Overlay<BuildCopy> = {
               "O custo de mana do Static Field passa a ser o que você mais conjura, então um mercenário com **Insight** deixa de ser conveniência. Nada mais muda.",
             statNote: "Nenhuma mudança.",
             contentNote:
-              "Mephisto, Andariel, Countess e Pindleskin — trajetos curtos de boss. É o pior dos três no Pit e em Terror Zones, onde nada que você encontra tem vida suficiente para valer um Static Field.",
+              "Mephisto, Andariel, Countess e Pindleskin — trajetos curtos de boss. É o mais fraco dos três no Pit e em Terror Zones, onde o que te para é a quantidade de coisas se movendo e não qualquer uma delas em particular.",
           },
           "energy-shield": {
             name: "Energy Shield",
             when: "Uma segunda barra de vida em vez de mais controle de grupo, para uma Sorceress que continua morrendo para a única coisa que passou. Escolha deliberadamente ou não escolha — metade dele é pior que nada dele.",
             tradeoff:
-              "**Mana burn deixa de ser incômodo e vira morte**, e uma reserva drenada te devolve a menor vida do jogo. Você também abre mão do Frost Nova e de um Static Field maximizado, e gasta quatro pontos numa corrente de raio que nunca vai conjurar.",
+              "**Mana burn deixa de ser incômodo e vira morte**, e uma reserva drenada te devolve a menor vida do jogo. Você também abre mão do Frost Nova e de um Static Field maximizado, e três dos quatro pontos que ligam o escudo compram uma corrente de raio que você nunca vai conjurar.",
             skillNotes: {
               telekinesis:
                 "**Cada ponto duro aqui reduz o que o escudo cobra de você**, e nenhuma quantidade de equipamento com +skills faz o mesmo — o jogo lê o nível *duro* do Telekinesis para essa proporção. Este é o pacote, e é o motivo de ele não valer a pena com cinco pontos.",
@@ -3712,7 +3712,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "Congela tudo ao seu redor. Numa build que vive no centro dos grupos, este é um botão de verdade.",
       lightning:
         "Um ponto para o raro alvo único que o Static Field não termina. **Não aumente** — ele está numa tabela de conjuração diferente da Nova, então a velocidade de conjuração que o resto do seu equipamento compra não se aplica a ele.",
-      "thunder-storm": "Um raio passivo em intervalo fixo, e os pré-requisitos dele — Chain Lightning e Nova — já estão pagos. Um ponto no núcleo. **O Static Field alimenta ele**, e esta build maximiza o Static Field, então dois dos três pacotes abaixo levam ele a vinte por dezenove pontos e nenhum equipamento novo.",
+      "thunder-storm": "Um raio passivo em intervalo fixo, e os pré-requisitos dele — Chain Lightning e Nova — já estão pagos. Um ponto no núcleo. **O Static Field alimenta ele**, e esta build maximiza o Static Field, então dois dos três pacotes abaixo levam ele a vinte — dezenove pontos, em cima de vinte já gastos.",
       "chain-lightning": "**Tanto o Thunder Storm quanto o Energy Shield exigem o Chain Lightning.** Um ponto cobre os dois no núcleo — e a Nova alimenta ele, que é por que o pacote A Tempestade maximiza ele em vez de deixar aqui.",
     },
     immunityPlan:

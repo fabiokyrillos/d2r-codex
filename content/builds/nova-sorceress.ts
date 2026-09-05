@@ -121,7 +121,7 @@ export const novaSorceress: Build = {
       skill: "thunder-storm",
       points: 1,
       role: "utility",
-      note: "A passive lightning strike on a timer, and its prerequisites — Chain Lightning and Nova — are already paid. One point in the core. **Static Field feeds it**, which this build maxes, so two of the three packages below take it to twenty for nineteen points and no new gear.",
+      note: "A passive lightning strike on a timer, and its prerequisites — Chain Lightning and Nova — are already paid. One point in the core. **Static Field feeds it**, which this build maxes, so two of the three packages below take it to twenty — nineteen points, on top of twenty already spent.",
     },
     { skill: "lightning", points: 1, role: "utility", note: "One point for the rare single target Static Field cannot finish. **Do not raise it** — it is on a different cast table from Nova, so the cast rate the rest of your gear buys does not apply to it." },
     {

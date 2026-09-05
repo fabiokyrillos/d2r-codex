@@ -205,14 +205,14 @@ export const frozenOrbSorceress: Build = {
             "Static Field's mana cost is what you now cast most, so an **Insight** mercenary stops being a convenience. Nothing else changes.",
           statNote: "No change.",
           contentNote:
-            "Mephisto, Andariel, Countess and Pindleskin — short boss routes. It is the worst of the three in the Pit and in Terror Zones, where nothing you meet has a life pool worth a Static Field.",
+            "Mephisto, Andariel, Countess and Pindleskin — short boss routes. It is the weakest of the three in the Pit and in Terror Zones, where what stops you is the number of things moving rather than any one of them.",
         },
         {
           id: "energy-shield",
           name: "Energy Shield",
           when: "A second health bar instead of more crowd control, for a Sorceress who keeps dying to the one thing that got through. Take it deliberately or not at all — half of it is worse than none of it.",
           tradeoff:
-            "**Mana burn stops being an annoyance and becomes a death**, and a drained pool leaves you with the smallest life total in the game. You also give up Frost Nova and a maxed Static Field, and you spend four points on a lightning chain you will never cast.",
+            "**Mana burn stops being an annoyance and becomes a death**, and a drained pool leaves you with the smallest life total in the game. You also give up Frost Nova and a maxed Static Field, and three of the four points that turn the shield on buy a lightning chain you will never cast.",
           skills: [
             {
               skill: "telekinesis",
