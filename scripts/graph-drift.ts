@@ -33,16 +33,23 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
 /**
- * The commit the ninety pre-Necromancer nodes were published at.
+ * The commit the current hundred and fifty nodes were published at.
  *
- * `c98e3ed` — "Stop the pt-BR Avenger calling the Ancient Tunnels cold immune",
- * the tip of `main` when this pass started.
+ * `24cbd7b` — "Read the three synergies the game keeps on a missile, not on a
+ * skill". Moved from `c98e3ed` because that regeneration deliberately changed
+ * three of the ninety original node bodies: Fist of the Heavens, Meteor and
+ * Immolation Arrow each gained a `missileSynergies` entry, which the check
+ * reported and the commit message justifies. Nothing else in the file moved.
+ *
+ * Moving it is what makes the check mean something again: held to `c98e3ed` it
+ * would report those three forever, and a permanently red gate is a gate nobody
+ * reads.
  */
-const BASELINE = "c98e3ed8e0f8d9ca0fc20367e419110623040aeb";
+const BASELINE = "24cbd7bb360e37d8e4dd2b878a592d87f136d3d8";
 const FILE = "content/classes/skill-graph.ts";
 
 /** How many nodes the baseline is expected to carry, as a sanity floor. */
-const BASELINE_NODES = 90;
+const BASELINE_NODES = 150;
 
 /**
  * Node bodies, keyed by slug.
