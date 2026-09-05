@@ -11,16 +11,23 @@ import type { Build } from "@/lib/types";
  * is a level 6 skill**, but Cold Mastery — the thing that keeps its damage
  * relevant in Hell — is a level 30 skill. Cold Mastery itself requires no
  * prerequisite at all; what gates the build is character level, not a chain.
- * The points still nearly all go somewhere, because Ice Bolt, Ice Blast and
- * Glacial Spike are Frost Nova's damage synergies and Blizzard and Frozen Orb
- * are two more:
+ *
+ * The second structural fact is which skills feed it. Frost Nova's row reads
+ * `EDmgSymPerCalc = (skill('Blizzard'.blvl)+skill('Frozen Orb'.blvl))*par8`
+ * with `par8 = 10`. **Blizzard and Frozen Orb are the whole list, at 10% per
+ * hard point each.** Ice Bolt, Ice
+ * Blast and Glacial Spike feed Blizzard, Frozen Orb and each other; they give
+ * Frost Nova nothing, and this page used to max all three of them.
  *
  * - Frost Nova 20 and Cold Mastery 20 = 40
- * - Ice Bolt, Ice Blast and Glacial Spike maxed as synergies = 60
- * - Blizzard and Frozen Orb, two more synergies at one point each = 2
- * - Teleport, Warmth, Static Field and defensive utility = 6
+ * - Blizzard 20 and Frozen Orb 20, the two real synergies = 40
+ * - The chain that reaches Blizzard: Ice Bolt, Ice Blast, Glacial Spike = 3
+ * - Teleport, Telekinesis, Warmth, Static Field, Frozen Armor = 5
  *
- * That is 108 of the 110 a level 99 character has. There is no slack at all.
+ * That is 88 of the 110 a level 99 character has, and the 22 that remain are
+ * counted in the flex points. Forty hard points of synergy is **+400%** where
+ * the old plan's two points were +20%, so the correction is worth about four
+ * times the damage as well as being what the game's own tables say.
  *
  * Verified at Tier 1: Frost Nova requires level 6 and is `EType = cold`; Cold
  * Mastery requires level 30 and reduces enemy cold resistance by 20% plus 5%
@@ -41,20 +48,20 @@ export const frostNovaSorceress: Build = {
     "No aiming at all — the spell is centred on you",
     "Cold Mastery reduces enemy resistance rather than raising your damage, so the build ages well without expensive gear",
     "Very cheap. It reaches its ceiling without a single high rune, unlike the lightning Nova",
-    "Five of its six damage synergies sit in the same tree, so the levelling points and the endgame points are the same points",
+    "Its two synergies are two more cold spells, so the damage comes with a ground-placed nuke and a ranged projectile attached",
   ],
   weaknesses: [
-    "**No slack in the skill plan at all** — the finished build is 108 of your 110 points",
+    "**Both of its synergies are level 30 skills**, so the ring stays weak for twenty-four levels however you spend before then",
     "Cold immunes are a hard stop, and there is no second damage type",
     "You fight from the centre of the pack, which is where things kill you",
-    "Poor single-target damage; bosses are a Static Field problem",
+    "The ring itself has poor single-target damage — bosses are a Blizzard and Static Field problem, not a Frost Nova one",
     "Cold Mastery is level 30, so the build's damage is flat until then despite Frost Nova unlocking at 6",
   ],
   difficulty: "moderate",
   budget: "low",
   ratings: {
     clearSpeed: 4,
-    bossing: 2,
+    bossing: 3,
     survivability: 4,
     magicFind: 4,
     terrorZones: 5,
@@ -79,28 +86,22 @@ export const frostNovaSorceress: Build = {
       note: "**Reduces enemy cold resistance by 20% at level 1 and 5% per level.** It does not break true immunity, but it is why the damage still matters deep into Hell.",
     },
     {
-      skill: "ice-bolt",
+      skill: "blizzard",
       points: 20,
       role: "synergy",
       order: 3,
-      note: "A Frost Nova synergy and the first link in the chain to Cold Mastery. Doing two jobs at once, like everything on this list.",
+      note: "**One of Frost Nova's two synergies, at 10% per hard point.** Twenty points is +200% on the ring, and it is a strong ground-placed cold spell in its own right for the single targets the ring is bad at.",
     },
     {
-      skill: "ice-blast",
+      skill: "frozen-orb",
       points: 20,
       role: "synergy",
       order: 4,
-      note: "The second synergy, and the second link.",
+      note: "**The other synergy, also 10% per hard point.** Another +200%, and a travelling projectile for the packs you would rather not stand inside. Between them these two are the difference between a Frost Nova that works in Hell and one that does not.",
     },
-    {
-      skill: "glacial-spike",
-      points: 20,
-      role: "synergy",
-      order: 5,
-      note: "The third synergy, the third link, and a genuine emergency freeze in its own right.",
-    },
-    { skill: "blizzard", points: 1, role: "synergy", note: "**A Frost Nova synergy**, not a prerequisite for Cold Mastery — which requires nothing at all." },
-    { skill: "frozen-orb", points: 1, role: "synergy", note: "**The other Frost Nova synergy.** Also a serviceable ranged option for packs you would rather not stand inside." },
+    { skill: "ice-bolt", points: 1, role: "prerequisite", note: "The first link in the chain to Blizzard. One point: it feeds Blizzard and Frozen Orb rather than the ring, and their own twenty points are worth far more than its." },
+    { skill: "ice-blast", points: 1, role: "prerequisite", note: "The second link." },
+    { skill: "glacial-spike", points: 1, role: "prerequisite", note: "The third link, and a genuine emergency freeze at one point — its freeze runs 50 frames before any investment at all." },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1." },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever**, and it is how you get into the middle." },
@@ -109,8 +110,10 @@ export const frostNovaSorceress: Build = {
 
   ],
   flexPoints: [
-    "**There are no flex points, and that is the honest answer.** The finished plan is 108 of 110. If you are below level 99 — and you are — the decision is which synergy to leave unfinished, not where to spend spare points. Glacial Spike is the usual answer, because its one-point emergency freeze is most of its value.",
-    "**More Frozen Orb** is the exception worth considering. It is already a prerequisite, and a second point or two gives you a genuine ranged option for the packs you would rather not stand inside. It costs synergy damage to get it.",
+    "**Twenty-two points are free.** Frost Nova, Cold Mastery, Blizzard and Frozen Orb are eighty; the eight one-point skills are eight; a level 99 character has 110. Frost Nova has two synergies and both are already maxed, so **nothing left in the cold tree raises the ring** — the twenty-two buy utility or survival instead.",
+    "**Glacial Spike, up to 20 of the 22.** Not a synergy for the ring, but its freeze runs 50 frames at one point and three more per level, and your Blizzard points lengthen it further. This is where more crowd control comes from once the ring is not enough.",
+    "**Static Field, up to 20 of the 22.** Its radius grows with every point, and on a build that already stands in the middle, radius is the whole cost of using it.",
+    "**Below level 99 the order matters more than the total.** Frost Nova and Cold Mastery first, then Blizzard, then Frozen Orb. Each of the last two is +200% and neither does much half-finished, so complete one before starting the other.",
     "**Magic find variant:** same skill plan, gear swapped for magic find. The build clears fast enough to afford it.",
     "**Do not put points in Energy.** Warmth and an Insight mercenary cover the cost of casting continuously.",
   ],
@@ -179,7 +182,7 @@ export const frostNovaSorceress: Build = {
       ],
       nextUpgrade: "Level 30 for Cold Mastery. The build is genuinely flat until then.",
       notes:
-        "Frost Nova is available at 6 but weak, and the chain to Cold Mastery is long. Most players level with Ice Blast and Glacial Spike — both of which are synergies you were going to max anyway — and only switch to Frost Nova as the main button around 30.",
+        "Frost Nova is available at 6 but weak, and Cold Mastery is a level 30 skill. Most players level with Ice Blast and Glacial Spike and switch to Frost Nova as the main button around 30. Be clear that those are not the endgame points: neither skill feeds the ring, and the finished plan keeps one point in each.",
     },
 
     {
@@ -568,7 +571,7 @@ export const frostNovaSorceress: Build = {
 
   levelingPath: {
     summary:
-      "Awkward, and worth understanding before you commit. Frost Nova is available at **level 6** but stays weak until Cold Mastery, and Cold Mastery is a level 30 skill. It requires nothing else — the wait is character level, not a prerequisite chain — so the honest framing is that you spend twenty-four levels playing a skill that is not yet good. The saving grace is that everything you level with is a Frost Nova synergy: Ice Bolt, Ice Blast and Glacial Spike are all maxed in the finished build. Switch to Frost Nova as your main button at 30. **No respec is required.**",
+      "Awkward, and worth understanding before you commit. Frost Nova is available at **level 6** but stays weak until Cold Mastery, and Cold Mastery is a level 30 skill. It requires nothing else — the wait is character level, not a prerequisite chain — so the honest framing is that you spend twenty-four levels playing a skill that is not yet good. The awkward part is that the skills you level with are not the skills you finish with. Ice Bolt, Ice Blast and Glacial Spike carry you to 30 and then drop to one point each, because Frost Nova's synergies are Blizzard and Frozen Orb and both of those are level 30 skills themselves. Switch to Frost Nova as your main button at 30 and start Blizzard the same day. **A respec is worth taking here**, and the Den of Evil in Nightmare pays for it.",
   },
 
   confidence: "verified",

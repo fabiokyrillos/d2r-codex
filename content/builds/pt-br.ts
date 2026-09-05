@@ -3514,8 +3514,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "O Energy Shield transforma mana burn de incômodo em morte",
     ],
     flexPoints: [
+      "**Quarenta pontos estão livres, porque a Nova tem uma sinergia e ela já está maximizada.** Nova, Lightning Mastery e Static Field são sessenta; as nove skills de um ponto são nove; o Energy Shield é o único ponto opcional. Um personagem nível 99 tem 110, então quarenta são seus para colocar — e nada na árvore de raio aumenta o dano da Nova com eles. As entradas abaixo são os destinos honestos.",
       "**O Energy Shield é a decisão real da build.** A dois de mana por ponto de dano, ele converte uma reserva grande de mana numa segunda barra de vida efetiva, o que combina com um personagem parado no meio de tudo. Também significa que mana burn te mata na hora e que uma reserva esvaziada te deixa com a sua vida real, minúscula. Pegue de propósito com investimento em Telekinesis por trás, ou não pegue e compre vida. Ficar em cima do muro é o pior dos dois.",
-      "**A híbrida com Hydra.** O Maxroll publica uma variante que adiciona Hydra pelo dano de fogo que a Nova não faz. Custa os pontos que iriam para uma sinergia e te dá uma resposta contra imunes a raio que não é o Infinity. Vale antes de o Infinity existir, menos depois.",
+      "**A híbrida com Hydra.** O Maxroll publica uma variante que adiciona Hydra pelo dano de fogo que a Nova não faz. Como a Nova não tem uma segunda sinergia para abrir mão, custa apenas os pontos livres e te dá uma resposta contra imunes a raio que não é o Infinity. Vale antes de o Infinity existir, menos depois.",
       "**Variante de magic find:** mesmo plano de skills, troque charms e equipamento de dano por magic find. A velocidade de limpeza da build faz dela um dos melhores personagens de magic find mesmo com dano reduzido.",
       "**Não coloque pontos em Energy**, nem para o Energy Shield. O escudo escala com a sua reserva de mana, e equipamento fornece muito mais mana por ponto gasto que o atributo.",
     ],
@@ -3544,8 +3545,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "lightning-mastery":
         "**50% de dano no nível 1 e +12% por nível.** Um multiplicador de dano, não uma redução de resistência — ela não quebra imunidade.",
       "static-field":
-        "Sinergia da Nova além de ser a sua resposta contra bosses. Tira 25% da vida atual do alvo por conjuração, o que é o que permite a uma build péssima de alvo único conseguir matar coisas.",
-      "charged-bolt": "A outra sinergia, e o seu dano nos primeiros onze níveis.",
+        "**A única sinergia da Nova**, a 5% por ponto duro, além de ser a sua resposta contra bosses. Tira 25% da vida atual do alvo por conjuração, o que é o que permite a uma build péssima de alvo único conseguir matar coisas.",
+      "charged-bolt": "**O seu dano nos primeiros onze níveis, e um ponto depois disso.** É pré-requisito do Lightning e portanto do Chain Lightning, que é como este plano alcança o Thunder Storm e o Energy Shield. **Não** é sinergia da Nova — alimenta o Lightning e o Chain Lightning, e esta build não conjura nenhum dos dois.",
       warmth:
         "Regeneração de mana desde o nível 1, e importa mais aqui que em qualquer outra build se você pegar Energy Shield.",
       telekinesis:
@@ -3580,10 +3581,10 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     levelingPath: {
       summary:
-        "Evolui como ela mesma. Charged Bolt desde o nível 1 e Static Field desde o 6 são as duas sinergias, a Nova chega no 12, e o Teleport no 18 dá a mobilidade sobre a qual a build é construída. A Lightning Mastery no 30 é quando o dano começa a compor. **Nenhum respec é necessário** — mas tenha clareza de que a build que você está evoluindo não é a build dos níveis finais desta página, que é definida por um item e não por uma skill.",
+        "Evolui como ela mesma. O Charged Bolt desde o nível 1 te leva até a Nova no 12, o Static Field desde o 6 é a sinergia que você mantém, e o Teleport no 18 dá a mobilidade sobre a qual a build é construída. A Lightning Mastery no 30 é quando o dano começa a compor. **Nenhum respec é necessário** — mas tenha clareza de que a build que você está evoluindo não é a build dos níveis finais desta página, que é definida por um item e não por uma skill.",
     },
     selfFoundNotes:
-      "Realisticamente, não. A build pronta é um Infinity, que são duas runas Ber entre quatro, e não existe versão do endgame que funcione sem a Conviction. O que *é* self-found são os primeiros oitenta níveis: a Nova no 12 com as sinergias de Charged Bolt e Static Field é um personagem genuinamente forte e muito barato, e a híbrida com Hydra a mantém viável no Hell contra imunes a raio. Trate esta página como destino. As páginas de Frozen Orb e Fire Ball Meteor descrevem builds que chegam ao próprio teto sem uma única runa alta.",
+      "Realisticamente, não. A build pronta é um Infinity, que são duas runas Ber entre quatro, e não existe versão do endgame que funcione sem a Conviction. O que *é* self-found são os primeiros oitenta níveis: a Nova no 12 sobre um Static Field maximizado — a sua única sinergia — é um personagem genuinamente forte e muito barato, e a híbrida com Hydra a mantém viável no Hell contra imunes a raio. Trate esta página como destino. As páginas de Frozen Orb e Fire Ball Meteor descrevem builds que chegam ao próprio teto sem uma única runa alta.",
     hardcoreNotes:
       "A Sorceress mais perigosa do site, e os motivos são estruturais e não corrigíveis. Você luta do centro do grupo por desenho; empunhar o Infinity significa **nenhum escudo**, então sem bloqueio e sem resistência daquele slot; e a reserva de vida da Sorceress é a menor do jogo. Se você pegar o Energy Shield, **mana burn vira letal** em vez de irritante. No Hardcore, a recomendação honesta é colocar o Infinity no mercenário e manter um escudo Spirit — você perde o Insight e paga a mana de outro jeito, e mantém um slot defensivo. Chains of Honor em vez de Enigma, Battle Orders sempre, e 60% de Faster Hit Recovery como requisito duro.",
     gearSets: {
@@ -3591,7 +3592,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         goal: "Charged Bolt até o 12, Nova dali em diante. Barato e genuinamente eficaz.",
         nextUpgrade: "Nível 30 e a Lightning Mastery. A Nova fica estagnada até lá, e isso é esperado.",
         notes:
-          "O Charged Bolt é sinergia, então os pontos de evolução não são desperdiçados. O Static Field a partir do nível 6 é ao mesmo tempo sinergia e a sua resposta contra qualquer coisa com vida demais.",
+          "O Charged Bolt te carrega até o nível 12, e um ponto é tudo que ele vale depois disso — não é sinergia da Nova. **O Static Field é**, a 5% por ponto duro, além de ser a sua resposta contra qualquer coisa com vida demais, então é nele que os pontos de evolução devem ir.",
         picks: {
           "weapon-0": {
             why: "+2 skills e até 35% de Faster Cast Rate no nível 25.",
@@ -4571,18 +4572,20 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Nenhuma mira — a magia é centrada em você",
       "A Cold Mastery reduz a resistência do inimigo em vez de aumentar o seu dano, então a build envelhece bem sem equipamento caro",
       "Muito barata. Ela alcança o próprio teto sem uma única runa alta, diferente da Nova de raio",
-      "Cinco das seis sinergias de dano dela ficam na mesma árvore, então os pontos da evolução e os do endgame são os mesmos pontos",
+      "As duas sinergias dela são outras duas magias de frio, então o dano vem acompanhado de um nuke colocado no chão e de um projétil à distância",
     ],
     weaknesses: [
-      "**Nenhuma folga no plano de skills** — a build pronta são 108 dos seus 110 pontos",
+      "**As duas sinergias dela são skills de nível 30**, então o anel fica fraco por vinte e quatro níveis, gaste como gastar antes disso",
       "Imunes a frio são parada total, e não há segundo tipo de dano",
       "Você luta do centro do grupo, que é onde as coisas te matam",
-      "Dano de alvo único ruim; bosses são problema do Static Field",
+      "O anel em si tem dano de alvo único ruim — bosses são problema do Blizzard e do Static Field, não do Frost Nova",
       "A Cold Mastery é nível 30, então o dano da build fica estagnado até lá apesar de o Frost Nova abrir no 6",
     ],
     flexPoints: [
-      "**Não existem pontos flexíveis, e essa é a resposta honesta.** O plano pronto são 108 de 110. Se você está abaixo do nível 99 — e está — a decisão é qual sinergia deixar incompleta, não onde gastar pontos que sobram. O Glacial Spike costuma ser a resposta, porque o congelamento de emergência de um ponto é a maior parte do valor dele.",
-      "**Mais Frozen Orb** é a exceção que vale considerar. Ele já é pré-requisito, e um segundo ou terceiro ponto te dá uma opção à distância de verdade para os grupos dentro dos quais você preferiria não ficar. Custa dano de sinergia.",
+      "**Vinte e dois pontos estão livres.** Frost Nova, Cold Mastery, Blizzard e Frozen Orb são oitenta; as oito skills de um ponto são oito; um personagem nível 99 tem 110. O Frost Nova tem duas sinergias e as duas já estão maximizadas, então **não sobra nada na árvore de frio que aumente o anel** — os vinte e dois compram utilidade ou sobrevivência.",
+      "**Glacial Spike, até 20 dos 22.** Não é sinergia do anel, mas o congelamento dele dura 50 frames com um ponto e mais três por nível, e os seus pontos de Blizzard o alongam ainda mais. É daqui que vem mais controle de grupo quando o anel não basta.",
+      "**Static Field, até 20 dos 22.** O raio cresce a cada ponto, e numa build que já fica no meio, o raio é todo o custo de usá-lo.",
+      "**Abaixo do nível 99 a ordem importa mais que o total.** Frost Nova e Cold Mastery primeiro, depois Blizzard, depois Frozen Orb. Cada um dos dois últimos é +200% e nenhum rende muito pela metade, então termine um antes de começar o outro.",
       "**Variante de magic find:** mesmo plano de skills, equipamento trocado por magic find. A build limpa rápido o bastante para bancar.",
       "**Não coloque pontos em Energy.** Warmth e um mercenário com Insight cobrem o custo de conjurar continuamente.",
     ],
@@ -4609,12 +4612,12 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "cold-mastery":
         "**Reduz a resistência a frio do inimigo em 20% no nível 1 e 5% por nível.** Não quebra imunidade verdadeira, mas é por isso que o dano ainda importa bem dentro do Hell.",
       "ice-bolt":
-        "Sinergia do Frost Nova e o primeiro elo da cadeia até a Cold Mastery. Fazendo dois trabalhos ao mesmo tempo, como tudo nesta lista.",
-      "ice-blast": "A segunda sinergia, e o segundo elo.",
+        "O primeiro elo da cadeia até o Blizzard. Um ponto: ele alimenta o Blizzard e o Frozen Orb, não o anel, e os vinte pontos deles valem muito mais que os dele.",
+      "ice-blast": "O segundo elo.",
       "glacial-spike":
-        "A terceira sinergia, o terceiro elo, e um congelamento de emergência de verdade por si só.",
-      blizzard: "**Uma sinergia do Frost Nova**, não um pré-requisito da Cold Mastery — que não exige absolutamente nada.",
-      "frozen-orb": "**A outra sinergia do Frost Nova.** Também uma opção à distância aceitável para os grupos dentro dos quais você preferiria não ficar.",
+        "O terceiro elo, e um congelamento de emergência de verdade com um ponto — o congelamento dele dura 50 frames sem investimento nenhum.",
+      blizzard: "**Uma das duas sinergias do Frost Nova, a 10% por ponto duro.** Vinte pontos são +200% no anel, e ele é uma magia de frio forte por si só para os alvos únicos em que o anel é ruim.",
+      "frozen-orb": "**A outra sinergia, também a 10% por ponto duro.** Mais +200%, e um projétil que viaja para os grupos dentro dos quais você preferiria não ficar. Juntas, essas duas são a diferença entre um Frost Nova que funciona no Hell e um que não funciona.",
       warmth: "Regeneração de mana desde o nível 1.",
       teleport: "**Um ponto para sempre**, e é como você chega ao meio.",
       "static-field": "Tira 25% da vida atual do alvo — a sua única resposta real contra um boss.",
@@ -4641,7 +4644,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     levelingPath: {
       summary:
-        "Estranho, e vale entender antes de se comprometer. O Frost Nova está disponível no **nível 6** mas fica fraco até a Cold Mastery, e a Cold Mastery é uma skill de nível 30. Ela não exige mais nada — a espera é nível de personagem, não uma cadeia de pré-requisitos — então a leitura honesta é que você passa vinte e quatro níveis jogando com uma skill que ainda não é boa. A salvação é que tudo com que você evolui é sinergia do Frost Nova: Ice Bolt, Ice Blast e Glacial Spike são todas maximizadas na build pronta. Troque para o Frost Nova como botão principal no 30. **Nenhum respec é necessário.**",
+        "Estranho, e vale entender antes de se comprometer. O Frost Nova está disponível no **nível 6** mas fica fraco até a Cold Mastery, e a Cold Mastery é uma skill de nível 30. Ela não exige mais nada — a espera é nível de personagem, não uma cadeia de pré-requisitos — então a leitura honesta é que você passa vinte e quatro níveis jogando com uma skill que ainda não é boa. A parte estranha é que as skills com que você evolui não são as skills com que você termina. Ice Bolt, Ice Blast e Glacial Spike te levam até o 30 e depois caem para um ponto cada, porque as sinergias do Frost Nova são Blizzard e Frozen Orb e as duas também são skills de nível 30. Troque para o Frost Nova como botão principal no 30 e comece o Blizzard no mesmo dia. **Vale usar um respec aqui**, e o Den of Evil do Nightmare paga por ele.",
     },
     selfFoundNotes:
       "Boa, e melhor do que o tier sugere para quem joga self-found. Ela não precisa de nada caro — dois Spirits, um Vipermagi e um Shako já é um personagem funcional no Hell — e a Cold Mastery significa que ela não precisa de um Infinity para seguir relevante. A fraqueza em self-found é a mesma que a geral: imunes a frio, sem segundo tipo de dano e sem forma barata de contornar.",
@@ -4652,7 +4655,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         goal: "Frost Nova desde o nível 6, e a caminhada longa até a Cold Mastery no 30.",
         nextUpgrade: "Nível 30 pela Cold Mastery. A build fica genuinamente estagnada até lá.",
         notes:
-          "O Frost Nova está disponível no 6 mas é fraco, e a cadeia até a Cold Mastery é longa. A maioria evolui com Ice Blast e Glacial Spike — que são sinergias que você ia maximizar de qualquer jeito — e só troca para o Frost Nova como botão principal por volta do 30.",
+          "O Frost Nova está disponível no 6 mas é fraco, e a Cold Mastery é uma skill de nível 30. A maioria evolui com Ice Blast e Glacial Spike e troca para o Frost Nova como botão principal por volta do 30. Deixe claro que esses não são os pontos do endgame: nenhuma das duas alimenta o anel, e o plano pronto mantém um ponto em cada.",
         picks: {
           "weapon-0": {
             why: "+2 skills e até 35% de velocidade no nível 25.",

@@ -19,6 +19,11 @@ import type { Build } from "@/lib/types";
  *   two mana per point at base. Telekinesis improves that ratio; the extraction
  *   does not give the per-level figure, so the page states the base and stops.
  * - Static Field takes 25% of the target's current life.
+ * - **Nova has exactly one synergy.** Its row reads
+ *   `EDmgSymPerCalc = (skill('Static Field'.blvl))*par8` with `par8 = 5`, and
+ *   that is the whole list. Charged Bolt feeds Lightning and Chain Lightning,
+ *   neither of which this build casts, so twenty points there used to buy
+ *   nothing — see the flex points for where they go instead.
  *
  * Nova is **not** Lightning or Chain Lightning, so it uses the **standard**
  * Sorceress cast table (0/9/20/37/63/105/200), not the separate lightning one.
@@ -85,10 +90,9 @@ export const novaSorceress: Build = {
     },
     {
       skill: "charged-bolt",
-      points: 20,
-      role: "synergy",
-      order: 4,
-      note: "The other synergy, and your damage for the first eleven levels.",
+      points: 1,
+      role: "prerequisite",
+      note: "**Your damage for the first eleven levels, and one point after that.** It is Lightning's prerequisite and therefore Chain Lightning's, which is how this plan reaches Thunder Storm and Energy Shield. It is **not** a Nova synergy — it feeds Lightning and Chain Lightning, and this build casts neither.",
     },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1, and it matters more here than on any other build if you take Energy Shield." },
     { skill: "telekinesis", points: 1, role: "utility", note: "Teleport's prerequisite, and it improves Energy Shield's mana-to-damage ratio. Worth more than one point if you commit to the shield." },
@@ -117,8 +121,9 @@ export const novaSorceress: Build = {
 
   ],
   flexPoints: [
+    "**Forty points are free, because Nova has one synergy and it is already maxed.** Nova, Lightning Mastery and Static Field are sixty; the nine one-point skills are nine; Energy Shield is the one optional point. A level 99 character has 110, so forty are yours to place — and nothing in the lightning tree raises Nova damage with them. The entries below are the honest destinations.",
     "**Energy Shield is the build's real decision.** At two mana per point of damage it converts a large mana pool into an effective second health bar, which suits a character standing in the middle of everything. It also means mana burn kills you outright and a drained pool leaves you with your actual, tiny life total. Take it deliberately with Telekinesis investment behind it, or skip it entirely and buy life instead. Half-committing is the worst of both.",
-    "**The Hydra hybrid.** Maxroll ships a variant that adds Hydra for the fire damage Nova cannot do. It costs the points you would have put into a synergy and gives you an answer to lightning immunes that is not Infinity. Worth it before Infinity exists, less so after.",
+    "**The Hydra hybrid.** Maxroll ships a variant that adds Hydra for the fire damage Nova cannot do. Since Nova has no second synergy to give up, it costs only the spare points and gives you an answer to lightning immunes that is not Infinity. Worth it before Infinity exists, less so after.",
     "**Magic find variant:** same skill plan, swap damage charms and gear for magic find. The build's clear speed makes it one of the better magic find characters even at reduced damage.",
     "**Do not put points in Energy**, even for Energy Shield. The shield scales with your mana pool, and gear supplies far more mana per point spent than the attribute does.",
   ],
@@ -192,7 +197,7 @@ export const novaSorceress: Build = {
       ],
       nextUpgrade: "Level 30 and Lightning Mastery. Nova is flat until then and that is expected.",
       notes:
-        "Charged Bolt is a synergy, so the levelling points are not wasted. Static Field from level 6 is both a synergy and your answer to anything with too much life.",
+        "Charged Bolt carries you to level 12, and one point is all it is worth after that — it is not a Nova synergy. **Static Field is**, at 5% per hard point, as well as your answer to anything with too much life, so it is the one to pour levelling points into.",
     },
 
     {
@@ -584,11 +589,11 @@ export const novaSorceress: Build = {
     "The most dangerous Sorceress on the site, and the reasons are structural rather than fixable. You fight from the centre of the pack by design; self-wielding Infinity means **no shield at all**, so no block and no resistances from that slot; and the Sorceress life pool is the smallest in the game. If you take Energy Shield, **mana burn becomes lethal** rather than annoying. In Hardcore the honest recommendation is to put Infinity on the mercenary instead and keep a Spirit shield — you lose the Insight and pay for mana another way, and you keep a defensive slot. Chains of Honor over Enigma, Battle Orders always, and 60% Faster Hit Recovery as a hard requirement.",
 
   selfFoundNotes:
-    "Not realistically. The finished build is an Infinity, which is two Ber runes among four, and there is no version of the endgame that works without Conviction. What *is* self-found is the first eighty levels: Nova at 12 with Charged Bolt and Static Field synergies is a genuinely strong and very cheap character, and the Hydra hybrid keeps it viable in Hell against lightning immunes. Treat this page as a destination. The Frozen Orb and Fire Ball Meteor pages describe builds that reach their own ceiling without a single high rune.",
+    "Not realistically. The finished build is an Infinity, which is two Ber runes among four, and there is no version of the endgame that works without Conviction. What *is* self-found is the first eighty levels: Nova at 12 over a maxed Static Field — its one synergy — is a genuinely strong and very cheap character, and the Hydra hybrid keeps it viable in Hell against lightning immunes. Treat this page as a destination. The Frozen Orb and Fire Ball Meteor pages describe builds that reach their own ceiling without a single high rune.",
 
   levelingPath: {
     summary:
-      "Levels as itself. Charged Bolt from level 1 and Static Field from 6 are both synergies, Nova arrives at 12, and Teleport at 18 gives you the mobility the build is built on. Lightning Mastery at 30 is when the damage starts to compound. **No respec is required** — but be clear-eyed that the build you are levelling is not the build on this page's later tiers, which is defined by an item rather than a skill.",
+      "Levels as itself. Charged Bolt from level 1 gets you to Nova at 12, Static Field from 6 is the synergy you keep, and Teleport at 18 gives you the mobility the build is built on. Lightning Mastery at 30 is when the damage starts to compound. **No respec is required** — but be clear-eyed that the build you are levelling is not the build on this page's later tiers, which is defined by an item rather than a skill.",
   },
 
   confidence: "verified",
