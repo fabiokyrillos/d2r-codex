@@ -37,6 +37,67 @@ export interface SkillAllocation {
   note?: string;
 }
 
+// ---------------------------------------------------------------------------
+// Optional packages
+//
+// A build whose core is mathematically closed — every synergy it has, already
+// maxed — still has points left, and `flexPoints` could only describe them in
+// prose. Prose cannot say "these two are alternatives", cannot be added up, and
+// cannot be checked. Two Sorceress pages were publishing forty-one and forty
+// spare points against a paragraph that named four destinations worth well over
+// a hundred points between them, with nothing saying you may take one.
+//
+// So: the core plan stays in `skills` and is the thing every reader spends. A
+// package is a *complete* second half of the plan, costed, with siblings it
+// excludes. Nothing here is Sorceress-specific and nothing here knows what a
+// synergy is; it is a budget with a name.
+// ---------------------------------------------------------------------------
+
+export interface SkillPackage {
+  /** Stable within the build. Keys the locale overlay and the DOM. */
+  id: string;
+  name: string;
+  /** The case for this one over its siblings. */
+  when: string;
+  /** What taking it costs you — the sibling you are giving up. */
+  tradeoff: string;
+  /**
+   * Final hard points per skill, **including** any core allocation this raises.
+   *
+   * Final rather than additional, because that is the number a reader reads off
+   * their own skill screen. The cost is the difference from the core, computed
+   * in `lib/builds/packages.ts`, so a prerequisite the core already pays for
+   * costs this package nothing and cannot be counted twice.
+   */
+  skills: SkillAllocation[];
+  /** How the package changes the gear plan, if it does. */
+  gearNote?: string;
+  /** How it changes the attribute plan, if it does. */
+  statNote?: string;
+  /** How it changes what you actually press, if it does. */
+  rotationNote?: string;
+  /** What it is for — the content this route is chosen to run. */
+  contentNote?: string;
+  /** Where any genuinely free points go once the package is paid for. */
+  remainderNote?: string;
+}
+
+export interface SkillPackageGroup {
+  id: string;
+  name: string;
+  /**
+   * `one` — the packages are alternatives and the reader takes exactly one.
+   * `any` — they are independent and may be combined.
+   *
+   * The distinction is the whole reason this type exists, so it is required
+   * rather than defaulted: a group that does not say which it is would render
+   * as the "max everything" tree this model was written to stop.
+   */
+  choose: "one" | "any";
+  intro: string;
+  packages: SkillPackage[];
+}
+
 export interface StatPlan {
   strength: string;
   dexterity: string;
@@ -99,6 +160,13 @@ export interface Build extends Entity {
   ratings: BuildRatings;
 
   skills: SkillAllocation[];
+  /**
+   * Closed, costed alternatives for the points the core does not spend.
+   *
+   * Where a build has them, they are the plan — `flexPoints` beside them is for
+   * what is genuinely not a point-spending decision.
+   */
+  skillPackages?: SkillPackageGroup[];
   /** What to do with points beyond the core allocation. */
   flexPoints?: string[];
   stats: StatPlan;

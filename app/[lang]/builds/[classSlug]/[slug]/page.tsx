@@ -15,6 +15,7 @@ import {
   Section,
 } from "@/components/ui";
 import { SkillTree } from "@/components/game";
+import { SkillPackages } from "@/components/game/skill-packages";
 import { ConfidenceNote, DifficultyBadge, ElementBadge, RichText } from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
 import {
@@ -29,6 +30,7 @@ import { dictionaryFor, fmt, formatPoints, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import {
+  allocationRoleLabels,
   budgetLabels,
   playDifficultyLabels,
   progressionTiers,
@@ -36,7 +38,6 @@ import {
 } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 import { MAX_HARD_POINTS, hasSkillPages } from "@/lib/skills";
-import type { AllocationRole } from "@/lib/types";
 
 export function generateStaticParams() {
   return getBuilds("en-us").map((b) => ({ classSlug: b.classSlug, slug: b.slug }));
@@ -54,16 +55,6 @@ export async function generateMetadata(
     title: build.name,
     description: build.summary,
   });
-}
-
-function roleLabels(t: ReturnType<typeof dictionaryFor>): Record<AllocationRole, string> {
-  return {
-    main: t.builds.roleMain,
-    synergy: t.builds.roleSynergy,
-    utility: t.builds.roleUtility,
-    prerequisite: t.builds.rolePrerequisite,
-    flex: t.builds.roleFlex,
-  };
 }
 
 function priorityLabel(
@@ -91,7 +82,7 @@ export default async function BuildPage(
   const merc = build.mercenary ? getMercenary(locale, build.mercenary) : undefined;
   const tiers = progressionTiers(t);
   const ratings = ratingLabels(t);
-  const roles = roleLabels(t);
+  const roles = allocationRoleLabels(t);
   const budgets = budgetLabels(t);
   const difficulties = playDifficultyLabels(t);
 
@@ -310,6 +301,24 @@ export default async function BuildPage(
                 })}
               />
             </div>
+
+            {/*
+              Packages sit between the one-point table and the remaining-points
+              notes, because that is the order the decision is made in: the core
+              first, then the one choice that spends everything left, then the
+              things that are not a skill point at all.
+            */}
+            {build.skillPackages && build.skillPackages.length > 0 && (
+              <div>
+                <h3 className="mb-1 text-sm font-semibold text-ink">
+                  {t.builds.packages}
+                </h3>
+                <p className="mb-4 max-w-3xl text-sm leading-relaxed text-ink-muted">
+                  {t.builds.packagesDescription}
+                </p>
+                <SkillPackages build={build} />
+              </div>
+            )}
 
             {build.flexPoints && build.flexPoints.length > 0 && (
               <div>

@@ -131,6 +131,34 @@ export interface BuildCopy {
   strengths: string[];
   weaknesses: string[];
   flexPoints?: string[];
+  /**
+   * Keyed by group id, then by package id. Skill notes inside a package are
+   * keyed by skill slug, exactly as `skillNotes` is for the core.
+   *
+   * Keys rather than positions, for the same reason gear picks are: a package
+   * inserted in the middle would otherwise silently re-label its neighbours.
+   */
+  skillPackages?: Record<
+    string,
+    {
+      name?: string;
+      intro?: string;
+      packages: Record<
+        string,
+        {
+          name: string;
+          when: string;
+          tradeoff: string;
+          skillNotes?: Record<string, string>;
+          gearNote?: string;
+          statNote?: string;
+          rotationNote?: string;
+          contentNote?: string;
+          remainderNote?: string;
+        }
+      >;
+    }
+  >;
   statPlan: {
     strength: string;
     dexterity: string;

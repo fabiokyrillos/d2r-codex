@@ -22,8 +22,26 @@ import type { Build } from "@/lib/types";
  * - **Nova has exactly one synergy.** Its row reads
  *   `EDmgSymPerCalc = (skill('Static Field'.blvl))*par8` with `par8 = 5`, and
  *   that is the whole list. Charged Bolt feeds Lightning and Chain Lightning,
- *   neither of which this build casts, so twenty points there used to buy
- *   nothing — see the flex points for where they go instead.
+ *   neither of which the core casts, so twenty points there used to buy
+ *   nothing.
+ *
+ * Which left forty-one points — a third of the character — described in prose
+ * as four suggestions worth more than the budget between them. They are now
+ * three packages, costed against the graph, each closing at 110:
+ *
+ * - **The Storm** maxes Thunder Storm and Chain Lightning. Both edges are in
+ *   the graph and both are already paid for: `thunder-storm` receives from
+ *   Static Field, which this build maxes, and `chain-lightning` receives from
+ *   Nova. Its three spare points go to Charged Bolt, which feeds the Chain
+ *   Lightning it just maxed — the same twenty points that bought nothing in
+ *   the core.
+ * - **Energy Shield** buys Telekinesis, whose *hard* level sets the shield's
+ *   mana ratio. The extraction records that as a parameter rather than a
+ *   synergy edge, so it is described as a ratio and never labelled one.
+ * - **The Hydra hybrid** is the pre-Infinity answer to lightning immunity, and
+ *   it is priced honestly: Hydra's synergies are Fire Bolt and Fire Ball, this
+ *   route holds both at one point, and Fire Mastery ends at 18 because that is
+ *   what fits.
  *
  * Nova is **not** Lightning or Chain Lightning, so it uses the **standard**
  * Sorceress cast table (0/9/20/37/63/105/200), not the separate lightning one.
@@ -51,7 +69,7 @@ export const novaSorceress: Build = {
     "You fight from the centre of the pack, which is the most dangerous place to be",
     "Poor single-target damage — bosses are a Static Field problem, not a Nova one",
     "Uses the standard cast table, which is easy to get wrong after reading the Lightning page",
-    "Energy Shield turns mana burn from an annoyance into a death",
+    "Energy Shield, if you take that package, turns mana burn from an annoyance into a death",
   ],
   difficulty: "advanced",
   budget: "extreme",
@@ -92,40 +110,170 @@ export const novaSorceress: Build = {
       skill: "charged-bolt",
       points: 1,
       role: "prerequisite",
-      note: "**Your damage for the first eleven levels, and one point after that.** It is Lightning's prerequisite and therefore Chain Lightning's, which is how this plan reaches Thunder Storm and Energy Shield. It is **not** a Nova synergy — it feeds Lightning and Chain Lightning, and this build casts neither.",
+      note: "**Your damage for the first eleven levels, and one point after that.** It is Lightning's prerequisite and therefore Chain Lightning's, which is how this plan reaches Thunder Storm and Energy Shield. It is **not** a Nova synergy — it feeds Lightning and Chain Lightning, and the core casts neither. The Storm package is the one case where that changes.",
     },
     { skill: "warmth", points: 1, role: "utility", note: "Mana regeneration from level 1, and it matters more here than on any other build if you take Energy Shield." },
-    { skill: "telekinesis", points: 1, role: "utility", note: "Teleport's prerequisite, and it improves Energy Shield's mana-to-damage ratio. Worth more than one point if you commit to the shield." },
+    { skill: "telekinesis", points: 1, role: "utility", note: "Teleport's prerequisite. One point in the core; **the Energy Shield package maxes it**, because its hard level is what sets the shield's mana-to-damage ratio." },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever**, and it is how you get into the middle of the pack." },
-    {
-      skill: "energy-shield",
-      points: 1,
-      role: "flex",
-      note: "**Two mana per point of damage at base**, improved by Telekinesis. A genuine fork — read the flex points before committing.",
-    },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Free defence and a chance to freeze whatever reaches you." },
     { skill: "frost-nova", points: 1, role: "utility", note: "Chills everything around you. On a build that lives at the centre of packs, this is a real button." },
     {
       skill: "thunder-storm",
       points: 1,
       role: "utility",
-      note: "A passive lightning strike on a timer. One point — it is not a Nova synergy and Lightning Mastery does not require it.",
+      note: "A passive lightning strike on a timer, and its prerequisites — Chain Lightning and Nova — are already paid. One point in the core. **Static Field feeds it**, which this build maxes, so two of the three packages below take it to twenty for nineteen points and no new gear.",
     },
-    { skill: "lightning", points: 1, role: "utility", note: "One point for the rare single target Static Field cannot finish. Do not invest further — it is on a different cast table." },
+    { skill: "lightning", points: 1, role: "utility", note: "One point for the rare single target Static Field cannot finish. **Do not raise it** — it is on a different cast table from Nova, so the cast rate the rest of your gear buys does not apply to it." },
     {
       skill: "chain-lightning",
       points: 1,
       role: "prerequisite",
-      note: "**Thunder Storm and Energy Shield both require Chain Lightning.** One point covers both.",
+      note: "**Thunder Storm and Energy Shield both require Chain Lightning.** One point covers both in the core — and Nova feeds it, which is why the Storm package maxes it rather than leaving it here.",
     },
 
   ],
+  skillPackages: [
+    {
+      id: "spare-points",
+      name: "The second half of the plan",
+      choose: "one",
+      intro:
+        "The core above is 69 of 110 and it is **finished** — Nova has one synergy, Static Field, and it is already maxed, so no further point anywhere raises Nova damage. Forty-one are left, which is more than a third of the character. **Take exactly one of the three below.** They are alternatives and not a menu: the Storm and the Hydra hybrid both want the whole budget, and a character holding half of each has neither.",
+      packages: [
+        {
+          id: "storm",
+          name: "The Storm",
+          when: "The default. It stays inside the lightning tree, changes no gear, and buys the two things Nova is worst at — a target it cannot reach and a target it cannot burst — using synergies the core has already paid for.",
+          tradeoff:
+            "It does nothing at all about lightning immunity. If you do not own an Infinity yet, the Hydra hybrid is the package that keeps Hell playable; this is the one that makes Hell faster once you do.",
+          skills: [
+            {
+              skill: "thunder-storm",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "**Static Field feeds Thunder Storm, and this build maxes Static Field.** That is the whole argument: twenty points here arrive on top of twenty already spent, both prerequisites are already paid, and it costs no cast time at all — it strikes on its own timer while you are casting Nova.",
+            },
+            {
+              skill: "chain-lightning",
+              points: 20,
+              role: "main",
+              order: 2,
+              note: "**Nova feeds Chain Lightning**, so the core's twenty arrive with it. It is the answer to whatever is standing outside Nova's ring — a shooter on a ledge, a boss you would rather not stand next to. Note the cast table: like Lightning, it is not on Nova's.",
+            },
+            {
+              skill: "charged-bolt",
+              points: 4,
+              role: "synergy",
+              order: 3,
+              note: "The last three points, and this is the one package where they are not idle: **Charged Bolt feeds Chain Lightning**, which you have just maxed. Four is what the budget leaves, not a target.",
+            },
+          ],
+          rotationNote:
+            "Nova is still the button you hold. Chain Lightning for what is out of reach, Static Field for what has too much life, and Thunder Storm running the whole time without ever being cast.",
+          gearNote:
+            "No change. Every point is lightning damage under the same Lightning Mastery and the same −enemy lightning resistance you were already stacking.",
+          statNote: "No change. Vitality with everything after gear requirements.",
+          contentNote:
+            "The Worldstone Keep, the Throne of Destruction and Travincal — the build's own farming list, once Infinity exists.",
+        },
+        {
+          id: "energy-shield",
+          name: "Energy Shield",
+          when: "You fight from the centre of the pack and the Sorceress has the smallest life pool in the game. This package spends the budget on not dying rather than on killing, and it is the only route that changes what your gear is for.",
+          tradeoff:
+            "**Mana burn stops being an annoyance and becomes a death**, and Static Field — which costs mana — is now spending your health bar. You also give up Chain Lightning, so anything outside Nova's ring stays outside it.",
+          skills: [
+            {
+              skill: "telekinesis",
+              points: 20,
+              role: "utility",
+              order: 1,
+              note: "**The package.** Its *hard* level is what sets the shield's mana-to-damage ratio, and no amount of +skills gear moves it — which is exactly why this is worth twenty points and not five.",
+            },
+            {
+              skill: "thunder-storm",
+              points: 20,
+              role: "main",
+              order: 2,
+              note: "Fed by the Static Field you already max, and it costs no mana to keep running — which on a build whose mana is now its life is why it is here rather than Chain Lightning.",
+            },
+            {
+              skill: "energy-shield",
+              points: 1,
+              role: "main",
+              order: 3,
+              note: "**Two mana per point of damage at base**, improved by Telekinesis. One point: the extraction this site reads does not publish what a second point changes, so the plan buys the ratio, which is measurable, and not the level, which is not.",
+            },
+          ],
+          remainderNote:
+            "**Two points are genuinely left over.** Warmth is where they go — on this route mana regeneration is life regeneration — or a second and third point of Energy Shield if you would rather have levels the site cannot yet put a number on. Either way the character finishes at 110.",
+          rotationNote:
+            "Unchanged in what you press, changed in what you watch: the mana globe is the health globe. Static Field becomes something you spend rather than something you spam.",
+          gearNote:
+            "The largest gear change of the three. Mana on rings and an amulet outranks magic find, **the mercenary's Insight becomes required rather than convenient**, and mana burn is a reason to leave an area. In Hardcore this is the route that pairs with putting Infinity on the mercenary and keeping a Spirit shield.",
+          statNote:
+            "**Still no points in Energy.** The shield scales with the size of the pool, and gear supplies far more mana per point spent than the attribute does. Vitality is still where the points go, because a drained shield hands you back your real life total.",
+          contentNote:
+            "Hell Terror Zones and 8-player games. Avoid it anywhere mana burn is common, which includes much of the Worldstone Keep.",
+        },
+        {
+          id: "hydra-hybrid",
+          name: "The Hydra hybrid",
+          when: "You do not own an Infinity. This is the package that answers lightning immunes with a second damage type rather than with a rune word, and it is the only route on this page that works before the build's defining item exists.",
+          tradeoff:
+            "The most expensive package and the least efficient: **Hydra's own synergies are Fire Bolt and Fire Ball, and this plan holds both at one point**, so the fire damage comes almost entirely from Fire Mastery. A fully synergised Hydra is a different character and has its own page. Once Infinity exists, the Storm is strictly better.",
+          skills: [
+            {
+              skill: "hydra",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "Three fire-breathing heads, cast and forgotten. It is the second damage type, and it works while you are casting Nova rather than instead of it.",
+            },
+            {
+              skill: "fire-mastery",
+              points: 18,
+              role: "main",
+              order: 2,
+              note: "**Where the fire damage actually comes from on this route**, since the synergies are held at one point. Eighteen rather than twenty because that is what the budget leaves after the chain, and the last two points are worth less than the twenty in Hydra they would have to come from.",
+            },
+            {
+              skill: "fire-bolt",
+              points: 1,
+              role: "prerequisite",
+              note: "First of three points on the chain to Hydra. It is also a Hydra synergy, at one point, which is the honest measure of how little this route buys from synergies.",
+            },
+            {
+              skill: "fire-ball",
+              points: 1,
+              role: "prerequisite",
+              note: "Second on the chain, and the other Hydra synergy. Same one point, same reason.",
+            },
+            {
+              skill: "enchant",
+              points: 1,
+              role: "prerequisite",
+              note: "**Hydra's actual prerequisite.** It needs Fire Ball and Warmth, and the core already pays for Warmth.",
+            },
+          ],
+          rotationNote:
+            "Drop Hydra before you teleport in, then Nova as normal. Against a lightning immune the order reverses: Hydra first, and you keep your distance instead of standing in the middle.",
+          gearNote:
+            "Split gear, which is the hidden cost. **A Griffon's Eye and lightning facets do nothing for the Hydra**, and a fire facet does nothing for Nova. Bonuses that read *all skills* — Enigma, Mara's, a Hellfire Torch, an Annihilus — are what pay both halves, so this route wants them earlier than the others do.",
+          statNote: "No change.",
+          contentNote:
+            "The Chaos Sanctuary and the Pit before Infinity, and anywhere the immunity list is mixed. The Secret Cow Level does not need it — nothing there is lightning immune.",
+        },
+      ],
+    },
+  ],
+
   flexPoints: [
-    "**Forty points are free, because Nova has one synergy and it is already maxed.** Nova, Lightning Mastery and Static Field are sixty and the nine one-point skills are nine, which is 69 of 110, with Energy Shield the one optional point on top. Forty are yours to place — and nothing in the lightning tree raises Nova damage with them. The entries below are the honest destinations.",
-    "**Energy Shield is the build's real decision.** At two mana per point of damage it converts a large mana pool into an effective second health bar, which suits a character standing in the middle of everything. It also means mana burn kills you outright and a drained pool leaves you with your actual, tiny life total. Take it deliberately with Telekinesis investment behind it, or skip it entirely and buy life instead. Half-committing is the worst of both.",
-    "**The Hydra hybrid.** Maxroll ships a variant that adds Hydra for the fire damage Nova cannot do. Since Nova has no second synergy to give up, it costs only the spare points and gives you an answer to lightning immunes that is not Infinity. Worth it before Infinity exists, less so after.",
-    "**Magic find variant:** same skill plan, swap damage charms and gear for magic find. The build's clear speed makes it one of the better magic find characters even at reduced damage.",
-    "**Do not put points in Energy**, even for Energy Shield. The shield scales with your mana pool, and gear supplies far more mana per point spent than the attribute does.",
+    "**Forty-one points are spare before you choose, and the package you pick above spends every one of them** — bar the two the Energy Shield route leaves over, which it names. Nova has one synergy and it is already maxed, so none of this is a way to raise Nova damage; the packages buy reach, survival or a second element instead.",
+    "**Do not put points in Energy**, even on the Energy Shield route. The shield scales with your mana pool, and gear supplies far more mana per point spent than the attribute does.",
+    "**Magic find variant:** the same skill plan, whichever package you took, swapping damage charms and gear for magic find. The build's clear speed makes it one of the better magic find characters even at reduced damage.",
+    "**The Lightning Sorceress is not this build with the Storm package.** That page maxes Lightning and Chain Lightning as its main skills, on their own cast table, and holds Nova at one point; this one is the reverse. If the Storm package is the part that appeals, read that page before committing forty-one points to a half version of it.",
   ],
   stats: {
     strength: "Enough for your gear. If you self-wield Infinity, note that it goes in a **polearm or spear** — check the base's requirement before committing stat points, because it is higher than a caster normally pays.",
@@ -583,17 +731,17 @@ export const novaSorceress: Build = {
   ],
 
   immunityPlan:
-    "One answer, and the build is built around owning it. **Lightning Mastery does not break immunity** — it is a damage multiplier at 50% plus 12% per level, the same as on the Lightning Sorceress. What breaks it is **Conviction from Infinity**, and this build's defining choice is to wield that Infinity yourself rather than putting it on the mercenary: the aura is identical either way, and self-wielding frees him to carry the Insight that pays your mana bill. **Griffon's Eye** stacks another -15-20% enemy lightning resistance on top, and **lightning facets** add more still. Before Infinity exists, the honest answers are the **Hydra hybrid** variant for a second damage type, or picking zones — the Secret Cow Level has nothing lightning immune in it at all. A **Crack of the Heavens** sunder charm works but costs 70 to 90 points of your own lightning resistance, which on a build standing in the middle of lightning enchanted packs is a worse trade than usual.",
+    "One answer, and the build is built around owning it. **Lightning Mastery does not break immunity** — it is a damage multiplier at 50% plus 12% per level, the same as on the Lightning Sorceress. What breaks it is **Conviction from Infinity**, and this build's defining choice is to wield that Infinity yourself rather than putting it on the mercenary: the aura is identical either way, and self-wielding frees him to carry the Insight that pays your mana bill. **Griffon's Eye** stacks another -15-20% enemy lightning resistance on top, and **lightning facets** add more still. Before Infinity exists, the honest answers are the **Hydra hybrid package** for a second damage type, or picking zones — the Secret Cow Level has nothing lightning immune in it at all. A **Crack of the Heavens** sunder charm works but costs 70 to 90 points of your own lightning resistance, which on a build standing in the middle of lightning enchanted packs is a worse trade than usual.",
 
   hardcoreNotes:
     "The most dangerous Sorceress on the site, and the reasons are structural rather than fixable. You fight from the centre of the pack by design; self-wielding Infinity means **no shield at all**, so no block and no resistances from that slot; and the Sorceress life pool is the smallest in the game. If you take Energy Shield, **mana burn becomes lethal** rather than annoying. In Hardcore the honest recommendation is to put Infinity on the mercenary instead and keep a Spirit shield — you lose the Insight and pay for mana another way, and you keep a defensive slot. Chains of Honor over Enigma, Battle Orders always, and 60% Faster Hit Recovery as a hard requirement.",
 
   selfFoundNotes:
-    "Not realistically. The finished build is an Infinity, which is two Ber runes among four, and there is no version of the endgame that works without Conviction. What *is* self-found is the first eighty levels: Nova at 12 over a maxed Static Field — its one synergy — is a genuinely strong and very cheap character, and the Hydra hybrid keeps it viable in Hell against lightning immunes. Treat this page as a destination. The Frozen Orb and Fire Ball Meteor pages describe builds that reach their own ceiling without a single high rune.",
+    "Not realistically. The finished build is an Infinity, which is two Ber runes among four, and there is no version of the endgame that works without Conviction. What *is* self-found is the first eighty levels: Nova at 12 over a maxed Static Field — its one synergy — is a genuinely strong and very cheap character, and the Hydra hybrid package keeps it viable in Hell against lightning immunes — it is the one route on this page costed for a character with no high runes. Treat this page as a destination. The Frozen Orb and Fire Ball Meteor pages describe builds that reach their own ceiling without a single high rune.",
 
   levelingPath: {
     summary:
-      "Levels as itself. Charged Bolt from level 1 gets you to Nova at 12, Static Field from 6 is the synergy you keep, and Teleport at 18 gives you the mobility the build is built on. Lightning Mastery at 30 is when the damage starts to compound. **No respec is required** — but be clear-eyed that the build you are levelling is not the build on this page's later tiers, which is defined by an item rather than a skill.",
+      "Levels as itself. Charged Bolt from level 1 gets you to Nova at 12, Static Field from 6 is the synergy you keep, and Teleport at 18 gives you the mobility the build is built on. Lightning Mastery at 30 is when the damage starts to compound. **No respec is required** — but be clear-eyed that the build you are levelling is not the build on this page's later tiers, which is defined by an item rather than a skill. **Do not start a package before the core is finished**, which is around level 80: until then every point belongs to the 69, and which package you want depends on whether an Infinity has turned up by the time you get there.",
   },
 
   confidence: "verified",

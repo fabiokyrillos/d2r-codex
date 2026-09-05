@@ -25,6 +25,22 @@ import type { Build } from "@/lib/types";
  *   spending forty points on nothing, which is the mistake this page used to
  *   make and the reason the skill plan below is short.
  *
+ * A short plan is not a finished one. Sixty-nine of the hundred and ten are
+ * mandatory and the other forty-one used to be four prose suggestions worth
+ * well over a hundred points between them, with nothing saying you may take
+ * one. They are now three packages, each costed against the graph and each
+ * closing at exactly 110:
+ *
+ * - **Deep Freeze** maxes Glacial Spike and Frost Nova, and the reason is an
+ *   edge the page never used to state in the direction that matters. Both are
+ *   *fed by* Frozen Orb, and Glacial Spike by Ice Bolt as well — the forty
+ *   points this build already owns arrive with them.
+ * - **The Boss Answer** maxes Ice Blast, which Frozen Orb and Ice Bolt also
+ *   feed, and Static Field, whose radius is the only thing limiting it.
+ * - **Energy Shield** buys Telekinesis, whose *hard* level sets the shield's
+ *   mana ratio. That relationship is a parameter in the extraction rather than
+ *   a synergy edge, so it is described as a ratio and never labelled one.
+ *
  * Uses the standard Sorceress cast table.
  */
 export const frozenOrbSorceress: Build = {
@@ -47,7 +63,7 @@ export const frozenOrbSorceress: Build = {
   weaknesses: [
     "**Nothing before level 30** — Frozen Orb and Cold Mastery unlock together",
     "Cold immunes exist and Cold Mastery does not break them, only shrinks resistance on things that are not immune",
-    "Single-target damage is modest; bosses take a while",
+    "Single-target damage is modest in the core — only the Boss Answer package fixes it, and it costs you the freeze",
     "Low life, no block, and no defensive layer beyond Teleport and the freeze",
     "One damage type, so a genuine cold immune is a wall rather than a slow-down — the Pit and the Worldstone Keep are where this site records them",
   ],
@@ -91,14 +107,14 @@ export const frozenOrbSorceress: Build = {
       skill: "ice-blast",
       points: 1,
       role: "prerequisite",
-      note: "**On the chain to Frozen Orb** — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Orb — and a usable single-target spell while you wait for level 30. One point: it feeds Blizzard and Glacial Spike, and neither of those is what you cast.",
+      note: "**On the chain to Frozen Orb** — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Orb — and a usable single-target spell while you wait for level 30. One point in the core, because nothing it feeds is a skill the core casts. **The Boss Answer package maxes it instead**, and it is worth reading why: Frozen Orb and Ice Bolt both feed Ice Blast, so the forty points already in them arrive with it.",
     },
     { skill: "telekinesis", points: 1, role: "prerequisite" },
     { skill: "teleport", points: 1, role: "utility", note: "**One point forever.** More points only cut the mana cost." },
-    { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life, which is how a cold build handles a boss it cannot burst." },
+    { skill: "static-field", points: 1, role: "utility", note: "Takes 25% of a target's current life, which is how a cold build handles a boss it cannot burst. One point casts it; its **radius** is what more points buy, and two of the three packages below buy some." },
     { skill: "frozen-armor", points: 1, role: "utility", note: "Defence and a freeze on attackers." },
     { skill: "frost-nova", points: 1, role: "utility", note: "A point-blank panic button that chills everything around you." },
-    { skill: "glacial-spike", points: 1, role: "prerequisite", note: "On the way to Blizzard, and a genuine defensive tool in its own right — one point freezes a pack solid for a moment." },
+    { skill: "glacial-spike", points: 1, role: "prerequisite", note: "On the way to Blizzard, and a genuine defensive tool in its own right — one point freezes a pack solid for a moment. **All three packages below raise it**, because Frozen Orb and Ice Bolt both feed it and this plan already maxes them." },
     {
       skill: "blizzard",
       points: 1,
@@ -107,14 +123,155 @@ export const frozenOrbSorceress: Build = {
     },
 
   ],
+
+  skillPackages: [
+    {
+      id: "spare-points",
+      name: "The second half of the plan",
+      choose: "one",
+      intro:
+        "The core above is 69 of 110 and it is **finished** — Frozen Orb has one synergy, Ice Bolt, and it is already maxed, so no point anywhere in the cold tree raises Orb damage. That leaves forty-one, which is not a rounding error: it is more than a third of the character, and until you spend it you are playing a build with a hole in it. **Take exactly one of the three below.** Each is costed to the point, each finishes at 110, and each is a different character.",
+      packages: [
+        {
+          id: "deep-freeze",
+          name: "Deep Freeze",
+          when: "The default, and the one to take if you are not sure. It buys the thing this build is already best at — nothing on the screen gets to move — and it needs no gear you were not already going to wear.",
+          tradeoff:
+            "You keep the build's weakest quality: bosses. Static Field ends at 4 rather than 20, so a boss with a large life pool is still a slow fight you win with the mercenary. Take the Boss Answer instead if that is the fight you keep losing.",
+          skills: [
+            {
+              skill: "glacial-spike",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "**Its freeze runs 50 frames at one point and three more per level**, so a maxed Glacial Spike holds a pack still for over four seconds. And it is not a cold spell you are starting from scratch: **Frozen Orb and Ice Bolt both feed it**, and this plan already has twenty in each.",
+            },
+            {
+              skill: "frost-nova",
+              points: 20,
+              role: "main",
+              order: 2,
+              note: "**Frozen Orb feeds it too.** A maxed Frost Nova is the button for the thing that is already touching you — it chills everything in a ring around you at once, which is the one situation Glacial Spike's single freeze cannot answer.",
+            },
+            {
+              skill: "static-field",
+              points: 4,
+              role: "utility",
+              order: 3,
+              note: "The last three points, and Static Field is the only skill left where one still does something: the radius grows with every point. Four is what is left, not a target.",
+            },
+          ],
+          rotationNote:
+            "Orb into the corridor, Glacial Spike at whatever survives it, Frost Nova when something is in your face. Three buttons instead of one, and the second and third are both defensive.",
+          gearNote:
+            "No change. This is the package that costs nothing outside the skill tree, which is most of the argument for it.",
+          statNote:
+            "No change. Vitality with everything after gear requirements, exactly as above.",
+          contentNote:
+            "Terror Zones, 8-player games and Hardcore. Anywhere the danger is the number of things moving toward you rather than the size of one of them.",
+        },
+        {
+          id: "boss-answer",
+          name: "The Boss Answer",
+          when: "Take this if your farming list is Mephisto, Andariel and Countess rather than the Pit — bosses in a fixed spot, run after run, where the build's modest single-target damage is the whole clock.",
+          tradeoff:
+            "Frost Nova stays at one point, so you have no panic button for something already on top of you. This is the least safe of the three and the worst pick for Hardcore.",
+          skills: [
+            {
+              skill: "ice-blast",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "**The single-target cold spell the core never casts, and the one the core has already paid for.** Frozen Orb and Ice Bolt both feed Ice Blast, so twenty points here arrive on top of the forty already in them. It also freezes outright rather than chilling.",
+            },
+            {
+              skill: "static-field",
+              points: 20,
+              role: "utility",
+              order: 2,
+              note: "**Takes 25% of a target's current life and ignores resistance.** Its radius is the only limit and every point raises it, so a maxed Static Field is the difference between walking into range of a boss and standing where you already are.",
+            },
+            {
+              skill: "glacial-spike",
+              points: 4,
+              role: "synergy",
+              order: 3,
+              note: "The last three points, and they are not idle: **Glacial Spike feeds Ice Blast's freeze**, which is the spell this package just maxed. Four is what is left over.",
+            },
+          ],
+          rotationNote:
+            "Static Field until the boss is down to the difficulty's floor, then Ice Blast rather than the Orb — the Orb sheds most of its shards on the way past a single target and Ice Blast does not. The Orb stays the answer for everything that is not a boss.",
+          gearNote:
+            "Static Field's mana cost is what you now cast most, so an **Insight** mercenary stops being a convenience. Nothing else changes.",
+          statNote: "No change.",
+          contentNote:
+            "Mephisto, Andariel, Countess and Pindleskin — short boss routes. It is the worst of the three in the Pit and in Terror Zones, where nothing you meet has a life pool worth a Static Field.",
+        },
+        {
+          id: "energy-shield",
+          name: "Energy Shield",
+          when: "A second health bar instead of more crowd control, for a Sorceress who keeps dying to the one thing that got through. Take it deliberately or not at all — half of it is worse than none of it.",
+          tradeoff:
+            "**Mana burn stops being an annoyance and becomes a death**, and a drained pool leaves you with the smallest life total in the game. You also give up Frost Nova and a maxed Static Field, and you spend four points on a lightning chain you will never cast.",
+          skills: [
+            {
+              skill: "telekinesis",
+              points: 20,
+              role: "utility",
+              order: 1,
+              note: "**Every hard point here lowers what the shield charges you**, and no amount of +skills gear does the same — the game reads Telekinesis' *hard* level for the ratio. This is the package, and the reason it is not worth taking at five points.",
+            },
+            {
+              skill: "glacial-spike",
+              points: 19,
+              role: "utility",
+              order: 2,
+              note: "The shield does not kill anything, so the freeze still has to. Nineteen rather than twenty because that is what the budget leaves after the chain — one point short of maxed, and worth more here than the four points it would cost to get it.",
+            },
+            {
+              skill: "energy-shield",
+              points: 1,
+              role: "main",
+              order: 3,
+              note: "**Two mana per point of damage at base**, improved by Telekinesis. One point, because the extraction this site reads does not publish what a second point changes — so the plan buys the ratio, which is measurable, and not the level, which is not.",
+            },
+            {
+              skill: "charged-bolt",
+              points: 1,
+              role: "prerequisite",
+              note: "The first of three points on the chain to the shield. You will never cast it.",
+            },
+            {
+              skill: "lightning",
+              points: 1,
+              role: "prerequisite",
+              note: "The second. On a different cast table from everything else you own, which is another reason not to cast it.",
+            },
+            {
+              skill: "chain-lightning",
+              points: 1,
+              role: "prerequisite",
+              note: "The third, and **Energy Shield's actual prerequisite** alongside Teleport, which the core already pays for.",
+            },
+          ],
+          rotationNote:
+            "Unchanged in what you press and changed in what you watch: the mana globe is now the health globe. Glacial Spike before the pack arrives rather than after.",
+          gearNote:
+            "The plan stops being gear-neutral. Mana on rings and an amulet is worth more than magic find, **Insight on the mercenary becomes required**, and anything that says Mana Burn is a reason to leave. Frostburn's mana bonus finally earns its slot.",
+          statNote:
+            "Still no points in Energy. The shield scales with the size of the pool and gear supplies far more mana per point spent than the attribute does — that is true here for the same reason it is true everywhere else on this page.",
+          contentNote:
+            "Hell Terror Zones and 8-player games, where the incoming damage is what stops you rather than the outgoing. Avoid it anywhere mana burn is common.",
+        },
+      ],
+    },
+  ],
+
   flexPoints: [
-    "**Forty-one points are genuinely free, and that is this build's defining fact.** Frozen Orb, Cold Mastery and Ice Bolt are sixty and the nine one-point skills are nine, which is 69 of 110. Frozen Orb has one synergy and it is already maxed, so **there is nothing left in the cold tree that raises Orb damage** — the remaining forty-one buy utility, survival or a second element instead. The entries below are where they honestly go.",
-    "**Glacial Spike, up to 20 of the 41.** Not a synergy — it feeds Blizzard and Ice Bolt, neither of which you cast — but its freeze runs 50 frames at one point and three more per level, so a maxed Glacial Spike holds a pack still for over four seconds. The best of the four if you want the build to stay cold.",
-    "**Static Field, up to 20 of the 41.** Its radius is the only thing limiting it, and the radius grows with every point. On a build whose single-target damage is poor by design, that is the difference between a boss you can kill and one you cannot.",
-    "**Telekinesis and Energy Shield.** A different answer to the same spare budget: a second health bar rather than more crowd control. It costs three points this plan does not otherwise spend — Charged Bolt, Lightning and Chain Lightning are the chain to the shield — and then as many as you want in Telekinesis, because **each hard point there lowers what the shield charges you** and no amount of +skills gear does the same. Take it deliberately or not at all.",
+    "**Forty-one points are spare before you choose, and the package you pick above spends every one of them.** The three are alternatives, not a list: taking one is the plan, taking parts of two is how a character ends up with nothing finished. What follows is the rest of the decision — the parts that are not a skill point.",
     "**The Blizzard question.** Blizzard is the other cold build and it has its own page; it trades this build's forgiving aim for higher single-target damage and a cooldown to play around. They are not variants of each other and the skill plans barely overlap.",
-    "**The Meteorb split** — Frozen Orb plus Meteor rather than a cold tree with forty-one points and nothing left to buy — is a separate build with its own page. It is the most productive answer to the spare budget, and it pays for the second damage type with a much thinner one.",
-    "**Magic find variant:** this build has the best magic find profile of any starter, because it clears fast and needs almost nothing from its gear. Swap damage charms for magic find and take War Traveler and a Harlequin Crest. The skill plan does not change.",
+    "**The Meteorb split** — Frozen Orb plus Meteor rather than a cold tree and three packages — is a separate build with its own page. It is the largest change you can make to this character, because it buys a second damage type, and it pays for it by giving up Ice Bolt's forty percent and every package above.",
+    "**Magic find variant:** this build has the best magic find profile of any starter, because it clears fast and needs almost nothing from its gear. Swap damage charms for magic find and take War Traveler and a Harlequin Crest. **The skill plan does not change**, and any of the three packages will carry it.",
   ],
   stats: {
     strength: "Only what the gear needs, which for this build is very little.",
@@ -122,7 +279,7 @@ export const frozenOrbSorceress: Build = {
     vitality: "Everything else.",
     energy: "None. Warmth and an Insight mercenary cover it.",
     notes: [
-      "This is the cheapest stat plan of any build on the site: no block, no heavy base, no weapon requirement.",
+      "This is the cheapest stat plan of any build on the site: no block, no heavy base, no weapon requirement — and **Deep Freeze and the Boss Answer both keep it that way**. Only the Energy Shield package changes what your gear is for, and it changes it towards mana rather than towards attributes.",
       "A Call to Arms swap is worth more life than any amount of Vitality you could buy with the equivalent currency.",
     ],
   },

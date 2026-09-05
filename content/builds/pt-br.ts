@@ -3235,18 +3235,95 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     weaknesses: [
       "**Nada antes do nível 30** — Frozen Orb e Cold Mastery abrem juntos",
       "Imunes a frio existem e a Cold Mastery não os quebra, só reduz resistência do que não é imune",
-      "Dano de alvo único é modesto; bosses demoram",
+      "Dano de alvo único é modesto no núcleo — só o pacote A Resposta para Bosses resolve isso, e ele custa o congelamento",
       "Vida baixa, sem bloqueio, e nenhuma camada defensiva além do Teleport e do congelamento",
       "Um tipo de dano só, então um imune a frio de verdade é uma parede e não uma lentidão — o Pit e o Worldstone Keep são onde este site os registra",
     ],
+    skillPackages: {
+      "spare-points": {
+        name: "A segunda metade do plano",
+        intro:
+          "O núcleo acima é 69 de 110 e está **terminado** — o Frozen Orb tem uma sinergia, o Ice Bolt, e ela já está maximizada, então nenhum ponto em lugar nenhum da árvore de frio aumenta o dano do Orb. Sobram quarenta e um, e isso não é um arredondamento: é mais de um terço do personagem, e enquanto você não gastar está jogando uma build com um buraco. **Escolha exatamente um dos três abaixo.** Cada um tem custo fechado, cada um termina em 110, e cada um é um personagem diferente.",
+        packages: {
+          "deep-freeze": {
+            name: "Congelamento Profundo",
+            when: "O padrão, e o que pegar se estiver em dúvida. Ele compra aquilo em que esta build já é a melhor — nada na tela consegue se mover — e não pede nenhum equipamento que você já não fosse usar.",
+            tradeoff:
+              "Você mantém a pior qualidade da build: bosses. O Static Field para em 4 em vez de 20, então um boss com muita vida continua sendo uma luta lenta que você ganha com o mercenário. Pegue A Resposta para Bosses se essa é a luta que você vem perdendo.",
+            skillNotes: {
+              "glacial-spike":
+                "**O congelamento dele dura 50 frames com um ponto e mais três por nível**, então um Glacial Spike maximizado segura um grupo parado por mais de quatro segundos. E não é uma magia de frio começando do zero: **tanto o Frozen Orb quanto o Ice Bolt alimentam ele**, e este plano já tem vinte em cada.",
+              "frost-nova":
+                "**O Frozen Orb também alimenta ele.** Um Frost Nova maximizado é o botão para o que já está encostando em você — congela tudo num anel ao seu redor de uma vez, que é a única situação que o congelamento de alvo único do Glacial Spike não resolve.",
+              "static-field":
+                "Os últimos três pontos, e o Static Field é a única skill que sobra em que mais um ponto ainda faz algo: o raio cresce a cada ponto. Quatro é o que sobrou, não uma meta.",
+            },
+            rotationNote:
+              "Orb no corredor, Glacial Spike no que sobreviver, Frost Nova quando algo estiver na sua cara. Três botões em vez de um, e o segundo e o terceiro são defensivos.",
+            gearNote:
+              "Nenhuma mudança. Este é o pacote que não custa nada fora da árvore de skills, e isso é a maior parte do argumento a favor dele.",
+            statNote:
+              "Nenhuma mudança. Vitality com tudo depois dos requisitos de equipamento, exatamente como acima.",
+            contentNote:
+              "Terror Zones, partidas de 8 jogadores e Hardcore. Onde o perigo é a quantidade de coisas vindo na sua direção, e não o tamanho de uma delas.",
+          },
+          "boss-answer": {
+            name: "A Resposta para Bosses",
+            when: "Pegue este se a sua lista de farm é Mephisto, Andariel e Countess em vez do Pit — bosses num lugar fixo, run após run, onde o dano modesto de alvo único da build é o relógio inteiro.",
+            tradeoff:
+              "O Frost Nova fica em um ponto, então você não tem botão de pânico para algo que já está em cima de você. Este é o menos seguro dos três e a pior escolha para Hardcore.",
+            skillNotes: {
+              "ice-blast":
+                "**A magia de frio de alvo único que o núcleo nunca conjura, e a que o núcleo já pagou.** Tanto o Frozen Orb quanto o Ice Bolt alimentam o Ice Blast, então vinte pontos aqui chegam em cima dos quarenta que já estão neles. E ele congela de verdade em vez de só desacelerar.",
+              "static-field":
+                "**Tira 25% da vida atual do alvo e ignora resistência.** O raio é o único limite e cada ponto o aumenta, então um Static Field maximizado é a diferença entre andar até o alcance de um boss e ficar onde você já está.",
+              "glacial-spike":
+                "Os últimos três pontos, e eles não estão parados: **o Glacial Spike alimenta o congelamento do Ice Blast**, que é a magia que este pacote acabou de maximizar. Quatro é o que sobrou.",
+            },
+            rotationNote:
+              "Static Field até o boss chegar no piso da dificuldade, e então Ice Blast em vez do Orb — o Orb solta a maior parte dos estilhaços passando por um alvo único e o Ice Blast não. O Orb continua sendo a resposta para tudo que não é boss.",
+            gearNote:
+              "O custo de mana do Static Field passa a ser o que você mais conjura, então um mercenário com **Insight** deixa de ser conveniência. Nada mais muda.",
+            statNote: "Nenhuma mudança.",
+            contentNote:
+              "Mephisto, Andariel, Countess e Pindleskin — trajetos curtos de boss. É o pior dos três no Pit e em Terror Zones, onde nada que você encontra tem vida suficiente para valer um Static Field.",
+          },
+          "energy-shield": {
+            name: "Energy Shield",
+            when: "Uma segunda barra de vida em vez de mais controle de grupo, para uma Sorceress que continua morrendo para a única coisa que passou. Escolha deliberadamente ou não escolha — metade dele é pior que nada dele.",
+            tradeoff:
+              "**Mana burn deixa de ser incômodo e vira morte**, e uma reserva drenada te devolve a menor vida do jogo. Você também abre mão do Frost Nova e de um Static Field maximizado, e gasta quatro pontos numa corrente de raio que nunca vai conjurar.",
+            skillNotes: {
+              telekinesis:
+                "**Cada ponto duro aqui reduz o que o escudo cobra de você**, e nenhuma quantidade de equipamento com +skills faz o mesmo — o jogo lê o nível *duro* do Telekinesis para essa proporção. Este é o pacote, e é o motivo de ele não valer a pena com cinco pontos.",
+              "glacial-spike":
+                "O escudo não mata nada, então o congelamento ainda precisa matar. Dezenove em vez de vinte porque é o que o orçamento deixa depois da corrente — um ponto abaixo do máximo, e vale mais aqui que os quatro pontos que custaria chegar lá.",
+              "energy-shield":
+                "**Dois de mana por ponto de dano na base**, melhorado pelo Telekinesis. Um ponto, porque a extração que este site lê não publica o que um segundo ponto muda — então o plano compra a proporção, que é mensurável, e não o nível, que não é.",
+              "charged-bolt":
+                "O primeiro de três pontos na corrente até o escudo. Você nunca vai conjurar.",
+              lightning:
+                "O segundo. Está numa tabela de conjuração diferente de tudo que você tem, o que é mais um motivo para não conjurar.",
+              "chain-lightning":
+                "O terceiro, e **o pré-requisito de verdade do Energy Shield** junto com o Teleport, que o núcleo já paga.",
+            },
+            rotationNote:
+              "Igual no que você aperta e diferente no que você olha: o globo de mana agora é o globo de vida. Glacial Spike antes de o grupo chegar, e não depois.",
+            gearNote:
+              "O plano deixa de ser neutro em equipamento. Mana em anéis e amuleto vale mais que magic find, **o Insight no mercenário passa a ser obrigatório**, e qualquer coisa que diga Mana Burn é motivo para ir embora. O bônus de mana do Frostburn finalmente justifica o espaço.",
+            statNote:
+              "Ainda nenhum ponto em Energy. O escudo escala com o tamanho da reserva e o equipamento dá muito mais mana por ponto gasto do que o atributo — isso vale aqui pelo mesmo motivo que vale no resto da página.",
+            contentNote:
+              "Terror Zones do Hell e partidas de 8 jogadores, onde o que te para é o dano que entra e não o que sai. Evite onde mana burn é comum.",
+          },
+        },
+      },
+    },
     flexPoints: [
-      "**Quarenta e um pontos são genuinamente livres, e esse é o fato que define esta build.** Frozen Orb, Cold Mastery e Ice Bolt são sessenta e as nove skills de um ponto são nove, o que dá 69 de 110. O Frozen Orb tem uma sinergia e ela já está maximizada, então **não sobra nada na árvore de frio que aumente o dano do Orb** — os quarenta e um restantes compram utilidade, sobrevivência ou um segundo elemento. As entradas abaixo são para onde eles honestamente vão.",
-      "**Glacial Spike, até 20 dos 41.** Não é sinergia — ele alimenta o Blizzard e o Ice Bolt, e você não conjura nenhum dos dois — mas o congelamento dele dura 50 frames com um ponto e mais três por nível, então um Glacial Spike maximizado segura um grupo parado por mais de quatro segundos. A melhor das opções se você quiser que a build continue sendo de frio.",
-      "**Static Field, até 20 dos 41.** O raio é a única coisa que o limita, e o raio cresce a cada ponto. Numa build cujo dano de alvo único é fraco por projeto, essa é a diferença entre um boss que você mata e um que você não mata.",
-      "**Telekinesis e Energy Shield.** Uma resposta diferente para o mesmo orçamento livre: uma segunda barra de vida em vez de mais controle de grupo. Custa três pontos que este plano não gasta de outra forma — Charged Bolt, Lightning e Chain Lightning são a corrente até o escudo — e depois quantos você quiser em Telekinesis, porque **cada ponto duro ali reduz o que o escudo cobra de você** e nenhuma quantidade de equipamento com +skills faz o mesmo. Escolha deliberadamente ou não escolha.",
+      "**Quarenta e um pontos estão livres antes da escolha, e o pacote que você pegar acima gasta todos eles.** Os três são alternativas, não uma lista: pegar um é o plano, pegar pedaços de dois é como um personagem termina sem nada pronto. O que vem a seguir é o resto da decisão — as partes que não são ponto de skill.",
       "**A questão do Blizzard.** O Blizzard é a outra build de frio e tem página própria; ele troca a mira perdoável desta build por dano de alvo único maior e um cooldown para administrar. Não são variantes uma da outra e os planos de skill mal se sobrepõem.",
-      "**A divisão Meteorb** — Frozen Orb mais Meteor em vez de uma árvore de frio com quarenta e um pontos e nada mais para comprar — é uma build separada com página própria. É a resposta mais produtiva para o orçamento livre, e paga o segundo tipo de dano com um orçamento bem mais apertado.",
-      "**Variante de magic find:** esta build tem o melhor perfil de magic find entre as starters, porque limpa rápido e quase não precisa de nada do equipamento. Troque charms de dano por magic find e use War Traveler e um Harlequin Crest. O plano de skills não muda.",
+      "**A divisão Meteorb** — Frozen Orb mais Meteor em vez de uma árvore de frio e três pacotes — é uma build separada com página própria. É a maior mudança que você pode fazer neste personagem, porque compra um segundo tipo de dano, e ela paga por isso abrindo mão dos quarenta por cento do Ice Bolt e de todos os pacotes acima.",
+      "**Variante de magic find:** esta build tem o melhor perfil de magic find entre as starters, porque limpa rápido e quase não precisa de nada do equipamento. Troque charms de dano por magic find e use War Traveler e um Harlequin Crest. **O plano de skills não muda**, e qualquer um dos três pacotes carrega a variante.",
     ],
     statPlan: {
       strength: "Só o que o equipamento pedir, que para esta build é muito pouco.",
@@ -3254,7 +3331,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       vitality: "Todo o resto.",
       energy: "Nenhum. O Warmth e um mercenário com Insight cobrem.",
       notes: [
-        "Este é o plano de atributos mais barato de qualquer build do site: sem bloqueio, sem base pesada, sem requisito de arma.",
+        "Este é o plano de atributos mais barato de qualquer build do site: sem bloqueio, sem base pesada, sem requisito de arma — e **o Congelamento Profundo e A Resposta para Bosses mantêm assim**. Só o pacote Energy Shield muda para que serve o seu equipamento, e ele muda para mana em vez de para atributos.",
         "Uma troca com Call to Arms vale mais vida que qualquer quantidade de Vitality que você comprasse com a moeda equivalente.",
       ],
     },
@@ -3273,15 +3350,15 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "ice-bolt":
         "**A única sinergia do Frozen Orb**, a 2% por ponto duro, e o seu dano nos primeiros onze níveis. Nada gasto aqui é desperdiçado — e nada mais na árvore faz o mesmo trabalho.",
       "ice-blast":
-        "**Na corrente até o Frozen Orb** — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Orb — e uma magia de alvo único utilizável enquanto você espera o nível 30. Um ponto: ele alimenta o Blizzard e o Glacial Spike, e não é nenhum dos dois que você conjura.",
+        "**Na corrente até o Frozen Orb** — Ice Bolt, Ice Blast, Glacial Spike, Blizzard, Orb — e uma magia de alvo único utilizável enquanto você espera o nível 30. Um ponto no núcleo, porque nada que ele alimenta é uma skill que o núcleo conjura. **O pacote A Resposta para Bosses maximiza ele**, e vale ler por quê: tanto o Frozen Orb quanto o Ice Bolt alimentam o Ice Blast, então os quarenta pontos que já estão neles chegam junto.",
       warmth: "Regeneração de mana desde o nível 1.",
       teleport: "**Um ponto para sempre.** Mais pontos só cortam o custo de mana.",
       "static-field":
-        "Tira 25% da vida atual do alvo, que é como uma build de frio lida com um boss que ela não consegue explodir.",
+        "Tira 25% da vida atual do alvo, que é como uma build de frio lida com um boss que ela não consegue explodir. Um ponto já conjura; o que mais pontos compram é o **raio**, e dois dos três pacotes abaixo compram um pouco dele.",
       "frozen-armor": "Defesa e congelamento em quem te ataca.",
       "frost-nova": "Um botão de pânico à queima-roupa que congela tudo ao seu redor.",
       "glacial-spike":
-        "No caminho até o Blizzard, e uma ferramenta defensiva de verdade por si só — um ponto congela um grupo inteiro por um instante.",
+        "No caminho até o Blizzard, e uma ferramenta defensiva de verdade por si só — um ponto congela um grupo inteiro por um instante. **Os três pacotes abaixo aumentam ele**, porque tanto o Frozen Orb quanto o Ice Bolt alimentam ele e este plano já maximiza os dois.",
       blizzard:
         "**Pré-requisito do Frozen Orb**, então este ponto é obrigatório. Também é uma build inteira — veja a página da Blizzard Sorceress se o estilo de colocar no chão te agradar mais que o orb que viaja.",
     },
@@ -3512,14 +3589,91 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Você luta do centro do grupo, que é o lugar mais perigoso para estar",
       "Dano de alvo único ruim — bosses são problema do Static Field, não da Nova",
       "Usa a tabela de conjuração padrão, o que é fácil de errar depois de ler a página da Lightning",
-      "O Energy Shield transforma mana burn de incômodo em morte",
+      "O Energy Shield, se você pegar esse pacote, transforma mana burn de incômodo em morte",
     ],
+    skillPackages: {
+      "spare-points": {
+        name: "A segunda metade do plano",
+        intro:
+          "O núcleo acima é 69 de 110 e está **terminado** — a Nova tem uma sinergia, o Static Field, e ela já está maximizada, então nenhum ponto a mais em lugar nenhum aumenta o dano da Nova. Sobram quarenta e um, que é mais de um terço do personagem. **Escolha exatamente um dos três abaixo.** São alternativas e não um cardápio: A Tempestade e a híbrida com Hydra querem o orçamento inteiro, e um personagem com metade de cada não tem nenhum dos dois.",
+        packages: {
+          storm: {
+            name: "A Tempestade",
+            when: "O padrão. Fica dentro da árvore de raio, não muda equipamento nenhum, e compra as duas coisas em que a Nova é pior — um alvo que ela não alcança e um alvo que ela não explode — usando sinergias que o núcleo já pagou.",
+            tradeoff:
+              "Não faz absolutamente nada contra imunidade a raio. Se você ainda não tem um Infinity, a híbrida com Hydra é o pacote que mantém o Hell jogável; este é o que deixa o Hell mais rápido depois que você tiver.",
+            skillNotes: {
+              "thunder-storm":
+                "**O Static Field alimenta o Thunder Storm, e esta build maximiza o Static Field.** Esse é o argumento inteiro: vinte pontos aqui chegam em cima de vinte já gastos, os dois pré-requisitos já estão pagos, e ele não custa tempo de conjuração nenhum — cai sozinho no intervalo dele enquanto você conjura Nova.",
+              "chain-lightning":
+                "**A Nova alimenta o Chain Lightning**, então os vinte do núcleo chegam junto. É a resposta para o que está parado fora do anel da Nova — um atirador numa saliência, um boss do lado de quem você prefere não ficar. Repare na tabela de conjuração: como o Lightning, ele não está na da Nova.",
+              "charged-bolt":
+                "Os últimos três pontos, e este é o único pacote em que eles não ficam parados: **o Charged Bolt alimenta o Chain Lightning**, que você acabou de maximizar. Quatro é o que o orçamento deixa, não uma meta.",
+            },
+            rotationNote:
+              "A Nova continua sendo o botão que você segura. Chain Lightning para o que está longe, Static Field para o que tem vida demais, e o Thunder Storm rodando o tempo todo sem nunca ser conjurado.",
+            gearNote:
+              "Nenhuma mudança. Cada ponto é dano de raio sob a mesma Lightning Mastery e a mesma −resistência a raio do inimigo que você já estava acumulando.",
+            statNote: "Nenhuma mudança. Vitality com tudo depois dos requisitos de equipamento.",
+            contentNote:
+              "Worldstone Keep, Throne of Destruction e Travincal — a própria lista de farm da build, uma vez que o Infinity exista.",
+          },
+          "energy-shield": {
+            name: "Energy Shield",
+            when: "Você luta do centro do grupo e a Sorceress tem a menor reserva de vida do jogo. Este pacote gasta o orçamento em não morrer em vez de em matar, e é a única rota que muda para que serve o seu equipamento.",
+            tradeoff:
+              "**Mana burn deixa de ser incômodo e vira morte**, e o Static Field — que custa mana — agora gasta a sua barra de vida. Você também abre mão do Chain Lightning, então o que estiver fora do anel da Nova continua fora dele.",
+            skillNotes: {
+              telekinesis:
+                "**O pacote.** O nível *duro* dela é o que define a proporção de mana por dano do escudo, e nenhum equipamento com +skills move isso — que é exatamente por que isso vale vinte pontos e não cinco.",
+              "thunder-storm":
+                "Alimentado pelo Static Field que você já maximiza, e não custa mana nenhuma para continuar rodando — o que numa build cuja mana virou a vida dela é o motivo de ele estar aqui em vez do Chain Lightning.",
+              "energy-shield":
+                "**Dois de mana por ponto de dano na base**, melhorado pelo Telekinesis. Um ponto: a extração que este site lê não publica o que um segundo ponto muda, então o plano compra a proporção, que é mensurável, e não o nível, que não é.",
+            },
+            remainderNote:
+              "**Dois pontos sobram de verdade.** O Warmth é para onde eles vão — nesta rota regeneração de mana é regeneração de vida — ou um segundo e um terceiro ponto de Energy Shield, se você preferir níveis que o site ainda não consegue colocar um número. De qualquer forma o personagem termina em 110.",
+            rotationNote:
+              "Igual no que você aperta, diferente no que você olha: o globo de mana é o globo de vida. O Static Field vira algo que você gasta em vez de algo que você repete.",
+            gearNote:
+              "A maior mudança de equipamento dos três. Mana em anéis e amuleto vale mais que magic find, **o Insight do mercenário passa a ser obrigatório em vez de conveniente**, e mana burn é motivo para sair da área. No Hardcore esta é a rota que combina com colocar o Infinity no mercenário e manter um escudo Spirit.",
+            statNote:
+              "**Ainda nenhum ponto em Energy.** O escudo escala com o tamanho da reserva, e o equipamento fornece muito mais mana por ponto gasto que o atributo. A Vitality continua sendo o destino dos pontos, porque um escudo drenado te devolve a sua vida real.",
+            contentNote:
+              "Terror Zones do Hell e partidas de 8 jogadores. Evite onde mana burn é comum, o que inclui boa parte do Worldstone Keep.",
+          },
+          "hydra-hybrid": {
+            name: "A híbrida com Hydra",
+            when: "Você não tem um Infinity. Este é o pacote que responde aos imunes a raio com um segundo tipo de dano em vez de com uma runeword, e é a única rota desta página que funciona antes de o item que define a build existir.",
+            tradeoff:
+              "O pacote mais caro e o menos eficiente: **as sinergias da Hydra são Fire Bolt e Fire Ball, e este plano segura as duas em um ponto**, então o dano de fogo vem quase todo da Fire Mastery. Uma Hydra com sinergias completas é outro personagem e tem página própria. Depois que o Infinity existir, A Tempestade é estritamente melhor.",
+            skillNotes: {
+              hydra:
+                "Três cabeças que cospem fogo, conjuradas e esquecidas. É o segundo tipo de dano, e funciona enquanto você conjura Nova em vez de no lugar dela.",
+              "fire-mastery":
+                "**De onde o dano de fogo realmente vem nesta rota**, já que as sinergias ficam em um ponto. Dezoito em vez de vinte porque é o que o orçamento deixa depois da corrente, e os dois últimos pontos valem menos que os vinte da Hydra de onde teriam de sair.",
+              "fire-bolt":
+                "Primeiro de três pontos na corrente até a Hydra. Também é sinergia da Hydra, em um ponto, que é a medida honesta de quão pouco esta rota compra de sinergias.",
+              "fire-ball": "Segundo na corrente, e a outra sinergia da Hydra. Mesmo um ponto, mesmo motivo.",
+              enchant:
+                "**O pré-requisito de verdade da Hydra.** Ele precisa de Fire Ball e Warmth, e o núcleo já paga o Warmth.",
+            },
+            rotationNote:
+              "Solte a Hydra antes de teleportar, e então Nova como sempre. Contra um imune a raio a ordem inverte: Hydra primeiro, e você mantém distância em vez de ficar no meio.",
+            gearNote:
+              "Equipamento dividido, que é o custo escondido. **Um Griffon's Eye e facets de raio não fazem nada pela Hydra**, e um facet de fogo não faz nada pela Nova. Bônus que dizem *todas as skills* — Enigma, Mara's, uma Hellfire Torch, um Annihilus — são o que paga as duas metades, então esta rota quer esses itens mais cedo que as outras.",
+            statNote: "Nenhuma mudança.",
+            contentNote:
+              "Chaos Sanctuary e Pit antes do Infinity, e qualquer lugar em que a lista de imunidades seja mista. O Secret Cow Level não precisa — nada lá é imune a raio.",
+          },
+        },
+      },
+    },
     flexPoints: [
-      "**Quarenta pontos estão livres, porque a Nova tem uma sinergia e ela já está maximizada.** Nova, Lightning Mastery e Static Field são sessenta e as nove skills de um ponto são nove, o que dá 69 de 110, com o Energy Shield como o único ponto opcional por cima. Quarenta são seus para colocar — e nada na árvore de raio aumenta o dano da Nova com eles. As entradas abaixo são os destinos honestos.",
-      "**O Energy Shield é a decisão real da build.** A dois de mana por ponto de dano, ele converte uma reserva grande de mana numa segunda barra de vida efetiva, o que combina com um personagem parado no meio de tudo. Também significa que mana burn te mata na hora e que uma reserva esvaziada te deixa com a sua vida real, minúscula. Pegue de propósito com investimento em Telekinesis por trás, ou não pegue e compre vida. Ficar em cima do muro é o pior dos dois.",
-      "**A híbrida com Hydra.** O Maxroll publica uma variante que adiciona Hydra pelo dano de fogo que a Nova não faz. Como a Nova não tem uma segunda sinergia para abrir mão, custa apenas os pontos livres e te dá uma resposta contra imunes a raio que não é o Infinity. Vale antes de o Infinity existir, menos depois.",
-      "**Variante de magic find:** mesmo plano de skills, troque charms e equipamento de dano por magic find. A velocidade de limpeza da build faz dela um dos melhores personagens de magic find mesmo com dano reduzido.",
-      "**Não coloque pontos em Energy**, nem para o Energy Shield. O escudo escala com a sua reserva de mana, e equipamento fornece muito mais mana por ponto gasto que o atributo.",
+      "**Quarenta e um pontos estão livres antes da escolha, e o pacote que você pegar acima gasta todos eles** — menos os dois que a rota do Energy Shield deixa sobrando, e que ela nomeia. A Nova tem uma sinergia e ela já está maximizada, então nada aqui é uma forma de aumentar o dano da Nova; os pacotes compram alcance, sobrevivência ou um segundo elemento.",
+      "**Não coloque pontos em Energy**, nem na rota do Energy Shield. O escudo escala com a sua reserva de mana, e equipamento fornece muito mais mana por ponto gasto que o atributo.",
+      "**Variante de magic find:** o mesmo plano de skills, com qualquer pacote que você tenha pegado, trocando charms e equipamento de dano por magic find. A velocidade de limpeza da build faz dela um dos melhores personagens de magic find mesmo com dano reduzido.",
+      "**A Lightning Sorceress não é esta build com o pacote A Tempestade.** Aquela página maximiza Lightning e Chain Lightning como skills principais, na tabela de conjuração delas, e segura a Nova em um ponto; esta faz o contrário. Se o pacote A Tempestade é a parte que te atrai, leia aquela página antes de comprometer quarenta e um pontos com uma meia versão dela.",
     ],
     statPlan: {
       strength: "O suficiente para o seu equipamento. Se você empunhar o Infinity, note que ele vai numa **polearm ou spear** — confira o requisito da base antes de gastar pontos, porque é mais alto do que um caster costuma pagar.",
@@ -3547,24 +3701,22 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "**50% de dano no nível 1 e +12% por nível.** Um multiplicador de dano, não uma redução de resistência — ela não quebra imunidade.",
       "static-field":
         "**A única sinergia da Nova**, a 5% por ponto duro, além de ser a sua resposta contra bosses. Tira 25% da vida atual do alvo por conjuração, o que é o que permite a uma build péssima de alvo único conseguir matar coisas.",
-      "charged-bolt": "**O seu dano nos primeiros onze níveis, e um ponto depois disso.** É pré-requisito do Lightning e portanto do Chain Lightning, que é como este plano alcança o Thunder Storm e o Energy Shield. **Não** é sinergia da Nova — alimenta o Lightning e o Chain Lightning, e esta build não conjura nenhum dos dois.",
+      "charged-bolt": "**O seu dano nos primeiros onze níveis, e um ponto depois disso.** É pré-requisito do Lightning e portanto do Chain Lightning, que é como este plano alcança o Thunder Storm e o Energy Shield. **Não** é sinergia da Nova — alimenta o Lightning e o Chain Lightning, e o núcleo não conjura nenhum dos dois. O pacote A Tempestade é o único caso em que isso muda.",
       warmth:
         "Regeneração de mana desde o nível 1, e importa mais aqui que em qualquer outra build se você pegar Energy Shield.",
       telekinesis:
-        "Pré-requisito do Teleport, e melhora a taxa de mana por dano do Energy Shield. Vale mais que um ponto se você se comprometer com o escudo.",
+        "Pré-requisito do Teleport. Um ponto no núcleo; **o pacote Energy Shield maximiza ela**, porque o nível duro dela é o que define a proporção de mana por dano do escudo.",
       teleport: "**Um ponto para sempre**, e é como você chega ao meio do grupo.",
-      "energy-shield":
-        "**Dois de mana por ponto de dano na base**, melhorado pela Telekinesis. Uma bifurcação real — leia os pontos flexíveis antes de se comprometer.",
       "frozen-armor": "Defesa grátis e chance de congelar o que te alcançar.",
       "frost-nova":
         "Congela tudo ao seu redor. Numa build que vive no centro dos grupos, este é um botão de verdade.",
       lightning:
-        "Um ponto para o raro alvo único que o Static Field não termina. Não invista mais — ele está numa tabela de conjuração diferente.",
-      "thunder-storm": "Um raio passivo em intervalo fixo. Um ponto — não é sinergia do Nova e a Lightning Mastery não exige ele.",
-      "chain-lightning": "**Thunder Storm e Energy Shield exigem os dois o Chain Lightning.** Um ponto cobre ambos.",
+        "Um ponto para o raro alvo único que o Static Field não termina. **Não aumente** — ele está numa tabela de conjuração diferente da Nova, então a velocidade de conjuração que o resto do seu equipamento compra não se aplica a ele.",
+      "thunder-storm": "Um raio passivo em intervalo fixo, e os pré-requisitos dele — Chain Lightning e Nova — já estão pagos. Um ponto no núcleo. **O Static Field alimenta ele**, e esta build maximiza o Static Field, então dois dos três pacotes abaixo levam ele a vinte por dezenove pontos e nenhum equipamento novo.",
+      "chain-lightning": "**Tanto o Thunder Storm quanto o Energy Shield exigem o Chain Lightning.** Um ponto cobre os dois no núcleo — e a Nova alimenta ele, que é por que o pacote A Tempestade maximiza ele em vez de deixar aqui.",
     },
     immunityPlan:
-      "Uma resposta, e a build é construída em torno de possuí-la. **A Lightning Mastery não quebra imunidade** — é um multiplicador de dano de 50% mais 12% por nível, igual à da Lightning Sorceress. O que quebra é a **Conviction do Infinity**, e a escolha que define esta build é empunhar esse Infinity você mesma em vez de colocá-lo no mercenário: a aura é idêntica dos dois jeitos, e empunhar libera ele para carregar o Insight que paga a sua conta de mana. O **Griffon's Eye** soma outros -15-20% de resistência a raio do inimigo por cima, e **facets de raio** somam mais ainda. Antes de o Infinity existir, as respostas honestas são a variante **híbrida com Hydra** por um segundo tipo de dano, ou escolher zonas — o Secret Cow Level não tem nada imune a raio dentro dele. Um sunder charm **Crack of the Heavens** funciona, mas custa 70 a 90 pontos da sua própria resistência a raio, o que numa build parada no meio de grupos lightning enchanted é uma troca pior que o normal.",
+      "Uma resposta, e a build é construída em torno de possuí-la. **A Lightning Mastery não quebra imunidade** — é um multiplicador de dano de 50% mais 12% por nível, igual à da Lightning Sorceress. O que quebra é a **Conviction do Infinity**, e a escolha que define esta build é empunhar esse Infinity você mesma em vez de colocá-lo no mercenário: a aura é idêntica dos dois jeitos, e empunhar libera ele para carregar o Insight que paga a sua conta de mana. O **Griffon's Eye** soma outros -15-20% de resistência a raio do inimigo por cima, e **facets de raio** somam mais ainda. Antes de o Infinity existir, as respostas honestas são o **pacote híbrido com Hydra** por um segundo tipo de dano, ou escolher zonas — o Secret Cow Level não tem nada imune a raio dentro dele. Um sunder charm **Crack of the Heavens** funciona, mas custa 70 a 90 pontos da sua própria resistência a raio, o que numa build parada no meio de grupos lightning enchanted é uma troca pior que o normal.",
     mercenaryNotes:
       "**Esta é a build em que o trabalho do mercenário se inverte.** Como você carrega o Infinity, ele não precisa — então dê a ele um **Insight**, cuja aura de Meditation é o que banca uma build que conjura continuamente. Pegue **Might** pelo dano dele, ou **Holy Freeze** para desacelerar o grupo dentro do qual você está, o que nesta build vale mais que o dano dele. Uma armadura **Treachery** e um **Vampire Gaze** o mantêm vivo; ele ainda vai morrer, porque está onde você está.",
     farmingWhy: {
@@ -3582,12 +3734,12 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     levelingPath: {
       summary:
-        "Evolui como ela mesma. O Charged Bolt desde o nível 1 te leva até a Nova no 12, o Static Field desde o 6 é a sinergia que você mantém, e o Teleport no 18 dá a mobilidade sobre a qual a build é construída. A Lightning Mastery no 30 é quando o dano começa a compor. **Nenhum respec é necessário** — mas tenha clareza de que a build que você está evoluindo não é a build dos níveis finais desta página, que é definida por um item e não por uma skill.",
+        "Evolui como ela mesma. O Charged Bolt desde o nível 1 te leva até a Nova no 12, o Static Field desde o 6 é a sinergia que você mantém, e o Teleport no 18 dá a mobilidade sobre a qual a build é construída. A Lightning Mastery no 30 é quando o dano começa a compor. **Nenhum respec é necessário** — mas tenha clareza de que a build que você está evoluindo não é a build dos níveis finais desta página, que é definida por um item e não por uma skill. **Não comece um pacote antes de o núcleo estar pronto**, o que acontece por volta do nível 80: até lá cada ponto pertence aos 69, e qual pacote você vai querer depende de um Infinity ter aparecido ou não até chegar lá.",
     },
     selfFoundNotes:
-      "Realisticamente, não. A build pronta é um Infinity, que são duas runas Ber entre quatro, e não existe versão do endgame que funcione sem a Conviction. O que *é* self-found são os primeiros oitenta níveis: a Nova no 12 sobre um Static Field maximizado — a sua única sinergia — é um personagem genuinamente forte e muito barato, e a híbrida com Hydra a mantém viável no Hell contra imunes a raio. Trate esta página como destino. As páginas de Frozen Orb e Fire Ball Meteor descrevem builds que chegam ao próprio teto sem uma única runa alta.",
+      "Realisticamente, não. A build pronta é um Infinity, que são duas runas Ber entre quatro, e não existe versão do endgame que funcione sem a Conviction. O que *é* self-found são os primeiros oitenta níveis: a Nova no 12 sobre um Static Field maximizado — a sua única sinergia — é um personagem genuinamente forte e muito barato, e o pacote híbrido com Hydra a mantém viável no Hell contra imunes a raio — é a única rota desta página com custo fechado para um personagem sem runas altas. Trate esta página como destino. As páginas de Frozen Orb e Fire Ball Meteor descrevem builds que chegam ao próprio teto sem uma única runa alta.",
     hardcoreNotes:
-      "A Sorceress mais perigosa do site, e os motivos são estruturais e não corrigíveis. Você luta do centro do grupo por desenho; empunhar o Infinity significa **nenhum escudo**, então sem bloqueio e sem resistência daquele slot; e a reserva de vida da Sorceress é a menor do jogo. Se você pegar o Energy Shield, **mana burn vira letal** em vez de irritante. No Hardcore, a recomendação honesta é colocar o Infinity no mercenário e manter um escudo Spirit — você perde o Insight e paga a mana de outro jeito, e mantém um slot defensivo. Chains of Honor em vez de Enigma, Battle Orders sempre, e 60% de Faster Hit Recovery como requisito duro.",
+      "A Sorceress mais perigosa do site, e os motivos são estruturais e não corrigíveis. Você luta do centro do grupo por desenho; empunhar o Infinity significa **nenhum escudo**, então sem bloqueio e sem resistência daquele slot; e a reserva de vida da Sorceress é a menor do jogo. Se você pegar o pacote Energy Shield, **mana burn vira letal** em vez de irritante. No Hardcore, a recomendação honesta é colocar o Infinity no mercenário e manter um escudo Spirit — você perde o Insight e paga a mana de outro jeito, e mantém um slot defensivo. Chains of Honor em vez de Enigma, Battle Orders sempre, e 60% de Faster Hit Recovery como requisito duro.",
     gearSets: {
       starter: {
         goal: "Charged Bolt até o 12, Nova dali em diante. Barato e genuinamente eficaz.",

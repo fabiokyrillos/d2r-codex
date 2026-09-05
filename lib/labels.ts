@@ -1,5 +1,6 @@
 import type {
   ActionKind,
+  AllocationRole,
   BudgetLevel,
   Confidence,
   Difficulty,
@@ -220,6 +221,23 @@ export const budgetLabels = (t: Dictionary): Record<BudgetLevel, string> => ({
   medium: t.budget.medium,
   high: t.budget.high,
   extreme: t.budget.extreme,
+});
+
+/**
+ * What a build page calls each kind of skill allocation.
+ *
+ * Lived on the build page as a local helper until the package cards needed the
+ * same five words. Two copies of a label set is how "Synergy" and "Sinergia"
+ * drift apart, so it moved here rather than being duplicated.
+ */
+export const allocationRoleLabels = (
+  t: Dictionary,
+): Record<AllocationRole, string> => ({
+  main: t.builds.roleMain,
+  synergy: t.builds.roleSynergy,
+  utility: t.builds.roleUtility,
+  prerequisite: t.builds.rolePrerequisite,
+  flex: t.builds.roleFlex,
 });
 
 export const playDifficultyLabels = (

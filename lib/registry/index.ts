@@ -224,6 +224,37 @@ const buildsFor = memoByLocale((locale) => {
       strengths: copy.strengths,
       weaknesses: copy.weaknesses,
       flexPoints: copy.flexPoints ?? build.flexPoints,
+      // Packages fall back field by field, like every other overlay here: an
+      // untranslated `contentNote` renders in English inside a Portuguese card
+      // rather than disappearing, and `check:content` is what makes that
+      // visible instead of permanent.
+      skillPackages: build.skillPackages?.map((group) => {
+        const groupCopy = copy.skillPackages?.[group.id];
+        return {
+          ...group,
+          name: groupCopy?.name ?? group.name,
+          intro: groupCopy?.intro ?? group.intro,
+          packages: group.packages.map((pkg) => {
+            const pkgCopy = groupCopy?.packages?.[pkg.id];
+            if (!pkgCopy) return pkg;
+            return {
+              ...pkg,
+              name: pkgCopy.name,
+              when: pkgCopy.when,
+              tradeoff: pkgCopy.tradeoff,
+              gearNote: pkgCopy.gearNote ?? pkg.gearNote,
+              statNote: pkgCopy.statNote ?? pkg.statNote,
+              rotationNote: pkgCopy.rotationNote ?? pkg.rotationNote,
+              contentNote: pkgCopy.contentNote ?? pkg.contentNote,
+              remainderNote: pkgCopy.remainderNote ?? pkg.remainderNote,
+              skills: pkg.skills.map((s) => ({
+                ...s,
+                note: pkgCopy.skillNotes?.[s.skill] ?? s.note,
+              })),
+            };
+          }),
+        };
+      }),
       immunityPlan: copy.immunityPlan ?? build.immunityPlan,
       mercenaryNotes: copy.mercenaryNotes ?? build.mercenaryNotes,
       selfFoundNotes: copy.selfFoundNotes ?? build.selfFoundNotes,
