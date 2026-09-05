@@ -1750,4 +1750,77 @@ export const runewords: Runeword[] = [
     ],
     confidence: "verified",
   },
+
+  // -------------------------------------------------------------------------
+  // Assassin claws
+  // -------------------------------------------------------------------------
+  {
+    slug: "mosaic",
+    name: "Mosaic",
+    summary:
+      "The claw that stopped Martial Arts charges from being spent. Half the time you swing a finisher, the charges stay up.",
+    runes: ["mal", "gul", "amn"],
+    sockets: 3,
+    requiredLevel: 53,
+    tier: "optimized",
+    bases: {
+      categories: ["claw"],
+      display: "Any 3-socket Assassin Claw",
+      exclusions: [
+        "Claws only — the runeword's item-type field is `h2h`, so no other weapon accepts it, and no other class can equip the result.",
+      ],
+    },
+    stats: [
+      { text: "+2 to Martial Arts (Assassin Only)", notable: true },
+      {
+        text: "50% Chance for Finishing Moves to not consume Charges",
+        notable: true,
+      },
+      { text: "+20% Increased Attack Speed" },
+      { text: "+200-250% Enhanced Damage", variable: true },
+      { text: "Adds 8-15 Fire Damage", variable: true },
+      { text: "Adds 8-15 Cold Damage", variable: true },
+      { text: "Adds 8-15 Lightning Damage", variable: true },
+      { text: "Prevent Monster Heal" },
+      { text: "+20% Bonus to Attack Rating" },
+      { text: "7% Life Stolen per Hit" },
+    ],
+    recommendedBases: [
+      "**Any 3-socket claw with the attack speed you want.** The runeword adds 20% and the base's own speed does the rest; a Feral Claws or Greater Talons base is the usual pick for the speed rather than for the damage.",
+      "Enhanced Damage on the runeword multiplies the *claw's* damage, so a higher base damage claw is worth more than it looks — but only for the finishers that use the weapon. Kicks do not.",
+    ],
+    commonMistakes: [
+      "**Socketing in rune order Mal, Gul, Amn.** Getting it wrong destroys three high runes' worth of value; there is no undo beyond a Hel rune and starting again with a new base.",
+      "Assuming two of them give 100%. The property is 50 on each claw and the extraction says nothing about how two are combined — see the build page.",
+      "Expecting it on a Ladder character you are levelling now. It cannot be made there. The block above is the whole story.",
+    ],
+    availability: {
+      rows: [
+        { mode: "ladder", status: "usable" },
+        { mode: "non-ladder-online", status: "craftable" },
+        { mode: "offline", status: "craftable" },
+      ],
+      notes: {
+        rows: {
+          ladder:
+            "**The one runeword in the file that cannot be made on Ladder.** The recipe is blocked; the item is not. A claw made elsewhere and brought over on a transferred character still works, and so does one traded to you.",
+          "non-ladder-online":
+            "Made and worn normally. This is where every current Mosaic guide is written from, whether or not it says so.",
+          offline:
+            "Made and worn normally. Offline has no ladder, so the crafting block has nothing to apply to.",
+        },
+        consequence:
+          "If you are playing the current Ladder season and have no character to transfer one from, **you cannot make this claw** and the build has to be played without it. The build page's opening package is written for exactly that case.",
+        history:
+          "It was Ladder-only when it arrived in Ladder Season 3, and stayed Ladder-only through Season 12. That is the reverse of today's answer, and it is why so much of what is written about Mosaic is backwards rather than merely out of date.",
+      },
+      source:
+        "json/runes.json @ blizzhackers/d2data fc46999 — disallowCraftingInLadder: 1, firstLadderSeason: 3, lastLadderSeason: 12",
+      checked: "2026-09-05",
+      baseline: "D2R Patch 3.3 / Ladder Season 15",
+    },
+    notes:
+      "`disallowCraftingInLadder` is set on **exactly one** of the 181 runewords in the pinned extraction, and this is it. Blizzard's stated reason was a graphics fault that could crash clients, not balance — and `charge-noconsume` is still 50, unchanged, so the runeword has not been nerfed. It has been made unmakeable in one mode, which is a different thing.",
+    confidence: "verified",
+  },
 ];

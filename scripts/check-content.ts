@@ -69,6 +69,12 @@ import {
 import { checkSourcedDivergence, exitCodeFor, isUntranslatedProse } from "./content-rules";
 import { FREEZE_RULES, checkFreezeLengthClaims } from "./freeze-length-claims";
 import { ASSASSIN_RULES, checkAssassinClaims } from "./assassin-rules";
+import {
+  AVAILABILITY_RULES,
+  checkAvailabilityClaims,
+  checkAvailabilityShape,
+  checkGates,
+} from "./availability-rules";
 import { TREES_NOT_YET_AUTHORED, checkClassTrees } from "./class-tree-rules";
 import {
   CORROBORATED,
@@ -1183,6 +1189,39 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
   const assassin = pages.flatMap(({ where, lines }) => checkAssassinClaims(lines, where));
   for (const rule of ASSASSIN_RULES) {
     const hits = assassin.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+
+  /*
+   * Availability rides the same sweep, and it has to: the sentence that
+   * collapses making a thing into using it does not appear in the availability
+   * block — the block is the thing that gets it right. It appears in a gear
+   * tier's `why`, in a package's `when`, in a build summary. Only a sweep over
+   * every string on every page in both locales sees those together.
+   */
+  const availability = pages.flatMap(({ where, lines }) =>
+    checkAvailabilityClaims(lines, where),
+  );
+  for (const locale of LOCALES) {
+    for (const rw of getRunewords(locale)) {
+      if (!rw.availability) continue;
+      availability.push(
+        ...checkAvailabilityShape(rw.availability, `${locale} runeword ${rw.slug}`),
+      );
+    }
+    for (const build of getBuilds(locale)) {
+      availability.push(
+        ...checkGates(
+          build.gatedBy,
+          (slug) => getRuneword(locale, slug)?.availability !== undefined,
+          `${locale} build ${build.slug}`,
+        ),
+      );
+    }
+  }
+  for (const rule of AVAILABILITY_RULES) {
+    const hits = availability.filter((p) => p.rule === rule);
     console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
     for (const h of hits) problems.push(h.message);
   }

@@ -89,6 +89,10 @@ const runewordsFor = memoByLocale((locale) =>
     usedBy: copy.usedBy ?? base.usedBy,
     commonMistakes: copy.commonMistakes ?? base.commonMistakes,
     notes: copy.notes ?? base.notes,
+    availability:
+      base.availability && copy.availability
+        ? { ...base.availability, notes: copy.availability }
+        : base.availability,
     // Stat lines are game strings and stay English; the only exception is the
     // "not yet verified" placeholder on the expansion runewords.
     stats: copy.stats ?? base.stats,

@@ -1,4 +1,5 @@
 import type {
+  Availability,
   Confidence,
   Entity,
   GearSlot,
@@ -223,6 +224,13 @@ export interface Runeword extends Entity {
   /** Mistakes to avoid — surfaced as a warning callout. */
   commonMistakes?: string[];
   modes?: ModeScope;
+  /**
+   * Present only where making it and using it are different questions.
+   *
+   * `modes` above is the ordinary case — a runeword that belongs to one ladder
+   * side. This field is for the one that does not: see `Availability`.
+   */
+  availability?: Availability;
   release?: Release;
   confidence?: Confidence;
   notes?: string;

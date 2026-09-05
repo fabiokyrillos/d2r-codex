@@ -667,4 +667,37 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "**O +2 é em Necromancer Skill Levels, não em All Skills.** Um mercenário usando esta armadura ganha as resistências, a mana e a redução de dano, e mais nada.",
     ],
   },
+  mosaic: {
+    summary:
+      "A garra que fez as cargas de Martial Arts pararem de ser gastas. Metade das vezes em que você usa um finisher, as cargas continuam de pé.",
+    basesDisplay: "Qualquer Assassin Claw de 3 sockets",
+    basesExclusions: [
+      "Só garras — o campo de tipo de item da runeword é `h2h`, então nenhuma outra arma aceita, e nenhuma outra classe consegue equipar o resultado.",
+    ],
+    recommendedBases: [
+      "**Qualquer garra de 3 sockets com a velocidade de ataque que você quer.** A runeword acrescenta 20% e a velocidade da base faz o resto; uma base Feral Claws ou Greater Talons é a escolha usual, pela velocidade e não pelo dano.",
+      "O Enhanced Damage da runeword multiplica o dano *da garra*, então uma base com dano maior vale mais do que parece — mas só para os finishers que usam a arma. Os chutes não usam.",
+    ],
+    commonMistakes: [
+      "**Socketar fora da ordem Mal, Gul, Amn.** Errar destrói o equivalente a três runas altas; não há desfazer além de uma runa Hel e recomeçar com outra base.",
+      "Assumir que duas delas dão 100%. A propriedade vale 50 em cada garra e a extração não diz nada sobre como duas se combinam — veja a página da build.",
+      "Contar com ela num personagem de Ladder que você está evoluindo agora. Lá ela não pode ser fabricada. O bloco acima é a história inteira.",
+    ],
+    availability: {
+      rows: {
+        ladder:
+          "**A única runeword do arquivo que não pode ser fabricada no Ladder.** A receita está bloqueada; o item não está. Uma garra feita em outro modo e trazida num personagem transferido continua funcionando, e uma recebida em troca também.",
+        "non-ladder-online":
+          "Fabricada e usada normalmente. É daqui que todo guia atual de Mosaic é escrito, diga ele isso ou não.",
+        offline:
+          "Fabricada e usada normalmente. Offline não tem ladder, então o bloqueio de fabricação não tem onde se aplicar.",
+      },
+      consequence:
+        "Se você está jogando a temporada atual de Ladder e não tem um personagem de onde transferir uma, **você não pode fabricar esta garra** e a build precisa ser jogada sem ela. O pacote de abertura da página da build foi escrito exatamente para esse caso.",
+      history:
+        "Ela foi Ladder-only quando chegou na Ladder Season 3, e continuou Ladder-only até a Season 12. Isso é o inverso da resposta de hoje, e é por isso que boa parte do que se escreve sobre Mosaic está invertido, e não apenas desatualizado.",
+    },
+    notes:
+      "`disallowCraftingInLadder` está marcado em **exatamente uma** das 181 runewords da extração fixada, e é esta. A razão declarada pela Blizzard foi uma falha gráfica capaz de derrubar clientes, não balanceamento — e `charge-noconsume` continua 50, inalterado, então a runeword não sofreu nerf. Ela foi tornada infabricável num modo, o que é outra coisa.",
+  },
 };

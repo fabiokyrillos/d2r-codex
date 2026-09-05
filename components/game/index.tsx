@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import type {
+  Availability,
   Confidence,
   Difficulty,
   Element,
@@ -15,6 +16,9 @@ import { resolveRef } from "@/lib/registry/resolve";
 import { type Dictionary } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import {
+  availabilityModeLabels,
+  availabilityStatusLabels,
+  availabilityStatusStyles,
   confidenceLabels,
   difficultyColors,
   difficultyLabels,
@@ -320,6 +324,95 @@ export function StatLines({ stats }: { stats: StatLine[] }) {
         </li>
       ))}
     </ul>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Availability
+// ---------------------------------------------------------------------------
+
+/**
+ * The craft-versus-wear table.
+ *
+ * Renders every row the data carries, in the order the data declares. It never
+ * fills in a missing mode: the type requires all of them, so an absent row is
+ * a validation failure to be caught by `check:content`, not something to paper
+ * over at render time. `title` exists because the same block appears on the
+ * item's own page, where the heading is generic, and on a build page, where it
+ * names the item that gates the build.
+ */
+export async function AvailabilityTable({
+  availability,
+  title,
+}: {
+  availability: Availability;
+  title?: string;
+}) {
+  const copy = availability.notes;
+  const { t } = await getI18n();
+  const modeLabel = availabilityModeLabels(t);
+  const statusLabel = availabilityStatusLabels(t);
+
+  return (
+    <div className="rounded border border-border bg-surface p-4">
+      <p className="text-sm font-semibold text-ink">{title ?? t.availability.title}</p>
+      <p className="mt-1 text-sm leading-relaxed text-ink-muted">
+        <RichText>{t.availability.description}</RichText>
+      </p>
+
+      <ul className="mt-3 space-y-2">
+        {availability.rows.map((row) => (
+          <li
+            key={row.mode}
+            className="flex flex-col gap-1 border-t border-border pt-2 sm:flex-row sm:items-baseline sm:gap-3"
+          >
+            <span className="shrink-0 text-sm font-medium text-ink sm:w-40">
+              {modeLabel[row.mode]}
+            </span>
+            <span
+              className={cn(
+                "inline-flex w-fit shrink-0 rounded border px-2 py-0.5 text-xs font-semibold",
+                availabilityStatusStyles[row.status].tone,
+              )}
+            >
+              {statusLabel[row.status]}
+            </span>
+            <span className="text-sm leading-relaxed text-ink-muted [&_strong]:text-ink">
+              <RichText>{copy.rows[row.mode]}</RichText>
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      <p className="mt-3 border-t border-border pt-3 text-sm leading-relaxed text-ink-muted [&_strong]:text-ink">
+        <strong className="text-ink">{t.availability.consequenceLabel}: </strong>
+        <RichText>{copy.consequence}</RichText>
+      </p>
+
+      {copy.history && (
+        <p className="mt-2 text-sm leading-relaxed text-ink-muted [&_strong]:text-ink">
+          <strong className="text-ink">{t.availability.historyLabel}: </strong>
+          <RichText>{copy.history}</RichText>
+        </p>
+      )}
+
+      <dl className="mt-3 grid gap-x-4 gap-y-1 border-t border-border pt-3 text-xs text-ink-subtle sm:grid-cols-3">
+        <div>
+          <dt className="inline font-semibold">{t.availability.sourceLabel}: </dt>
+          <dd className="inline">{availability.source}</dd>
+        </div>
+        <div>
+          <dt className="inline font-semibold">{t.availability.baselineLabel}: </dt>
+          <dd className="inline">{availability.baseline}</dd>
+        </div>
+        <div>
+          <dt className="inline font-semibold">{t.availability.checkedLabel}: </dt>
+          <dd className="inline">
+            <time dateTime={availability.checked}>{availability.checked}</time>
+          </dd>
+        </div>
+      </dl>
+    </div>
   );
 }
 

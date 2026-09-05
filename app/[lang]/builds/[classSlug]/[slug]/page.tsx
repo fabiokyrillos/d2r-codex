@@ -16,7 +16,7 @@ import {
 } from "@/components/ui";
 import { SkillTree } from "@/components/game";
 import { SkillPackages } from "@/components/game/skill-packages";
-import { ConfidenceNote, DifficultyBadge, ElementBadge, RichText } from "@/components/game";
+import { AvailabilityTable, ConfidenceNote, DifficultyBadge, ElementBadge, RichText } from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
 import {
   getBuild,
@@ -24,6 +24,7 @@ import {
   getClass,
   getFarmingArea,
   getMercenary,
+  getRuneword,
   getSkill,
 } from "@/lib/registry";
 import { dictionaryFor, fmt, formatPoints, isLocale } from "@/lib/i18n";
@@ -80,6 +81,18 @@ export default async function BuildPage(
 
   const cls = getClass(locale, build.classSlug);
   const merc = build.mercenary ? getMercenary(locale, build.mercenary) : undefined;
+
+  /*
+   * A gate is only a gate if the item it names actually carries availability
+   * data. Filtering here rather than asserting means a runeword that later has
+   * its restriction lifted — the block deleted from its entry — simply stops
+   * rendering the callout, instead of crashing the build page that referenced
+   * it. `check:content` is where a `gatedBy` pointing at nothing is caught.
+   */
+  const gates = (build.gatedBy ?? [])
+    .map((rwSlug) => getRuneword(locale, rwSlug))
+    .filter((rw) => rw?.availability !== undefined)
+    .map((rw) => rw!);
   const tiers = progressionTiers(t);
   const ratings = ratingLabels(t);
   const roles = allocationRoleLabels(t);
@@ -138,6 +151,24 @@ export default async function BuildPage(
       />
 
       <div className="mt-8 space-y-12">
+        {/*
+          Above "how it plays", because a reader who cannot make the item this
+          build is named after needs to know before they read a word about how
+          it feels. The prose is the runeword's, not the build's, so the two
+          pages cannot disagree.
+        */}
+        {gates.length > 0 && (
+          <div className="space-y-4">
+            {gates.map((rw) => (
+              <AvailabilityTable
+                key={rw.slug}
+                availability={rw.availability!}
+                title={fmt(t.availability.gateTitle, { item: rw.name })}
+              />
+            ))}
+          </div>
+        )}
+
         <Section title={t.builds.howItPlays}>
           {/*
             Through RichText like every other content string. It was not, and

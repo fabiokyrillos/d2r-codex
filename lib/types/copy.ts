@@ -1,4 +1,4 @@
-import type { ContentBlock, Slug, StatLine } from "@/lib/types";
+import type { AvailabilityNotes, ContentBlock, Slug, StatLine } from "@/lib/types";
 
 /**
  * Localized editorial copy.
@@ -34,6 +34,8 @@ export interface RunewordCopy {
   recommendedBases?: string[];
   usedBy?: string;
   commonMistakes?: string[];
+  /** Overlays `Runeword.availability.notes`. Required wherever it exists. */
+  availability?: AvailabilityNotes;
   notes?: string;
   /**
    * Present only where a stat line is genuinely editorial rather than a game

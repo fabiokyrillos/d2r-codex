@@ -213,6 +213,17 @@ export interface Build extends Entity {
   };
 
   modes?: ModeScope;
+  /**
+   * Runewords whose availability materially gates this build.
+   *
+   * Not "runewords it uses" — the gear tiers already carry those, and a build
+   * that merely prefers an item is not gated by it. This is the shorter list
+   * of items without which the build is a different build, and it exists so
+   * the page can surface their `Availability` rather than restating it. A
+   * restatement is a second copy of a fact that changes on Blizzard's
+   * schedule, and the two would drift the first time one was updated.
+   */
+  gatedBy?: Slug[];
   release?: Release;
   confidence?: Confidence;
   /** Set false while a build page is still a stub. */

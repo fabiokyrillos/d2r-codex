@@ -1096,6 +1096,25 @@ export const ptBR: Dictionary = {
     ring2: "Anel",
   },
 
+  availability: {
+    title: "Onde dá para conseguir, e onde só dá para usar",
+    description:
+      "Fabricar uma coisa e usá-la são duas permissões diferentes, e para uma runeword do jogo elas hoje divergem. Esta tabela responde às duas em todo modo, em vez de escolher um lado.",
+    modeLadder: "Ladder",
+    modeNonLadderOnline: "Non-Ladder, online",
+    modeOffline: "Offline",
+    statusCraftable: "Pode ser fabricada",
+    statusUsable: "Pode ser usada, não fabricada",
+    statusDisabled: "Indisponível",
+    statusUnknown: "Não estabelecido",
+    sourceLabel: "Lido de",
+    checkedLabel: "Verificado em",
+    baselineLabel: "Baseline",
+    historyLabel: "O que já foi",
+    consequenceLabel: "O que isso significa para esta build",
+    gateTitle: "Antes de começar: {item}",
+  },
+
   actionKinds: {
     skill: "Skill",
     stat: "Atributos",

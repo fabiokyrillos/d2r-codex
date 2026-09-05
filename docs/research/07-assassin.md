@@ -176,3 +176,105 @@ question, not a recommendation.
 Whether Blizzard intends to re-enable Mosaic on Ladder, and when. Maxroll's
 standing banner says "when Mosaic is reintroduced", which is an expectation
 rather than information.
+
+---
+
+## 4. Definitive roster — cycle 2
+
+Cycle 1 recorded fifteen families with a create/consolidate/refuse verdict.
+This is the same set re-examined against the pinned data rather than against
+the guides, with the columns a build page actually needs. **Nothing was
+re-researched that cycle 1 had already settled and sourced**; what changed is
+that the point plans and rotations below are now derived from `skills.json`
+rather than transcribed, and three verdicts moved.
+
+Sources are unchanged from §3 and are not re-listed per row: the pinned
+extraction at `fc46999` for every mechanical figure, Maxroll's nine Assassin
+guides (all stamped 2026-05-22) for what is *played*, and Blizzard's patch
+material for availability. Where a guide and the extraction disagree, the row
+says so.
+
+### Availability, stated once
+
+Only one thing on this page varies by mode, and it varies in one direction:
+**Mosaic cannot be crafted on Ladder** and can be worn there. Every other
+family below is craftable and usable in all three modes, so their availability
+column would read the same word three times and is omitted rather than padded.
+The distinction now has a type — `Availability` in `lib/types/core.ts` — and
+`npm run test:availability` refuses the two collapsed sentences.
+
+### The nine, ordered by what the cycle will build
+
+| # | Canonical | Aliases | Main skill | Distribution (110) | Rotation | Distinctive gear | Verdict |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | **Lightning Trapsin** | Trapsin, Trapper, Lightsin, LS/DS | Lightning Sentry | LS 20, CBS 20, Shock Web 20, Death Sentry 20, Fire Blast 1, Shadow suite 9 = **90**, 20 in one package | Mind Blast to stun, lay 4 Lightning + 1 Death Sentry on the pack, Cloak of Shadows if it turns | Two Spirits or a claw with +3 Lightning Sentry; nothing mode-gated | **CREATE** — flagship |
+| 2 | **Fire Trapsin** | WoF Trapsin, Fire Trapper | Wake of Inferno | WoI 20, Wake of Fire 20, Fire Blast 20, Death Sentry 1, Shadow suite 9 = **70**, 40 in packages | Spread Wake of Fire across the room; Wake of Inferno stacked on one target | Fire facets rather than lightning; the same claws | **CREATE** — inverted immunity profile, different rotation |
+| 3 | **Phoenix Strike** | PS Sin, Mosaic Sin, Mosaic Martial Arts | Phoenix Strike | Phoenix Strike 20, Fists of Fire 20, Claws of Thunder 20, Blades of Ice 20, Dragon Talon or Dragon Claw as finisher, Shadow suite | Charge to 3, release with a finisher; the three elements fire in order | **Mosaic ×1 or ×2 — Ladder-gated** | **CREATE**, and it is the only page that has to carry the availability block |
+| 4 | **Kicksin** | Dragon Talon Sin, Kick Assassin, Kicker | Dragon Talon | Dragon Talon 20, Venom 20, Fade, Weapon Block, Shadow Master, Burst of Speed | Tiger Strike to 3 charges, release with Dragon Talon's kick chain | **Boots** — kick damage lives there and nowhere else | **CREATE** — Uber specialist |
+| 5 | **Blade Fury** | Bladesin, Furysin | Blade Fury | Blade Fury 20, Blade Sentinel 20, Blade Shield 20, Venom 20 | Hold Blade Fury at range; Blade Shield running | The one Assassin build that wants a **normal weapon**, not claws | **CREATE** |
+| 6 | **Dragon Tail** | Tigertail | Dragon Tail | Dragon Tail 20, Tiger Strike 20, Venom, Fade | Tiger Strike ×3 then one Dragon Tail | Boots again, but the payload is a **fire** blast | **CREATE** — see the −40% attack speed note below |
+| 7 | **Riftsin** | — | Dragon Talon | Dragon Talon 20 plus the trap tree for utility | Kick for hit-rate; the weapon procs Frozen Orb | **Rift** — a *weapon* runeword, so the Mosaic block does not touch it | **CREATE** — hard ceiling at /players 1-3 |
+| 8 | **Whirlwind Assassin** | WWsin | Whirlwind (from the item) | Zero points in the damage skill; everything in Venom, Fade, Weapon Block, Shadow Master | Whirlwind | **Chaos** — claw-only, and verified to carry no restriction flag | **CREATE**, low priority |
+| 9 | **Fire Blast Assassin** | Bomber, Bombasin | Fire Blast | Fire Blast 20 fed by all five traps at 11%/pt | Aimed throw | Nothing distinctive | **FOLD INTO Lightning Trapsin** — verdict moved, see below |
+
+### One cycle-1 sentence that the arithmetic contradicts
+
+§3 calls the Lightning Trapsin "the one Assassin build that levels as itself
+into endgame". **That is wrong, and the numbers say so.** Every lightning trap
+has a minimum damage of 1 at every level — Lightning Sentry is 1-20 at level 1
+and 8-2574 at level 20 with both synergies maxed — so the build is a lottery
+ticket until roughly sixty points are in it. Wake of Fire at the same twenty-four
+points deals **71-81 per wave** with a floor that is not 1. The Lightning
+Trapsin levels on *fire* and respecs once, at level 45; the leveling page states
+the closure. Nothing was published on the strength of the cycle-1 sentence, so
+this is a correction to a note rather than to a page.
+
+### Three verdicts that moved, and why
+
+- **Fire Blast Assassin: CREATE (borderline) → FOLD.** Cycle 1 called it the
+  weakest of the nine and said it could be folded "if a tighter set is wanted".
+  The arithmetic settles it. Fire Blast receives 11% per hard point from all
+  five traps, and the Lightning Trapsin already maxes three of them; at that
+  point a 19-point package takes Fire Blast to **646-859 per bomb**, which is
+  the same character with the same gear pressing a different button. There is
+  no distribution, no rotation and no gear that differs. It ships as the
+  Lightning Trapsin's lightning-immunity package, where it is a real answer,
+  rather than as a page describing a build nobody plays on its own.
+- **"Martial Arts without Mosaic": CONSOLIDATE → the Phoenix Strike page's
+  default.** Cycle 1 was right that it is not a family. It is stronger than
+  that: on the current Ladder it is *the only version that can be started*, so
+  it is not the fallback section, it is the opening section, and the Mosaic
+  route is the one written as conditional.
+- **Kicksin hybrid with traps: CONSOLIDATE, confirmed.** Death Sentry's corpse
+  explosion is **40-80% of the monster type's base life and does not scale with
+  skill level** (`mon death sentry` Param1/Param2, against the Necromancer's
+  70-120%). One point buys the entire chain reaction. That is what makes the
+  "hybrid" a one-point splash on a kick build rather than a family — and it is
+  also why the Lightning Trapsin maxes Death Sentry *last*.
+
+### Refused, unchanged from cycle 1
+
+Standalone Tiger / Cobra / Fists builds (charge-ups cannot kill alone; v1.10-era
+guide names), PvP WW/Trapper hybrid (no current-patch maintenance), "IceKicksin"
+(traced to the D2R Reimagined mod, not retail).
+
+### Two mechanics found this cycle that change a recommendation
+
+- **Dragon Tail carries `Param4 = -40`, "Attack Speed % Reduction".** Its own
+  row applies a 40% attack-speed penalty. No guide consulted mentions this. It
+  is the reason Dragon Tail is a one-big-kick build and Dragon Talon is a
+  many-small-kicks build, and it belongs on both pages.
+- **Charged Bolt Sentry gains a shot per 4 hard points of Lightning Sentry**
+  (`Param7 = 4`), and Shock Web gains a bolt per 3 (`Param6 = 3`). On the
+  finished Lightning Trapsin this is decoration: the five-trap ceiling is spent
+  on Lightning and Death Sentries, so **Charged Bolt Sentry is twenty points in
+  a trap the finished build never lays**. It is a pure synergy, and the page
+  has to say so or the reader will keep casting it.
+
+### One open question, recorded and not published
+
+`mon death sentry` computes its shot count as `par8 + skill('Fire Trauma'.blvl)/3`
+— Fire Blast would add corpse explosions — while the parent Death Sentry row
+carries a flat `Param1 = 5` and the column comment says the two "must match".
+They do not match once Fire Blast has levels. Which one the engine reads is not
+determinable from the table, so nothing on the site depends on it.

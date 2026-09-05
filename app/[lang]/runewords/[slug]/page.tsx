@@ -12,6 +12,7 @@ import {
   Section,
 } from "@/components/ui";
 import {
+  AvailabilityTable,
   ConfidenceNote,
   ItemRefLink,
   RichText,
@@ -93,6 +94,11 @@ export default async function RunewordPage(
         {/* The base rule sits above everything else on purpose — it is the
             information that prevents the expensive mistake. */}
         <RunewordBaseRule runeword={rw} />
+
+        {/* Second, and only where making it and wearing it are different
+            questions. On every other runeword this block is absent, which is
+            itself the answer. */}
+        {rw.availability && <AvailabilityTable availability={rw.availability} />}
 
         <Section title={t.runewords.runesInOrder}>
           <div className="rounded-lg border border-border bg-surface p-5">

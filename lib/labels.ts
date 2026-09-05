@@ -1,6 +1,8 @@
 import type {
   ActionKind,
   AllocationRole,
+  AvailabilityMode,
+  AvailabilityStatus,
   BudgetLevel,
   Confidence,
   Difficulty,
@@ -272,6 +274,40 @@ export const confidenceLabels = (
   community: t.confidence.community,
   unverified: t.confidence.unverified,
 });
+
+export const availabilityModeLabels = (
+  t: Dictionary,
+): Record<AvailabilityMode, string> => ({
+  ladder: t.availability.modeLadder,
+  "non-ladder-online": t.availability.modeNonLadderOnline,
+  offline: t.availability.modeOffline,
+});
+
+export const availabilityStatusLabels = (
+  t: Dictionary,
+): Record<AvailabilityStatus, string> => ({
+  craftable: t.availability.statusCraftable,
+  usable: t.availability.statusUsable,
+  disabled: t.availability.statusDisabled,
+  unknown: t.availability.statusUnknown,
+});
+
+/**
+ * Tone per status, module-level because it is presentation.
+ *
+ * `usable` is deliberately not the same tone as `craftable`. "You may wear one"
+ * and "you may make one" look alike in a table and are the whole distinction
+ * this feature exists to draw, so they must not be the same colour.
+ */
+export const availabilityStatusStyles: Record<
+  AvailabilityStatus,
+  { tone: string }
+> = {
+  craftable: { tone: "border-emerald-500/40 bg-emerald-500/10 text-emerald-200" },
+  usable: { tone: "border-amber-500/40 bg-amber-500/10 text-amber-200" },
+  disabled: { tone: "border-rose-500/40 bg-rose-500/10 text-rose-200" },
+  unknown: { tone: "border-slate-500/40 bg-slate-500/10 text-slate-300" },
+};
 
 export const gearSlotLabels = (t: Dictionary): Record<GearSlot, string> => ({
   helm: t.gearSlots.helm,
