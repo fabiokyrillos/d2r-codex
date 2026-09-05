@@ -124,6 +124,7 @@ export const synergyKindLabels = (t: Dictionary): Record<string, string> => ({
   "attack-rating": t.skills.synergyKindAttackRating,
   physical: t.skills.synergyKindPhysical,
   fire: t.skills.synergyKindFire,
+  shots: t.skills.synergyKindShots,
 });
 
 /**
@@ -146,6 +147,7 @@ export const SYNERGY_KINDS_LABELLED: readonly string[] = [
   "attack-rating",
   "physical",
   "fire",
+  "shots",
 ];
 
 /**

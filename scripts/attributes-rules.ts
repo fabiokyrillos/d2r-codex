@@ -76,6 +76,19 @@ export const CHARSTATS: Record<string, CharStatsRow> = {
     LifePerVitality: 12, ManaPerMagic: 8, LifePerLevel: 8, ManaPerLevel: 6,
     StaminaPerVitality: 4,
   },
+  /*
+   * The Assassin is the only class in the table whose quarter-point columns do
+   * not all divide evenly. `ManaPerMagic: 7` is 1.75 mana per point of Energy
+   * and `StaminaPerVitality: 5` is 1.25 stamina per point of Vitality — every
+   * other class carries multiples of four in both. A conversion that rounded, or
+   * a model typed as integers, would publish 2 and 1 here and be wrong about the
+   * only class it could be wrong about.
+   */
+  assassin: {
+    str: 20, dex: 20, vit: 20, int: 25, hpadd: 30, stamina: 95,
+    LifePerVitality: 12, ManaPerMagic: 7, LifePerLevel: 8, ManaPerLevel: 6,
+    StaminaPerVitality: 5,
+  },
 };
 
 /**

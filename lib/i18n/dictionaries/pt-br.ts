@@ -716,6 +716,7 @@ export const ptBR: Dictionary = {
     synergyKindArmor: "defesa",
     synergyKindHealing: "cura",
     synergyKindDuration: "duração",
+    synergyKindShots: "tiros disparados",
     synergyKindFreeze: "tempo de congelamento",
     synergyKindHp: "vida",
     synergyKindAbsorb: "absorção de dano",
@@ -793,6 +794,8 @@ export const ptBR: Dictionary = {
       "A tabela é o dano próprio desta skill. Ao contrário dos outros ataques da árvore dela, não contribui com nada do dano físico base da sua arma — o golpe ainda rola contra o attack rating, e os projéteis secundários são criados à parte.",
     noProgressionConverted:
       "O dano desta skill é o da sua arma. Parte dele acontece como o elemento da skill em vez de dano físico, e essa parcela cresce com o nível — é o valor convertido na tabela acima. A skill não tem alcance elemental próprio para publicar.",
+    noProgressionKick:
+      "O dano desta skill vem das suas **botas**, não da sua arma. As garras nas suas mãos somam os níveis de skill delas e nada mais, e é por isso que uma build de chute procura botas e as melhora em vez de caçar uma arma. Não há faixa para publicar aqui: a skill multiplica o chute, e o chute é das botas. O Crushing Blow é sorteado uma vez por chute, que é por que essas builds matam bosses muito acima do dano listado.",
     damageOverTime:
       "O veneno acontece ao longo do tempo, e não no impacto. A tabela dá o total durante a duração ao lado.",
     noProgressionCorpse:

@@ -1,0 +1,369 @@
+/**
+ * Proof that the Assassin's controls fire.
+ *
+ * The class arrives with thirty skills and no build pages, so there is no
+ * shipped mistake to plant here the way `freeze-length.test.ts` plants six. What
+ * there is instead is a set of sentences that are *true of another class* and
+ * would read as perfectly ordinary on these pages — which is the failure mode
+ * the whole file is written against.
+ *
+ * Three kinds of check.
+ *
+ * **Structure, against the graph.** Thirty skills, three trees, the positions
+ * and prerequisites the extraction gave, and the two disjoint sets the martial
+ * arts tree is built out of. These fail if a skill is dropped, mis-slugged or
+ * moved.
+ *
+ * **Derived arithmetic.** The blade share is computed from `SrcDam` rather than
+ * typed as 75%, and the charge duration in seconds from the frame count. If the
+ * pinned extraction ever gives different columns these numbers move, and the
+ * prose quoting them fails in `check:content`.
+ *
+ * **Planted mutations.** Every sentence in `WOULD_HAVE_SHIPPED` is one a writer
+ * would plausibly produce from knowing another class: the weapon scaling that is
+ * true of every attack except a kick, the shield block that is true of every
+ * blocker except this one, the poison that ticks for seconds like every poison
+ * except this one. Each is asserted rejected, and its corrected form asserted
+ * silent — a rule that refuses both the error and the fix is a rule the next
+ * author deletes.
+ *
+ * Run with `npm run test:assassin`.
+ */
+import { SKILL_GRAPH } from "../content/classes/skill-graph";
+import { assassinSkills, assassinTrees } from "../content/classes/assassin/skills";
+import {
+  ASSASSIN_RULES,
+  BLADE_SKILLS,
+  BLADE_WEAPON_DENOMINATOR,
+  BLADE_WEAPON_NUMERATOR,
+  BLADE_WEAPON_SHARE,
+  CHARGE_DURATION_FRAMES,
+  CHARGE_UPS,
+  FINISHERS,
+  FRAMES_PER_SECOND,
+  KICKS,
+  SHADOW_LIMIT,
+  SHADOW_SLUGS,
+  TRAP_LIMIT,
+  TRAP_SLUGS,
+  VENOM_POISON_FRAMES,
+  checkAssassinClaims,
+  type AssassinRule,
+} from "./assassin-rules";
+
+let passed = 0;
+const failures: string[] = [];
+const check = (name: string, ok: boolean, detail = "") => {
+  if (ok) {
+    passed++;
+    console.log(`  ok   ${name}`);
+  } else {
+    failures.push(`${name}${detail ? ` — ${detail}` : ""}`);
+    console.log(`  FAIL ${name}${detail ? ` — ${detail}` : ""}`);
+  }
+};
+
+const fires = (line: string, rule: AssassinRule) =>
+  checkAssassinClaims([line], "control").some((p) => p.rule === rule);
+const silent = (line: string) => checkAssassinClaims([line], "control").length === 0;
+
+const nodes = Object.entries(SKILL_GRAPH).filter(([, n]) => n.classSlug === "assassin");
+const bySlug = new Map(nodes);
+
+// ===========================================================================
+console.log("\nThe class is complete and where the extraction put it");
+// ===========================================================================
+{
+  check("thirty skills in the graph", nodes.length === 30, `${nodes.length}`);
+  check("thirty skills authored", assassinSkills.length === 30, `${assassinSkills.length}`);
+  check("three trees authored", assassinTrees.length === 3, `${assassinTrees.length}`);
+
+  const authored = new Set(assassinSkills.map((s) => s.slug));
+  const graphed = new Set(nodes.map(([slug]) => slug));
+  const missing = [...graphed].filter((s) => !authored.has(s));
+  const extra = [...authored].filter((s) => !graphed.has(s));
+  check("every graph node is authored", missing.length === 0, missing.join(", "));
+  check("no authored skill is absent from the graph", extra.length === 0, extra.join(", "));
+
+  // Ten per tree, which is what a 3x10 skill window means.
+  for (const tree of ["martial-arts", "shadow-disciplines", "traps"]) {
+    const n = assassinSkills.filter((s) => s.tree === tree).length;
+    check(`${tree}: ten skills`, n === 10, `${n}`);
+  }
+
+  // The six internal identifiers must not have reached a slug.
+  for (const forbidden of [
+    "fire-trauma",
+    "shock-field",
+    "wake-of-fire-sentry",
+    "inferno-sentry",
+    "quickness",
+    "royal-strike",
+  ]) {
+    check(`"${forbidden}" is not a published slug`, !graphed.has(forbidden));
+  }
+}
+
+// ===========================================================================
+console.log("\nCharge-ups and finishers are two disjoint sets");
+// ===========================================================================
+{
+  check("six charge-ups", CHARGE_UPS.length === 6);
+  check("four finishers", FINISHERS.length === 4);
+  const overlap = CHARGE_UPS.filter((s) => (FINISHERS as readonly string[]).includes(s));
+  check("no skill is both", overlap.length === 0, overlap.join(", "));
+
+  // All ten are in the martial arts tree and nowhere else.
+  for (const slug of [...CHARGE_UPS, ...FINISHERS]) {
+    check(`${slug} is a martial art`, bySlug.get(slug)?.tree === "martial-arts", bySlug.get(slug)?.tree);
+  }
+
+  /*
+   * Dragon Claw is the row that makes the kick list worth transcribing. It is a
+   * finisher, it sits beside Dragon Talon, and it is not a kick.
+   */
+  check("three of the four finishers are kicks", KICKS.length === 3);
+  check(
+    "Dragon Claw is a finisher and not a kick",
+    (FINISHERS as readonly string[]).includes("dragon-claw") &&
+      !(KICKS as readonly string[]).includes("dragon-claw"),
+  );
+  for (const slug of KICKS) {
+    const authored = assassinSkills.find((s) => s.slug === slug);
+    check(`${slug} declares the kick damage model`, authored?.damageModel === "kick", authored?.damageModel);
+  }
+  check(
+    "Dragon Claw does not declare the kick model",
+    assassinSkills.find((s) => s.slug === "dragon-claw")?.damageModel === undefined,
+  );
+
+  const seconds = CHARGE_DURATION_FRAMES / FRAMES_PER_SECOND;
+  check("charges stand for 15 seconds, not 14", seconds === 15, `${seconds}`);
+}
+
+// ===========================================================================
+console.log("\nThe blades take three quarters of the weapon");
+// ===========================================================================
+{
+  check("three blade skills", BLADE_SKILLS.length === 3);
+  check(
+    `${BLADE_WEAPON_NUMERATOR}/${BLADE_WEAPON_DENOMINATOR} is exactly three quarters`,
+    BLADE_WEAPON_SHARE === 0.75,
+    `${BLADE_WEAPON_SHARE}`,
+  );
+  // Derived, so a changed numerator moves the sentence that quotes it.
+  check("which is 75%", Math.round(BLADE_WEAPON_SHARE * 100) === 75);
+  for (const slug of BLADE_SKILLS) {
+    check(`${slug} is in the graph`, bySlug.has(slug));
+  }
+}
+
+// ===========================================================================
+console.log("\nCeilings: five traps in total, one shadow");
+// ===========================================================================
+{
+  check("the trap ceiling is five", TRAP_LIMIT === 5);
+  check("six skills share it", TRAP_SLUGS.length === 6, `${TRAP_SLUGS.length}`);
+  check("the shadow ceiling is one", SHADOW_LIMIT === 1);
+  check("two skills share it", SHADOW_SLUGS.length === 2);
+  for (const slug of TRAP_SLUGS) check(`${slug} is a trap-tree skill`, bySlug.get(slug)?.tree === "traps");
+  for (const slug of SHADOW_SLUGS) {
+    check(`${slug} is a shadow discipline`, bySlug.get(slug)?.tree === "shadow-disciplines");
+  }
+}
+
+// ===========================================================================
+console.log("\nVenom's poison is not a poison duration like any other");
+// ===========================================================================
+{
+  const venom = bySlug.get("venom");
+  check("Venom carries a duration", venom?.damage?.duration !== undefined);
+  check(
+    `it is ${VENOM_POISON_FRAMES} frames`,
+    venom?.damage?.duration?.base === VENOM_POISON_FRAMES,
+    `${venom?.damage?.duration?.base}`,
+  );
+  check("and does not grow with level", venom?.damage?.duration?.perLevel === 0);
+  check(
+    "which is under half a second",
+    VENOM_POISON_FRAMES / FRAMES_PER_SECOND < 0.5,
+    `${VENOM_POISON_FRAMES / FRAMES_PER_SECOND}s`,
+  );
+  /*
+   * The contrast that makes it worth a rule of its own. Poison Nova is the
+   * shortest poison on the site outside this class and is still five times
+   * longer.
+   */
+  const nova = SKILL_GRAPH["poison-nova"]?.damage?.duration?.base;
+  check("Poison Nova's 50 frames is five times longer", nova === 50, `${nova}`);
+}
+
+// ===========================================================================
+console.log("\nPhoenix Strike's meteor feeds Fists of Fire twice, at two rates");
+// ===========================================================================
+{
+  const ps = bySlug.get("phoenix-strike");
+  const fromFists = (ps?.missileSynergies ?? []).filter((m) => m.from === "fists-of-fire");
+  check("two components, not one", fromFists.length === 2, `${fromFists.length}`);
+  const rates = fromFists.map((m) => m.magnitude).sort((a, b) => a - b);
+  check("6% on the ground fire and 10% on the impact", rates.join(",") === "6,10", rates.join(","));
+  check(
+    "the components are named so the page can tell them apart",
+    new Set(fromFists.map((m) => m.missile)).size === 2,
+  );
+  // The other two charges feed one component each; the pair above is the case
+  // that made keying by source alone unrepresentable.
+  for (const from of ["claws-of-thunder", "blades-of-ice"]) {
+    const n = (ps?.missileSynergies ?? []).filter((m) => m.from === from).length;
+    check(`${from} feeds one component`, n === 1, `${n}`);
+  }
+}
+
+// ===========================================================================
+// Planted mutations
+// ===========================================================================
+
+const WOULD_HAVE_SHIPPED: { note: string; line: string; rule: AssassinRule }[] = [
+  {
+    note: "the biggest number in the tree described as the thing you press last",
+    line: "Tiger Strike is the finisher every martial arts build ends its rotation with.",
+    rule: "charge-up-called-finisher",
+  },
+  {
+    note: "Phoenix Strike as a finisher, which is how every tier list describes it",
+    line: "Phoenix Strike spends the charges and releases all three elements at once.",
+    rule: "charge-up-called-finisher",
+  },
+  {
+    note: "pt-br form of the same",
+    line: "O Phoenix Strike é o finalizador que libera os três elementos.",
+    rule: "charge-up-called-finisher",
+  },
+  {
+    note: "the weapon sentence that is true of every attack in the game except a kick",
+    line: "Dragon Talon scales with your weapon damage, so a fast claw is the priority.",
+    rule: "kick-scales-with-weapon",
+  },
+  {
+    note: "the same mistake pointed at claws, which is the natural one for this class",
+    line: "Dragon Tail takes its damage from the claws you are holding.",
+    rule: "kick-scales-with-weapon",
+  },
+  {
+    note: "pt-br form",
+    line: "O dano do Dragon Flight vem da arma que você está segurando.",
+    rule: "kick-scales-with-weapon",
+  },
+  {
+    note: "three quarters rounded up to all of it",
+    line: "Blade Fury throws blades that carry your weapon's full damage at range.",
+    rule: "blade-takes-whole-weapon",
+  },
+  {
+    note: "pt-br form",
+    line: "O Blade Sentinel leva o dano cheio da arma.",
+    rule: "blade-takes-whole-weapon",
+  },
+  {
+    note: "the block mechanic every other class has",
+    line: "Weapon Block is shield block under another name, so bring a shield.",
+    rule: "weapon-block-needs-a-shield",
+  },
+  {
+    note: "two buffs that cannot both be up, presented as a pair you keep up",
+    line: "Keep Fade and Burst of Speed running and refresh them between packs.",
+    rule: "fade-and-burst-together",
+  },
+  {
+    note: "the poison intuition that is right everywhere else",
+    line: "Venom adds poison damage over several seconds to everything you hit.",
+    rule: "venom-as-ordinary-poison",
+  },
+  {
+    note: "pt-br form",
+    line: "O Venom soma dano de veneno ao longo de vários segundos.",
+    rule: "venom-as-ordinary-poison",
+  },
+  {
+    note: "a per-skill trap ceiling, which is the natural misreading of petmax",
+    line: "You can have up to three traps of each kind on the ground.",
+    rule: "trap-limit-not-five",
+  },
+  {
+    note: "pt-br form",
+    line: "Dá para ter no máximo seis sentinelas no chão ao mesmo tempo.",
+    rule: "trap-limit-not-five",
+  },
+];
+
+console.log("\nPlanted mutations — sentences a writer would plausibly produce");
+for (const { note, line, rule } of WOULD_HAVE_SHIPPED) {
+  check(`rejects: ${note}`, fires(line, rule), `expected ${rule}`);
+}
+
+const ACCEPTED: { note: string; line: string }[] = [
+  {
+    note: "the corrected charge-up sentence",
+    line: "Tiger Strike is a charge-up: it stores charges that a finisher spends, and pressing it is a normal weapon swing.",
+  },
+  {
+    note: "a finisher correctly called one",
+    line: "Dragon Claw is a finisher. It spends standing charges and cannot miss while doing so.",
+  },
+  {
+    note: "the corrected kick sentence",
+    line: "Dragon Talon's damage comes from the boots, so the claws add their skill levels and nothing else.",
+  },
+  {
+    note: "Dragon Claw crediting the weapon, which is correct for it",
+    line: "Dragon Claw carries the weapon's full damage and no Kick flag, so it scales with the claws you hold.",
+  },
+  {
+    note: "the corrected blade fraction",
+    line: "Blade Fury carries three quarters of your weapon's damage at range.",
+  },
+  {
+    note: "the corrected block sentence",
+    line: "Weapon Block is not shield block: it is gated on holding claws and works with no shield equipped at all.",
+  },
+  {
+    note: "the two buffs named together with the exclusion said",
+    line: "Fade and Burst of Speed are mutually exclusive — casting one drops the other.",
+  },
+  {
+    note: "pt-br form of the exclusion",
+    line: "Fade e Burst of Speed são mutuamente exclusivos, e conjurar um derruba o outro.",
+  },
+  {
+    note: "the corrected Venom sentence",
+    line: "Venom overrides poison length to ten frames, so the whole amount lands in four tenths of a second.",
+  },
+  {
+    note: "the correct trap ceiling",
+    line: "Five sentries stand at once, and the ceiling is shared across every trap skill.",
+  },
+  {
+    note: "a trap count that is not a ceiling claim at all",
+    line: "Lightning Sentry fires ten shots per sentry, and the bolts pierce.",
+  },
+  {
+    note: "an unrelated sentence about another class",
+    line: "Blizzard has a hard cooldown that Faster Cast Rate cannot reduce.",
+  },
+];
+
+console.log("\nSentences that must stay silent");
+for (const { note, line } of ACCEPTED) {
+  const problems = checkAssassinClaims([line], "control");
+  check(`silent on: ${note}`, silent(line), problems.map((p) => p.rule).join(", "));
+}
+
+console.log("\nWiring");
+check("seven rules are exported for the content sweep", ASSASSIN_RULES.length === 7);
+
+console.log(`\n${passed} passed, ${failures.length} failed`);
+if (failures.length > 0) {
+  console.error("\nFailures:");
+  for (const f of failures) console.error(`  - ${f}`);
+  process.exit(1);
+}

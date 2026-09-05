@@ -80,7 +80,7 @@ const SOURCE_REPO = "blizzhackers/d2data";
  * the tree on the class page, the tree on every build page, the sitemap entries
  * and the search index at once -- there is no second list to keep in step.
  */
-const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer", dru: "druid" } as const;
+const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer", dru: "druid", ass: "assassin" } as const;
 
 /**
  * The exact commit the shipped graph was extracted from.
@@ -668,10 +668,25 @@ const PUBLISHES_MANA = new Set<string>([
  *   a range at all          returns. The row has no `MaxDam` whatsoever, which
  *                           is the tell. Excluded.
  *
+ *   the same damage twice   Psychic Hammer's 2-6, which the row also declares as
+ *                           `EMin`/`EMax` under `EType = mag` — the identical
+ *                           numbers and the identical per-level bands.
+ *                           Publishing both would tabulate one damage as two.
+ *                           Excluded.
+ *
  * Magic Arrow is excluded by rule rather than by name: its missile declares
  * `EType = mag`, so those columns are delivered as magic damage and the site
  * already models the skill as `weapon-converted-to-element`. Calling them
  * physical would contradict the page above them.
+ *
+ * Mind Blast is included by the same reasoning that includes Shock Wave, and
+ * the two rows are worth reading side by side. Shock Wave carries no `EType` at
+ * all; Mind Blast carries `EType = stun` with an `ELen` and **no** `EMin`/`EMax`.
+ * A stun is a status with a length rather than damage with a range, so neither
+ * row has anything in the elemental columns and in both the physical pair is the
+ * whole of the skill's damage. Psychic Hammer is the row that proves the
+ * distinction is real rather than a convenience: it *does* fill `EMin`/`EMax`,
+ * with the same numbers, and is excluded for exactly that reason.
  *
  * `assertPhysicalClassified` below refuses any in-scope row carrying both
  * columns that appears in neither list, so a class added later cannot publish
@@ -679,6 +694,15 @@ const PUBLISHES_MANA = new Set<string>([
  */
 const PUBLISHES_PHYSICAL = new Set<string>([
   "molten-boulder", "twister", "shock-wave", "volcano", "tornado", "armageddon",
+  /*
+   * The Assassin's four. Three of them are the blade skills, and their physical
+   * table is only half the story: each carries `SrcDam = 96`, so three quarters
+   * of the weapon's damage lands on top of the range published here. That share
+   * is why the build holds a large normal weapon, and the pages say so.
+   *
+   * Mind Blast carries no weapon share at all — the range is the whole of it.
+   */
+  "blade-sentinel", "blade-fury", "blade-shield", "mind-blast",
 ]);
 
 /** Rows whose `MinDam`/`MaxDam` is deliberately not published, and why. */
@@ -688,6 +712,9 @@ const PHYSICAL_IS_NOT_THE_SKILLS_OWN: Record<string, string> = {
   "summon-dire-wolf": "the wolf's damage per hit, which belongs to the pet",
   "summon-grizzly": "the bear's damage per hit, which belongs to the pet",
   "spirit-of-barbs": "the share of damage the totem returns; the row has no MaxDam at all",
+  "psychic-hammer":
+    "the same 2-6 the row already declares as magic in EMin/EMax, with the same " +
+    "per-level bands; publishing both would tabulate one damage as two",
 };
 
 /**

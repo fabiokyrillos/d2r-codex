@@ -50,7 +50,7 @@
  *   Critical Strike under no parameter at all -- those columns set the summon's
  *   own skill levels. Neither produces an edge. The Valkyrie's one real synergy
  *   is Decoy, under a parameter the game itself labels "HP % synergy".
- *   Extracted   150 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer, 30 druid)
+ *   Extracted   180 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer, 30 druid, 30 assassin)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces
  *   this file exactly, or fails; it never silently follows the source forward.
@@ -60,7 +60,7 @@
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —
  *   the current D2R tables and the pre-D2R Lord of Destruction tables under
- *   `json/base/` — for 150 of 150 skills.
+ *   `json/base/` — for 180 of 180 skills.
  *
  *   These are two snapshots of different game versions from one extraction
  *   project, not two independent publishers. Their agreement shows the values
@@ -99,7 +99,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "amazon" | "druid" | "necromancer" | "paladin" | "sorceress">;
+  readonly classSlug: Extract<ClassSlug, "amazon" | "assassin" | "druid" | "necromancer" | "paladin" | "sorceress">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of `tree`. */
@@ -451,6 +451,186 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     prerequisites: ["plague-javelin"],
     synergies: [{ from: "charged-strike", kinds: ["damage"] }, { from: "lightning-bolt", kinds: ["damage"] }, { from: "lightning-strike", kinds: ["damage"] }, { from: "power-strike", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 40, bands: [20, 30, 40, 50, 50] } },
     effects: [{ labelKey: "effectBolts", unit: "count", shape: { kind: "linear", base: 2, perLevel: 1 } }],
+  },
+  "fire-blast": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "charged-bolt-sentry", kinds: ["damage"] }, { from: "lightning-sentry", kinds: ["damage"] }, { from: "shock-web", kinds: ["damage"] }, { from: "wake-of-fire", kinds: ["damage"] }, { from: "wake-of-inferno", kinds: ["damage"] }], damage: { element: "fire", hitShift: 7, min: { base: 6, bands: [3, 8, 20, 38, 58] }, max: { base: 8, bands: [5, 11, 24, 44, 66] } },
+  },
+  "shock-web": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["fire-blast"],
+    synergies: [{ from: "charged-bolt-sentry", kinds: ["damage"] }, { from: "lightning-sentry", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 7, min: { base: 2, bands: [0, 0, 0, 0, 0] }, max: { base: 20, bands: [6, 12, 20, 30, 42] } },
+  },
+  "blade-sentinel": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "blade-fury", kinds: ["damage"] }, { from: "blade-shield", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 6, bands: [3, 4, 5, 5, 5] }, max: { base: 10, bands: [3, 4, 5, 5, 5] } },
+  },
+  "charged-bolt-sentry": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["shock-web"],
+    synergies: [{ from: "fire-blast", kinds: ["damage"] }, { from: "lightning-sentry", kinds: ["damage", "shots"] }], damage: { element: "ltng", hitShift: 7, min: { base: 2, bands: [0, 0, 0, 0, 0] }, max: { base: 14, bands: [6, 8, 12, 14, 16] } },
+  },
+  "wake-of-fire": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 3, column: 2,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["fire-blast"],
+    synergies: [{ from: "fire-blast", kinds: ["damage"] }, { from: "wake-of-inferno", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 5, bands: [2, 3, 5, 7, 9] }, max: { base: 10, bands: [2, 3, 6, 8, 10] } },
+  },
+  "blade-fury": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 4, column: 3,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["blade-sentinel", "wake-of-fire"],
+    synergies: [{ from: "blade-sentinel", kinds: ["damage"] }, { from: "blade-shield", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 8, bands: [3, 5, 8, 8, 8] }, max: { base: 10, bands: [3, 5, 8, 8, 8] } },
+  },
+  "lightning-sentry": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["charged-bolt-sentry"],
+    synergies: [{ from: "charged-bolt-sentry", kinds: ["damage"] }, { from: "shock-web", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 20, bands: [10, 16, 24, 34, 44] } },
+  },
+  "wake-of-inferno": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["wake-of-fire"],
+    synergies: [{ from: "fire-blast", kinds: ["damage"] }, { from: "wake-of-fire", kinds: ["damage"] }], damage: { element: "fire", hitShift: 4, min: { base: 20, bands: [17, 21, 26, 32, 39] }, max: { base: 50, bands: [19, 23, 28, 34, 41] } },
+  },
+  "death-sentry": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["lightning-sentry"],
+    synergies: [{ from: "lightning-sentry", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 50, bands: [8, 14, 22, 28, 34] } },
+  },
+  "blade-shield": {
+    classSlug: "assassin", tree: "traps", page: 1, row: 6, column: 3,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["blade-fury"],
+    synergies: [{ from: "blade-fury", kinds: ["damage"] }, { from: "blade-sentinel", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 1, bands: [5, 6, 7, 7, 7] }, max: { base: 30, bands: [5, 6, 7, 7, 7] } },
+  },
+  "claw-mastery": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "psychic-hammer": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [], damage: { element: "mag", hitShift: 7, min: { base: 2, bands: [2, 3, 4, 5, 6] }, max: { base: 6, bands: [3, 4, 5, 6, 7] } },
+  },
+  "burst-of-speed": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["claw-mastery"],
+    synergies: [],
+  },
+  "weapon-block": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 3, column: 2,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["claw-mastery"],
+    synergies: [],
+  },
+  "cloak-of-shadows": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["psychic-hammer"],
+    synergies: [],
+  },
+  "fade": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["burst-of-speed"],
+    synergies: [],
+  },
+  "shadow-warrior": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["cloak-of-shadows", "weapon-block"],
+    synergies: [],
+  },
+  "mind-blast": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["cloak-of-shadows"],
+    synergies: [], physical: { hitShift: 8, min: { base: 10, bands: [2, 5, 8, 8, 8] }, max: { base: 20, bands: [2, 5, 8, 8, 8] } },
+  },
+  "venom": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["fade"],
+    synergies: [], damage: { element: "pois", hitShift: 6, min: { base: 24, bands: [6, 8, 10, 12, 14] }, max: { base: 32, bands: [6, 8, 10, 12, 14] }, duration: { base: 10, perLevel: 0 }, overTime: true },
+  },
+  "shadow-master": {
+    classSlug: "assassin", tree: "shadow-disciplines", page: 2, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["shadow-warrior"],
+    synergies: [],
+  },
+  "tiger-strike": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "dragon-talon": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "fists-of-fire": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "phoenix-strike", kinds: ["damage"] }], missileSynergies: [{ from: "phoenix-strike", missile: "fistsoffirefirewall", element: "fire", magnitude: 6 }], damage: { element: "fire", hitShift: 8, min: { base: 6, bands: [5, 10, 20, 30, 40] }, max: { base: 10, bands: [5, 11, 22, 33, 44] } },
+  },
+  "dragon-claw": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["dragon-talon"],
+    synergies: [{ from: "claw-mastery", kinds: ["damage"] }],
+  },
+  "cobra-strike": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 3, column: 2,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["tiger-strike"],
+    synergies: [],
+  },
+  "claws-of-thunder": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["fists-of-fire"],
+    synergies: [{ from: "phoenix-strike", kinds: ["damage"] }], missileSynergies: [{ from: "phoenix-strike", missile: "clawsofthunderbolt", element: "ltng", magnitude: 8 }, { from: "phoenix-strike", missile: "clawsofthundernova", element: "ltng", magnitude: 8 }], damage: { element: "ltng", hitShift: 8, min: { base: 1, bands: [0, 0, 0, 0, 0] }, max: { base: 80, bands: [20, 40, 60, 80, 100] } },
+  },
+  "dragon-tail": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 4, column: 3,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["dragon-claw"],
+    synergies: [],
+  },
+  "blades-of-ice": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["claws-of-thunder"],
+    synergies: [{ from: "phoenix-strike", kinds: ["damage"] }], damage: { element: "cold", hitShift: 8, min: { base: 15, bands: [8, 10, 20, 30, 40] }, max: { base: 35, bands: [8, 10, 22, 32, 42] } },
+  },
+  "dragon-flight": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["dragon-tail"],
+    synergies: [],
+  },
+  "phoenix-strike": {
+    classSlug: "assassin", tree: "martial-arts", page: 3, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["blades-of-ice", "cobra-strike"],
+    synergies: [], missileSynergies: [{ from: "blades-of-ice", missile: "royalstrikechaosice", element: "cold", magnitude: 10 }, { from: "claws-of-thunder", missile: "royalstrikechainlightning", element: "ltng", magnitude: 13 }, { from: "fists-of-fire", missile: "royalstrikemeteor", element: "fire", magnitude: 10 }, { from: "fists-of-fire", missile: "royalstrikemeteorfire", element: "fire", magnitude: 6 }],
   },
   "raven": {
     classSlug: "druid", tree: "druid-summoning", page: 1, row: 1, column: 2,

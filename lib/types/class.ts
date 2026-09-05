@@ -75,6 +75,8 @@ export interface Skill extends Entity {
    *   corpse-life                   the damage is a share of the exploded
    *                                 corpse's *type's* base life, so it belongs
    *                                 to what died rather than to the skill
+   *   kick                          the damage is the *boots'*, not the
+   *                                 weapon's, and no table exists for it
    *
    * Plain weapon attacks need no entry — `kind === "attack"` with no elemental
    * table is unambiguous. Everything else is authored, never derived, and
@@ -100,7 +102,8 @@ export interface Skill extends Entity {
     | "weapon-plus-element"
     | "weapon-converted-to-element"
     | "element-only-attack"
-    | "corpse-life";
+    | "corpse-life"
+    | "kick";
   /** Mana cost at base, when it is decision-relevant. */
   manaCost?: string;
   /** Cast/attack behaviour notes that affect play. */

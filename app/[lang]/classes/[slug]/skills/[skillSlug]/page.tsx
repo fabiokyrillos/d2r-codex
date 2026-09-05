@@ -483,7 +483,12 @@ export default async function SkillPage(
                             // "no direct damage" is true of it.
                             presentation === "corpse-life"
                             ? t.skills.noProgressionCorpse
-                            : t.skills.noProgressionNone,
+                            : // The Assassin's three kicks. Their damage is
+                              // real and is the boots', so "no direct damage"
+                              // and the weapon sentence are both false of them.
+                              presentation === "kick"
+                              ? t.skills.noProgressionKick
+                              : t.skills.noProgressionNone,
                   { mechanics: t.skills.mechanicsTitle },
                 )}
               </RichText>

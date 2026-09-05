@@ -482,6 +482,7 @@ export type DamagePresentation =
   | "shield"
   | "proportional"
   | "corpse-life"
+  | "kick"
   | "none";
 
 /** The models an attack whose damage the graph tabulates is allowed to claim. */

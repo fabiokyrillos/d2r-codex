@@ -68,6 +68,7 @@ import {
 } from "./skill-graph-rules";
 import { checkSourcedDivergence, exitCodeFor, isUntranslatedProse } from "./content-rules";
 import { FREEZE_RULES, checkFreezeLengthClaims } from "./freeze-length-claims";
+import { ASSASSIN_RULES, checkAssassinClaims } from "./assassin-rules";
 import { TREES_NOT_YET_AUTHORED, checkClassTrees } from "./class-tree-rules";
 import {
   CORROBORATED,
@@ -1172,6 +1173,20 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
     for (const h of hits) problems.push(h.message);
   }
 
+  /*
+   * The Assassin's seven, on the same sweep. Her characteristic failure is not a
+   * wrong number but a right one described by a sentence that is true of another
+   * class — a kick that "scales with your weapon", a block that "needs a
+   * shield", a poison that "ticks for seconds". None of those is checkable
+   * against the graph, because none of them states a figure.
+   */
+  const assassin = pages.flatMap(({ where, lines }) => checkAssassinClaims(lines, where));
+  for (const rule of ASSASSIN_RULES) {
+    const hits = assassin.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+
   const inert = IMMUNITY_AGENTS.filter((a) => !a.breaksImmunity);
   console.log(
     `  ${pages.length} pages swept; ${IMMUNITY_AGENTS.length - inert.length} agents break an ` +
@@ -1471,6 +1486,7 @@ console.log("\nDamage presentation:");
     shield: [],
     proportional: [],
     "corpse-life": [],
+    kick: [],
     none: [],
   };
   for (const skill of getSkills(DEFAULT_LOCALE)) {
@@ -1509,6 +1525,10 @@ console.log("\nDamage presentation:");
   const attackBuckets = [
     "weapon",
     "shield",
+    // The Assassin's three kicks. Their damage is the boots', which is neither
+    // the weapon nor an element, so without this bucket they escape the
+    // partition and land on their own pages saying they deal no damage.
+    "kick",
     ...ELEMENTAL_ATTACK_MODELS,
   ] as const;
   const covered = attackBuckets.flatMap((b) => buckets[b]);

@@ -92,6 +92,46 @@ export const SLUG_OVERRIDES: Record<string, string> = {
   "Shape Shifting": "lycanthropy",
   Wearbear: "werebear",
   Eruption: "fissure",
+  /*
+   * The Assassin, six of thirty. Hers are not misspellings like the Druid's —
+   * they are working titles, and two of them are titles the shipped game gave to
+   * a *different* concept, which is what makes slugifying them dangerous rather
+   * than merely ugly. `Fire Trauma` is not a skill any player has heard of, and
+   * `Royal Strike` would publish `/classes/assassin/skills/royal-strike` for the
+   * most-searched skill the class has.
+   *
+   * Each is pinned by its own row rather than by resemblance:
+   *
+   *   Fire Trauma           page 1, level 1, `srvmissile = "bomb in air"` with
+   *                         `lob = 1` — a thrown arcing bomb — fire, radius 5,
+   *                         and the receiver of every trap's damage synergy
+   *                         -> Fire Blast
+   *   Shock Field           page 1, level 6, requires Fire Trauma, lightning,
+   *                         Param1 "# of Missiles created" = 6 -> Shock Web
+   *   Wake of Fire Sentry   page 1, level 12, requires Fire Trauma,
+   *                         `pettype = assassintrap`, `summon = wakeofdestruction`
+   *                         -> Wake of Fire
+   *   Inferno Sentry        page 1, level 24, requires Wake of Fire Sentry,
+   *                         `summon = infernosentry`, HitShift 4 -> Wake of Inferno
+   *   Quickness             page 2, level 6, requires Claw Mastery, an aurastate
+   *                         granting `velocitypercent` 15-70 and `attackrate`
+   *                         15-60 -> Burst of Speed
+   *   Royal Strike          page 3, level 30, requires Cobra Strike and Blades
+   *                         of Ice, `progressive = 1`, three missiles named
+   *                         meteor, chainlightning and chaosice -> Phoenix Strike
+   *
+   * The identifiers stay the join key — Fists of Fire, Claws of Thunder and
+   * Blades of Ice each read `skill('Royal Strike'.blvl)`, and Lightning Sentry
+   * reads `skill('Shock Field'.blvl)` — while nothing public carries them.
+   * `skill-page.test.ts` asserts no override's identifier reaches a page, a URL
+   * or the sitemap.
+   */
+  "Fire Trauma": "fire-blast",
+  "Shock Field": "shock-web",
+  "Wake of Fire Sentry": "wake-of-fire",
+  "Inferno Sentry": "wake-of-inferno",
+  Quickness: "burst-of-speed",
+  "Royal Strike": "phoenix-strike",
 };
 
 const slugify = (name: string) =>
@@ -252,6 +292,26 @@ const SYNERGY_KINDS: Record<string, string> = {
    * time a thing lasts.
    */
   duration: "duration",
+  /*
+   * The Assassin's trap tree, where a synergy buys *more of the thing* rather
+   * than a bigger number. Charged Bolt Sentry reads
+   * `calc4 = par1 + skill('Lightning Sentry'.blvl)/par7`: every four hard points
+   * in Lightning Sentry give the earlier sentry one additional shot.
+   *
+   * Kept apart from "damage" for the reason this table exists at all. A reader
+   * told that Lightning Sentry raises Charged Bolt Sentry's *damage* would spend
+   * points expecting a bigger hit; what they get is a sentry that fires more
+   * often. Both are worth having and they are not the same purchase.
+   *
+   * The same row carries a companion, `par6` "Bonus bolt Missiles created per #
+   * levels synergy", and it is deliberately **not** mapped here. No expression
+   * in scope reads it — the calc that would sits on `BoltSentry`, a monster row
+   * the extraction does not take — so mapping it would put a word in the label
+   * table for an edge no graph carries, and `check:content` rejects exactly
+   * that. If the shape ever reaches an in-scope row the generator will stop on
+   * it, which is the right outcome.
+   */
+  "bonus shot per # levels": "shots",
 };
 
 /**
@@ -1111,17 +1171,44 @@ export function missileSynergiesFor(
         );
       }
 
+      /*
+       * Keyed by source *and* component, not by source alone.
+       *
+       * Phoenix Strike is why. Its first charge releases a meteor, and two
+       * missiles carry a reference to Fists of Fire at different rates:
+       * `royalstrikemeteor`, the impact, at 10% a hard point, and
+       * `royalstrikemeteorfire`, the ground fire it leaves behind, at 6%. Both
+       * are real, both are that skill's damage, and neither is the other's
+       * duplicate.
+       *
+       * Keying by source alone made that pair unrepresentable: the first entry
+       * won and the second raised "two missile magnitudes, pick the governing
+       * one". There is no governing one to pick — a reader who maxes Fists of
+       * Fire gets both, and publishing only the 10% understates what the points
+       * bought while publishing only the 6% understates it further.
+       *
+       * `MissileSynergy` already carried the missile name for exactly this kind
+       * of question, and Armageddon already proves the array holds more than one
+       * entry — it takes `armageddonfire` from Firestorm and from Molten
+       * Boulder. This widens that from two sources on one component to any
+       * (source, component) pair, which is what the game's own tables express.
+       *
+       * The same source on the same missile at two magnitudes is still a
+       * contradiction rather than a component, and still throws.
+       */
       for (const ref of refs) {
         const slug = slugFor(ref);
-        const existing = found.get(slug);
+        const key = `${slug}|${String(row.Missile).toLowerCase()}`;
+        const existing = found.get(key);
         if (existing && existing.magnitude !== magnitude) {
           throw new Error(
-            `${where} <- ${slug}: two missile magnitudes (${existing.magnitude}, ${magnitude}). ` +
-              `Pick the governing missile deliberately.`,
+            `${where} <- ${slug}: missile "${row.Missile}" gives two magnitudes ` +
+              `(${existing.magnitude}, ${magnitude}) for one component. One missile carries ` +
+              `one rate; read the new shape deliberately.`,
           );
         }
         if (!existing) {
-          found.set(slug, { from: slug, missile: String(row.Missile), element, magnitude });
+          found.set(key, { from: slug, missile: String(row.Missile), element, magnitude });
         }
       }
     }
@@ -1134,5 +1221,7 @@ export function missileSynergiesFor(
 
   for (const name of spawns) walk(name);
 
-  return [...found.values()].sort((x, y) => x.from.localeCompare(y.from));
+  return [...found.values()].sort(
+    (x, y) => x.from.localeCompare(y.from) || x.missile.localeCompare(y.missile),
+  );
 }

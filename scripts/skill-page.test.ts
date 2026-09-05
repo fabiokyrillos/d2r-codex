@@ -100,6 +100,7 @@ const buckets: Record<DamagePresentation, string[]> = {
   shield: [],
   proportional: [],
   "corpse-life": [],
+  kick: [],
   none: [],
 };
 for (const s of skills) {
@@ -128,6 +129,10 @@ const attackSlugs = skills
 const attackModelled = [
   ...buckets.weapon,
   ...buckets.shield,
+  // The Assassin's three kicks. Their damage is the boots', which is neither the
+  // weapon nor an element, so without this the partition drops them and they
+  // land on their own pages saying they deal no damage.
+  ...buckets.kick,
   ...ELEMENTAL_ATTACK_MODELS.flatMap((m) => buckets[m]),
 ];
 check(

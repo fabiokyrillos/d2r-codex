@@ -102,6 +102,24 @@ export const skillTreesPtBr: Overlay<SkillTreeCopy> = {
     theme:
       "Três grupos que não dividem limite: aves, lobos, e um de cada um dos demais. Os totens são a razão de a árvore aparecer em builds que não invocam nada — Oak Sage é um bônus fixo de vida para o grupo inteiro e Heart of Wolverine um bônus fixo de dano, e ambos custam um ponto mais o pré-requisito.",
   },
+  "martial-arts": {
+    name: "Martial Arts",
+    summary: "Ataques de carga que acumulam poder, e finalizadores que o gastam.",
+    theme:
+      "Duas metades que só funcionam juntas. Seis skills acumulam cargas e quatro as gastam, e nenhum dos lados é uma build sozinho — as skills de carga não têm um pagamento que você possa apertar, e os finalizadores batem por uma fração do que uma carga completa entrega.",
+  },
+  "shadow-disciplines": {
+    name: "Shadow Disciplines",
+    summary: "Buffs próprios, dois lacaios sombra e o melhor controle de grupo da classe.",
+    theme:
+      "A árvore em que toda Assassin gasta pontos, não importa com o que ela mate. Fade e Burst of Speed são os dois buffs que definem a classe, o Mind Blast atordoa uma tela inteira, e o Shadow Master é um lacaio que devolve as suas próprias skills na sala.",
+  },
+  traps: {
+    name: "Traps",
+    summary: "Sentinelas colocadas que atiram sozinhas, mais as três skills de lâmina.",
+    theme:
+      "Dano que você posiciona em vez de mirar. Cinco sentinelas ficam de pé ao mesmo tempo e continuam atirando enquanto você anda, e é por isso que a Assassin de traps é uma das personagens mais seguras do jogo — e as três skills de lâmina dividem a árvore sem dividir mais nada.",
+  },
 };
 
 export const skillsPtBr: Overlay<SkillCopy> = {
@@ -1379,5 +1397,299 @@ export const skillsPtBr: Overlay<SkillCopy> = {
       "Ele provoca. O urso puxa os monstros para si, o que é todo o plano defensivo de um Summon Druid e a razão de a build parecer segura.",
       "Ele não pode ser reinvocado enquanto vive, então perdê-lo no meio da luta custa uma conjuração inteira de 40 de mana em vez de um reforço.",
     ],
+  },
+  "tiger-strike": {
+    summary:
+      "Uma skill de carga que multiplica o dano do finalizador que a gasta. O maior multiplicador único da árvore.",
+    mechanics: [
+      "**É uma carga, não um ataque com que você termina a luta.** Ela guarda até três cargas e cada uma soma o bônus de dano dela ao *finalizador* com que você as libera. Bater com Tiger Strike sozinho é um golpe de arma comum.",
+      "As cargas duram **15 segundos** — `375` frames — e cada uma também carrega +50% de attack rating, que é a maior parte do motivo pelo qual uma artista marcial acerta alguma coisa.",
+      "O bônus é uma porcentagem do dano da arma e é enorme: 100% com um ponto e mais 20% por nível, aplicado por carga.",
+    ],
+  },
+  "dragon-talon": {
+    summary:
+      "Uma sequência rápida de chutes que gasta cargas. Os chutes tiram o dano das suas botas, não da sua arma.",
+    mechanics: [
+      "**O dano do chute vem das botas.** A linha carrega `Kick = 1` e nenhuma parcela de dano de arma, então as garras nas suas mãos somam os +skills delas e nada mais. É por isso que uma Kicksin caça botas e as melhora.",
+      "O número de chutes é `nível / 6 + 1`: um no nível 1, dois no 6, três no 12, quatro no 18 e cinco do 24 em diante.",
+      "**É um finalizador.** Ele gasta as cargas que estiverem de pé, e enquanto as gasta não pode errar — o Param8 da linha liga o Always Hit só quando as cargas são consumidas.",
+      "Cada chute sorteia Crushing Blow separadamente, e é por isso que a build mata bosses muito acima do dano listado.",
+    ],
+  },
+  "fists-of-fire": {
+    summary: "Uma carga que soma dano de fogo e deixa chão em chamas onde acerta.",
+    mechanics: [
+      "**É uma carga.** O dano cheio da arma acerta e o fogo tabelado acerta junto; as cargas são gastas por um finalizador, não por esta skill.",
+      "A terceira carga cria uma parede de fogo no chão em vez de um golpe maior, então o valor da skill é negar área tanto quanto causar dano.",
+      "As cargas ficam de pé por 15 segundos e cada uma carrega +50% de attack rating.",
+    ],
+    synergyBonuses: ["+12% de dano por nível"],
+  },
+  "dragon-claw": {
+    summary:
+      "Um golpe com as duas garras que gasta cargas. O único finalizador que usa a arma em vez das botas.",
+    mechanics: [
+      "**A exceção entre os finalizadores.** Ele carrega o dano cheio da arma e nenhuma marca de `Kick`, então, diferente de Dragon Talon, Tail e Flight, ele escala com as garras que você está segurando.",
+      "Ele golpeia com as duas garras, então precisa de duas equipadas para fazer o que promete.",
+      "A Claw Mastery aumenta o dano dele diretamente — 4% por ponto duro, lido do nível base da Claw Mastery.",
+      "**É um finalizador.** Ele gasta as cargas de pé e não pode errar enquanto faz isso.",
+    ],
+    synergyBonuses: ["+4% de dano por nível"],
+  },
+  "cobra-strike": {
+    summary: "Uma carga que transforma o finalizador em roubo de vida e mana em vez de dano.",
+    mechanics: [
+      "**Roubo, não dano.** As cargas dela dão ao finalizador vida e mana roubadas por golpe — 40% com um ponto e mais 5% por nível — e não somam nada ao golpe em si.",
+      "É assim que uma artista marcial sobrevive sem uma arma com roubo de vida, e é por isso que um ponto vale a pena mesmo numa build que finaliza com cargas de Tiger Strike.",
+      "As cargas ficam de pé por 15 segundos e, como em toda skill de carga, cada uma carrega +50% de attack rating.",
+    ],
+  },
+  "claws-of-thunder": {
+    summary: "Uma carga que soma raio, liberando uma nova e raios encadeados na carga cheia.",
+    mechanics: [
+      "**É uma carga.** O dano da arma acerta por inteiro e o raio acerta junto.",
+      "A segunda carga dispara uma nova e a terceira libera charged bolts, então a skill vai de alvo único a controle de grupo conforme enche.",
+      "As cargas ficam de pé por 15 segundos e cada uma carrega +50% de attack rating.",
+    ],
+    synergyBonuses: ["+8% de dano por nível"],
+  },
+  "dragon-tail": {
+    summary:
+      "Um chute que detona numa explosão de fogo em volta do alvo. A resposta de Martial Arts para um grupo.",
+    mechanics: [
+      "**Dano de chute, então as botas decidem** — e a explosão de fogo é uma parcela desse chute em vez de um número próprio, que é por que o grafo não tabela faixa de fogo para ele.",
+      "A explosão tem raio 6 e acerta tudo dentro dele, o que faz deste o único finalizador que limpa em vez de matar uma coisa só.",
+      "**Ele é mais lento do que parece.** A linha carrega uma penalidade de −40% de velocidade de ataque, então uma barra de Dragon Tail não alcança os breakpoints que uma de Dragon Talon alcança.",
+      "**É um finalizador.** Ele gasta as cargas de pé e não pode errar enquanto faz isso.",
+    ],
+  },
+  "blades-of-ice": {
+    summary: "Uma carga que soma dano de frio e congela o que acerta.",
+    mechanics: [
+      "**É uma carga.** O dano da arma acerta por inteiro e o frio acerta junto.",
+      "Ela desacelera e congela, o que numa personagem corpo a corpo é defesa tanto quanto dano — a coisa ao seu lado para de bater.",
+      "As cargas ficam de pé por 15 segundos e cada uma carrega +50% de attack rating.",
+    ],
+    synergyBonuses: ["+8% de dano por nível"],
+  },
+  "dragon-flight": {
+    summary: "Teleporta até um alvo e o chuta. A única skill de movimento da classe sem Enigma.",
+    mechanics: [
+      "**É um teleporte que precisa de alvo.** Alcance 38, e ele te coloca ao lado do que você clicou — o que é movimento, fuga e entrada num botão só, e o único que a classe tem de forma nativa.",
+      "Dano de chute, então as botas decidem. O bônus de dano é grande — 100% com um ponto e 35% por nível — mas é uma parcela de um chute.",
+      "**É um finalizador.** Ele gasta as cargas de pé, o que faz dele uma forma de entregar uma pilha cheia de Tiger Strike em algo do outro lado da sala.",
+      "Custa 15 de mana e não liga para a arma nas suas mãos.",
+    ],
+  },
+  "phoenix-strike": {
+    summary:
+      "Uma carga cujas três cargas são três elementos diferentes. O motivo de uma Assassin de Martial Arts não ter problema com imunidades.",
+    mechanics: [
+      "**Três cargas, três elementos.** A primeira libera um meteoro, a segunda raio encadeado e a terceira uma explosão de gelo — fogo, raio e frio de uma skill só, que é por que nada no jogo é imune a tudo isso.",
+      "**É uma carga, não um finalizador.** Os elementos são liberados quando um *finalizador* gasta as cargas. Apertar Phoenix Strike sozinho acumula cargas e balança a arma.",
+      "Ela alimenta Fists of Fire, Claws of Thunder e Blades of Ice em vez do contrário, então pontos aqui aumentam três outras skills também.",
+      "As cargas ficam de pé por 15 segundos e cada uma carrega +25% de attack rating — metade do que as outras skills de carga dão.",
+    ],
+  },
+  "claw-mastery": {
+    summary:
+      "Aumenta dano, attack rating e chance de crítico com garras. O primeiro ponto de toda Assassin corpo a corpo.",
+    mechanics: [
+      "Vale só para garras — a linha é limitada ao tipo de item `h2h` — então uma Assassin de lâminas segurando uma arma comum não ganha nada com ela.",
+      "Attack rating 30% com um ponto e mais 10% por nível; dano 35% e mais 4% por nível; chance de crítico subindo até 25%.",
+      "O Dragon Claw lê o nível de **pontos duros** dela para mais 4% de dano por ponto, então equipamento que soma níveis de skill não compra essa parte.",
+    ],
+  },
+  "psychic-hammer": {
+    summary:
+      "Um martelo mágico que empurra o alvo para trás. Um pré-requisito de um ponto para as skills de verdade da árvore.",
+    mechanics: [
+      "O empurrão é certo contra um monstro comum, e uma chance decrescente contra um único ou um boss — 50% a 100% e 25% a 99%, respectivamente.",
+      "O dano é pequeno e continua pequeno. O motivo de ele existir na barra é ser a porta para Cloak of Shadows e Mind Blast.",
+    ],
+  },
+  "burst-of-speed": {
+    summary:
+      "Um buff próprio que dá velocidade de corrida e de ataque. Ele não pode estar ativo ao mesmo tempo que o Fade.",
+    mechanics: [
+      "**Burst of Speed e Fade são mutuamente exclusivos.** Os dois escrevem o mesmo tipo de estado próprio e conjurar um derruba o outro, então a escolha é permanente por luta em vez de um par de buffs que você mantém junto.",
+      "Velocidade de corrida de 15% a 70% e velocidade de ataque de 15% a 60%, as duas numa curva decrescente — os primeiros pontos valem muito mais que os últimos.",
+      "Dura 3000 frames com um ponto e mais 300 por nível: dois minutos com um ponto, e tempo suficiente para esquecer que existe no nível 20.",
+      "Ele aumenta a velocidade com que as traps são colocadas, porque colocar uma trap é um ataque e a velocidade de ataque governa isso.",
+    ],
+  },
+  "weapon-block": {
+    summary:
+      "Faz garras bloquearem como um escudo. Não é a mesma mecânica do bloqueio de escudo, e não precisa de um.",
+    mechanics: [
+      "**Isto não é bloqueio de escudo.** É uma passiva própria, limitada a segurar garras, e funciona sem nenhum escudo equipado — que é justamente o que permite a uma Assassin de duas garras ter chance de bloqueio.",
+      "A chance vai de 20% a 65% numa curva decrescente e tem teto em 65%, e não nos 75% que um escudo alcança.",
+      "Vale só com garras. Uma Assassin de lâminas segurando uma arma comum não bloqueia nada.",
+    ],
+  },
+  "cloak-of-shadows": {
+    summary:
+      "Cega todo monstro na tela e tira a defesa deles. O botão de pânico da classe e a melhor utilidade única dela.",
+    mechanics: [
+      "Raio 30 — na prática a tela inteira — e segura por 200 frames com um ponto mais 25 por nível.",
+      "Corta a defesa dos monstros em 15% com um ponto e mais 3% por nível, com teto em 95%, enquanto aumenta a sua em 10% e mais 3% por nível.",
+      "Monstros cegos perdem você de vista, e é por isso que um ponto transforma uma sala perigosa numa sala de onde dá para sair.",
+    ],
+  },
+  fade: {
+    summary:
+      "Um buff próprio que dá resistências, redução de duração de maldição e redução de dano físico. A resposta da Assassin de Hardcore para tudo.",
+    mechanics: [
+      "**Fade e Burst of Speed são mutuamente exclusivos.** Conjurar um derruba o outro. O Fade é o que uma trapper usa; o Burst of Speed é o que uma kicker usa.",
+      "As quatro resistências de 10% a 75% numa curva decrescente, duração de maldição cortada em 40% a 90%, e mais 1% de redução de dano físico por nível por cima.",
+      "Dura 3000 frames com um ponto e mais 300 por nível, igual ao Burst of Speed.",
+      "As resistências dele entram antes do teto, que é o que faz dele a resposta padrão para a penalidade de −100 do Hell.",
+    ],
+  },
+  "shadow-warrior": {
+    summary:
+      "Uma cópia sombra que repete as skills que você usa. Uma por vez, e ela concorre com o Shadow Master.",
+    mechanics: [
+      "**Uma sombra, e só uma.** Shadow Warrior e Shadow Master dividem um tipo de lacaio com teto de um, então conjurar qualquer um substitui o outro.",
+      "Ela espelha as skills da sua própria barra em vez de escolher as dela, o que a torna previsível e, numa trapper, mais uma fonte de sentinelas.",
+      "Ela ganha 15% de vida, 40% de attack rating e 12% de defesa por nível, e as resistências dela sobem 4% por nível até o teto de 75%.",
+    ],
+  },
+  "mind-blast": {
+    summary:
+      "Atordoa tudo num raio e converte parte disso para lutar por você. O melhor controle de grupo da classe.",
+    mechanics: [
+      "O atordoamento dura 50 frames com um ponto e mais 5 por nível, e é o que mantém uma trapper segura enquanto as sentinelas trabalham.",
+      "Converte uma parcela do que acerta — 15% a 40% numa curva decrescente — por 150 frames mais um bônus aleatório.",
+      "Raio 4, conjurado à distância, e barato o bastante com 15 de mana para apertar sem parar.",
+    ],
+  },
+  venom: {
+    summary:
+      "Soma dano de veneno a todo ataque, entregue em quatro décimos de segundo em vez de ao longo de segundos.",
+    mechanics: [
+      "**Não é veneno comum.** A linha sobrescreve a duração do veneno de forma direta e a fixa em 10 frames — quatro décimos de segundo — então o veneno inteiro chega quase de uma vez em vez de pingar por vários segundos.",
+      "É por isso que ele é enorme num ataque rápido, e por que a intuição normal de veneno está errada aqui: o número não é dano ao longo do tempo em nenhum sentido útil, é dano.",
+      "Como ele *sobrescreve* a duração em vez de somar a ela, não acumula com outras fontes de veneno — ele substitui o tempo delas.",
+      "Dura 3000 frames com um ponto e mais 300 por nível.",
+    ],
+  },
+  "shadow-master": {
+    summary:
+      "Uma sombra que escolhe as próprias skills e não morre fácil. A mais forte das duas sombras, e ela substitui a outra.",
+    mechanics: [
+      "**Uma sombra, e só uma.** Ela divide o tipo de lacaio e o teto de um com o Shadow Warrior, então as duas nunca ficam de pé juntas.",
+      "As resistências dela vão de 5% a 90% numa curva decrescente — acima do teto do jogador, que é a maior parte do motivo de ela sobreviver no Hell.",
+      "Ela usa qualquer skill de Assassin em vez de espelhar as suas, então é menos previsível que o Shadow Warrior e em geral mais útil.",
+      "Ela ganha 15% de vida e 40% de attack rating por nível.",
+    ],
+  },
+  "fire-blast": {
+    summary:
+      "Uma bomba arremessada que explode no impacto. A única skill de trap que você mira, e a que todas as outras traps alimentam.",
+    mechanics: [
+      "**Arremessada, não colocada.** É um projétil em arco que você mira em vez de uma sentinela que você posiciona, o que faz dela a única skill de trap cujo dano chega onde e quando você quiser.",
+      "Cada uma das outras cinco skills de trap aumenta o dano dela — 11% por ponto duro cada — então ela continua relevante numa barra que nunca a aperta.",
+      "Raio de explosão 5, e custa 24 de mana com um ponto.",
+    ],
+    synergyBonuses: [
+      "+11% de dano por nível",
+      "+11% de dano por nível",
+      "+11% de dano por nível",
+      "+11% de dano por nível",
+      "+11% de dano por nível",
+    ],
+  },
+  "shock-web": {
+    summary: "Um leque de projéteis de raio pelo chão. Uma skill de evolução que para de escalar.",
+    mechanics: [
+      "Ela cria 6 projéteis com um ponto, mais um a cada 4 níveis, e mais um a cada 3 pontos duros de Fire Blast.",
+      "Os projéteis viajam rentes ao chão e acertam o que estiver neles, então ela quer um corredor em vez de uma sala aberta.",
+      "É barata com 6 de mana e leva a build até o Charged Bolt Sentry, depois do que ela fica pela sinergia e não pelo botão.",
+    ],
+    synergyBonuses: ["+17% de dano por nível", "+17% de dano por nível"],
+  },
+  "blade-sentinel": {
+    summary:
+      "Uma lâmina giratória que patrulha de um lado para o outro. Dano físico de uma árvore que quase não tem.",
+    mechanics: [
+      "**Ela leva três quartos do dano da sua arma**, que é o que faz das skills de lâmina o único lugar da classe onde uma arma comum ganha de uma garra.",
+      "Ela percorre um caminho fixo e volta, então é posicionada atravessada num gargalo em vez de mirada num monstro.",
+      "Dura 100 frames com um ponto e mais 12 por nível, e conta para o teto de cinco traps como qualquer sentinela.",
+    ],
+    synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
+  },
+  "charged-bolt-sentry": {
+    summary:
+      "Uma sentinela que dispara charged bolts. O dano principal da trapper até o Lightning Sentry abrir no 24.",
+    mechanics: [
+      "Cinco tiros com um ponto, e mais um a cada 4 pontos duros de Lightning Sentry — então a skill de nível 24 melhora esta aqui depois que você já seguiu em frente.",
+      "Os bolts se espalham conforme viajam, o que a torna boa contra um grupo à sua frente e ruim contra uma coisa só.",
+      "Conta para o teto de cinco traps dividido com todas as outras sentinelas.",
+    ],
+    synergyBonuses: [
+      "+9% de dano por nível",
+      "+9% de dano por nível, e um tiro extra a cada 4 níveis",
+    ],
+  },
+  "wake-of-fire": {
+    summary:
+      "Uma sentinela que manda ondas de fogo pelo chão. A skill principal da trapper em evolução até o fim do Nightmare.",
+    mechanics: [
+      "Cinco tiros com um ponto, cada um uma onda que viaja para fora e acerta tudo na linha dela.",
+      "**Duas delas não podem causar dano ao mesmo alvo**, então são espalhadas pela sala em vez de empilhadas num ponto — que é o oposto de como o Lightning Sentry é usado.",
+      "Conta para o teto de cinco traps dividido com todas as outras sentinelas.",
+    ],
+    synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
+  },
+  "blade-fury": {
+    summary: "Arremessa lâminas giratórias à distância que carregam três quartos do dano da sua arma.",
+    mechanics: [
+      "**Três quartos da arma, não ela inteira.** A parcela de arma da linha é 96 de 128, e essa fração é toda a razão de a build segurar uma arma comum grande em vez de garras.",
+      "Ela aplica efeitos de arma à distância — uma lâmina arremessada ainda rouba vida e ainda dispara o que a arma dispara.",
+      "Ela lança uma lâmina a cada 5 frames enquanto segurada, e custa mana por lâmina em vez de por aperto.",
+    ],
+    synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
+  },
+  "lightning-sentry": {
+    summary:
+      "O dano principal da Assassin de traps. Dez raios por sentinela, e cinco sentinelas ao mesmo tempo.",
+    mechanics: [
+      "Dez tiros por sentinela, e os raios perfuram — que é por que estas são empilhadas num ponto em vez de espalhadas, e por que um corredor mata mais rápido que uma sala.",
+      "**Cinco sentinelas ao mesmo tempo, divididas com todas as outras traps.** Uma barra rodando Lightning e Death Sentry juntas está dividindo as mesmas cinco.",
+      "O dano dela é só raio, então um grupo imune a raio é uma parede em vez de uma luta lenta. Esta é a única fraqueza real da build.",
+    ],
+    synergyBonuses: ["+18% de dano por nível", "+18% de dano por nível"],
+  },
+  "wake-of-inferno": {
+    summary: "Uma sentinela que sopra um jato contínuo de fogo. Dano de alvo único em vez de área.",
+    mechanics: [
+      "Ela joga fogo num alvo à frente em vez de cobrir chão, o que faz dela a resposta da árvore de fogo para um boss em vez de para um grupo.",
+      "Dez tiros por sentinela, e conta para o mesmo teto de cinco traps.",
+      "O dano dela é tabelado numa escala mais fina que o das outras traps — a linha desloca por 4 em vez de 8 — então a faixa publicada é o número por tique, e ela tica rápido.",
+    ],
+    synergyBonuses: ["+18% de dano por nível", "+18% de dano por nível"],
+  },
+  "death-sentry": {
+    summary:
+      "Uma sentinela que explode cadáveres e dispara raio. Um ponto transforma um grupo morto numa sala limpa.",
+    mechanics: [
+      "**Dois componentes, não um.** A linha invoca uma sentinela que explode cadáveres *e* uma de raio, então ela continua funcionando depois que os cadáveres acabam.",
+      "A explosão de cadáver é uma parcela da vida do próprio monstro morto, e é por isso que ela escala com o que você matou em vez de com pontos gastos aqui.",
+      "É o motivo de uma trapper limpar uma sala a partir de uma morte, e um ponto basta para a corrente — pontos além disso compram o componente de raio.",
+      "Conta para o teto de cinco traps dividido com todas as outras sentinelas.",
+    ],
+    synergyBonuses: ["+12% de dano por nível"],
+  },
+  "blade-shield": {
+    summary:
+      "Lâminas orbitam você e cortam o que chega perto, levando três quartos do dano da sua arma.",
+    mechanics: [
+      "**Ela consome durabilidade da arma enquanto está ativa.** Numa arma etérea isso é uma forma de destruir uma runeword, e é o único perigo desta skill que vale conhecer antes de apertá-la.",
+      "Três quartos do dano da arma, aplicados a cada 25 frames em tudo dentro do raio 6.",
+      "Dura 3000 frames com um ponto e mais 300 por nível.",
+    ],
+    synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
   },
 };

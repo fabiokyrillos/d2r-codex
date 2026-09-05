@@ -86,7 +86,7 @@ export const classesPtBr: Overlay<ClassCopy> = {
     strengths: [
       "Armadilhas matam de longe e continuam funcionando enquanto você se reposiciona",
       "Excelente capacidade em Uber Tristram",
-      "Fade e Burst of Speed são buffs próprios fortes",
+      "Fade ou Burst of Speed — dois buffs próprios fortes, e você escolhe um, porque conjurar qualquer um derruba o outro",
       "Shadow Master é um minion genuinamente útil",
     ],
     weaknesses: [

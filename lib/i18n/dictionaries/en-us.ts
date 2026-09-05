@@ -722,6 +722,9 @@ export const enUS = {
     synergyKindHealing: "healing",
     synergyKindDuration: "duration",
     synergyKindFreeze: "freeze length",
+    // The Assassin's one, where the synergy buys more of the thing rather than a
+    // bigger number: Lightning Sentry gives Charged Bolt Sentry extra shots.
+    synergyKindShots: "shots fired",
     synergyKindHp: "life",
     synergyKindAbsorb: "damage absorbed",
     // The Druid's elemental tree is the only place a source raises one of a
@@ -845,6 +848,13 @@ export const enUS = {
      */
     noProgressionConverted:
       "This skill's damage is your weapon's. Part of it is dealt as this skill's element instead of as physical damage, and that share grows with skill level — it is the converted figure in the table above. The skill has no elemental range of its own to publish.",
+    /*
+     * The Assassin's three kicks. Neither the weapon sentence nor "no direct
+     * damage" is true of them: the damage is real, and it belongs to a gear slot
+     * rather than to the weapon every other attack on the site scales from.
+     */
+    noProgressionKick:
+      "This skill's damage is your **boots'**, not your weapon's. The claws in your hands add their skill levels and nothing else, which is why a kick build hunts for boots and upgrades them rather than chasing a weapon. There is no range to publish here: the skill multiplies the kick, and the kick is the boots'. Crushing Blow is rolled once per kick, which is why these builds kill bosses far above their listed damage.",
     damageOverTime:
       "Poison is dealt over time rather than on impact. The table gives the total across the duration beside it.",
     /*
