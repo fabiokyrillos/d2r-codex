@@ -61,9 +61,11 @@ import { allSkills } from "../content/classes";
 import {
   capFromMinCalc,
   manaFromRow,
+  missileSynergiesFor,
   petMaxFromColumn,
   slugFor,
   synergiesFor,
+  type MissileRow,
   type SkillRow,
 } from "./skill-graph-rules";
 
@@ -153,6 +155,15 @@ interface RawMissile {
   dParam1?: number;
   dParam2?: number;
   EType?: string;
+  /**
+   * The game's own name for a synergy calc, and on a missile it is the whole
+   * declaration: the coefficient is a literal rather than a `parN`, so there is
+   * no parameter description for `synergiesFor`'s rule to weigh. Read by
+   * `missileSynergiesFor`; see the comment on that function for the three
+   * skills in scope whose synergy lives here rather than on the skill row.
+   */
+  EDmgSymPerCalc?: string;
+  ELenSymPerCalc?: string;
 }
 
 /**
@@ -746,7 +757,7 @@ async function main() {
     getJson<RawSkill>(PATHS.current, ["skill", "charclass", "reqlevel", "maxlvl", "skilldesc"]),
     getJson<RawSkill>(PATHS.base, ["skill", "charclass", "reqlevel"]),
     getJson<RawDesc>(PATHS.descs, ["skilldesc", "SkillPage", "SkillRow", "SkillColumn"]),
-    getJson<RawMissile>(PATHS.missiles, ["Missile", "DmgCalc1"]),
+    getJson<RawMissile>(PATHS.missiles, ["Missile", "DmgCalc1", "EDmgSymPerCalc", "HitSubMissile1"]),
   ]);
 
   /*
@@ -790,6 +801,17 @@ async function main() {
   const eTypeByMissile = new Map<string, string>();
   for (const m of missiles) {
     if (m.EType) eTypeByMissile.set(String(m.Missile).toLowerCase(), m.EType);
+  }
+
+  /**
+   * Every missile row by lowercased name, for the sub-missile walk.
+   *
+   * Keyed the same way as the two maps above and for the same reason: the
+   * skill columns and the `SubMissile` columns do not agree on case.
+   */
+  const missileByName = new Map<string, MissileRow>();
+  for (const m of missiles) {
+    missileByName.set(String(m.Missile).toLowerCase(), m as unknown as MissileRow);
   }
   const missileETypeFor = (s: RawSkill & Record<string, unknown>) =>
     missilesOf(s)
@@ -959,6 +981,7 @@ async function main() {
         maxLevel: s.maxlvl ?? 20,
         prerequisites: a.get(slug)!,
         synergies: synergiesFor(s, rowByName),
+        missileSynergies: missileSynergiesFor(missilesOf(s), missileByName, slug),
         effects: [
           ...(EFFECTS[slug]?.(s) ?? []),
           ...(PUBLISHES_MANA.has(slug)
@@ -1035,6 +1058,17 @@ async function main() {
           .join(", ") +
         `],`;
 
+  const missileSyn = (ms: (typeof rows)[number]["missileSynergies"]) =>
+    ms.length === 0
+      ? ""
+      : `, missileSynergies: [${ms
+          .map(
+            (m) =>
+              `{ from: "${m.from}", missile: "${m.missile}", ` +
+              `element: "${m.element}", magnitude: ${m.magnitude} }`,
+          )
+          .join(", ")}]`;
+
   const conv = (c: (typeof rows)[number]["conversion"]) =>
     c
       ? `, conversion: { element: "${c.element}", base: ${c.base}, perLevel: ${c.perLevel} }`
@@ -1071,7 +1105,7 @@ async function main() {
               `{ from: "${s.from}", kinds: [${s.kinds.map((k) => `"${k}"`).join(", ")}]` +
               `${s.magnitude === undefined ? "" : `, magnitude: ${s.magnitude}`} }`,
           )
-          .join(", ")}]${dmg(r.damage)}${phys(r.physical)}${conv(r.conversion)},${eff(r.effects)}\n` +
+          .join(", ")}]${missileSyn(r.missileSynergies)}${dmg(r.damage)}${phys(r.physical)}${conv(r.conversion)},${eff(r.effects)}\n` +
         `  },`,
     )
     .join("\n");
@@ -1112,6 +1146,12 @@ async function main() {
  *   references carry no synergy parameter and produce no edge. Hydra does still
  *   receive a damage synergy from both, declared separately in
  *   \`EDmgSymPerCalc\` — the exclusion covers the summon columns only.
+ *
+ *   Three synergies are not on a skill row at all. Fist of the Heavens, Meteor
+ *   and Immolation Arrow each deal part of their damage through a sub-missile
+ *   that carries its own \`EDmgSymPerCalc\`, and \`missileSynergies\` records
+ *   those separately — see the field's own comment for why they are not merged
+ *   into the list above.
  *
  *   Concentration is not excluded: it never appears as a \`skill()\` reference
  *   at all. Its boost to Blessed Hammer arrives through the aura state, leaving
@@ -1208,6 +1248,31 @@ export interface SkillGraphNode {
     readonly from: Slug;
     readonly kinds: readonly string[];
     readonly magnitude?: number;
+  }[];
+  /**
+   * Synergies the game keeps on a *missile* this skill creates rather than on
+   * its own row, and which are therefore invisible to \`synergies\` above.
+   *
+   * Present on three skills. Fist of the Heavens deals lightning and spawns
+   * \`fistoftheheavensbolt\`, a magic missile carrying
+   * \`skill('Holy Bolt'.blvl) * 15\`; Meteor's ground fire reads Inferno at 3%;
+   * Immolation Arrow's reads Fire Arrow at 5%. In each case hard points in the
+   * named skill raise part of what the skill does and nothing on the skill row
+   * says so.
+   *
+   * Kept separate rather than merged into \`synergies\` because the two are not
+   * interchangeable to a reader: this bonus applies to one damage component,
+   * dealt as \`element\`, and not to the skill's whole output. A page that prints
+   * them together would over-claim.
+   */
+  readonly missileSynergies?: readonly {
+    readonly from: Slug;
+    /** The missile row the calc sits on, so a page can name the component. */
+    readonly missile: string;
+    /** The missile's own element. Not necessarily the skill's. */
+    readonly element: string;
+    /** Percent per hard point. */
+    readonly magnitude: number;
   }[];
   /**
    * Base elemental damage before synergies. Absent for skills that deal none.

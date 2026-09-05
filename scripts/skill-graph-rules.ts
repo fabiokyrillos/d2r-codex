@@ -986,3 +986,153 @@ export function checkSynergies(
 
   return problems;
 }
+
+// ===========================================================================
+// Missile-borne synergies
+// ===========================================================================
+
+/**
+ * A synergy the game keeps on a *missile* rather than on a skill's own row.
+ *
+ * `synergiesFor` reads `skills.json` and nothing else, which is correct for
+ * every edge the game declares on the skill. It is not the whole game. Three
+ * skills in the five classes in scope deal part of their damage through a
+ * sub-missile that carries its own `EDmgSymPerCalc`, and those references are
+ * invisible from the skill row:
+ *
+ *   fistoftheheavensbolt   `skill('Holy Bolt'.blvl) * 15`   EType mag
+ *   meteorfire             `skill('Inferno'.blvl)*3`        EType fire
+ *   immolationfire         `skill('Fire Arrow'.blvl) * 5`   EType fire
+ *
+ * The FoHdin is why this exists. Its plan puts twenty hard points in Holy Bolt
+ * and calls them a synergy; the skill row says Fist of the Heavens' only
+ * synergy is Holy Shock, so a rule reading skill rows alone rejects a correct
+ * allocation. The points are collected on the missile — the magic waves — at
+ * fifteen percent each, and a graph that cannot see that cannot arbitrate the
+ * claim.
+ *
+ * Two more missiles carry a synergy calc whose source the skill row already
+ * declares — `moltenboulderfirepath` and `armageddonfire`, both from Firestorm.
+ * They are extracted all the same and de-duplicated by the consumer rather than
+ * here, because "the missile says so too" is a fact about the game and dropping
+ * it would make this function's output depend on the other one's.
+ *
+ * The coefficient is a literal here, not a `parN`, so the parameter-description
+ * test that governs `synergiesFor` has nothing to read. The column name is the
+ * declaration instead: `EDmgSymPerCalc` and `ELenSymPerCalc` are the game's own
+ * names for a synergy calc, and a reference in any *other* column is not one.
+ */
+export interface MissileSynergy {
+  /** Slug of the skill whose hard points feed this. */
+  from: string;
+  /** The missile row the calc sits on, so a page can name the component. */
+  missile: string;
+  /** The missile's own `EType`. Its damage is this element, not the skill's. */
+  element: string;
+  /** Percent per hard point. */
+  magnitude: number;
+}
+
+/** One row of `missiles.json`, as far as this rule cares. */
+export type MissileRow = { Missile: string } & Record<string, unknown>;
+
+/** The columns a missile spawns further missiles through. */
+export const MISSILE_CHILD_COLUMNS = [
+  "SubMissile1",
+  "SubMissile2",
+  "SubMissile3",
+  "HitSubMissile1",
+  "HitSubMissile2",
+  "HitSubMissile3",
+  "HitSubMissile4",
+] as const;
+
+/** `skill('X'.blvl) * 15` or `(skill('X'.blvl)+skill('Y'.blvl))*7`. */
+const MISSILE_SYNERGY_COLUMNS = ["EDmgSymPerCalc", "ELenSymPerCalc"] as const;
+const MISSILE_LITERAL_COEFFICIENT = /\*\s*(\d+)\s*$/;
+
+/**
+ * Every missile-borne synergy reachable from one skill, following sub-missiles.
+ *
+ * `spawns` gives the missiles the *skill* creates; the walk from there is over
+ * `MISSILE_CHILD_COLUMNS`, because the calc sits on the grandchild in all three
+ * cases that matter — Fist of the Heavens creates `fistoftheheavensdelay`,
+ * which creates the bolt that carries the reference.
+ *
+ * A shape this cannot read stops the generator rather than being skipped. The
+ * point of the function is that a synergy the game declares is not silently
+ * absent from a graph whose whole meaning is "hard points here raise that
+ * number", and a parser that shrugged at an unfamiliar expression would
+ * reintroduce exactly that.
+ */
+export function missileSynergiesFor(
+  spawns: readonly string[],
+  missileByName: ReadonlyMap<string, MissileRow>,
+  where: string,
+): MissileSynergy[] {
+  const found = new Map<string, MissileSynergy>();
+  const seen = new Set<string>();
+
+  const walk = (name: string) => {
+    const key = name.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    const row = missileByName.get(key);
+    if (!row) return;
+
+    for (const column of MISSILE_SYNERGY_COLUMNS) {
+      const value = row[column];
+      if (typeof value !== "string" || !value.includes("skill(")) continue;
+
+      const refs = [...value.matchAll(SKILL_REF)].map((m) => m[1]);
+      if (refs.length === 0) {
+        throw new Error(
+          `${where}: missile "${row.Missile}" declares ${column} as "${value}", which ` +
+            `references no skill's base level. A synergy reads \`blvl\`; teach this rule ` +
+            `the new shape rather than dropping the edge.`,
+        );
+      }
+
+      const coefficient = MISSILE_LITERAL_COEFFICIENT.exec(value.trim());
+      if (!coefficient) {
+        throw new Error(
+          `${where}: missile "${row.Missile}" declares ${column} as "${value}", whose ` +
+            `coefficient is not a trailing literal. Every missile synergy in the pinned ` +
+            `extraction ends in \`* N\`; read the new shape deliberately.`,
+        );
+      }
+      const magnitude = Number(coefficient[1]);
+
+      const element = row.EType;
+      if (typeof element !== "string" || element.length === 0) {
+        throw new Error(
+          `${where}: missile "${row.Missile}" carries a synergy calc and no EType, so the ` +
+            `element its damage is dealt as is unknown.`,
+        );
+      }
+
+      for (const ref of refs) {
+        const slug = slugFor(ref);
+        const existing = found.get(slug);
+        if (existing && existing.magnitude !== magnitude) {
+          throw new Error(
+            `${where} <- ${slug}: two missile magnitudes (${existing.magnitude}, ${magnitude}). ` +
+              `Pick the governing missile deliberately.`,
+          );
+        }
+        if (!existing) {
+          found.set(slug, { from: slug, missile: String(row.Missile), element, magnitude });
+        }
+      }
+    }
+
+    for (const column of MISSILE_CHILD_COLUMNS) {
+      const child = row[column];
+      if (typeof child === "string" && child.length > 0) walk(child);
+    }
+  };
+
+  for (const name of spawns) walk(name);
+
+  return [...found.values()].sort((x, y) => x.from.localeCompare(y.from));
+}

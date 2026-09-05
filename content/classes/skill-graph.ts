@@ -33,6 +33,12 @@
  *   receive a damage synergy from both, declared separately in
  *   `EDmgSymPerCalc` — the exclusion covers the summon columns only.
  *
+ *   Three synergies are not on a skill row at all. Fist of the Heavens, Meteor
+ *   and Immolation Arrow each deal part of their damage through a sub-missile
+ *   that carries its own `EDmgSymPerCalc`, and `missileSynergies` records
+ *   those separately — see the field's own comment for why they are not merged
+ *   into the list above.
+ *
  *   Concentration is not excluded: it never appears as a `skill()` reference
  *   at all. Its boost to Blessed Hammer arrives through the aura state, leaving
  *   only a parameter description behind, so there is no reference for the rule
@@ -126,6 +132,31 @@ export interface SkillGraphNode {
     readonly from: Slug;
     readonly kinds: readonly string[];
     readonly magnitude?: number;
+  }[];
+  /**
+   * Synergies the game keeps on a *missile* this skill creates rather than on
+   * its own row, and which are therefore invisible to `synergies` above.
+   *
+   * Present on three skills. Fist of the Heavens deals lightning and spawns
+   * `fistoftheheavensbolt`, a magic missile carrying
+   * `skill('Holy Bolt'.blvl) * 15`; Meteor's ground fire reads Inferno at 3%;
+   * Immolation Arrow's reads Fire Arrow at 5%. In each case hard points in the
+   * named skill raise part of what the skill does and nothing on the skill row
+   * says so.
+   *
+   * Kept separate rather than merged into `synergies` because the two are not
+   * interchangeable to a reader: this bonus applies to one damage component,
+   * dealt as `element`, and not to the skill's whole output. A page that prints
+   * them together would over-claim.
+   */
+  readonly missileSynergies?: readonly {
+    readonly from: Slug;
+    /** The missile row the calc sits on, so a page can name the component. */
+    readonly missile: string;
+    /** The missile's own element. Not necessarily the skill's. */
+    readonly element: string;
+    /** Percent per hard point. */
+    readonly magnitude: number;
   }[];
   /**
    * Base elemental damage before synergies. Absent for skills that deal none.
@@ -284,7 +315,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 5, column: 3,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["exploding-arrow"],
-    synergies: [{ from: "exploding-arrow", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 12, bands: [12, 23, 34, 36, 38] }, max: { base: 23, bands: [12, 23, 34, 36, 38] } },
+    synergies: [{ from: "exploding-arrow", kinds: ["damage"] }], missileSynergies: [{ from: "fire-arrow", missile: "immolationfire", element: "fire", magnitude: 5 }], damage: { element: "fire", hitShift: 8, min: { base: 12, bands: [12, 23, 34, 36, 38] }, max: { base: 23, bands: [12, 23, 34, 36, 38] } },
   },
   "freezing-arrow": {
     classSlug: "amazon", tree: "bow-and-crossbow", page: 1, row: 6, column: 1,
@@ -572,7 +603,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "druid", tree: "elemental", page: 3, row: 2, column: 1,
     requiredLevel: 6, maxLevel: 20,
     prerequisites: ["firestorm"],
-    synergies: [{ from: "firestorm", kinds: ["fire"] }, { from: "volcano", kinds: ["physical"] }], damage: { element: "fire", hitShift: 8, min: { base: 6, bands: [4, 7, 10, 13, 16] }, max: { base: 12, bands: [5, 8, 11, 14, 17] } }, physical: { hitShift: 8, min: { base: 6, bands: [4, 7, 10, 13, 16] }, max: { base: 12, bands: [5, 8, 11, 14, 17] } },
+    synergies: [{ from: "firestorm", kinds: ["fire"] }, { from: "volcano", kinds: ["physical"] }], missileSynergies: [{ from: "firestorm", missile: "moltenboulderfirepath", element: "fire", magnitude: 8 }], damage: { element: "fire", hitShift: 8, min: { base: 6, bands: [4, 7, 10, 13, 16] }, max: { base: 12, bands: [5, 8, 11, 14, 17] } }, physical: { hitShift: 8, min: { base: 6, bands: [4, 7, 10, 13, 16] }, max: { base: 12, bands: [5, 8, 11, 14, 17] } },
     effects: [{ labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 7, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 10, perLevel: 0.5 } }],
   },
   "arctic-blast": {
@@ -620,7 +651,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "druid", tree: "elemental", page: 3, row: 6, column: 1,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["volcano"],
-    synergies: [{ from: "firestorm", kinds: ["fire"] }, { from: "fissure", kinds: ["duration"] }, { from: "molten-boulder", kinds: ["fire"] }, { from: "volcano", kinds: ["physical"] }], damage: { element: "fire", hitShift: 8, min: { base: 25, bands: [15, 20, 25, 31, 38] }, max: { base: 75, bands: [16, 22, 27, 34, 40] } }, physical: { hitShift: 8, min: { base: 18, bands: [10, 12, 15, 18, 22] }, max: { base: 26, bands: [11, 13, 16, 19, 23] } },
+    synergies: [{ from: "firestorm", kinds: ["fire"] }, { from: "fissure", kinds: ["duration"] }, { from: "molten-boulder", kinds: ["fire"] }, { from: "volcano", kinds: ["physical"] }], missileSynergies: [{ from: "firestorm", missile: "armageddonfire", element: "fire", magnitude: 7 }, { from: "molten-boulder", missile: "armageddonfire", element: "fire", magnitude: 7 }], damage: { element: "fire", hitShift: 8, min: { base: 25, bands: [15, 20, 25, 31, 38] }, max: { base: 75, bands: [16, 22, 27, 34, 40] } }, physical: { hitShift: 8, min: { base: 18, bands: [10, 12, 15, 18, 22] }, max: { base: 26, bands: [11, 13, 16, 19, 23] } },
     effects: [{ labelKey: "effectDuration", unit: "frames", shape: { kind: "linear", base: 250, perLevel: 0 } }, { labelKey: "effectRadius", unit: "units", shape: { kind: "linear", base: 8, perLevel: 0 } }, { labelKey: "effectMana", unit: "mana", shape: { kind: "linear", base: 35, perLevel: 0 } }],
   },
   "hurricane": {
@@ -898,7 +929,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "paladin", tree: "combat-skills", page: 1, row: 6, column: 2,
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["blessed-hammer", "conversion"],
-    synergies: [{ from: "holy-shock", kinds: ["damage"] }], damage: { element: "ltng", hitShift: 8, min: { base: 150, bands: [15, 30, 45, 55, 65] }, max: { base: 200, bands: [15, 30, 45, 55, 65] } },
+    synergies: [{ from: "holy-shock", kinds: ["damage"] }], missileSynergies: [{ from: "holy-bolt", missile: "fistoftheheavensbolt", element: "mag", magnitude: 15 }], damage: { element: "ltng", hitShift: 8, min: { base: 150, bands: [15, 30, 45, 55, 65] }, max: { base: 200, bands: [15, 30, 45, 55, 65] } },
   },
   "might": {
     classSlug: "paladin", tree: "offensive-auras", page: 2, row: 1, column: 1,
@@ -1066,7 +1097,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 5, column: 2,
     requiredLevel: 24, maxLevel: 20,
     prerequisites: ["fire-ball", "fire-wall"],
-    synergies: [{ from: "fire-ball", kinds: ["damage"] }, { from: "fire-bolt", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 80, bands: [23, 39, 79, 81, 83] }, max: { base: 100, bands: [25, 41, 81, 83, 85] } },
+    synergies: [{ from: "fire-ball", kinds: ["damage"] }, { from: "fire-bolt", kinds: ["damage"] }], missileSynergies: [{ from: "inferno", missile: "meteorfire", element: "fire", magnitude: 3 }], damage: { element: "fire", hitShift: 8, min: { base: 80, bands: [23, 39, 79, 81, 83] }, max: { base: 100, bands: [25, 41, 81, 83, 85] } },
   },
   "fire-mastery": {
     classSlug: "sorceress", tree: "fire-spells", page: 1, row: 6, column: 2,
