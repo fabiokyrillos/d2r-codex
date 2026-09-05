@@ -9220,4 +9220,384 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "fury-druid": {
+    summary:
+      "Um lobisomem que aplica cinco rolagens de ataque separadas por golpe, o que transforma crushing blow e roubo de vida num plano contra chefes em vez de um enfeite.",
+    playstyle:
+      "Você conjura o seu espírito e o seu urso em forma humana, transforma-se, e então para de pensar em botões. Fury é o único ataque que você aperta, e é uma rajada de até cinco golpes no tempo que um ataque comum leva para dar um. Contra um grupo você entra andando, porque o lobo é rápido e o Grizzly já puxou a primeira fileira para cima de si; contra um chefe você fica parado e deixa a contagem de golpes trabalhar. Não há rotação, nem cooldown, nem recurso a administrar — o Fury custa quatro de mana. O que existe no lugar é um problema de posicionamento: tudo o que você mata, você mata em alcance corpo a corpo, e todo o plano defensivo da build é que as coisas estejam olhando para o urso em vez de para você.",
+    strengths: [
+      "Cinco rolagens de ataque separadas por golpe — crushing blow, open wounds e vida roubada rolam cinco vezes",
+      "Uma reserva de vida enorme: os +115% da Lycanthropy multiplicam o que a Vitality comprou, e o Werewolf soma +25% fixos por cima",
+      "Praticamente de graça: o Fury custa 4 de mana em todos os níveis, então não há problema de mana a resolver",
+      "Dano de chefe sem arma de chefe; crushing blow é uma fração da vida atual do alvo, não da sua",
+      "O Grizzly provoca, o que dá à build uma linha de frente que ela não precisa ser",
+    ],
+    weaknesses: [
+      "Um único tipo de dano, e é aquele a que o Hell distribui imunidade mais barato nos atos finais",
+      "Não existe breakpoint publicado de velocidade de ataque para nenhuma das duas formas animais, então o equipamento não pode ser planejado até o quadro",
+      "Attack rating é um problema real no Hell e se resolve com pontos e equipamento, não com skill",
+      "Você não conjura enquanto transformado — cada buff, invocação e decisão de poção acontece antes da luta",
+      "Nenhuma skill de movimento, e o Teleport de um Enigma tira você da forma a cada uso",
+    ],
+    flexPoints: [
+      "Quatro pontos sobram de verdade no nível 99. O **Oak Sage** é o destino usual deles no Hardcore — mas note que ele e o Heart of Wolverine dividem um único espaço de espírito, então pontos nos dois compram uma *troca*, não um acúmulo.",
+      "**Werebear no lugar do Werewolf** não é um ponto flexível, é outra build. O urso não usa Fury de jeito nenhum — Fury é exclusivo do lobo.",
+      "O **Hunger** custa três pontos para ser alcançado daqui (Werebear, Maul, Fire Claws) e dá uma mordida de emergência que devolve vida e mana. Numa build com vida roubada em cinco golpes por investida, raramente é o melhor uso de três pontos.",
+      "Não coloque pontos em **Rabies** nem em **Feral Rage** além de um em cada. O Fury substitui os dois, e nenhum deles o alimenta.",
+    ],
+    statPlan: {
+      strength: "O suficiente para a arma e a armadura que você realmente pretende usar, contado uma vez e não ultrapassado.",
+      dexterity: "O suficiente para a arma, e nada além disso, a menos que você esteja construindo para bloqueio máximo.",
+      vitality: "Todo o resto, e aqui ele vale mais do que em qualquer outra classe.",
+      energy: "Nenhum. O Fury custa quatro de mana.",
+      notes: [
+        "O Druid ganha 2 de vida por ponto de Vitality, e então a **Lycanthropy multiplica o resultado por 2,15 com vinte pontos** enquanto o Werewolf acrescenta 25% fixos por cima. Um ponto de Vitality vale mais para um shapeshifter do que para qualquer outro personagem do jogo, e esse é o argumento contra gastar qualquer um deles em outro lugar.",
+        "É o attack rating, não o dano, que falha primeiro no Hell. Os +158% do Heart of Wolverine são a maior fonte isolada da build; depois disso são anéis, um amuleto e o mercenário.",
+        "Strength para um escudo é uma decisão real e esta build não precisa de um. Uma arma de duas mãos não custa nada além do bloqueio que você não ia conseguir de forma confiável mesmo.",
+        "**Não há resposta de Energy a procurar**, o que é incomum neste site: o custo do Fury não cresce com o nível dele.",
+      ],
+    },
+    breakpointWhy: {},
+    breakpointNotes:
+      "**Esta tabela está vazia de propósito.** Werewolf e Werebear não usam as tabelas de quadros da forma humana — o site diz isso na tabela de velocidade de conjuração do Druid, que publica as três. O que existe para velocidade de conjuração não existe para recuperação de golpe nem para velocidade de ataque: a Blizzard nunca publicou uma tabela de quadros das formas animais, e a calculadora comunitária de facto foi construída sobre uma build de PTR de 2022 cujo próprio repositório carrega um issue aberto sobre esta skill. Imprimir aqui os números da forma humana repetiria exatamente o erro contra o qual a tabela de conjuração avisa, então nada é impresso. **Increased Attack Speed continua sendo o melhor afixo ofensivo da build** — o equipamento abaixo o persegue — mas é perseguido continuamente e não até um limiar, e qualquer página que lhe dê um breakpoint de velocidade de ataque em forma animal está citando uma fonte que esta aqui não conseguiu verificar.",
+    skillNotes: {
+      fury: "Cinco golpes a partir do nível 4 — todo ponto depois do quarto compra os +17% de dano por nível e mais nada. Ele não recebe sinergia de skill nenhuma, e é por isso que nada mais nesta árvore vale ser maximizado por causa dele.",
+      werewolf:
+        "Velocidade de ataque, e velocidade de ataque é vazão numa skill cuja contagem de golpes já está no teto. O bônus sobe de 10% em direção a um limite de 80% numa curva decrescente, então os primeiros pontos valem muito mais que os últimos — mas não há lugar melhor para eles.",
+      lycanthropy:
+        "+115% de vida com vinte pontos — só um Oak Sage maximizado dá mais que isso a esta classe, e aquele é um totem que pode morrer — mais quarenta segundos de forma a cada dois pontos. Não custa mana e não tem conjuração — é uma passiva que o jogo arquiva ao lado das formas.",
+      "heart-of-wolverine":
+        "+153% de dano aprimorado e +158% de attack rating com vinte. O dano aprimorado multiplica a arma, e o attack rating é a resposta honesta a errar golpes no Hell.",
+      "summon-grizzly":
+        "Um urso, e ele provoca. É a linha de frente, e a razão de um personagem corpo a corpo sem plano de bloqueio sobreviver a um grupo do Hell.",
+      "feral-rage":
+        "Exigido pelo Rabies. Também é o botão de deslocamento da build: as cargas dele compram velocidade de movimento, subindo em direção a 70%, e o lobo não tem outro jeito de andar mais rápido.",
+      rabies:
+        "Exigido pelo Fury, e mais nada. Um ponto de veneno numa build física não é um plano; veja o Rabies Druid se a ideia agradar.",
+      "oak-sage":
+        "Exigido pelo Heart of Wolverine e pelos lobos. Um ponto também é uma opção real no Hardcore — veja os pontos flexíveis.",
+      raven: "Exigido pelos lobos. Cinco aves que cegam, por um ponto.",
+    },
+    immunityPlan:
+      "**Tudo o que esta build causa é físico, então imunidade a físico é a única imunidade que existe para ela — e ela tem duas respostas, não uma.** A primeira é o **Amplify Damage** do Atma's Scarab. É uma maldição, então é cortada a um quinto contra um alvo que ainda está imune, e mesmo assim quebra a imunidade sempre que um quinto for suficiente — o que cobre a maior parte do que o Hell coloca na sua frente. A segunda é o **Bone Break**, o Sunder Charm físico, que quebra a imunidade de vez; só se pode carregar um Sunder Charm por vez e físico é o único que esta build algum dia iria querer. O que **não** ajuda é uma linha de −% to Enemy Resistance: o pierce de item é aplicado depois da verificação de imunidade e essa etapa é pulada enquanto a imunidade está de pé, então contra um imune a físico ele está ausente, não fraco. Depois que uma maldição ou o charm tiver quebrado a imunidade, todo o resto que você possui incide sobre o resultado com valor cheio.",
+    mercenaryNotes:
+      "**O trabalho do mercenário é a aura que você ainda não carrega.** Com o Beast na mão você já tem Fanaticism, então contrate um Act 2 Desert Mercenary e dê Might a ele no Nightmare — a aura de dano aprimorado dele se soma a Fanaticism, Heart of Wolverine e Fortitude, que são dano aprimorado de fontes diferentes e multiplicam a arma. No topo, esse mercenário carrega **Pride** e a aura Concentration dela, que é a maior aura de dano físico do jogo. Se você preferir usar **Grief** em vez de Beast, a aura precisa mudar de lugar: contrate uma **Act 1 Rogue Scout** com **Faith** pelo Fanaticism dela, e pegue as flechas de frio no Nightmare para que o grupo chegue lento até você. **Infinity é quase inútil aqui** — Conviction reduz resistência a fogo, frio e raio, e cada ponto de dano desta build é físico.",
+    farmingWhy: {
+      "pindleskin-hell":
+        "Uma corrida de trinta segundos contra um único alvo grande, que é exatamente o formato em que uma investida de cinco golpes com crushing blow é melhor. O alvo padrão de primeiro Hell para um Druid corpo a corpo.",
+      "secret-cow-level-hell":
+        "Nada ali é imune a físico, a densidade é absurda, e os cinco golpes do Fury significam que cada investida rouba vida cinco vezes. É a melhor troca entre experiência e segurança que a build tem.",
+      "mausoleum-hell":
+        "Denso, nível 85, alcançável cedo, e cheio dos mortos-vivos que open wounds e crushing blow resolvem sem nenhuma ajuda.",
+      "pit-hell":
+        "Nível 85 e a melhor densidade de itens do Ato 1 — mas os grupos mistos daqui são onde uma build só de físico encontra o primeiro imune a físico, então traga a resposta.",
+      "travincal-hell":
+        "O Conselho é grande, corpo a corpo, e não é imune a físico. Crushing blow é uma fração da vida atual deles, que é exatamente o caso em que ele vale mais.",
+      "worldstone-keep-hell":
+        "Os grupos mais densos do jogo e a melhor experiência. Pede resistências no teto e um Sunder Charm antes de ficar confortável.",
+      "uber-tristram-hell":
+        "Cinco rolagens de ataque por investida são cinco rolagens de crushing blow, e crushing blow é a única mecânica que machuca de verdade os três Ubers. O teto da build está aqui, e não em nenhuma corrida de farm.",
+    },
+    levelingPath: {
+      summary:
+        "O Fury só existe no nível 30 e o Werewolf existe no nível 1, então os primeiros trinta níveis são gastos no Feral Rage com um ponto na Lycanthropy a cada nível. Nada é respecado: cada ponto gasto no caminho — Werewolf, Lycanthropy, Feral Rage, Rabies — ou é maximizado depois ou é um pré-requisito de que a build final precisa de qualquer forma.",
+      respecAt:
+        "Nenhum respec necessário. Esta é uma das poucas builds do site em que o personagem que evolui é o personagem pronto.",
+    },
+    selfFoundNotes:
+      "Funciona, mas é mais lento que os Druids elementais, por um motivo: o dano desta build mora na arma e no attack rating dela, e os dois vêm de itens em vez de pontos. Steel, Lore e Stealth a carregam pelo Normal, Treachery e um pelt imbuído pela Charsi a carregam pelo Nightmare, e Gore Rider e String of Ears caem com facilidade. Um Kingslayer no nível 53 é uma arma realista sozinho; Beast não é, e enquanto um não existir o mercenário é de onde o Fanaticism precisa vir — o que significa Faith, que também não se acha sozinho. Um Fury Druid solo deve planejar **Might num mercenário do Ato 2** e aceitar que o problema da aura fica sem solução.",
+    hardcoreNotes:
+      "Uma build viável mas exigente no Hardcore, e as exigências são específicas. **Você não bebe do cinto com a mesma liberdade em forma animal e não conjura nada**, então a luta em que você está é a luta para a qual você se preparou. Pegue o **Oak Sage** em vez do Heart of Wolverine — o bônus de vida vale para você, para o mercenário e para o urso, e toda a margem desta build é vida. Mantenha o Grizzly vivo: é a provocação dele que decide se o grupo está olhando para o urso ou para você, e ele não pode ser reinvocado enquanto estiver vivo, então um urso morto significa sair da forma no meio de uma luta. Os assassinos específicos são o Iron Maiden de um Oblivion Knight — cinco rolagens de ataque por investida são cinco devoluções do seu próprio dano — e grupos à distância com Fanaticism que o urso não alcança. Redução de dano físico vale mais que qualquer linha ofensiva: String of Ears, Vampire Gaze e um Crown of Ages já são um plano de equipamento de Hardcore por si sós.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 30 e ao Fury. Até lá você evolui no Feral Rage, e tudo aqui é compra de vendedor ou runa da Countess.",
+        nextUpgrade:
+          "Nível 30 e o primeiro ponto no Fury. Tudo antes disso é outro personagem vestindo este equipamento.",
+        notes:
+          "**Coloque um ponto no Werewolf no nível 1 e depois alimente a Lycanthropy.** Os quarenta segundos de duração base da forma são o que torna a transformação tediosa em nível baixo, e a Lycanthropy soma vinte segundos por ponto de graça — sem mana, sem conjuração.",
+        picks: {
+          "weapon-0": {
+            why: "Velocidade de ataque, attack rating e open wounds por duas das runas mais baratas do jogo, numa base que dá para comprar. Antes de o Fury existir você bate uma vez por investida, e open wounds não liga para o quanto você bate forte.",
+            sockets: "Tir + El em qualquer Sword, Axe ou Mace de 2 soquetes. Uma base rápida vence uma base grande.",
+          },
+          "weapon-0-alt0": {
+            label: "Qualquer arma com um soquete e a recompensa de missão do Larzuk",
+            why: "Uma arma rara ou mágica com Increased Attack Speed é um substituto perfeitamente bom. Este espaço é trocado duas vezes antes do Hell.",
+            lookFor: ["Increased attack speed", "+% de dano aprimorado", "+ de attack rating"],
+          },
+          "helm-0": {
+            why: "+1 em todas as skills por Ort + Sol. Num pelt de Druid ele se soma à rolagem do próprio pelt, e um pelt é o único elmo do jogo que rola + numa skill de Druid diretamente.",
+            sockets:
+              "Ort + Sol em qualquer elmo de 2 soquetes. Compre um pelt de Druid branco da Akara em vez de usar um capacete comum.",
+          },
+          "body-0": {
+            why: "Recuperação de golpe, corrida mais rápida e +6 de Dexterity a partir do nível 17 por Tal + Eth. Você corre para tudo quanto é lado e apanha o tempo todo.",
+          },
+          "boots-0": {
+            label: "Quaisquer botas com faster run/walk e resistências",
+            why: "As cargas do Feral Rage são a skill de movimento do lobo e elas decaem após vinte segundos sem acertar nada. As botas cobrem os intervalos entre as lutas.",
+            lookFor: ["Faster run/walk", "Resistência a fogo e raio"],
+          },
+          "ring1-0": {
+            why: "Attack rating e magic find de um anel que cai no Ato 1. Attack rating é o atributo que falta a esta build da primeira hora até a última.",
+          },
+        },
+      },
+      nightmare: {
+        goal: "Nightmare terminado com o Fury maximizado e o Grizzly em campo. É neste nível que a build deixa de ser uma curiosidade.",
+        nextUpgrade:
+          "Uma resposta do Hell à imunidade a físico. Enquanto não existir um Atma's Scarab ou um Bone Break, um imune a físico é um monstro do qual você se afasta.",
+        notes:
+          "**Conjure nesta ordem e então transforme-se: Heart of Wolverine, Grizzly, Werewolf.** Você não conjura depois de estar em forma, e reinvocar qualquer um dos dois significa sair dela. O Grizzly não pode ser reinvocado enquanto estiver vivo, então um urso morto custa uma conjuração cheia de 40 de mana e uma transformação.",
+        picks: {
+          "weapon-0": {
+            why: "Increased attack speed e um bônus muito grande de attack rating numa arma de quatro soquetes disponível no nível 43. Velocidade de ataque numa skill que golpeia cinco vezes é o dano mais barato da página.",
+            sockets:
+              "Dol + Ort + Eld + Lem em qualquer arma de 4 soquetes. Uma base rápida de uma mão vale mais que uma lenta de duas aqui.",
+          },
+          "weapon-0-alt0": {
+            why: "Dez níveis depois e um degrau de runa acima, mas ele carrega crushing blow e open wounds — e esta build rola os dois cinco vezes por investida.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +2 Druid Skills e +3 em Shape Shifting Skills",
+            why: "Pelts são os únicos elmos que rolam uma skill de Druid diretamente, e uma rolagem de +3 em Shape Shifting sobe Fury, Werewolf e Lycanthropy de uma vez. O imbue da Charsi num pelt branco depois do nível 30 é o jeito deliberado de conseguir um.",
+            lookFor: ["+2 Druid Skills", "+3 to Shape Shifting Skills", "Faster hit recovery", "Vida"],
+          },
+          "helm-0-alt0": {
+            why: "Ainda serve se nada tiver caído. +1 em todas as skills é +1 em cinco skills que você maximizou ou quase.",
+          },
+          "body-0": {
+            why: "45% de increased attack speed e um Fade que dispara ao ser atingido — o que, num personagem que está sempre sendo atingido, é quase resistências e redução de dano permanentes.",
+            sockets: "Shael + Thul + Lem em qualquer armadura de 3 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "Quatro níveis depois: crushing blow e open wounds no lugar da velocidade de ataque. Numa investida de cinco golpes, crushing blow é a metade melhor dessa troca contra qualquer coisa grande.",
+          },
+          "gloves-0": {
+            label: "Quaisquer luvas com 20% de increased attack speed",
+            why: "A velocidade de ataque mais barata do jogo, e ela aparece em raros e crafts comuns. Este espaço não tem trabalho melhor nesta build.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "Resistências"],
+          },
+          "belt-0": {
+            why: "Vida roubada por golpe e redução de dano físico, que são as duas coisas que um personagem que vive em alcance corpo a corpo realmente quer de um cinto.",
+          },
+          "boots-0": {
+            why: "Crushing blow, open wounds e deadly strike num espaço só — três efeitos por golpe numa skill que rola cada um deles cinco vezes.",
+          },
+          "ring1-0": {
+            why: "Não pode ser congelado, e um bônus fixo grande de attack rating. Ser congelado é pior para um personagem corpo a corpo do que para qualquer outro e esta é a única resposta barata.",
+          },
+          "ring2-0": {
+            label: "Um anel raro com attack rating e vida roubada por golpe",
+            why: "Attack rating primeiro, roubo em segundo, resistências em terceiro. Um anel é o lugar mais barato do personagem para comprar os três.",
+            lookFor: ["+ de attack rating", "Life stolen per hit", "Todas as resistências"],
+          },
+          "amulet-0": {
+            why: "20% de increased attack speed, 30% de faster run/walk e +25 de Dexterity. É um amuleto corpo a corpo que por acaso também resolve o problema de deslocamento do lobo.",
+          },
+          "amulet-0-alt0": {
+            label: "Um amuleto raro com +2 Druid Skills e attack rating",
+            why: "+2 em skills de Druid é +2 em Fury, Werewolf, Lycanthropy, Heart of Wolverine e no Grizzly ao mesmo tempo. Assim que as resistências estiverem no teto, ele vence o único.",
+          },
+        },
+      },
+      "early-hell": {
+        goal: "Hell iniciado. Resistências no teto, uma resposta à imunidade a físico, e um mercenário que sobrevive.",
+        nextUpgrade:
+          "O Beast, e a aura Fanaticism que ele traz. É a maior melhoria isolada desta página e ela muda o que o mercenário deve estar carregando.",
+        notes:
+          "**O Atma's Scarab não é um amuleto de magic find nesta build, é a resposta de imunidade.** Leia o plano de imunidades antes de decidir trocá-lo por um raro de +2 skills.",
+        picks: {
+          "weapon-0": {
+            why: "Crushing blow, open wounds e −25% na defesa do alvo, todos efeitos por golpe numa investida de cinco golpes. É a última arma antes das duas que encerram a build.",
+            sockets:
+              "Mal + Um + Gul + Fal numa Sword ou Axe de 4 soquetes. Escolha a base mais rápida cuja Strength você consiga pagar.",
+          },
+          "weapon-0-alt0": {
+            why: "Mais barato por um degrau de runa, e o open wounds e os −35% de resistência a raio do inimigo fazem dele uma arma melhor para um mercenário do que para você.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills e dois soquetes",
+            why: "Dois soquetes de joias de 15% em todas as resistências é como um Druid corpo a corpo fecha as resistências sem abrir mão de um espaço de skill por elas.",
+            lookFor: ["+2 Druid Skills", "+3 to Shape Shifting Skills", "2 soquetes", "Faster hit recovery"],
+            sockets:
+              "Duas joias de 15% em todas as resistências, ou duas joias de Increased Attack Speed quando as resistências já estiverem fechadas em outro lugar.",
+          },
+          "body-0": {
+            why: "15% de crushing blow e 33% de open wounds numa armadura, mais uma rolagem grande de dano aprimorado e dano de frio que desacelera. Toda linha dele é uma linha que esta build multiplica por cinco.",
+            sockets: "Shael + Um + Thul em qualquer armadura de 3 soquetes.",
+          },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de increased attack speed e vida roubada por golpe",
+            why: "Velocidade de ataque e roubo juntos. Uma luva de sangue craftada rola as duas coisas e é a resposta padrão neste nível.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "Todas as resistências"],
+          },
+          "belt-0": {
+            why: "Sem mudança. Redução de dano físico vale mais no Hell do que qualquer outra linha de cinto disponível neste nível.",
+          },
+          "boots-0": {
+            why: "Sem mudança, e ele fica até o fim da build. Nada mais no espaço carrega três efeitos por golpe.",
+          },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": {
+            why: "+1 em todas as skills. Numa build com cinco skills maximizadas isso são cinco níveis efetivos por um espaço.",
+          },
+          "ring2-0-alt0": {
+            label: "Um anel raro com attack rating, roubo e resistências",
+            why: "Melhor que o único enquanto as resistências ainda estiverem curtas. Feche primeiro, otimize depois.",
+          },
+          "amulet-0": {
+            why: "**Amplify Damage ao golpear, e este é o plano de imunidade da build.** É uma maldição, então é cortada a um quinto contra um imune a físico e ainda assim quebra a imunidade quando um quinto basta. Contra todo o resto ele é simplesmente um multiplicador de dano muito grande.",
+          },
+        },
+        charms: [
+          {
+            label: "Skillers de Shape Shifting com vida",
+            why: "+1 nível efetivo em Fury, Werewolf e Lycanthropy em cada um. Nada preenche melhor um inventário nesta build; um skiller de Summoning sobe só duas das cinco skills maximizadas.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Hell farmado com conforto. Fanaticism vindo da sua própria arma, e um mercenário carregando uma aura que você ainda não tem.",
+        nextUpgrade: "Dracul's Grasp, e uma segunda aura no mercenário.",
+        picks: {
+          "weapon-0": {
+            why: "**Fanaticism, da sua própria mão.** É velocidade de ataque, attack rating e dano aprimorado numa aura só, numa build cujos três problemas são exatamente esses. O +3 em Werebear é desperdiçado num lobo e ele continua sendo a melhor arma daqui.",
+            sockets:
+              "Ber + Tir + Um + Mal + Lum numa Axe, Scepter ou Hammer de 5 soquetes. Uma Berserker Axe é a base usual.",
+          },
+          "weapon-0-alt0": {
+            why: "Mais dano bruto por golpe e −25% na defesa do alvo, mas nenhuma aura. Se você pegar o Grief, o mercenário passa a ter de carregar o Fanaticism — veja a nota do mercenário.",
+          },
+          "helm-0": {
+            label: "Um pelt de Druid com +3 em Shape Shifting Skills, +2 Druid Skills e dois soquetes",
+            why: "Cinco níveis efetivos no Fury vindos de um espaço só, e dois soquetes sobrando para resistências ou velocidade de ataque.",
+            lookFor: ["+3 to Shape Shifting Skills", "+2 Druid Skills", "2 soquetes", "Vida"],
+          },
+          "helm-0-alt0": {
+            why: "Vida e mana roubadas por golpe e 15–20% de redução de dano físico. Num personagem sem escudo é a redução de dano mais barata do jogo.",
+          },
+          "body-0": {
+            why: "+300% de dano aprimorado e um bônus de defesa muito grande. Dano aprimorado multiplica a arma, então ele se acumula com Heart of Wolverine e Fanaticism em vez de competir com eles.",
+            sockets: "El + Sol + Dol + Lo em qualquer armadura de 4 soquetes.",
+          },
+          "body-0-alt0": {
+            why: "Fique com ele se a runa Lo não existir. Crushing blow vezes cinco golpes vale mais do que parece contra os monstros maiores do Hell.",
+          },
+          "gloves-0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed e vida roubada por golpe",
+            why: "Velocidade de ataque, roubo e vida num item só. O craft é barato e repetível e vence todo único deste espaço até o Dracul's Grasp.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "+ de vida"],
+          },
+          "belt-0": { why: "Ainda a melhor redução de dano físico disponível no espaço." },
+          "belt-0-alt0": {
+            why: "Se for raio o que está matando você: absorção, uma rolagem grande de Vitality e resistência a raio acima do teto.",
+          },
+          "boots-0": { why: "Crushing blow, open wounds e deadly strike, num espaço só." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            why: "Amplify Damage ao golpear. Ele fica até um Bone Break assumir o trabalho que ele está fazendo.",
+          },
+          "amulet-0-alt0": {
+            why: "Deadly strike que cresce com o nível do personagem, e 20% de increased attack speed. Pegue assim que um Sunder Charm estiver carregando o plano de imunidade no lugar dele.",
+          },
+        },
+        charms: [
+          {
+            why: "Sunder físico, e a razão de o espaço de amuleto poder voltar a ser um espaço de amuleto. Só se carrega um Sunder Charm por vez, e físico é a única imunidade que esta build enfrenta.",
+          },
+          {
+            label: "Skillers de Shape Shifting com vida, e charms pequenos com attack rating",
+            why: "Attack rating em charms pequenos é o atributo menos glamouroso desta página e um dos dois que de fato limitam o dano no Hell.",
+          },
+        ],
+      },
+      optimized: {
+        goal: "Tudo no Hell, em qualquer contagem de jogadores, sem trocar de equipamento entre corridas.",
+        nextUpgrade: "Last Wish, se as runas Jah existirem. Não sobra mais nada.",
+        picks: {
+          "weapon-0": {
+            why: "Fanaticism vale mais que qualquer linha de dano bruto que o espaço pudesse carregar no lugar, porque ele multiplica a arma *e* sobe a velocidade de ataque *e* sobe o attack rating.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com duas joias de 15% em todas as resistências",
+            why: "Cinco níveis efetivos e trinta de resistência vindos de um espaço só.",
+          },
+          "helm-0-alt0": {
+            why: "+1 em todas as skills, 30% de redução de dano e dois soquetes. A resposta de Hardcore, e ela custa dois níveis efetivos de Fury.",
+          },
+          "body-0": { why: "+300% de dano aprimorado. Nada mais no espaço compete numa build física." },
+          "body-0-alt0": {
+            why: "+2 skills, +65 em todas as resistências e 8% de redução de dano. A troca é dano por deixar de pensar em resistências.",
+          },
+          "gloves-0": {
+            why: "**Life Tap ao golpear, rolado cinco vezes por investida.** O Life Tap devolve uma fração do dano causado como vida, o que numa build que bate com esta frequência é uma fonte de sustento maior que qualquer rolagem de roubo — e é a razão de esta build não precisar de uma skill de cura.",
+          },
+          "gloves-0-alt0": {
+            label: "Luvas de sangue craftadas com 20% de increased attack speed",
+            why: "O Dracul's não carrega velocidade de ataque. Se a sua investida parecer lenta, o craft é a alternativa honesta em vez de uma melhoria a ser suportada.",
+          },
+          "belt-0": {
+            why: "Redução de dano físico, e roubo para cobrir o intervalo em que o Life Tap não está ativo.",
+          },
+          "boots-0": { why: "Três efeitos por golpe; nada o substitui." },
+          "ring1-0": { why: "Não pode ser congelado, e attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            why: "Deadly strike crescendo com o nível do personagem, 20% de increased attack speed e +1 em todas as skills. Correto assim que o Bone Break estiver carregando o plano de imunidade.",
+          },
+        },
+        charms: [
+          { why: "Sunder físico. A única imunidade da build, respondida." },
+          {
+            label: "Anni, Torch e skillers de Shape Shifting",
+            why: "Os +3 em skills de Druid do Torch são três níveis efetivos em cinco skills maximizadas ao mesmo tempo.",
+          },
+        ],
+        weaponSwap: [
+          {
+            why: "Battle Orders antes de você se transformar. A vida que ele acrescenta é multiplicada pela Lycanthropy e pelo Werewolf por cima, e é por isso que ele vale mais para esta build do que para quase qualquer outra.",
+          },
+        ],
+      },
+      bis: {
+        goal: "Não sobrou nada para comprar.",
+        notes:
+          "**O Fanaticism precisa vir de algum lugar e ele só tem duas casas: o Beast na sua mão ou o Faith num mercenário do Ato 1.** Duas cópias da mesma aura não se somam — o nível mais alto vence — então ter as duas desperdiça uma delas. A decisão de fim de jogo é qual mão carrega a aura, e a resposta define toda a seção do mercenário.",
+        picks: {
+          "weapon-0": {
+            why: "Might, 60–70% de chance de crushing blow, e Life Tap ao golpear — três dos temas recorrentes desta página numa arma só. Ele substitui o Beast apenas porque o seu mercenário pode carregar o Fanaticism no lugar; se ele não puder, fique com o Beast.",
+            sockets: "Jah + Mal + Jah + Sur + Jah + Ber numa Sword, Hammer ou Axe de 6 soquetes.",
+          },
+          "weapon-0-alt0": {
+            why: "Continua correto, e não é uma piora mensurável em nada se o mercenário não tiver Faith. Fanaticism de uma fonte ou de outra não é opcional.",
+          },
+          "helm-0": {
+            label: "Um pelt de +3 Shape Shifting e +2 Druid Skills com duas joias de 15% em todas as resistências",
+            why: "O item mais difícil de achar da página e a maior peça ainda faltando.",
+          },
+          "body-0": { why: "+300% de dano aprimorado, e mais nada." },
+          "gloves-0": { why: "Life Tap ao golpear, cinco rolagens por investida." },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Crushing blow, open wounds e deadly strike. Nada as substitui." },
+          "ring1-0": { why: "Não pode ser congelado." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "amulet-0": {
+            label: "Um amuleto raro com +2 Druid Skills, 20% de increased attack speed e duas resistências",
+            why: "Dois níveis efetivos em cinco skills maximizadas, e a velocidade de ataque de que o espaço do Dracul's abriu mão.",
+          },
+          "amulet-0-alt0": { why: "Nunca está errado, e é muito mais fácil de achar." },
+        },
+        charms: [
+          { why: "Sunder físico." },
+          {
+            label: "Anni, Torch e nove skillers de Shape Shifting com vida",
+            why: "O inventário padrão de fim de jogo de um shapeshifter.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders antes de se transformar, sempre." }],
+      },
+    },
+  },
 };

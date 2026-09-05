@@ -140,6 +140,8 @@ export interface BuildCopy {
   };
   /** Keyed by `${stat}-${value}`, e.g. "fcr-105". */
   breakpointWhy: Record<string, string>;
+  /** Prose under the breakpoint table. Required wherever the build carries it. */
+  breakpointNotes?: string;
   /** Keyed by skill slug. */
   skillNotes: Record<string, string>;
   immunityPlan?: string;

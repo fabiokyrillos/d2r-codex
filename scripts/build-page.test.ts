@@ -8,8 +8,9 @@
  * page rather than the data, because a correct data model wired to the wrong
  * prop renders an empty section and passes every content check.
  *
- * Scoped to the classes published under the completeness contract — the Amazon
- * and, since this pass, the Necromancer. That scoping is the same judgement
+ * Scoped to the classes published under the completeness contract — the Amazon,
+ * the Necromancer, and since the Druid pass the Druid too. That scoping is the
+ * same judgement
  * `amazon-rules.ts` records: a gate that forces edits to already-approved
  * content in order to go green gets argued with rather than obeyed. The
  * structural assertions that are class-agnostic run over every build page on
@@ -75,7 +76,7 @@ const longestPlainRun = (authored: string, cap = 45) =>
     .slice(0, cap);
 
 /** The classes whose pages this file holds to the full contract. */
-const CONTRACTED_CLASSES = ["amazon", "necromancer"] as const;
+const CONTRACTED_CLASSES = ["amazon", "necromancer", "druid"] as const;
 const CONTRACTED = getBuilds("en-us").filter((b) =>
   (CONTRACTED_CLASSES as readonly string[]).includes(b.classSlug),
 );
@@ -107,7 +108,9 @@ console.log(`\nEvery build page was prerendered (${LOCALES.length} locales)`);
 }
 
 // ---------------------------------------------------------------------------
-console.log("\nThe eight Amazon pages say what the data says, in both locales");
+console.log(
+  `\nThe ${CONTRACTED.length} contracted pages say what the data says, in both locales`,
+);
 // ---------------------------------------------------------------------------
 for (const locale of LOCALES) {
   const t = dictionaryFor(locale);

@@ -240,6 +240,7 @@ const buildsFor = memoByLocale((locale) => {
         ...b,
         why: copy.breakpointWhy[`${b.stat}-${b.value}`] ?? b.why,
       })),
+      breakpointNotes: copy.breakpointNotes ?? build.breakpointNotes,
       farming: build.farming.map((f) => ({
         ...f,
         why: copy.farmingWhy[`${f.area}-${f.difficulty}`] ?? f.why,

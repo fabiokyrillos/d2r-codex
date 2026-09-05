@@ -103,6 +103,20 @@ export interface Build extends Entity {
   flexPoints?: string[];
   stats: StatPlan;
   breakpoints: BreakpointTarget[];
+  /**
+   * Why the table above says what it says — and, on the builds where it is
+   * empty, why there is nothing in it.
+   *
+   * The shapeshifting Druids are the reason this field exists. Werewolf and
+   * Werebear use their own frame tables, which is a fact this site already
+   * publishes for Faster Cast Rate (`fcr-druid` names both). No wereform hit
+   * recovery or attack speed table exists at a source tier this project
+   * accepts, so a melee Druid build that printed the human-form numbers would
+   * be repeating exactly the mistake the cast-rate table warns against. An
+   * empty table with a sentence saying so is information; an empty table on
+   * its own is a gap the reader has to guess at.
+   */
+  breakpointNotes?: string;
 
   /** Ordered progression, `starter` through `bis`. */
   gearSets: GearSet[];

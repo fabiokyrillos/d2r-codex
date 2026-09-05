@@ -350,6 +350,7 @@ export default async function BuildPage(
           title={t.classes.breakpointsTitle}
           description={t.builds.breakpointsDescription}
         >
+          {build.breakpoints.length > 0 && (
           <DataTable
             headers={[
               t.builds.colStat,
@@ -386,6 +387,12 @@ export default async function BuildPage(
               </span>,
             ])}
           />
+          )}
+          {build.breakpointNotes && (
+            <div className={build.breakpoints.length > 0 ? "mt-4" : undefined}>
+              <RichText>{build.breakpointNotes}</RichText>
+            </div>
+          )}
         </Section>
 
         {build.immunityPlan && (

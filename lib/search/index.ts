@@ -122,6 +122,8 @@ export const NICKNAMES: Record<string, string> = {
     "windy druid tornado druid windmaster wind elemental tornado hurricane furacao vento tempestade",
   "fire-druid":
     "fissure druid fire elemental volcanic elementalist armageddon druid fissure volcano fissura vulcao",
+  "fury-druid":
+    "werewolf druid fury werewolf wolf druid lobisomem lobo furia licantropia shapeshifter shifter",
 
   /*
    * --- Necromancer builds, and the names that are not builds ---------------
