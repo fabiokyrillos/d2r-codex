@@ -65,6 +65,22 @@ const BASELINE_NODES = 150;
  * what "byte-identical" has to mean for a generated file.
  */
 function nodeBodies(source: string, where: string): Map<string, string> {
+  /*
+   * Line endings are normalised before anything is read, and the two sides
+   * arrive with different ones on Windows.
+   *
+   * `git show` hands back what the repository stores, which is LF. The working
+   * tree is whatever the checkout wrote, and with the default `core.autocrlf`
+   * on Windows that is CRLF. The pattern below anchors on `\n`, so the
+   * working-tree side parsed zero nodes and the check died with "the emitted
+   * shape moved" — on a file whose shape had not moved at all, on every Windows
+   * clone, for a reason that has nothing to do with the graph.
+   *
+   * A gate that cannot run is worse than no gate: this one exists to say that
+   * the published nodes are byte-identical, and "byte" has to mean the bytes
+   * the repository stores rather than the bytes the platform happened to write.
+   */
+  source = source.replace(/\r\n/g, "\n");
   const start = source.indexOf("export const SKILL_GRAPH");
   if (start < 0) throw new Error(`${where}: no SKILL_GRAPH declaration found`);
   const bodies = new Map<string, string>();
