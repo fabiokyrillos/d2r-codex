@@ -35,17 +35,22 @@ import { readFileSync } from "node:fs";
 /**
  * The commit the current hundred and fifty nodes were published at.
  *
- * `24cbd7b` — "Read the three synergies the game keeps on a missile, not on a
- * skill". Moved from `c98e3ed` because that regeneration deliberately changed
- * three of the ninety original node bodies: Fist of the Heavens, Meteor and
- * Immolation Arrow each gained a `missileSynergies` entry, which the check
- * reported and the commit message justifies. Nothing else in the file moved.
+ * `c785b47` — "Say how long Glacial Spike's freeze lasts where the build is
+ * played". Moved from `24cbd7b` because that regeneration deliberately changed
+ * one of the hundred and fifty node bodies: Glacial Spike gained an
+ * `effectFreezeLength` row, so the freeze length three build pages had been
+ * quoting from prose is extracted and read from the graph instead. The check
+ * reported the changed node and the commit message justifies it. Nothing else
+ * in the file moved — one insertion, and the diff is a single line.
  *
- * Moving it is what makes the check mean something again: held to `c98e3ed` it
- * would report those three forever, and a permanently red gate is a gate nobody
- * reads.
+ * `24cbd7b` was itself moved from `c98e3ed`, for three node bodies that gained
+ * a `missileSynergies` entry.
+ *
+ * Moving it is what makes the check mean something again: held to `24cbd7b` it
+ * would report Glacial Spike forever, and a permanently red gate is a gate
+ * nobody reads.
  */
-const BASELINE = "24cbd7bb360e37d8e4dd2b878a592d87f136d3d8";
+const BASELINE = "c785b474f627b4f86bab37523041ca3bc43cd799";
 const FILE = "content/classes/skill-graph.ts";
 
 /** How many nodes the baseline is expected to carry, as a sanity floor. */
