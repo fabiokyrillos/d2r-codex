@@ -305,7 +305,13 @@ export const boneSpearNecromancer: Build = {
         },
         {
           slot: "belt",
-          picks: [{ ref: { kind: "unique", slug: "arachnid-mesh" }, why: "+1 all skills and 20% Faster Cast Rate — the two stats that raise this build's damage." }],
+          picks: [
+            {
+              label: "Rare or crafted caster belt: 10% Faster Cast Rate, life and resistances",
+              why: "**Arachnid Mesh is the slot's real answer — +1 all skills and 20% Faster Cast Rate, the two stats that raise this build's damage — and it requires level 80**, past this tier. A rare belt buys the cast rate now and keeps sixteen potion slots while it does.",
+              lookFor: ["10% Faster Cast Rate", "Life", "Resistances"],
+            },
+          ],
         },
         {
           slot: "gloves",

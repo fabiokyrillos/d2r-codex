@@ -296,9 +296,8 @@ export const poisonNovaNecromancer: Build = {
           slot: "helm",
           picks: [
             {
-              ref: { kind: "unique", slug: "andariels-visage" },
-              why: "+2 skills, Poison Resist +70% and +10% maximum poison resist — the resistance this build most wants to over-cap. Its −30% fire resistance is the price, and an Um in the socket pays it.",
-              alternatives: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "+2 skills with no penalty and a much lower Strength requirement." }],
+              ref: { kind: "unique", slug: "harlequin-crest" },
+              why: "+2 skills with no penalty and a low Strength requirement. **Andariel's Visage is the helm this build ends on — +2 skills, Poison Resist +70% and +10% maximum poison resist — and it requires level 83**, so it arrives with the next set and not this one.",
             },
           ],
         },
@@ -308,7 +307,13 @@ export const poisonNovaNecromancer: Build = {
         },
         {
           slot: "belt",
-          picks: [{ ref: { kind: "unique", slug: "arachnid-mesh" }, why: "+1 all skills and 20% Faster Cast Rate, and cast rate is coverage." }],
+          picks: [
+            {
+              label: "Rare or crafted caster belt: 10% Faster Cast Rate, life and resistances",
+              why: "**Arachnid Mesh is the slot's real answer — +1 all skills and 20% Faster Cast Rate, and cast rate is coverage — and it requires level 80**, past this tier. A rare belt reaches the same cast-rate breakpoint for a fraction of the price and keeps sixteen potion slots while it does.",
+              lookFor: ["10% Faster Cast Rate", "Life", "Resistances"],
+            },
+          ],
         },
         {
           slot: "gloves",

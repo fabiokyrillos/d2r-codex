@@ -253,9 +253,8 @@ export const poisonJavelinAmazon: Build = {
           slot: "helm",
           picks: [
             {
-              ref: { kind: "unique", slug: "andariels-visage" },
-              why: "+2 skills and a large poison resistance, on a build that will eventually want to over-cap it. Its −30% fire resistance is the price.",
-              alternatives: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "+2 skills with no penalty, and easier to reach at 50 Strength." }],
+              ref: { kind: "unique", slug: "harlequin-crest" },
+              why: "+2 skills with no penalty, at 50 Strength. **Andariel's Visage is the eventual helm — +2 skills and the poison resistance this build wants to over-cap — and it requires level 83**, so it belongs to the next set rather than this one.",
             },
           ],
         },

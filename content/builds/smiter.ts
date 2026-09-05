@@ -340,8 +340,9 @@ export const smiter: Build = {
           slot: "gloves",
           picks: [
             {
-              ref: { kind: "unique", slug: "draculs-grasp" },
-              why: "**The item that makes Ubers possible.** Life Tap converts your damage into healing, which is the only sustain a Smiter has — life steal does not work with Smite. Any roll will do: the Life Tap proc is fixed, and it is the entire reason to wear these.",
+              label: "Crafted Blood gloves, or rares with 20% Increased Attack Speed",
+              why: "**Dracul's Grasp is the item that makes Ubers possible, and it requires level 76** — one level past this tier. Life Tap converts your damage into healing, which is the only sustain a Smiter has, because life steal does not work with Smite. Until you can wear it, take attack speed, life and resistances here, and carry a Life Tap wand on weapon swap for anything that needs the curse now.",
+              lookFor: ["20% Increased Attack Speed", "Life per hit", "Resistances"],
             },
           ],
         },

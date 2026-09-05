@@ -329,13 +329,7 @@ export const blizzardSorceress: Build = {
           picks: [
             {
               ref: { kind: "runeword", slug: "lore" },
-              why: "Still fine.",
-              alternatives: [
-                {
-                  ref: { kind: "unique", slug: "harlequin-crest" },
-                  why: "+2 skills, life, mana, 50% magic find and 10% damage reduction. If you find a Shako, wear it immediately.",
-                },
-              ],
+              why: "Still fine, and it is the helm for the whole of this tier. **A Harlequin Crest requires level 62**, which is past the band this set is written for — pick one up when it drops and put it away until then; the next tier opens with it.",
             },
           ],
         },

@@ -279,8 +279,9 @@ export const lightningStrikeAmazon: Build = {
           slot: "gloves",
           picks: [
             {
-              ref: { kind: "unique", slug: "draculs-grasp" },
-              why: "**Life Tap on striking.** On a build that hits several times a second it is close to permanent, and it is the single largest survivability item available to a melee Amazon.",
+              label: "Crafted Blood gloves, or rares with 20% Increased Attack Speed",
+              why: "**Dracul's Grasp is the goal here and it requires level 76**, one level past this tier. Its Life Tap on striking is close to permanent on a build that hits several times a second, and it is the single largest survivability item available to a melee Amazon — but you cannot wear it yet. Attack speed and resistances hold the slot until you can.",
+              lookFor: ["20% Increased Attack Speed", "Life per hit", "Resistances"],
             },
           ],
         },

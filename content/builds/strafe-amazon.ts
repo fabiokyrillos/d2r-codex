@@ -153,14 +153,8 @@ export const strafeAmazon: Build = {
           picks: [
             {
               ref: { kind: "runeword", slug: "edge" },
-              why: "35% attack speed, Thorns, and enormous bonus damage to demons and undead for three Countess runes at level 25.",
+              why: "35% attack speed, Thorns, and enormous bonus damage to demons and undead for three Countess runes at level 25. **Melody is twelve skill levels for three low runes and it requires level 39**, so it is the next tier's bow rather than this one's — cube the runes early and hold them.",
               sockets: "Tir, Tal, Amn into a 3-socket bow.",
-              alternatives: [
-                {
-                  ref: { kind: "runeword", slug: "melody" },
-                  why: "+3 to the entire Bow and Crossbow tab plus +3 each to Critical Strike, Dodge and Slow Missiles, at level 39. Twelve skill levels for three low runes.",
-                },
-              ],
             },
           ],
         },

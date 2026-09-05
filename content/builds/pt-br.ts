@@ -195,9 +195,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "body-0-alt1": {
             why: "Continua servindo. Não gaste runas substituindo até ter algo genuinamente melhor.",
           },
-          "helm-0": { why: "Continua servindo." },
-          "helm-0-alt0": {
-            why: "+2 skills, vida, mana, 50% de magic find e 10% de redução de dano. Se você achar um Shako, use na hora.",
+          "helm-0": {
+            why: "Continua servindo, e é o elmo de todo este estágio. **Um Harlequin Crest exige nível 62**, o que passa da faixa para a qual este conjunto foi escrito — pegue um quando cair e guarde; o próximo estágio abre com ele.",
           },
           "amulet-0": {
             label: "Qualquer amuleto com +2 Sorceress Skills",
@@ -1101,7 +1100,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             why: "As resistências importam mais no Hell que o bloqueio, e este escudo dá os dois.",
           },
           "gloves-0": {
-            why: "**O item que torna os Ubers possíveis.** Life Tap converte o seu dano em cura, que é a única sustentação que um Smiter tem — life steal não funciona com Smite. Qualquer roll serve: o proc de Life Tap é fixo, e é a razão inteira de usar essas luvas.",
+            label: "Luvas Blood craftadas, ou raras com 20% de Increased Attack Speed",
+            why: "**O Dracul's Grasp é o item que torna os Ubers possíveis, e ele exige nível 76** — um nível além deste estágio. O Life Tap converte o seu dano em cura, que é a única sustentação que um Smiter tem, porque life steal não funciona com Smite. Até poder usá-lo, pegue velocidade de ataque, vida e resistências aqui, e leve uma wand de Life Tap no swap para o que precisar da maldição agora.",
+            lookFor: ["20% Increased Attack Speed", "Vida por golpe", "Resistências"],
           },
           "body-0": {
             why: "15% de Crushing Blow no slot de armadura, mais redução de dano, por três runas médias.",
@@ -5837,7 +5838,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "body-0-alt0": { why: "+2 skills de Amazon se as resistências já estiverem resolvidas." },
           "helm-0": { why: "+2 skills, vida por nível e 10% de redução de dano com 50 de Strength." },
           "gloves-0": {
-            why: "**Life Tap ao golpear.** Numa build que acerta várias vezes por segundo isso é quase permanente, e é o maior item de sobrevivência disponível a uma Amazon corpo a corpo.",
+            label: "Luvas Blood craftadas, ou raras com 20% de Increased Attack Speed",
+            why: "**O Dracul's Grasp é a meta deste slot e exige nível 76**, um nível além deste estágio. O Life Tap ao golpear é quase permanente numa build que acerta várias vezes por segundo, e é o maior item de sobrevivência disponível a uma Amazon corpo a corpo — mas você ainda não pode usá-lo. Velocidade de ataque e resistências seguram o slot até lá.",
+            lookFor: ["20% Increased Attack Speed", "Vida por golpe", "Resistências"],
           },
           "belt-0": {
             why: "+3 Lightning Strike, +3 Lightning Fury, e a resistência máxima a raio elevada de que você precisa parada no meio dos grupos.",
@@ -6079,11 +6082,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "Magic Arrow desde o nível 1 não custa flecha nenhuma, o que importa mais do que parece quando aljavas custam ouro que você não tem. Multiple Shot no 6 é o botão de limpeza até o Strafe existir no 24.",
         picks: {
           "weapon-0": {
-            why: "35% de velocidade de ataque, Thorns, e um dano bônus enorme contra demônios e mortos-vivos por três runas da Countess no nível 25.",
+            why: "35% de velocidade de ataque, Thorns, e um dano bônus enorme contra demônios e mortos-vivos por três runas da Countess no nível 25. **A Melody são doze níveis de skill por três runas baixas e exige nível 39**, então ela é o arco do próximo estágio e não deste — cube as runas cedo e segure.",
             sockets: "Tir, Tal e Amn num arco de 3 sockets.",
-          },
-          "weapon-0-alt0": {
-            why: "+3 na aba inteira de Bow and Crossbow mais +3 em cada um de Critical Strike, Dodge e Slow Missiles, no nível 39. Doze níveis de skill por três runas baixas.",
           },
           "body-0": {
             why: "Recuperação de golpe e velocidade de corrida no nível 17, que é do que um personagem preso no lugar mais precisa.",
@@ -7328,10 +7328,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             lookFor: ["+50% to Poison Skill Damage"],
           },
           "helm-0": {
-            why: "+2 skills e uma resistência a veneno grande, numa build que eventualmente vai querer estourar o teto dela. Os −30% de resistência a fogo são o preço.",
-          },
-          "helm-0-alt0": {
-            why: "+2 skills sem penalidade, e mais fácil de alcançar com 50 de Strength.",
+            why: "+2 skills sem penalidade, com 50 de Strength. **O Andariel's Visage é o elmo final — +2 skills e a resistência a veneno que esta build quer estourar — e ele exige nível 83**, então pertence ao próximo conjunto e não a este.",
           },
           "offhand-0": { why: "+2 skills e bloqueio." },
           "belt-0": { why: "33% de pierce ao longo da linha de veneno." },
@@ -7614,7 +7611,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             why: "+2 skills, vida por nível e 10% de redução de dano com apenas 50 de Strength.",
           },
           "gloves-0": {
-            why: "**Life Tap ao golpear, e o Jab golpeia três vezes por ataque.** Nada mais no slot chega perto numa Amazon corpo a corpo.",
+            label: "Luvas Blood craftadas, ou raras com 20% de Increased Attack Speed",
+            why: "**O Dracul's Grasp é para o que este slot existe — Life Tap ao golpear, e o Jab golpeia três vezes por ataque — e ele exige nível 76**, um além deste estágio. Nada mais no slot chega perto, então trate estas como provisórias e compre as de verdade no nível em que puder usá-las.",
+            lookFor: ["20% Increased Attack Speed", "Vida por golpe", "Resistências"],
           },
           "belt-0": { why: "Roubo de vida e redução de dano." },
           "amulet-0": {
@@ -8181,11 +8180,14 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             lookFor: ["+50% to Poison Skill Damage"],
           },
           "helm-0": {
-            why: "+2 skills, Poison Resist +70% e +10% de resistência máxima a veneno — a resistência que esta build mais quer ultrapassar o teto. Os −30% de resistência a fogo são o preço, e uma Um no socket paga.",
+            why: "+2 skills sem penalidade e com requisito de Strength baixo. **O Andariel's Visage é o elmo com que esta build termina — +2 skills, Poison Resist +70% e +10% de resistência máxima a veneno — e ele exige nível 83**, então chega com o próximo conjunto e não com este.",
           },
-          "helm-0-alt0": { why: "+2 skills sem penalidade e com requisito de Strength muito menor." },
           "offhand-0": { why: "+2 skills de Necromancer, +2 em Curses — que é o nível do Lower Resist — e All Resistances +40 num slot só." },
-          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate, e taxa de conjuração é cobertura." },
+          "belt-0": {
+            label: "Cinto de caster raro ou craftado: 10% de Faster Cast Rate, vida e resistências",
+            why: "**O Arachnid Mesh é a resposta real do slot — +1 em todas as skills e 20% de Faster Cast Rate, e taxa de conjuração é cobertura — e ele exige nível 80**, além deste estágio. Um cinto raro alcança o mesmo breakpoint de conjuração por uma fração do preço e mantém dezesseis espaços de poção enquanto isso.",
+            lookFor: ["10% Faster Cast Rate", "Vida", "Resistências"],
+          },
           "gloves-0": { why: "Taxa de conjuração, e um nível de skill de fogo que aumenta o nível efetivo do Corpse Explosion e portanto o raio dele." },
           "ring1-0": { why: "+1 em todas as skills e mana." },
           "boots-0": { why: "Recuperação de golpe e redução de duração de veneno. **Marrowwalk** é a bota de Necromancer que as pessoas citam aqui, e este site não a catalogou." },
@@ -8434,7 +8436,11 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "body-0": { why: "+1 skills, +30 de todas as resistências e 30% de Faster Cast Rate. A armadura padrão de entrada no Hell." },
           "helm-0": { why: "+2 skills, vida, mana e magic find com 50 de Strength." },
           "amulet-0": { why: "+2 skills e +30 de todas as resistências." },
-          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate — os dois atributos que aumentam o dano desta build." },
+          "belt-0": {
+            label: "Cinto de caster raro ou craftado: 10% de Faster Cast Rate, vida e resistências",
+            why: "**O Arachnid Mesh é a resposta real do slot — +1 em todas as skills e 20% de Faster Cast Rate, os dois atributos que aumentam o dano desta build — e ele exige nível 80**, além deste estágio. Um cinto raro compra a taxa de conjuração agora e mantém dezesseis espaços de poção enquanto isso.",
+            lookFor: ["10% Faster Cast Rate", "Vida", "Resistências"],
+          },
           "gloves-0": { why: "Taxa de conjuração e regeneração de mana." },
           "ring1-0": { why: "+1 em todas as skills, +20% de mana máxima." },
           "boots-0": { why: "Recuperação de golpe e Strength. **Marrowwalk** é a bota de Necromancer que as pessoas citam aqui — ela carrega cargas de Bone Prison e +1-2 em Skeleton Mastery, e este site não a catalogou nem ao comportamento às vezes atribuído a ela." },

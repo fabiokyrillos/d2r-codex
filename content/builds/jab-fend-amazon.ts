@@ -269,8 +269,9 @@ export const jabFendAmazon: Build = {
           slot: "gloves",
           picks: [
             {
-              ref: { kind: "unique", slug: "draculs-grasp" },
-              why: "**Life Tap on striking, and Jab strikes three times per attack.** Nothing else in the slot is close for a melee Amazon.",
+              label: "Crafted Blood gloves, or rares with 20% Increased Attack Speed",
+              why: "**Dracul's Grasp is what this slot is for — Life Tap on striking, and Jab strikes three times per attack — and it requires level 76**, one past this tier. Nothing else in the slot is close, so treat these as a placeholder and buy the real ones the level you can wear them.",
+              lookFor: ["20% Increased Attack Speed", "Life per hit", "Resistances"],
             },
           ],
         },
