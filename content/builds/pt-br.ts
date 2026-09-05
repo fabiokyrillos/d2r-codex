@@ -3325,7 +3325,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "weapon-0-alt0": {
             label: "Qualquer staff ou orb com +Ice Bolt ou +Ice Blast",
-            why: "O estoque dos vendedores é renovado cada vez que você entra na cidade, e até o nível 30 o Ice Bolt *é* o seu dano. **+3 Ice Bolt para de pagar no instante em que o Frozen Orb chega** — uma sinergia conta apenas pontos duros, então a staff aumenta o bolt que você não conjura mais e não o Orb que você conjura. Compre para os primeiros trinta níveis e conte em trocar.",
+            why: "O estoque dos vendedores é renovado cada vez que você entra na cidade, e até o nível 30 o Ice Bolt *é* o seu dano. **+3 Ice Bolt para de pagar no instante em que o Frozen Orb chega** — uma sinergia conta apenas pontos duros, então a staff aumenta o bolt que você não conjura mais e não o Orb que você conjura. Compre para os primeiros trinta níveis e já conte que vai trocar.",
             lookFor: ["+3 Ice Bolt", "+3 Ice Blast", "+2 Cold Skills"],
           },
           "offhand-0": { why: "Resistências por três runas da Countess." },

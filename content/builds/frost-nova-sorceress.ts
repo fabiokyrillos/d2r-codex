@@ -15,9 +15,9 @@ import type { Build } from "@/lib/types";
  * The second structural fact is which skills feed it. Frost Nova's row reads
  * `EDmgSymPerCalc = (skill('Blizzard'.blvl)+skill('Frozen Orb'.blvl))*par8`
  * with `par8 = 10`. **Blizzard and Frozen Orb are the whole list, at 10% per
- * hard point each.** Ice Bolt, Ice
- * Blast and Glacial Spike feed Blizzard, Frozen Orb and each other; they give
- * Frost Nova nothing, and this page used to max all three of them.
+ * hard point each.** Ice Bolt, Ice Blast and Glacial Spike feed Blizzard,
+ * Frozen Orb and each other; they give Frost Nova nothing, and this page used
+ * to max all three of them.
  *
  * - Frost Nova 20 and Cold Mastery 20 = 40
  * - Blizzard 20 and Frozen Orb 20, the two real synergies = 40

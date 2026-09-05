@@ -221,6 +221,53 @@ console.log("\nPlanted mutation: gear listed above the tier that recommends it")
     "an item requiring exactly the tier's cap passes — the band includes its own top",
     checkGearLevelFeasibility([build(65, "enigma")], resolve, "control").length === 0,
   );
+  /*
+   * A pick that says out loud that the item is a future goal is still rejected.
+   *
+   * This is the shape all nine of the fixed picks had after the fact: the prose
+   * knew. "If you find a Shako, wear it immediately" sat under a level 62 helm
+   * in a tier ending at 60, and Melody's entry named level 39 inside a tier
+   * ending at 30. Saying the level does not make the recommendation reachable,
+   * and a rule that accepted a sentence as an exemption would have passed every
+   * one of them.
+   *
+   * The model has no "future goal" flag, and this control is where that
+   * decision is recorded. If one is ever wanted it has to be a field the rule
+   * can read and the page can render differently — not a sentence, which is
+   * invisible to both.
+   */
+  check(
+    "naming the item's level in the prose does not exempt the pick",
+    checkGearLevelFeasibility(
+      [
+        {
+          slug: "control",
+          farming: [],
+          gearSets: [
+            {
+              tier: "starter",
+              goal: "",
+              levelRange: [1, 40],
+              slots: [
+                {
+                  slot: "body",
+                  picks: [
+                    {
+                      ref: { kind: "runeword", slug: "enigma" },
+                      why: "Requires level 65 — a goal for later, not for now.",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        } as unknown as Build,
+      ],
+      resolve,
+      "control",
+    ).length === 1,
+  );
+
   check(
     "an alternative nested inside a pick is checked too",
     checkGearLevelFeasibility(
