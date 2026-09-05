@@ -29,9 +29,14 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { MAX_HARD_POINTS, SKILL_GRAPH } from "../content/classes/skill-graph";
-import { getBuilds } from "../lib/registry";
+import { getBuilds, getSkill } from "../lib/registry";
 import {
+  checkPackageClaims,
+  checkPackageLocaleParity,
+  checkPackages,
+  checkPackagesDistinct,
   checkPointBudget,
+  checkPrimarySynergyInvested,
   checkStatedRemainders,
   checkStatedTotals,
   checkSynergyRoles,
@@ -39,7 +44,14 @@ import {
   receiverSkillsOf,
   synergySourcesOf,
 } from "./allocation-claims";
-import type { Build, SkillAllocation, Slug } from "../lib/types";
+import { packageMath, worstCaseTotal } from "../lib/builds/packages";
+import type {
+  Build,
+  SkillAllocation,
+  SkillPackage,
+  SkillPackageGroup,
+  Slug,
+} from "../lib/types";
 
 let passed = 0;
 const failures: string[] = [];
@@ -94,6 +106,13 @@ console.log("\nThe live sweep: every build, every class, both locales");
       ...checkPointBudget(builds, SKILL_GRAPH, locale),
       ...checkStatedTotals(builds, runtimeLines, locale),
       ...checkStatedRemainders(builds, locale),
+      ...checkPrimarySynergyInvested(builds, SKILL_GRAPH, locale),
+      ...checkPackages(builds, SKILL_GRAPH, locale),
+      ...checkPackageClaims(builds, locale),
+      ...checkPackagesDistinct(builds, locale),
+      ...(locale === "en-us"
+        ? []
+        : checkPackageLocaleParity(getBuilds("en-us"), builds, locale)),
     ];
   });
   for (const problem of problems) console.log(`       ${problem.message}`);
@@ -512,6 +531,582 @@ console.log("\nPlanted mutation: a flex point that names the wrong remainder");
     "and it reads the remainders the site already publishes, rather than none of them",
     readable >= 7,
     `${readable} pages state a remainder this rule can read`,
+  );
+}
+
+// ===========================================================================
+// Optional packages
+//
+// The model exists because two Sorceress pages published forty-one and forty
+// spare points against four prose suggestions worth more than the budget
+// between them. Everything below is a way that can be true again.
+// ===========================================================================
+
+/** The builds that publish packages, and one of each for the mutations to bend. */
+const packaged = enBuilds.filter((b) => (b.skillPackages?.length ?? 0) > 0);
+const frozenOrb = by("frozen-orb-sorceress");
+const nova = by("nova-sorceress");
+
+/** One build with one package's fields replaced. */
+const withPackage = (
+  build: Build,
+  packageId: string,
+  patch: Partial<SkillPackage>,
+): Build => ({
+  ...build,
+  skillPackages: (build.skillPackages ?? []).map((group) => ({
+    ...group,
+    packages: group.packages.map((p) => (p.id === packageId ? { ...p, ...patch } : p)),
+  })),
+});
+
+/** One build with one package's allocation of one skill replaced. */
+const withPackageSkill = (
+  build: Build,
+  packageId: string,
+  skill: Slug,
+  patch: Partial<SkillAllocation> | "drop",
+): Build => {
+  const pkg = (build.skillPackages ?? [])
+    .flatMap((g) => g.packages)
+    .find((p) => p.id === packageId);
+  if (!pkg) throw new Error(`no package "${packageId}" on ${build.slug}`);
+  return withPackage(build, packageId, {
+    skills:
+      patch === "drop"
+        ? pkg.skills.filter((a) => a.skill !== skill)
+        : pkg.skills.map((a) => (a.skill === skill ? { ...a, ...patch } : a)),
+  });
+};
+
+/** One build with one group's fields replaced. */
+const withGroup = (build: Build, patch: Partial<SkillPackageGroup>): Build => ({
+  ...build,
+  skillPackages: (build.skillPackages ?? []).map((g) => ({ ...g, ...patch })),
+});
+
+const packageFails = (build: Build) =>
+  checkPackages([build], SKILL_GRAPH, "control").length;
+/**
+ * The rules a mutation trips, by name.
+ *
+ * Counting problems would make these assertions brittle in the wrong
+ * direction: a package one point over the cap trips both the combined budget
+ * and the page's worst case, and both are correct. What the mutation has to
+ * prove is that the *named* rule fired.
+ */
+const packageRules = (build: Build) =>
+  checkPackages([build], SKILL_GRAPH, "control").map((p) => p.rule);
+const claimFails = (build: Build) => checkPackageClaims([build], "control").length;
+
+// ---------------------------------------------------------------------------
+console.log("\nThe arithmetic a package publishes is derived, not written down");
+// ---------------------------------------------------------------------------
+{
+  /*
+   * Nothing on a package card is authored arithmetic, so the check that matters
+   * is that the derivation is the one a reader would do by hand: final points
+   * per skill, less what the core already spends, summed.
+   *
+   * Worked by hand here rather than by calling the same function twice, which
+   * would prove only that it equals itself.
+   */
+  const deepFreeze = packageMath(frozenOrb, frozenOrb.skillPackages![0].packages[0]);
+  check(
+    "Deep Freeze costs Glacial Spike 1→20, Frost Nova 1→20 and Static Field 1→4",
+    deepFreeze.cost === 19 + 19 + 3,
+    `${deepFreeze.cost}`,
+  );
+  check("and its total is the core plus that", deepFreeze.total === 69 + 41, `${deepFreeze.total}`);
+  check("which is the whole budget, with nothing left", deepFreeze.free === 0, `${deepFreeze.free}`);
+
+  const shield = nova
+    .skillPackages![0].packages.find((p) => p.id === "energy-shield")!;
+  const shieldMath = packageMath(nova, shield);
+  check(
+    "the Nova shield route costs Telekinesis 1→20, Thunder Storm 1→20 and one point of the shield",
+    shieldMath.cost === 19 + 19 + 1,
+    `${shieldMath.cost}`,
+  );
+  check(
+    "and is the one route on either page that genuinely leaves points over",
+    shieldMath.free === 2,
+    `${shieldMath.free}`,
+  );
+
+  /*
+   * The property that makes the cost a *cost*: a package raising a skill the
+   * core already pays for charges the difference. Model the same package with
+   * `points` read as an addition and the shield route would bill 20 for a
+   * Telekinesis the core already opened.
+   */
+  const naive = shield.skills.reduce((sum, a) => sum + a.points, 0);
+  check(
+    "reading the same numbers as additions instead of finals over-bills the route",
+    naive === 41 && naive !== shieldMath.cost,
+    `${naive} vs ${shieldMath.cost}`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: a package that does not fit in the budget");
+// ---------------------------------------------------------------------------
+{
+  check("the real packages fit", packaged.every((b) => packageFails(b) === 0));
+
+  check(
+    "a package one point over 110 is rejected",
+    packageRules(
+      withPackageSkill(frozenOrb, "deep-freeze", "static-field", { points: 5 }),
+    ).includes("budget-exceeded"),
+  );
+
+  /*
+   * The reason `choose` is required rather than defaulted. Three alternatives
+   * at forty-one cost forty-one; three add-ons at forty-one cost a hundred and
+   * twenty-three, and only the field distinguishes them.
+   */
+  check(
+    "the same three packages priced as add-ons rather than alternatives are rejected",
+    packageFails(withGroup(frozenOrb, { choose: "any" })) === 1,
+  );
+  check(
+    "and the worst case it reports is all three summed",
+    worstCaseTotal(withGroup(frozenOrb, { choose: "any" })) === 69 + 41 * 3,
+    `${worstCaseTotal(withGroup(frozenOrb, { choose: "any" }))}`,
+  );
+  check(
+    "while the real page prices one choice",
+    worstCaseTotal(frozenOrb) === 110,
+    `${worstCaseTotal(frozenOrb)}`,
+  );
+
+  // A group that says neither, which is how a page renders as a tree the
+  // reader thinks they can max all of.
+  check(
+    "a group that does not declare whether its packages are alternatives is rejected",
+    packageFails(withGroup(frozenOrb, { choose: "both" as never })) >= 1,
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: a package that cannot be spent");
+// ---------------------------------------------------------------------------
+{
+  /*
+   * An incomplete package. Energy Shield needs Chain Lightning, Chain Lightning
+   * needs Lightning, Lightning needs Charged Bolt — and the Frozen Orb core
+   * pays for none of the three, so dropping one from the package leaves a plan
+   * no character can spend.
+   */
+  check(
+    "a package missing a link in its own prerequisite chain is rejected",
+    packageRules(withPackageSkill(frozenOrb, "energy-shield", "lightning", "drop")).includes(
+      "unpaid-prerequisite",
+    ),
+  );
+
+  check(
+    "a package allocating more points than the game allows in a skill is rejected",
+    packageRules(withPackageSkill(nova, "storm", "thunder-storm", { points: 21 })).includes(
+      "points-above-skill-maximum",
+    ),
+  );
+
+  /*
+   * A package that lowers the core. Silent under a `Math.max(0, …)` cost, which
+   * is why `lowersCore` is kept rather than clamped away: the route would bill
+   * nothing for taking nineteen points off the reader's Static Field.
+   */
+  const lowered = withPackageSkill(frozenOrb, "boss-answer", "static-field", { points: 0 });
+  check(
+    "a package that asks for fewer points than the core is rejected",
+    packageRules(lowered).includes("package-lowers-core"),
+  );
+  check(
+    "and the cost it would otherwise have billed is unchanged",
+    packageMath(lowered, lowered.skillPackages![0].packages[1]).cost === 19 + 3,
+    `${packageMath(lowered, lowered.skillPackages![0].packages[1]).cost}`,
+  );
+
+  check(
+    "a package allocation with no reason given is rejected",
+    packageRules(withPackageSkill(nova, "storm", "charged-bolt", { note: undefined })).includes(
+      "package-note-missing",
+    ),
+  );
+
+  check(
+    "two packages sharing an id are rejected",
+    packageRules(withPackage(frozenOrb, "deep-freeze", { id: "boss-answer" })).includes(
+      "package-duplicate-id",
+    ),
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: a synergy claimed inside a package");
+// ---------------------------------------------------------------------------
+{
+  /*
+   * A package's synergy claim is read against the *combined* plan, and both
+   * directions of that matter.
+   *
+   * The Storm package calls Charged Bolt a synergy, which is true only because
+   * the same package maxes Chain Lightning — the core holds it at one point and
+   * casts it never. Drop Chain Lightning back to the core's single point and
+   * the claim becomes exactly the one `checkSynergyRoles` exists to reject.
+   */
+  check("the Storm's Charged Bolt claim passes as written", packageFails(nova) === 0);
+  check(
+    "the same claim without the Chain Lightning that makes it true is rejected",
+    packageRules(withPackageSkill(nova, "storm", "chain-lightning", "drop")).includes(
+      "synergy-role-with-no-edge",
+    ),
+  );
+  /*
+   * Dropping it rather than lowering it, because a `main` allocation is a
+   * receiver at any size — the Tesladin holds its own primary skill at one
+   * point while a Dream supplies the aura, and `receiverSkillsOf` exists to
+   * keep that correct. What makes the Charged Bolt claim false is Chain
+   * Lightning not being something this plan casts at all.
+   */
+
+  /*
+   * Telekinesis raises what Energy Shield charges through a parameter the
+   * extraction records as a ratio, not as a synergy edge — the graph's own
+   * header says so. A page that promoted it to "synergy" would be telling a
+   * reader that +skills gear raises it, which is the opposite of true.
+   */
+  check(
+    "calling the shield's Telekinesis a synergy is rejected",
+    packageFails(withPackageSkill(frozenOrb, "energy-shield", "telekinesis", { role: "synergy" })) ===
+      1,
+  );
+
+  // And the reverse: a real receiver demoted to a role that does not receive.
+  check(
+    "a package's Glacial Spike synergy claim survives its Ice Blast being maxed",
+    packageFails(nova) === 0 && packageFails(frozenOrb) === 0,
+  );
+  check(
+    "and is rejected once the Ice Blast it feeds is no longer in the plan",
+    packageRules(withPackageSkill(frozenOrb, "boss-answer", "ice-blast", "drop")).includes(
+      "synergy-role-with-no-edge",
+    ),
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: a package sentence that states the wrong number");
+// ---------------------------------------------------------------------------
+{
+  check("every package's prose agrees with its own arithmetic", packaged.every((b) => claimFails(b) === 0));
+
+  check(
+    "a package claiming a total it does not reach is rejected",
+    claimFails(withPackage(frozenOrb, "deep-freeze", { when: "It finishes at 104 of 110." })) === 1,
+  );
+  check(
+    "the total the route actually reaches passes",
+    claimFails(withPackage(frozenOrb, "deep-freeze", { when: "It finishes at 110 of 110." })) === 0,
+  );
+  check(
+    "a remainder the route does not leave is rejected",
+    claimFails(
+      withPackage(nova, "energy-shield", { remainderNote: "Five points are left over." }),
+    ) === 1,
+  );
+  check(
+    "the remainder it does leave passes",
+    claimFails(
+      withPackage(nova, "energy-shield", { remainderNote: "Two points are left over." }),
+    ) === 0,
+  );
+  check(
+    "and the rejection names the number the route actually leaves",
+    checkPackageClaims(
+      [withPackage(nova, "energy-shield", { remainderNote: "Nine points remain." })],
+      "control",
+    )[0]?.message.includes("leaves 2") === true,
+  );
+
+  /*
+   * The rule reporting nothing is only meaningful if it can see the sentences
+   * the site actually publishes. Move one core allocation by a point and every
+   * package that names its own remainder has to contradict itself — a floor on
+   * how much live prose the regular expressions are reading, in both locales,
+   * rather than on how much could exist.
+   *
+   * One package on the site states a remainder, because one route is the only
+   * one that leaves anything over. Two locales, so two.
+   */
+  const readable = LOCALES.reduce((total, locale) => {
+    const shifted = getBuilds(locale)
+      .filter((b) => (b.skillPackages?.length ?? 0) > 0)
+      .map((build) => ({
+        ...build,
+        skills: build.skills.map((a, i) => (i === 0 ? { ...a, points: a.points - 1 } : a)),
+      }));
+    return total + shifted.reduce((n, b) => n + claimFails(b), 0);
+  }, 0);
+  check(
+    "it reads the remainders the packages already publish, rather than none of them",
+    readable >= LOCALES.length,
+    `${readable} package sentences this rule can read`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: alternatives that do not tell themselves apart");
+// ---------------------------------------------------------------------------
+{
+  const distinctFails = (build: Build) => checkPackagesDistinct([build], "control").length;
+  check("the real packages differ where a reader chooses", packaged.every((b) => distinctFails(b) === 0));
+
+  /*
+   * The shape this was written for: a defensive route's advice landing on the
+   * route that does not take it, so a reader stacks mana for a plan that spends
+   * none. `when` and `tradeoff` are the fields the choice is made on.
+   */
+  const shieldWhen = frozenOrb.skillPackages![0].packages.find((p) => p.id === "energy-shield")!.when;
+  check(
+    "two routes making the same case for themselves are rejected",
+    distinctFails(withPackage(frozenOrb, "deep-freeze", { when: shieldWhen })) === 1,
+  );
+  const stormTradeoff = nova.skillPackages![0].packages[0].tradeoff;
+  check(
+    "and two routes giving up the same thing are rejected",
+    distinctFails(withPackage(nova, "hydra-hybrid", { tradeoff: stormTradeoff })) === 1,
+  );
+  check(
+    "an add-on group is not held to it, because add-ons are not a choice",
+    distinctFails(withGroup(withPackage(frozenOrb, "deep-freeze", { when: shieldWhen }), { choose: "any" })) === 0,
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: a build that skips its own only synergy");
+// ---------------------------------------------------------------------------
+{
+  const synergyFails = (build: Build) =>
+    checkPrimarySynergyInvested([build], SKILL_GRAPH, "control").length;
+
+  check("both pages buy the one synergy they have", synergyFails(frozenOrb) === 0 && synergyFails(nova) === 0);
+
+  check(
+    "Frozen Orb without the Ice Bolt that is its only synergy is rejected",
+    synergyFails(withAllocation(frozenOrb, "ice-bolt", { points: 1 })) === 1,
+  );
+  check(
+    "Nova without the Static Field that is its only synergy is rejected",
+    synergyFails(withAllocation(nova, "static-field", { points: 1 })) === 1,
+  );
+  check(
+    "the rejection names the skill the graph says feeds it",
+    checkPrimarySynergyInvested(
+      [withAllocation(nova, "static-field", { points: 1 })],
+      SKILL_GRAPH,
+      "control",
+    )[0]?.message.includes("static-field") === true,
+  );
+
+  /*
+   * And it stays quiet where the budget is genuinely contested. The Meteorb
+   * Sorceress holds Ice Bolt at one point because it also casts Meteor, whose
+   * own synergies want the same points — a trade, not an oversight. Take Meteor
+   * out of the plan and the same allocation becomes the defect.
+   */
+  const meteorb = by("meteorb-sorceress");
+  check("a hybrid with a second fed skill is left alone", synergyFails(meteorb) === 0);
+  check(
+    "and is caught the moment that second skill is no longer what it casts",
+    synergyFails({
+      ...meteorb,
+      skills: meteorb.skills.map((a) =>
+        a.skill === "meteor" ? { ...a, points: 1, role: "utility" as const } : a,
+      ),
+    }) === 1,
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nPlanted mutation: packages that diverge between locales");
+// ---------------------------------------------------------------------------
+{
+  const ptBuilds = getBuilds("pt-br");
+  const parityFails = (source: Build[], other: Build[]) =>
+    checkPackageLocaleParity(source, other, "control").length;
+
+  check("both locales publish the same routes at the same prices", parityFails(enBuilds, ptBuilds) === 0);
+
+  check(
+    "a route the translation prices differently is rejected",
+    parityFails(
+      [frozenOrb],
+      [withPackageSkill(ptBuilds.find((b) => b.slug === frozenOrb.slug)!, "deep-freeze", "frost-nova", {
+        points: 10,
+      })],
+    ) === 1,
+  );
+  check(
+    "a route the translation drops is rejected",
+    parityFails(
+      [nova],
+      [
+        {
+          ...ptBuilds.find((b) => b.slug === nova.slug)!,
+          skillPackages: [
+            {
+              ...nova.skillPackages![0],
+              packages: nova.skillPackages![0].packages.slice(0, 2),
+            },
+          ],
+        },
+      ],
+    ) === 1,
+  );
+
+  /*
+   * Prose is allowed to differ — that is the point of a translation — so the
+   * rule must not fire on it. If it did, every correctly translated page would
+   * be a failure and the check would have to be deleted.
+   */
+  check(
+    "but prose differing between locales is not a divergence",
+    parityFails(
+      [frozenOrb],
+      [
+        withPackage(ptBuilds.find((b) => b.slug === frozenOrb.slug)!, "deep-freeze", {
+          when: "Uma frase completamente diferente.",
+        }),
+      ],
+    ) === 0,
+  );
+
+  /*
+   * The same leak `check-content` catches in gear tables, in the one field it
+   * does not reach: a package note keyed by skill slug that the overlay never
+   * mentions renders in English inside a Portuguese card.
+   */
+  const leaks: string[] = [];
+  /*
+   * A route named after the skill it buys keeps that name in both languages —
+   * "Energy Shield" is the spell's name, not a sentence, and translating it
+   * would be the defect. Anything else identical across locales is untranslated
+   * prose, which is what this looks for. Same exemption ADR 0003 already makes
+   * for gear reasons that are nothing but game stat names.
+   */
+  const skillProperNouns = new Set(
+    enBuilds.flatMap((b) =>
+      (b.skillPackages ?? []).flatMap((g) =>
+        g.packages.flatMap((p) =>
+          p.skills.map((a) => getSkill("en-us", a.skill)?.name ?? ""),
+        ),
+      ),
+    ),
+  );
+
+  for (const build of packaged) {
+    const other = ptBuilds.find((b) => b.slug === build.slug);
+    if (!other) continue;
+    for (const group of build.skillPackages ?? []) {
+      const twinGroup = other.skillPackages?.find((g) => g.id === group.id);
+      for (const pkg of group.packages) {
+        const twin = twinGroup?.packages.find((p) => p.id === pkg.id);
+        if (!twin) continue;
+        for (const field of ["name", "when", "tradeoff", "rotationNote", "contentNote"] as const) {
+          if (field === "name" && skillProperNouns.has(pkg.name)) continue;
+          if (pkg[field] && twin[field] === pkg[field]) {
+            leaks.push(`${build.slug}/${pkg.id}.${field}`);
+          }
+        }
+        for (const allocation of pkg.skills) {
+          if (!allocation.note) continue;
+          const twinNote = twin.skills.find((a) => a.skill === allocation.skill)?.note;
+          if (twinNote === allocation.note) leaks.push(`${build.slug}/${pkg.id}/${allocation.skill}`);
+        }
+      }
+    }
+  }
+  for (const leak of leaks) console.log(`       ${leak}`);
+  check("no package string falls back to English", leaks.length === 0, `${leaks.length} leaks`);
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nThe two pages this model was written for");
+// ---------------------------------------------------------------------------
+{
+  /*
+   * Page contracts rather than general rules. Each is a specific wrong thing
+   * these two pages invite, and each was true of one of them before this pass.
+   */
+  for (const build of [frozenOrb, nova]) {
+    const group = build.skillPackages?.[0];
+    check(
+      `${build.slug}: the spare points are a choice, not a list`,
+      group?.choose === "one" && group.packages.length >= 2,
+      `${group?.choose} of ${group?.packages.length}`,
+    );
+
+    const totals = (group?.packages ?? []).map((p) => packageMath(build, p).total);
+    check(
+      `${build.slug}: every route finishes inside a level 99 character`,
+      totals.every((n) => n <= MAX_HARD_POINTS),
+      totals.join(", "),
+    );
+    check(
+      `${build.slug}: and no route leaves a third of the character unplanned`,
+      (group?.packages ?? []).every((p) => packageMath(build, p).free <= 5),
+      (group?.packages ?? [])
+        .map((p) => `${p.id}=${packageMath(build, p).free}`)
+        .join(", "),
+    );
+
+    /*
+     * The defect that started this: a page promising an Energy-Shield defence
+     * and never buying the thing that makes the shield affordable. Telekinesis'
+     * *hard* level sets the ratio and no +skills gear moves it, so a shield
+     * route without it is a page telling a reader to spend twenty points on
+     * nothing.
+     */
+    const shield = group?.packages.find((p) => p.skills.some((a) => a.skill === "energy-shield"));
+    check(
+      `${build.slug}: the shield route buys the Telekinesis that pays for it`,
+      (shield?.skills.find((a) => a.skill === "telekinesis")?.points ?? 0) > 1,
+      shield ? `${shield.skills.find((a) => a.skill === "telekinesis")?.points ?? 0}` : "no route",
+    );
+
+    /*
+     * And the mirror of it: the routes that do not take the shield must not
+     * carry its gear advice, or a reader stacks mana for a plan that spends
+     * none of it.
+     */
+    const shieldGear = shield?.gearNote;
+    const others = (group?.packages ?? []).filter((p) => p.id !== shield?.id);
+    check(
+      `${build.slug}: and no other route repeats the shield's gear advice`,
+      shieldGear === undefined || others.every((p) => p.gearNote !== shieldGear),
+    );
+  }
+
+  // Both cores are the same size, and that is a fact rather than a coincidence:
+  // three maxed skills and nine one-point ones, on both pages.
+  check(
+    "both cores spend 69 and leave 41 before a package",
+    pointBudgetOf(frozenOrb).mandatory === 69 &&
+      pointBudgetOf(frozenOrb).remaining === 41 &&
+      pointBudgetOf(nova).mandatory === 69 &&
+      pointBudgetOf(nova).remaining === 41,
+    `${pointBudgetOf(frozenOrb).mandatory}/${pointBudgetOf(frozenOrb).remaining}, ` +
+      `${pointBudgetOf(nova).mandatory}/${pointBudgetOf(nova).remaining}`,
+  );
+
+  // Neither page keeps a flex allocation beside its packages. One optional
+  // point living outside the model is a second, unpriced route.
+  check(
+    "and neither keeps an unpriced optional point outside the model",
+    [frozenOrb, nova].every((b) => b.skills.every((a) => a.role !== "flex")),
   );
 }
 

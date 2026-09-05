@@ -11,6 +11,11 @@
  * the rule fires without touching the site's data.
  */
 import { MAX_HARD_POINTS, type SkillGraphNode } from "../content/classes/skill-graph";
+import {
+  combinedAllocations,
+  packageMath,
+  worstCaseTotal,
+} from "../lib/builds/packages";
 import type { AllocationRole, Build, SkillAllocation, Slug } from "../lib/types";
 
 export type AllocationRule =
@@ -20,7 +25,12 @@ export type AllocationRule =
   | "duplicate-allocation"
   | "points-above-skill-maximum"
   | "primary-skill-unallocated"
-  | "stated-total-disagrees";
+  | "stated-total-disagrees"
+  | "package-group-undeclared"
+  | "package-duplicate-id"
+  | "package-lowers-core"
+  | "package-note-missing"
+  | "package-locale-divergence";
 
 export interface AllocationProblem {
   rule: AllocationRule;
@@ -297,6 +307,341 @@ export function checkStatedTotals(
             (flex > 0 ? ` plus ${flex} optional (${mandatory + flex} together)` : "") +
             `. One of the two is wrong, and the allocations are the ones a reader spends.`,
         });
+      }
+    }
+  }
+  return found;
+}
+
+// ===========================================================================
+// Optional packages
+// ===========================================================================
+
+/**
+ * Everything the core rules already say, said again about core-plus-package.
+ *
+ * A package is a second half of a plan, and the failures it can carry are the
+ * same six the core can — an unspendable budget, a prerequisite nobody paid, a
+ * synergy that feeds nothing, a skill over its cap — except that all of them
+ * are now *about the combination*. Checking a package alone would reject the
+ * Nova Storm package's Chain Lightning synergy claim, which is true only
+ * because the core maxes Nova; checking the core alone would miss all of it.
+ *
+ * So this reuses the same functions on a synthesised build whose `skills` are
+ * the merged allocations. One definition of "overspent", one of "unpaid", one
+ * of "feeds nothing you cast", and no second copy to drift.
+ *
+ * The rules that are genuinely new are the ones about the *group*: that a
+ * `one` group is priced as one choice and an `any` group as all of them, that
+ * ids are unique, and that a package never lowers the core it sits on top of.
+ */
+export function checkPackages(
+  builds: readonly Build[],
+  graph: Graph,
+  where: string,
+): AllocationProblem[] {
+  const found: AllocationProblem[] = [];
+  const add = (rule: AllocationRule, message: string) => found.push({ rule, message });
+
+  for (const build of builds) {
+    const groups = build.skillPackages ?? [];
+    if (groups.length === 0) continue;
+
+    const groupIds = new Set<string>();
+    for (const group of groups) {
+      if (groupIds.has(group.id)) {
+        add(
+          "package-duplicate-id",
+          `${where}/${build.slug}: two package groups share the id "${group.id}", so a locale ` +
+            `overlay addressed to it reaches only one of them.`,
+        );
+      }
+      groupIds.add(group.id);
+
+      if (group.choose !== "one" && group.choose !== "any") {
+        add(
+          "package-group-undeclared",
+          `${where}/${build.slug}/${group.id}: the group does not say whether its ` +
+            `${group.packages.length} packages are alternatives or add-ons. Without that the ` +
+            `page reads as a tree the reader can max all of, which is the failure this whole ` +
+            `model exists to stop.`,
+        );
+      }
+      if (group.packages.length === 0) {
+        add(
+          "package-group-undeclared",
+          `${where}/${build.slug}/${group.id}: a package group with no packages in it.`,
+        );
+      }
+
+      const packageIds = new Set<string>();
+      for (const pkg of group.packages) {
+        if (packageIds.has(pkg.id)) {
+          add(
+            "package-duplicate-id",
+            `${where}/${build.slug}/${group.id}: two packages share the id "${pkg.id}".`,
+          );
+        }
+        packageIds.add(pkg.id);
+
+        const math = packageMath(build, pkg);
+
+        if (math.lowersCore.length > 0) {
+          add(
+            "package-lowers-core",
+            `${where}/${build.slug}/${group.id}/${pkg.id}: the package asks for fewer points in ` +
+              `${math.lowersCore.sort().join(", ")} than the core already spends. A package adds ` +
+              `to a plan; one that subtracts is a respec the page has not described, and its ` +
+              `cost of ${math.cost} is under-reported by the difference.`,
+          );
+        }
+
+        // Every core rule, applied to the plan a reader would actually hold.
+        const combined: Build = { ...build, skills: combinedAllocations(build, pkg) };
+        const scope = `${where}/${build.slug}+${group.id}/${pkg.id}`;
+        found.push(
+          ...checkSynergyRoles([combined], graph, scope),
+          ...checkPointBudget([combined], graph, scope),
+        );
+
+        for (const allocation of pkg.skills) {
+          if (!allocation.note) {
+            add(
+              "package-note-missing",
+              `${scope}: ${allocation.skill} is allocated ${allocation.points} points with no ` +
+                `note. Inside a package every allocation is a claim about why this route and ` +
+                `not its sibling, and a row with no reason is the one a reader skips.`,
+            );
+          }
+        }
+      }
+    }
+
+    // The number that has to fit in 110: one package per exclusive group, all
+    // of them per additive group. A page offering three alternatives at 41
+    // costs 41; a page offering three add-ons at 41 costs 123 and cannot be
+    // spent, and the two are indistinguishable without `choose`.
+    const worst = worstCaseTotal(build);
+    if (worst > MAX_HARD_POINTS) {
+      add(
+        "budget-exceeded",
+        `${where}/${build.slug}: taking the dearest package in every exclusive group, and every ` +
+          `package in an additive one, spends ${worst} of ${MAX_HARD_POINTS}. A reader following ` +
+          `the page as written cannot finish it.`,
+      );
+    }
+  }
+  return found;
+}
+
+/**
+ * Every place a package's prose states a number the model does not produce.
+ *
+ * The same rule as `checkStatedTotals` and `checkStatedRemainders`, pointed at
+ * package copy, and it exists because the cost is *derived*: an author who
+ * writes "forty-one points" into a `when` sentence and later drops an
+ * allocation leaves a number nothing else on the page still agrees with.
+ *
+ * A package's remainder is read against its own `free`, not the build's — the
+ * whole point of a package is that it changes what is left.
+ */
+export function checkPackageClaims(
+  builds: readonly Build[],
+  where: string,
+): AllocationProblem[] {
+  const found: AllocationProblem[] = [];
+  for (const build of builds) {
+    for (const group of build.skillPackages ?? []) {
+      for (const pkg of group.packages) {
+        const math = packageMath(build, pkg);
+        const lines = [
+          pkg.when,
+          pkg.tradeoff,
+          pkg.remainderNote ?? "",
+          pkg.gearNote ?? "",
+          pkg.statNote ?? "",
+          pkg.rotationNote ?? "",
+          pkg.contentNote ?? "",
+          ...pkg.skills.map((a) => a.note ?? ""),
+        ];
+        const scope = `${where}/${build.slug}/${group.id}/${pkg.id}`;
+
+        for (const line of lines) {
+          for (const match of line.matchAll(STATED_TOTAL)) {
+            const stated = Number(match[1]);
+            if (stated === math.total || stated === math.core) continue;
+            found.push({
+              rule: "stated-total-disagrees",
+              message:
+                `${scope}: a sentence says "${match[0]}", and this route spends ${math.core} on ` +
+                `the core plus ${math.cost} on the package, which is ${math.total}.`,
+            });
+          }
+          for (const match of line.matchAll(STATED_REMAINDER)) {
+            const stated = readNumber(match[1]);
+            if (stated === undefined || stated === math.free) continue;
+            found.push({
+              rule: "stated-total-disagrees",
+              message:
+                `${scope}: a sentence says "${match[0].trim()}", and this route leaves ` +
+                `${math.free} — ${MAX_HARD_POINTS} less ${math.total}.`,
+            });
+          }
+        }
+      }
+    }
+  }
+  return found;
+}
+
+/**
+ * Package structure that differs between locales.
+ *
+ * `flexPoints` drift is already caught by comparing array lengths, and packages
+ * need the same guard for a shape arrays cannot express: a translation
+ * addressed by key silently keeps the English string when the key is wrong, and
+ * an English `contentNote` inside a Portuguese card is exactly the defect
+ * `check:content` was written for in the gear tables.
+ *
+ * Compared on ids and on the set of skills, not on prose: what may not differ
+ * is which routes exist and what they cost.
+ */
+export function checkPackageLocaleParity(
+  source: readonly Build[],
+  translated: readonly Build[],
+  where: string,
+): AllocationProblem[] {
+  const found: AllocationProblem[] = [];
+  const shapeOf = (build: Build) =>
+    (build.skillPackages ?? [])
+      .map(
+        (group) =>
+          `${group.id}:${group.choose}[` +
+          group.packages
+            .map(
+              (pkg) =>
+                `${pkg.id}(` +
+                pkg.skills
+                  .map((a) => `${a.skill}=${a.points}/${a.role}`)
+                  .sort()
+                  .join(",") +
+                `)`,
+            )
+            .join("|") +
+          `]`,
+      )
+      .join(";");
+
+  for (const build of source) {
+    const other = translated.find((b) => b.slug === build.slug);
+    if (!other) continue;
+    const a = shapeOf(build);
+    const b = shapeOf(other);
+    if (a === b) continue;
+    found.push({
+      rule: "package-locale-divergence",
+      message:
+        `${where}/${build.slug}: the package structure differs from the source. ` +
+        `source "${a}" vs "${b}". Prose may differ between locales; which routes exist, what ` +
+        `they cost and what they are called in the data may not.`,
+    });
+  }
+  return found;
+}
+
+/**
+ * A build that skips the one synergy its own main skill has.
+ *
+ * The reverse of `checkSynergyRoles`, which catches a page calling something a
+ * synergy that is not one. This catches the page that owns a real one and does
+ * not buy it — and it fires only where there is no budget argument left.
+ *
+ * Two conditions, and both are about competition for the same points:
+ *
+ *   - The primary skill has **exactly one** synergy source. A skill with three
+ *     cannot always afford all three, and a rule that demanded it would fail
+ *     the Lightning Sorceress for holding Nova at a point while it maxes two
+ *     other sources — a correct allocation.
+ *   - It is the **only** skill the build uses that receives a synergy at all.
+ *     The Meteorb Sorceress holds Ice Bolt at one point and that is a real
+ *     trade rather than an oversight: it also casts Meteor, whose own synergies
+ *     want the same budget. Where a second receiver exists, the choice between
+ *     them is editorial and this rule has nothing to say about it.
+ *
+ * What is left after both is the shape this exists for: one damage skill, one
+ * source feeding it, and a page that did not buy the only thing that scales it.
+ */
+export function checkPrimarySynergyInvested(
+  builds: readonly Build[],
+  graph: Graph,
+  where: string,
+): AllocationProblem[] {
+  const found: AllocationProblem[] = [];
+  for (const build of builds) {
+    const sources = synergySourcesOf(graph, build.primarySkill);
+    if (sources.length !== 1) continue;
+
+    const otherFedReceivers = receiverSkillsOf(build).filter(
+      (slug) => slug !== build.primarySkill && synergySourcesOf(graph, slug).length > 0,
+    );
+    if (otherFedReceivers.length > 0) continue;
+
+    const [source] = sources;
+    const points = build.skills.find((a) => a.skill === source)?.points ?? 0;
+    if (points > 1) continue;
+    found.push({
+      rule: "synergy-role-with-no-edge",
+      message:
+        `${where}/${build.slug}: ${build.primarySkill} has exactly one synergy in the graph — ` +
+        `${source} — and the core plan puts ${points} hard ${points === 1 ? "point" : "points"} ` +
+        `in it. Nothing else this build casts receives a synergy either, so there is no competing ` +
+        `claim on the budget: this is damage the build is entitled to and does not take.`,
+    });
+  }
+  return found;
+}
+
+/**
+ * Two alternatives that make the same case for themselves.
+ *
+ * Packages in a `one` group exist to be told apart. `when` and `tradeoff` are
+ * the fields a reader chooses on, so two packages sharing either verbatim is a
+ * copy-paste that leaves the choice unmade — and the specific shape this was
+ * written for is a defensive route's gear advice landing on the route that does
+ * not take it, which is how a reader ends up stacking mana for a plan that
+ * spends none.
+ *
+ * `gearNote` and `statNote` are deliberately not included: "no change" is the
+ * true answer on more than one route, and forcing it to be reworded would trade
+ * a real check for invented variation.
+ */
+export function checkPackagesDistinct(
+  builds: readonly Build[],
+  where: string,
+): AllocationProblem[] {
+  const found: AllocationProblem[] = [];
+  const fields = ["when", "tradeoff", "rotationNote", "contentNote"] as const;
+
+  for (const build of builds) {
+    for (const group of build.skillPackages ?? []) {
+      if (group.choose !== "one") continue;
+      for (const field of fields) {
+        const seen = new Map<string, string>();
+        for (const pkg of group.packages) {
+          const value = pkg[field];
+          if (!value) continue;
+          const first = seen.get(value);
+          if (first) {
+            found.push({
+              rule: "package-note-missing",
+              message:
+                `${where}/${build.slug}/${group.id}: "${pkg.id}" and "${first}" give the same ` +
+                `${field}. They are alternatives, and a reader choosing between them on this ` +
+                `field learns nothing from a sentence that is true of both.`,
+            });
+          }
+          seen.set(value, pkg.id);
+        }
       }
     }
   }
