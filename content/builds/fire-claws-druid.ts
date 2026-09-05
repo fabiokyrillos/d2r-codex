@@ -696,7 +696,7 @@ export const fireClawsDruid: Build = {
     {
       area: "secret-cow-level",
       difficulty: "hell",
-      why: "Nothing there is immune to fire or to physical, the density is high, and a per-hit fire block is at its best when there are many things to hit.",
+      why: "High density, no fire immunity in the population, and a per-hit fire block is at its best when there are many things to hit. The area's one immunity is physical, which costs this build the smaller half of its damage.",
       minTier: "early-hell",
       rating: 5,
     },
@@ -729,10 +729,10 @@ export const fireClawsDruid: Build = {
       rating: 4,
     },
     {
-      area: "ancient-tunnels",
+      area: "throne-of-destruction",
       difficulty: "hell",
-      why: "Level 85 and no cold immunes — which matters here only because the Sand Maggots are not fire immune either. A reliable run once Conviction is up.",
-      minTier: "budget",
+      why: "Level 85 at density five, and its recorded immunities are cold, lightning and poison — not one of which this build deals. Both halves of the damage land on the whole population, which is the cleanest match the area list offers.",
+      minTier: "optimized",
       rating: 4,
     },
     {

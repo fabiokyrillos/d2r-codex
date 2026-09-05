@@ -773,7 +773,7 @@ export const summonDruid: Build = {
     {
       area: "secret-cow-level",
       difficulty: "hell",
-      why: "Nothing is immune to physical and the density is absurd. The one caution is the density itself: a herd that surrounds the bear will reach you.",
+      why: "Absurd density, and the area's one immunity is physical — which the Sunder Charm in your inventory hands to all eight minions at once. The other caution is the density itself: a herd that surrounds the bear will reach you.",
       minTier: "budget",
       rating: 4,
     },

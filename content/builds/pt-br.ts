@@ -8614,7 +8614,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "worldstone-keep-hell":
         "A melhor experiência do jogo e os grupos mais densos. Quer o breakpoint de 99% e resistências no teto antes.",
       "secret-cow-level-hell":
-        "Nada lá é imune a físico, a densidade é absurda, e o Tornado é uma skill que recompensa densidade mais do que recompensa pontaria.",
+        "Densidade absurda, e físico é a única imunidade que a área carrega — que é exatamente a metade que o frio do Hurricane cobre de graça. O Tornado recompensa densidade mais do que recompensa pontaria.",
     },
     levelingPath: {
       summary:
@@ -9286,7 +9286,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "pindleskin-hell":
         "Uma corrida de trinta segundos contra um único alvo grande, que é exatamente o formato em que uma investida de cinco golpes com crushing blow é melhor. O alvo padrão de primeiro Hell para um Druid corpo a corpo.",
       "secret-cow-level-hell":
-        "Nada ali é imune a físico, a densidade é absurda, e os cinco golpes do Fury significam que cada investida rouba vida cinco vezes. É a melhor troca entre experiência e segurança que a build tem.",
+        "Densidade absurda, e cinco rolagens de roubo por investida. O detalhe é que físico é a única imunidade que esta área carrega e é a única imunidade que esta build tem, então Bone Break ou Atma's Scarab vem antes de a corrida virar rotina.",
       "mausoleum-hell":
         "Denso, nível 85, alcançável cedo, e cheio dos mortos-vivos que open wounds e crushing blow resolvem sem nenhuma ajuda.",
       "pit-hell":
@@ -9682,7 +9682,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "ancient-tunnels-hell":
         "Nível 85 sem imunes a frio, o que significa que a desaceleração dos lobos espirituais pega em tudo e o grupo chega devagar até o urso.",
       "secret-cow-level-hell":
-        "Nada ali é imune a físico e a densidade é absurda. O único cuidado é a própria densidade: uma manada que cerca o urso vai chegar em você.",
+        "Densidade absurda, e a única imunidade da área é físico — que o Sunder Charm do seu inventário entrega aos oito minions de uma vez. O outro cuidado é a própria densidade: uma manada que cerca o urso vai chegar em você.",
       "lower-kurast-hell":
         "Baús em vez de monstros, o que combina com uma build que farma devagar. O exército dá conta do pouco que revida.",
       "worldstone-keep-hell":
@@ -10026,7 +10026,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "travincal-hell":
         "O Conselho é corpo a corpo, grande e não é imune a físico, e eles vêm até você — o que elimina o único problema que esta build de fato tem.",
       "secret-cow-level-hell":
-        "Nada é imune a físico e tudo entra em alcance corpo a corpo. O Shock Wave segura uma manada no lugar melhor do que segura qualquer outra coisa.",
+        "Tudo entra em alcance corpo a corpo e o Shock Wave segura uma manada no lugar melhor do que segura qualquer outra coisa. Físico é a única imunidade da área e também a única lacuna desta build, então o charm não é opcional aqui.",
       "pit-hell":
         "Nível 85 e a melhor densidade do Ato 1, mas o terreno aberto e os grupos à distância são onde uma build lenta parece lenta. Traga o Holy Freeze.",
       "worldstone-keep-hell":
@@ -10349,7 +10349,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "**Um Act 2 Desert Mercenary, e no topo este é o item mais importante da página: o Infinity.** A aura Conviction dele reduz resistência a fogo, frio e raio, que é a única aura do jogo que ajuda a metade maior desta build — e, ao contrário de um facet, uma aura *pode* quebrar uma imunidade. Enquanto o Infinity não existir, pegue **Might** no Nightmare pela metade física, e dê **Fortitude** ao mercenário para ele sobreviver o bastante para manter a aura de pé. Os dois mercenários que esta build não deve contratar são justamente os que os outros Druids corpo a corpo querem: uma rogue do Ato 1 com Faith dá Fanaticism, o que é real, mas o Conviction vale mais aqui que velocidade de ataque no momento em que os imunes a fogo aparecem; e o dano de fogo de um Iron Wolf do Ato 3 não faz nada pelo seu.",
     farmingWhy: {
       "secret-cow-level-hell":
-        "Nada ali é imune a fogo nem a físico, a densidade é alta, e um bloco de fogo por golpe rende mais quando há muita coisa para acertar.",
+        "Densidade alta, nenhuma imunidade a fogo na população, e um bloco de fogo por golpe rende mais quando há muita coisa para acertar. A única imunidade da área é físico, o que custa a esta build a metade menor do dano dela.",
       "mausoleum-hell":
         "Nível 85, denso e morto-vivo. Os esqueletos e zumbis daqui são a coisa mais amigável do Hell para uma build de fogo.",
       "pindleskin-hell":
@@ -10358,8 +10358,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "O Conselho é imune a fogo, e esta é a entrada que prova o desenho da build: a metade da arma mata mesmo assim, devagar. Traga o Sunder Charm e ela deixa de ser devagar.",
       "pit-hell":
         "Nível 85 e a melhor densidade de itens do Ato 1. As imunidades mistas daqui são exatamente para o que um ataque corpo a corpo de dois tipos de dano foi feito.",
-      "ancient-tunnels-hell":
-        "Nível 85 e sem imunes a frio — o que importa aqui só porque os Sand Maggots também não são imunes a fogo. Uma corrida confiável assim que o Conviction estiver de pé.",
+      "throne-of-destruction-hell":
+        "Nível 85 com densidade cinco, e as imunidades registradas dela são frio, raio e veneno — nenhuma das quais esta build causa. As duas metades do dano pegam em toda a população, que é a combinação mais limpa que a lista de áreas oferece.",
       "worldstone-keep-hell":
         "A melhor experiência do jogo, e o lugar onde imunidade a fogo é mais comum. Pede Infinity e o Sunder Charm, os dois.",
     },

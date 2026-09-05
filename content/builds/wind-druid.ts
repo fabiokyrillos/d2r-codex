@@ -915,7 +915,7 @@ export const windDruid: Build = {
     {
       area: "secret-cow-level",
       difficulty: "hell",
-      why: "Nothing there is immune to physical, the density is absurd, and Tornado is a skill that rewards density more than it rewards aim.",
+      why: "Absurd density, and physical is the only immunity the area carries — which is precisely the half Hurricane's cold covers for free. Tornado rewards density more than it rewards aim.",
       minTier: "early-hell",
       rating: 4,
     },

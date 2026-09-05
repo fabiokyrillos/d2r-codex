@@ -768,7 +768,7 @@ export const furyDruid: Build = {
     {
       area: "secret-cow-level",
       difficulty: "hell",
-      why: "Nothing there is immune to physical, the density is absurd, and Fury's five hits mean each swing leeches five times. It is the best experience-and-safety trade the build has.",
+      why: "Absurd density, and five leech rolls a swing. The catch is that physical is the one immunity this area carries and it is the one immunity this build has, so Bone Break or Atma's Scarab comes before the run becomes a habit.",
       minTier: "early-hell",
       rating: 5,
     },

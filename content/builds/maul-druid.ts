@@ -702,7 +702,7 @@ export const maulDruid: Build = {
     {
       area: "secret-cow-level",
       difficulty: "hell",
-      why: "Nothing is immune to physical and everything walks into melee range. Shock Wave holds a herd in place better than it holds anything else.",
+      why: "Everything walks into melee range and Shock Wave holds a herd in place better than it holds anything else. Physical is the area's only immunity and also this build's only gap, so the charm is not optional here.",
       minTier: "early-hell",
       rating: 4,
     },
