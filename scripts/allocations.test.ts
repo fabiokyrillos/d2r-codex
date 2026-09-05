@@ -127,7 +127,7 @@ console.log("\nThe live sweep: every build, every class, both locales");
   const classes = new Set(enBuilds.map((b) => b.classSlug));
   check(
     "and it covers every class the site publishes, not the one this pass owns",
-    classes.size === 5,
+    classes.size === 6,
     [...classes].join(", "),
   );
 }

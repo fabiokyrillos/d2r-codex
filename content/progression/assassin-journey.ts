@@ -58,6 +58,7 @@ import type { ProgressionJourney } from "@/lib/types";
  */
 export const assassinJourney: ProgressionJourney = {
   classSlug: "assassin",
+  targetBuild: "lightning-trapsin",
   summary:
     "Level on fire from the first point, respec once at Nightmare Act 4 around level 45, and finish on lightning traps. The two halves of the trap tree share no synergy, so this is a real change of character rather than a re-spend.",
   overview: [
@@ -114,7 +115,7 @@ export const assassinJourney: ProgressionJourney = {
         },
         {
           kind: "tip",
-          text: "**Burst of Speed makes you throw faster, not just run faster.** Fire Blast uses the attack rate, and Burst of Speed adds 15% to it at one point. That is why one early point in it is worth more than it looks.",
+          text: "**Burst of Speed is 15% run speed at one point**, and an Assassin who throws rather than fights spends most of Act 1 walking. It is also Fade's prerequisite, which is the real reason to buy it now rather than at 18.",
         },
         {
           kind: "gear",
@@ -212,7 +213,7 @@ export const assassinJourney: ProgressionJourney = {
         },
         {
           ref: { kind: "runeword", slug: "spirit" },
-          why: "**+2 to All Skills and up to 35% faster cast** in a four-socket shield at level 25. The cast rate is for Mind Blast and Fade later, not for laying traps.",
+          why: "**+2 to All Skills and up to 35% faster cast** in a four-socket shield at level 25. Cast rate is the Assassin's trap-laying speed as well as her spell speed, so this is a damage item as much as a utility one.",
         },
       ],
       exitCriteria: "Baal is dead, Wake of Fire is at 16, and all four Normal quest points are spent.",
@@ -333,7 +334,7 @@ export const assassinJourney: ProgressionJourney = {
       gearTargets: [
         {
           ref: { kind: "runeword", slug: "spirit" },
-          why: "In a four-socket shield: +2 all skills and up to 35% cast rate. The cast rate is for Mind Blast and Fade — trap laying runs on attack speed, not cast rate.",
+          why: "In a four-socket shield: +2 all skills and up to 35% cast rate. **Faster Cast Rate is how quickly you lay traps**, not only how quickly you cast Mind Blast, so 65% is the number to reach.",
         },
         {
           label: "Magic or rare claw: +3 Lightning Sentry, +2 Traps",

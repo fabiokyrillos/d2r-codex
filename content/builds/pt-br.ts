@@ -11112,4 +11112,378 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "lightning-trapsin": {
+    summary:
+      "Cinco sentries colocadas no mesmo ponto, dez raios perfurantes em cada uma, e um Death Sentry que transforma o primeiro cadáver na sala inteira. A build principal da Assassin, e ela não precisa de runeword nenhuma para funcionar.",
+    playstyle:
+      "Você nunca ataca. O Mind Blast atordoa o grupo, você coloca quatro Lightning Sentries e um Death Sentry dentro dele, e anda para trás enquanto dez raios de cada uma perfuram tudo que estiver alinhado. A primeira coisa que morre começa uma corrente: o Death Sentry explode cadáveres por uma fração da vida deles, e numa sala densa isso é uma conjuração e uma tela limpa. Todo o ofício da build é onde você fica de pé — os raios perfuram, então um corredor vale três vezes uma caverna aberta, e trap colocada onde nada vai passar é trap que você não colocou.",
+    strengths: [
+      "**Nenhuma runeword é obrigatória.** Uma garra rara e dois Spirits são a build pronta; tudo acima disso é velocidade",
+      "A corrente de cadáveres do Death Sentry limpa salas a partir de uma morte, e o dano dela vem do cadáver e não dos seus pontos",
+      "Você luta atrás de cinco torres, com um atordoamento, uma cegueira e um guarda-costas",
+      "Metade da explosão do Death Sentry é fogo e metade é físico, então ela continua funcionando em imunes a raio",
+      "Evolui para si mesma com um respec grátis — veja a jornada",
+    ],
+    weaknesses: [
+      "**Imunidade a raio é uma parede.** Não existe Lightning Mastery nesta classe e não existe Conviction que você possa empunhar",
+      "Cinco traps no total, não cinco por skill. Rodar duas skills de sentry divide as mesmas cinco",
+      "As traps ficam onde você está, então qualquer coisa mais rápida que você reposiciona a rotação inteira",
+      "Quase nada na luta da Uber Tristram entra num campo de traps, e o grupo do Lister não fica parado",
+      "O Charged Bolt Sentry são vinte pontos numa skill que a build pronta nunca conjura. Ele é sinergia, e a página diz isso em vez de fingir o contrário",
+    ],
+    flexPoints: [
+      "**Não existem pontos livres.** O núcleo são 90, cada pacote custa exatamente 20, e 90 + 20 = 110. Se a sua tela de skills mostra um ponto não gasto, uma das três rotas acima não está terminada.",
+      "**Não divida os vinte entre dois pacotes.** Fade em dez são 40% de resistência em vez de 75%; Fire Blast em dez é uma bomba que não mata o grupo imune que você pegou ele para matar. Cada uma das três vale pega inteira e nenhuma vale pela metade.",
+      "**Venom não está nesta página**, e é a resposta errada mais comum. Ele acrescenta veneno a *ataques*, e este personagem não faz nenhum — traps são invocações e o dano delas não é seu.",
+      "**Blade Fury e Blade Shield também não estão.** Eles vivem na mesma árvore, levam três quartos do dano da sua arma, e esta build carrega uma garra escolhida por +skills e não por dano.",
+    ],
+    skillPackages: {
+      "the-last-twenty": {
+        name: "A segunda metade do plano",
+        intro:
+          "O núcleo acima são 90 de 110 e ele está **terminado**: as duas sinergias do Lightning Sentry estão maximizadas, a única sinergia do Death Sentry está maximizada, e nenhum ponto adicional em lugar nenhum sobe qualquer um dos dois. Sobram vinte — quase um quinto do personagem. **Pegue exatamente um dos três abaixo.** Cada um custa exatamente vinte, então qualquer que seja a escolha o plano fecha em 110 sem sobra, e cada um compra uma coisa diferente que o núcleo não faz: sobreviver, matar o que ele não consegue matar, ou colocar algo entre você e o grupo.",
+        packages: {
+          fade: {
+            name: "Fade",
+            when: "O padrão, e a única resposta no Hardcore. O Hell aplica -100% em toda resistência que você tem, e estes são os vinte pontos que devolvem isso sem custar um único slot de equipamento.",
+            tradeoff:
+              "Ele não faz absolutamente nada contra imunidade a raio. Uma trapper de Fade numa Terror Zone imune a raio é espectadora, e o pacote de Fire Blast é o que resolve isso.",
+            skillNotes: {
+              fade: "**As quatro resistências subindo em direção a 75%, duração de maldição cortada em até 90%, e 1% de redução de dano físico por nível.** A redução física é a metade que as pessoas esquecem e a que mais importa no Chaos Sanctuary. Dezenove pontos em cima do único do núcleo.",
+              "shadow-master":
+                "O vigésimo ponto, e ele vem para cá em vez de virar um vigésimo primeiro ponto de outra coisa: as resistências do próprio Shadow Master escalam com o nível dele, então o guarda-costas desta rota fica um pouco mais duro de graça.",
+            },
+            rotationNote:
+              "Sem mudança no que você aperta. Mudança no que você consegue encarar: Fade em vinte é a diferença entre sair de uma Terror Zone e limpá-la.",
+            gearNote:
+              "**A maior mudança de equipamento das três, no que ela deixa de exigir.** Vinte pontos de Fade são resistências que você não compra mais em anéis, amuleto e charms, então esses slots vão para dano de raio e Faster Cast Rate. Ele também soma com o proc do Treachery em vez de substituir.",
+            statNote: "Sem mudança. Vitality com tudo depois dos requisitos de equipamento.",
+            contentNote:
+              "Terror Zones do Hell, o Chaos Sanctuary, e todo personagem de Hardcore do site.",
+          },
+          "fire-blast": {
+            name: "Fire Blast",
+            when: "Você vive encontrando imunes a raio e indo embora. Este é o segundo tipo de dano, ele não precisa de pré-requisito novo, e não muda nada no seu equipamento.",
+            tradeoff:
+              "Você abre mão do Fade em vinte, o que significa que resistência continua sendo problema de equipamento até o 110. Também é um botão que você precisa mirar, num personagem que fora isso nunca mira nada.",
+            skillNotes: {
+              "fire-blast":
+                "**Todas as traps o alimentam a 11% por ponto duro**, e esta build maximiza três delas: Shock Web, Charged Bolt Sentry e Lightning Sentry, sessenta pontos, +660%. Isso é uma bomba arremessada causando 646-859 num raio de 5, por dezenove pontos e nenhum pré-requisito novo.",
+              "wake-of-fire":
+                "O vigésimo ponto, e a única das três rotas em que o último ponto não é arredondamento: **o Wake of Fire também alimenta o Fire Blast a 11%**, então são +11% na skill que você acabou de maximizar, por um ponto, usando um pré-requisito que o núcleo já pagou.",
+            },
+            rotationNote:
+              "Agora são duas rotações. Contra qualquer coisa que não seja imune a raio, nada muda. Contra um grupo imune a raio: Mind Blast, e depois arremesse — o Fire Blast faz um arco até onde você mira em vez de esperar alguém passar por cima, que é também o que faz dele a resposta a qualquer coisa que não entra num campo de traps.",
+            gearNote:
+              "**Sem mudança**, que é o argumento a favor dele. Os dois tipos de dano andam nos mesmos +skills, e um Hellfire Torch ou um Annihilus paga as duas metades de uma vez. Facetas de fogo num elmo são uma opção real se você se comprometer, mas nada aqui exige.",
+            statNote: "Sem mudança.",
+            contentNote:
+              "O Pit, os Ancient Tunnels e qualquer Terror Zone com lista de imunidades mista. Também o caminho mais rápido pelo Hell para um personagem que ainda não achou equipamento de resistência, porque ele mata os grupos que antes eram parede.",
+          },
+          "shadow-master": {
+            name: "O Shadow Master",
+            when: "Você morre enquanto coloca o campo, e não depois dele. Vinte pontos compram uma companheira cujas resistências passam do teto do jogador e cuja vida escala 15% por nível, e ela luta na sua frente.",
+            tradeoff:
+              "O menos mensurável dos três. Ele não sobe o seu dano e não sobe as suas resistências; ele compra um corpo, e o site não consegue colocar um número em quantas vezes esse corpo está onde você precisava.",
+            skillNotes: {
+              "shadow-master":
+                "**Resistências de 5% em direção a 90%** — acima dos 75% que um jogador alcança, que é a maior parte do motivo de ele sobreviver ao Hell — mais 15% de vida e 40% de attack rating por nível. Ele escolhe skills de Assassin próprias em vez de espelhar as suas, incluindo traps e Mind Blast.",
+              fade: "O vigésimo ponto. Esta rota comprou um guarda-costas e não uma resistência, então o único ponto que sobra vai onde a resistência está.",
+            },
+            rotationNote:
+              "Reconjure depois de cada morte e de cada portal — ele não te segue entre áreas. Fora isso, nada muda: ele entra primeiro e você coloca atrás dele.",
+            gearNote:
+              "**Nada no seu personagem sobe ele além de +skills**, e ele lê todos, então um Hellfire Torch vale mais nesta rota do que nas outras duas. Nada do que você equipa se transfere para ele.",
+            statNote: "Sem mudança.",
+            contentNote:
+              "Partidas de oito jogadores e Terror Zones densas, onde o que mata uma trapper é ser alcançada antes de o campo estar de pé.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength:
+        "Exatamente o suficiente para a armadura de corpo que você pretende usar, e nada além. Uma Dusk Shroud de três sockets para o Treachery é o alvo usual; Chains of Honor e Enigma pedem mais.",
+      dexterity:
+        "**Nenhum.** Esta build não tem arma para acertar e não financia chance de bloqueio nenhuma — veja a nota abaixo, que é a parte que a maioria dos conselhos de atributo erra.",
+      vitality: "Todo o resto, a 3 de vida por ponto.",
+      energy:
+        "Nenhum. O Insight do mercenário resolve a mana por completo, e equipamento dá mais mana por ponto do que o atributo.",
+      notes: [
+        "**Weapon Block não é bloqueio de escudo e este plano não o financia.** É um passivo próprio, exige uma garra em cada mão, e para de funcionar no instante em que você equipa um escudo Spirit — que é o que quase todo tier aqui faz. Se ele lê Dexterity do mesmo jeito que o bloqueio de escudo não é algo que a extração resolva, então nenhum ponto de Dexterity é gasto atrás de um número que este site não consegue calcular.",
+        "**O Insight no mercenário vale mais do que qualquer Energy que você pudesse comprar.** A Meditation reabastece uma trapper entre grupos, e a conta de mana de uma trapper são cinco conjurações a cada poucos segundos.",
+        "Um Call to Arms no swap de arma é Battle Orders, e Battle Orders é vida. Num personagem com a segunda menor reserva de vida do jogo isso não é luxo.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-65":
+        "**Faster Cast Rate é a velocidade com que você coloca traps**, e não só a de conjurar Mind Blast — a tabela da Assassin cobre as duas. 65% é a meta prática e a diferença entre colocar o campo antes de o grupo chegar e colocar depois.",
+      "fcr-102":
+        "Um frame mais rápido, e a última linha que vale perseguir: 174% é mais um frame por quase o dobro do investimento.",
+      "fhr-48":
+        "A meta padrão da tabela que a Assassin divide com o Paladin e o Barbarian. Você não deveria ser atingida, mas no instante em que for, a recuperação é o que permite terminar o campo.",
+    },
+    breakpointNotes:
+      "**Não existe linha de Increased Attack Speed aqui, de propósito.** Este personagem nunca golpeia nada: traps são colocadas, o Fire Blast é arremessado, e o Mind Blast é conjurado. Guias que listam uma meta de IAS para uma trapper estão trazendo isso das builds de chute, onde é o eixo inteiro do equipamento. O único lugar em que velocidade de ataque importaria é o Burst of Speed — e uma trapper roda Fade no lugar dele, porque os dois não podem estar ativos juntos.",
+    skillNotes: {
+      "lightning-sentry":
+        "**Dez disparos por sentry e os raios perfuram.** É por isso que cinco vão no mesmo ponto em vez de espalhadas pela sala, e por que um corredor mata três vezes mais rápido que terreno aberto.",
+      "charged-bolt-sentry":
+        "**18% por ponto duro no Lightning Sentry**, e a build pronta nunca coloca uma — o teto de cinco traps pertence a Lightning e Death Sentry. Vinte pontos numa skill que você deixa de conjurar ainda são o segundo maior aumento de dano da página. Maximizada antes do Shock Web porque, durante os cinquenta níveis que isso leva, esta aqui dispara sozinha.",
+      "shock-web":
+        "Os outros **18% por ponto duro**. Diferente do Charged Bolt Sentry ela é uma skill que você ainda pode apertar — seis mísseis com um ponto, mais um a cada quatro níveis, e **mais um a cada três pontos duros de Fire Blast**. Vale um espaço na barra mesmo no fim.",
+      "death-sentry":
+        "**Maximizada por último, porque um ponto já compra a corrente inteira.** A explosão de cadáver são 40-80% da vida base do tipo de monstro seja qual for o nível da skill — a do Necromancer são 70-120% — e os pontos compram raio de alcance (5 jardas, +0,5 por nível) e a metade de raio. Metade fogo e metade físico, que é por que ela continua funcionando em imunes a raio.",
+      "fire-blast":
+        "O primeiro degrau da corrente, e a única skill da árvore de traps no nível 1. Um ponto no núcleo — **e o pacote Fire Blast abaixo é a única rota que leva ele a vinte**, onde as cinco traps o alimentando a 11% cada fazem dele um segundo tipo de dano.",
+      "claw-mastery":
+        "Portão do Burst of Speed e do Weapon Block. Os bônus dele mesmo são de corpo a corpo e esta build nunca usa.",
+      "burst-of-speed":
+        "Comprado pelo Fade, não para usar. **Os dois são mutuamente exclusivos** — conjurar um derruba o outro — e uma trapper roda Fade.",
+      fade: "Resistências, redução de duração de maldição e 1% de redução de dano físico por nível, por dois minutos a cada conjuração. Um ponto no núcleo; **o pacote Fade leva a vinte**, que é o que uma trapper de Hardcore faz com o orçamento que sobra.",
+      "weapon-block":
+        "**Não é bloqueio de escudo.** É um passivo próprio, condicionado a segurar uma garra em cada mão, e funciona sem escudo nenhum. Um ponto, porque esta build fica atrás das traps e não na frente delas — e porque um escudo Spirit desliga ele por completo.",
+      "psychic-hammer": "O portão do Cloak of Shadows, e a única razão de ele estar no plano.",
+      "cloak-of-shadows":
+        "Cega uma tela e corta a defesa dela. Numa build que precisa de três segundos de nada acontecendo para colocar um campo inteiro, este é o segundo melhor botão depois do Mind Blast.",
+      "shadow-warrior":
+        "O portão do Shadow Master. **Os dois compartilham um tipo de lacaio com teto de um**, então nunca ficam de pé juntos e este ponto é gasto para destravar o melhor dos dois.",
+      "mind-blast":
+        "**O botão que faz a build funcionar.** Raio 4, 50 frames de atordoamento com um ponto, e uma fração do que ele acerta convertida para lutar por você. Cinquenta frames é exatamente o tempo de colocar um campo inteiro num grupo que não consegue se mexer.",
+      "shadow-master":
+        "Um ponto, e as resistências dele ainda sobem em direção a 90% — acima do teto do jogador, que é a maior parte do motivo de ele sobreviver ao Hell. Ele escolhe as próprias skills em vez de espelhar as suas. **O pacote Shadow Master leva a vinte**, onde ele é um corpo que luta.",
+    },
+    immunityPlan:
+      "**Imunidade a raio é o único problema real da build e não existe solução limpa.** A Assassin não tem Lightning Mastery, não tem Conviction que possa empunhar, e não tem Lower Resist. Três respostas parciais, em ordem de quanto ajudam de verdade. Primeira, **a explosão de cadáver do Death Sentry é metade fogo e metade físico**, então assim que qualquer coisa do grupo morre a corrente funciona nos imunes — o que significa levar algo capaz de matar um deles. Segunda, o **pacote Fire Blast** é a resposta deliberada: dezenove pontos por um segundo tipo de dano que não exige trocar equipamento, causando 646-859 por arremesso com as três traps maximizadas do núcleo alimentando ele. Terceira, um Sunder Charm **Crack of the Heavens** transforma imunidade a raio em 95% de resistência, ao custo de -70 na sua própria resistência a raio e um slot de charm. **Griffon's Eye e facetas de raio não quebram imunidade** — reduzir uma resistência de 100% em 20 deixa ela em 100 para efeito de imunidade. Elas são dano contra tudo que nunca foi imune.",
+    mercenaryNotes:
+      "**Insight, e não é opcional.** A Meditation é o plano de mana inteiro desta build — cinco conjurações a cada poucos segundos, num personagem sem roubo de vida e sem Warmth. Pegue a variante com aura Defiance no Nightmare: o trabalho dele é segurar um corredor enquanto o campo trabalha, não matar nada. Um corpo de Treachery dá o proc de Fade a ele também, e a Andariel's Visage é o elmo assim que a reserva de vida dele aguentar.",
+    farmingWhy: {
+      "travincal-hell":
+        "Densa, fechada e curta. Todo grupo entra pelo mesmo corredor, que é exatamente o terreno que raios perfurantes querem.",
+      "lower-kurast-hell":
+        "Baús em vez de mortes, então a única fraqueza da build nunca aparece. A rodada de caça a runas mais rápida disponível para um personagem sem Enigma.",
+      "pit-hell":
+        "Dois níveis fechados no maior nível de área do Ato 1. Imunidades mistas, que é onde o pacote Fire Blast justifica os vinte pontos.",
+      "chaos-sanctuary-hell":
+        "Corredores e grupos de selo — tudo chega em fila. Os Oblivion Knights amaldiçoam, que é para isso que serve a redução de duração de maldição do Fade.",
+      "worldstone-keep-hell":
+        "Três níveis de corredores fechados no maior nível de área do jogo. Cuidado com os grupos imunes a raio.",
+      "mausoleum-hell":
+        "Uma sala, densidade alta, e a corrente de cadáveres faz quase tudo. Um bom lugar para aprender onde um campo de traps quer ficar.",
+    },
+    levelingPath: {
+      summary:
+        "**Não evolua como esta build.** Toda trap de raio tem dano mínimo 1 em todo nível, então um Lightning Sentry com metade do investimento não dá metade do dano. Evolua com fogo — Fire Blast até 11, depois Wake of Fire — e faça um respec no nível 45, Ato 4 do Nightmare, onde voltam 52 pontos e a abertura de raio custa exatamente 52.",
+      respecAt: "Nível 45, Ato 4 do Nightmare, com o token da Den of Evil do Nightmare",
+    },
+    selfFoundNotes:
+      "**Esta é a build self-found mais forte que a Assassin tem e uma das mais fortes do site.** Nada nos três primeiros tiers é runeword acima de três runas: Stealth, Lore, Spirit, Ancients' Pledge, Treachery. A arma — o maior item de dano da build — é uma garra mágica ou rara de vendedor, e vendedores renovam estoque toda vez que você volta à cidade. A única coisa que vale caçar de propósito é uma garra com +3 Lightning Sentry e +3 Death Sentry juntos.",
+    hardcoreNotes:
+      "**Pegue o pacote Fade.** Vinte pontos de Fade são 75% de resistência e 20% de redução de dano físico que nenhum slot de equipamento precisa pagar, e a redução de duração de maldição é o que impede o Amplify Damage de um Oblivion Knight de ser fatal. Fora isso, a build já é uma das mais seguras do jogo: você nunca entra em corpo a corpo, o Mind Blast atordoa antes de você se comprometer, o Cloak of Shadows cega uma tela, e o Shadow Master chega primeiro. As duas coisas que matam trappers de Hardcore são colocar um campo num grupo que já estava em movimento, e a Iron Maiden.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao Lightning Sentry com as resistências intactas. Nada aqui custa mais do que três runas da Countess.",
+        nextUpgrade:
+          "Nível 45 e o respec. Até lá você está evoluindo com fogo — a jornada é a página dessa metade.",
+        notes:
+          "**Um cajado pode carregar o Leaf e a Assassin consegue empunhar um**, que é por que a metade de evolução deste personagem costuma terminar o Normal com um cajado em vez de uma garra. A partir do respec nada do que você conjura é fogo e a garra volta.",
+        picks: {
+          "weapon-0": {
+            label: "Garra mágica: +3 Lightning Sentry, +2 Traps",
+            why: "**O maior item de dano do jogo para esta build, e é um resultado de vendedor.** Afixos de skill em garra chegam a +3 numa skill e +2 na aba inteira, e a Charsi renova o estoque toda vez que você volta à cidade.",
+            lookFor: ["+3 to Lightning Sentry", "+2 to Traps", "+3 to Death Sentry"],
+          },
+          "offhand-0": {
+            why: "+2 em Todas as Skills e até 35% de Faster Cast Rate no nível 25. Velocidade de conjuração aqui é velocidade de colocar trap.",
+            sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
+          },
+          "offhand-0-alt0": { why: "Resistências por três runas da Countess, se a Amn ainda não apareceu." },
+          "body-0": {
+            why: "25% de Faster Cast Rate e 25% de Faster Hit Recovery no nível 17, por duas das runas mais comuns do jogo.",
+          },
+          "helm-0": { why: "+1 em Todas as Skills por uma Ort e uma Sol." },
+        },
+      },
+      nightmare: {
+        goal: "65% de velocidade de conjuração, dois Spirits se der, e Treachery no momento em que três runas médias existirem.",
+        nextUpgrade: "Decida o pacote antes do Hell. Ele muda para que servem os seus charms.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara ou mágica: +3 Lightning Sentry, +3 Death Sentry",
+            why: "Uma garra com as duas vale mais do que qualquer unique deste tier e custa uma fração.",
+            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+          },
+          "offhand-0": {
+            why: "35% de conjuração e +2 skills. Note que ele desliga o Weapon Block — essa é a troca, e nesta build é a certa.",
+          },
+          "offhand-0-alt0": {
+            label: "Segunda garra: +2 Traps, resistências",
+            why: "Mantém o Weapon Block vivo e dobra os afixos de skill. Só vale se a segunda garra carregar +2 Traps de verdade.",
+          },
+          "body-0": {
+            why: "**+2 em Assassin Skill Levels** por Shael, Thul e Lem, mais 5% de chance de conjurar Fade nível 15 ao ser atingida — Fade sem você apertar.",
+            sockets: "Shael, Thul, Lem numa armadura de corpo de 3 sockets. Uma Dusk Shroud é a base leve.",
+          },
+          "helm-0": {
+            why: "+1 skills e magic find enquanto nada melhor existir. **Um Harlequin Crest exige nível 62 e este tier termina no 60**, então ele pertence ao tier de baixo e não a este.",
+          },
+          "gloves-0": { why: "20% de Faster Cast Rate, que é velocidade de colocar trap." },
+          "belt-0": {
+            why: "Resistências e dano convertido em mana enquanto o Insight do mercenário ainda está sendo montado.",
+          },
+        },
+        charms: [
+          { label: "Small charms de resistência e vida", why: "O caminho mais barato até 75% antes dos -100% do Hell." },
+        ],
+      },
+      "early-hell": {
+        goal: "75% de resistências, 65% de conjuração mantidos, e uma resposta para imunes a raio.",
+        nextUpgrade: "102% de conjuração, e um amuleto que não esteja carregando resistência sozinho.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, 20% Faster Cast Rate",
+            why: "Três afixos num item só, e ainda mais barata do que qualquer runeword desta página.",
+            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
+          },
+          "offhand-0": { why: "+2 skills e 35% de conjuração." },
+          "body-0": { why: "+2 em skills de Assassin e o proc de Fade." },
+          "body-0-alt0": {
+            why: "+1 skills, 30% de conjuração e até +35 em todas as resistências — a resposta de resistência se você não pegou o pacote Fade.",
+          },
+          "helm-0": { why: "+2 skills, +1,5 de vida por nível, redução de dano." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": {
+            why: "Redução de dano físico e roubo de vida num personagem que não tem nenhum dos dois. **O Arachnid Mesh é o cinto que esta build realmente quer e ele exige nível 80**, que é o tier acima deste.",
+          },
+          "boots-0": {
+            why: "Recuperação, stamina e duas resistências. Dano de chute em botas é irrelevante aqui — nada nesta página chuta.",
+          },
+          "ring2-0": {
+            label: "Anel raro: 10% Faster Cast Rate, duas resistências, vida",
+            why: "De onde vêm os últimos pontos de conjuração no caminho até 65%.",
+            lookFor: ["10% Faster Cast Rate", "Two resistances at 20+", "Life"],
+          },
+        },
+      },
+      budget: {
+        goal: "102% de conjuração alcançados com itens que custam runas médias e não altas.",
+        nextUpgrade:
+          "Um Griffon's Eye — o único item da página que reduz resistência inimiga em vez de somar dano.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, 20% Faster Cast Rate",
+            why: "Igual ao tier abaixo, porque não há para onde subir — a garra é resultado de vendedor e continua best in slot até o fim.",
+            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
+          },
+          "offhand-0": { why: "35% de conjuração e +2 skills. Ainda os 35% mais baratos do personagem." },
+          "body-0": { why: "+2 em skills de Assassin e o proc de Fade, por três runas médias." },
+          "body-0-alt0": {
+            why: "+30 em todas as resistências e a Strength para vestir uma base mais pesada, se o pacote Fade não foi o que você pegou.",
+          },
+          "helm-0": { why: "+2 skills, vida por nível e redução de dano." },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": {
+            why: "+1 skills e 20% de conjuração — o maior item de conjuração fora do escudo.",
+          },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills e mana máxima." },
+          "ring2-0": {
+            label: "Anel raro: 10% Faster Cast Rate, duas resistências, vida",
+            why: "35 (Spirit) + 20 (Magefist) + 20 (Arachnid) + 10 (anel) + 20 (Stealth ou Vipermagi, se algum ainda estiver equipado) passa de 102% com folga.",
+            lookFor: ["10% Faster Cast Rate", "Two resistances at 20+", "Life"],
+          },
+          "boots-0": { why: "Recuperação e resistências até a sobrevivência estar resolvida." },
+        },
+        charms: [
+          {
+            label: "Grand charms de skills de trap com vida",
+            why: "A aba em que esta build gasta pontos, e a vida que falta a ela.",
+          },
+          {
+            label: "Small charms de resistência",
+            why: "Só se você não pegou o pacote Fade. Se pegou, estes slots vão para dano de raio.",
+          },
+        ],
+        weaponSwap: [
+          { why: "Battle Orders. A vida que falta a esta build." },
+          { why: "Mão secundária do swap." },
+        ],
+      },
+      optimized: {
+        goal: "102% de conjuração, resistências acima do teto, e resistência a raio inimiga no chão.",
+        nextUpgrade: "Facetas de raio em todo socket que aceitar uma.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Faster Cast Rate",
+            why: "Quatro afixos. A esta altura a garra vale mais do que todo o resto do personagem somado e não existe runeword que ganhe dela.",
+            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+          },
+          "offhand-0": {
+            why: "35% de conjuração e +2 skills, com uma faceta de raio num escudo que tenha o socket.",
+          },
+          "offhand-0-alt0": { why: "+1 skills, 20% de conjuração e mana a cada morte." },
+          "body-0": {
+            why: "+2 em todas as skills e **+65 em todas as resistências**, que é o que permite a uma rota sem Fade alcançar o teto.",
+          },
+          "body-0-alt0": {
+            why: "Teleport. Ele transforma uma trapper de uma build que caminha até corredores numa que chega neles, e a Strength por nível paga pela base.",
+          },
+          "helm-0": {
+            why: "**-15 a -20% de resistência a raio inimiga** e +10-15% de dano de skill de raio, mais 25% de conjuração. O único item da página que reduz resistência em vez de somar dano.",
+            lookFor: ["-20% Enemy Lightning Resistance", "+15% Lightning Skill Damage", "1 socket"],
+          },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 skills, 20% de conjuração, mana máxima." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Cannot be Frozen, que é o afixo de que um conjurador parado mais sente falta." },
+          "boots-0": { why: "Magic find assim que a sobrevivência estiver resolvida. Sandstorm Trek se não estiver." },
+        },
+        charms: [
+          {
+            label: "Hellfire Torch (Assassin)",
+            why: "+3 em skills de Assassin. Na rota do Shadow Master vale mais do que nas outras duas.",
+          },
+          { label: "Annihilus", why: "+1 em todas as skills e resistências." },
+          {
+            label: "Grand charms de skills de trap com vida",
+            why: "A aba em que esta build realmente gasta pontos.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária do swap." }],
+      },
+      bis: {
+        goal: "Não sobrou nada para consertar.",
+        nextUpgrade: "Nada. Gaste a moeda num segundo personagem.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Faster Cast Rate",
+            why: "Ainda a melhor arma do jogo para esta build, e ainda não é runeword.",
+            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+          },
+          "offhand-0": { why: "Com uma faceta de raio no socket." },
+          "body-0": { why: "Teleport, e a velocidade de limpeza que vem de nunca mais andar." },
+          "helm-0": {
+            why: "Um resultado de -20% com uma faceta de raio socketada.",
+            lookFor: ["-20% Enemy Lightning Resistance", "+15% Lightning Skill Damage"],
+          },
+          "gloves-0": { why: "20% de Faster Cast Rate." },
+          "belt-0": { why: "+1 skills e 20% de conjuração." },
+          "amulet-0": { why: "+2 skills, +30 em todas as resistências." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Cannot be Frozen." },
+          "boots-0": { why: "Magic find." },
+        },
+        charms: [
+          { label: "Hellfire Torch (Assassin)", why: "+3 em skills de Assassin." },
+          { label: "Annihilus", why: "+1 em todas as skills." },
+          {
+            label: "Grand charms de skills de trap com vida",
+            why: "As últimas porcentagens de dano, e a vida para carregá-las.",
+          },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }, { why: "Mão secundária do swap." }],
+      },
+    },
+  },
 };

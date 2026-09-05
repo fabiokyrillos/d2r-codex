@@ -62,17 +62,15 @@ control in `scripts/assassin-rules.ts`, exercised by `npm run test:assassin`.
 
 Both were encountered in current guides and are **not** published here.
 
-- *"Traps are laid at a rate governed by Faster Cast Rate."* Laying a trap is an
-  attack (`UseAttackRate = 1` on every trap row); attack speed governs it, and
-  Burst of Speed raises it. The 102% FCR figure those guides also quote is for
-  Mind Blast, Cloak of Shadows, Fade and Teleport, which a trapper casts
-  constantly — two true statements about different skills, collapsed into one
-  false one.
+- ~~*"Traps are laid at a rate governed by Faster Cast Rate."*~~ **This note was
+  wrong and is retracted — see §5.** `UseAttackRate = 1` says whether the action
+  can miss, not how fast its animation plays. Faster Cast Rate is the trap-laying
+  table and the site already published it as such.
 - *"Kick speed comes from the boots."* Boots supply kick *damage*. Nothing in the
   boots' row touches speed.
 
-Both need a breakpoints pass of their own before anything is published about
-them; the foundation states neither.
+The foundation stated neither. §5 is the breakpoints pass they were waiting for:
+the first is retracted and the site's existing table stands, the second holds.
 
 ---
 
@@ -278,3 +276,59 @@ guide names), PvP WW/Trapper hybrid (no current-patch maintenance), "IceKicksin"
 carries a flat `Param1 = 5` and the column comment says the two "must match".
 They do not match once Fire Blast has levels. Which one the engine reads is not
 determinable from the table, so nothing on the site depends on it.
+
+---
+
+## 5. The breakpoints question, settled
+
+Cycle 1 recorded two claims from secondary sources that it believed the pinned
+data contradicted, and deferred both. Publishing a build page forces the
+question. One of the two was a misreading by cycle 1; the other stands.
+
+### Faster Cast Rate does govern trap laying. Cycle 1's note was wrong.
+
+The note reasoned from `UseAttackRate = 1`, which is set on every trap row, to
+"laying a trap is an attack, so attack speed governs it". That inference does
+not hold. `UseAttackRate` is the column that decides **whether an action can
+miss** — whether the game runs a to-hit check against the target's defence, or
+the action simply lands. It says nothing about animation speed, and the two are
+independent: Fire Blast is a thrown missile that can miss and is cast at cast
+rate.
+
+Three things point the same way and none points the other:
+
+1. **This site already publishes the answer.** `content/breakpoints/breakpoints.ts`
+   carries `fcr-assassin` with `summary: "Applies to trap laying as well as to
+   spells."`, `confidence: "verified"`, and the eight-row table
+   0 / 8 / 16 / 27 / 42 / 65 / 102 / 174. It shipped before the Assassin cycle
+   and was not written from the trap research.
+2. **The table's shape is specific to the claim.** 65 and 102 are the two rows
+   every Trapsin guide names, and they are named *as trap-laying breakpoints*.
+   A table that governed something else would not have converged on those two.
+3. **Nothing in the extraction contradicts it.** There is no column in
+   `skills.txt` that assigns an animation-speed source, so the pinned data is
+   silent rather than opposed — and cycle 1 treated silence as opposition.
+
+So the build pages publish **65% Faster Cast Rate as the practical target and
+102% as the stretch**, matching the table the site already has. Nothing claims
+that Burst of Speed speeds up trap laying, and the levelling page's Burst of
+Speed step was rewritten to say what it does buy: run speed, and access to Fade.
+
+### "Kick speed comes from the boots" is still false, and still not published.
+
+Unchanged from cycle 1. Boots supply kick *damage*; nothing in the boots' row
+touches speed. Dragon Talon's kick count is `lvl/6 + 1` from its own row, and
+Dragon Tail carries `Param4 = -40`, an attack-speed *penalty*. The kick pages
+will state those two and nothing about boots and speed.
+
+### What the Lightning Trapsin page therefore publishes
+
+| Stat | Target | Frames | Why |
+| --- | --- | --- | --- |
+| FCR | 65% | 11 | The practical trap-laying target; the site's own table. |
+| FCR | 102% | 10 | The stretch, and the last row worth chasing — 174% is one frame more for double the investment. |
+| FHR | 48% | 5 | The shared Paladin/Assassin/Barbarian table's standard target. |
+
+No IAS row. The build's damage is laid rather than swung, and an Increased
+Attack Speed target on a page whose character never attacks would be the same
+mistake in the other direction.

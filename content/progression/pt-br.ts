@@ -1131,7 +1131,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         actions: [
           "Limpe a **Den of Evil** por completo pelo ponto de skill e pelo token de respec grátis. Fale com a Akara depois — o ponto não é automático.",
           "**O Fire Blast é arremessado, não colocado.** Ele faz um arco até onde você mira e explode num raio de 5, então é uma granada e não uma trap. Jogue no meio do grupo, não no bicho mais perto.",
-          "**O Burst of Speed faz você arremessar mais rápido, não só correr mais rápido.** O Fire Blast usa a taxa de ataque, e o Burst of Speed acrescenta 15% a ela com um ponto. É por isso que um ponto cedo nele vale mais do que parece.",
+          "**O Burst of Speed são 15% de velocidade de corrida com um ponto**, e uma Assassin que arremessa em vez de lutar passa quase todo o Ato 1 andando. Ele também é pré-requisito do Fade, que é o motivo real de comprar agora e não no 18.",
           "Qualquer garra com **+ em Traps** ou **+ em Fire Blast** ganha de qualquer garra com dano melhor. Charsi e Gheed renovam o estoque toda vez que você volta à cidade, e uma garra mágica com +2 Traps é um resultado comum cedo.",
           "Rode a **Countess** por Tal, Eth, Ral e Ort. Elas montam Stealth e Leaf, que são os dois itens que carregam este personagem pelo Normal.",
           "Mate a **Blood Raven** e pegue a Rogue Scout grátis da Kashya. Um corpo à distância que atira em coisas vale a pena mesmo que o mercenário do Ato 2 substitua ela depois.",
@@ -1177,7 +1177,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
             why: "+1 em All Skills num elmo de dois sockets por uma Ort e uma Sol. Barato, e nunca deixa de valer a pena até um Shako.",
           },
           {
-            why: "**+2 em All Skills e até 35% de conjuração** num escudo de quatro sockets no nível 25. A velocidade de conjuração é para Mind Blast e Fade depois, não para colocar traps.",
+            why: "**+2 em All Skills e até 35% de conjuração** num escudo de quatro sockets no nível 25. A velocidade de conjuração é a velocidade com que você coloca traps, além da de conjurar, então este é um item de dano tanto quanto de utilidade.",
           },
         ],
         exitCriteria: "O Baal está morto, o Wake of Fire está em 16, e os quatro pontos de quest do Normal estão gastos.",
@@ -1244,7 +1244,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         ],
         gearTargets: [
           {
-            why: "Num escudo de quatro sockets: +2 em todas as skills e até 35% de conjuração. A conjuração é para Mind Blast e Fade — colocar trap roda em velocidade de ataque, não em velocidade de conjuração.",
+            why: "Num escudo de quatro sockets: +2 em todas as skills e até 35% de conjuração. **Faster Cast Rate é a velocidade com que você coloca traps**, e não só a de conjurar Mind Blast, então 65% é o número a alcançar.",
           },
           {
             label: "Garra mágica ou rara: +3 Lightning Sentry, +2 Traps",

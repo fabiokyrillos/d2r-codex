@@ -690,7 +690,7 @@ console.log("\nAmazon-pass rules, each planted against the real content");
       JSON.stringify(found.map((p) => p.message)),
     );
   }
-  check("and that is five classes, not one", publishedClasses.length === 5);
+  check("and that is six classes, not one", publishedClasses.length === 6);
   {
     const victim = realBuilds.find((b) => b.classSlug === "amazon");
     if (!victim) throw new Error("no Amazon build to mutate");

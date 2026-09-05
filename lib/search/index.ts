@@ -136,6 +136,17 @@ export const NICKNAMES: Record<string, string> = {
     "rabies wolf raiva lobo raivoso veneno contagio contagious poison werewolf poison druid",
 
   /*
+   * --- Assassin builds ------------------------------------------------------
+   *
+   * "trapsin" and "trapper" both resolve here rather than to the fire build,
+   * because they are what players type when they mean this one — the fire
+   * version is always qualified in practice. "ls" and "ds" are deliberately
+   * absent: two-letter tokens match half the item list.
+   */
+  "lightning-trapsin":
+    "trapsin trapper lightsin lightning sentry death sentry trap assassin armadilha armadilheira raio sentinela",
+
+  /*
    * --- Necromancer builds, and the names that are not builds ---------------
    *
    * Same job as the Amazon block above, and a heavier one: the Necromancer has
