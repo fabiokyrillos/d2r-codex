@@ -95,10 +95,30 @@ npm run check:built EXIT=1 — 1 failure of 1023, the counter in item 3 above
 "Whirlwind Assassin" in both locales; `test:allocations` reports
 `whirlwind-assassin 67/110`.
 
-## What still fails without them
+## What fails until they land, and it is exactly one thing
 
-Nothing fails — it simply does not exist. With the wiring reverted the build
-object and its overlay are unreferenced modules, every gate stays green at 42
-builds, and the page does not render. `scripts/assassin.test.ts` imports
+`npm run check` on my branch as committed exits **1**, on a single assertion in
+`scripts/allocations.test.ts`:
+
+```
+FAIL every build file was found and read — 43 of 42
+```
+
+It reads every `content/builds/*.ts` except `index.ts` and `pt-br.ts`, pulls the
+first `slug:` out of each, and requires the count to equal the registry's. My
+file is the forty-third on disk and the registry holds forty-two, which is
+precisely the missing line in item 1 — no other gate is involved and no page
+content is at fault. Proved both ways on the same commit:
+
+```
+wiring off  npx tsx scripts/allocations.test.ts  EXIT=1  "43 of 42"
+wiring on   npx tsx scripts/allocations.test.ts  EXIT=0  107 checks passed
+```
+
+(`content/builds/pt-br-assassin.ts` is inside that glob and contributes nothing,
+because it holds no `slug:` key — so it neither needs nor gets an exclusion.)
+
+Everything else is green with the wiring reverted: `npm run build` EXIT=0 and
+`npm run check:built` EXIT=0. `scripts/assassin.test.ts` imports
 `whirlwindAssassin` from its module rather than from the registry precisely so
 its checks keep running while this proposal is outstanding.
