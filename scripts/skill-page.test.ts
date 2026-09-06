@@ -261,12 +261,30 @@ console.log("\nNo overridden game identifier reaches any built artifact");
    * sweep still runs for every other identifier, where a substring hit can only
    * be the real thing.
    *
-   * Exempting is deliberate and costs coverage, so it is two entries with two
-   * reasons rather than a rule about capital letters.
+   * Exempting is deliberate and costs coverage, so it is an entry and a reason
+   * each rather than a rule about capital letters.
+   *
+   * The Warlock added a third, and it is the strongest case of the three:
+   *
+   *   "Levitate"        the game's identifier for Levitation Mastery, and also
+   *                     an ordinary English verb describing the one thing this
+   *                     class is built around. The class page says "He levitates
+   *                     his weapon" and heads a core mechanic "Levitated
+   *                     weapon"; Blade Warp's summary says "the levitated melee
+   *                     weapon". None of them names a skill, and asking the
+   *                     prose to avoid the word would be asking a class page not
+   *                     to describe its own passive.
+   *
+   * A word-boundary match would in fact separate "Levitate" from "levitated",
+   * and it is used for exactly that on the search index in
+   * `necromancer.test.ts`. It is not the answer here, because it does nothing
+   * for `Vines` -- the plain English word is the same word -- and one matching
+   * rule for the sweep is worth more than two.
    */
   const AMBIGUOUS: Record<string, string> = {
     Vines: 'also the plain English word, used on the Poison Creeper page',
     "Shape Shifting": "also the published name of the Druid's second tree",
+    Levitate: "also an ordinary English verb, and the Warlock's whole class passive",
   };
 
   const identifiers = Object.keys(SLUG_OVERRIDES).filter((i) => !(i in AMBIGUOUS));

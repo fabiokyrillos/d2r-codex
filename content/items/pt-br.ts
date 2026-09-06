@@ -409,4 +409,45 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "**Leia as duas linhas de aba juntas.** Os +2 em Summoning empilham com os +3 em Raise Skeleton e os +3 em Skeleton Mastery, então um personagem de nível 36 segurando esta wand levanta esqueletos cinco níveis efetivos acima dos pontos duros dele e faz cada um valer cinco acima também — e os +2 em Poison and Bone aumentam o raio do Corpse Explosion ao mesmo tempo. Nada mais neste nível cobre as duas metades de um Summoner de uma vez.\n\nOs dois procs disparam quando *você* é atingido, e não quando você acerta, o que combina com um personagem que não está no corpo a corpo: são um Bone Prison defensivo e um Bone Spirit ocasional, não um plano de dano. **Esta wand é superada, não substituída** — um White dá mais para a árvore de osso e nada para a de invocação, e a resposta de endgame é uma wand rara ou craftada com +3 numa skill de invocação e +Necromancer skills.",
   },
+  "arreats-face": {
+    summary:
+      "O elmo símbolo do Barbarian. +2 nas skills dele, +2 em Combat Skills, 30% de Faster Hit Recovery e resistência a tudo.",
+    dropSummary:
+      "Nível de área 50+. É uma base exclusiva de Barbarian, então cai do pool de itens de classe e não do pool geral de elmos.",
+    notes:
+      "Quatro níveis de skill num slot só — dois na classe inteira e mais dois na aba Combat — além das resistências e do recovery que um personagem corpo a corpo teria de comprar em outro lugar. O índice de `skilltab` é 12, que é a primeira aba do Barbarian; os índices de aba andam de três em três por classe, na ordem de `SkillPage`, que é como as abas Curses, Poison and Bone e Summoning do Necromancer saem como 6, 7 e 8.",
+  },
+  "verdungos-hearty-cord": {
+    summary:
+      "Vitality, 10% de Faster Hit Recovery e até 15% de redução de dano físico num cinto.",
+    dropSummary: "Nível de área 71+. Na prática, só no Hell.",
+    notes:
+      "As tabelas do jogo escrevem **Verdugo's**, com um `n` a menos, e o `allstrings-eng.json` publica **Verdungo's**. O site publica o nome que o jogo mostra, como faz em todo lugar em que os dois discordam.",
+  },
+  goldwrap: {
+    summary:
+      "80% de gold a mais e 30% de magic find num cinto que qualquer um veste a partir do nível 27.",
+    dropSummary:
+      "Nível de área 36+. Barato, comum, e o primeiro item de gold find que a maioria dos personagens tem.",
+  },
+  "chance-guards": {
+    summary:
+      "200% de gold a mais e até 40% de magic find, a partir do nível 15. As luvas de magic find mais baratas do jogo.",
+    dropSummary: "Nível de área 20+. Um dos uniques úteis mais cedo que existem.",
+  },
+  metalgrid: {
+    summary:
+      "Defesa, attack rating e resistência a tudo num amuleto, mais cargas de Iron Golem e Iron Maiden.",
+    dropSummary: "Nível de área 85. Um dos amuletos de nível mais alto do jogo.",
+    notes:
+      "As duas linhas de carga se leem ao contrário de qualquer outra propriedade de skill num item. Em `charged`, **min é a quantidade de cargas e max é o nível** — `min=11 max=22` são onze cargas de um Iron Golem de nível 22, e `min=20 max=12` são vinte cargas de um Iron Maiden de nível 12. O `scripts/item-rules.ts` fixa a ordem dos argumentos dessa coluna porque a coluna irmã `hit-skill` inverte.",
+  },
+  "gheeds-fortune": {
+    summary:
+      "O grand charm de magic find: até 40% de magic find, 160% de gold a mais, e vendedores mais baratos.",
+    dropSummary:
+      "Nível de área 70+. Só no Hell, e a faixa de roll é larga o bastante para um roll baixo valer pouco.",
+    notes:
+      "É um charm, então não ocupa slot de equipamento e funciona a partir do inventário. Só um pode estar equipado por vez — a mesma restrição que as joias dos Colossal Ancients da expansão carregam.",
+  },
 };

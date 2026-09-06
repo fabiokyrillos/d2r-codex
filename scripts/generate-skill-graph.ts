@@ -80,7 +80,7 @@ const SOURCE_REPO = "blizzhackers/d2data";
  * the tree on the class page, the tree on every build page, the sitemap entries
  * and the search index at once -- there is no second list to keep in step.
  */
-const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer", dru: "druid", ass: "assassin", bar: "barbarian" } as const;
+const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer", dru: "druid", ass: "assassin", bar: "barbarian", war: "warlock" } as const;
 
 /**
  * The exact commit the shipped graph was extracted from.
@@ -725,6 +725,34 @@ const PUBLISHES_PHYSICAL = new Set<string>([
    * a list.
    */
   "leap-attack", "war-cry",
+  /*
+   * The Warlock's two, and the second is the hardest call this list has had to
+   * make, because the two precedents already on either side of it disagree.
+   *
+   * Echoing Strike is easy and is Blade Fury's shape: `SrcDam = 116` plus a
+   * physical range of its own, so 91% of the weapon lands on top of the table.
+   *
+   * Blood Boil's physical and fire tables are **byte-identical**, base and all
+   * five bands — `10-20` rising to `20-30`. That is exactly Psychic Hammer's
+   * shape, and Psychic Hammer is excluded below as one damage written twice. It
+   * is also Molten Boulder's shape, and Molten Boulder is published.
+   *
+   * What separates them is the donor, not the table. Psychic Hammer carries
+   * **no** `DmgSymPerCalc` and no `EDmgSymPerCalc` — nothing feeds either
+   * number, which is what one damage written twice looks like. Blood Boil
+   * carries both, and they name different skills:
+   *
+   *     DmgSymPerCalc    (skill('Engorge'.blvl))*par8      -> the physical
+   *     EDmgSymPerCalc   (skill('Blood Oath'.blvl))*par8   -> the fire
+   *
+   * Two components fed by two different skills are two components. Molten
+   * Boulder and Volcano are the same argument with a louder label — theirs
+   * carry two separately named params, "Physical Damage synergy" and "Fire
+   * Damage synergy", where Blood Boil has one `par8` read by both expressions.
+   * The labels are what made those two easy; the donors are what decide this
+   * one.
+   */
+  "echoing-strike", "blood-boil",
 ]);
 
 /** Rows whose `MinDam`/`MaxDam` is deliberately not published, and why. */
@@ -1059,7 +1087,7 @@ async function main() {
         maxLevel: s.maxlvl ?? 20,
         prerequisites: a.get(slug)!,
         synergies: synergiesFor(s, rowByName),
-        missileSynergies: missileSynergiesFor(missilesOf(s), missileByName, slug),
+        missileSynergies: missileSynergiesFor(missilesOf(s), missileByName, slug, rowByName),
         effects: [
           ...(EFFECTS[slug]?.(s) ?? []),
           ...(PUBLISHES_MANA.has(slug)

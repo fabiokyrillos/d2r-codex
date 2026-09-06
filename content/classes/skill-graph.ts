@@ -50,7 +50,7 @@
  *   Critical Strike under no parameter at all -- those columns set the summon's
  *   own skill levels. Neither produces an edge. The Valkyrie's one real synergy
  *   is Decoy, under a parameter the game itself labels "HP % synergy".
- *   Extracted   210 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer, 30 druid, 30 assassin, 30 barbarian)
+ *   Extracted   240 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer, 30 druid, 30 assassin, 30 barbarian, 30 warlock)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces
  *   this file exactly, or fails; it never silently follows the source forward.
@@ -60,7 +60,7 @@
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —
  *   the current D2R tables and the pre-D2R Lord of Destruction tables under
- *   `json/base/` — for 210 of 210 skills.
+ *   `json/base/` — for 210 of 240 skills (differs: summon-goatman, demonic-mastery, death-mark, summon-tainted, summon-defiler, blood-oath, engorge, blood-boil, consume, bind-demon, levitation-mastery, eldritch-blast, hex-bane, hex-siphon, psychic-ward, echoing-strike, hex-purge, blade-warp, cleave, mirrored-blades, sigil-lethargy, ring-of-fire, miasma-bolt, sigil-rancor, enhanced-entropy, flame-wave, miasma-chain, sigil-death, apocalypse, abyss).
  *
  *   These are two snapshots of different game versions from one extraction
  *   project, not two independent publishers. Their agreement shows the values
@@ -99,7 +99,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "amazon" | "assassin" | "barbarian" | "druid" | "necromancer" | "paladin" | "sorceress">;
+  readonly classSlug: Extract<ClassSlug, "amazon" | "assassin" | "barbarian" | "druid" | "necromancer" | "paladin" | "sorceress" | "warlock">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of `tree`. */
@@ -780,7 +780,7 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     classSlug: "barbarian", tree: "warcries", page: 3, row: 3, column: 3,
     requiredLevel: 12, maxLevel: 20,
     prerequisites: ["find-potion"],
-    synergies: [{ from: "find-potion", kinds: ["chance"] }],
+    synergies: [{ from: "find-potion", kinds: ["find-chance"] }],
   },
   "battle-cry": {
     classSlug: "barbarian", tree: "warcries", page: 3, row: 4, column: 1,
@@ -1591,6 +1591,186 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 30, maxLevel: 20,
     prerequisites: [],
     synergies: [],
+  },
+  "demonic-mastery": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: ["summon-goatman"],
+    synergies: [],
+  },
+  "summon-goatman": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "blood-oath": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["demonic-mastery"],
+    synergies: [],
+  },
+  "death-mark": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["summon-goatman"],
+    synergies: [],
+  },
+  "summon-tainted": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["summon-goatman"],
+    synergies: [],
+  },
+  "blood-boil": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["death-mark"],
+    synergies: [{ from: "blood-oath", kinds: ["damage"] }, { from: "engorge", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 10, bands: [8, 10, 12, 16, 20] }, max: { base: 20, bands: [10, 12, 18, 26, 30] } }, physical: { hitShift: 8, min: { base: 10, bands: [8, 10, 12, 16, 20] }, max: { base: 20, bands: [10, 12, 18, 26, 30] } },
+  },
+  "summon-defiler": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 4, column: 3,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["summon-tainted"],
+    synergies: [],
+  },
+  "engorge": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["blood-boil"],
+    synergies: [{ from: "blood-oath", kinds: ["armor"], magnitude: 25 }],
+  },
+  "consume": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["blood-oath"],
+    synergies: [],
+  },
+  "bind-demon": {
+    classSlug: "warlock", tree: "demon", page: 1, row: 6, column: 3,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["engorge", "summon-defiler"],
+    synergies: [],
+  },
+  "levitation-mastery": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "hex-bane": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "consume", kinds: ["damage"] }, { from: "eldritch-blast", kinds: ["duration"] }, { from: "hex-purge", kinds: ["damage"] }, { from: "mirrored-blades", kinds: ["damage"] }], damage: { element: "mag", hitShift: 7, min: { base: 9, bands: [3, 7, 11, 15, 19] }, max: { base: 16, bands: [5, 9, 13, 17, 21] } },
+  },
+  "cleave": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["levitation-mastery"],
+    synergies: [{ from: "eldritch-blast", kinds: ["damage"] }, { from: "hex-purge", kinds: ["damage"] }, { from: "mirrored-blades", kinds: ["damage"] }],
+  },
+  "echoing-strike": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["levitation-mastery"],
+    synergies: [{ from: "blade-warp", kinds: ["damage"] }, { from: "mirrored-blades", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 8, bands: [3, 4, 6, 6, 6] }, max: { base: 12, bands: [5, 6, 9, 9, 9] } },
+  },
+  "hex-purge": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["hex-bane"],
+    synergies: [{ from: "eldritch-blast", kinds: ["damage", "duration"] }, { from: "hex-bane", kinds: ["damage"] }, { from: "sigil-death", kinds: ["explode-chance"] }], damage: { element: "mag", hitShift: 8, min: { base: 10, bands: [4, 8, 10, 14, 18] }, max: { base: 15, bands: [6, 10, 12, 16, 20] } },
+  },
+  "blade-warp": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["echoing-strike"],
+    synergies: [{ from: "echoing-strike", kinds: ["damage"] }, { from: "mirrored-blades", kinds: ["damage"] }], damage: { element: "mag", hitShift: 8, min: { base: 8, bands: [3, 5, 8, 8, 8] }, max: { base: 10, bands: [3, 5, 8, 8, 8] } },
+  },
+  "psychic-ward": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["cleave"],
+    synergies: [{ from: "cleave", kinds: ["absorb"] }, { from: "levitation-mastery", kinds: ["absorb"] }],
+  },
+  "eldritch-blast": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["psychic-ward"],
+    synergies: [{ from: "blade-warp", kinds: ["damage"] }, { from: "hex-purge", kinds: ["damage"] }, { from: "psychic-ward", kinds: ["duration"] }], damage: { element: "mag", hitShift: 8, min: { base: 2, bands: [3, 6, 9, 15, 17] }, max: { base: 6, bands: [3, 6, 9, 15, 17] } },
+  },
+  "hex-siphon": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["hex-purge"],
+    synergies: [{ from: "eldritch-blast", kinds: ["duration"] }, { from: "engorge", kinds: ["steal"] }],
+  },
+  "mirrored-blades": {
+    classSlug: "warlock", tree: "eldritch", page: 2, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["blade-warp", "eldritch-blast"],
+    synergies: [],
+  },
+  "miasma-bolt": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "abyss", kinds: ["damage"] }, { from: "miasma-chain", kinds: ["damage"] }], missileSynergies: [{ from: "abyss", missile: "miasmaboltcloud", element: "mag", magnitude: 20 }, { from: "miasma-chain", missile: "miasmaboltcloud", element: "mag", magnitude: 20 }], damage: { element: "mag", hitShift: 7, min: { base: 2, bands: [2, 2, 3, 3, 4] }, max: { base: 4, bands: [2, 2, 4, 4, 6] } },
+  },
+  "ring-of-fire": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "apocalypse", kinds: ["damage"] }, { from: "flame-wave", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 6, bands: [6, 8, 10, 11, 12] }, max: { base: 10, bands: [7, 9, 11, 13, 15] } },
+  },
+  "sigil-lethargy": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "sigil-rancor": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 3, column: 2,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["sigil-lethargy"],
+    synergies: [],
+  },
+  "miasma-chain": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["miasma-bolt"],
+    synergies: [{ from: "abyss", kinds: ["damage"] }, { from: "miasma-bolt", kinds: ["damage"] }], missileSynergies: [{ from: "abyss", missile: "miasmachainscloud", element: "mag", magnitude: 20 }, { from: "miasma-bolt", missile: "miasmachainscloud", element: "mag", magnitude: 20 }], damage: { element: "mag", hitShift: 8, min: { base: 6, bands: [2, 3, 3, 4, 4] }, max: { base: 9, bands: [2, 3, 3, 4, 4] } },
+  },
+  "flame-wave": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["ring-of-fire"],
+    synergies: [{ from: "apocalypse", kinds: ["damage"] }, { from: "ring-of-fire", kinds: ["damage"] }], missileSynergies: [{ from: "apocalypse", missile: "flamewavefire", element: "fire", magnitude: 10 }, { from: "apocalypse", missile: "flamewavelingerfire", element: "fire", magnitude: 10 }, { from: "inferno", missile: "meteorfire", element: "fire", magnitude: 3 }, { from: "ring-of-fire", missile: "flamewavefire", element: "fire", magnitude: 10 }, { from: "ring-of-fire", missile: "flamewavelingerfire", element: "fire", magnitude: 10 }], damage: { element: "fire", hitShift: 8, min: { base: 13, bands: [8, 12, 17, 18, 21] }, max: { base: 17, bands: [9, 14, 18, 20, 23] } },
+  },
+  "sigil-death": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["sigil-rancor"],
+    synergies: [],
+  },
+  "enhanced-entropy": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["miasma-chain"],
+    synergies: [],
+  },
+  "apocalypse": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["flame-wave", "sigil-death"],
+    synergies: [{ from: "flame-wave", kinds: ["damage"] }, { from: "ring-of-fire", kinds: ["damage"] }], damage: { element: "fire", hitShift: 8, min: { base: 80, bands: [23, 46, 69, 75, 95] }, max: { base: 100, bands: [25, 50, 75, 95, 115] } },
+  },
+  "abyss": {
+    classSlug: "warlock", tree: "chaos", page: 3, row: 6, column: 3,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["enhanced-entropy"],
+    synergies: [{ from: "miasma-bolt", kinds: ["damage"] }, { from: "miasma-chain", kinds: ["damage"] }], missileSynergies: [{ from: "miasma-bolt", missile: "abysscenter", element: "mag", magnitude: 10 }, { from: "miasma-bolt", missile: "abyssexplode", element: "mag", magnitude: 10 }, { from: "miasma-chain", missile: "abysscenter", element: "mag", magnitude: 10 }, { from: "miasma-chain", missile: "abyssexplode", element: "mag", magnitude: 10 }], damage: { element: "mag", hitShift: 8, min: { base: 20, bands: [3, 6, 9, 12, 15] }, max: { base: 40, bands: [4, 8, 12, 16, 20] } },
   },
 };
 

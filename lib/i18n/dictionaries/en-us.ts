@@ -725,7 +725,9 @@ export const enUS = {
     // The Assassin's one, where the synergy buys more of the thing rather than a
     // bigger number: Lightning Sentry gives Charged Bolt Sentry extra shots.
     synergyKindShots: "shots fired",
-    synergyKindChance: "find chance",
+    synergyKindFindChance: "find chance",
+    synergyKindExplodeChance: "chance to explode",
+    synergyKindSteal: "life and mana stolen",
     synergyKindHp: "life",
     synergyKindAbsorb: "damage absorbed",
     // The Druid's elemental tree is the only place a source raises one of a
@@ -1039,7 +1041,7 @@ export const enUS = {
     gap3: "The exact statue count for the Colossal Ancients recipe.",
     gap4: "What Latent Sunder Charms do, and how they differ from the original Sunder Charms.",
     gap5: "What Worldstone Shards are used for.",
-    gap6: "Stat lines for the expansion runewords: Authority, Coven, Void, Vigilence and Ritual.",
+    gap6: "Set items: 140 of them across 35 sets exist in the game, and none is catalogued here.",
     gap7: "The complete Terror Zone rotation group list.",
     gap8: "Increased Attack Speed tables, which depend on weapon base speed and specific skill.",
     originalTitle: "On original writing",

@@ -344,7 +344,7 @@ export const classes: CharacterClass[] = [
     weaknesses: [
       "Requires a paid expansion — not available to base D2R owners",
       "Far less community knowledge than the 25-year-old classes",
-      "Actively being balanced; Bind Demon was nerfed as recently as Patch 3.3",
+      "Actively being balanced; Bind Demon's damage was rewritten as recently as Patch 3.3",
     ],
     coreMechanics: [
       {

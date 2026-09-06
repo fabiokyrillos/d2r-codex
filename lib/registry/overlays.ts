@@ -25,6 +25,7 @@ import { mercenariesPtBr } from "@/content/mercenaries/pt-br";
 import { breakpointsPtBr } from "@/content/breakpoints/pt-br";
 import { mechanicsPtBr } from "@/content/mechanics/pt-br";
 import { buildsPtBr } from "@/content/builds/pt-br";
+import { assassinBuildsPtBr } from "@/content/builds/pt-br-assassin";
 import { journeysPtBr } from "@/content/progression/pt-br";
 
 /**
@@ -55,6 +56,8 @@ export const OVERLAYS = {
     Record<Locale, Overlay<BreakpointTableCopy>>
   >,
   mechanics: { "pt-br": mechanicsPtBr } as Partial<Record<Locale, Overlay<MechanicCopy>>>,
-  builds: { "pt-br": buildsPtBr } as Partial<Record<Locale, Overlay<BuildCopy>>>,
+  builds: { "pt-br": { ...buildsPtBr, ...assassinBuildsPtBr } } as Partial<
+    Record<Locale, Overlay<BuildCopy>>
+  >,
   journeys: { "pt-br": journeysPtBr } as Partial<Record<Locale, Overlay<JourneyCopy>>>,
 } as const;

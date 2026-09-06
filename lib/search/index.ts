@@ -160,6 +160,16 @@ export const NICKNAMES: Record<string, string> = {
     "bladefury blade fury bladesin blade sin blade assassin blade sentinel blade shield laminas lamina furia de laminas assassina de laminas ranged assassin distancia venom",
   "dragon-tail":
     "dragontail dragon tail tailsin tail sin kick explosion fire kick assassin cauda do dragao chute explosao chutadora de fogo tiger strike martial arts",
+  /*
+   * Every occurrence of `whirlwind` here is qualified, and that is not style.
+   * The Barbarian's thirty skills landed in this same run, so `whirlwind` is
+   * now a skill page of its own, and a bare token that is another entity's
+   * page name is exactly what `checkAliasesAreNotPages` refuses. `chaos` alone
+   * is out because the Chaos Sanctuary owns it, and `ww` alone for the reason
+   * this file already gives about two-letter tokens.
+   */
+  "whirlwind-assassin":
+    "wwsin whirlwind assassin whirlwind sin chaos claw chaossin oskill assassin giro rodopio assassina de giro garra chaos",
 
   /*
    * --- Necromancer builds, and the names that are not builds ---------------
