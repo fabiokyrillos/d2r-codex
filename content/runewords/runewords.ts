@@ -1266,7 +1266,7 @@ export const runewords: Runeword[] = [
     slug: "authority",
     name: "Authority",
     summary:
-      "A Reign of the Warlock body armor runeword. Runes and base confirmed; stat lines not yet verified.",
+      "A Reign of the Warlock body armour runeword. +2 to Warlock Skill Levels, and a Miasma Chain on striking.",
     runes: ["hel", "shael", "ral"],
     sockets: 3,
     requiredLevel: 29,
@@ -1290,7 +1290,7 @@ export const runewords: Runeword[] = [
     slug: "coven",
     name: "Coven",
     summary:
-      "A Reign of the Warlock helm runeword. Runes and base confirmed; stat lines not yet verified.",
+      "A Reign of the Warlock helm runeword. +1 to All Skills, 20% Faster Cast Rate and up to 40% magic find.",
     runes: ["ist", "ral", "io"],
     sockets: 3,
     requiredLevel: 51,
@@ -1348,7 +1348,7 @@ export const runewords: Runeword[] = [
     slug: "vigilance",
     name: "Vigilance",
     summary:
-      "A Reign of the Warlock shield runeword. Runes and base confirmed; stat lines not yet verified.",
+      "A Reign of the Warlock Grimoire runeword, and the Warlock's off-hand answer. All resistances, block rate, life and mana.",
     runes: ["dol", "gul"],
     sockets: 2,
     requiredLevel: 53,
@@ -1377,7 +1377,7 @@ export const runewords: Runeword[] = [
     slug: "ritual",
     name: "Ritual",
     summary:
-      "A Reign of the Warlock dagger runeword. Runes and base confirmed; stat lines not yet verified.",
+      "A Reign of the Warlock dagger runeword. Enormous physical damage, +150-250% against demons, and Slain Monsters Rest in Peace.",
     runes: ["amn", "shael", "ohm"],
     sockets: 3,
     requiredLevel: 57,
@@ -1951,6 +1951,50 @@ export const runewords: Runeword[] = [
       "Making it for the Frenzy line. `+5 to Frenzy` is class-scoped — `item_singleskill` carries `Save Param Bits 3` and its tooltip reads \"+# to [Skill] ([Class] only)\" — so it is the biggest-looking line on the item and does nothing at all for seven of the eight classes.",
       "Assuming a claw cannot take it. `mele` is a parent of `h2h`, and the hierarchy is what decides.",
     ],
+    confidence: "verified",
+  },
+  {
+    slug: "oath",
+    name: "Oath",
+    summary:
+      "50% attack speed, up to +340% damage and a level 20 Bone Spirit on striking, in any sword, axe or mace.",
+    runes: ["shael", "pul", "mal", "lum"],
+    sockets: 4,
+    requiredLevel: 49,
+    tier: "optimized",
+    bases: {
+      categories: ["sword", "axe", "mace"],
+      display: "Any 4-socket Sword, Axe or Mace",
+      exclusions: [
+        "The row names all three types explicitly - `itype1 = swor`, `itype2 = axe`, `itype3 = mace` - so there is no item-type hierarchy to resolve here and no fourth type it quietly covers.",
+        "Not polearms, spears, daggers or throwing weapons, despite all four being melee.",
+      ],
+    },
+    stats: [
+      { text: "+210-340% Enhanced Damage", variable: true, notable: true },
+      { text: "50% Increased Attack Speed", notable: true },
+      { text: "30% Chance to cast level 20 Bone Spirit on striking", notable: true },
+      { text: "Prevent Monster Heal", notable: true },
+      { text: "Indestructible" },
+      { text: "+75% Damage to Demons" },
+      { text: "+100 to Attack Rating against Demons" },
+      { text: "Magic Damage Reduced by 10-15", variable: true },
+      { text: "+10 to Energy" },
+      { text: "Level 17 Iron Golem (14 Charges)" },
+      { text: "Level 16 Heart of Wolverine (20 Charges)" },
+    ],
+    recommendedBases: [
+      "A Balrog Blade, Highland Blade or Cryptic Sword - the elite swords a Barbarian's Blade Mastery already covers, which is why the Frenzy guides recommend that mastery for this runeword by name.",
+      "A Berserker Axe, if the character's mastery is in axes. The row allows it and nothing about the runeword prefers a sword.",
+    ],
+    usedBy:
+      "Melee characters who want attack speed and a large damage roll without a high rune, and mercenaries. The Bone Spirit procs constantly and does real work against anything that is not magic immune.",
+    commonMistakes: [
+      "Reading the attack speed off the runeword's own column. Its own line is 30%; Shael supplies the other twenty, and the item wears 50%.",
+      "Making it for a polearm mercenary. The three types are named in the row and a polearm is not among them.",
+    ],
+    notes:
+      "Attack speed is published at **50%** where the runeword's own block gives 30%, on the same rule that puts Faith at +330% rather than +280%: a runeword's displayed block is its own properties plus each rune's mod for that item type. Shael is the twenty; Mal supplies Prevent Monster Heal, Pul the demon damage and attack rating, and Lum the energy.",
     confidence: "verified",
   },
 ];
