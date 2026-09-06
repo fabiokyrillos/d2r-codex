@@ -188,6 +188,28 @@ else:
 +50% and +5% per level. There is no synergy to spend points on, which is why the
 build's remaining forty-odd points go to a mastery and the Warcries.
 
+### 3.2.1 Four more facts about the skill, from the Assassin's pass
+
+The Assassin reaches Whirlwind as a runeword-granted oskill, so the same `bar`
+row was researched twice from two directions. These are that pass's findings,
+recorded here because four of the five are facts about **the skill** rather than
+about either class, and because a Barbarian page that ignored them would be
+worse rather than merely unbroken. They are relayed through the coordinator;
+where a tier is given it is theirs.
+
+| Claim | Verdict | Tier |
+| --- | --- | --- |
+| Weapon Block works at **full effectiveness** while whirling — it is *running* that is cut | Established | 3, corroborated |
+| Whirlwind releases no charge-up | Established — the row carries **no `finishing` flag**; the six that do are `Attack`, `Left Hand Swing` and the four Dragon skills | 1 |
+| Whirlwind takes Increased Attack Speed from **all equipment**, not only from the weapon's own sockets | The 1.1x-era claim is **refuted**; patch 2.4.3 also states that while dual wielding the attack frame for each weapon is averaged, rounding up | 2 |
+| Whether on-striking procs fire during a whirl | **NOT ESTABLISHED**, and it is to be published as not established rather than resolved either way | — |
+
+Two of these change what a Barbarian page can say. The block one is why the
+Whirlwind page can hold a shield without a caveat, and the attack-speed one
+retires a claim that still appears in guides — which also means the site's
+absence of an attack-speed frame table for this class (§5) is a gap in the
+*table*, not a reason to repeat the socket myth in its place.
+
 ### 3.3 Three relationships that are real and are *not* synergies
 
 Each reads another skill's `blvl` under a parameter the game does **not** label
@@ -353,7 +375,12 @@ the skills a player presses most.
   calculation, so the number is per weapon rather than per class. `weapons.json`
   carries the modifiers at Tier 1 and the frame tables are not sourced at any
   acceptable tier. The Fury Druid page's empty table with
-  `breakpointNotes` is the precedent when the build pages arrive.
+  `breakpointNotes` is the precedent when the build pages arrive. **The empty
+  table must not be filled with the old socket claim**: patch 2.4.3 refutes it,
+  and Whirlwind takes attack speed from all equipment (§3.2.1).
+- **Whether on-striking procs fire during a whirl.** Not established at any
+  acceptable tier, and to be published as *not established* rather than resolved
+  in either direction. See §3.2.1.
 - **That `weapsel = 2` means alternating weapons.** See §3.5.
 - **Which mastery applies to a thrown swing** where two cover the same item.
   See §3.6.

@@ -172,13 +172,15 @@ this a separate page rather than a variant of Berserk.
    would rather not, say so and it becomes a label with the three bases named in
    prose.
 
-## 4. One thing I could not check
+## 4. The whirl rules — answered, so this section is closed
 
-Agent A's whirl rules are not on `main`, so I cannot read them and cannot write
-my prose against the real predicates. I will keep the Whirlwind page's claims to
-what the extraction supports — no synergies in either direction, cannot be
-interrupted, a weapon-selection mode shared with no other skill, 12.5 mana — and
-**I will not assert anything about blocking while whirling**, in either
-direction, because I cannot verify it at Tier 1 and the rule name suggests it is
-exactly the claim being policed. If that leaves a gap you want filled, tell me
-what the rule considers true.
+The coordinator relayed what the four rules hold, so there is nothing left to
+write around. Recorded in `docs/research/08-barbarian.md` §3.2.1 with tiers:
+Weapon Block works at full effectiveness while whirling and it is *running* that
+is cut; Whirlwind carries no `finishing` flag so it releases no charge-up; the
+1.1x socket-only attack-speed claim is refuted by patch 2.4.3, which also states
+the dual-wield attack frame is averaged and rounded up; and whether on-striking
+procs fire is **not established**, to be published as such rather than resolved.
+
+The Whirlwind page will use the first three as facts rather than avoid them, and
+state the fourth as unresolved.
