@@ -2,8 +2,9 @@
 
 **Researched:** 2026-09-06
 **Applies to:** D2R Patch 3.3 / Ladder Season 15, *Reign of the Warlock* DLC
-**Phase:** 1 of 5. This document covers the trees and the thirty skills only.
-Builds, journey and controls are later phases and are not started here.
+**Phases:** 1 (trees and the thirty skills, sections 1-10) and 2 (the build
+inventory, section 11). Build files, journey and controls are later phases and
+are not started here.
 
 Everything below is Tier 1 from the pinned extraction unless it says otherwise.
 The pin is the one the whole site already uses:
@@ -771,10 +772,13 @@ item-granted, and all four are Warlock skills.
 
 Two findings every page has to carry:
 
-- **The Warlock has no elemental mastery.** No skill in any tree multiplies an
-  element the way Fire Mastery does. Elemental damage comes from skill level and
-  synergies only, and Apocalypse's own −40 fire pierce is the class's single
-  piece of resistance-breaking.
+- **The Warlock has no elemental mastery *skill*.** No skill in any tree
+  multiplies an element the way Fire Mastery does; elemental damage comes from
+  skill level and synergies. The gear is a different story and §11.5 corrects an
+  earlier sentence here that said Apocalypse's −40 fire pierce was the class's
+  only resistance-breaking: `pierce-mag` appears on three of the class's own
+  items and totals up to 32 points of **magic** pierce, which belongs to the
+  Abyss build and not the fire one.
 - **Apocalypse leaves 47 points spare and the natural sink is the void branch**,
   which is also the fire build's answer to a fire immune. The two Chaos pages are
   therefore near-neighbours in points and opposites in element, and each should
@@ -802,56 +806,154 @@ Two findings every page has to carry:
 - **Bow or crossbow Warlock.** Mechanically possible — Mirrored Blades takes any
   weapon and has `range = both` — and supported by no other skill in the class.
 
-### 11.5 Item availability — one blocking gap
+### 11.5 Item availability — the blocking gap did not exist
 
-Checked against the catalogue as it stands: 52 uniques and 50 runewords.
+**This section replaces a wrong finding for the second time in this document, and
+the two are the same mistake.** §3 checked slug uniqueness and reported a
+conclusion about names. This section checked the site's catalogue and reported a
+conclusion about the game:
 
-**Blocking: the Warlock has no off-hand item on this site.** There is no unique
-Grimoire catalogued, and the socket count rules out most of the alternatives:
+> "Blocking: the Warlock has no off-hand item on this site. There is no unique
+> Grimoire catalogued… may a gear tier reference a unique whose stats are blank?"
 
-> Every one of the fifteen Grimoire bases carries `gemsockets = 2`. So the
-> 4-socket **Spirit** — the default caster off-hand for every other class — and
-> the 3-socket **Ancients' Pledge** cannot go in one. The only runewords that fit
-> a Grimoire are the three 2-socket shield words: **Rhyme**, **Splendor** and
-> **Vigilence**.
+Every word about the *catalogue* was true. The conclusion drawn from it — that
+the class's off-hand was undocumented and the stat lines unverified — was false,
+and `uniqueitems.json` at the pinned commit says so in four complete rows. The
+same thing had already happened to the Bind Demon question in §7.1a. **Three
+times now, an absence in a derived artefact has been written up as an absence in
+the world.**
 
-That is a genuine class rule and it belongs on all four pages: a Warlock who
-wants Grimoire staffmods gives up Spirit, and one who wants Spirit puts it in an
-ordinary shield and gives up the staffmods. It is a real trade rather than a
-prohibition, because nothing stops a Warlock equipping a normal shield.
+The rule, stated so the next phase does not need it again: **when reporting that
+something does not exist, name the artefact that was searched.** "Not in
+`content/items/uniques.ts`" and "not in the game" are different claims, and only
+one of them was checked. Before any future "unverified", "blank" or "missing"
+reaches a report, the primary extraction gets opened first.
 
-Also recorded: seven of the 52 uniques are locked away from this class by
-someone else's class restriction — three Sorceress orbs, two Amazon javelins,
-Herald of Zakarum and Homunculus.
+#### The four Grimoire uniques, all complete
 
-### 11.6 What the catalogue is missing
+| Unique | Base | Req | What it is for |
+| --- | --- | --- | --- |
+| `Ars Al'Diablolos` | Blasphemous Grimoire | 80 | **Apocalypse.** `skilltab 23 +2`, +3-5 Apocalypse, 25% FCR, **+15-25% Fire Skill Damage**, +20-30 fire resist, 170-200% ED |
+| `Ars Tor'Baalos` | Blasphemous Compendium | 73 | **Blood Boil.** `skilltab 21 +2`, +2-3 Demonic Mastery, +2-4 Blood Boil, +2-3 Engorge, +2-3 Consume, 12 life/level, 5-10% damage reduction |
+| `Ars Dul'Mephistos` | Occult Tome | 78 | **Cleave and Abyss.** `war +2`, 20-30% FCR, 70-115% ED, 50-70% AR, **10-20 magic pierce**, 10-25% MF |
+| `Measured Wrath` | Burnt Text | 52 | **The mid-game fire off-hand.** `war +1`, +1-3 Ring of Fire, +1-3 Flame Wave, +1-3 Summon Tainted, 25% FCR, +20-30 all resist |
 
-Requested of the coordinator, in priority order. Nothing below is authored around
-free text and nothing is assumed to exist.
+`Ars Al'Diablolos` and `Ars Tor'Baalos` independently confirm the skill-tab
+indices: **21 demon, 22 eldritch, 23 chaos**, in `SkillPage` order, the same
+arithmetic that gives the Necromancer 6, 7, 8.
 
-**1. One unique Grimoire, blocking.** Any of the four the expansion names:
-`Ars Al'Diablolos` (Blasphemous Grimoire), `Ars Tor'Baalos` (Blasphemous
-Compendium), `Ars Dul'Mephistos` (Occult Tome), `Measured Wrath` (Burnt Text).
+#### The socket rule survives, and Vigilance is what it is for
 
-> **This needs a decision before it needs an entry.** Their stat lines are
-> unverified, exactly like the five DLC runewords already carried with blank
-> stats. So: may a gear tier reference a unique whose stats are blank? If yes,
-> one Grimoire entry unblocks the off-hand slot on four pages. If no, all four
-> pages say the class's own off-hand is not yet documented — a worse page, but an
-> honest one.
+The one thing this section got right is the one that matters, and it is now the
+frame rather than the problem:
 
-**2. Seven more DLC uniques**, which would materially improve the four pages:
-`Hellwarden's Will` (Death Mask, helm), `Entropy Locket` (Amulet), `Opalvein`
-(Ring), `Sling` (Ring), `Wraithstep` (Mirrored Boots), `Gheed's Wager` (Troll
-Belt), `Dreadfang` (Legend Sword — the only Warlock-flavoured melee weapon the
-expansion names, and the Cleave page's natural weapon).
+> Every one of the fifteen Grimoire bases carries `gemsockets = 2`.
 
-**3. One question about an item you already carry.** `Ormus' Robes` is summarised
-as "+1-3 to one specific skill, plus up to +15% damage to fire, lightning and
-cold skills". In the game the +skill roll is a Sorceress skill and the elemental
-damage is not class-restricted. If that is right, the robe is a real Apocalypse
-Warlock body armour with half its text dead, and the page should say which half.
-Not asserted either way here.
+Checked against the runeword rows rather than assumed. All of Rhyme, Splendor,
+Ancients' Pledge and Spirit declare `itype = shld`, and a Grimoire is
+`Equiv1 = shld`, so all four match by *type*. Only the rune count separates them:
+
+| Runeword | Runes | Fits a Grimoire? |
+| --- | --- | --- |
+| **Vigilance** | 2 (Dol Gul) | **yes — `itype1 = grim`, built for it** |
+| Rhyme | 2 (Shael Eth) | yes, by the `shld` equivalence |
+| Splendor | 2 (Eth Lum) | yes, by the `shld` equivalence |
+| Ancients' Pledge | 3 | no — three sockets |
+| Spirit | 4 | no — four sockets |
+
+So the class rule to publish is not "the Warlock has no off-hand". It is: **the
+default caster off-hand in this game is Spirit, and a Warlock cannot put Spirit
+in a Grimoire.** Two sockets is the whole reason, and Vigilance is the two-rune
+word the expansion added for exactly that slot. A Warlock who wants Spirit puts
+it in an ordinary shield and gives up the Grimoire's staffmods; a Warlock who
+wants the staffmods takes Vigilance, Rhyme, Splendor or one of the four uniques.
+It is a trade, and the trade is the page.
+
+#### Two corrections to `00-game-state.md` that fall out of this
+
+Both are coordinator-owned and both are being handled there; recorded here so
+the reasoning is not re-derived.
+
+1. **The runeword is `Vigilance`, spelled correctly.** The site carries
+   "Vigilence *(sic — Blizzard's spelling)*", which propagated the
+   announcement's typo into content. `runes.json` spells it `Vigilance`.
+2. **It is a Grimoire runeword, not only a shield one.** The site records
+   "2-socket shield"; the row reads `itype1 = grim, itype2 = shld,
+   itype3 = head, itype4 = ashd`. It is Grimoire-first and also fits shields,
+   Necromancer shrunken heads and Paladin shields.
+
+#### The other four DLC runewords are complete too
+
+| Runeword | Runes | Base | Notable |
+| --- | --- | --- | --- |
+| Authority | Hel Shael Ral | body armour | `war +2`, 40-60% ED, 10-15% chance to cast Miasma Chains on striking |
+| Coven | Ist Ral Io | helm | +1 all skills, 20% FCR, 30-50% ED, 1-15% MF |
+| **Void** | Thul Zod Ist | dagger | **+2 all skills, 40% FCR, +10-15% Magic Skill Damage, `oskill Abyss` 1-3**, +8-12 all stats |
+| Ritual | Amn Shael Ohm | dagger | 200-270% ED, 200-260% AR, 20% IAS, **+150-250% damage to demons**, prevent monster heal |
+
+**Void is the Abyss page's weapon** and Ritual is a real Cleave weapon. Note the
+`primarySkill` rule holds cleanly: Void *grants* Abyss, which is why Abyss is not
+the primary because of Void — it is the primary because the plan spends twenty
+points in it.
+
+#### Five more class items, and one that does not exist
+
+Nine uniques in the whole file carry a Warlock skill or tab. Four are the
+Grimoires above; the rest:
+
+- `Dreadfang` (Legend Sword, 61) — **+3 Mirrored Blades**, 133-166% ED, 33% IAS,
+  33% Deadly Strike, 33% chance of Amplify Damage on striking, −33% requirements.
+  The Cleave page's weapon.
+- `Bloodpact Shard` (Mithril Point, 67) — +1 all skills, 30% FCR, +2-3 Blood
+  Oath, +2-3 Blood Boil, +1-3 Bind Demon, +10-15% max life. The Blood Boil
+  page's weapon.
+- `Wraithstep` (Mirrored Boots, 67) — `skilltab-war +1`, 30% FRW.
+- `Entropy Locket` (Amulet, 54) — **+5-10% Magic Skill Damage**, 4-19% chance to
+  cast Miasma Chains on striking, +25-40 lightning resist.
+- `Opalvein` (Ring, 50) and `Sling` (Ring, 50) — Flame Wave on attack; and 3-5
+  magic pierce with an `oskill Town Portal` respectively. `Gheed's Wager` (Troll
+  Belt, 71) carries another 3-7 magic pierce and 44-75% gold find.
+
+**`Hellwarden's Will` is not in `uniqueitems.json` under that name.** It is in
+`00-game-state.md`'s list of twelve, sourced from the announcement. Either the
+shipped name differs or it is not a unique; flagged so nobody tries to catalogue
+a ghost.
+
+#### The asymmetry worth publishing
+
+**Only tabs 21 and 23 appear on any item. There is no `+2 Eldritch` unique in
+the game.** The Cleave page's class support is `war +1/+2` on Ars
+Dul'Mephistos and Measured Wrath, `skilltab-war +1` on Wraithstep, and +3
+Mirrored Blades on Dreadfang — all of it either generic or single-skill. The two
+caster pages get a dedicated +2 tab and the weapon page does not.
+
+#### And the immunity story inverts
+
+An earlier draft of §11.3 said Apocalypse's −40 fire pierce was the class's only
+resistance-breaking. It is the only one *in the skills*. In the gear, the pierce
+is magic and there is a lot of it:
+
+```
+Ars Dul'Mephistos  pierce-mag 10-20
+Gheed's Wager      pierce-mag  3-7
+Sling              pierce-mag  3-5
+```
+
+Up to 32 points of magic pierce, on top of `extra-mag` from Void (10-15%) and
+Entropy Locket (5-10%). Magic is already the element fewest monsters resist, and
+the class's own items break it further. **The Abyss page is better supported by
+gear than the Apocalypse page is**, which is the opposite of what the skill
+tables alone suggested, and both pages have to say so.
+
+### 11.6 Items — nothing to request
+
+The nine uniques and five runewords above are all in the pinned extraction and
+the coordinator is cataloguing them. Gear tiers will be authored around real
+`ref`s and no build will name an item by free text.
+
+One question stands open and is not mine: whether `Ormus' Robes`' `+1-3 to one
+specific skill` is Sorceress-scoped while its elemental damage is not. Nothing
+is asserted about that item on any page until it is answered.
 
 ### 11.7 Aliases
 
