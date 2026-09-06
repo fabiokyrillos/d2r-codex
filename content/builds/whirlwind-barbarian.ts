@@ -329,4 +329,5 @@ export const whirlwindBarbarian: Build = {
     respecAt: "Nightmare Act 4, level 40, after The Fallen Angel — 47 points come back and the Whirlwind opening costs exactly 47.",
   },
   confidence: "verified",
+  complete: true,
 };
