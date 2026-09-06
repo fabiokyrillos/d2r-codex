@@ -142,9 +142,19 @@ export const NICKNAMES: Record<string, string> = {
    * because they are what players type when they mean this one — the fire
    * version is always qualified in practice. "ls" and "ds" are deliberately
    * absent: two-letter tokens match half the item list.
+   *
+   * `mosaic` is deliberately absent from the Phoenix Strike row even though it
+   * is what half the community calls the build. It is already the runeword's
+   * own page, and an alias that steals a slug from a real page sends the reader
+   * somewhere they did not ask to go. `mosaicsin` carries the same intent and
+   * collides with nothing.
    */
   "lightning-trapsin":
     "trapsin trapper lightsin lightning sentry death sentry trap assassin armadilha armadilheira raio sentinela",
+  "fire-trapsin":
+    "firetrapsin wof wake of fire wake of inferno fire blast armadilheira de fogo armadilha fogo",
+  "phoenix-strike":
+    "phoenix strike pssin mosaicsin martial arts assassin martialarts charge up chargeup finisher dragon claw fenix artes marciais garras assassina corpo a corpo",
 
   /*
    * --- Necromancer builds, and the names that are not builds ---------------

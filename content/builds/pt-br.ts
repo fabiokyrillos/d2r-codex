@@ -11796,4 +11796,317 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "phoenix-strike": {
+    summary:
+      "Três cargas, três elementos, liberados por um finisher. A Assassin que responde a uma imunidade tendo mais duas, e a única build da classe cuja melhor garra não pode ser obtida no Ladder de jeito nenhum.",
+    playstyle:
+      "Você bate para carregar e bate para gastar. Três acertos com Phoenix Strike empilham três cargas — um meteoro, depois chain lightning, depois uma rajada de dezesseis bolts de gelo — e um finisher libera tudo isso no que estiver ao seu lado. As cargas ficam de pé por quinze segundos, então o ritmo não é frenético: carregue no caminho, libere na coisa que importa, e deixe os quinze segundos cobrirem a caminhada até o próximo grupo. O que muda tudo nesse ritmo é uma garra. Sem a Mosaic, todo finisher gasta as cargas e portanto todo finisher acerta sozinho, então a cadência é um três-e-libera fixo e a chance de acerto não vale nada para você. Com a Mosaic, metade dos seus finishers preserva as cargas — e são exatamente esses os golpes que precisam rolar acerto. A build fica mais rápida e passa a se importar com Attack Rating no mesmo instante.",
+    strengths: [
+      "**Fogo, raio e frio de um botão só.** Um grupo imune não trava esta build; ele apenas custa um dos três",
+      "**Cada ponto do núcleo faz dois trabalhos.** O Phoenix Strike alimenta os outros três a 12/8/8 por ponto, e cada um deles devolve para um dos mísseis dele a 10/13/10 — um laço fechado, não uma pilha de sinergias",
+      "As cargas duram quinze segundos fixos em qualquer nível, então a rotação sobrevive a andar, catar item e perseguir",
+      "Um finisher não pode errar no golpe que gasta cargas, então a versão legal no Ladder não precisa de Attack Rating nenhum",
+      "É a única build de Assassin que dá para jogar no Ladder hoje e que é materialmente melhor no Non-Ladder — a mesma página, a uma garra de distância",
+    ],
+    weaknesses: [
+      "**É corpo a corpo, numa classe sem vida por nível digna do nome.** Tudo aqui é entregue andando até a coisa",
+      "**A melhor garra da build não pode ser obtida no Ladder atual por rota nenhuma** — nem fabricada, nem trocada, nem trazida. O bloco acima não é rodapé",
+      "Quatro skills maximizadas deixam dezessete pontos. É o orçamento de pontos mais apertado da classe, e não existe um quarto pacote possível",
+      "**Iron Maiden.** O Chaos Sanctuary pune um ataque corpo a corpo rápido de múltiplos acertos mais do que pune qualquer outra coisa neste site",
+      "O dano se divide em três elementos, então uma faceta ou um Sunder Charm de um elemento compra para você um terço do que compra para uma Sorceress",
+      "O Dragon Claw precisa de garra nas **duas** mãos, então não existe escudo nesta build e não existe bloqueio de Spirit",
+    ],
+    flexPoints: [
+      "Não existem, e essa é a resposta honesta. Quatro skills maximizadas, nove utilidades de um ponto e quatro pré-requisitos somam 93; o pacote gasta os 17 restantes exatamente. Se você está lendo isto antes do nível 99, a ordem no núcleo acima é a ordem de gastar.",
+      "**Os pontos de quest já estão contados.** O total de 110 são 99 níveis menos um, mais doze pontos de quest nas três dificuldades. Um personagem que pulou o Izual ou o Pássaro Dourado tem menos, e deve segurar o pacote até o fim.",
+    ],
+    skillPackages: {
+      "the-last-seventeen": {
+        name: "Os dezessete pontos que quatro skills maximizadas deixam",
+        intro:
+          "O núcleo acima são 93 de 110, e o laço está **fechado**: Phoenix Strike e os três elementos dele estão todos em vinte, então nenhum ponto adicional em lugar nenhum sobe um míssil. Sobram dezessete — o orçamento mais apertado da classe, e a razão de haver três rotas aqui em vez de quatro. **Pegue exatamente uma.** Cada uma custa exatamente dezessete e o plano fecha em 110 qualquer que seja a escolha. A primeira é a resposta se você tem a Mosaic, a segunda se não tem, e a terceira se morrer encerraria o personagem.",
+        packages: {
+          "claw-mastery": {
+            name: "Claw Mastery",
+            when: "**O pacote da Mosaic.** Pegue quando você estiver com uma ou duas Mosaics — o que, no Ladder atual, você não está e não pode estar.",
+            tradeoff:
+              "Cada um dos dezessete pontos é gasto em acertar e aumentar um golpe, e não em sobreviver a um. Contra Iron Maiden e no Chaos Sanctuary você vai sentir o pacote de Fade que não pegou.",
+            skillNotes: {
+              "claw-mastery":
+                "**Attack Rating, e esta é a única build em que essa frase precisa ser defendida.** Sem a Mosaic todo finisher consome cargas, então o `Param8 = 1` faz todo finisher acertar e o Attack Rating não vale nada. Com a Mosaic, metade deles preserva as cargas — e um golpe que preserva não é um golpe que consome, então o Always Hit está desligado e o golpe rola acerto como qualquer outro. A Mosaic compra uptime e te vende o acerto garantido. É isto que compra ele de volta, e de quebra sobe o dano do Dragon Claw em 4% por ponto.",
+            },
+            rotationNote:
+              "Mesma forma, cadência mais rápida. Com as cargas preservadas você aperta o finisher muito mais do que um golpe em cada quatro, que é o propósito inteiro da garra.",
+            gearNote:
+              "Muda o que você procura nos anéis e no amuleto: Attack Rating vira um afixo de verdade nesta rota e não vale nada nas outras duas.",
+            statNote: "Sem mudança.",
+            contentNote: "Non-Ladder e offline, onde a Mosaic pode de fato ser fabricada.",
+          },
+          venom: {
+            name: "Venom",
+            when: "**O padrão, e o único dos três que está inteiramente disponível no Ladder.** Pegue a menos que você esteja no Hardcore.",
+            tradeoff:
+              "Ele não faz nada por Attack Rating, o que aqui tudo bem — sem a Mosaic o seu finisher não erra mesmo — e nada por resistências, o que não está tudo bem no Chaos Sanctuary.",
+            skillNotes: {
+              venom:
+                "**Um quarto elemento, numa build cujo argumento já é ter três.** O veneno pega carona em todo golpe, e esta build dá muitos golpes. Duas coisas para saber, as duas vindas da linha da skill: a duração dele é `ELen = 10` sob `skill_poison_override_length` — quatro décimos de segundo, e ele **sobrescreve** em vez de acumular, então mais acertos por segundo compram uptime e não magnitude. E ele é de Shadow Disciplines, então o único ponto de Fade do núcleo já pagou o pré-requisito.",
+            },
+            rotationNote:
+              "Reaplique junto com o Burst of Speed no começo da run. Em dezessete pontos ele fica de pé por quase seis minutos.",
+            gearNote: "Nada muda, e essa é a maior parte do argumento a favor desta rota num personagem de Ladder.",
+            statNote: "Sem mudança.",
+            contentNote: "Ladder, e qualquer lugar onde um grupo resista a um dos seus três elementos e não a veneno.",
+          },
+          fade: {
+            name: "Fade",
+            when: "Hardcore, e qualquer personagem que pretenda rodar o Chaos Sanctuary de propósito.",
+            tradeoff:
+              "**Ele custa o Burst of Speed, e portanto velocidade de ataque**, porque os dois não podem estar ativos juntos — e numa build que bate para carregar, velocidade de ataque é velocidade de limpeza. Ele também não gasta nada em dano.",
+            skillNotes: {
+              fade: "**As quatro resistências subindo em direção a 75%, duração de maldição cortada em até 90%, e 1% de redução de dano físico por nível.** Nesta build a linha de maldição é a que importa: o Iron Maiden reflete uma parte do dano que você causa, e um ataque corpo a corpo rápido de múltiplos acertos é a pior coisa possível de se estar segurando quando ele cai. Dezoito pontos cortam quanto tempo ele gruda.",
+            },
+            rotationNote:
+              "Você perde a velocidade de ataque do Burst of Speed, então a cadência fixa de três cargas e liberação fica mais lenta. O Cloak of Shadows vira a abertura em vez de luxo.",
+            gearNote:
+              "**A maior mudança de equipamento das três, no que ela deixa de exigir.** Dezoito pontos de Fade são resistências que você não compra mais em anéis, amuleto e charms, então esses slots vão para velocidade de ataque e dano.",
+            statNote: "Sem mudança. Vitality com tudo depois dos requisitos de equipamento.",
+            contentNote: "Hardcore, o Chaos Sanctuary, e qualquer Terror Zone em que você pretenda ficar parado.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "O suficiente para as suas garras e a sua armadura, e nem um ponto a mais. Garras são a classe de arma mais leve do jogo — uma Runic Talons pede 79 — então normalmente é a armadura que define o número.",
+      dexterity: "O suficiente para o seu equipamento, e pare. **Attack Rating vindo de dexterity não vale nada na rota legal no Ladder**, porque um finisher que gasta cargas não pode errar. Na rota da Mosaic vale alguma coisa, e mesmo lá o Claw Mastery compra mais Attack Rating por ponto do que dexterity compra.",
+      vitality: "Todo o resto. Esta é uma build corpo a corpo numa classe que não tem Battle Orders próprio até você achar um Call to Arms.",
+      energy: "Nenhum. A mana vem das cargas do Cobra Strike, do leech e do cinto.",
+      notes: [
+        "**Bloqueio aqui não é uma decisão de dexterity.** Weapon Block é skill, não atributo, e funciona com duas garras e nenhum escudo — que é a única razão de uma build sem slot de escudo conseguir ficar no corpo a corpo.",
+        "A rota da Mosaic e a rota do Ladder querem os mesmos atributos. Nada neste plano muda com a garra; só o pacote de skill muda.",
+        "Se você pegar o pacote de Fade, as resistências vêm de skill em vez de equipamento, e os pontos que você gastaria para alcançar um requisito de resistência vão para vitality.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-65":
+        "**Para Mind Blast, Cloak of Shadows, e o que você tiver de pé entre Fade e Burst of Speed — não os dois, já que um derruba o outro — e não para nada com que você ataque.** A taxa de conjuração encurta a animação `SC` da Assassin, levando 16 frames a 11. Phoenix Strike e Dragon Claw são animações de ataque e não estão nesta tabela.",
+      "fhr-48":
+        "**Obrigatório e não recomendado, porque esta build fica dentro do grupo.** As builds de trap colocam atrás de uma linha e podem tratar recuperação como luxo; uma Assassin corpo a corpo atordoada entre uma carga e uma liberação perde a janela de cargas, não só um segundo.",
+      "fbr-86":
+        "O Weapon Block te dá chance de bloqueio sem escudo, e um bloqueio do qual você não se recupera rápido é um bloqueio que você ainda está pagando. Vale alcançar assim que o Weapon Block tiver níveis vindos de +skills.",
+    },
+    breakpointNotes:
+      "**Esta build roda em velocidade de ataque, e a ausência de uma linha de Increased Attack Speed acima é deliberada.** O Phoenix Strike é `anim = A1, seqtrans = A1` e o Dragon Claw é `SQ -> A1` — as duas são animações de ataque, então a velocidade base da garra é entrada da mesma fórmula que o afixo alimenta, e uma porcentagem única estaria errada para a maioria dos leitores. Valem aqui as mesmas três regras das páginas de trap, e são elas que pegam as pessoas de surpresa: **duas garras usam a média das duas bases**; **Increased Attack Speed na garra da mão secundária não conta**; e **o Burst of Speed acrescenta até 60% sem diminuição**, que é por que o pacote de Fade custa velocidade de verdade e não apenas um buff. A própria Mosaic carrega +20% de Increased Attack Speed na garra que a tem, então a rota da Mosaic já chega com parte do requisito paga. Estar congelado deixa a animação mais lenta, então Cannot Be Frozen protege a cadência. Para um par específico de garras, use uma calculadora de velocidade de ataque e informe as duas bases, o Increased Attack Speed só da mão principal, e o seu nível de Burst of Speed. **A Faster Cast Rate não toca em nada disso** — ela compra o Mind Blast e os buffs, que é por que a tabela acima diz isso na própria linha em vez de deixar você supor.",
+    skillNotes: {
+      "phoenix-strike":
+        "**O motor de cargas, e a única sinergia que os outros três têm.** Vinte pontos aqui são +240% no Fists of Fire, +160% no Claws of Thunder e +160% no Blades of Ice — antes de ele ter disparado um único míssil próprio. Ele é maximizado primeiro porque é a única skill que paga em tudo o mais da página.",
+      "claws-of-thunder":
+        "**Maximizado antes dos outros dois, e a razão é uma taxa.** O míssil de chain lightning — a liberação de duas cargas — lê `EDmgSymPerCalc = (skill('Claws of Thunder'.blvl))*13`, então esta skill paga 13% por ponto duro nele, contra os 10% que Fists of Fire e Blades of Ice pagam nos deles. Três pontos de diferença sobre vinte pontos é por que este vem primeiro. Ele também é um charge-up por direito próprio, então os pontos nunca ficam parados.",
+      "fists-of-fire":
+        "Alimenta o meteoro de uma carga a 10% por ponto duro, e é o que mais recebe do Phoenix Strike dos três, a 12%. Maximize-o em terceiro e o meteoro deixa de ser a carga que você libera sem querer.",
+      "blades-of-ice":
+        "Alimenta a rajada de gelo de três cargas a 10% por ponto duro — dezesseis bolts, e a liberação que você vai de fato mirar. Por último só porque é o elemento a que menos monstros resistem, então é o menos urgente, não o menos útil.",
+      "tiger-strike":
+        "Pré-requisito do Cobra Strike, e portanto do Phoenix Strike. **Vale apertar mesmo assim**: as cargas dele ficam num estado diferente (`progressive_damage`) das do Phoenix Strike, então as duas ficam de pé ao mesmo tempo e um finisher gasta as duas.",
+      "cobra-strike":
+        "A outra metade do pré-requisito do Phoenix Strike. As cargas dele são `progressive_steal` — roubo de vida e mana na liberação — e numa build sem leech no plano de equipamento até o quarto tier, isso não é pouco.",
+      "dragon-talon":
+        "Pré-requisito do Dragon Claw. Também é um finisher de emergência perfeitamente bom: o dano dele vem das botas e não das garras, então funciona quando as garras são o problema.",
+      "dragon-claw":
+        "**O finisher, e um ponto é o custo inteiro.** A função de um finisher é liberar as cargas, e o dano da liberação é dos mísseis — não do finisher. Pontos acima de um compram o dano de arma do próprio finisher, que é para o que serve o pacote de Claw Mastery. Ele golpeia com as duas garras, então esta build segura duas.",
+      "claw-mastery": "Attack Rating, dano e chance de crítico com garras — e uma sinergia de dano de 4% por ponto para o Dragon Claw. Um ponto agora; veja os pacotes.",
+      "burst-of-speed": "Velocidade de corrida e até 60% de velocidade de ataque, sem diminuição. Numa build que bate para carregar e bate para gastar, velocidade de ataque é velocidade de limpeza.",
+      "weapon-block": "Bloqueio com duas garras e nenhum escudo. A única razão de uma Assassin corpo a corpo conseguir ficar onde esta build fica.",
+      "psychic-hammer": "A outra raiz da árvore Shadow, e pré-requisito do Cloak of Shadows.",
+      "cloak-of-shadows": "Cega a sala e tira a defesa dela. Numa build corpo a corpo é a abertura, não a fuga.",
+      fade: "Resistências, duração de maldição e redução de dano físico. Um ponto agora; o pacote de Hardcore leva a dezoito.",
+      "shadow-warrior": "Pré-requisito do Shadow Master. Substituído por ele, já que os dois compartilham `pettype = shadowwarrior` com `petmax = 1`.",
+      "mind-blast": "Atordoa e converte. A única skill desta página que é genuinamente uma conjuração — ela toca a animação `SC` e é a única coisa que a sua Faster Cast Rate está comprando.",
+      "shadow-master": "Um segundo corpo dentro do grupo, o que numa build corpo a corpo é uma segunda coisa para o grupo bater.",
+    },
+    immunityPlan:
+      "**A resposta desta build à imunidade é que ela tem três, e a versão honesta dessa frase tem uma ressalva.** O Phoenix Strike libera fogo em uma carga, raio em duas e frio em três, então um grupo que resiste a um elemento é respondido pelos outros dois sem mudar um único ponto ou item. Isso é uma vantagem estrutural real e é por que esta página vai bem em Terror Zones. A ressalva é que a vantagem é *diluição*, não penetração: um Sunder Charm ou uma pilha de facetas compra uma build inteira para uma Sorceress e compra um terço de uma para você, porque só um terço do seu dano é o elemento que ela nomeia. **Não monte em cima de faceta aqui.** Quatro coisas ajudam de verdade, em ordem. Primeiro, **escolha qual carga você libera**. Esta é a habilidade de que a build realmente trata: libere em uma carga no Pit, onde raio e frio são resistidos, e segure até três em Travincal, onde fogo e raio é que são. Quem sempre carrega até três está jogando uma build de frio com duas cargas desperdiçadas. Segundo, **o dano físico do próprio Dragon Claw** cai em qualquer coisa que não seja imune a físico, e o Crushing Blow do Gore Rider se aplica a ele — o finisher é um ataque de arma, então o Crushing Blow das botas funciona nele mesmo não fazendo nada pelos mísseis liberados. Terceiro, o **pacote de Venom**, que acrescenta um quarto elemento a que quase nada da lista de farm resiste. Quarto, e vale dizer porque o censo diz: **a Worldstone Keep lista físico, fogo, raio e frio entre as imunidades comuns dela** — os seus três elementos e o seu dano de arma. É a única área deste site em que \"eu tenho três elementos\" não é resposta, e é por isso que ela não está na lista de farm acima.",
+    mercenaryNotes:
+      "**Might, não Holy Freeze, e a razão é a janela de cargas.** Um mercenário de Holy Freeze congela o grupo, o que normalmente é presente e aqui é um pequeno imposto: um monstro congelado sai do raio da liberação mais devagar, mas o problema desta build nunca é as coisas chegarem rápido demais — é já estar parada ao lado delas. O Might sobe a metade física de todo golpe de charge-up e o dano do próprio Dragon Claw. Prayer é uma segunda escolha defensável no Hardcore. Dê Insight a ele se a mana estiver apertada antes de você ter leech, e Fortitude quando puder. **No que ele não ajuda é no Iron Maiden** — a maldição é em você, não nele.",
+    farmingWhy: {
+      "secret-cow-level-hell":
+        "**O melhor encaixe da página.** A única imunidade comum aqui é físico, então os seus três elementos caem em tudo, e um rebanho que anda até a distância de corpo a corpo é uma build que nunca precisa fechar distância. Carregue na aproximação, libere no meio.",
+      "travincal-hell":
+        "Fogo e raio são as imunidades comuns, o que deixa **frio — a liberação de três cargas, aquela que você estava mirando de qualquer jeito**. Uma run curta, um grupo fixo, e tudo parado num lugar só para um personagem corpo a corpo.",
+      "pit-hell":
+        "Físico, frio e raio são as imunidades comuns aqui, então **fogo é a carga que responde a esta área** — o meteoro de uma carga, liberado cedo em vez de segurado. Dois níveis fechados no maior nível de área do Ato 1.",
+      "mausoleum-hell":
+        "Veneno e frio, então fogo e raio caem os dois. Densidade alta numa sala só, que é o que uma build com janela de quinze segundos quer — você carrega uma vez e libera três.",
+      "andariel-hell":
+        "Só veneno, então nada do que você causa é resistido. Um corredor até o trono e uma boss que fica parada enquanto você carrega até três.",
+      "chaos-sanctuary-hell":
+        "**Frio é a resposta aqui** — fogo, raio e físico estão todos na lista de imunidades desta área e frio não está. Mas leia o plano de imunidade antes de ir: esta é a sala do Iron Maiden, e um ataque corpo a corpo rápido de múltiplos acertos é a pior coisa de se estar segurando quando essa maldição cai. Pegue o pacote de Fade ou aprenda a vigiar os Oblivion Knights.",
+    },
+    levelingPath: {
+      summary:
+        "**O Phoenix Strike não existe até o nível 30, então os primeiros trinta níveis são a build de outra pessoa.** A rota honesta é Tiger Strike e Dragon Claw com uma garra de vendedor — as cargas do Tiger Strike multiplicam o dano físico do golpe que as gasta, e isso basta pelo Normal — e depois o laço de quatro skills a partir do 30. Nada gasto em Tiger Strike ou Cobra Strike é desperdiçado: os dois são pré-requisitos que o plano final paga de qualquer forma, e os dois seguram cargas junto com as do Phoenix Strike.",
+      respecAt: "Nível 30, quando o Phoenix Strike destrava — e só se você tiver gastado demais em Dragon Claw antes disso. Uma corrida limpa não precisa de respec nenhum.",
+    },
+    selfFoundNotes:
+      "**Melhor em self-found do que parece, e a razão é o vendedor.** Garras rolam skills de Assassin nativamente e a Charsi renova o estoque toda vez que você volta à cidade, então o item mais importante da página — uma garra com +3 Phoenix Strike e +2 Martial Arts — é algo que você compra e não que você farma. Nada nos quatro primeiros tiers é runeword acima de quatro runas: Lore, Stealth, Treachery, Coven. A build está inteiramente terminada no tier budget sem uma única runa alta. **O que não está disponível em self-found no Ladder é o tier optimized inteiro**, e isso é uma restrição de modo e não de raridade — nenhuma quantidade de farm produz uma Mosaic num personagem de Ladder. Em offline e Non-Ladder self-found, Mal + Gul + Amn é um alvo realista entre runs da Countess e a Hellforge.",
+    hardcoreNotes:
+      "**Pegue o pacote de Fade, e leve o Chaos Sanctuary a sério.** Esta é uma build corpo a corpo numa classe sem bônus de vida próprio, e as duas coisas que a matam são sempre as mesmas duas. O Iron Maiden reflete uma parte do dano que você causa, e um ataque rápido de múltiplos acertos com Crushing Blow nas botas é quase a pior coisa possível de se estar fazendo quando ele está em você — a redução de duração de maldição do Fade é a mitigação, e dezoito pontos dela cortam a duração em até 90%. A outra é simplesmente chegar: um personagem corpo a corpo sem Teleport entra andando nas salas, e o Cloak of Shadows antes de entrar é a diferença. Weapon Block não é opcional aqui, o que quer dizer que duas garras também não são. **E uma coisa específica do Hardcore Non-Ladder:** a razão declarada pela Blizzard para desabilitar a Mosaic no Ladder foi uma falha gráfica capaz de derrubar clientes no Chaos Sanctuary. Essa correção nunca apareceu em nota de patch, então nos modos em que a Mosaic *é* legal, o risco pelo qual ela foi desabilitada não foi anunciado como resolvido. No Hardcore isso é motivo para pensar duas vezes, não para entrar em pânico.",
+    gearSets: {
+      starter: {
+        goal: "Chegar vivo ao Phoenix Strike no nível 30. Nada aqui vale mais que um punhado de runas baixas, e as garras vêm de vendedor.",
+        nextUpgrade: "Uma segunda garra com +Martial Arts, e o Spirit no switch no instante em que você fizer 25.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer garra com +3 numa skill de Martial Arts, ou +2 em Martial Arts",
+            why: "Garras rolam skills de Assassin nativamente e a Charsi renova o estoque toda vez que você volta à cidade. Até o nível 30 você está evoluindo com Tiger Strike e Dragon Claw, então +3 Tiger Strike é o afixo que te carrega.",
+            lookFor: ["+2 to Martial Arts", "+3 to Tiger Strike", "+3 to Dragon Claw", "Increased Attack Speed"],
+          },
+          "offhand-0": {
+            label: "Uma segunda garra, qualquer garra",
+            why: "**O Dragon Claw golpeia com as duas mãos e precisa de duas garras equipadas para fazer o que promete.** Uma garra ruim na segunda mão vale mais que um escudo bom aqui, e isso continua verdade pela build inteira.",
+            lookFor: ["+2 to Martial Arts", "Increased Attack Speed"],
+          },
+          "helm-0": { why: "+1 em todas as skills por duas runas, e a resistência a raio é a que mais falta no Ato 3." },
+          "body-0": { why: "Recuperação e corrida, por duas das runas mais comuns do jogo. A recuperação importa mais aqui do que numa build de trap." },
+          "gloves-0": { why: "Velocidade de ataque é a velocidade com que você carrega e libera. Vinte por cento de um par azul ganha de resistências neste nível." },
+          "belt-0": { why: "Quatro fileiras, e algo para pôr nelas." },
+          "boots-0": { why: "Agora você fecha distância para viver." },
+          "ring1-0": { why: "Nada de Attack Rating. O seu finisher não pode errar enquanto está gastando cargas." },
+          "ring2-0": { why: "Idem." },
+          "amulet-0": { why: "+skills é, golpe a golpe, o melhor afixo da classe." },
+        },
+      },
+      nightmare: {
+        goal: "O Phoenix Strike está no ar e o laço começou. Resistências em 75 até o fim do Nightmare, e as primeiras garras de verdade.",
+        nextUpgrade: "Duas garras com +2 Martial Arts e Increased Attack Speed juntos, e um Treachery.",
+        picks: {
+          "weapon-0": {
+            label: "Uma garra com +2 em Martial Arts e Increased Attack Speed",
+            why: "**Os dois afixos numa garra só é a caçada.** +2 Martial Arts sobe o Phoenix Strike e as três sinergias dele de uma vez, o que nesta build são quatro skills numa linha de texto.",
+            lookFor: ["+2 to Martial Arts", "+3 to Phoenix Strike", "Increased Attack Speed", "Life stolen per hit"],
+          },
+          "offhand-0": {
+            label: "Uma segunda garra, preferindo a base mais rápida",
+            why: "Duas garras tiram a média da velocidade base, então uma segunda mão rápida puxa o ataque inteiro mesmo com o Increased Attack Speed dela não contando.",
+            lookFor: ["+2 to Martial Arts", "A Greater Talons or Runic Talons base"],
+          },
+          "helm-0": { why: "+1 em skills e magic find enquanto você farma as runas de tudo o que vem abaixo." },
+          "helm-0-alt0": { why: "Continua servindo, e continua custando duas runas." },
+          "body-0": { why: "**A armadura de Assassin.** 45% de Increased Attack Speed, e uma chance de conjurar Fade ao ser atingida — que é resistência de graça numa build que está sendo atingida." },
+          "body-0-alt0": { why: "Se a Lem ainda não apareceu: +50 em todas as resistências por duas runas." },
+          "gloves-0": { why: "Vinte por cento é o slot inteiro. Resistências em cima disso são bônus." },
+          "belt-0": { why: "Redução de dano físico e roubo de vida, que é exatamente o que falta a uma Assassin corpo a corpo no Nightmare." },
+          "boots-0": { why: "Sessenta e cinco de vida e uma cura, numa classe que tem muito pouco dos dois." },
+          "ring1-0": { why: "**Cannot Be Frozen, que nesta build é um atributo de velocidade** — estar congelado alonga a animação de ataque." },
+          "ring2-0": { why: "Leech é como um personagem corpo a corpo se mantém de pé antes de o plano de equipamento fornecer isso." },
+          "amulet-0": { why: "+3 Martial Arts são quatro das suas cinco skills de núcleo de uma vez." },
+        },
+      },
+      "early-hell": {
+        goal: "Sobreviver à penalidade de resistência e começar a limpar. É aqui que os três elementos da build começam a pagar e onde o corpo a corpo começa a doer.",
+        nextUpgrade: "Duas garras com +3 Phoenix Strike, e a decisão sobre qual pacote você vai pegar.",
+        picks: {
+          "weapon-0": {
+            label: "Uma garra com +3 Phoenix Strike e +2 Martial Arts",
+            why: "+3 Phoenix Strike são +36% no Fists of Fire e +24% em cada um dos outros dois, além do míssil que ele mesmo dispara.",
+            lookFor: ["+3 to Phoenix Strike", "+2 to Martial Arts", "Increased Attack Speed", "Life stolen per hit"],
+          },
+          "offhand-0": {
+            label: "Uma segunda garra com +2 Martial Arts numa base rápida",
+            why: "O Increased Attack Speed dela não conta, então compre skills e velocidade base com este slot e velocidade de ataque com o outro.",
+          },
+          "helm-0": { why: "Redução de dano físico e vida roubada por acerto. O elmo mais útil que uma Assassin corpo a corpo pode achar em vez de fabricar." },
+          "body-0": { why: "Continua sendo a resposta, e continua sendo 45% de velocidade de ataque." },
+          "gloves-0": {
+            label: "Luvas raras ou craftadas com 20% de Increased Attack Speed e vida roubada por acerto",
+            why: "Velocidade de ataque e leech num slot só. **O Dracul's Grasp é o upgrade aqui e ele pede nível 76**, que é um tier adiante — não planeje este slot em torno dele ainda.",
+            lookFor: ["20% Increased Attack Speed", "Life stolen per hit", "Resistances"],
+          },
+          "belt-0": { why: "Redução de dano físico é o atributo que mantém uma Assassin corpo a corpo viva no Hell." },
+          "boots-0": { why: "Crushing Blow, Open Wounds e Deadly Strike. **Eles se aplicam ao Dragon Claw, não aos mísseis liberados** — os mísseis são o dano das cargas e não empunham arma nenhuma." },
+          "ring1-0": { why: "Cannot Be Frozen, ainda um atributo de velocidade." },
+          "ring2-0": { why: "Resistência é o imposto do Hell e é aqui que você paga." },
+          "amulet-0": { why: "+2 em skills e +30 em todas as resistências, que são as duas metades do problema num slot só." },
+        },
+        charms: [{ why: "Um skiller de Martial Arts sobe o Phoenix Strike e as três sinergias, o que o torna mais valioso nesta build do que em qualquer outra página do site." }],
+        weaponSwap: [{ why: "Battle Orders é o maior aumento isolado de vida disponível para esta classe, e ele aceita garra — então vai numa garra reserva em vez de custar um tipo de arma. Nível 57, que é por que ele chega neste tier e não no anterior." }],
+      },
+      budget: {
+        goal: "Um personagem de Ladder terminado. Tudo aqui pode ser fabricado ou encontrado no Ladder atual — de propósito, porque o tier acima não pode.",
+        nextUpgrade: "A Mosaic — mas só se você puder fabricar uma, o que significa Non-Ladder ou offline. No Ladder o tier acima está fechado para você, e este é o build terminado e não uma parada no caminho até ele.",
+        picks: {
+          "weapon-0": {
+            label: "A melhor garra com +3 Phoenix Strike que você conseguir, com 20% de Increased Attack Speed",
+            why: "**No Ladder este é o seu slot de arma final, então compre direito.** Uma Runic Talons rara com +3 Phoenix Strike, +2 Martial Arts e 20% de Increased Attack Speed é o alvo.",
+            lookFor: ["+3 to Phoenix Strike", "+2 to Martial Arts", "20% Increased Attack Speed", "Runic Talons or Greater Talons base"],
+          },
+          "offhand-0": {
+            label: "Uma segunda Runic Talons com +3 Phoenix Strike",
+            why: "A velocidade base tira média entre as duas mãos, então uma base de garra elite na mão secundária vale frames de verdade mesmo com o afixo de velocidade dela não contando.",
+          },
+          "helm-0": { why: "+2 em skills e resistência num elmo que você pode fabricar. No Ladder, fabricado ganha de encontrado." },
+          "helm-1": { why: "+2 em skills de Assassin e 20% de Increased Attack Speed, ao custo de −30% de resistência a fogo que você precisa responder em outro lugar." },
+          "body-0": { why: "+2 em skills, +65 de resistências e 8% de redução de dano. A melhor armadura que uma Assassin corpo a corpo pode vestir que não seja Enigma." },
+          "body-0-alt0": { why: "Muito mais barata, e o Crushing Blow dela cai no Dragon Claw." },
+          "gloves-0": { why: "Life Tap ao golpear continua sendo a melhor linha de sobrevivência disponível para o slot." },
+          "belt-0": { why: "Redução de dano físico, ainda." },
+          "belt-1": { why: "+1 em skills se as suas resistências já estiverem resolvidas." },
+          "boots-0": { why: "Crushing Blow no finisher." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em skills e a mana para apertar um charge-up sem pensar." },
+          "amulet-0": { why: "+2 em skills e +30 de resistências." },
+          "amulet-1": { why: "Deadly Strike escalando com o nível e 20% de Increased Attack Speed, se as resistências estiverem cobertas." },
+        },
+        charms: [{ why: "Quatro skills por skiller. Nada mais nesta página escala assim." }],
+        weaponSwap: [{ why: "Battle Orders num switch de garra. Feito de runas, então está disponível no Ladder." }],
+      },
+      optimized: {
+        goal: "O personagem com Mosaic. **Este tier não é alcançável no Ladder atual** — veja o bloco de disponibilidade no topo da página — e tudo nele pressupõe Non-Ladder online ou offline.",
+        nextUpgrade: "Uma segunda Mosaic, e a ressalva honesta que vem junto.",
+        picks: {
+          "weapon-0": {
+            why: "**50% de chance de os finishers não consumirem cargas — e isso é uma chance percentual, não uma garantia.** Ela também carrega +2 Martial Arts, +20% de Increased Attack Speed e 200–250% de Enhanced Damage. O que ela muda não é dano, é cadência: cargas que sobrevivem a um finisher são cargas que você não gastou três golpes reconstruindo. **O que ela te custa é o acerto garantido** — um golpe que preserva cargas não é um golpe que as consome, então a marca de Always Hit fica desligada e ele rola acerto. Pegue o pacote de Claw Mastery com esta garra.",
+            sockets: "Mal, Gul, Amn, nessa ordem, numa garra de 3 sockets. Errar a ordem custa três runas altas.",
+          },
+          "offhand-0": {
+            why: "**Uma segunda Mosaic é uma segunda chance de 50%, e esta página não vai te dizer que isso é 100%.** A propriedade vale 50 em cada garra e a extração não diz absolutamente nada sobre como duas se combinam — se somam, se rolam independentes, ou se só a mão principal é lida. É mais preservação que uma; quanto mais não está estabelecido, e quem te der um número está dando um palpite.",
+            sockets: "Mal, Gul, Amn de novo.",
+          },
+          "offhand-0-alt0": { why: "Uma Mosaic e uma boa rara é um ponto de parada perfeitamente razoável, e sai três runas altas mais barato." },
+          "helm-0": { why: "Holy Shock como aura vestida, e +30 em todas as resistências. O dano de raio dela é um dos três elementos que você já causa." },
+          "helm-1": { why: "Redução de dano e dois sockets, se você preferir não gastar uma Jah." },
+          "body-0": { why: "+2 em skills, +65 de resistências, 8% de redução de dano." },
+          "body-1": { why: "Teleport, que muda como uma build corpo a corpo chega num grupo mais do que qualquer afixo de dano mudaria." },
+          "gloves-0": { why: "Life Tap ao golpear — e com a Mosaic você golpeia mais vezes." },
+          "belt-0": { why: "+1 em skills." },
+          "belt-1": { why: "Se dano físico for o que está te matando." },
+          "boots-0": { why: "Crushing Blow no Dragon Claw." },
+          "boots-1": { why: "Stamina, redução de duração de veneno e muito mais força/vitalidade, se Crushing Blow não for o gargalo." },
+          "ring1-0": { why: "Cannot Be Frozen, e **Attack Rating que finalmente vale alguma coisa** num personagem com Mosaic." },
+          "ring2-0": { why: "+1 em skills." },
+          "amulet-0": { why: "+2 em skills e resistências." },
+          "amulet-1": { why: "Deadly Strike e 20% de Increased Attack Speed." },
+        },
+        charms: [{ why: "A Torch é +3 em skills de Assassin, que são três níveis em todas as skills do laço de uma vez." }],
+        weaponSwap: [{ why: "Battle Orders, numa garra reserva." }],
+      },
+      bis: {
+        goal: "O teto. Duas Mosaics, e equipamento escolhido para fazer os golpes entre as liberações importarem tanto quanto as liberações.",
+        nextUpgrade: "Nada. Faça uma Kicksin e pegue as botas que você vinha ignorando.",
+        picks: {
+          "weapon-0": { why: "Na base de garra elite mais rápida que você achar. Runic Talons a −30 de velocidade base é a resposta usual.", sockets: "Mal, Gul, Amn." },
+          "offhand-0": { why: "A segunda. **Continua sendo 50% na linha dela**, e continua não sendo 100% documentado juntas.", sockets: "Mal, Gul, Amn." },
+          "helm-0": { why: "Uma aura vestida, numa build que quer estar parada ao lado das coisas de qualquer jeito." },
+          "body-0": { why: "Teleport. Numa build corpo a corpo com janela de quinze segundos, conseguir chegar vale mais que outra linha de dano." },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": { why: "+1 em skills, e a taxa de conjuração chega no Mind Blast." },
+          "boots-0": { why: "Crushing Blow, upgradeadas para Myrmidon Greaves se você tiver força para isso." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills." },
+          "amulet-0": { why: "Deadly Strike e velocidade de ataque, com resistências cobertas pelo Dream e pelo Enigma." },
+        },
+        charms: [{ why: "+3 em skills de Assassin só da Torch são três níveis nas quatro skills de núcleo." }],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+    },
+  },
 };

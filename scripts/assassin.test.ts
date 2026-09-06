@@ -274,6 +274,72 @@ const WOULD_HAVE_SHIPPED: { note: string; line: string; rule: AssassinRule }[] =
     line: "Keep Fade and Burst of Speed running and refresh them between packs.",
     rule: "fade-and-burst-together",
   },
+
+  /*
+   * Phoenix Strike and Mosaic. Every line below is a sentence a real guide
+   * publishes; the first two are the two halves of the same misunderstanding,
+   * and they point in opposite directions.
+   */
+  {
+    note: "one Mosaic sold as total preservation",
+    line: "With Mosaic your finishing moves have a 100% chance to not consume charges.",
+    rule: "charge-preservation-overstated",
+  },
+  {
+    note: "dual Mosaic sold as fifty between the pair",
+    line: "Two Mosaics give you a 75% chance to preserve charges between them.",
+    rule: "charge-preservation-overstated",
+  },
+  {
+    note: "total preservation stated in words instead of a number",
+    line: "A dual Mosaic Assassin never consumes her charges, so the rotation is one button.",
+    rule: "charge-preservation-overstated",
+  },
+  {
+    note: "the pt-BR form of the same certainty",
+    line: "Com duas Mosaics as cargas nunca são consumidas e você só aperta o finisher.",
+    rule: "charge-preservation-overstated",
+  },
+  {
+    note: "the preserved swing given the guarantee it specifically loses",
+    line: "A swing that preserves charges still cannot miss, so attack rating stays irrelevant.",
+    rule: "preserved-swing-called-always-hit",
+  },
+  {
+    note: "the same claim from the other direction",
+    line: "Dragon Claw always hits even when Mosaic preserves the charges.",
+    rule: "preserved-swing-called-always-hit",
+  },
+  {
+    note: "the pt-BR mirror",
+    line: "Um golpe que preserva cargas sempre acerta, então Attack Rating continua irrelevante.",
+    rule: "preserved-swing-called-always-hit",
+  },
+  {
+    note: "the charge order inverted — one charge is the meteor, not the ice",
+    line: "With Phoenix Strike, one charge releases cold and three charges release fire.",
+    rule: "charge-order-wrong",
+  },
+  {
+    note: "the middle charge given the wrong element",
+    line: "Phoenix Strike at two charges fires a meteor into the pack.",
+    rule: "charge-order-wrong",
+  },
+  {
+    note: "the pt-BR mirror of the inverted order",
+    line: "No Phoenix Strike, três cargas liberam fogo e uma carga libera gelo.",
+    rule: "charge-order-wrong",
+  },
+  {
+    note: "telling a Ladder reader to go and make the one claw that cannot be made there",
+    line: "Craft Mosaic as soon as you can on Ladder; it is the build's whole engine.",
+    rule: "make-a-blocked-runeword-here",
+  },
+  {
+    note: "the pt-BR form",
+    line: "Fabrique a Mosaic assim que possível no Ladder, porque ela é o motor da build.",
+    rule: "make-a-blocked-runeword-here",
+  },
   {
     note: "the poison intuition that is right everywhere else",
     line: "Venom adds poison damage over several seconds to everything you hit.",
@@ -350,6 +416,48 @@ const ACCEPTED: { note: string; line: string }[] = [
     note: "an unrelated sentence about another class",
     line: "Blizzard has a hard cooldown that Faster Cast Rate cannot reduce.",
   },
+
+  /*
+   * The negative controls for the four Phoenix Strike rules. Three of these
+   * are sentences the shipped page actually carries, and each was written
+   * before the rule that has to leave it alone.
+   */
+  {
+    note: "the shipped Mosaic sentence: fifty, and a percent chance rather than a guarantee",
+    line: "Mosaic gives a 50% chance for finishing moves to not consume charges, and that is a percent chance, not a guarantee.",
+  },
+  {
+    note: "the shipped second-claw sentence, which refuses the hundred",
+    line: "A second Mosaic is a second 50% chance, and this page will not tell you it is 100%.",
+  },
+  {
+    note: "the shipped Always Hit sentence, with the override said to be off",
+    line: "A swing that preserves charges is not a swing that consumes them, so the Always Hit flag is off and it rolls to hit.",
+  },
+  {
+    note: "the pt-BR mirror of it",
+    line: "Um golpe que preserva cargas não é um golpe que as consome, então a marca de Always Hit fica desligada e ele rola acerto.",
+  },
+  {
+    note: "Fists of Fire's own third charge, which is not Phoenix Strike's",
+    line: "The third charge creates a wall of ground fire rather than a larger hit, so the skill's value is area denial.",
+  },
+  {
+    note: "the three elements listed in order without a release verb between them",
+    line: "Three hits with Phoenix Strike stack three charges — a meteor, then chain lightning, then a burst of sixteen ice bolts.",
+  },
+  {
+    note: "making it in a mode where it can be made, with Non-Ladder named",
+    line: "Mosaic — but only if you can make one, which means Non-Ladder or offline.",
+  },
+  {
+    note: "the pt-BR mirror, where Non-Ladder also contains the word Ladder",
+    line: "A Mosaic — mas só se você puder fabricar uma, o que significa Non-Ladder ou offline.",
+  },
+  {
+    note: "saying plainly that it cannot be made on Ladder",
+    line: "Mosaic cannot be crafted on Ladder, so nothing on that mode can make one.",
+  },
 ];
 
 console.log("\nSentences that must stay silent");
@@ -359,7 +467,7 @@ for (const { note, line } of ACCEPTED) {
 }
 
 console.log("\nWiring");
-check("twelve rules are exported for the content sweep", ASSASSIN_RULES.length === 12);
+check("sixteen rules are exported for the content sweep", ASSASSIN_RULES.length === 16);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) {

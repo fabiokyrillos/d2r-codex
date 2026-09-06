@@ -274,6 +274,10 @@ export const ASSASSIN_RULES = [
   "universal-trap-ias-number",
   "firing-interval-as-laying-speed",
   "cast-rate-for-sentry-output",
+  "charge-preservation-overstated",
+  "preserved-swing-called-always-hit",
+  "charge-order-wrong",
+  "make-a-blocked-runeword-here",
 ] as const;
 export type AssassinRule = (typeof ASSASSIN_RULES)[number];
 
@@ -468,6 +472,142 @@ const SENTRY_FIRES =
 /** Sentry damage or output, as distinct from how fast you put one down. */
 const SENTRY_OUTPUT =
   /\b(damage|dps|output|harder|stronger)\b|\b(dano|sa[íi]da|mais forte)\b/i;
+
+/* ---------------------------------------------------------------------------
+ * Charges, Mosaic, and the four ways a Phoenix Strike page goes wrong
+ *
+ * The Mosaic claw's property is `charge-noconsume`, which resolves to
+ * `item_charge_noconsume` and reads "+#% chance for finishing moves to not
+ * consume charges". It is **50 on each claw**, and the extraction says nothing
+ * whatever about how two claws combine. Both of the popular wrong answers —
+ * that one claw is total preservation, and that two claws are 50% between them
+ * — are percentages this site has no basis for, so the rule is simply that a
+ * preservation figure other than 50 has to be a denial.
+ *
+ * The second rule is the subtle one and it exists because the truth here is
+ * counter-intuitive. `Param8 = 1` on the three finishers means "Always Hit
+ * (0 = disabled | 1 = enabled only when Charges are consumed)". A swing that
+ * *preserves* charges has not consumed them, so the override is off and the
+ * swing rolls to hit like any other — which is why `ToHit`/`LevToHit` exist on
+ * those rows at all. Writing "preserved swings still cannot miss" is the error,
+ * and it cannot be caught by looking for a negation, because the error sentence
+ * contains one ("cannot miss"). So this rule looks for the escape clause that
+ * the correct sentence must carry: the override being off, suspended, or no
+ * longer applying.
+ * ------------------------------------------------------------------------- */
+
+/** `charge-noconsume` on Mosaic, from `runes.json` at the pinned commit. */
+const CHARGE_NOCONSUME_PER_CLAW = 50;
+
+/** An ordinary denial anywhere in the sentence. */
+const DENIES_ANYWHERE =
+  /\b(cannot|can't|cant|never|nobody|no\s?one|nothing|none|not|isn't|doesn't|does\s+not|won't|will\s+not|unable|impossible|unverified|not established|n[ãa]o|nenhum\w*|ningu[ée]m|nunca|sem)\b/i;
+
+/** A sentence that is about charges being kept or spent. */
+const CHARGE_PRESERVATION =
+  /\b(charges?|cargas?)\b[^.]{0,70}\b(preserv\w*|consum\w*|noconsume|conserv\w*)|\b(preserv\w*|consum\w*|conserv\w*)\w*\b[^.]{0,70}\b(charges?|cargas?)\b/i;
+
+/** Any percentage in the sentence, as a number. */
+const percentagesIn = (s: string): number[] =>
+  [...s.matchAll(/(\d{1,3})\s*%/g)].map((m) => Number(m[1]));
+
+/**
+ * A total-preservation claim made in words rather than in a number.
+ *
+ * `always(?!\s+hit)` keeps this off "Always Hit", which is the name of a column
+ * rather than a claim about certainty and appears in the correct sentence about
+ * exactly this mechanic.
+ */
+const TOTAL_IN_WORDS =
+  /\b(?:never|always(?!\s+hit)|guarantee[ds]?|100\s*per\s*cent|nunca|sempre|garant\w*)\b/gi;
+
+/**
+ * Words that belong to the claim rather than to a refutation of it.
+ *
+ * This is the correction that made these rules work at all. The first draft
+ * tested the raw sentence for a denial, and three of the four planted mutations
+ * walked straight through:
+ *
+ *   "a 100% chance to not consume charges"   — "not" is in the property's own
+ *                                              name, not a denial of the 100
+ *   "never consumes her charges"             — "never" IS the overstatement
+ *   "as cargas nunca são consumidas"         — and so is "nunca"
+ *
+ * So the denial is judged on the sentence with those phrases removed. What
+ * survives — "will not tell you it is 100%", "not a guarantee", "is not a swing
+ * that consumes them" — is a real refutation and still silences the rule.
+ */
+const scrubClaimWords = (s: string): string =>
+  s
+    .replace(/\bnot\s+consum\w*/gi, " ")
+    .replace(/\bn[ãa]o\s+(?:s[ãa]o\s+)?consom\w*|\bn[ãa]o\s+(?:s[ãa]o\s+)?consumid\w*/gi, " ")
+    .replace(TOTAL_IN_WORDS, " ");
+
+/**
+ * The escape clause a correct sentence about a preserved swing must carry.
+ *
+ * Deliberately not the generic denial list. "A preserved swing still cannot
+ * miss" is the mutation this rule exists to catch and it contains "cannot", so
+ * a denial-based escape would silence the rule on the exact sentence it is for.
+ */
+const OVERRIDE_IS_OFF =
+  /\b(off|suspend\w*|no longer|does not apply|do not apply|not apply|stops? applying|is not (?:a|the) swing|desligad\w*|não se aplica|nao se aplica|deixa de|sai de cena)\b/i;
+
+/** Claiming a preserved swing keeps the guaranteed hit. */
+const PRESERVED_STILL_HITS =
+  /\b(preserv\w*|keeps? the charges?|not consum\w*|noconsume|preserva\w*|mant[ée]m as cargas)\b[^.]{0,80}\b(always hits?|cannot miss|can't miss|never misses?|sempre acerta|nunca erra|acerto garantido)\b|\b(always hits?|cannot miss|never misses?|sempre acerta|nunca erra)\b[^.]{0,80}\b(preserv\w*|not consum\w*|preserva\w*)\b/i;
+
+/**
+ * Phoenix Strike's charge order, from `Royal Strike`'s own missile columns.
+ *
+ * One charge is `royalstrikemeteorcenter` (fire), two is
+ * `royalstrikechainlightning`, three is `royalstrikechaosice` (cold). The rule
+ * only fires when a charge count is joined to an element by a *verb* — without
+ * that, "three charges — a meteor, then chain lightning, then ice" is an
+ * ordinary correct sentence listing all three in order, and a proximity-only
+ * rule would reject it.
+ */
+const RELEASE_VERB = "(?:releases?|gives?|fires?|creates?|is|are|means?|libera|d[áa]|dispara|cria|é|s[ãa]o)";
+const CHARGE_ORDER_WRONG: RegExp[] = [
+  new RegExp(
+    `\\b(?:one|1|first|uma|primeira)[ -](?:charge|carga)\\b[^.]{0,30}\\b${RELEASE_VERB}\\b[^.]{0,30}\\b(lightning|cold|ice|raio|frio|gelo)\\b`,
+    "i",
+  ),
+  new RegExp(
+    `\\b(?:two|2|second|duas|segunda)[ -](?:charges?|cargas?)\\b[^.]{0,30}\\b${RELEASE_VERB}\\b[^.]{0,30}\\b(fire|cold|ice|meteor|fogo|frio|gelo|meteoro)\\b`,
+    "i",
+  ),
+  new RegExp(
+    `\\b(?:three|3|third|tr[êe]s|terceira)[ -](?:charges?|cargas?)\\b[^.]{0,30}\\b${RELEASE_VERB}\\b[^.]{0,30}\\b(fire|lightning|meteor|fogo|raio|meteoro)\\b`,
+    "i",
+  ),
+];
+
+/**
+ * Telling the reader to make a runeword in a mode where it cannot be made.
+ *
+ * `(?<!non[- ])` is load-bearing and was not there in the first draft. `\b`
+ * treats the hyphen in "Non-Ladder" as a boundary, so a bare `\bladder\b`
+ * matches inside it — and the sentence this rule flagged first was the correct
+ * one, "only if you can make one, which means Non-Ladder or offline".
+ */
+const LADDER_NOT_NON_LADDER = "(?<!non[- ])(?<!n[ãa]o[- ])ladder";
+const MAKE_IT_ON_LADDER = new RegExp(
+  `\\bmosaic\\b[^.]{0,90}\\b(?:craft|make|making|made|socket|fabri\\w*|montar|fazer|fa[çc]a)\\w*\\b[^.]{0,40}\\b${LADDER_NOT_NON_LADDER}\\b` +
+    `|\\b(?:craft|make|making|socket|fabri\\w*|montar|fazer)\\w*\\b[^.]{0,60}\\bmosaic\\b[^.]{0,60}\\b${LADDER_NOT_NON_LADDER}\\b`,
+  "i",
+);
+
+/**
+ * Phoenix Strike's charge order is Phoenix Strike's alone.
+ *
+ * The first draft of `CHARGE_ORDER_WRONG` had no scope and immediately flagged
+ * the Fists of Fire skill page for saying "the third charge creates a wall of
+ * ground fire" — which is true, because Fists of Fire is its own charge-up with
+ * its own three charges. The order this rule knows belongs to one skill, so the
+ * sentence has to be about that skill.
+ */
+const ABOUT_PHOENIX_STRIKE = /\b(phoenix strike|royal strike)\b/i;
 
 export function checkAssassinClaims(lines: string[], where: string): AssassinProblem[] {
   const problems: AssassinProblem[] = [];
@@ -701,6 +841,64 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
               `all of them; this states ${stated}`,
           );
         }
+      }
+
+      /*
+       * Charge preservation, in numbers and in words. 50 per claw is the only
+       * figure the data supports, so any other percentage — and any wording
+       * that makes it total — has to be a denial.
+       */
+      if (CHARGE_PRESERVATION.test(sentence) && !DENIES_ANYWHERE.test(scrubClaimWords(sentence))) {
+        const wrong = percentagesIn(sentence).filter((p) => p !== CHARGE_NOCONSUME_PER_CLAW);
+        if (wrong.length) {
+          add(
+            "charge-preservation-overstated",
+            sentence,
+            `\`charge-noconsume\` is ${CHARGE_NOCONSUME_PER_CLAW} on each claw and nothing ` +
+              `establishes how two combine; this publishes ${wrong.join("/")}%`,
+          );
+        } else if (new RegExp(TOTAL_IN_WORDS.source, "i").test(sentence)) {
+          add(
+            "charge-preservation-overstated",
+            sentence,
+            `\`charge-noconsume\` is a ${CHARGE_NOCONSUME_PER_CLAW}% chance per claw; ` +
+              "describing it as never, always or guaranteed states a certainty the data does not",
+          );
+        }
+      }
+
+      /*
+       * The counter-intuitive one. Always Hit is enabled "only when Charges are
+       * consumed", so the swings Mosaic preserves are exactly the swings that
+       * lose it. See OVERRIDE_IS_OFF for why the escape clause is not a denial.
+       */
+      if (PRESERVED_STILL_HITS.test(sentence) && !OVERRIDE_IS_OFF.test(sentence)) {
+        add(
+          "preserved-swing-called-always-hit",
+          sentence,
+          "`Param8 = 1` reads \"Always Hit ... enabled only when Charges are consumed\", so a " +
+            "swing that preserves charges does not get the override and has to roll to hit",
+        );
+      }
+
+      /* One charge is the meteor, two the chain lightning, three the ice. */
+      if (ABOUT_PHOENIX_STRIKE.test(sentence) && CHARGE_ORDER_WRONG.some((re) => re.test(sentence))) {
+        add(
+          "charge-order-wrong",
+          sentence,
+          "Royal Strike's own missiles are meteor at one charge, chain lightning at two and " +
+            "chaos ice at three; this pairs a charge count with the wrong element",
+        );
+      }
+
+      /* Telling the reader to make a claw that cannot be made where they are. */
+      if (MAKE_IT_ON_LADDER.test(sentence) && !DENIES_ANYWHERE.test(sentence)) {
+        add(
+          "make-a-blocked-runeword-here",
+          sentence,
+          "Mosaic carries `disallowCraftingInLadder: 1` — the only row in the file that does — " +
+            "so it cannot be made on Ladder and must not be recommended there",
+        );
       }
     }
   }
