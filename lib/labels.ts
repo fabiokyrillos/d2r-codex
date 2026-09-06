@@ -288,6 +288,7 @@ export const availabilityStatusLabels = (
 ): Record<AvailabilityStatus, string> => ({
   craftable: t.availability.statusCraftable,
   usable: t.availability.statusUsable,
+  unobtainable: t.availability.statusUnobtainable,
   disabled: t.availability.statusDisabled,
   unknown: t.availability.statusUnknown,
 });
@@ -298,6 +299,12 @@ export const availabilityStatusLabels = (
  * `usable` is deliberately not the same tone as `craftable`. "You may wear one"
  * and "you may make one" look alike in a table and are the whole distinction
  * this feature exists to draw, so they must not be the same colour.
+ *
+ * `unobtainable` sits with `disabled` on the red end rather than with `usable`
+ * on the amber one. A reader skims the colour before the words, and the
+ * practical answer to "can I have this here" is no — the fact that it would
+ * still function is a nuance the row's own sentence carries, not a reason to
+ * paint the cell like a permission.
  */
 export const availabilityStatusStyles: Record<
   AvailabilityStatus,
@@ -305,6 +312,7 @@ export const availabilityStatusStyles: Record<
 > = {
   craftable: { tone: "border-emerald-500/40 bg-emerald-500/10 text-emerald-200" },
   usable: { tone: "border-amber-500/40 bg-amber-500/10 text-amber-200" },
+  unobtainable: { tone: "border-rose-500/40 bg-rose-500/10 text-rose-200" },
   disabled: { tone: "border-rose-500/40 bg-rose-500/10 text-rose-200" },
   unknown: { tone: "border-slate-500/40 bg-slate-500/10 text-slate-300" },
 };

@@ -1,7 +1,7 @@
 /**
  * Proof that the availability controls fire.
  *
- * Three kinds of check, the same shape the Assassin's file uses.
+ * Four kinds of check, the same shape the Assassin's file uses.
  *
  * **Structure.** The shipped data is asserted complete, then mutated four ways
  * — a mode dropped, a mode duplicated, prose removed, provenance blanked — and
@@ -17,6 +17,12 @@
  * both locales, asserted silent. This is what stops the prose rules being
  * tightened until they fire on the shipped page and quietly turned off.
  *
+ * **Status against its own prose.** The last section, and the one added after a
+ * wrong sentence shipped past every check above. A per-mode status and the
+ * paragraph beneath it are written at different times by different hands, so
+ * each is made to constrain the other: `usable` must name a route in, and
+ * `unobtainable` must not. Neither can drift alone.
+ *
  * Run with `npm run test:availability`.
  */
 import { AVAILABILITY_MODES, AVAILABILITY_STATUSES } from "../lib/types";
@@ -27,6 +33,7 @@ import {
   AVAILABILITY_RULES,
   EXPECTED_STATUSES,
   checkAvailabilityClaims,
+  affirmsAcquisitionRoute,
   checkAvailabilityShape,
   checkGates,
   type AvailabilityRule,
@@ -53,7 +60,7 @@ console.log("\nThe union has not grown behind the label maps");
 // ---------------------------------------------------------------------------
 
 check(
-  "four statuses, in order",
+  "five statuses, in order",
   JSON.stringify([...AVAILABILITY_STATUSES]) === JSON.stringify([...EXPECTED_STATUSES]),
   [...AVAILABILITY_STATUSES].join(","),
 );
@@ -214,7 +221,9 @@ const WOULD_HAVE_SHIPPED: [string, AvailabilityRule, string][] = [
   [
     "Mosaic é exclusiva do Ladder.",
     "ladder-only-stated-as-current",
-    "Mosaic não pode ser fabricada no Ladder, mas pode ser usada lá por um personagem transferido.",
+    // Not "usada lá por um personagem transferido", which is what this fixture
+    // said until the third verb was added: nothing transfers *into* Ladder.
+    "Mosaic não pode ser fabricada no Ladder, e não há rota legítima até uma lá.",
   ],
 ];
 
@@ -239,6 +248,86 @@ check(
 check(
   "leaves an ordinary Ladder claim alone",
   silent("Bulwark is Ladder-only for this season."),
+);
+
+// ---------------------------------------------------------------------------
+console.log("\nThe third verb: a status and its own prose have to agree");
+// ---------------------------------------------------------------------------
+
+/*
+ * This section exists because the sentence below shipped, in both locales, and
+ * every check in this file passed while it did. Mosaic's Ladder row read
+ * `usable`, and the prose under it invented two acquisition routes:
+ *
+ *   - "brought over on a transferred character" — the season-end conversion
+ *     runs Ladder *into* Non-Ladder, once, and never the other way.
+ *   - "one traded to you" — nothing on Ladder can make one, so no Ladder
+ *     player has one to trade. The supply is empty, not merely restricted.
+ *
+ * The prose sweep above could not have caught it: neither sentence contains
+ * the word "Mosaic", so `mentionsGatedItem` skips both. What catches it is the
+ * coupling between the status and the sentence beneath it, in both directions.
+ */
+const SHIPPED_BUG_EN =
+  "**The one runeword in the file that cannot be made on Ladder.** The recipe is blocked; the item is not. A claw made elsewhere and brought over on a transferred character still works, and so does one traded to you.";
+const SHIPPED_BUG_PT =
+  "**A única runeword do arquivo que não pode ser fabricada no Ladder.** A receita está bloqueada; o item não está. Uma garra feita em outro modo e trazida num personagem transferido continua funcionando, e uma recebida em troca também.";
+
+check("the sentence that shipped is read as claiming a route (en-US)", affirmsAcquisitionRoute(SHIPPED_BUG_EN));
+check("the sentence that shipped is read as claiming a route (pt-BR)", affirmsAcquisitionRoute(SHIPPED_BUG_PT));
+
+for (const locale of LOCALES) {
+  const live = getRuneword(locale, "mosaic")!.availability!;
+  check(
+    `${locale} — the ladder prose that replaced it claims no route`,
+    !affirmsAcquisitionRoute(live.notes.rows.ladder),
+    live.notes.rows.ladder.slice(0, 90),
+  );
+
+  const restored = JSON.parse(JSON.stringify(live)) as Availability;
+  restored.notes.rows.ladder = locale === "en-us" ? SHIPPED_BUG_EN : SHIPPED_BUG_PT;
+  check(
+    `${locale} — rejects: the invented routes put back under "unobtainable"`,
+    checkAvailabilityShape(restored, "planted").some(
+      (p) => p.rule === "status-contradicts-its-own-prose",
+    ),
+  );
+
+  const softened = JSON.parse(JSON.stringify(live)) as Availability;
+  softened.rows = softened.rows.map((r) =>
+    r.mode === "ladder" ? { ...r, status: "usable" as const } : r,
+  );
+  check(
+    `${locale} — rejects: "unobtainable" quietly downgraded to "usable"`,
+    checkAvailabilityShape(softened, "planted").some(
+      (p) => p.rule === "status-contradicts-its-own-prose",
+    ),
+  );
+}
+
+/*
+ * The negative control, and the one that shaped the rule. "It cannot be made
+ * here, but one made Non-Ladder can be traded to you" is a correct `usable`
+ * row. A sentence-scoped denial check rejects it — the word "cannot" is
+ * present — so the check is clause-scoped instead. Without this control the
+ * rule reads as working while being unusable for any genuinely `usable` item.
+ */
+const honestUsable = JSON.parse(
+  JSON.stringify(getRuneword("en-us", "mosaic")!.availability!),
+) as Availability;
+honestUsable.rows = honestUsable.rows.map((r) =>
+  r.mode === "ladder" ? { ...r, status: "usable" as const } : r,
+);
+honestUsable.notes.rows.ladder =
+  "It cannot be made here, but one made Non-Ladder can be traded to you and still works.";
+check(
+  "leaves a genuine `usable` row alone when it does name its route",
+  checkAvailabilityShape(honestUsable, "control").length === 0,
+  checkAvailabilityShape(honestUsable, "control").map((p) => p.message).join(" | "),
+);
+check(
+  "and a denial in a different clause does not mask the route",
+  affirmsAcquisitionRoute(honestUsable.notes.rows.ladder),
 );
 
 // ---------------------------------------------------------------------------

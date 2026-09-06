@@ -1792,31 +1792,31 @@ export const runewords: Runeword[] = [
     commonMistakes: [
       "**Socketing in rune order Mal, Gul, Amn.** Getting it wrong destroys three high runes' worth of value; there is no undo beyond a Hel rune and starting again with a new base.",
       "Assuming two of them give 100%. The property is 50 on each claw and the extraction says nothing about how two are combined — see the build page.",
-      "Expecting it on a Ladder character you are levelling now. It cannot be made there. The block above is the whole story.",
+      "**Planning a Ladder character around it, and expecting to trade for one.** Nobody on Ladder can make one, so nobody on Ladder has one to sell — and items move out of Ladder at season end, never into it. \"Can be worn\" is true and, on a Ladder character, worth nothing.",
     ],
     availability: {
       rows: [
-        { mode: "ladder", status: "usable" },
+        { mode: "ladder", status: "unobtainable" },
         { mode: "non-ladder-online", status: "craftable" },
         { mode: "offline", status: "craftable" },
       ],
       notes: {
         rows: {
           ladder:
-            "**The one runeword in the file that cannot be made on Ladder.** The recipe is blocked; the item is not. A claw made elsewhere and brought over on a transferred character still works, and so does one traded to you.",
+            "**The one runeword in the file that cannot be made on Ladder — and there is no other way to one either.** The recipe is blocked, so no Mosaic can come into existence on Ladder. Trading cannot supply what nobody can make: the season opened with an empty character group, and no route adds to it. Transfer does not help, because the season-end conversion runs Ladder into Non-Ladder and never the other way. A Mosaic would function on a Ladder character; the point is that no Ladder character can come by one.",
           "non-ladder-online":
-            "Made and worn normally. This is where every current Mosaic guide is written from, whether or not it says so.",
+            "Made and worn normally, and the only online route there is. This is where every current Mosaic guide is written from, whether or not it says so.",
           offline:
             "Made and worn normally. Offline has no ladder, so the crafting block has nothing to apply to.",
         },
         consequence:
-          "If you are playing the current Ladder season and have no character to transfer one from, **you cannot make this claw** and the build has to be played without it. The build page's opening package is written for exactly that case.",
+          "If you are playing the current Ladder season, **there is no legitimate way to obtain this claw at all** — not by making it, not by buying it, not by carrying one in. The build has to be played without it, and the build page's default route is written for exactly that case rather than treating it as a downgrade.",
         history:
-          "It was Ladder-only when it arrived in Ladder Season 3, and stayed Ladder-only through Season 12. That is the reverse of today's answer, and it is why so much of what is written about Mosaic is backwards rather than merely out of date.",
+          "Two different restrictions have applied to Mosaic, and confusing them is why so much written about it is backwards rather than merely out of date. It arrived Ladder-**only** in Season 3 and stayed that way through Season 12 — the reverse of today's answer — and that exclusivity has since expired. What blocks it now is a separate, item-specific crafting flag added later, the only one of its kind in the file. Blizzard gave the reason as a graphics fault that could crash clients, not balance, and has not revisited it in the two patches since.",
       },
       source:
         "json/runes.json @ blizzhackers/d2data fc46999 — disallowCraftingInLadder: 1, firstLadderSeason: 3, lastLadderSeason: 12",
-      checked: "2026-09-05",
+      checked: "2026-09-06",
       baseline: "D2R Patch 3.3 / Ladder Season 15",
     },
     notes:

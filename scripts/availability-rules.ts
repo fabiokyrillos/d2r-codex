@@ -41,6 +41,7 @@ export const AVAILABILITY_RULES = [
   "gated-item-has-no-availability",
   "mode-claim-collapses-craft-and-use",
   "ladder-only-stated-as-current",
+  "status-contradicts-its-own-prose",
 ] as const;
 export type AvailabilityRule = (typeof AVAILABILITY_RULES)[number];
 
@@ -77,6 +78,69 @@ const LADDER_ONLY_PRESENT =
 /** Words that put a Ladder-only statement safely in the past. */
 const PAST_TENSE =
   /\b(was|were|used to|until|through|arrived|historic\w*|season \d+|foi|era|eram|até|chegou|histori\w*|temporada \d+|inverso|backwards|reverse)\b/i;
+
+/*
+ * Getting hold of one: the third verb, and the one the first version of this
+ * file had no word for.
+ *
+ * The bug this pair exists to catch shipped for a week. Mosaic's Ladder row was
+ * `usable`, and the sentence under it read "a claw made elsewhere and brought
+ * over on a transferred character still works, and so does one traded to you".
+ * Both halves are false — the season-end conversion runs Ladder *into*
+ * Non-Ladder and never back, and nothing on Ladder can make one, so no Ladder
+ * player has one to trade. The prose sweep could not have caught it: that
+ * sentence never says "Mosaic", so `mentionsGatedItem` skips it.
+ *
+ * What catches it is the coupling. A status and the sentence beneath it are
+ * written by different hands at different times, so making each constrain the
+ * other means neither can drift alone:
+ *
+ *   `usable`        must describe a route in, or it is asserting one it will
+ *                   not name
+ *   `unobtainable`  must not describe a route in, or it contradicts itself
+ *
+ * Flipping the status back to `usable` with the honest prose fails. Restoring
+ * the invented routes under `unobtainable` fails. Doing both at once is no
+ * longer a slip — it is someone deliberately claiming a route exists, which is
+ * a claim a human should have to make on purpose.
+ */
+const ACQUISITION_ROUTE =
+  /\b(trade[dsr]?|trading|transferr?\w*|brought|bring|carried|carry|bought|buy|purchas\w*|import\w*|troca\w*|trocad\w*|transferid\w*|trazid\w*|trazer|comprar?|comprad\w*)\b/i;
+
+/** Words that turn a route into a permission rather than a mention of one. */
+const PERMITS =
+  /\b(can|could|may|still\s+(?:works?|functions?)|works?|functions?|fine|able|possible|pode[m]?|consegue[m]?|dá para|continua\s+funcionand\w*|funciona\w*|serve)\b/i;
+
+/**
+ * A denial anywhere in the same sentence. Sentence-scoped, not line-scoped —
+ * scoping an escape clause to the line is the hole that let
+ * `firing-interval-as-laying-speed` be defeated by any paragraph containing the
+ * word "not", and the same shape would defeat this.
+ */
+const DENIES =
+  /\b(cannot|can't|cant|never|nobody|no\s?one|nothing|none|not|isn't|doesn't|does\s+not|won't|will\s+not|unable|impossible|empty|zero|não|nao|nenhum\w*|ninguém|ninguem|nunca|sem|vazi\w*)\b/i;
+
+/**
+ * Contrastive joins, which is where a denial stops applying.
+ *
+ * Scoping the denial to the sentence was still too coarse, and the control that
+ * caught it is the one that matters: "It cannot be made here, **but** one made
+ * Non-Ladder can be traded to you" is a perfectly good `usable` row, and a
+ * sentence-scoped reading rejects it because the word "cannot" is present. The
+ * denial belongs to the first clause and the route to the second. Anything
+ * coarser than a clause either rejects the honest sentence or, tightened the
+ * other way, waves through the dishonest one.
+ */
+const CONTRAST =
+  /\b(but|however|though|although|whereas|yet|mas|por[ée]m|contudo|entretanto|todavia|embora|j[áa]\s+que)\b|[;—]/i;
+
+/** Does this prose affirm that a copy can arrive in this mode from outside? */
+export function affirmsAcquisitionRoute(prose: string): boolean {
+  return sentencesIn(prose)
+    .flatMap((s) => s.split(CONTRAST))
+    .filter((c): c is string => typeof c === "string" && c.trim().length > 0)
+    .some((c) => ACQUISITION_ROUTE.test(c) && PERMITS.test(c) && !DENIES.test(c));
+}
 
 function sentencesIn(line: string): string[] {
   return line
@@ -190,6 +254,27 @@ export function checkAvailabilityShape(
   if (!availability.notes?.consequence?.trim())
     add("availability-notes-missing", "no consequence line");
 
+  /*
+   * The status and the sentence under it have to agree about the third verb.
+   * See `affirmsAcquisitionRoute` for what shipped before this existed.
+   */
+  for (const row of availability.rows) {
+    const prose = availability.notes?.rows?.[row.mode];
+    if (!prose || !prose.trim()) continue;
+    const affirms = affirmsAcquisitionRoute(prose);
+
+    if (row.status === "unobtainable" && affirms)
+      add(
+        "status-contradicts-its-own-prose",
+        `mode "${row.mode}" is marked unobtainable, then its prose describes a way to get one`,
+      );
+    if (row.status === "usable" && !affirms)
+      add(
+        "status-contradicts-its-own-prose",
+        `mode "${row.mode}" is marked usable — which means made elsewhere and brought here — but its prose never says how one arrives. If there is no route, the status is "unobtainable"`,
+      );
+  }
+
   if (!availability.source?.trim())
     add("availability-provenance-missing", "no source");
   if (!availability.baseline?.trim())
@@ -229,6 +314,7 @@ export function checkGates(
 export const EXPECTED_STATUSES: readonly AvailabilityStatus[] = [
   "craftable",
   "usable",
+  "unobtainable",
   "disabled",
   "unknown",
 ];

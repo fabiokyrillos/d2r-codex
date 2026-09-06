@@ -681,21 +681,21 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     commonMistakes: [
       "**Socketar fora da ordem Mal, Gul, Amn.** Errar destrói o equivalente a três runas altas; não há desfazer além de uma runa Hel e recomeçar com outra base.",
       "Assumir que duas delas dão 100%. A propriedade vale 50 em cada garra e a extração não diz nada sobre como duas se combinam — veja a página da build.",
-      "Contar com ela num personagem de Ladder que você está evoluindo agora. Lá ela não pode ser fabricada. O bloco acima é a história inteira.",
+      "**Planejar um personagem de Ladder em torno dela, contando com uma troca.** Ninguém no Ladder consegue fabricar uma, então ninguém no Ladder tem uma para vender — e os itens saem do Ladder no fim da temporada, nunca entram. \"Pode ser usada\" é verdade e, num personagem de Ladder, não vale nada.",
     ],
     availability: {
       rows: {
         ladder:
-          "**A única runeword do arquivo que não pode ser fabricada no Ladder.** A receita está bloqueada; o item não está. Uma garra feita em outro modo e trazida num personagem transferido continua funcionando, e uma recebida em troca também.",
+          "**A única runeword do arquivo que não pode ser fabricada no Ladder — e também não há outro caminho até ela.** A receita está bloqueada, então nenhuma Mosaic chega a existir no Ladder. Troca não fornece o que ninguém pode fabricar: a temporada começou com um grupo de personagens vazio, e nenhuma rota acrescenta a ele. Transferência não resolve, porque a conversão de fim de temporada leva do Ladder para o Non-Ladder e nunca no sentido contrário. Uma Mosaic funcionaria num personagem de Ladder; o ponto é que nenhum personagem de Ladder consegue obter uma.",
         "non-ladder-online":
-          "Fabricada e usada normalmente. É daqui que todo guia atual de Mosaic é escrito, diga ele isso ou não.",
+          "Fabricada e usada normalmente, e é a única rota online que existe. É daqui que todo guia atual de Mosaic é escrito, diga ele isso ou não.",
         offline:
           "Fabricada e usada normalmente. Offline não tem ladder, então o bloqueio de fabricação não tem onde se aplicar.",
       },
       consequence:
-        "Se você está jogando a temporada atual de Ladder e não tem um personagem de onde transferir uma, **você não pode fabricar esta garra** e a build precisa ser jogada sem ela. O pacote de abertura da página da build foi escrito exatamente para esse caso.",
+        "Se você está jogando a temporada atual de Ladder, **não existe forma legítima de obter esta garra** — nem fabricando, nem comprando, nem trazendo uma de fora. A build precisa ser jogada sem ela, e a rota padrão da página da build foi escrita exatamente para esse caso, em vez de tratá-lo como um rebaixamento.",
       history:
-        "Ela foi Ladder-only quando chegou na Ladder Season 3, e continuou Ladder-only até a Season 12. Isso é o inverso da resposta de hoje, e é por isso que boa parte do que se escreve sobre Mosaic está invertido, e não apenas desatualizado.",
+        "Duas restrições diferentes já valeram para a Mosaic, e confundir as duas é o motivo de tanta coisa escrita sobre ela estar invertida, e não apenas desatualizada. Ela chegou Ladder-**only** na Season 3 e ficou assim até a Season 12 — o inverso da resposta de hoje — e essa exclusividade já expirou. O que a bloqueia agora é outra coisa: uma marca de fabricação específica do item, acrescentada depois, a única do tipo no arquivo. A Blizzard deu como razão uma falha gráfica capaz de derrubar clientes, não balanceamento, e não voltou ao assunto nos dois patches seguintes.",
     },
     notes:
       "`disallowCraftingInLadder` está marcado em **exatamente uma** das 181 runewords da extração fixada, e é esta. A razão declarada pela Blizzard foi uma falha gráfica capaz de derrubar clientes, não balanceamento — e `charge-noconsume` continua 50, inalterado, então a runeword não sofreu nerf. Ela foi tornada infabricável num modo, o que é outra coisa.",

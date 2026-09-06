@@ -169,12 +169,34 @@ export type PlayDifficulty = (typeof DIFFICULTY_RATINGS)[number];
 /**
  * What you can do with a thing in one mode, right now, on one baseline.
  *
- * - `craftable`  can be made here, and therefore used here
- * - `usable`     can be equipped and used here, but cannot be made here
- * - `disabled`   cannot be made and cannot be used here
- * - `unknown`    not established — say so rather than guess
+ * There are **three** verbs, not two: make it, get hold of one, use it. The
+ * first version of this type had words for making and using and nothing for
+ * getting, and the gap did exactly the damage you would predict — Mosaic's
+ * Ladder row said "can be worn, not made", and the prose beneath it then
+ * invented two acquisition routes that do not exist, because "usable" reads as
+ * an invitation to go and find one.
+ *
+ * - `craftable`     can be made here, and therefore used here
+ * - `usable`        can be made elsewhere, brought here, and used here
+ * - `unobtainable`  would work here, but there is no legitimate route to a copy
+ *                   in this mode — not by making, not by trade, not by transfer
+ * - `disabled`      cannot be made and would not work if you had one
+ * - `unknown`       not established — say so rather than guess
+ *
+ * `unobtainable` and `disabled` are not the same claim and must not be
+ * collapsed. `disabled` is about the item; `unobtainable` is about the routes
+ * to it, and it is the answer whenever every route is closed *and* the item
+ * would still function. The distinction is what lets a page say "this would
+ * work, and you still cannot have one" without either overstating the block or
+ * implying a supply that is not there.
  */
-export const AVAILABILITY_STATUSES = ["craftable", "usable", "disabled", "unknown"] as const;
+export const AVAILABILITY_STATUSES = [
+  "craftable",
+  "usable",
+  "unobtainable",
+  "disabled",
+  "unknown",
+] as const;
 export type AvailabilityStatus = (typeof AVAILABILITY_STATUSES)[number];
 
 /**

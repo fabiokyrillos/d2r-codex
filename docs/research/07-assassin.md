@@ -184,13 +184,61 @@ This is the same set re-examined against the pinned data rather than against
 the guides, with the columns a build page actually needs. **Nothing was
 re-researched that cycle 1 had already settled and sourced**; what changed is
 that the point plans and rotations below are now derived from `skills.json`
-rather than transcribed, and three verdicts moved.
+rather than transcribed, and three verdicts moved. A fourth — Riftsin — moved in
+cycle 4 and has its own section below.
 
 Sources are unchanged from §3 and are not re-listed per row: the pinned
 extraction at `fc46999` for every mechanical figure, Maxroll's nine Assassin
 guides (all stamped 2026-05-22) for what is *played*, and Blizzard's patch
 material for availability. Where a guide and the extraction disagree, the row
 says so.
+
+### The count, stated as a number so it cannot drift again
+
+The table below has **nine rows and nine verdicts**, and rows are not pages. A
+closing note in cycle 3 said "2 of 7 builds" while listing six still to come,
+which is eight, and neither number matched the table. So the arithmetic is
+written out here once:
+
+| | |
+| --- | --- |
+| Families examined | **9** |
+| — folded into another page (Fire Blast Assassin) | −1 |
+| — demoted to a gear package (Riftsin, see below) | −1 |
+| **Build pages the Assassin gets** | **7** |
+| Published (Lightning Trapsin, Fire Trapsin) | 2 |
+| Remaining | **5** |
+
+The five remaining, in build order: **Phoenix Strike, Kicksin, Blade Fury,
+Dragon Tail, Whirlwind Assassin.** The Assassin is complete when those five
+exist, and not before.
+
+### Riftsin: a package on the Kicksin page, not a page
+
+Verdict moved this cycle, from CREATE to a named gear package, and the reason is
+one column. **Dragon Talon carries no `SrcDam` and `weapsel = 4`** — the weapon
+slot contributes nothing at all to a kick, whose base damage is the boots'
+`mindam`/`maxdam`. So a Riftsin is the same skills, the same rotation, the same
+boots, the same attributes, the same target content and the same levelling path,
+holding something different in its hands. Measured against the seven axes a
+separate page has to move, it moves one, narrowly, and that one is confined to
+the two hand slots.
+
+It is a *package* rather than a one-line note because the swap is not free:
+Rift is a polearm or scepter, so it forfeits **Weapon Block** (`passiveitype =
+"h2h"`, claws in both hands) and the claw `+skills` that feed `calc1 =
+"lvl/6+1"` — which can cost a whole kick per activation. What buys that back is
+`hit-skill` → level-16 Tornado, whose `item_skillonhit` fires on
+`domeleedamage`, the same per-hit event a multi-kick Dragon Talon presents over
+and over. That is a real cost and a real benefit, and it needs a costed section
+rather than a sentence.
+
+**And one caveat ships with it.** Whether a weapon-sourced `item_skillonhit`
+(flagged `damagerelated = 1`) fires at all from a `weapsel = 4` armour-strike is
+**not establishable from the pinned data**. Rift's two largest lines — 160–250
+magic and 60–180 fire — are weapon-damage adds a kick structurally cannot use.
+If the proc does not fire either, the package is worthless and the honest
+verdict becomes REJECT. The page says so rather than picking a side.
 
 ### Availability, stated once
 
@@ -211,7 +259,7 @@ The distinction now has a type — `Availability` in `lib/types/core.ts` — and
 | 4 | **Kicksin** | Dragon Talon Sin, Kick Assassin, Kicker | Dragon Talon | Dragon Talon 20, Venom 20, Fade, Weapon Block, Shadow Master, Burst of Speed | Tiger Strike to 3 charges, release with Dragon Talon's kick chain | **Boots** — kick damage lives there and nowhere else | **CREATE** — Uber specialist |
 | 5 | **Blade Fury** | Bladesin, Furysin | Blade Fury | Blade Fury 20, Blade Sentinel 20, Blade Shield 20, Venom 20 | Hold Blade Fury at range; Blade Shield running | The one Assassin build that wants a **normal weapon**, not claws | **CREATE** |
 | 6 | **Dragon Tail** | Tigertail | Dragon Tail | Dragon Tail 20, Tiger Strike 20, Venom, Fade | Tiger Strike ×3 then one Dragon Tail | Boots again, but the payload is a **fire** blast | **CREATE** — see the −40% attack speed note below |
-| 7 | **Riftsin** | — | Dragon Talon | Dragon Talon 20 plus the trap tree for utility | Kick for hit-rate; the weapon procs Frozen Orb | **Rift** — a *weapon* runeword, so the Mosaic block does not touch it | **CREATE** — hard ceiling at /players 1-3 |
+| 7 | **Riftsin** | — | Dragon Talon | identical to the Kicksin | identical to the Kicksin | **Rift** — a polearm or scepter, so it costs Weapon Block and the claw +skills | **PACKAGE INSIDE KICKSIN** — verdict moved, see above |
 | 8 | **Whirlwind Assassin** | WWsin | Whirlwind (from the item) | Zero points in the damage skill; everything in Venom, Fade, Weapon Block, Shadow Master | Whirlwind | **Chaos** — claw-only, and verified to carry no restriction flag | **CREATE**, low priority |
 | 9 | **Fire Blast Assassin** | Bomber, Bombasin | Fire Blast | Fire Blast 20 fed by all five traps at 11%/pt | Aimed throw | Nothing distinctive | **FOLD INTO Lightning Trapsin** — verdict moved, see below |
 
@@ -227,7 +275,7 @@ Trapsin levels on *fire* and respecs once, at level 45; the leveling page states
 the closure. Nothing was published on the strength of the cycle-1 sentence, so
 this is a correction to a note rather than to a page.
 
-### Three verdicts that moved, and why
+### Three verdicts that moved in cycle 2, and why
 
 - **Fire Blast Assassin: CREATE (borderline) → FOLD.** Cycle 1 called it the
   weakest of the nine and said it could be folded "if a tighter set is wanted".
@@ -305,9 +353,20 @@ available to anyone editing this page next.
    source, so the pinned data is silent rather than opposed."** **This is simply
    false.** The column is `anim`, it is present on every row, and it is the
    column that decides which animation the character plays — which is the thing
-   a speed stat shortens. Cycle 1 reasoned from `UseAttackRate`, which decides
-   whether an action can *miss*; cycle 2 correctly rejected that and then
-   concluded the data was silent, without looking one column further.
+   a speed stat shortens. Cycle 1 reasoned from `UseAttackRate`; cycle 2
+   correctly rejected that and then concluded the data was silent, without
+   looking one column further.
+
+   Cycle 4 footnote: cycles 1 and 2 both described `UseAttackRate` as the column
+   that "decides whether an action can *miss*". **It is not, and controls in the
+   same file settle it** — Zeal, Whirlwind, Fend, Charge and Leap Attack all
+   leave it blank and every one of them misses; 263 of 429 rows are blank. It
+   marks the rows that call the standard attack-rate path, and a blank row
+   resolves its own hit check inside `srvdofunc`. A skill's attack rating lives
+   in `ToHit` and `LevToHit`, present on 72 rows. Nothing in §5 rests on this —
+   the speed finding is `anim` plus the animdata plus the 15/15 empirical
+   control — but the sentence was wrong and is retracted here rather than left
+   for a later cycle to reason from.
 
 ### What the data says
 

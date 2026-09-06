@@ -111,8 +111,13 @@ export const VENOM_POISON_FRAMES = 10;
 // with the claim that "there is no column in skills.txt that assigns an
 // animation-speed source". There is. It is `anim`, and it is the column that
 // decides which animation the character plays — which is what a speed stat
-// shortens. `UseAttackRate`, the column cycle 1 reasoned from, decides whether
-// the action can miss; both readings were wrong about different columns.
+// shortens. `UseAttackRate`, the column cycle 1 reasoned from, does not decide
+// whether an action can miss either — Zeal, Whirlwind, Fend, Charge and Leap
+// Attack all leave it blank and all of them miss, and 263 of the 429 rows are
+// blank. It marks the skills that call the standard attack-rate path; a blank
+// row resolves its own hit check in its `srvdofunc`. The columns that do carry
+// a skill's attack rating are `ToHit` and `LevToHit`, on 72 rows. So both
+// cycles reasoned from a column that could not answer the question they asked.
 //
 // The Assassin has three animation families and they do not overlap:
 //

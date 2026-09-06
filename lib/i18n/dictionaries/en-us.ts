@@ -1160,12 +1160,13 @@ export const enUS = {
   availability: {
     title: "Where you can get this, and where you can only wear it",
     description:
-      "Making a thing and using it are two different permissions, and for one runeword in the game they currently differ. This table answers both for every mode, rather than picking a side.",
+      "Making a thing, getting hold of one and using it are three different permissions, and for one runeword in the game all three currently differ. This table answers them for every mode, rather than picking a side — because a mode where the item works is not automatically a mode where you can come by one.",
     modeLadder: "Ladder",
     modeNonLadderOnline: "Non-Ladder, online",
     modeOffline: "Offline",
     statusCraftable: "Can be made",
     statusUsable: "Can be worn, not made",
+    statusUnobtainable: "Would work, but you cannot get one",
     statusDisabled: "Not available",
     statusUnknown: "Not established",
     sourceLabel: "Read from",

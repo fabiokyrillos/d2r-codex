@@ -1099,12 +1099,13 @@ export const ptBR: Dictionary = {
   availability: {
     title: "Onde dá para conseguir, e onde só dá para usar",
     description:
-      "Fabricar uma coisa e usá-la são duas permissões diferentes, e para uma runeword do jogo elas hoje divergem. Esta tabela responde às duas em todo modo, em vez de escolher um lado.",
+      "Fabricar uma coisa, conseguir uma e usá-la são três permissões diferentes, e para uma runeword do jogo as três hoje divergem. Esta tabela responde às três em todo modo, em vez de escolher um lado — porque um modo onde o item funciona não é automaticamente um modo onde dá para obter um.",
     modeLadder: "Ladder",
     modeNonLadderOnline: "Non-Ladder, online",
     modeOffline: "Offline",
     statusCraftable: "Pode ser fabricada",
     statusUsable: "Pode ser usada, não fabricada",
+    statusUnobtainable: "Funcionaria, mas não há como obter",
     statusDisabled: "Indisponível",
     statusUnknown: "Não estabelecido",
     sourceLabel: "Lido de",
