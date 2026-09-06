@@ -141,9 +141,20 @@ be spent as a result.
 | **Baseline** | D2R Patch 3.3 / Ladder Season 15 extraction |
 | **Regenerate** | `npm run gen:skill-graph` |
 | **Fields taken** | `charclass`, `reqlevel`, `reqskill1`, `reqskill2`, `SkillPage`, the `calc`/`Param` columns for synergies and effects, `mana`/`lvlmana`/`manashift`, and `petmax` |
-| **Normalization** | Filter to the `charclass` codes in scope — currently `pal`, `sor`, `ama`, `nec`; slugify the identifier through `SLUG_OVERRIDES`; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
-| **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **120 of 120** skills |
-| **Non-drift** | `npm run check:graph-drift` compares every node body against the file as committed at `c98e3ed` and fails on any change to one that already existed |
+| **Normalization** | Filter to the `charclass` codes in scope — currently `pal`, `sor`, `ama`, `nec`, `dru`, `ass`; slugify the identifier through `SLUG_OVERRIDES`; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
+| **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **180 of 180** skills |
+| **Non-drift** | `npm run check:graph-drift` compares every node body against the file as committed at `c785b47` and fails on any change to one that already existed |
+
+> Three of the rows above had gone stale, and they are worth naming because of
+> *how* they went stale. The scope, the agreement count and the drift baseline
+> are all facts about files this table describes but does not read: the Druid
+> and Assassin passes each added a `charclass` code and sixty nodes, and the
+> freeze-length regeneration moved the drift baseline from `c98e3ed` to
+> `c785b47`, and nothing failed, because a prose table cannot disagree with
+> anything. The generator prints all three on every run —
+> `skills: 180`, `agreement: 180/180`, and the page→tree map — so the check is
+> to read that output rather than to trust this table. Re-read it whenever a
+> class enters scope.
 
 **Why a commit and not `master`.** A moving ref means the generator is not a
 function of anything written down: re-running it later can rewrite the graph

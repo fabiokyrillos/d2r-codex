@@ -281,9 +281,20 @@ console.log("\nOR inside a group, AND between groups");
     filterBuilds(rows, EMPTY_FILTER_STATE).map((r) => r.slug).join() ===
       rows.map((r) => r.slug).join(),
   );
+  /*
+   * `tinker` is not a Diablo II class, and that is the point.
+   *
+   * These three assertions need a value with no rows behind it, and they used
+   * to spell it `barbarian` and `warlock` — real classes that happened to have
+   * no builds yet. `rows` comes from the live registry, and filter options are
+   * derived from it ("an option with no rows behind it is never offered"), so
+   * the day either class is published the assertion stops testing what its name
+   * says and starts failing for an unrelated reason. A word that can never be a
+   * class keeps the claim true forever, the same way `plasma` does for damage.
+   */
   check(
     "a group with no rows behind the selection returns nothing rather than everything",
-    filterBuilds(rows, state({ class: ["barbarian"] })).length === 0,
+    filterBuilds(rows, state({ class: ["tinker"] })).length === 0,
   );
 }
 
@@ -410,11 +421,11 @@ console.log("\nQuery parameters: round trip, and everything invalid dropped");
     parse("damage=cold,plasma,,cold").damage.join() === "cold",
     parse("damage=cold,plasma,,cold").damage.join(),
   );
-  check("a group with only unknown values ends up empty", parse("class=barbarian").class.length === 0);
+  check("a group with only unknown values ends up empty", parse("class=tinker").class.length === 0);
   check("a garbage query string still yields a usable state", isEmptyState(parse("=&&&%%%=")));
   check(
     "a filtered link with only invalid values shows the whole catalogue",
-    filterBuilds(rows, parse("damage=plasma&class=warlock")).length === rows.length,
+    filterBuilds(rows, parse("damage=plasma&class=tinker")).length === rows.length,
   );
   check(
     "an over-long query is truncated rather than carried",
