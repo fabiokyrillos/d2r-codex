@@ -647,11 +647,19 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
        * that fires by itself while you are laying Lightning Sentries" names both
        * clocks and confuses neither, and the levelling page needs to say it.
        */
+      /*
+       * The denial is looked for in the sentence, not the line. Scoping it to
+       * the line meant any paragraph containing the word "not" anywhere became
+       * immune — which an adversarial pass proved by planting "more Increased
+       * Attack Speed also lets the traps you lay fire their shots faster" into
+       * a note whose first clause happened to say "not a sentry", and watching
+       * the rule stay silent.
+       */
       if (
         aboutLaying &&
         SENTRY_FIRES.test(sentence) &&
         (CAST_RATE.test(sentence) || ATTACK_SPEED.test(sentence)) &&
-        !DRAWS_THE_DISTINCTION(line)
+        !DRAWS_THE_DISTINCTION(sentence)
       ) {
         add(
           "firing-interval-as-laying-speed",

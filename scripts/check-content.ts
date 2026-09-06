@@ -158,7 +158,31 @@ function buildProse(build: Build): string[] {
     build.selfFoundNotes ?? "",
     build.levelingPath?.summary ?? "",
     build.levelingPath?.respecAt ?? "",
+    /*
+     * `breakpointNotes` and the skill packages were both outside this sweep
+     * until an adversarial pass planted a mutation in each and neither was
+     * caught. They are not minor fields: `breakpointNotes` is where a build
+     * says which stat governs its speed, and the packages are a third of every
+     * page that has them. A rule that cannot see a string is not a rule.
+     */
+    build.breakpointNotes ?? "",
   ];
+  for (const group of build.skillPackages ?? []) {
+    out.push(group.name, group.intro);
+    for (const pkg of group.packages) {
+      out.push(
+        pkg.name,
+        pkg.when,
+        pkg.tradeoff,
+        pkg.gearNote ?? "",
+        pkg.statNote ?? "",
+        pkg.rotationNote ?? "",
+        pkg.contentNote ?? "",
+        pkg.remainderNote ?? "",
+      );
+      for (const allocation of pkg.skills) out.push(allocation.note ?? "");
+    }
+  }
   for (const allocation of build.skills) out.push(allocation.note ?? "");
   for (const breakpoint of build.breakpoints) out.push(breakpoint.why);
   for (const entry of build.farming) out.push(entry.why);

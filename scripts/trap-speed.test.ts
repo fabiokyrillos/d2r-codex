@@ -208,6 +208,33 @@ check(
   "and says so explicitly rather than by omission",
   /does not govern trap laying/i.test(fcrAssassin?.summary ?? ""),
 );
+
+/*
+ * A structural check, because the prose rule cannot do this one.
+ *
+ * `trap-laying-on-cast-rate` needs a cast-rate term *in the sentence* before it
+ * will fire. A breakpoint table does not need one: its own `stat` supplies the
+ * context, so "It also governs how fast you lay traps." in an `fcr` table's
+ * summary is the full claim and names no stat at all. An adversarial pass
+ * planted exactly that and the sweep stayed silent.
+ *
+ * So every cast-rate table is checked against its own `stat` field: if it
+ * mentions laying traps, it must be denying it.
+ */
+const MENTIONS_LAYING = /\b(lay|laying|lays)\b[^.]{0,40}\btraps?\b|\btrap[- ]laying\b|\bcoloca[çc][ãa]o de armadilhas?\b|\bcolocar\b[^.]{0,40}\b(traps?|armadilhas?)\b/i;
+const DENIES = /\b(not|never|cannot|can't|does not|doesn't|no longer)\b|(?:^|\s)n[ãa]o\b/i;
+for (const table of breakpointTables.filter((t) => t.stat === "fcr")) {
+  for (const line of [table.summary, ...(table.guidance ?? [])]) {
+    for (const sentence of line.split(/(?<=[.!?])\s+/)) {
+      if (!MENTIONS_LAYING.test(sentence)) continue;
+      check(
+        `${table.slug}: a cast-rate table mentioning trap laying denies it`,
+        DENIES.test(sentence),
+        sentence.slice(0, 90),
+      );
+    }
+  }
+}
 check(
   "and says which animation it is",
   fcrAssassin?.variant !== undefined && /cast/i.test(fcrAssassin.variant),
