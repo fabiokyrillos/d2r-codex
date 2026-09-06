@@ -42,7 +42,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
   "summon-goatman": {
     summary: "Um demônio corpo a corpo que aprende quatro habilidades próprias conforme a skill cresce.",
     mechanics: [
-      "Ele ganha uma skill própria em cada um dos cinco primeiros hard points: **Stun no 2, Berserk no 3, Frenzy no 4 e Cleave no 5**. Os quatro primeiros pontos compram comportamento em vez de números, o que os torna baratos e torna os seguintes comuns.",
+      "Ele ganha uma skill própria em cada um dos hard points **dois a cinco**: Stun no 2, Berserk no 3, Frenzy no 4 e Cleave no 5. Nada chega no primeiro ponto e nada depois do quinto, então esses quatro compram comportamento em vez de números — o que os torna baratos e torna os seguintes comuns.",
       "O dano dele começa em **+10% e sobe 10% por nível**, a attack rating em **140 com mais 40 por nível**, e a defesa em **100 com mais 20 por nível**. Demonic Mastery soma aos dois primeiros por cima disso.",
       "**Quantos você tem não se decide aqui.** Os três summons compartilham o pet type `demon` e o mesmo teto — um, subindo para dois com 5 hard points em Demonic Mastery e três com 10 — então o limite é o total entre todo tipo de demônio, não um de cada.",
       "Pontos em **Death Mark** dão Crushing Blow a ele: **5% com um ponto, mais 1% por nível de Death Mark**.",
@@ -175,7 +175,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "**A tabela mágica é o dano inteiro.** Diferente de Echoing Strike e Mirrored Blades, que rodam na mesma função de servidor e ambas declaram uma parcela da arma, esta linha não declara nenhuma e zera as colunas de dano e de dano fixo. Se uma extração futura der a ela uma parcela de arma, é esta frase que muda.",
       "É a **skill de movimento** da classe: o warp é o ponto, e a explosão mágica de 8-10 num raio de 4 é o que você ganha por usá-la ofensivamente.",
       "Custa **15 de mana fixos em todo nível**, o que a torna barata para repetir tarde e cara cedo.",
-      "A sinergia dela é a maior da árvore, com **24% por nível**, vinda de duas skills que uma build de arma já quer.",
+      "A sinergia dela é de **24% por nível** vinda de cada uma de duas skills que uma build de arma já quer — quase cinco vezes a taxa que o Echoing Strike recolhe do mesmo par.",
     ],
     synergyBonuses: ["+24% de dano por nível", "+24% de dano por nível"],
   },
@@ -196,7 +196,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "O hex tira **30% da defesa do alvo com mais 1% por nível, até um teto de 50%**, e **25% da attack rating dele**.",
       "Dura **3600 frames com mais 300 por nível** — cerca de dois minutos e meio com um ponto. É um debuff que você aplica uma vez por grupo, não um que você mantém.",
       "Ela **não pode ser usada com armas de mão a mão**. Todo outro tipo de arma funciona.",
-      "**Três skills sobem o dano dela em 35% por nível cada** — Consume, Hex: Purge e Mirrored Blades — que é a sinergia de dano mais íngreme da classe, e ela atravessa as três árvores para juntar isso.",
+      "**Três skills sobem o dano dela em 35% por nível cada** — Consume, Hex: Purge e Mirrored Blades, uma de cada uma das três árvores. Sessenta hard points espalhados assim chegam a +2100% num único hex; só o Eldritch Blast chega perto, com +2000% vindos de duas fontes de 50%.",
     ],
     synergyBonuses: [
       "+35% de dano por nível",

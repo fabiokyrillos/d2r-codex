@@ -125,7 +125,7 @@ export const bloodBoilWarlock: Build = {
               points: 20,
               role: "utility",
               order: 5,
-              note: "It learns Stun at 2, Berserk at 3, Frenzy at 4 and Cleave at 5 — the first five points buy behaviour rather than numbers, and the fifteen after them buy damage and defence.",
+              note: "It learns Stun at 2, Berserk at 3, Frenzy at 4 and Cleave at 5 — the four points from the second to the fifth buy behaviour rather than numbers, and the fifteen after them buy damage and defence.",
             },
             { skill: "death-mark", points: 1, role: "utility" },
           ],

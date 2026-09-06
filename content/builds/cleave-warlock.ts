@@ -41,7 +41,7 @@ export const cleaveWarlock: Build = {
   playstyle:
     "You hold one button. Cleave sweeps eleven of thirty slices of a circle at one point and twenty at twenty — roughly 132 degrees opening to 240 — carries the weapon's full damage, costs a flat 3 mana that never grows, and swings even when you have no mana at all. Mirrored Blades is the boss button: two ethereal duplicates at one point and five at fifteen, each one a full weapon hit. The hexes are applied by hitting things rather than cast, so they land while you are already doing the thing you were going to do — Hex: Bane strips defence and writes magic damage onto the weapon, Hex: Purge detonates on about seven hits in ten. It is the least fussy melee build on this site and the only one that never runs out of mana.",
   strengths: [
-    "+600% weapon damage from three synergies, the largest multiplier available to any Warlock skill",
+    "+600% weapon damage from three synergies — three times what the tree's other weapon skill collects",
     "A two-handed weapon and an off-hand at the same time — no other class in the game can do this",
     "Cleave costs a flat 3 mana at every level and swings without mana at all",
     "Physical and magic at once: physical immunity is recorded in eight catalogued areas and magic in one",

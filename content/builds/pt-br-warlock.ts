@@ -560,7 +560,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
     playstyle:
       "Você segura um botão. Cleave varre onze de trinta fatias de um círculo com um ponto e vinte com vinte — algo como 132 graus abrindo para 240 — carrega o dano cheio da arma, custa 3 de mana fixos que nunca crescem, e golpeia mesmo sem mana nenhuma. Mirrored Blades é o botão de chefe: duas duplicatas etéreas com um ponto e cinco com quinze, cada uma um golpe cheio de arma. Os hexes são aplicados batendo em coisas, não conjurando, então eles caem enquanto você já está fazendo o que ia fazer — Hex: Bane arranca defesa e escreve dano mágico na arma, Hex: Purge detona em cerca de sete acertos em dez. É a build de corpo a corpo menos chata deste site e a única que nunca fica sem mana.",
     strengths: [
-      "+600% de dano de arma vindo de três sinergias, o maior multiplicador disponível a qualquer skill de Warlock",
+      "+600% de dano de arma vindo de três sinergias — três vezes o que a outra skill de arma da árvore recolhe",
       "Uma arma de duas mãos e uma mão secundária ao mesmo tempo — nenhuma outra classe do jogo faz isso",
       "Cleave custa 3 de mana fixos em todo nível e golpeia sem mana nenhuma",
       "Físico e mágico ao mesmo tempo: imunidade a físico é registrada em oito áreas catalogadas e a mágico em uma",
@@ -814,7 +814,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
               "Sem Bind Demon, ou seja, sem quarto demônio e sem um monstro Aura Enchanted capturado lutando por você. Esta é a build mais simples e a que funciona sem depender de um grupo específico à sua frente.",
             skillNotes: {
               "summon-goatman":
-                "Ele aprende Stun no 2, Berserk no 3, Frenzy no 4 e Cleave no 5 — os cinco primeiros pontos compram comportamento em vez de números, e os quinze seguintes compram dano e defesa.",
+                "Ele aprende Stun no 2, Berserk no 3, Frenzy no 4 e Cleave no 5 — os quatro pontos do segundo ao quinto compram comportamento em vez de números, e os quinze seguintes compram dano e defesa.",
             },
             rotationNote:
               "Marque, deixe os três chegarem, e ferva o que estiver mais longe de você para que os outros dois continuem lutando. Os demônios são fonte de dano neste pacote e não devem ser gastos todos de uma vez.",
