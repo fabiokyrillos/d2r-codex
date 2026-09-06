@@ -415,7 +415,7 @@ console.log("\nOptional packages survive rendering, in both locales and with no 
 
   check(
     "the sweep read the pages that publish packages, in both locales",
-    pagesWithPackages === 10 && routesChecked === 30,
+    pagesWithPackages === 12 && routesChecked === 36,
     `${pagesWithPackages} pages, ${routesChecked} routes`,
   );
 

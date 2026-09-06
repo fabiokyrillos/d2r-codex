@@ -12109,4 +12109,321 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  kicksin: {
+    summary:
+      "O Dragon Talon chuta de quatro a sete vezes por aperto, e cada chute rola Crushing Blow separadamente. O dano está nas botas, não nas garras — e é por isso que esta build caça calçado.",
+    playstyle:
+      "Você chega perto e aperta um botão, e o botão chuta quatro vezes — cinco, seis ou sete quando os seus +skills forem altos o bastante. Cada chute é um acerto separado que rola Crushing Blow, Open Wounds e roubo de vida por conta própria, então um boss com uma barra de vida enorme cai para uma build cujo dano listado parece modesto ao lado do de uma Sorceress. O Venom fica ativo o tempo todo e pega carona em cada um desses chutes. O resto do plano é sobre ter permissão para ficar ali: Weapon Block em vinte dá chance de bloqueio com duas garras e nenhum escudo, o Burst of Speed deixa os chutes mais rápidos, e um ponto em Death Sentry transforma o primeiro cadáver no resto da sala. O que você não faz é bater num monstro imune a físico, porque os chutes são físicos e não existe versão desta build em que isso não seja verdade.",
+    strengths: [
+      "**Cada chute rola Crushing Blow separadamente**, o que faz desta a melhor matadora de boss da classe e a razão de ela ser a build de Uber",
+      "**O dano está nas botas**, que são baratas, e upgradeá-las praticamente dobra esse dano — o maior upgrade isolado de qualquer página de Assassin",
+      "+skills compram chutes inteiros nos níveis efetivos 6, 12, 18, 24, 30, 36, 42 e 48",
+      "O Weapon Block dá chance de bloqueio de verdade com duas garras e nenhum escudo",
+      "O Venom pega carona em cada chute, e uma build que chuta tanto assim é a que mais aproveita um veneno que não acumula",
+      "Botas **não têm requisito de dexterity nenhum** — todas são `reqdex 0` — então o plano de atributos é força e vitalidade",
+    ],
+    weaknesses: [
+      "**Imunidade a físico é uma parede, e o Crushing Blow também não atravessa** — ele é dano físico como o resto do chute",
+      "Oito das vinte áreas de farm deste site listam físico entre as imunidades comuns, incluindo o Pit, o Cow Level e o Chaos Sanctuary",
+      "**Iron Maiden.** Uma ativação de sete chutes contra uma maldição de dano refletido é a forma mais rápida de se matar neste site",
+      "É corpo a corpo sem bônus de vida, sem leech próprio até o plano de equipamento fornecer, e sem opção à distância nenhuma",
+      "A velocidade de limpeza é comum. Esta build mata uma coisa muito rápido e uma sala andando, que é o oposto das irmãs de trap",
+      "O número de dano listado é quase sem sentido, porque a saída da build são procs por acerto e não o número da ficha do personagem",
+    ],
+    flexPoints: [
+      "Não existem. Setenta e quatro no núcleo, trinta e seis em exatamente um pacote, e 110 é o total que um personagem de nível 99 com todas as recompensas de quest tem.",
+      "**Não gaste os trinta e seis em Claw Mastery.** É o destino mais recomendado para eles e o cabeçalho desta própria página explica por que ele não está aqui: a fórmula de dano do Dragon Claw nomeia Claw Mastery e a do Dragon Talon não nomeia nada.",
+      "**E não gaste em Dragon Tail também.** É outra build — a linha dele carrega uma penalidade de −40% de velocidade de ataque, que é o oposto do que uma build de contagem de chutes quer.",
+    ],
+    skillPackages: {
+      "the-last-thirty-six": {
+        name: "Os trinta e seis pontos que uma build sem sinergia deixa sobrando",
+        intro:
+          "O núcleo acima são 74 de 110, e ele é pequeno por um motivo: **o Dragon Talon não tem sinergia em direção nenhuma**, então não há nada a comprar que suba o chute além dos vinte pontos que já estão nele. Sobram trinta e seis — um terço do personagem — e eles vão para aquilo *através do* que os chutes são entregues, e não para os chutes. **Pegue exatamente um.** Cada um custa exatamente trinta e seis e o plano fecha em 110 qualquer que seja a escolha.",
+        packages: {
+          "death-sentry": {
+            name: "Death Sentry e Lightning Sentry",
+            when: "**O padrão.** Pegue a menos que você esteja montando especificamente para a Uber Tristram, onde há muito pouco para explodir.",
+            tradeoff:
+              "Ele gasta um terço do personagem inteiramente fora do chute, e a sentry não disputa nada que você estivesse usando — mas também não faz nada por um boss sozinho numa sala, que é justamente a luta em que esta build é melhor.",
+            skillNotes: {
+              "death-sentry":
+                "Dezenove em cima do único do núcleo. **Eles não sobem a explosão de cadáver**, que é 40–80% da vida *base* do monstro morto em qualquer nível. O que eles compram é raio — meio metro por nível a partir de uma base de cinco — e a metade de raio da skill.",
+              "lightning-sentry":
+                "**A única sinergia do Death Sentry, a 12% por ponto duro.** Mais dezessete pontos são +204% na metade de raio, que é o que mata o primeiro monstro para a corrente de cadáveres ter por onde começar.",
+            },
+            rotationNote:
+              "Chute uma coisa até morrer, largue um Death Sentry no cadáver, e chute a próxima enquanto a sala se desmonta. A sentry é a velocidade de limpeza que esta build não tem de outro jeito.",
+            gearNote: "Nada muda. Trinta e seis pontos de skill comprando uma resposta de limpeza que nenhum slot de equipamento precisa pagar.",
+            statNote: "Sem mudança.",
+            contentNote: "Terror Zones do Hell, o Mausoléu, Travincal, e qualquer lugar onde o problema é uma sala e não um monstro.",
+          },
+          "tiger-strike": {
+            name: "Tiger Strike e Fade",
+            when: "**Uber Tristram, e qualquer boss que você pretenda matar de propósito.** Também é a resposta do Hardcore.",
+            tradeoff:
+              "Ele abre mão da corrente de cadáveres inteira, então a limpeza continua no passo da caminhada, e custa o Burst of Speed — Fade e Burst of Speed não podem estar ativos juntos, então os chutes ficam mais lentos em troca de sobreviver ao que você está chutando.",
+            skillNotes: {
+              "tiger-strike":
+                "**Um multiplicador no chute que gasta as cargas, e o maior disponível para esta build.** Três cargas antes de um Dragon Talon é a rotação inteira de Uber. Ele também faz esse chute não poder errar enquanto está gastando as cargas — `Param8 = 1`, \"Always Hit ... habilitado só quando as Cargas são consumidas\".",
+              fade: "**Duração de maldição cortada em até 90%, e é essa a linha que importa aqui, não as resistências.** O Iron Maiden reflete uma parte do dano que você causa, e nada neste site causa dano em tantas parcelas separadas quanto um Dragon Talon de sete chutes. Dezessete pontos cortam quanto tempo ele gruda em você.",
+            },
+            rotationNote:
+              "Tiger Strike três vezes, depois Dragon Talon. As três cargas ficam de pé por quinze segundos, então elas sobrevivem à caminhada entre a porta e o boss.",
+            gearNote:
+              "O Fade é resistência que você para de comprar em anéis e charms, então esses slots vão para Crushing Blow, velocidade de ataque e +skills.",
+            statNote: "Sem mudança.",
+            contentNote: "Uber Tristram, os Ancients, e Hardcore em geral.",
+          },
+          "burst-of-speed": {
+            name: "Burst of Speed e Shadow Master",
+            when: "Quando os chutes já estão matando as coisas e o problema é quanto tempo leva para chegar até elas.",
+            tradeoff:
+              "Ele custa o Fade, e portanto a mitigação do Iron Maiden, o que faz do Chaos Sanctuary um lugar que você visita e não farma. Também não compra dano nenhum — cada ponto é velocidade ou um corpo.",
+            skillNotes: {
+              "burst-of-speed":
+                "**Até 60% de velocidade de ataque, sem diminuição, e até 70% de velocidade de corrida.** Velocidade de ataque é chutes por segundo, e sem diminuição significa que ela vale muito mais que o mesmo número num item.",
+              "shadow-master":
+                "**Resistências subindo em direção a 90% e +15% de vida por nível.** O problema real de uma build corpo a corpo é ser o único alvo; é aqui que o Shadow Master para de morrer na hora e passa a segurar um grupo.",
+            },
+            rotationNote: "Buffe e entre mais rápido do que o grupo espera. Você está trocando a corrente de cadáveres por chegar primeiro.",
+            gearNote: "Faster run/walk nas botas deixa de importar, então o argumento do Gore Rider fica mais forte contra o do War Traveler.",
+            statNote: "Sem mudança.",
+            contentNote: "Limpeza de Terror Zone, runs de Travincal no relógio, e qualquer lugar onde a caminhada é o custo.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "**É para cá que vão os pontos de atributo, e as botas são o motivo.** O Gore Rider pede 93 de força efetiva; upgradeado para Myrmidon Greaves pede cerca de 156, e o Shadow Dancer cerca de 166. Decida em quais botas você vai terminar antes de gastar, porque a diferença é sessenta pontos.",
+      dexterity: "O suficiente para as suas garras, e nada além. **Toda bota do jogo não pede dexterity nenhuma** — `reqdex 0` em todas as linhas — então o item de dano desta build não quer nada deste atributo. Bloqueio vem do Weapon Block, que é skill e não atributo.",
+      vitality: "Todo o resto. É uma build corpo a corpo sem bônus de vida próprio.",
+      energy: "Nenhum.",
+      notes: [
+        "**O número de força é uma decisão, não uma fórmula.** Terminar em Gore Riders upgradeados custa cerca de sessenta pontos de força a mais que terminar nos normais, e esses sessenta pontos são vida que você não tem. Só upgradeie se conseguir chegar lá sem esvaziar a vitalidade.",
+        "Dexterity para bloqueio é o instinto errado aqui e seria o certo em quase qualquer outra build corpo a corpo. O Weapon Block substitui isso inteiramente.",
+        "Se você pegar o pacote de Tiger Strike, as resistências vêm do Fade e não do equipamento, e os pontos que perseguiriam um requisito de resistência vão para vitalidade.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-65":
+        "**Para o Mind Blast e os buffs, e para nada com que você ataque.** A taxa de conjuração encurta a animação `SC` da Assassin de 16 frames para 11. Ela não toca num chute. Luxo e não recomendado, porque esta build aperta um botão de conjuração entre lutas e nenhum durante elas.",
+      "fhr-48":
+        "**Obrigatório, porque o método inteiro desta build é ficar parada ao lado da coisa.** Ser atordoada no meio de uma ativação custa o resto dos chutes, e os chutes são o dano.",
+      "fbr-86":
+        "O Weapon Block em vinte dá 65% de chance de bloqueio, e um bloqueio do qual você se recupera devagar é um bloqueio que ainda te custou a luta. É este breakpoint que faz aqueles vinte pontos pagarem.",
+    },
+    breakpointNotes:
+      "**Chutes rodam em velocidade de ataque, e não há linha de Increased Attack Speed acima porque um número único estaria errado para a maioria dos leitores.** O Dragon Talon toca a animação `KK`, que está no cálculo de velocidade de ataque — então a velocidade base das garras é entrada da mesma fórmula que o afixo alimenta, mesmo que o dano em si seja das botas. É essa a parte que pega as pessoas: **as garras que você segura mudam a rapidez do chute, e as botas decidem a força.** Valem as mesmas três regras de toda esta classe: duas garras usam a média das duas bases, Increased Attack Speed na garra secundária não conta, e o Burst of Speed acrescenta até 60% sem diminuição — que é o que o terceiro pacote compra e o que o pacote de Fade abre mão. Estar congelado alonga a animação, então Cannot Be Frozen é um atributo de velocidade aqui. **A Faster Cast Rate não faz nada por nada disso**, e é por isso que a linha dela acima está marcada como luxo em vez de omitida: omitir convida o leitor a achar que foi esquecimento.",
+    skillNotes: {
+      "dragon-talon":
+        "**Vinte pontos duros são quatro chutes e +138% de dano de chute** (`5 + 7 por nível`), e a contagem de chutes sai do nível *efetivo*, então todo +skill acima de vinte trabalha em direção a um quinto chute no 24 e um sexto no 30. Ele não tem sinergia em direção nenhuma — nada no arquivo o alimenta — então vinte é o investimento inteiro e o resto da página é sobre entrega.",
+      venom:
+        "**A segunda fonte de dano, e a que responde a um imune a físico.** Ele escreve dano de veneno em você como atributo de personagem, então pega carona nos chutes e não nas garras. A duração é `ELen = 10` sob `skill_poison_override_length` — quatro décimos de segundo, *sobrescrevendo* em vez de acumular — então uma build que chuta sete vezes por segundo é a que o mantém de pé, não a que o multiplica.",
+      "weapon-block":
+        "**20% em um ponto, 65% em vinte**, com duas garras e nenhum escudo. É por isso que uma Assassin corpo a corpo consegue ficar onde esta build fica, e é a razão de as garras continuarem nas mãos dela mesmo sem contribuir nada para o chute.",
+      "tiger-strike":
+        "**Um charge-up, não um ataque.** Três cargas multiplicam o dano do chute que as gasta, e enquanto ele as gasta o `Param8 = 1` faz o chute não poder errar. Um ponto basta para tê-lo; veja os pacotes para o argumento a favor de vinte.",
+      "fire-blast": "A única skill de nível 1 da árvore de Traps, e o primeiro de quatro pontos no caminho até o Death Sentry.",
+      "shock-web": "Segundo dos quatro.",
+      "charged-bolt-sentry": "Terceiro dos quatro.",
+      "lightning-sentry": "Quarto. Também é a única sinergia do Death Sentry, que é sobre o que o primeiro pacote é montado.",
+      "death-sentry":
+        "**Um ponto compra a explosão de cadáver inteira.** Ela é 40–80% da vida *base* do monstro morto em qualquer nível, metade fogo e metade físico, e não escala com nível de skill nenhum — níveis compram raio e a metade de raio. Cinco pontos no total para chegar nela, e é o que transforma uma build de alvo único numa que limpa sala.",
+      "claw-mastery":
+        "**Um ponto, e um ponto de propósito.** A fórmula de dano do Dragon Claw nomeia Claw Mastery explicitamente; a do Dragon Talon não nomeia nada. Ele está aqui porque o Burst of Speed e o Weapon Block o exigem.",
+      "psychic-hammer": "Pré-requisito do Cloak of Shadows.",
+      "burst-of-speed": "Velocidade de ataque, que nesta build é chutes por segundo. Um ponto agora; o terceiro pacote leva a vinte.",
+      "cloak-of-shadows": "Cega a sala e tira a defesa dela. A abertura de uma build que precisa chegar no corpo a corpo.",
+      fade: "Resistências, duração de maldição e redução de dano físico. A linha de maldição é a resposta ao Iron Maiden; veja o segundo pacote.",
+      "shadow-warrior": "Pré-requisito do Shadow Master, e substituído por ele.",
+      "mind-blast": "Atordoamento, e a única skill aqui para a qual a Faster Cast Rate faz alguma coisa.",
+      "shadow-master": "Um segundo corpo para o grupo bater enquanto você chuta uma coisa até a morte.",
+    },
+    immunityPlan:
+      "**Imunidade a físico é a parede desta build, e é uma parede mais alta do que a maioria das páginas corpo a corpo admite — inclusive para o Crushing Blow.** O Crushing Blow é dano físico; um monstro com 100% ou mais de resistência a físico não recebe essencialmente nada dele, então o mecanismo que faz desta a melhor matadora de boss da classe é exatamente o mecanismo que para de funcionar. O censo de áreas deste próprio site lista físico entre as imunidades comuns em **oito das vinte áreas de farm**, e não são áreas obscuras: o Pit, o Cow Level, o Chaos Sanctuary, a Worldstone Keep, o River of Flame, o templo do Nihlathak, a Stony Tomb e os templos de Kurast. Metade da lista popular de farm do Hell está fechada para os chutes. Quatro respostas, em ordem de quanto ajudam. Primeiro, o **Venom**, e é por isso que ele são vinte pontos do núcleo e não de um pacote: veneno não é físico, ele pega carona em cada chute, e quase nada da lista de farm resiste a ele. Segundo, o **pacote de Death Sentry** — a explosão de cadáver é metade fogo e metade físico, e a metade de fogo cai num imune a físico, mas alguma coisa precisa morrer antes, então é resposta a uma sala e não a um monstro. Terceiro, **um mercenário que não seja você**: um mercenário de Might do Ato 2 também é físico, então se imunidade a físico é o problema, a resposta é um Iron Wolf do Ato 3 ou um Bárbaro do Ato 5, e não mais aura. Quarto, e o mais frequentemente correto: **passe direto**. Um grupo imune a físico numa Terror Zone não é um enigma que esta build resolve, e fingir que é é como o personagem morre. O que **não** funciona é empilhar Crushing Blow, Deadly Strike ou Open Wounds, os três físicos e os três parando na mesma parede.",
+    mercenaryNotes:
+      "**Might, e não chega a ser disputa.** A aura do mercenário sobe o dano físico de todo chute, e dano físico é o que esta build é. Holy Freeze é a resposta corpo a corpo usual em outros lugares e é pior aqui: congelar um boss não faz nada por uma build cujo problema nunca foi o boss se mexer. Dê Insight a ele até o leech estar resolvido, depois Fortitude ou uma Infinity se existir — embora a **Conviction da Infinity não faça nada por uma build física**, então ali ela é item de sobrevivência do mercenário e não de dano. No que nenhum mercenário ajuda é no Iron Maiden, que é em você.",
+    farmingWhy: {
+      "uber-tristram-hell":
+        "**A razão de a build existir.** Fogo, raio e veneno são as imunidades comuns aqui e físico não é, então os chutes caem — e Crushing Blow por chute é o mecanismo que derruba barras de vida do tamanho das dos três bosses Uber. Pegue o pacote de Tiger Strike e leve Life Tap.",
+      "travincal-hell":
+        "Fogo e raio são as imunidades comuns, então os chutes caem em tudo. Uma run curta, um grupo fixo parado num lugar só, e cadáveres suficientes para o pacote de Death Sentry transformar isso em segundos.",
+      "pindleskin-hell":
+        "Frio e veneno em vez de físico, um superunique fixo, e um corredor. A luta repetível mais rápida que esta build tem fora dos Ubers.",
+      "mausoleum-hell":
+        "Veneno e frio, então os chutes caem, e densidade alta numa sala só — que é exatamente o que o pacote de Death Sentry converte em velocidade de limpeza. **O Venom não está fazendo nada aqui**, o que vale saber antes de você se perguntar por que a barra de veneno não anda.",
+      "countess-hell":
+        "Fogo é a única imunidade comum, então os chutes caem em tudo, e as runas são do que o resto desta página é feito. Uma run curta, fechada e repetível.",
+      "andariel-hell":
+        "Só veneno, então todo chute cai — e **o seu Venom não faz absolutamente nada**, o que torna esta a demonstração mais clara do site de por que os vinte pontos nele são condicionais e não gratuitos.",
+    },
+    levelingPath: {
+      summary:
+        "**O Dragon Talon existe no nível 1, o que quase nada mais nesta classe faz.** Você pode chutar desde o primeiro ponto de skill, e a build evolui como ela mesma o caminho inteiro — os vinte pontos no Dragon Talon são gastos na ordem que o final quer e nunca respecados. O que muda são as botas. Botas normais são 3–20 de dano, exceptional são 23–80 no nível 25, e elite são 50–149 a partir do 45, então a experiência de evolução são três saltos no mesmo slot em vez de uma skill nova. O Venom chega no 30 e vale um ponto no instante em que chega.",
+      respecAt: "Nenhum necessário. Se você gastou pontos em Claw Mastery esperando que ele subisse os chutes, esse é o único respec que esta página justificaria.",
+    },
+    selfFoundNotes:
+      "**A build de final de jogo mais amigável a self-found da classe, porque a arma dela é uma bota.** O Gore Rider é um unique comum numa base exceptional, e é o único item do qual a build inteira é calculada — sem runa, sem troca, sem ladder. Todo o resto é ou uma garra de vendedor (a Charsi renova o estoque toda vez que você volta à cidade e garras rolam skills de Assassin nativamente) ou uma runeword de quatro runas ou menos: Lore, Stealth, Treachery, Duress. Nada aqui precisa de runa alta. As duas coisas genuinamente difíceis em self-found são a **Hellfire Torch**, que é travada em Uber e portanto circular, e a força para vestir Gore Riders upgradeados, que é decisão e não drop. **E uma coisa que não custa nada:** o pacote de Death Sentry são cinco pontos de pré-requisito e trinta e seis de pacote, e ele transforma uma build de alvo único numa de farm sem um único item.",
+    hardcoreNotes:
+      "**Pegue o pacote de Tiger Strike e Fade, e fique fora do Chaos Sanctuary.** O problema do Iron Maiden é pior para esta build que para qualquer outra do site, e o motivo é aritmética: a maldição reflete uma parte do dano que você causa, e um Dragon Talon de sete chutes causa isso em sete parcelas em cerca de um segundo. A redução de duração de maldição do Fade é a mitigação e dezoito pontos dela cortam a duração em até 90%, mas a mitigação de verdade é não estar lá — o Chaos Sanctuary lista físico entre as imunidades comuns de qualquer jeito, então esta build tem pouco motivo para estar na sala. Fora isso: Weapon Block em vinte não é opcional, o que quer dizer que duas garras também não são; Life Tap do Dracul's Grasp é o maior item de sobrevivência do jogo para uma build que golpeia tanto assim; e Cannot Be Frozen protege a taxa de chutes, que no Hardcore é a diferença entre terminar uma ativação e ser interrompido no meio dela.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao Nightmare com um chute que funciona. As botas são a arma, então qualquer bota com dano ganha de qualquer bota sem.",
+        nextUpgrade: "Botas exceptional no instante em que você fizer 25, e duas garras com +skills.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer garra com +2 em Martial Arts ou +3 em Dragon Talon",
+            why: "**Ela não faz nada pelo dano do chute e tudo pela contagem de chutes.** +skills sobem o nível efetivo que o `lvl/6+1` lê.",
+            lookFor: ["+3 to Dragon Talon", "+2 to Martial Arts", "Increased Attack Speed"],
+          },
+          "offhand-0": {
+            label: "Uma segunda garra, para o Weapon Block",
+            why: "**O Weapon Block precisa de garra nas duas mãos** — a linha dele é `itypea1 = h2h` e `itypeb1 = h2h`. Uma segunda garra não é opcional nesta build.",
+          },
+          "helm-0": { why: "+1 em todas as skills por duas runas, o que é progresso rumo a um breakpoint de chute." },
+          "body-0": { why: "Recuperação mais rápida, numa build que vai apanhar." },
+          "gloves-0": { why: "Velocidade de ataque é chutes por segundo." },
+          "belt-0": { why: "Quatro fileiras." },
+          "boots-0": {
+            label: "As botas de maior dano que você conseguir vestir — Greaves acima de Chain Boots acima de Boots",
+            why: "**Este é o slot de arma desta build.** Greaves são 10–20 onde Boots simples são 3–8, e essa diferença é o seu dano, não a sua defesa.",
+            lookFor: ["Any damage at all", "Faster run/walk", "Resistances"],
+          },
+          "ring1-0": { why: "Nada de sofisticado ainda." },
+          "ring2-0": { why: "Idem." },
+          "amulet-0": { why: "+skills são chutes." },
+        },
+      },
+      nightmare: {
+        goal: "Botas exceptional, e o primeiro Crushing Blow de verdade. É aqui que a build começa a fazer aquilo para que existe.",
+        nextUpgrade: "Gore Rider, e Treachery pela velocidade de ataque.",
+        picks: {
+          "weapon-0": {
+            label: "Uma garra com +2 Martial Arts e Increased Attack Speed",
+            why: "Skills pela contagem de chutes, velocidade pela taxa. O dano da garra é irrelevante e você pode ignorá-lo por completo.",
+            lookFor: ["+2 to Martial Arts", "+3 to Dragon Talon", "Increased Attack Speed"],
+          },
+          "offhand-0": {
+            label: "Uma segunda garra com +skills",
+            why: "O Weapon Block precisa dela, e os +skills dela contam para os breakpoints de chute mesmo com a velocidade de ataque dela não contando para os frames.",
+          },
+          "helm-0": { why: "+1 em skills e magic find." },
+          "body-0": { why: "**45% de Increased Attack Speed e um proc de Fade ao ser atingida.** A velocidade de ataque são chutes e o Fade é resistência que você não precisou comprar." },
+          "body-0-alt0": { why: "+50 de resistências por duas runas se a Lem não apareceu." },
+          "gloves-0": { why: "Vinte por cento é o slot inteiro." },
+          "belt-0": { why: "Redução de dano físico e roubo de vida, que é o que falta a um personagem corpo a corpo no Nightmare." },
+          "boots-0": {
+            label: "Botas exceptional com dano — base War Boots ou Battle Boots",
+            why: "**War Boots são 39–80 onde as Greaves eram 10–20.** Sair de normal para exceptional praticamente quadruplica a base do chute, e isso acontece no nível 25.",
+            lookFor: ["War Boots or Battle Boots base", "Crushing Blow", "Faster run/walk"],
+          },
+          "ring1-0": { why: "Cannot Be Frozen — estar congelado alonga a animação do chute — mais Attack Rating, que um chute usa." },
+          "ring2-0": { why: "Leech por acerto, numa build que acerta quatro vezes por aperto." },
+          "amulet-0": { why: "Contagem de chutes de novo." },
+        },
+      },
+      "early-hell": {
+        goal: "Gore Rider, e a pilha de Crushing Blow que faz desta build uma matadora de boss.",
+        nextUpgrade: "Gore Riders upgradeados se a força for viável, e uma segunda fonte de Crushing Blow.",
+        picks: {
+          "weapon-0": {
+            label: "Uma garra com +3 Dragon Talon e Increased Attack Speed",
+            why: "+3 Dragon Talon é meio breakpoint de chute sozinho.",
+            lookFor: ["+3 to Dragon Talon", "+2 to Martial Arts", "Increased Attack Speed"],
+          },
+          "offhand-0": {
+            label: "Uma segunda garra com +3 Dragon Talon",
+            why: "Os +skills das duas garras contam para o nível efetivo, então a mão secundária é um slot de contagem de chutes mesmo com a velocidade de ataque dela sendo ignorada.",
+          },
+          "helm-0": { why: "Redução de dano físico e vida roubada por acerto — as duas coisas de que uma build que fica no corpo a corpo e acerta repetidamente é a melhor usuária possível." },
+          "body-0": { why: "Continua 45% de velocidade de ataque, continua um Fade grátis." },
+          "body-1": { why: "**15% de Crushing Blow na armadura**, que soma com as botas e se aplica por chute." },
+          "gloves-0": { why: "Velocidade de ataque e leech. **O Dracul's Grasp é o upgrade e pede nível 76**, que é um tier adiante." },
+          "belt-0": { why: "Redução de dano físico é o que mantém uma Assassin corpo a corpo viva no Hell." },
+          "boots-0": {
+            why: "**O item da build.** 15% de Crushing Blow, 10% de Open Wounds e 15% de Deadly Strike, no slot de onde o dano já vem — e cada chute rola os três separadamente. Não há o que rolar: os afixos são fixos. A pergunta deste slot é se você consegue bancar a força para upgradear a base depois.",
+            lookFor: ["A War Boots base", "Strength for the upgrade"],
+          },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "O imposto de resistência do Hell." },
+          "amulet-0": { why: "+2 em skills e +30 de resistências, que são os dois problemas num slot só." },
+        },
+        charms: [{ why: "Um skiller é progresso rumo ao próximo breakpoint de chute. Entre breakpoints ele compra porcentagem de dano; num breakpoint, ele compra um acerto inteiro a mais." }],
+      },
+      budget: {
+        goal: "Um personagem de Hell terminado. Crushing Blow de dois slots, Weapon Block em sessenta e cinco por cento, e resistência suficiente para ficar parada.",
+        nextUpgrade: "Botas upgradeadas, e a decisão sobre segurar uma polearm em vez de garras.",
+        picks: {
+          "weapon-0": {
+            label: "Uma garra rara com +3 Dragon Talon, +2 Martial Arts e 20% de Increased Attack Speed",
+            why: "A garra é um item de +skills e velocidade nesta build. O dano dela nunca entra no chute.",
+            lookFor: ["+3 to Dragon Talon", "+2 to Martial Arts", "20% Increased Attack Speed", "A Runic Talons base"],
+          },
+          "offhand-0": { label: "Uma segunda garra rara com +3 Dragon Talon", why: "O Weapon Block exige, e os +skills contam." },
+          "helm-0": { why: "Redução de dano e leech." },
+          "helm-1": { why: "**+2 em skills de Assassin, 20% de Increased Attack Speed e +8-10% de vida roubada por acerto**, ao custo de −30% de resistência a fogo. Numa build que acerta tanto assim, a linha de leech é enorme." },
+          "body-0": { why: "15% de Crushing Blow, e barata." },
+          "body-1": { why: "+2 em skills, +65 de resistências e 8% de redução de dano, se as runas existirem." },
+          "gloves-0": { why: "**Life Tap ao golpear, numa build que golpeia de quatro a sete vezes por aperto.** Nada mais no slot chega perto para uma Assassin corpo a corpo." },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Crushing Blow, Open Wounds e Deadly Strike, por chute.", sockets: "Nenhum — elas não são socketáveis e não querem ser." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em skills e a mana para continuar chutando." },
+          "amulet-0": { why: "Deadly Strike escalando com o nível, +1 em skills e 20% de Increased Attack Speed — três das quatro alavancas desta build num slot só." },
+        },
+        charms: [{ why: "Só a Torch são +3 em skills de Assassin, que é meio breakpoint de chute." }],
+        weaponSwap: [{ why: "Battle Orders, numa garra. Nível 57, então já está disponível há um tempo aqui." }],
+      },
+      optimized: {
+        goal: "Botas upgradeadas, Crushing Blow máximo, e o setup de Uber. É neste tier que a decisão de força do plano de atributos é paga.",
+        nextUpgrade: "Garras best-in-slot, e o experimento Riftsin se você quiser rodar.",
+        picks: {
+          "weapon-0": {
+            label: "Uma Runic Talons rara ou craftada com +3 Dragon Talon, +2 Martial Arts e 20% de Increased Attack Speed",
+            why: "Continua sendo item de +skills. Não existe upgrade de garra que suba o dano do chute, só que suba a contagem e a taxa.",
+            lookFor: ["+3 to Dragon Talon", "+2 to Martial Arts", "20% Increased Attack Speed"],
+          },
+          "weapon-1": {
+            label: "Rift, numa polearm ou cetro de 4 sockets — a variante \"Riftsin\"",
+            why: "**Uma variante de equipamento desta build e não uma build própria, e não é troca de graça.** Como um chute não tira nada da arma, segurar uma polearm não custa dano nenhum ao chute — é essa exatamente a razão de a variante existir. O que custa é o **Weapon Block**, cuja linha exige garra nas duas mãos, e os +skills das duas garras, que podem valer um chute inteiro. O que compra é uma linha: `hit-skill`, 20% de chance de conjurar Tornado nível 16, e isso dispara em `domeleedamage` — o mesmo evento por acerto que o Crushing Blow usa, então uma ativação de vários chutes rola isso repetidamente. **Duas ressalvas honestas.** Os dois maiores mods da Rift, 160–250 de dano mágico e 60–180 de fogo, são adições de dano de arma que um chute estruturalmente não consegue usar. E se um proc on-striking vindo da arma dispara de um armour-strike com `weapsel = 4` **não é estabelecível a partir dos dados fixados** — se não dispara, esta variante não vale nada. Voulge ou Bill são as bases baratas de 4 sockets, as duas `reqdex 0`.",
+            sockets: "Hel, Ko, Lem, Gul, nessa ordem, numa polearm ou cetro de 4 sockets.",
+          },
+          "offhand-0": { label: "Uma segunda Runic Talons com +3 Dragon Talon", why: "Weapon Block e contagem de chutes. Vazio se você estiver rodando a variante Rift, que é a maior parte do que essa variante custa." },
+          "helm-0": { why: "+2 em skills de Assassin, 20% de velocidade de ataque e vida roubada por acerto." },
+          "helm-1": { why: "Redução de dano e dois sockets, se a penalidade de resistência a fogo for o problema." },
+          "body-0": { why: "+2 em skills, +65 de resistências, 8% de redução de dano." },
+          "body-1": { why: "A defesa e a vida se você preferir não perseguir resistências." },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": { why: "Redução de dano físico." },
+          "belt-1": { why: "+1 em skills, se as resistências já estiverem resolvidas." },
+          "boots-0": { why: "**Upgradeadas para base Myrmidon Greaves, o que leva 39–80 a 83–149.** Isso é praticamente o dobro do número do qual a build inteira é calculada, e custa cerca de sessenta de força. É o maior upgrade isolado desta página." },
+          "boots-1": { why: "Se a força para Gore Riders upgradeados custar vitalidade demais: já é base elite em 60–110, com atributos muito melhores." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills." },
+          "amulet-0": { why: "Deadly Strike, +1 em skills e velocidade de ataque." },
+        },
+        charms: [{ why: "Some o total e confira contra a tabela de chutes: efetivo 24, 30, 36 e 42 são onde um charm vira um chute." }],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      bis: {
+        goal: "A matadora de Uber. Toda fonte de Crushing Blow, botas upgradeadas, e +skills suficientes para sete chutes.",
+        nextUpgrade: "Nada. Esta é a build que mata as coisas que as outras builds não matam.",
+        picks: {
+          "weapon-0": { label: "Uma Runic Talons craftada com +3 Dragon Talon, +3 Martial Arts e 20% de Increased Attack Speed", why: "Seis níveis efetivos de um item só é um chute inteiro." },
+          "offhand-0": { label: "Uma segunda Runic Talons craftada com +3 Dragon Talon", why: "Contagem de chutes, e Weapon Block em sessenta e cinco por cento." },
+          "helm-0": { why: "Socketado com uma Ral para responder à própria penalidade de fogo. +2 em skills, velocidade de ataque e leech." },
+          "body-0": { why: "+2 em skills, resistências e redução de dano." },
+          "gloves-0": { why: "Life Tap ao golpear, que contra um Uber é a diferença entre a luta ser sobrevivível e não ser." },
+          "belt-0": { why: "Redução de dano físico." },
+          "boots-0": { why: "Upgradeadas. Base 83–149, mais Crushing Blow, Open Wounds e Deadly Strike por chute." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em skills." },
+          "amulet-0": { why: "Deadly Strike e velocidade de ataque." },
+        },
+        charms: [{ why: "+skills até o próximo breakpoint de chute, depois vida com tudo o que sobrar." }],
+        weaponSwap: [{ why: "Battle Orders antes de todo portal de Uber." }],
+      },
+    },
+  },
 };
