@@ -439,7 +439,13 @@ and `mtmmo.com` rank well for "D2R Barbarian build" and appear throughout search
 results. They are usable as weak evidence that a build is *talked about* and for
 nothing else.
 
-### 8.1 A Tier 3 error, caught by Tier 1
+### 8.1 Source reliability: Maxroll's overview contradicts Maxroll's guides
+
+Filed here rather than only under the build inventory, because it is a fact
+about a **source** and not about a build. This site's Tier 3 policy treats a
+specialist database as one thing; this is evidence that one of them is not
+internally consistent, and that its overview and hub pages carry less weight
+than the guides they link to.
 
 Maxroll's **Barbarian overview page** states that Berserk's magic damage rises
 "10% for each Skill Point allocated into **Howl**, and **Shout**".
@@ -493,7 +499,7 @@ Barbarian attack on the bar at all.
 
 ## 10. Decisions
 
-**Seven pages, one consolidation, five refusals.**
+**Six pages, one consolidation, five refusals.**
 
 | Family | Aliases | Identity | Decision |
 | --- | --- | --- | --- |
@@ -503,7 +509,7 @@ Barbarian attack on the bar at all.
 | **War Cry Barbarian** | Singer | Kills with a shout; carries no weapon damage at all | **CREATE** — the only Barbarian who does not need a weapon |
 | **Double Throw Barbarian** | Thrower, Throw Barb | The class's only ranged build; ammunition is the mechanic | **CREATE** — Throwing Mastery's no-consume is the whole story and no pre-2.4 guide has it |
 | **Leap Attack Barbarian** | Leaper | Jumps onto each elite; 770% weapon damage plus its own physical table | **CREATE**, priority 6 |
-| **Werewolf Barbarian** | Wolfbarb | Feral Rage from Wolfhowl; zero Barbarian attack skills | **CREATE**, priority 7 — **and the one to cut if seven is too many**, see §10.3 |
+| Werewolf Barbarian | Wolfbarb | Feral Rage from Wolfhowl; zero Barbarian attack skills | **REFUSE** — its only item is uncatalogued, see §10.3 |
 | Gold Find Barbarian | — | — | **CONSOLIDATE** into Berserk Barbarian |
 | Concentrate Barbarian | — | — | **REFUSE** — a component |
 | Immortal King Whirlwind | — | — | **REFUSE** — a gear tier |
@@ -540,7 +546,10 @@ One mechanic from that guide must survive the fold, because it is not obvious an
 it is not a gear preference: **if the mercenary lands the killing blow, his gold
 find and yours are added together**. That belongs in `mercenaryNotes`.
 
-### 10.2 The five refusals, with reasons
+### 10.2 The refusals, with reasons
+
+Werewolf Barbarian is the fifth and has §10.3 to itself, because it is refused
+for a reason none of these four share.
 
 - **Concentrate Barbarian.** Concentrate is the backup button on two other bars —
   the Berserk and Leap Attack guides each give it exactly one point — and the
@@ -567,27 +576,27 @@ find and yours are added together**. That belongs in `mercenaryNotes`.
   now: it levels on **Double Swing and War Cry**, so the journey's early game is
   a build no endgame page describes.
 
-### 10.3 If seven is one too many, cut Werewolf
+### 10.3 Werewolf Barbarian, and why the most distinct family is refused
 
-Stated plainly so it does not have to be asked. **Werewolf Barbarian is the most
-mechanically distinct build on the class and the least defensible page.**
+**Refused.** It is worth writing at length because the reason is not that the
+build is weak — it is the most mechanically distinct family on the class.
 
 Distinct: it is the only Barbarian that invests nothing in a Barbarian attack.
 Its plan maxes Shout, Natural Resistance and Increased Speed, which no other
-build maxes. The site has a precedent for exactly this shape — the Whirlwind
+build maxes. The site has a precedent for exactly that shape — the Whirlwind
 Assassin, created despite investing zero points in its own damage skill.
 
-Indefensible: its damage skill is **Feral Rage**, a Druid skill, reached through
-one unique helm. That raises a modelling question with no precedent here —
-`Build.primarySkill` must be a slug in the skill data, and **no build on this
-site currently names a skill from another class**. Setting `primarySkill:
-"feral-rage"` on a Barbarian would put a Barbarian page in the Druid skill's
-"builds that use this" index.
+**Refused on cost, not on merit.** Its damage skill is Feral Rage, reached
+through exactly one item: **Wolfhowl, which is not in the catalogue and has no
+substitute.** Cataloguing a unique on this site is a Tier 1 decode performed in a
+research run — see `docs/sources/README.md` on how the item numbers were
+produced — not a line added to a file. Paying that price for the seventh page,
+while six stronger ones are unwritten, is the wrong trade. If the catalogue ever
+grows a Wolfhowl for another reason, this refusal is worth revisiting; nothing
+else about the build has changed.
 
-That is not mine to decide, and it is not only mine to answer: the planned
-**Whirlwind Assassin** has the identical problem in the opposite direction,
-because its damage skill is the Barbarian's Whirlwind. Whatever is decided
-should be decided once, for both.
+The modelling question it raised has been settled separately, and in its favour:
+see §10.5.
 
 ### 10.4 The arithmetic, written out so it cannot drift
 
@@ -595,13 +604,35 @@ should be decided once, for both.
 | --- | --- |
 | Families examined | **13** |
 | — folded into another page (Gold Find) | −1 |
-| — refused (Concentrate, IK Whirlwind, PvP, Elemental Throw) | −4 |
+| — refused (Werewolf, Concentrate, IK Whirlwind, PvP, Elemental Throw) | −5 |
 | — not a build (Barbarian Leveling) | −1 |
-| **Build pages the Barbarian gets** | **7** |
+| **Build pages the Barbarian gets** | **6** |
 | Published so far | 0 |
 
 In priority order: **Whirlwind, Frenzy, Berserk, War Cry, Double Throw, Leap
-Attack, Werewolf.**
+Attack.**
+
+### 10.5 `primarySkill` is the skill the plan spends points in
+
+Settled by the coordinator across two classes at once, because the Barbarian and
+the Assassin raised the same question from opposite sides: the Werewolf
+Barbarian's damage skill is a Druid's, and the Whirlwind Assassin's is a
+Barbarian's.
+
+> **`primarySkill` is the skill the plan spends points in, not the skill you
+> press.** A skill granted by an item takes no points, so it is never the plan's
+> primary; it belongs in the prose, the gear tiers and the summary.
+
+The Assassin's page resolves to Claw Mastery — the skill that plan maxes first —
+and a Wolfhowl Barbarian, if it is ever written, resolves to a mastery on the
+same rule.
+
+The reason this is a written rule rather than a habit is that nothing would have
+caught it. `check-content.ts` validates `primarySkill` only as "exists in the
+skill data", **globally rather than per class**, so an out-of-class primary would
+have passed silently — and `combinedReceivers` in `lib/builds/packages.ts` feeds
+`primarySkill` into the synergy receiver set, where a skill from another class
+would claim synergies from a tree the character does not have.
 
 ## 11. What blocks Phase 3, and it is not the skills
 
@@ -646,8 +677,8 @@ gap belongs to whoever does.
 1. Whether a Barbarian attack-speed frame table can be sourced for a **named
    weapon**. Whirlwind and Frenzy both want one; §5 says why the class cannot
    have a single one.
-2. Whether `Build.primarySkill` may name another class's skill. §10.3, and it
-   binds the Assassin's Whirlwind page too.
+2. ~~Whether `Build.primarySkill` may name another class's skill.~~ **Settled —
+   see §10.5.** It may not, and it never needs to.
 3. Whether the site takes sets. Immortal King is refused as a page regardless,
    but it is a real gear tier on the Whirlwind build and cannot currently be
    referenced.
@@ -668,3 +699,18 @@ transcription. No guide was consulted for the foundation.
 the levelling guide, all stamped 2026-05-22, for what is *played* — never for a
 number. Every mechanical figure quoted in Part 2 was re-derived from the
 extraction, which is how §8.1 was caught.
+
+**One weighting note for whoever researches the next class.** §8.1 found a
+Maxroll *overview* page contradicting the Maxroll *guide* it links to, on a
+number that decides twenty skill points. Both are the same Tier 3 source and
+they are not equally reliable: the guides carry a maintainer, a changelog and a
+`dateModified`, and the overview and hub pages do not. Where the two disagree,
+prefer the guide — and re-derive it from the extraction anyway.
+
+### A note on one thing that was *not* used
+
+The scratchpad this pass ran in already contained fetched HTML from
+`d2mods.info` knowledge-base articles that this pass did not download and cannot
+account for. None of it was read and none of it informed a decision here.
+Provenance is the whole of this repository's source policy, and content of
+unknown origin has none.
