@@ -252,7 +252,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "+50% de dano e mais 5% por nível, mais um ponto seco de dano por nível, e derruba o alvo para trás.",
       "**Ela é mantida pelo que dá, não pelo que faz.** Bash alimenta Double Swing a 10% por ponto duro, Stun a 8% e Concentrate a 5%, então fica numa barra maximizada em que nunca é apertada.",
-      "O attack rating dela é incomum: 15% e mais 5% por nível, *mais* 5% por ponto duro de Concentrate. Concentrate é uma das duas únicas sinergias de attack rating do jogo fora dos golens do Necromancer.",
+      "O attack rating dela é incomum: 15% e mais 5% por nível, *mais* 5% por ponto duro de Concentrate. **Concentrate é a única sinergia de attack rating do jogo fora dos golens do Necromancer** — existem cinco arestas dessas na extração inteira, e as outras três vêm todas do Clay Golem.",
       "2 de mana, e o knockback é uma ferramenta defensiva de verdade no nível 1.",
     ],
     synergyBonuses: ["+5% de dano por nível", "+5% de attack rating por nível"],
@@ -351,7 +351,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
     summary:
       "Gira por dentro de um grupo acertando tudo no caminho. A skill símbolo da classe, e a única que não alimenta nada.",
     mechanics: [
-      "**Ela não tem sinergia em nenhuma direção.** Nada a aumenta e ela não aumenta nada — a única skill de nível 30 da classe com as duas listas vazias, e é por isso que os quarenta e poucos pontos sobrando de uma build de Whirlwind vão para uma mastery e para os gritos.",
+      "**Ela não tem sinergia em nenhuma direção.** Nada a aumenta e ela não aumenta nada — o único ataque da classe com as duas listas vazias, sendo que as outras onze skills nessa posição são passivas e o Grim Ward. É por isso que os quarenta e poucos pontos sobrando de uma build de Whirlwind vão para uma mastery e para os gritos.",
       "+30% de dano e mais 5% por nível, que é um multiplicador pequeno; o dano da skill vem da quantidade de acertos e da arma, não do bônus.",
       "**Ela tem um modo de seleção de arma só dela**, não compartilhado com nenhuma outra skill do jogo. Double Swing, Double Throw e Frenzy compartilham um modo diferente, e a diferença é real mesmo que a extração não diga o que cada modo faz.",
       "Ela não pode ser interrompida, e você não consegue mudar a direção depois que começa — o caminho é fixado no momento do aperto.",

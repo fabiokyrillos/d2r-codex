@@ -175,9 +175,11 @@ case, not a special one; seventeen edges elsewhere on the site are the same.
 
 ### 3.2 Whirlwind neither gives a synergy nor receives one
 
-It is the only level-30 skill in the class with both lists empty, and one of
-twelve skills of thirty in that position — the ten Combat Masteries, Grim Ward
-and Whirlwind. `calc1 = ln12` and nothing else:
+Twelve of the thirty have both lists empty — the ten Combat Masteries, Grim Ward
+and Whirlwind — and eleven of the twelve are passives or a corpse skill.
+**Whirlwind is the only *attack* on the class in that position**, and Natural
+Resistance is the only other level-30 skill in it. `calc1 = ln12` and nothing
+else:
 **30% weapon damage at one point and 5% more per level**, with attack rating
 +50% and +5% per level. There is no synergy to spend points on, which is why the
 build's remaining forty-odd points go to a mastery and the Warcries.

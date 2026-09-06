@@ -29,9 +29,10 @@ import type { Skill, SkillTree } from "@/lib/types";
  *   one page of the window.
  *
  *   **Whirlwind neither gives a synergy nor receives one.** `calc1 = ln12` and
- *   nothing else. It is the only level-30 skill on the class with both lists
- *   empty, so the forty-odd points a Whirlwind build has left over go to a
- *   mastery and to the shouts rather than to anything that raises the spin.
+ *   nothing else. Twelve of the thirty have both lists empty and eleven of them
+ *   are passives or Grim Ward; Whirlwind is the only *attack* on the class in
+ *   that position, so the forty-odd points a Whirlwind build has left over go to
+ *   a mastery and to the shouts rather than to anything that raises the spin.
  *
  *   **Berserk's damage is magic, and it lends that to two other skills.**
  *   `calc4 = 100` under `EType = mag`: all of it, not part of it. Concentrate
@@ -482,7 +483,7 @@ export const barbarianSkills: Skill[] = [
     mechanics: [
       "+50% damage and 5% more per level, plus a flat point of damage per level, and it knocks the target backwards.",
       "**It is kept for what it gives, not for what it does.** Bash feeds Double Swing at 10% per hard point, Stun at 8% and Concentrate at 5%, so it stays on a maxed bar it is never pressed on.",
-      "Its attack rating is unusual: 15% and 5% per level, *plus* 5% per hard point of Concentrate. Concentrate is one of only two attack-rating synergies in the game outside the Necromancer's golems.",
+      "Its attack rating is unusual: 15% and 5% per level, *plus* 5% per hard point of Concentrate. **Concentrate is the only attack-rating synergy in the game outside the Necromancer's golems** — five such edges exist in the whole extraction, and the other three all come from Clay Golem.",
       "2 mana, and the knockback is a real defensive tool at level 1.",
     ],
     confidence: "verified",
@@ -651,7 +652,7 @@ export const barbarianSkills: Skill[] = [
     summary:
       "Spins through a pack hitting everything on the way. The signature skill of the class, and the only one that feeds nothing.",
     mechanics: [
-      "**It has no synergies in either direction.** Nothing raises it and it raises nothing — the only level-30 skill on the class with both lists empty, which is why a Whirlwind build's spare forty points go to a mastery and the shouts.",
+      "**It has no synergies in either direction.** Nothing raises it and it raises nothing — the only attack on the class with both lists empty, where the other eleven skills in that position are passives and Grim Ward. It is why a Whirlwind build's spare forty points go to a mastery and the shouts.",
       "+30% damage and 5% more per level, which is a small multiplier; the skill's damage comes from the number of hits and from the weapon, not from the bonus.",
       "**It has a weapon-selection mode of its own**, shared with no other skill in the game. Double Swing, Double Throw and Frenzy share a different one, and the difference is real even though the extraction does not name what either mode does.",
       "It cannot be interrupted, and you are not steerable once it starts — the path is fixed when you press it.",
