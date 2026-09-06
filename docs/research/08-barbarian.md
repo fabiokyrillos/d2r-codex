@@ -142,9 +142,12 @@ to whoever owns that file.
 
 ### 3.1 The Warcries feed the Combat Skills
 
-Twenty synergy edges, produced by running the repository's `synergiesFor` over
-the pinned rows and reading the output rather than a guide. Thirteen skills
-receive; thirteen give.
+**Twenty-four synergy edges**, produced by running the repository's
+`synergiesFor` over the pinned rows and reading the output rather than a guide.
+Thirteen skills receive; thirteen give. Fourteen edges are damage, seven
+duration, two attack rating and one find chance — counted off the shipped graph,
+because the first draft of this note said "twenty" over a list of twenty-four
+and the coordinator caught it.
 
 | Receiver | Sources, and what each gives per hard point |
 | --- | --- |
@@ -170,8 +173,9 @@ buff. No other class in scope has its damage tree fed by its utility tree.
 
 Every coefficient is receiver-owned — the `parN` lives on the row being raised,
 inside a sum of several sources — so the graph carries no `magnitude` for any of
-the twenty edges and all twenty numbers are authored prose. That is the ordinary
-case, not a special one; seventeen edges elsewhere on the site are the same.
+the twenty-four edges and all twenty-four numbers are authored prose. That is the
+ordinary case, not a special one; seventeen edges elsewhere on the site are the
+same.
 
 ### 3.2 Whirlwind neither gives a synergy nor receives one
 
