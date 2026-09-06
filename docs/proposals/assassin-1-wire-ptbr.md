@@ -83,13 +83,17 @@ this counter.
 
 ## What passes once these land
 
-Verified locally with the wiring temporarily applied, then reverted:
+Re-verified after Proposal 2 landed, with `main`'s `content/runewords/*` and the
+wiring temporarily materialised into this worktree, then reverted:
 
 ```
-npm run check       EXIT=0
+npm run check       EXIT=0   (no problems, no warnings)
 npm run build       EXIT=0
-npm run check:built EXIT=1 — 1 failure of 1023, the counter in item 3 above
+npm run check:built EXIT=0   with item 3 applied — 1023 checks across 18 pages
 ```
+
+Without item 3 and otherwise identical, `check:built` is `EXIT=1` on that
+counter alone.
 
 `check:content` counts 43 builds and 43/43 overlays; `test:search` finds
 "Whirlwind Assassin" in both locales; `test:allocations` reports
@@ -117,6 +121,13 @@ wiring on   npx tsx scripts/allocations.test.ts  EXIT=0  107 checks passed
 
 (`content/builds/pt-br-assassin.ts` is inside that glob and contributes nothing,
 because it holds no `slug:` key — so it neither needs nor gets an exclusion.)
+
+**Note that the Chaos and Fury references do not fail here.** `check-content`
+walks gear refs for builds that are *in the registry*, and this page is not, so
+its four `{ kind: "runeword", slug: "chaos" }` picks are never resolved until
+item 1 lands. They resolve correctly against the catalogue as committed — that
+is what the run above proves — but a green `check:content` on this branch is not
+evidence about them either way.
 
 Everything else is green with the wiring reverted: `npm run build` EXIT=0 and
 `npm run check:built` EXIT=0. `scripts/assassin.test.ts` imports
