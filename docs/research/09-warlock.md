@@ -413,7 +413,16 @@ same single generator run.
 
 ---
 
-## 6. Synergies: three throws and six silent drops
+## 6. Synergies: three throws and six silent drops — all fixed
+
+> **Resolved.** Everything below is what Phase 1 found and why. All three throws
+> and both silent-drop mechanisms were fixed upstream before the Warlock was
+> added to the generator's scope, and the fix was proved inert first: the
+> generator was re-run with the class still out of scope and reproduced
+> `skill-graph.ts` byte-identically — same 210 skills, same 220 edges — so the
+> rule change and the class addition are separable. The six edges are now in the
+> graph and their magnitudes are published on the skills. Kept as written because
+> the reasoning is the reusable part.
 
 `synergiesFor` was run against all thirty Warlock rows in isolation, before
 anything was authored, precisely so the coordinator's generator run would not be
@@ -534,6 +543,42 @@ to the coordinator; `classes.ts` is coordinator-owned and was not edited.
 External verification was attempted and is not available: web access is not
 reachable from this agent's tool set, so no Tier 2 patch-note fetch was possible.
 This is recorded so the next cycle does not assume it was checked and failed.
+
+### 7.1a The answer, and the reasoning error above that missed it
+
+**The coordinator answered it, and the method is the correction.** Everything in
+§7.1 is true and the conclusion drawn from it was wrong, because the list of
+places to look was incomplete: *the pinned source is a git repository, and it has
+earlier commits.* `a99ca28311` (2026-05-23, "Updated for newest patch") is the
+3.2-era extraction — after the February expansion, before the August patch — and
+diffing its thirty `war` rows against the pin answers the question directly, at
+Tier 1, with no web access at all.
+
+Re-derived here independently rather than accepted. **Two of thirty rows changed
+between 3.2 and 3.3:**
+
+```
+Bind Demon    passivecalc9  "ln34" -> "ln43"     (passivestat9 = item_normaldamage)
+              Param13       absent -> 50          "flat damage bonus baseline"
+              Param14       absent -> 25          "flat damage bonus per level"
+Sigil Death   EType         absent -> "fire"
+```
+
+So the claim's *subject* is corroborated — Bind Demon's damage really was
+rewritten in 3.3 — and its *direction* is not. Two parameters called "flat damage
+bonus" read as a buff; the operand swap in `passivecalc9` could go either way.
+The class page now states the change and stops there.
+
+The lesson is narrower than "check harder" and worth keeping: **"no before
+exists" was a claim about `json/base/skills.json`, and it got generalised into a
+claim about the world.** One file having no history is not the same as there
+being no history. The repository pins a *commit*, which means it pins a position
+in a sequence, and a sequence can be walked. Any future "this cannot be dated"
+conclusion about the extraction should be checked against the source's own log
+before it is written down.
+
+Sigil Death's gained element is a Warlock fact rather than a game-state one, and
+it is carried on that skill's page: see §11 and the skill's `mechanics`.
 
 ### 7.2 Open question 10 is closed, and closed against its own prediction
 
@@ -656,4 +701,178 @@ Two `SLUG_OVERRIDES` entries are needed — `"Levitate": "levitation-mastery"` a
 said on its first pass; §3 is the whole story. No proposal for a new
 `damageModel` (§5.1: the existing seven cover all four cases).
 
-Phases 2-5 do not start until the graph exists.
+Phase 2 begins at §11.
+
+---
+
+## 11. Phase 2 — the build inventory
+
+Phase 1 shipped and the graph carries the class. This section is the roster
+argument, and it is deliberately short. The class is seven months old, there is
+no community corpus to consolidate, and every number below comes from the
+extraction or the generated graph. Where the arithmetic does not support a
+build, it is refused here by name rather than written thinly.
+
+### 11.1 What the graph gave the argument
+
+The six edges that were being dropped are in, and two of them change the roster
+rather than decorating it:
+
+```
+hex-bane        <- consume, hex-purge, mirrored-blades    35% damage per level EACH
+eldritch-blast  <- blade-warp, hex-purge                  50% damage per level EACH
+```
+
+35% and 50% per level are the two steepest coefficients in the class, and both
+sit in the Eldritch tree. Neither was visible when Phase 1 planned.
+
+### 11.2 The arithmetic that decides the Eldritch tree
+
+The tree offers two ways to swing: an arc (Cleave) and a throw (Echoing Strike).
+They look like two builds. They are not, and one line settles it:
+
+| Receiver | Sources | Rate | Ceiling at 20 each |
+| --- | --- | --- | --- |
+| **Cleave** | Eldritch Blast, Hex: Purge, Mirrored Blades | 10%/level x3 | **+600%** |
+| Echoing Strike | Blade Warp, Mirrored Blades | 5%/level x2 | +200% |
+
+Both carry the weapon's full damage, so the synergy multiplier is the whole
+comparison, and Cleave wins it three to one. Echoing Strike is a ranged utility
+skill on a melee bar, not a build. **One weapon page, not two, and no thrown
+variant package** — a package the arithmetic says is a third as good is not a
+choice, it is a trap with a menu around it.
+
+The Cleave plan is also the tightest in the class, which is a point in its
+favour: 100 points of core across five maxed skills, 4 in prerequisites, 6 spare
+out of 110. Nothing has to be invented to fill it.
+
+```
+Levitation Mastery 20   Cleave 20   Mirrored Blades 20   Eldritch Blast 20
+Hex: Purge 20           prereqs: Echoing Strike 1, Blade Warp 1,
+                                 Psychic Ward 1, Hex: Bane 1
+= 104 of 110
+```
+
+### 11.3 The roster — four pages
+
+| # | Page | Tree | Primary | Damage | Core points |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **Apocalypse Warlock** | Chaos | `apocalypse` | fire | 63 of 110 |
+| 2 | **Abyss Warlock** | Chaos | `abyss` | magic | 80 of 110 |
+| 3 | **Cleave Warlock** | Eldritch | `cleave` | physical + magic | 104 of 110 |
+| 4 | **Blood Boil Warlock** | Demon | `blood-boil` | fire + physical | 72 of 110 |
+
+Four is the whole roster, and one page per tree is not the reason — the Chaos
+tree splits because fire and magic are different answers to an immunity, and the
+other two trees do not split because their arithmetic says so.
+
+**Every primary is a skill the plan spends twenty points in.** None is
+item-granted, and all four are Warlock skills.
+
+Two findings every page has to carry:
+
+- **The Warlock has no elemental mastery.** No skill in any tree multiplies an
+  element the way Fire Mastery does. Elemental damage comes from skill level and
+  synergies only, and Apocalypse's own −40 fire pierce is the class's single
+  piece of resistance-breaking.
+- **Apocalypse leaves 47 points spare and the natural sink is the void branch**,
+  which is also the fire build's answer to a fire immune. The two Chaos pages are
+  therefore near-neighbours in points and opposites in element, and each should
+  say what the other is for.
+
+### 11.4 Refused, with reasons
+
+- **Demon summoner.** The cap is three demons, set by two hard-point thresholds
+  in Demonic Mastery that `+skills` cannot move (§4.3). Three minions is not an
+  army and nothing in the tree makes it one. The Demon tree's damage build is
+  Blood Boil, which spends the demons rather than fielding them.
+- **Bind Demon.** One pet, four affix tiers, a capstone worth a package on the
+  Blood Boil page. Not a damage engine.
+- **Echoing Strike / thrown.** §11.2. A third of Cleave's multiplier.
+- **Eldritch Blast caster.** The largest coefficient in the class (+50% per level
+  from two sources) applied to a 2-6 base, and both its sources are weapon
+  skills. It is a support skill on the Cleave page: life and mana steal, and the
+  only thing in the class that maintains a hex without swinging.
+- **Hex-only "hexer".** The hexes are debuffs applied by hitting something. With
+  no weapon damage engine behind them they do nothing. Packages, not a page.
+- **Sigil control.** Sigil: Death is one point on every Chaos build — the execute
+  thresholds are flat 13% and 10% and do not scale, so the first point is the
+  whole skill except radius. There is no damage in the sigils to build on.
+- **Consume self-buff melee.** A buff that destroys a demon. Package.
+- **Bow or crossbow Warlock.** Mechanically possible — Mirrored Blades takes any
+  weapon and has `range = both` — and supported by no other skill in the class.
+
+### 11.5 Item availability — one blocking gap
+
+Checked against the catalogue as it stands: 52 uniques and 50 runewords.
+
+**Blocking: the Warlock has no off-hand item on this site.** There is no unique
+Grimoire catalogued, and the socket count rules out most of the alternatives:
+
+> Every one of the fifteen Grimoire bases carries `gemsockets = 2`. So the
+> 4-socket **Spirit** — the default caster off-hand for every other class — and
+> the 3-socket **Ancients' Pledge** cannot go in one. The only runewords that fit
+> a Grimoire are the three 2-socket shield words: **Rhyme**, **Splendor** and
+> **Vigilence**.
+
+That is a genuine class rule and it belongs on all four pages: a Warlock who
+wants Grimoire staffmods gives up Spirit, and one who wants Spirit puts it in an
+ordinary shield and gives up the staffmods. It is a real trade rather than a
+prohibition, because nothing stops a Warlock equipping a normal shield.
+
+Also recorded: seven of the 52 uniques are locked away from this class by
+someone else's class restriction — three Sorceress orbs, two Amazon javelins,
+Herald of Zakarum and Homunculus.
+
+### 11.6 What the catalogue is missing
+
+Requested of the coordinator, in priority order. Nothing below is authored around
+free text and nothing is assumed to exist.
+
+**1. One unique Grimoire, blocking.** Any of the four the expansion names:
+`Ars Al'Diablolos` (Blasphemous Grimoire), `Ars Tor'Baalos` (Blasphemous
+Compendium), `Ars Dul'Mephistos` (Occult Tome), `Measured Wrath` (Burnt Text).
+
+> **This needs a decision before it needs an entry.** Their stat lines are
+> unverified, exactly like the five DLC runewords already carried with blank
+> stats. So: may a gear tier reference a unique whose stats are blank? If yes,
+> one Grimoire entry unblocks the off-hand slot on four pages. If no, all four
+> pages say the class's own off-hand is not yet documented — a worse page, but an
+> honest one.
+
+**2. Seven more DLC uniques**, which would materially improve the four pages:
+`Hellwarden's Will` (Death Mask, helm), `Entropy Locket` (Amulet), `Opalvein`
+(Ring), `Sling` (Ring), `Wraithstep` (Mirrored Boots), `Gheed's Wager` (Troll
+Belt), `Dreadfang` (Legend Sword — the only Warlock-flavoured melee weapon the
+expansion names, and the Cleave page's natural weapon).
+
+**3. One question about an item you already carry.** `Ormus' Robes` is summarised
+as "+1-3 to one specific skill, plus up to +15% damage to fire, lightning and
+cold skills". In the game the +skill roll is a Sorceress skill and the elemental
+damage is not class-restricted. If that is right, the robe is a real Apocalypse
+Warlock body armour with half its text dead, and the page should say which half.
+Not asserted either way here.
+
+### 11.7 Aliases
+
+There is no community corpus for this class, so these are **search terms a reader
+would plausibly type, not claimed community names**, and the pages should not
+present them as nicknames the way "Hammerdin" or "Shako" are presented.
+
+| Page | Aliases |
+| --- | --- |
+| Apocalypse Warlock | Fire Warlock, Chaos Warlock, Apoc Warlock |
+| Abyss Warlock | Void Warlock, Miasma Warlock, Magic Warlock |
+| Cleave Warlock | Melee Warlock, Weapon Warlock, Hex Warlock |
+| Blood Boil Warlock | Demon Warlock, Demonologist |
+
+### 11.8 Open before Phase 3
+
+1. The blank-stats unique decision in §11.6.
+2. Whether `Latent Sunder Charm` does anything a Warlock build should plan
+   around. `00-game-state.md` still records its effect as unverified, so no page
+   will mention it until that closes.
+3. Whether the Grimoire's inherent Fire-or-Magic weapon damage adds to a weapon
+   build's swing. It is an off-hand affix and the Cleave page would want to know;
+   nothing in the files reached so far settles it, and nothing is published
+   either way.
