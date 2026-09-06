@@ -247,13 +247,23 @@ console.log("\nWhirlwind is a borrowed skill, and the columns say what it is not
    * skills take their damage from the boots; `WEAPON_SELECTION` says what
    * `weapsel` each row carries. Editing one alone breaks this, which is the
    * whole reason there are two.
+   *
+   * **Both checks below are statements about this map, not about the file**,
+   * and the names say so. The scope matters because the same sentence has
+   * already gone wrong once on another class's page: in the full extraction
+   * `weapsel = 4` also carries `Smite` and the generic `Kick` row, and
+   * `weapsel = 2` also carries `Talic's Whirlwind` (`*Id 410`, no `charclass`)
+   * — a fact this project's own research recorded in §11.3 and which makes
+   * "no other skill in the game" false. Whirlwind is the only *player* skill
+   * at 2, and that is a documented claim rather than something these two
+   * assertions demonstrate.
    */
   const weapselFour = Object.entries(WEAPON_SELECTION)
     .filter(([, v]) => v === WEAPSEL_NO_WEAPON)
     .map(([k]) => k)
     .sort();
   check(
-    "every kick is `weapsel = 4`, and every `weapsel = 4` row is a kick",
+    "the two transcriptions agree: the map's `weapsel = 4` rows are exactly the kicks",
     weapselFour.join(",") === [...KICKS].sort().join(","),
     `${weapselFour.join(",")} vs ${[...KICKS].sort().join(",")}`,
   );
@@ -262,7 +272,7 @@ console.log("\nWhirlwind is a borrowed skill, and the columns say what it is not
     .filter(([, v]) => v === WEAPSEL_EITHER_OR_BOTH)
     .map(([k]) => k);
   check(
-    "Whirlwind is the only row that uses either hand or both",
+    "and Whirlwind is the only entry in the map at `weapsel = 2`",
     eitherOrBoth.join(",") === "whirlwind",
     eitherOrBoth.join(","),
   );
