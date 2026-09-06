@@ -241,7 +241,7 @@ export const classesPtBr: Overlay<ClassCopy> = {
     weaknesses: [
       "Exige uma expansão paga — não está disponível para quem tem só o D2R base",
       "Muito menos conhecimento da comunidade que as classes de 25 anos",
-      "Está sendo balanceado ativamente; o Bind Demon levou nerf tão recentemente quanto o Patch 3.3",
+      "Está sendo balanceado ativamente; o dano do Bind Demon foi reescrito tão recentemente quanto o Patch 3.3",
     ],
     coreMechanics: [
       {
