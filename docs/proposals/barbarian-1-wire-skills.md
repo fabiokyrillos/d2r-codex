@@ -226,7 +226,8 @@ with §1 and §2 applied.
   byte-identical and 30 added, touching nothing else.
 - **Page → tree**: page 1 → `barbarian-combat-skills`, page 2 →
   `combat-masteries`, page 3 → `warcries`. Ten skills each.
-- **Twenty synergy edges**, on thirteen receivers:
+- **Twenty-four synergy edges**, on thirteen receivers — 14 damage, 7 duration,
+  2 attack rating, 1 chance:
 
 ```
 bash            <- concentrate (attack-rating), stun (damage)
@@ -244,9 +245,9 @@ battle-command  <- battle-orders (duration), shout (duration)
 find-item       <- find-potion (chance)
 ```
 
-- **No `magnitude` on any of the twenty.** Every Barbarian coefficient is
-  receiver-owned, so all twenty numbers are authored prose, as seventeen edges
-  elsewhere on the site already are.
+- **No `magnitude` on any of the twenty-four.** Every Barbarian coefficient is
+  receiver-owned, so all twenty-four numbers are authored prose, as seventeen
+  edges elsewhere on the site already are.
 - **Zero effect rows.** No Barbarian slug is in `EFFECTS`, so all thirty publish
   an empty effects table. This is the first class in that position and it is
   deliberate: every magnitude is in `mechanics`. If a later pass wants three,
