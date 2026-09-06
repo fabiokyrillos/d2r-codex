@@ -259,7 +259,7 @@ verified" placeholders for the same reason.
 | **Amazon** | **30, with pages** | **8** | **Yes** | **Complete as of 2026-09-02** |
 | **Necromancer** | **30, with pages** | **3** | **Yes** | **Complete as of 2026-09-03; see [`04-necromancer-foundation.md`](04-necromancer-foundation.md) and [`05-necromancer-builds.md`](05-necromancer-builds.md)** |
 | **Druid** | **30, with pages** | **2** | **Yes** | **As of 2026-09-04; see [`06-druid.md`](06-druid.md). Five further build families researched and not yet written** |
-| **Assassin** | **30, with pages** | **6 of a 7-page roster** | **Yes** | **In progress as of 2026-09-06; see [`07-assassin.md`](07-assassin.md). Whirlwind Assassin is researched (§11.3) and not yet written** |
+| **Assassin** | **30, with pages** | **7** | **Yes** | **Complete as of 2026-09-06; see [`07-assassin.md`](07-assassin.md). The seventh page, Whirlwind Assassin, closed the roster; Riftsin is a gear variant of Kicksin and not a page** |
 | **Barbarian** | **30, with pages** | — | — | **Skills and trees as of 2026-09-06; see [`08-barbarian.md`](08-barbarian.md). Builds and journey in progress** |
 | **Warlock** | **30, with pages** | — | — | **Skills and trees as of 2026-09-06; see [`09-warlock.md`](09-warlock.md). Builds and journey in progress** |
 

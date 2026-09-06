@@ -70,6 +70,57 @@ export const BLADE_WEAPON_DENOMINATOR = 128;
 /** 0.75. Derived, so a changed numerator moves every sentence that quotes it. */
 export const BLADE_WEAPON_SHARE = BLADE_WEAPON_NUMERATOR / BLADE_WEAPON_DENOMINATOR;
 
+/**
+ * `weapsel`, transcribed for every row that carries one that this class cares
+ * about, plus the borrowed skill the Whirlwind page is built on.
+ *
+ * The file guide for `Skills.txt` states the values: blank looks for a weapon in
+ * the right hand, 1 in the left, **2 "means that it can either use the Right or
+ * the Left or Both weapons (used by Whirlwind)"**, 3 always uses both, and 4
+ * uses no weapon at all.
+ *
+ * Kept beside `KICKS` on purpose rather than derived from it. Two independent
+ * transcriptions of the same column disagree loudly if either is edited alone,
+ * and the pair is what `assassin.test.ts` cross-checks — a single list would
+ * agree with itself no matter what it said.
+ */
+export const WEAPON_SELECTION: Record<string, number> = {
+  "dragon-talon": 4,
+  "dragon-tail": 4,
+  "dragon-flight": 4,
+  "dragon-claw": 3,
+  "fists-of-fire": 3,
+  "claws-of-thunder": 3,
+  "blades-of-ice": 3,
+  whirlwind: 2,
+};
+
+/** The `weapsel` value that means "no weapon at all", which is what a kick is. */
+export const WEAPSEL_NO_WEAPON = 4;
+/** The `weapsel` value Whirlwind carries, and the only row on this page that does. */
+export const WEAPSEL_EITHER_OR_BOTH = 2;
+
+/**
+ * The patch that retired "Whirlwind only reads Increased Attack Speed from the
+ * weapon", quoted so a rule can cite it rather than assert it.
+ *
+ *   PROVENANCE  Blizzard, "Diablo II: Resurrected Patch 2.4.3 | Now Live",
+ *               Quality of Life > Gameplay, 28 June 2022.
+ */
+export const WHIRLWIND_IAS_PATCH = "2.4.3";
+
+/**
+ * Whether a chance-to-cast-on-striking effect fires during Whirlwind.
+ *
+ * `null` rather than `false`, and that is the whole point. The 2009 reference
+ * usually quoted says Whirlwind "triggers none of the six mentioned chances",
+ * but its own table excludes only *on attack*, and three of its six events are
+ * level-up, death and kill — which no attack skill can suppress. Nothing above
+ * community tier settles the striking case in either direction, so the page must
+ * hedge and the rule below enforces the hedge rather than an answer.
+ */
+export const WHIRLWIND_ON_STRIKING: boolean | null = null;
+
 /** `pettype = assassintrap`, `petmax = 5` on every sentry. A total, not a per-skill cap. */
 export const TRAP_SLUGS = [
   "blade-sentinel",
@@ -287,6 +338,11 @@ export const ASSASSIN_RULES = [
   "blade-shotgun-or-pierce",
   "blade-synergy-scales-the-weapon-share",
   "tail-fire-independent-of-physical",
+  "whirlwind-releases-charges",
+  "whirlwind-ias-from-the-weapon-only",
+  "whirlwind-proc-stated-as-fact",
+  "claw-mastery-dead-on-a-whirl",
+  "blocked-while-whirling",
 ] as const;
 export type AssassinRule = (typeof ASSASSIN_RULES)[number];
 
@@ -311,6 +367,8 @@ const NAME: Record<string, string> = {
   "blade-sentinel": "Blade Sentinel",
   "blade-fury": "Blade Fury",
   "blade-shield": "Blade Shield",
+  "claw-mastery": "Claw Mastery",
+  whirlwind: "Whirlwind",
 };
 
 /**
@@ -785,6 +843,69 @@ const FIRE_STANDS_ALONE =
 const FIRE_IS_DERIVED =
   /\b(?:derived|computed|based on|comes from|share of|function of|no fire|none|nothing|derivad\w*|calculad\w*|a partir d|parcela d|em cima d|nenhum fogo|nada)\b/i;
 
+// ---------------------------------------------------------------------------
+// Whirlwind, which is a Barbarian skill this class reaches through an item
+//
+// Five rules, and every one of them exists because the *true* sentence about
+// some other page of this class is the *false* sentence here. A whirl swings
+// the claw and a kick does not, so Claw Mastery and Deadly Strike change sides.
+// Whirlwind is not in `FINISHERS`, so a charge-up stood up in front of it is
+// wasted where on any other melee page it is the plan. And patch 2.4.3 rewrote
+// the attack-speed rule for this skill and no other, so the off-hand sentence
+// this site publishes twice is wrong exactly once.
+// ---------------------------------------------------------------------------
+
+/** The skill, the verb, and the Portuguese noun. `\b` is useless before an accent. */
+const MENTIONS_A_WHIRL =
+  /\bwhirlwind\b|\bwhirling\b|\bwhirls?\b|\bgiro\b|\bgirando\b|\bgirar\b/i;
+
+/** Charges released, in the shapes that do not name the word "charges". */
+const RELEASES_A_STACK =
+  /\b(releases?|spends?|consumes?|unleash(?:es)?|cashes? in|delivers?)\b[^.]{0,40}\b(stack|charges?|charge[- ]ups?)\b|\b(libera|gasta|consome|descarrega)\b[^.]{0,40}\b(pilha|cargas?)\b/i;
+
+/** A denial anywhere in the sentence — "releases no charge-up" is the fix, not the error. */
+const DENIES_THE_RELEASE =
+  /\b(no|not|never|cannot|can't|does not|doesn't|without|wasted|inert|dead)\b|\b(não|nenhum\w*|nunca|sem|desperdiçad\w*|inerte|morta?s?)\b/i;
+
+/** Increased Attack Speed scoped to the weapon, or denied to the off-hand. */
+const IAS_WEAPON_ONLY =
+  /\bonly\b[^.]{0,45}\b(weapon|claw)\b|\b(weapon|claw)\b[^.]{0,25}\bonly\b|\bsocketed into the weapon\b|\b(off[- ]hand|secondary|second)\s+(weapon|claw|hand)\b[^.]{0,45}\b(does not|doesn't|do not|don't|is not|isn't|never)\s*\w*\s*(count|counted|read|apply|applies)\b|\b(s[óo]|apenas|somente)\b[^.]{0,45}\b(arma|garra)\b|\b(m[ãa]o secund[áa]ria|segunda garra|garra secund[áa]ria)\b[^.]{0,45}\bn[ãa]o\b[^.]{0,20}\b(conta|contada|lida|vale)\b/i;
+
+/** The 2.4.3 statement, in the shapes a correct sentence uses. */
+const IAS_FROM_EVERYWHERE =
+  /\ball equipment\b|\bany slot\b|\bevery slot\b|\bfrom everywhere\b|\bboth claws\b|\baveraged\b|\btodo o equipamento\b|\bqualquer slot\b|\bas duas garras\b|\bpromediad\w*\b|\bm[ée]dia\b|\b2\.4\.3\b/i;
+
+/** An on-striking or chance-to-cast effect, named. */
+const A_TRIGGER_EFFECT =
+  /\bon striking\b|\bchance to cast\b|\bhit-skill\b|\bprocs?\b|\bproc(?:ked|king)\b|\bao golpear\b|\bconjurar ao golpear\b/i;
+
+/** A verdict about whether that effect happens. Either direction is a verdict. */
+const A_TRIGGER_VERDICT =
+  /\b(do|does|will|would|always|reliably|never|none|no)\b[^.]{0,20}\b(fire|fires|trigger|triggers|proc|procs|go off|goes off|work|works)\b|\b(fires?|triggers?|procs?|works?)\b[^.]{0,25}\b(while|during|on every|with every|em cada|durante|enquanto)\b|\b(dispara|disparam|funciona|funcionam)\b[^.]{0,25}\b(em cada|durante|enquanto|sempre)\b|\bnunca\b[^.]{0,25}\b(dispara|disparam|funciona)\b/i;
+
+/** The hedge the page is required to carry instead of a verdict. */
+const HEDGED =
+  /\bnot established\b|\bnot confirmed\b|\bnot determinable\b|\bunknown\b|\bin doubt\b|\bin question\b|\bwhether\b|\bcannot be relied\b|\bn[ãa]o est[áa] estabelecid\w*\b|\bn[ãa]o confirmad\w*\b|\bem d[úu]vida\b|\bse\s|\bnão pode contar\b|\bnão pode(?:m)? contar\b/i;
+
+/** Claw Mastery denied to something. */
+const MASTERY_DENIED =
+  /\b(does not|doesn't|do not|don't|is not|isn't|never|no)\b[^.]{0,30}\b(apply|applies|applied|count|counted|help|helps|raise|raises|do|does|work|works|anything|nothing)\b|\bdoes nothing\b|\bn[ãa]o\b[^.]{0,30}\b(se aplica|aplica|conta|ajuda|sobe|faz nada|vale)\b/i;
+
+/** Blocking denied or reduced. */
+const BLOCK_DENIED =
+  /\b(cannot|can't|cant|do not|don't|does not|doesn't|no|never|stop\w*|lose[sd]?|reduced|cut|third)\b[^.]{0,40}\bblock\w*\b|\bblock\w*\b[^.]{0,40}\b(is|are)\s+(?:reduced|cut|disabled|off|ignored)\b|\bn[ãa]o\b[^.]{0,40}\bbloque\w*\b|\bbloqueio\b[^.]{0,40}\b(reduzid\w*|cortad\w*|desligad\w*|ignorad\w*|um ter[çc]o)\b/i;
+
+/** The correcting clause: whirling blocks at the full number. */
+/*
+ * The escape clause carries two shapes, and the second was added for a page
+ * this agent does not own. "Whirlwind loses no block at all" is the correct
+ * sentence a Barbarian page would write, and `BLOCK_DENIED` sees `lose … block`
+ * in it — so a denial of the loss has to be recognised as the fix rather than
+ * the error, the same way `DENIES_THE_SHIELD` works one rule up.
+ */
+const BLOCK_IS_FULL =
+  /\bfull[- ]effectiveness\b|\bfull effectiveness\b|\bfull(?:y)? block\w*\b|\bat full\b|\bnamed(?: as)? an exception\b|\bkeeps? (?:its|the) \d+%\b|\bintegralmente\b|\bbloqueio integral\b|\bexce[çc][ãa]o\b|\blose[sd]? no\b|\bno (?:block(?:ing)? )?(?:penalty|reduction|loss)\b|\bn[ãa]o perde\b|\bsem (?:penalidade|perda|redu[çc][ãa]o)\b/i;
+
 const SYNERGY_SCOPED_OFF_THE_WEAPON =
   /\b(?:not|does not|doesn't|never|cannot|untouched|separate|two (?:addends|terms|halves)|only the skill|its own damage|n[ãa]o|separad\w*|duas parcelas|apenas o dano)\b/i;
 
@@ -1240,6 +1361,105 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
           "Royal Strike's own missiles are meteor at one charge, chain lightning at two and " +
             "chaos ice at three; this pairs a charge count with the wrong element",
         );
+      }
+
+      /* ------------------------------------------------------------------
+       * Whirlwind
+       * ------------------------------------------------------------------ */
+      if (MENTIONS_A_WHIRL.test(sentence)) {
+        /*
+         * A charge-up stood up in front of a whirl. `finishing = 1` is on six
+         * rows — `Attack`, `Left Hand Swing` and the four Dragon skills — and
+         * Whirlwind is not one of them, so the rotation every other melee page
+         * on this class teaches is the one thing that cannot happen here.
+         */
+        if (RELEASES_A_STACK.test(sentence) && !DENIES_THE_RELEASE.test(sentence)) {
+          add(
+            "whirlwind-releases-charges",
+            sentence,
+            "Whirlwind carries neither `finishing` nor `prgchargesconsumed`, so it releases no " +
+              "charge-up. A Tiger Strike stack stood up in front of a whirl is simply spent by " +
+              "the next ordinary swing, or wasted",
+          );
+        }
+
+        /*
+         * The 2011 rule, which patch 2.4.3 retired by name. It is still the
+         * most repeated sentence about this skill, and this site publishes the
+         * off-hand half of it — correctly — on two other pages, which is
+         * exactly how it would arrive here.
+         */
+        if (
+          ATTACK_SPEED.test(sentence) &&
+          IAS_WEAPON_ONLY.test(sentence) &&
+          !IAS_FROM_EVERYWHERE.test(sentence)
+        ) {
+          add(
+            "whirlwind-ias-from-the-weapon-only",
+            sentence,
+            `patch ${WHIRLWIND_IAS_PATCH} states that "Whirlwind now incorporates Increased ` +
+              'Attack Speed (IAS) from all equipment" and that "while dual wielding, the attack ' +
+              'frame for each weapon will be averaged". Scoping it to the weapon, or writing the ' +
+              "off-hand out, is the pre-2.4.3 rule",
+          );
+        }
+
+        /*
+         * A verdict either way on the striking procs. The rule is deliberately
+         * symmetric: "they fire" and "they never fire" are the same defect,
+         * because neither is established. See `WHIRLWIND_ON_STRIKING`.
+         */
+        if (
+          WHIRLWIND_ON_STRIKING === null &&
+          A_TRIGGER_EFFECT.test(sentence) &&
+          A_TRIGGER_VERDICT.test(sentence) &&
+          !HEDGED.test(sentence)
+        ) {
+          add(
+            "whirlwind-proc-stated-as-fact",
+            sentence,
+            "whether a chance-to-cast-on-striking effect fires during Whirlwind is not " +
+              "established at any tier this project publishes from — the 2009 reference " +
+              "generalises an exclusion its own table applies to *on attack* alone. State the " +
+              "hedge rather than either verdict",
+          );
+        }
+
+        /*
+         * Claw Mastery, carried across from the kick pages where the denial is
+         * correct. `passive_mastery_melee_*` is gated `itypea1 = h2h` and a
+         * whirl is a claw melee attack, so it applies here in full.
+         */
+        /*
+         * The denial has to be *about* Claw Mastery, which means the name has
+         * to come first. The sentence that forced this reads "the +2 does
+         * nothing for Whirlwind and a great deal for Claw Mastery, Venom and
+         * Weapon Block" — a true sentence about a skill-bonus affix, in which
+         * Claw Mastery is on the receiving end of the credit rather than the
+         * denial. Same ordering test the finisher and kick rules use.
+         */
+        const masteryNamed = sentence.toLowerCase().indexOf("claw mastery");
+        const masteryDenial = MASTERY_DENIED.exec(sentence);
+        if (masteryNamed >= 0 && masteryDenial && masteryNamed < masteryDenial.index) {
+          add(
+            "claw-mastery-dead-on-a-whirl",
+            sentence,
+            "Claw Mastery is not applied to *kick* damage because a kick uses no weapon. A whirl " +
+              `is \`weapsel = ${WEAPSEL_EITHER_OR_BOTH}\` and swings the claw, so the mastery's ` +
+              "attack rating, damage and critical chance all apply",
+          );
+        }
+
+        /* Blocking, which whirling is a named exception to rather than a victim of. */
+        if (BLOCK_DENIED.test(sentence) && !BLOCK_IS_FULL.test(sentence)) {
+          add(
+            "blocked-while-whirling",
+            sentence,
+            "Whirlwind is named alongside standing and walking as a state that blocks at full " +
+              "effectiveness; running is the state cut to a third. Weapon Block keeps its " +
+              "`Param2 = 65` ceiling for the whole spin",
+          );
+        }
       }
 
       /* Telling the reader to make a claw that cannot be made where they are. */
