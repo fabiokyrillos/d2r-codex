@@ -282,6 +282,10 @@ export const ASSASSIN_RULES = [
   "deadly-strike-on-a-kick",
   "proc-limited-to-one-kick",
   "charge-timer-refreshed-by-a-finisher",
+  "blade-cadence-on-a-speed-stat",
+  "two-hander-not-halved",
+  "blade-shotgun-or-pierce",
+  "blade-synergy-scales-the-weapon-share",
 ] as const;
 export type AssassinRule = (typeof ASSASSIN_RULES)[number];
 
@@ -371,8 +375,15 @@ const DENIES_THE_SHIELD =
  */
 const BOTH_BUFFS_UP =
   /\bFade\b[^.]{0,80}\bBurst of Speed\b|\bBurst of Speed\b[^.]{0,80}\bFade\b/i;
+/*
+ * `exclud\w*` was added in cycle 5, forced by three correct sentences on the
+ * Blade Fury page. "It excludes Burst of Speed" is the plainest way in English
+ * to say the thing this rule wants said, and the first draft of the escape
+ * clause did not contain the word — so the rule was rejecting the statement of
+ * its own premise. The same goes for the Portuguese `exclu\w*`.
+ */
 const SAYS_EXCLUSIVE =
-  /\b(mutually exclusive|cannot|can't|replaces?|drops? the other|instead of|either|not both|one or the other)\b|\b(mutuamente exclusiv|não pode|derruba o outro|substitui|em vez de|ou o)\w*/i;
+  /\b(mutually exclusive|exclud\w*|cannot|can't|replaces?|drops? the other|instead of|either|not both|one or the other)\b|\b(mutuamente exclusiv|exclu[ií]\w*|não pode|derruba o outro|substitui|em vez de|ou o)\w*/i;
 
 /** Venom's poison described as running over seconds. */
 const POISON_OVER_SECONDS =
@@ -706,6 +717,51 @@ const A_LEGITIMATE_REFRESH =
 const BY_A_FINISHER =
   /\b(?:finisher|finishing move|dragon (?:talon|claw|tail|flight)|preserv\w*|releas\w*|libera\w*|golpe final)\b/i;
 
+/* ---------------------------------------------------------------------------
+ * BLADE FURY — the four things cycle 4 could not establish, now established.
+ *
+ * `Param4 = 5` is the throw rate and it is fixed: "Shooting speed is five
+ * Frames per attack and is neither subject to attack speed nor to cast rate."
+ * `Half2HSrc` halves the transferred share on a two-hander to 37.5%.
+ * `bladefragment1` is `NumDirections 1 / CollideKill 1` with no `Pierce`.
+ * And `DmgSymPerCalc` "does not influence physical damage passed over by
+ * SrcDamage" — the synergy multiplies the skill's own damage and not the
+ * weapon share.
+ * ------------------------------------------------------------------------- */
+
+/** The blade cadence, in frames, from `Param4`. */
+export const BLADE_FURY_FRAMES = 5;
+
+/** A speed stat being credited with changing how fast blades leave. */
+const SPEED_STAT =
+  /\b(increased attack speed|attack speed|ias\b|faster cast rate|cast rate|fcr\b|burst of speed|velocidade de ataque|taxa de conjura\w*|velocidade de conjura\w*)\b/i;
+
+/** Claiming a rate goes up, or that a speed stat is wanted. */
+const RAISES_THE_RATE =
+  /\b(?:faster|more (?:blades|often)|speeds? up|increases? (?:the )?(?:rate|cadence|throw\w*)|raises? (?:the )?rate|throw\w* faster|stack|get|buy|want|prioriti[sz]e|aumenta\w*|acelera\w*|mais r[áa]pid\w*|priorize|queira)\b/i;
+
+/** The escape clause: saying plainly that the cadence does not move. */
+const CADENCE_IS_FIXED =
+  /\b(?:fixed|constant|does not|doesn't|cannot|can't|no(?:t)? (?:subject|affected)|dead|nothing|never|unchanged|independent|fixa|constante|n[ãa]o (?:muda|afeta|altera|[ée] sujeit)|morto|morta|nada|nunca)\b/i;
+
+/** Claiming a two-handed weapon is not penalised, or naming the wrong share for one. */
+const TWO_HANDER_SHARE =
+  /\b(?:two[- ]handed|2[- ]handed|duas m[ãa]os)\b/i;
+const NOT_PENALISED =
+  /\b(?:no penalty|not penali[sz]ed|same (?:share|75)|full (?:share|75)|just as good|sem penalidade|n[ãa]o (?:é|e) penalizad|mesma parcela)\b/i;
+
+/** Claiming the blades spread, shotgun or pierce. */
+const BLADE_SPREAD =
+  /\b(?:shotgun\w*|spread|volley|multiple blades at once|all (?:the )?blades? at once|pierces?|piercing|atravessa\w*|perfura\w*|leque|rajada de l[âa]minas)\b/i;
+const DENIES_SPREAD =
+  /\b(?:no|not|never|cannot|can't|does not|doesn't|without|nem|n[ãa]o|sem|nenhum\w*)\b/i;
+
+/** Crediting the blade synergy with raising the weapon share. */
+const SYNERGY_RAISES_WEAPON =
+  /(?:\bsynerg\w*|\bsinergi\w*|\+\s*400\s*%|\b400\s*%)[^.]{0,90}\b(?:weapon (?:share|damage|half)|75\s*%|parcela da arma|metade da arma|dano da arma)\b|\b(?:weapon (?:share|damage|half)|parcela da arma|metade da arma)\b[^.]{0,90}(?:\bsynerg\w*|\bsinergi\w*|\+\s*400\s*%)/i;
+const SYNERGY_SCOPED_OFF_THE_WEAPON =
+  /\b(?:not|does not|doesn't|never|cannot|untouched|separate|two (?:addends|terms|halves)|only the skill|its own damage|n[ãa]o|separad\w*|duas parcelas|apenas o dano)\b/i;
+
 export function checkAssassinClaims(lines: string[], where: string): AssassinProblem[] {
   const problems: AssassinProblem[] = [];
   const add = (rule: AssassinRule, sentence: string, why: string) =>
@@ -837,6 +893,57 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
             sentence,
             `${NAME[slug]} carries \`SrcDam = ${BLADE_WEAPON_NUMERATOR}\` of ` +
               `${BLADE_WEAPON_DENOMINATOR}, which is three quarters of the weapon and not all of it`,
+          );
+        }
+
+        /*
+         * A two-handed weapon halves the transferred share. Saying otherwise
+         * sends the reader after a weapon that gives up half of half the build.
+         */
+        if (TWO_HANDER_SHARE.test(sentence) && NOT_PENALISED.test(sentence)) {
+          add(
+            "two-hander-not-halved",
+            sentence,
+            "`Half2HSrc` on the blade missiles halves the transferred share on a two-handed " +
+              "weapon, from 75% to 37.5%. Only one-handed weapons — claws included — take no penalty",
+          );
+        }
+
+        /* The synergy multiplies the skill's own damage, never the weapon share. */
+        if (SYNERGY_RAISES_WEAPON.test(sentence) && !SYNERGY_SCOPED_OFF_THE_WEAPON.test(sentence)) {
+          add(
+            "blade-synergy-scales-the-weapon-share",
+            sentence,
+            "`DmgSymPerCalc` adds its percentage to the physical damage done by the skill and " +
+              "explicitly not to damage passed over by `SrcDamage`. The +400% and the 75% weapon " +
+              "share are two addends, not a product",
+          );
+        }
+      }
+
+      /*
+       * Blade Fury alone: the cadence, the spread and the pierce.
+       *
+       * Scoped to Blade Fury rather than to the blade family, because Blade
+       * Sentinel *is* laid at attack speed — it plays the `S2` trap animation —
+       * and a rule that flagged that would be flagging a true sentence.
+       */
+      if (mentions(sentence, "blade-fury")) {
+        if (SPEED_STAT.test(sentence) && RAISES_THE_RATE.test(sentence) && !CADENCE_IS_FIXED.test(sentence)) {
+          add(
+            "blade-cadence-on-a-speed-stat",
+            sentence,
+            `Blade Fury's \`Param4 = ${BLADE_FURY_FRAMES}\` is a fixed ${BLADE_FURY_FRAMES}-frame ` +
+              "cadence, subject to neither attack speed nor cast rate. Selling a speed stat here " +
+              "sells an affix that does nothing",
+          );
+        }
+        if (BLADE_SPREAD.test(sentence) && !DENIES_SPREAD.test(sentence)) {
+          add(
+            "blade-shotgun-or-pierce",
+            sentence,
+            "`bladefragment1` is `NumDirections 1` with `CollideKill 1` and no `Pierce`. One " +
+              "missile per throw, separated in time, and the first thing it touches is the last",
           );
         }
       }

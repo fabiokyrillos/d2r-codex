@@ -12431,4 +12431,273 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "blade-fury": {
+    summary:
+      "Uma lâmina a cada cinco frames, à distância, carregando três quartos da sua arma e um veneno que nunca cai. A única Assassin cuja velocidade de ataque é uma constante.",
+    playstyle:
+      "Você segura o botão e as lâminas saem cinco vezes por segundo, e essa cadência nunca muda — nem com velocidade de ataque, nem com taxa de conjuração, nem com luva nenhuma do jogo. Cada lâmina é um míssil só, que para na primeira coisa que encosta, então esta é uma skill de ângulos e não de multidões: você recua por um corredor e deixa a fila de inimigos se alimentar sozinha na sua linha de tiro. O dano chega em duas parcelas independentes. Sessenta pontos no triângulo das lâminas multiplicam por cinco o dano do próprio Blade Fury, e a arma na sua mão soma três quartos do que um golpe normal com ela faria — e esses dois números nunca se tocam, que é por que a decisão de equipamento desta página é uma bifurcação de verdade e não uma escada. O Venom fica ativo o tempo todo, e como uma lâmina cai a cada 0,2 segundo contra um veneno fixado em 0,4, esta é a única build da classe em que o veneno está genuinamente sempre de pé.",
+    strengths: [
+      "**Cadência fixa de cinco frames**, então a build rende igual no nível 40 e no 99 e não precisa de velocidade de ataque nenhuma",
+      "**À distância, e à distância de verdade** — 40 unidades de voo de míssil com o dano de um golpe normal pendurado nele",
+      "**O Venom nunca cai.** Uma lâmina a cada 0,2 segundo contra uma janela de veneno de 0,4 segundo é uptime total, coisa que nenhuma outra skill de Assassin consegue",
+      "Duas fontes de dano que escalam de forma independente, então arma ruim com skills boas, ou arma boa com poucas skills, funcionam as duas",
+      "O Blade Shield machuca tudo que encosta em você enquanto canaliza, e o Blade Sentinel patrulha o corredor pelo qual você está recuando",
+      "**Sem next hit delay**, então a densidade é limitada só por quão rápido as lâminas saem",
+      "Barata de começar: o triângulo fica completo no nível 30 e a metade da arma funciona com o que você já estiver segurando",
+    ],
+    weaknesses: [
+      "**Imunidade a físico é a parede**, e ela fecha oito das vinte áreas de farm deste site para a maior metade do dano",
+      "**Sem shotgun e sem pierce.** Um míssil por arremesso, e a primeira coisa que ele encosta é a última — esta não é uma skill de limpar sala",
+      "Ela pode errar. `ToHitCalc = lvl*10` faz muito trabalho e não torna Attack Rating de graça",
+      "**O Burst of Speed não faz nada pelo ataque**, que é de longe a forma mais comum de montar esta build errado",
+      "Mana é cobrada por lâmina e não por aperto, então botão segurado é dreno segurado",
+      "O Blade Sentinel disputa os mesmos cinco slots de trap que qualquer sentry, então a árvore de traps não é um segundo ato aqui",
+      "A velocidade de limpeza é mediana. Ela mata uma fila muito bem e uma sala devagar",
+    ],
+    flexPoints: [
+      "Não existem. Noventa e um no núcleo, dezenove em exatamente um pacote, e 110 é o que um personagem nível 99 com todas as recompensas de quest tem.",
+      "**Não gaste na árvore de traps.** O Blade Sentinel já carrega `pettype = assassintrap` com `petmax = 5`, então um Lightning Sentry não é um segundo ato — é um Sentinel que você não tem mais espaço para colocar.",
+      "**Não gaste em Burst of Speed.** Ele não alcança uma cadência fixa de cinco frames, e cada ponto ali é um ponto que comprou velocidade de corrida a preço de dano.",
+    ],
+    skillPackages: {
+      "blade-fury-19": {
+        name: "Os últimos dezenove pontos",
+        intro:
+          "O núcleo acima são 91 de 110, e o triângulo está **fechado** — Blade Fury, Blade Sentinel e Blade Shield estão todos em vinte, então nenhum ponto a mais em lugar nenhum sobe os +400%. O Venom também está fechado. Sobram dezenove, e como as duas metades do dano escalam de forma independente, as três rotas abaixo são builds genuinamente diferentes e não graus da mesma. **Pegue exatamente uma.** Cada uma custa exatamente dezenove e o plano fecha em 110 qualquer que seja a escolha.",
+        packages: {
+          "claw-mastery": {
+            name: "Claw Mastery — a metade da arma",
+            when: "**Pegue se você está segurando garras**, que é o caso da maioria das Assassins. O Claw Mastery é `passive = 1` com `passiveitype = \"h2h\"`, então ele lê garras e nada mais — e, diferente da página de chute uma árvore ao lado, o bônus dele *é* aplicado ao Blade Fury.",
+            tradeoff: "Você abre mão das resistências do Fade e do corpo do Shadow Master. Numa build que fica parada à distância, as duas coisas são reais.",
+            skillNotes: {
+              "claw-mastery":
+                "**Attack Rating e dano fora da arma, na metade que as sinergias não alcançam — e é uma mastery, não uma sinergia.** O grafo de skills não desenha aresta de ponto duro do Claw Mastery para o Blade Fury, e faz bem: o que isto compra é +220% de Attack Rating, +111% de dano e 25% de chance de acerto crítico, e as três coisas caem no termo da arma e não no dano próprio da skill. A metade do Attack Rating importa mais do que parece, porque esta skill rola acerto.",
+            },
+            gearNote: "Este pacote escolhe garras por você. Duas garras também ligam o Weapon Block, então o ponto único do núcleo nele deixa de ser morto.",
+            rotationNote: "Sem mudança. Não há rotação para mudar — a cadência é fixa.",
+            contentNote: "Tudo, e especialmente qualquer coisa com muita defesa.",
+            remainderNote: "Nenhum. Dezenove pontos, e o plano fecha em 110.",
+          },
+          fade: {
+            name: "Fade — resistências e a resposta às maldições",
+            when: "**Pegue para o Hell e para o Hardcore.** Dezoito pontos a mais de Fade levam a resistência elemental ao teto, a redução de dano físico a 1% por nível, e a duração de maldição para baixo em até 90%.",
+            tradeoff: "Você abre mão do Attack Rating e do dano do Claw Mastery, e do corpo do Shadow Master. O que você *não* abre mão é de velocidade de ataque relevante, porque o Burst of Speed não alcançava a cadência de qualquer jeito.",
+            skillNotes: {
+              fade: "**A resposta ao Iron Maiden, e aqui ela importa mais do que na maioria das páginas.** A maldição reflete uma parte do que você causa, e esta build causa cinco vezes por segundo. Redução de duração de maldição é a mitigação. As resistências são a outra metade, e elas chegam sem gastar um slot de equipamento.",
+            },
+            gearNote: "Resistência deixa de ser aquilo pelo qual todo anel e todo charm é escolhido, então esses slots vão para Attack Rating, vida e `+skills`.",
+            statNote: "Sem mudança.",
+            contentNote: "Chaos Sanctuary, Worldstone Keep, e qualquer personagem de Hardcore.",
+            remainderNote: "Nenhum. Dezenove pontos exatos.",
+          },
+          "shadow-master": {
+            name: "Shadow Master — um corpo na sua frente",
+            when: "**Pegue se você joga à distância e morre assim mesmo.** Vinte pontos são uma sombra com até 90% de resistências, +300% de vida e +800% de Attack Rating, e ela usa as suas skills.",
+            tradeoff: "Você abre mão do dano do Claw Mastery e das resistências do Fade, e aceita que a sombra escolhe os próprios alvos.",
+            skillNotes: {
+              "shadow-master":
+                "Ela divide `pettype` com o Shadow Warrior e o substitui, então o ponto único no Shadow Warrior continua sendo um ponto para sempre. O que ela compra é o que uma build de canalizar mais quer: outra coisa em direção à qual o grupo caminhe.",
+            },
+            gearNote: "Nada muda, e esse é o ponto — este é o pacote para um personagem cujo equipamento não está pronto.",
+            contentNote: "Terror Zones, jogos em players 8, e o Hell inteiro antes de o plano de equipamento estar fechado.",
+            remainderNote: "Nenhum. Dezenove pontos exatos.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "O suficiente para o seu equipamento, e o número depende inteiramente da arma em que você vai terminar. A rota de garras quase não pede nada; uma arma de uma mão com escudo pode pedir bem mais de cem.",
+      dexterity: "**Mais do que a maioria das páginas de Assassin quer, e a razão é que esta skill rola acerto.** O `ToHitCalc = lvl*10` faz a maior parte do trabalho, então este não é um orçamento de dexterity de Amazon — mas Attack Rating está vivo, e se você não pegou o pacote de Claw Mastery, dexterity é de onde ele vem.",
+      vitality: "Todo o resto, e é bastante. Esta é uma build sem requisito de força que ela não possa escolher e sem requisito de dexterity nenhum se o Claw Mastery estiver pagando.",
+      energy: "Nenhum. Mana é cobrada por lâmina e a resposta é leech e um Spirit, não pontos de atributo.",
+      notes: [
+        "**O número de força é consequência da bifurcação de equipamento, não entrada dela.** Decida garras ou arma de uma mão com escudo primeiro; o plano de atributos vem depois e não pode ser escrito antes.",
+        "Attack Rating é o único lugar em que esta build difere das páginas de trap. Uma lâmina que erra é uma lâmina que não fez nada, cinco vezes por segundo.",
+        "Se você pegar o pacote de Fade, resistência chega de skill em vez de anel e charm, e esses slots viram Attack Rating e vida.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48":
+        "**Obrigatório, porque o método é ficar parada.** Esta build canaliza de um ponto só; ser atordoada repetidamente é a única coisa que interrompe o fluxo, e o fluxo é o dano.",
+      "fcr-65":
+        "**Para os buffs e o Mind Blast, e para nada com que você ataque.** A taxa de conjuração encurta a animação `SC` da Assassin de 16 frames para 11. O Blade Fury não está nessa tabela e nem na de ataque — a cadência dele é fixa.",
+      "fbr-86":
+        "Só se você estiver com duas garras e tiver gastado pontos em Weapon Block, ou com escudo. Na rota de arma de uma mão com escudo este é um breakpoint de bloqueio comum; na rota de garras com um ponto único em Weapon Block não vale a perseguição.",
+    },
+    breakpointNotes:
+      "**Não há linha de Increased Attack Speed, e desta vez a razão é um número publicado e não uma lacuna.** A linha do Blade Fury carrega `Param4 = 5`, e a referência de mecânicas da D2library diz a consequência sem rodeio: a velocidade de arremesso é de cinco frames por ataque e *não é sujeita nem a velocidade de ataque nem a taxa de conjuração*. Cinco frames são 0,2 segundo. Esse número é o mesmo num personagem nível 18 recém-feito sem equipamento nenhum e num personagem pronto usando todos os afixos do jogo, o que faz desta a única build de Assassin do site cujo dano por segundo é uma constante vezes o dano por acerto. Duas consequências que valem ação. **Increased Attack Speed é um afixo morto nesta build** — não fraco, morto — então uma garra com 40% de IAS e uma garra sem nenhum arremessam lâminas no mesmo ritmo, e o slot deve ser escolhido por `+skills` e dano. E o **Burst of Speed aqui é velocidade de corrida e nada mais**, que é por que o pacote de Fade abre mão de tão pouco: o buff que ele exclui não estava pagando. A Faster Hit Recovery é o breakpoint que de fato protege o rendimento, porque a única coisa que interrompe uma cadência fixa é ser tirada dela.",
+    skillNotes: {
+      "blade-fury":
+        "**101–103 de dano próprio em vinte pontos, e três quartos da sua arma por cima.** As duas coisas são parcelas separadas e só a primeira é multiplicada pelas sinergias. Maximizado primeiro porque é a única das três que você de fato aperta.",
+      "blade-sentinel":
+        "**+200% no Blade Fury, e uma skill por direito próprio.** É uma trap: `pettype = assassintrap` com `petmax = 5`, colocada na animação `S2` como uma sentry em vez de arremessada, e o `blade creeper` dela carrega `NextHit 1 / NextDelay 25`, então ela acerta um alvo no máximo uma vez por segundo. Um segundo de delay de conjuração (`localdelay = 25`, contra os 45 do Blizzard e os 25 do Frozen Orb).",
+      "blade-shield":
+        "**Os outros +200%, e dano de graça em tudo que encosta em você.** 112–141 em vinte, com três quartos da arma pendurados. Ele não dispara evento de item nenhum, e o raio dele é fixo em vez de vir da arma — então esta é uma sinergia que por acaso machuca, não um plano defensivo.",
+      venom:
+        "**Núcleo aqui, e pacote em toda outra página de Assassin, por um motivo: o tempo.** O Venom fixa veneno em dez frames — 0,4 segundo — em vez de acumular, e uma lâmina cai a cada 0,2. Os 425–445 estão portanto em toda lâmina e não em algumas. Ele também é a resposta à imunidade a físico, que é a única coisa que para o resto desta página.",
+      "fire-blast": "A única skill de nível 1 da árvore, e a porta de entrada. As lâminas são skills da árvore de Traps, e é por isso que dois destes pontos são gastos fora delas.",
+      "wake-of-fire": "O segundo pré-requisito do Blade Fury. Um ponto, e nunca apertado.",
+      "claw-mastery":
+        "A porta de entrada da árvore Shadow inteira: o Weapon Block fica atrás dele, e o Fade de que o Venom precisa também. **Diferente da página de chute, aqui ele é uma skill de dano**: o bônus do Claw Mastery é aplicado ao Blade Fury. Se vale gastar mais dezenove nele é o primeiro pacote.",
+      "burst-of-speed":
+        "**Um ponto, e entenda para que ele serve.** É pré-requisito do Fade e é velocidade de corrida. A velocidade de ataque dele não alcança uma cadência fixa de cinco frames, e tratá-lo como buff de dano aqui é o erro padrão.",
+      fade: "Pré-requisito do Venom, e a resposta de resistência. Um ponto, a menos que você pegue o pacote de Fade. Ele exclui o Burst of Speed — `fade` e `quickness` são os dois únicos membros do `group = 2` no `states.json` — e nesta build essa exclusão custa quase nada.",
+      "weapon-block": "Um ponto, e ele só faz alguma coisa com uma garra em cada mão. Se você terminar com arma de uma mão e escudo, isto fica em um para sempre.",
+      "psychic-hammer": "Pré-requisito do Cloak of Shadows.",
+      "cloak-of-shadows": "Cega a sala, o que para uma build que fica parada canalizando vale mais do que parece. Pré-requisito do Mind Blast e das sombras.",
+      "mind-blast": "Atordoamento e conversão. Numa build de cadência fixa não há rotação para interromper, então este é um botão de pânico gratuito.",
+      "shadow-warrior": "Pré-requisito do Shadow Master. Nunca vale mais que um — ele divide `pettype` com o Shadow Master, então os dois se substituem.",
+      "shadow-master": "Um ponto é uma sombra, e uma sombra é um corpo entre você e o grupo. Mais dezenove é o terceiro pacote.",
+    },
+    immunityPlan:
+      "**Imunidade a físico fecha a maior metade desta build, e a metade de veneno é a resposta que foi desenhada junto.** O censo de áreas deste próprio site lista físico entre as imunidades comuns em oito das vinte áreas de farm — o Pit, o Cow Level, o Chaos Sanctuary, a Worldstone Keep, o River of Flame, o templo do Nihlathak, a Stony Tomb e os templos de Kurast — e contra esses monstros tanto a parcela da arma quanto o dano próprio do Blade Fury param. O que não para é o **Venom**, e é por isso que ele são vinte pontos do núcleo e não de um pacote: ele não é físico, pega carona em cada lâmina, e uma lâmina cai a cada 0,2 segundo contra um veneno fixado em 0,4, então o uptime dele é total e não parcial. Veneno é a imunidade mais comum no papel — dez das vinte áreas — mas o que importa é a sobreposição, e **só duas áreas da lista inteira carregam as duas**: os templos de Kurast e o do Nihlathak. Essas duas são as paredes de verdade, e o conselho honesto para elas é farmar outra coisa. Mais três observações. **O Open Wounds não é físico e não pode ser resistido de forma alguma**, então um imune a físico não tem defesa contra ele — a pegadinha é que o estado só começa num inimigo que já esteja abaixo da vida cheia, e contra um imune a físico é o Venom que tira o primeiro sangue. **O Crushing Blow é físico e para na mesma parede**, e nesta build ele já vem pela metade porque o acerto veio de um míssil. E um **mercenário com Might sobe justamente a metade que já está bloqueada**, então se imunidade a físico é o problema recorrente, o mercenário não é onde está a resposta.",
+    mercenaryNotes:
+      "**Um mercenário com Might, e entenda exatamente qual metade ele sobe.** Might é bônus percentual de dano físico, e na fórmula de dano isso cai no termo da arma — os três quartos de um golpe normal — e não no dano próprio do Blade Fury, que já está carregando os +400% dele. Na rota de garras isso é uma aura pequena sobre um número pequeno; na rota do Grief é uma aura grande sobre um número grande. **O Insight é a outra razão de pegar um mercenário do Ato 2**, porque a Meditation responde ao único problema de recurso genuíno desta build: mana é cobrada por lâmina, e um botão segurado a cinco lâminas por segundo esvazia uma reserva mais rápido que qualquer skill de Assassin do site. Se o problema é imunidade a físico e não mana, um Iron Wolf do Ato 3 traz um tipo de dano que você não tem — mas o seu próprio Venom também traz, e é por isso que ele está no núcleo.",
+    farmingWhy: {
+      "travincal-hell":
+        "**A melhor run da página.** Fogo e raio são as imunidades comuns aqui e físico não é, então as duas metades caem — e o Conselho fica parado num lugar só, que é exatamente o que uma fila de mísseis únicos quer. Uma run curta com um grupo fixo no fim dela.",
+      "mephisto-hell":
+        "Fogo e raio de novo, então nada aqui resiste às lâminas. Ele fica parado, tem uma barra de vida grande, e o dano desta build é por acerto a cinco acertos por segundo com Life Tap disponível no slot de luva — uma luta de boss que combina com o formato.",
+      "countess-hell":
+        "Fogo é a imunidade comum, não físico, e os corredores da torre são a melhor geometria possível para uma skill que dispara um míssil sem pierce. Ela também é a fonte de runas de quase todo o plano de equipamento acima.",
+      "arcane-sanctuary-hell":
+        "Raio e mágico são as imunidades comuns, então as duas metades do dano caem em tudo — e as plataformas são corredores. As caminhadas longas entre grupos são o custo.",
+      "pit-hell":
+        "Nível de área 85, e **físico é uma das imunidades comuns aqui** — então esta é a run pela qual o Venom existe. A metade de veneno fica intacta e continua trabalhando nos grupos em que as lâminas ricocheteiam; espere algo mais lento que Travincal e que vale pelos drops.",
+      "andariel-hell":
+        "**Veneno é a imunidade comum, então o seu Venom não faz absolutamente nada aqui** — e a metade física fica intacta, o que faz desta a demonstração mais clara da página de que as duas metades são separadas. Uma luta rápida e repetível para uma build que não precisa do veneno para matá-la.",
+      "pindleskin-hell":
+        "Frio e veneno em vez de físico, um superunique fixo, e um corredor curto. O Venom é peso morto aqui e a metade da arma não é, e isso basta.",
+      "mausoleum-hell":
+        "Veneno e frio são as imunidades comuns, então a metade física cai em tudo mesmo que o Venom não caia. Denso, undead, e perto de um waypoint.",
+      "chaos-sanctuary-hell":
+        "**Meia recomendação.** Fogo, raio e físico estão todos listados aqui, então um grupo imune a físico é uma luta de Venom — e o Iron Maiden que os Oblivion Knights lançam é pior para esta build do que para quase qualquer outra, porque a maldição reflete uma parte de cinco acertos por segundo. Pegue o pacote de Fade antes de vir aqui, ou não venha.",
+    },
+    levelingPath: {
+      summary:
+        "**A parte chata são os primeiros dezoito níveis, e ela é chata de verdade.** O Blade Fury não existe antes do 18 e os dois pré-requisitos dele ficam fora das lâminas, então um personagem evoluindo para esta build passa o primeiro trecho no Fire Blast e no ataque normal. O Blade Sentinel chega no 6 e é uma skill de verdade nessa janela — ele patrulha, carrega três quartos da sua arma, e um ponto nele vale mais que um ponto em qualquer outra coisa que você alcance. Do 18 em diante a build é ela mesma: Blade Fury, depois Blade Sentinel até vinte, depois Blade Shield a partir do 30, e o Venom a partir do 30. A cadência nunca muda, então o personagem não fica mais rápido — ele só fica mais forte, o que torna a curva de evolução incomumente lisa e incomumente plana.",
+      respecAt:
+        "Nenhum necessário. Se você gastou pontos em Burst of Speed esperando que eles acelerassem as lâminas, esse é o único respec que esta página justificaria — e é o erro mais comum desta build.",
+    },
+    selfFoundNotes:
+      "**A build mais completa em self-found da classe, e a razão é que metade do dano dela não vem de item nenhum.** Sessenta pontos no triângulo multiplicam por cinco o dano próprio do Blade Fury sem envolver equipamento nenhum, e vinte no Venom somam um veneno que drop nenhum melhora. A metade da arma é a única parte que quer um item bom, e ela aceita *qualquer* arma de uma mão — uma espada rara, uma garra craftada, um Steel, um Passion — porque o que ela lê é a faixa de dano, não um afixo específico. Nada nos quatro primeiros tiers é runeword acima de quatro runas: Steel, Stealth, Lore, Treachery, Smoke, Duress, Spirit, Passion. Não há trava de ladder em lugar nenhum desta página e não há runa alta até o tier optimized, que é opcional por construção porque a alternativa de garra fica ao lado dele. **A única coisa que vale a pena caçar de verdade é `+skills`**, e garras rolam skills de Assassin nativamente na vendedora do Ato 1, que renova o estoque toda vez que você entra na cidade.",
+    hardcoreNotes:
+      "**Pegue o pacote de Fade, e leve o problema do Iron Maiden a sério.** A maldição reflete uma parte do dano que você causa, e esta build causa em cinco parcelas por segundo sem jeito de desacelerar — a cadência é fixa, então você não consegue nem escolher atacar menos vezes dentro de uma ativação. A redução de duração de maldição do Fade é a mitigação, e dezoito pontos dela cortam a duração em até 90%. Fora isso, o formato da build é incomumente gentil com o Hardcore: ela é genuinamente à distância em 40 unidades, não tem rotação para ser interrompida, e ser atordoada custa rendimento e não uma vida — que é por que o breakpoint de Faster Hit Recovery está marcado como obrigatório e o de bloqueio não está. Os dois perigos reais são o Chaos Sanctuary, que é a pior sala do site para essa maldição específica, e ficar sem mana no meio de um grupo: um custo por lâmina com o botão segurado esvazia uma reserva muito rápido, e um mercenário carregando Insight é a diferença entre uma luta e uma retirada.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao triângulo. O Blade Fury só existe no nível 18 e o Blade Shield no 30, e até lá isto é um personagem de ataque normal com um Blade Sentinel.",
+        nextUpgrade: "Blade Shield no 30, e qualquer arma de uma mão com dano de verdade.",
+        picks: {
+          "weapon-0": {
+            label: "A arma de uma mão com a maior faixa de dano que você tiver",
+            why: "**A metade da arma são três quartos de um golpe normal com ela, então o número no item é três quartos de um número na sua tela.** Uma mão importa: uma arma de duas mãos corta a parcela pela metade, para 37,5%, que é o maior erro de equipamento disponível nesta página.",
+            lookFor: ["Maior dano médio", "Uma mão", "Sockets"],
+          },
+          "weapon-1": { why: "Duas runas, +dano e 50% de Increased Attack Speed — dos quais a velocidade de ataque não faz nada pelas lâminas e faz tudo pelos ataques normais que você ainda dá antes do nível 18." },
+          "body-0": { why: "Duas runas, e a Faster Hit Recovery é o stat de que esta build de fato precisa. Disponível na Countess a partir do nível 17." },
+          "helm-0": { why: "+1 em skills, o que nesta página vale dano de verdade: a metade da skill lê o nível efetivo, então um ponto de `+skills` move os 101–103 para cima." },
+          "boots-0": { label: "Botas quaisquer com Faster Run/Walk e resistências", why: "Não há nada de especial neste slot nesta build — o dano não está nas botas aqui, que é o oposto da página de chute." },
+          "belt-0": { label: "O maior cinto que você conseguir usar", why: "Poções de mana. O Blade Fury cobra mana por lâmina e um botão segurado é um dreno segurado." },
+        },
+      },
+      nightmare: {
+        goal: "O triângulo está completo e o Venom está online. Este é o primeiro tier em que a build é ela mesma.",
+        nextUpgrade: "Uma arma de uma mão de verdade, e um Treachery pelo proc de Fade.",
+        picks: {
+          "weapon-0": {
+            label: "Uma garra rara ou craftada com +3 numa skill de Traps",
+            why: "**A rota de garras.** `+skills` sobem os 101–103 diretamente — seis deles levam a 149–151 — e não custam nada na metade da arma, porque garras são de uma mão e não sofrem a penalidade do `Half2HSrc`. Se você vai pegar o pacote de Claw Mastery, decida aqui.",
+            lookFor: ["+3 Blade Fury ou +2 Traps", "Dano qualquer", "IAS não, ela não faz nada"],
+          },
+          "weapon-0-alt0": { label: "Uma espada ou machado de uma mão com dano alto", why: "**A rota da arma.** Mais dano na metade que as sinergias não alcançam, ao custo do Weapon Block, do Claw Mastery e dos `+skills`. As duas rotas funcionam; o que não funciona é uma arma de duas mãos." },
+          "body-0": { why: "**A armadura de Assassin, menos a parte que costuma vendê-la.** Os 45% de Increased Attack Speed dela são mortos aqui, e a chance de conjurar Fade ao ser atingida não é — resistência de graça numa build que fica parada e apanha." },
+          "helm-0": { why: "Continua sendo +1 em skills, continua sendo dano de verdade." },
+          "offhand-0": { label: "Uma segunda garra, ou um escudo de resistência", why: "Duas garras ligam o ponto único de Weapon Block e somam os `+skills` delas; um escudo soma bloqueio e resistências. Esta é a mesma bifurcação do slot de arma, e deve ser respondida do mesmo jeito." },
+          "gloves-0": { label: "Luvas raras com vida, mana e resistências", why: "Nada neste slot muda o dano. Increased Attack Speed aqui é morto." },
+          "belt-0": { label: "Cinto raro ou craftado com vida e resistências", why: "Vida e fileiras de poção." },
+          "boots-0": { label: "Botas raras com Faster Run/Walk e resistências", why: "Movimento, que numa build de cadência fixa é a única velocidade que dá para comprar." },
+          "ring1-0": { why: "Attack Rating e magic find, e Attack Rating está vivo nesta página." },
+        },
+      },
+      "early-hell": {
+        goal: "Sobreviver à penalidade de resistência e manter o fluxo de pé. O Hell aplica −100% em todas as resistências e esta build não tem escape à distância.",
+        nextUpgrade: "Spirit na mão secundária ou uma arma de verdade, e Duress no corpo.",
+        picks: {
+          "weapon-0": { label: "A melhor arma de uma mão que você tiver, com sockets", why: "Sockets vão para dano, não para velocidade de ataque. Um Shael neste slot é uma runa desperdiçada nesta build e em nenhuma outra de Assassin.", lookFor: ["Dois ou três sockets", "Joias de dano", "Uma mão"] },
+          "offhand-0": { why: "**Se você está na rota do escudo.** +2 em skills, e esse +2 vale mais dano aqui do que na maioria das páginas, porque a metade da skill lê o nível efetivo. Os 35% de Faster Cast Rate alcançam os buffs e nada mais." },
+          "offhand-0-alt0": { label: "Uma segunda garra com +skills", why: "Se você está na rota de garras. Weapon Block, e mais das faixas de nível." },
+          "body-0": { why: "Três runas por 15% de Crushing Blow — que funciona a partir de uma lâmina pela metade — mais Enhanced Damage e Faster Hit Recovery." },
+          "body-0-alt0": { why: "+50 em todas as resistências por duas runas, se a penalidade do Hell for o problema em vez do dano." },
+          "helm-0": { why: "Redução de dano e roubo de vida, e leech funciona a partir de uma lâmina — a referência diz isso desta skill pelo nome." },
+          "gloves-0": { label: "Luvas de sangue craftadas", why: "Vida, roubo de vida e Attack Rating. Leech é o que paga por ficar parada." },
+          "belt-0": { why: "Redução de dano e roubo de vida, no slot que aqui não faz mais nada." },
+          "boots-0": { why: "Magic find e +dano. O dano é mínimo/máximo físico, que — diferente da página de chute — a metade da arma desta build usa." },
+          "ring1-0": { why: "Cannot Be Frozen e 150–250 de Attack Rating. Estar congelada deixa as animações mais lentas, e Attack Rating está vivo." },
+          "ring2-0": { label: "Um anel raro com Attack Rating, vida e resistências", why: "Attack Rating primeiro, se você não pegou o pacote de Claw Mastery." },
+          "amulet-0": { label: "Um amuleto raro com +2 em skills de Assassin", why: "+2 em skills é um degrau direto para cima nas faixas de nível: 101–103 vira 117–119." },
+        },
+      },
+      budget: {
+        goal: "Um personagem de Hell terminado, com runas que qualquer um acha. Esta build chega ao teto mais cedo que qualquer outra página de Assassin.",
+        nextUpgrade: "Uma arma de runa alta, e a decisão sobre qual metade do dano comprar.",
+        picks: {
+          "weapon-0": { why: "**Quatro runas, e leia as linhas com atenção.** O +dano e as cargas de Berserk são reais; os 25% de Increased Attack Speed são mortos aqui. Pegue pelo dano, não pela velocidade." },
+          "weapon-0-alt0": { label: "Uma garra rara com +3 Blade Fury e duas joias de dano", why: "A versão da rota de garras do mesmo tier, e ela não custa runa nenhuma." },
+          "weapon-1": { label: "Troca de arma: Call to Arms e um escudo Spirit", why: "Battle Orders. Esta build não tem bônus de vida próprio." },
+          "offhand-0": { why: "+2 em skills e as resistências. Ou a segunda garra, se essa for a rota." },
+          "body-0": { why: "Crushing Blow, Enhanced Damage e Faster Hit Recovery, por três runas médias." },
+          "helm-0": { why: "Leech e redução de dano, com sockets para resistências.", sockets: "Dois — um Um em cada, ou joias de dano se as resistências já estiverem resolvidas." },
+          "gloves-0": { label: "Luvas de sangue craftadas com +2 Martial Arts ou Traps", why: "A metade dos `+skills` de novo, mais o leech." },
+          "belt-0": { why: "Redução de dano e leech." },
+          "boots-0": { why: "Dano e magic find." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills e a reserva de mana que um custo por lâmina drena." },
+          "amulet-0": { why: "+2 em skills e +30 em todas as resistências — as duas metades do que falta neste tier." },
+        },
+        charms: [{ label: "Grand charms com +1 Traps, small charms com Attack Rating", why: "Attack Rating, vida e resistências. Um grand charm de `+1 Traps` vale mais que a maioria, porque a metade da skill lê o nível efetivo." }],
+        weaponSwap: [{ why: "Battle Orders, no nível 57." }],
+      },
+      optimized: {
+        goal: "As duas metades pagas. É aqui que as duas rotas param de parecer iguais.",
+        nextUpgrade: "A versão de runa alta da metade que você escolheu.",
+        picks: {
+          "weapon-0": {
+            why: "**A metade da arma, comprada de uma vez.** O dano fixo do Grief faz parte do que um golpe normal com ele faria, e três quartos disso pegam carona em cada lâmina. É uma phase blade, que é de uma mão, então nenhuma penalidade de `Half2HSrc` se aplica. Os 40% de Increased Attack Speed dele são, como em toda esta página, mortos — e ele ainda é o maior número isolado disponível para esta build.",
+            sockets: "Eth, Tir, Lo, Mal, Ral numa phase blade de cinco sockets.",
+          },
+          "weapon-0-alt0": { label: "Uma garra rara ou craftada com +3 Blade Fury e +2 Traps", why: "**A metade da skill, comprada em vez daquela.** Cinco níveis efetivos levam 101–103 a cerca de 141–143, mantêm Weapon Block e Claw Mastery vivos, e não custam runa nenhuma. É escolha de verdade, não downgrade." },
+          "offhand-0": { why: "**Se você pegou o Grief.** 35% de redução de dano e o melhor bloqueio do jogo, numa build que fica parada." },
+          "offhand-0-alt0": { label: "Uma segunda garra com +3 Blade Fury", why: "Se você pegou garras. Weapon Block no nível que o ponto único do núcleo der, e mais das faixas de nível." },
+          "body-0": { why: "+2 em skills, +65 em todas as resistências e 8% de redução de dano. As skills aqui são dano." },
+          "helm-0": { why: "+2 em skills de Assassin, roubo de vida e 20% de Increased Attack Speed — duas dessas três coisas importam. Os −30% de resistência a fogo são o preço e são reais no Chaos Sanctuary.", sockets: "Um — um Um, ou um rubi para a penalidade de fogo." },
+          "gloves-0": { why: "**Life Tap ao golpear, e esta é a build que prova que ele dispara.** O `item_skillonhit` carrega `domissiledamage` além de `domeleedamage`, então uma lâmina arremessada aciona ele — cinco vezes por segundo." },
+          "belt-0": { why: "+1 em skills e a mana. Um custo por lâmina é um custo real a cinco por segundo." },
+          "boots-0": { why: "Crushing Blow e Open Wounds. **Os dois funcionam a partir de uma lâmina — o Crushing Blow pela metade porque o acerto veio de um ataque à distância, o Open Wounds inteiro**, porque a coluna de distância do modificador de alvo dele é 1 contra monstros comuns." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills e mana." },
+          "amulet-0": { why: "+2 em skills e resistências." },
+        },
+        charms: [{ label: "Annihilus, Hellfire Torch, grand charms com +1 Traps", why: "Some os `+skills` e leia a faixa de nível: vinte pontos duros são 101–103, +6 é 149–151, +10 é 181–183. Grand charms com `+1 Traps` são o maior upgrade pequeno da página." }],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      bis: {
+        goal: "O teto nas duas metades ao mesmo tempo, que é o único tier em que a bifurcação se fecha.",
+        nextUpgrade: "Nada. Esta build termina mais cedo que a maioria e depois para.",
+        picks: {
+          "weapon-0": { why: "Numa phase blade. A maior metade de arma disponível, de uma mão, sem penalidade.", sockets: "Eth, Tir, Lo, Mal, Ral." },
+          "offhand-0": { why: "Redução de dano e bloqueio, com socket.", sockets: "Um — um Um para resistências." },
+          "body-0": { why: "+2 em skills, resistências, redução de dano." },
+          "helm-0": { why: "Redução de dano, resistências e dois sockets, sem a penalidade de fogo do Andariel's.", sockets: "Dois — Um e Um, ou joias de dano." },
+          "gloves-0": { why: "Life Tap ao golpear, a cinco arremessos por segundo." },
+          "belt-0": { why: "+1 em skills e mana." },
+          "boots-0": { why: "Crushing Blow e Open Wounds, e os dois viajam com a lâmina." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills." },
+          "amulet-0": { why: "+2 em skills e +30 em resistências." },
+        },
+        charms: [{ label: "Annihilus, Hellfire Torch, e todo grand charm com +1 Traps", why: "Todo `+1 Traps` é um degrau nas faixas de nível, e as faixas valem 8 de dano por nível nesta região." }],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+    },
+  },
 };

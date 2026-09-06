@@ -1646,7 +1646,7 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   "blade-fury": {
     summary: "Arremessa lâminas giratórias à distância que carregam três quartos do dano da sua arma.",
     mechanics: [
-      "**Três quartos da arma, não ela inteira.** A parcela de arma da linha é 96 de 128, e essa fração é toda a razão de a build segurar uma arma comum grande em vez de garras.",
+      "**Três quartos da arma, não ela inteira.** A parcela de arma da linha é 96 de 128 — e só se a arma for de uma mão. O míssil da lâmina carrega `Half2HSrc`, que corta a parcela transferida pela metade, para 37,5%, numa arma de duas mãos; então uma garra nunca é penalizada e uma arma de duas mãos sempre é.",
       "Ela aplica efeitos de arma à distância — uma lâmina arremessada ainda rouba vida e ainda dispara o que a arma dispara.",
       "Ela lança uma lâmina a cada 5 frames enquanto segurada, e custa mana por lâmina em vez de por aperto.",
     ],

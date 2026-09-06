@@ -156,6 +156,8 @@ export const NICKNAMES: Record<string, string> = {
   kicksin: "kicker kick assassin kicksin dragon talon talon chute chutadora chutes botas crushing blow uber",
   "phoenix-strike":
     "phoenix strike pssin mosaicsin martial arts assassin martialarts charge up chargeup finisher dragon claw fenix artes marciais garras assassina corpo a corpo",
+  "blade-fury":
+    "bladefury blade fury bladesin blade sin blade assassin blade sentinel blade shield laminas lamina furia de laminas assassina de laminas ranged assassin distancia venom",
 
   /*
    * --- Necromancer builds, and the names that are not builds ---------------

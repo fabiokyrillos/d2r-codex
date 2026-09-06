@@ -563,7 +563,7 @@ export const assassinSkills: Skill[] = [
       { skill: "blade-shield", bonus: "+10% damage per level" },
     ],
     mechanics: [
-      "**Three quarters of the weapon, not all of it.** The row's weapon share is 96 of 128, and that fraction is the whole reason the build holds a large normal weapon rather than claws.",
+      "**Three quarters of the weapon, not all of it.** The row's weapon share is 96 of 128 — and only if the weapon is one-handed. The blade missile carries `Half2HSrc`, which halves the transferred share on a two-handed weapon to 37.5%, so a claw is never penalised and a two-hander always is.",
       "It applies weapon effects at range — a thrown blade still steals life and still triggers what the weapon triggers.",
       "It fires a blade every 5 frames while held, and costs mana per blade rather than per press.",
     ],

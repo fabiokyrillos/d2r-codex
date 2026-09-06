@@ -350,6 +350,56 @@ const WOULD_HAVE_SHIPPED: { note: string; line: string; rule: AssassinRule }[] =
     line: "The Tornado only fires on the first kick of a Dragon Talon activation, so the chance to cast is worth less than it looks.",
     rule: "proc-limited-to-one-kick",
   },
+
+  /*
+   * Blade Fury. The four things cycle 4 could not establish, each planted as
+   * the sentence a guide would write from not knowing them.
+   */
+  {
+    note: "attack speed sold as raising the throw rate",
+    line: "Stack Increased Attack Speed on your claws — Blade Fury throws faster the more of it you have.",
+    rule: "blade-cadence-on-a-speed-stat",
+  },
+  {
+    note: "cast rate sold as the blade rate, which is the other half of the same error",
+    line: "Blade Fury is a cast, so Faster Cast Rate increases the rate you throw blades.",
+    rule: "blade-cadence-on-a-speed-stat",
+  },
+  {
+    note: "the pt-BR mirror",
+    line: "Priorize velocidade de ataque nas garras: o Blade Fury fica mais rápido com ela.",
+    rule: "blade-cadence-on-a-speed-stat",
+  },
+  {
+    note: "a two-handed weapon told it takes no penalty",
+    line: "A two-handed thresher is just as good for Blade Fury, since there is no penalty for the base.",
+    rule: "two-hander-not-halved",
+  },
+  {
+    note: "the same claim made as a share",
+    line: "Blade Sentinel gives the full 75% share on a two-handed weapon too.",
+    rule: "two-hander-not-halved",
+  },
+  {
+    note: "the blades given a spread they do not have",
+    line: "Up close, Blade Fury shotguns — all the blades land at once on a single target.",
+    rule: "blade-shotgun-or-pierce",
+  },
+  {
+    note: "pierce invented for a missile that has no Pierce column",
+    line: "With enough Pierce on your gear a Blade Fury blade carries on through the whole row.",
+    rule: "blade-shotgun-or-pierce",
+  },
+  {
+    note: "the synergy credited with raising the weapon share",
+    line: "Maxing Blade Sentinel and Blade Shield puts +400% on the 75% weapon share as well as on the skill.",
+    rule: "blade-synergy-scales-the-weapon-share",
+  },
+  {
+    note: "the pt-BR mirror of the same arithmetic",
+    line: "A sinergia do Blade Fury multiplica também a parcela da arma, então os 75% viram muito mais.",
+    rule: "blade-synergy-scales-the-weapon-share",
+  },
   {
     note: "the preserved swing given the guarantee it specifically loses",
     line: "A swing that preserves charges still cannot miss, so attack rating stays irrelevant.",
@@ -554,6 +604,36 @@ const ACCEPTED: { note: string; line: string }[] = [
     note: "the physical-only denial, which is the true half and must stay sayable",
     line: "Dragon Talon carries no SrcDam at all, so the plain minimum and maximum physical damage on your claws is worth nothing to a kick.",
   },
+
+  /* Blade Fury's corrected sentences, each of which now ships. */
+  {
+    note: "the cadence stated as fixed, naming both speed stats to say neither reaches it",
+    line: "Blade Fury throws every five frames and that rate is subject to neither attack speed nor cast rate, so Increased Attack Speed is a dead affix here.",
+  },
+  {
+    note: "Burst of Speed correctly demoted to run speed",
+    line: "Burst of Speed buys this build run speed and nothing else, because its attack speed cannot reach a fixed cadence.",
+  },
+  {
+    note: "the pt-BR mirror of the fixed cadence",
+    line: "A cadência do Blade Fury é fixa: ela não é sujeita a velocidade de ataque nem a taxa de conjuração.",
+  },
+  {
+    note: "the two-handed penalty stated correctly",
+    line: "A two-handed weapon halves the transferred share to 37.5%, so one-handed is not a preference here.",
+  },
+  {
+    note: "the absence of a shotgun stated plainly",
+    line: "Blade Fury has no shotgun and no pierce: one missile per throw, and the first thing it touches is the last.",
+  },
+  {
+    note: "the two halves described as separate, which is the corrected arithmetic",
+    line: "The +400% multiplies Blade Fury's own damage and not the 75% weapon share — they are two separate addends.",
+  },
+  {
+    note: "Blade Sentinel laid at attack speed, which is true and must not be caught by the Blade Fury rule",
+    line: "Blade Sentinel plays the S2 trap animation, so it is laid at attack speed like a sentry rather than thrown.",
+  },
 ];
 
 console.log("\nSentences that must stay silent");
@@ -563,7 +643,7 @@ for (const { note, line } of ACCEPTED) {
 }
 
 console.log("\nWiring");
-check("twenty rules are exported for the content sweep", ASSASSIN_RULES.length === 20);
+check("twenty-four rules are exported for the content sweep", ASSASSIN_RULES.length === 24);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) {
