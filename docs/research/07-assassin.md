@@ -639,3 +639,200 @@ both feed back into its missiles, and the graph already carries both directions.
   give 100% preservation — the property is 50 on each claw and the extraction
   says nothing about how two combine — and that a finisher refreshes the charge
   timer. No property line expresses either.
+
+---
+
+## 8. Cycle 4 — what the missiles said, and what a status word could not
+
+Three things were settled this cycle and one shipped page was corrected. The
+roster arithmetic is in §4; this section is the mechanics.
+
+### Phoenix Strike's loop closes through its missiles, not its row
+
+§7 called the synergy "bidirectional" and gave no magnitudes. Half of that is
+right and the reason was wrong. **Royal Strike's row carries no synergy column
+and no damage column at all** — no `EDmgSymPerCalc`, no EMin/EMax. Nothing feeds
+"Phoenix Strike", because Phoenix Strike has no damage of its own to feed. The
+return direction is on the three missiles:
+
+```
+royalstrikemeteor          EMin 20 EMax 40 fire
+                           EDmgSymPerCalc = skill('Fists of Fire'.blvl)    * 10
+royalstrikechainlightning  EMin  1 EMax 40 ltng   NextHit 1  NextDelay 4
+                           EDmgSymPerCalc = skill('Claws of Thunder'.blvl) * 13
+royalstrikechaosice        EMin 16 EMax 32 cold   NextHit 1  NextDelay 4
+                           EDmgSymPerCalc = skill('Blades of Ice'.blvl)    * 10
+                           ELen 100 chill, Param5 = 16 bolts
+```
+
+Outbound, the skill pays 12 / 8 / 8. So it is a **closed four-way loop with
+asymmetric rates**, and Claws of Thunder returning 13% is why the build page
+maxes it first. That derivation replaces "every guide maxes all four".
+
+### The to-hit question, settled on the right column
+
+Cycles 1 and 2 both described `UseAttackRate` as the column deciding whether an
+action can miss. **It is not**, and controls in the same file settle it: Zeal,
+Whirlwind, Fend, Charge and Leap Attack all leave it blank and every one of them
+misses. 263 of 429 rows are blank. It marks the rows that call the standard
+attack-rate path; a blank row resolves its own hit check inside `srvdofunc`.
+
+A skill's attack rating lives in **`ToHit` / `LevToHit`**, present on 72 rows:
+
+| | ToHit | LevToHit |
+| --- | --- | --- |
+| Royal Strike and the five other charge-ups | 25 | 10 |
+| Dragon Talon | 20 | **35** |
+| Dragon Claw | 40 | 25 |
+| Dragon Tail | 20 | 15 |
+| Dragon Flight | 60 | 25 |
+| Zeal / Whirlwind / Fend / Charge — all of which miss | 10 / 50 / 40 / 50 | 10 / 5 / 10 / 15 |
+| **Smite**, which never misses | **none** | **none** |
+
+So every Assassin finisher rolls to hit normally, and `Param8 = 1` — "Always Hit
+(0 = disabled | 1 = enabled only when Charges are consumed)" — is what suspends
+that on a consuming swing. **A Mosaic swing that preserves charges therefore
+loses the override and has to roll**, which now rests on two independent columns
+rather than on one comment. Royal Strike's `aurastat2 = progressive_tohit` at
++25% per charge is a third line of support: a bonus that would be pointless on a
+swing that could not miss.
+
+### Availability needed a third verb, and the old model had shipped a fiction
+
+Mosaic's Ladder row read `usable`, and the sentence beneath it said a claw could
+be "brought over on a transferred character" or "traded to you". **Both are
+false.** The season-end conversion runs Ladder *into* Non-Ladder and never back,
+and nothing on Ladder can make one, so no Ladder player has one to trade — the
+supply is empty rather than restricted. A player starting the current Ladder
+season has **no legitimate route to a Mosaic at all**.
+
+The gap was in the vocabulary. There are three verbs — make it, get hold of one,
+use it — and the type had words for the first and the third. "Usable" reads as an
+invitation to go and find one, so that is what got written.
+`AVAILABILITY_STATUSES` now carries **`unobtainable`**, styled with `disabled`
+rather than with `usable`, because a reader takes the colour before the words.
+
+One more distinction, because collapsing it is the second most common error
+about this item: `lastLadderSeason: 12` means the ordinary ladder **exclusivity
+expired after Season 12**. What blocks it now is `disallowCraftingInLadder`, a
+separate item-specific flag and the only one of its kind in 181 rows. Two
+opposite mechanisms that a single status word renders identically.
+
+### Kicksin: two derivations that contradict the usual advice
+
+- **Dragon Talon has no synergies in either direction.** Nothing in the file
+  names it as a source, its own row carries no synergy column, and the only
+  reference to it anywhere is Dragon Claw's `reqskill1`. There is nothing to buy
+  that raises the kick past the twenty points already in it, which is why the
+  core is 74 rather than 90.
+- **Claw Mastery is a Dragon Claw skill.** Dragon Claw's damage is
+  `ln12 + skill('Claw Mastery'.blvl) * par7`; Dragon Talon's `calc1` is
+  `lvl/6+1` and names nothing. Claw Mastery's own row is `passive = 1`,
+  `passiveitype = "h2h"`, with three `passive_mastery_melee_*` stats — so
+  whether the generic passive still reaches an attack whose damage is the boots'
+  is **not** determinable here. What is determinable is that the link was written
+  into one and not the other, and that is enough to spend one point rather than
+  twenty.
+- Kick count reads the **effective** level, so `+skills` buy whole kicks at
+  effective 6, 12, 18, 24, 30, 36, 42 and 48. Every boot in the game is
+  `reqdex 0`.
+- Crushing Blow is physical damage, so it does not answer physical immunity —
+  which eight of this site's twenty farming areas carry. Venom is in the core for
+  that reason rather than in a package.
+
+---
+
+## 9. Blade Fury — researched, not yet written
+
+Everything below is Tier 1 from the pinned commit unless marked otherwise. The
+page is the next cycle's first task and needs no further extraction.
+
+### The prerequisite chain runs through the Traps tree
+
+```
+fire-blast(1) -> wake-of-fire(12) ─┐
+blade-sentinel(6) ─────────────────┴─> blade-fury(18) -> blade-shield(30)
+```
+
+Two prerequisite points outside the blade skills, not one.
+
+### The row
+
+```
+SrcDam        96          75% of the weapon — the same share as Sentinel and Shield
+Param8        10          "Damage synergy"
+DmgSymPerCalc (skill('Blade Sentinel'.blvl) + skill('Blade Shield'.blvl)) * par8
+ToHitCalc     "lvl*10"    +10% attack rating per level
+anim SQ, seqtrans A1      the attack family — attack speed, never cast rate
+Param4        5           "Delay between Missiles created"
+usemanaondo   1           mana is charged per blade, not per activation
+finishing     absent      it does NOT release charge-ups
+no itypea1 / itypeb1 / restrict — any weapon, and not even melee-locked
+```
+
+### The triangle is real, symmetric, and hard-points-only
+
+All three carry `Param8 = 10` and each names the other two, so twenty points in
+two of them is **+400%** on the third. Every formula reads `blvl`, so **`+skills`
+from gear do not feed it** — worth publishing, because it is the opposite of how
+kick count behaves one tree over.
+
+### The missile, and the three claims it refutes
+
+`bladefragment1`: `NumDirections 1`, `CollideKill 1`, `Pierce` unset,
+`ToHit 1`, `Half2HSrc 1`, no `NextHit`, no `NextDelay`, `Vel 22`, `Range 40`.
+
+- **No shotgun.** One server missile per throw, and `Param4` is a delay
+  *between* missiles — the blades are separated in time, not fired together.
+- **No pierce**, and Pierce% gear cannot grant it: arrow and javelin carry
+  `Pierce = 1` *and* `LastCollide = 1`, and this carries neither.
+- **No next hit delay at all**, which is where the density actually comes from.
+  Contrast Blade Sentinel's `blade creeper` at `NextHit 1 / NextDelay 25`.
+- **It can miss.** `ToHitCalc = "lvl*10"`, and the missile's own `ToHit = 1`
+  where Guided Arrow — the never-miss control — is `ToHit = 0`. Tier 2 confirms
+  it independently: patch 2.4, 14 Apr 2022, "Blade Fury — Attack rating
+  increased by 10% per level". Guides calling it an always-hit skill are wrong.
+
+### Two findings that will shape the page
+
+- **`Half2HSrc = 1`** is on exactly 9 of 742 missiles and all nine are the
+  Assassin blade family. Read literally it halves the transferred weapon damage
+  on a **two-handed** weapon. Every claw is one-handed, so claws are never
+  penalised — which reverses cycle 1's note that this is "the one Assassin build
+  that wants a normal weapon". The exact multiplier semantics are read from the
+  column name plus its exclusive distribution: strong, but not a spec.
+- **Blade Sentinel is `pettype = assassintrap` with `petmax = 5`** — it shares
+  the five-trap ceiling with the sentries — and `anim = S2`, so it is *laid* at
+  attack speed like a trap rather than thrown like Blade Fury. Two skills on one
+  page with two different animations and one shared pet cap.
+
+### Patch history — checked, and mostly empty
+
+Patch **2.4** (14 Apr 2022) added all three synergies at 10% per level and the
++10%-per-level attack rating, raised Sentinel and Shield from 37% and 25% to 75%
+weapon damage, and cut Sentinel's cast delay from two seconds to one. Patch
+**2.7.4** (20 Aug 2024) fixed Blade Fury dropping its channel when the initially
+targeted monster died. **Nothing in the 3.x line touches any of the three**, and
+patch 3.3's notes mention no Assassin content at all. Beware a forum thread
+titled "Patch 3.3 PTR Notes": it is self-declared fan fiction and ranks well in
+search.
+
+### Four things NOT ESTABLISHED, which the page must say rather than guess
+
+1. Whether chance-to-cast-on-striking, life and mana leech, Crushing Blow, Open
+   Wounds and Deadly Strike apply to the projectile. The stats exist; nothing in
+   skills or missiles encodes which skills honour them. `bladefragment1`'s hit
+   classification is byte-identical to `arrow` — an argument, not evidence.
+2. Whether Venom's poison rides it. Venom writes character stats through
+   `aurastate = venomclaws`; a scan of every string column in both files finds no
+   reference to venom outside its own row, and `bladefragment1` carries no EType
+   of its own.
+3. Whether `Param4 = 5` is a hard floor capping throws at roughly five frames
+   regardless of Increased Attack Speed. The animation family is settled;
+   whether IAS keeps paying past that point is not. **No breakpoint table until
+   it is.**
+4. Whether the synergy scales only the flat damage or also the 75% weapon share.
+   It is worth an enormous amount either way, and the two readings are far apart.
+
+One controlled in-game test settles (1) and (2) together: Venom up, Blade Fury
+only, against a high-HP monster.
