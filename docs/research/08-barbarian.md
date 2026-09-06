@@ -407,10 +407,264 @@ this site depends on it.
    through the same `skill('Leap'.blvl)` expressions, and nothing on the site
    models a monster's skill bar.
 
+---
+
+# Part 2 — Build inventory
+
+**Nothing in Part 1 was re-researched.** Part 1 is Tier 1 and settled; this part
+asks a different question, which is what people actually play and how many pages
+that is. Where a guide and the extraction disagree, the extraction wins and the
+row says so.
+
+## 8. Sources, and what could not be reached
+
+The roster comes from **Maxroll's Barbarian overview and its eight endgame build
+guides**, the same Tier 3 specialist the Assassin pass used, corroborated by
+search for the families Maxroll does not cover.
+
+**Source-freshness caveat, identical to the Assassin's.** All eight guides plus
+the levelling guide carry `dateModified` of **2026-05-22** and are titled
+"Season 14". None has been touched for Season 15. Patch 3.3's skill fixes are
+all Warlock, so they remain substantively current, but their Season 14 framing
+must not be copied onto a page here.
+
+**Two sources could not be read, and no attempt was made to get around that.**
+`icy-veins.com` returns 403 to a plain fetch and `diablobytes.com` serves a
+Cloudflare interstitial. Working around bot detection is not something this
+project does, so both are absent from the evidence below. Neither is load-bearing:
+every roster decision rests on Maxroll plus Tier 1.
+
+**Gold-seller contamination, as on the Assassin.** `rpgstash.com`, `items7.com`
+and `mtmmo.com` rank well for "D2R Barbarian build" and appear throughout search
+results. They are usable as weak evidence that a build is *talked about* and for
+nothing else.
+
+### 8.1 A Tier 3 error, caught by Tier 1
+
+Maxroll's **Barbarian overview page** states that Berserk's magic damage rises
+"10% for each Skill Point allocated into **Howl**, and **Shout**".
+
+The extraction says Howl and **Battle Orders**:
+
+```
+Berserk  calc1 = ln12 + (skill('Howl'.blvl) + skill('Battle Orders'.blvl)) * par8
+         par8 = 10
+```
+
+and the generated graph agrees — `berserk <- battle-orders (damage), howl (damage)`.
+Maxroll's own **Berserk build guide** also agrees: it maxes Howl and puts ten
+points into Battle Orders, while giving Shout one. So the overview contradicts
+the guide it links to, and Tier 1 sides with the guide.
+
+This is not a trivia point. Shout is a skill a Barbarian otherwise gives one
+point; Battle Orders is a skill he maxes anyway for the life. A reader who
+believed the overview would spend twenty points in the wrong shout and lose the
+synergy they were buying.
+
+## 9. The eight guides, as point plans
+
+Read off the guides rather than summarised, because the consolidation argument
+is entirely about how much two plans overlap.
+
+| Guide | Maxes | Ten points | Stated content |
+| --- | --- | --- | --- |
+| **Whirlwind** | Whirlwind, Blade Mastery, Battle Orders, **Find Potion**, Berserk | — | general; "slow against physical immunes" |
+| **Frenzy** | Frenzy, Double Swing, Blade Mastery, Battle Orders, Berserk | — | fastest melee; the pro list literally says "**Uber Variant**" |
+| **Berserk** | Berserk, Blade Mastery, Howl, Find Potion, **Find Item** | Battle Orders | **The Pit and Pindleskin**; "#1 Elite Hunter", "Atrocious Density Farmer" |
+| **Gold Find** | **Battle Orders**, Berserk, Find Potion, Howl, Blade Mastery | — | **Travincal only**; the con list says "No Variety in Farming Locations" |
+| **War Cry** | War Cry, Battle Cry, Taunt, Battle Orders, Howl | — | "The Most Magic Find Possible", "Incredible Survivability" |
+| **Double Throw** | Throwing Mastery, Double Swing, Double Throw | Find Item, Battle Orders | ranged elite hunter; "Safe From Afar" |
+| **Leap Attack** | Leap Attack, Leap, Axe Mastery, Battle Orders, Find Item | — | "Farms Any Area", "Easily Stacks Magic Find", "Weak AoE Potential" |
+| **Werewolf** | Blade Mastery, Battle Orders, Shout, Natural Resistance, Increased Speed | — | single-target; damage is **Feral Rage from Wolfhowl**, an oskill |
+
+### 9.1 Two things in that table that Tier 1 explains and the guides do not
+
+**Why the Whirlwind build maxes Find Potion.** Nothing in Find Potion touches
+Whirlwind. It is there for §3.3: Find Potion adds **+5% enemy damage taken per
+hard point** to Grim Ward's debuff, and +1% find chance to the single point in
+Find Item. Twenty points in a level-1 skill doubles what everything inside the
+ward takes. The guide maxes it and does not say why; the column says why. This
+is the single best corroboration Part 1 got, because it is a point plan built on
+a relationship the graph deliberately draws no edge for.
+
+**Why the Werewolf build maxes nothing offensive.** Its damage skill is not a
+Barbarian skill. Every point goes to masteries and shouts because there is no
+Barbarian attack on the bar at all.
+
+## 10. Decisions
+
+**Seven pages, one consolidation, five refusals.**
+
+| Family | Aliases | Identity | Decision |
+| --- | --- | --- | --- |
+| **Whirlwind Barbarian** | WW Barb, IK Barb, Immortal King Whirlwind | The spin; physical, no synergies in either direction | **CREATE** — flagship |
+| **Frenzy Barbarian** | Frenzy Barb, dual-Grief Barb | Two weapons, a stack that builds on itself | **CREATE** — the Uber build, and the one page that must explain dual wield |
+| **Berserk Barbarian** | Pit Zerker, Zerker, **Horker**, **GF Barb**, Gambler, Travincal Barb | 100% magic damage, Find Item, elite hunting | **CREATE** — absorbs Gold Find, see §10.1 |
+| **War Cry Barbarian** | Singer | Kills with a shout; carries no weapon damage at all | **CREATE** — the only Barbarian who does not need a weapon |
+| **Double Throw Barbarian** | Thrower, Throw Barb | The class's only ranged build; ammunition is the mechanic | **CREATE** — Throwing Mastery's no-consume is the whole story and no pre-2.4 guide has it |
+| **Leap Attack Barbarian** | Leaper | Jumps onto each elite; 770% weapon damage plus its own physical table | **CREATE**, priority 6 |
+| **Werewolf Barbarian** | Wolfbarb | Feral Rage from Wolfhowl; zero Barbarian attack skills | **CREATE**, priority 7 — **and the one to cut if seven is too many**, see §10.3 |
+| Gold Find Barbarian | — | — | **CONSOLIDATE** into Berserk Barbarian |
+| Concentrate Barbarian | — | — | **REFUSE** — a component |
+| Immortal King Whirlwind | — | — | **REFUSE** — a gear tier |
+| PvP: BvB, BvC, PvP Singer | BvE | — | **REFUSE** — PvP, and the site has none |
+| Elemental Throw Barbarian | — | — | **REFUSE** — forum theorycraft |
+| "Barbarian Leveling" | — | — | **NOT A BUILD** — it is the journey, Phase 4 |
+
+### 10.1 Why Gold Find is a variant and not a page
+
+The two plans share **four of their five maxed skills**:
+
+| | Berserk Barbarian | Gold Find Barbarian |
+| --- | --- | --- |
+| Maxed | Berserk, Blade Mastery, Howl, Find Potion, **Find Item** | Berserk, Blade Mastery, Howl, Find Potion, **Battle Orders** |
+| The other one | Battle Orders at ten | Find Item at one |
+
+Same damage skill, same mastery, same synergy pair, same corpse skill. The whole
+difference is which of Find Item and Battle Orders gets the last twenty points,
+and a gear axis that stacks **%Extra Gold From Monsters** where the other stacks
+**%Magic Find**. Maxroll's own text calls it "also known as the GF Barb", and
+the community calls the same character the **Horker**.
+
+A page for it would be a page for **Travincal**, which is the failure mode this
+inventory was told to avoid — and the guide's own con list agrees, reading "No
+Variety in Farming Locations".
+
+So it becomes a **`skillPackage` plus a gear tier** on the Berserk page: the
+package moves the twenty points from Find Item to Battle Orders, the gear note
+swaps the magic-find axis for the gold-find one, and Travincal joins that build's
+`farming` list. `Horker`, `GF Barb`, `Gambler`, `Pit Zerker` and `Travincal Barb`
+all become `NICKNAMES` entries resolving to `berserk-barbarian`.
+
+One mechanic from that guide must survive the fold, because it is not obvious and
+it is not a gear preference: **if the mercenary lands the killing blow, his gold
+find and yours are added together**. That belongs in `mercenaryNotes`.
+
+### 10.2 The five refusals, with reasons
+
+- **Concentrate Barbarian.** Concentrate is the backup button on two other bars —
+  the Berserk and Leap Attack guides each give it exactly one point — and the
+  uninterruptible option a Hardcore character presses when Berserk's zero defence
+  is unaffordable. It has no maintained current-patch guide; the sources are a
+  2000s-era fan archive and a combined "Berserk / Concentrate / Whirlwind"
+  article. It is a component, exactly as Charged Strike is on the javelin pages.
+- **Immortal King Whirlwind / "IK Barb".** Maxroll's own overview says the set
+  "is most frequently used for Whirlwind" and "gets out scaled by setups that
+  focus on Uniques and Runewords". That is a description of a budget gear tier,
+  which this site already models as a tier. It is also **unbuildable today**: the
+  registry has no sets at all (see §11).
+- **PvP — BvB, BvC, PvP Whirlwind, PvP Singer.** These are real and they are
+  named as PvP. They are refused on two counts. First, **this site publishes no
+  PvP content whatsoever** — the string does not appear in any of the forty-two
+  build files — so the first PvP page would be opening a category rather than
+  adding a build, and that is a decision above a class pass. Second, the sources
+  are a 2000s fan archive, d2jsp forum threads and gold-seller blogs; none is
+  maintained against the current patch.
+- **Elemental Throw Barbarian.** One forum guide on diablo2.io. Theorycraft, not
+  a maintained family.
+- **"Barbarian Leveling" as a build page.** It is a route, and this site models
+  routes as journeys. It becomes `barbarian-journey` in Phase 4. Worth noting
+  now: it levels on **Double Swing and War Cry**, so the journey's early game is
+  a build no endgame page describes.
+
+### 10.3 If seven is one too many, cut Werewolf
+
+Stated plainly so it does not have to be asked. **Werewolf Barbarian is the most
+mechanically distinct build on the class and the least defensible page.**
+
+Distinct: it is the only Barbarian that invests nothing in a Barbarian attack.
+Its plan maxes Shout, Natural Resistance and Increased Speed, which no other
+build maxes. The site has a precedent for exactly this shape — the Whirlwind
+Assassin, created despite investing zero points in its own damage skill.
+
+Indefensible: its damage skill is **Feral Rage**, a Druid skill, reached through
+one unique helm. That raises a modelling question with no precedent here —
+`Build.primarySkill` must be a slug in the skill data, and **no build on this
+site currently names a skill from another class**. Setting `primarySkill:
+"feral-rage"` on a Barbarian would put a Barbarian page in the Druid skill's
+"builds that use this" index.
+
+That is not mine to decide, and it is not only mine to answer: the planned
+**Whirlwind Assassin** has the identical problem in the opposite direction,
+because its damage skill is the Barbarian's Whirlwind. Whatever is decided
+should be decided once, for both.
+
+### 10.4 The arithmetic, written out so it cannot drift
+
+| | |
+| --- | --- |
+| Families examined | **13** |
+| — folded into another page (Gold Find) | −1 |
+| — refused (Concentrate, IK Whirlwind, PvP, Elemental Throw) | −4 |
+| — not a build (Barbarian Leveling) | −1 |
+| **Build pages the Barbarian gets** | **7** |
+| Published so far | 0 |
+
+In priority order: **Whirlwind, Frenzy, Berserk, War Cry, Double Throw, Leap
+Attack, Werewolf.**
+
+## 11. What blocks Phase 3, and it is not the skills
+
+**Not one Barbarian item is in the registry.** `content/items/uniques.ts` holds
+fifty-two uniques and none of them is a Barbarian item. Comparable melee pages
+reference twenty-one to twenty-seven distinct items each — Kicksin 21, Zealot 22,
+Maul Druid 26, Fury Druid 27 — and only two `ItemRef` kinds are used anywhere on
+the site, `unique` and `runeword`.
+
+Counted across the eight guides, by how many of them use each:
+
+| Missing | Guides using it | Kind |
+| --- | --- | --- |
+| Gheed's Fortune | 8 of 8 | grand charm |
+| Verdungo's Hearty Cord | 7 | unique belt |
+| Guillaume's Face | 7 | set helm |
+| **Immortal King** | 6 | **set — the registry has no sets at all** |
+| Chance Guards | 6 | unique gloves |
+| **Arreat's Face** | 6 | **the class's defining helm** |
+| Metalgrid | 5 | unique amulet |
+| Goldwrap | 5 | unique belt |
+| Oath | 5 | runeword |
+| Lawbringer | 4 | runeword |
+| Wisdom | 3 | runeword |
+| Wolfhowl | 1 | unique — and the Werewolf build has no substitute for it |
+
+Already catalogued and usable: Atma's Scarab, Gore Rider, Highlord's Wrath,
+String of Ears, Razortail, Death's Web, and the runewords Enigma, Grief,
+Fortitude, Beast, Last Wish, Pride, Insight, Treachery, Call to Arms and
+Chains of Honor.
+
+A `GearPick` accepts a free-text `label` as well as a `ref`, so the pages *can*
+be authored around the gap. They would be visibly worse than every other class's:
+Arreat's Face would be plain text beside a linked Vampire Gaze, and no Barbarian
+item would appear in any "builds that use this item" index. **This is a
+scheduling input, not a request** — `content/items/uniques.ts` is not a file this
+pass owns, and the decision about whether to catalogue first or author around the
+gap belongs to whoever does.
+
+## 12. Open questions the build cycle inherits
+
+1. Whether a Barbarian attack-speed frame table can be sourced for a **named
+   weapon**. Whirlwind and Frenzy both want one; §5 says why the class cannot
+   have a single one.
+2. Whether `Build.primarySkill` may name another class's skill. §10.3, and it
+   binds the Assassin's Whirlwind page too.
+3. Whether the site takes sets. Immortal King is refused as a page regardless,
+   but it is a real gear tier on the Whirlwind build and cannot currently be
+   referenced.
+4. Whether the Berserk page's Gold Find package should carry Travincal in
+   `farming` for the *core* build or only for the package. The package changes
+   which area is worth running, and nothing in the build model expresses a
+   farming entry that belongs to a package rather than a build.
+
 ## Sources
 
-Tier 1 throughout, from the pinned commit: `skills.json`, `skilldesc.json`,
-`allstrings-eng.json`, `itemtypes.json`, `charstats.json` and `base/skills.json`.
-The synergy table in §3.1 and the three failures in §2.2 are the output of this
-repository's own `synergiesFor` run against those rows, not a transcription.
-No guide was consulted for the foundation.
+**Part 1** is Tier 1 throughout, from the pinned commit: `skills.json`,
+`skilldesc.json`, `allstrings-eng.json`, `itemtypes.json`, `charstats.json` and
+`base/skills.json`. The synergy table in §3.1 and the three failures in §2.2 are
+the output of this repository's own `synergiesFor` run against those rows, not a
+transcription. No guide was consulted for the foundation.
+
+**Part 2** adds Maxroll's Barbarian overview and its eight endgame guides plus
+the levelling guide, all stamped 2026-05-22, for what is *played* — never for a
+number. Every mechanical figure quoted in Part 2 was re-derived from the
+extraction, which is how §8.1 was caught.
