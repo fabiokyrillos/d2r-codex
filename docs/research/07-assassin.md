@@ -453,3 +453,130 @@ Unchanged from cycle 1. Boots supply kick *damage*; nothing in the boots' row
 touches speed. Dragon Talon's kick count is `lvl/6 + 1` from its own row, and
 Dragon Tail carries `Param4 = -40`, an attack-speed *penalty*. The kick pages
 will state those two and nothing about boots and speed.
+
+---
+
+## 6. Next hit delay, and why the two trap builds are different builds
+
+Cycle 3's second finding, and the one that gave the Fire Trapsin an identity
+rather than a palette. `missiles.json` at the pinned commit:
+
+| Missile | `NextHit` | `NextDelay` |
+| --- | --- | --- |
+| `wake of destruction` (Wake of Fire's wave) | 1 | **4** |
+| `wake of destruction maker` | 1 | **4** |
+| `inferno sentry 1` (Wake of Inferno) | — | — |
+| `bomb on ground` (Fire Blast's explosion) | — | — |
+| `shock field on ground` (Shock Web) | 1 | **25** |
+
+**The column was calibrated before it was used.** The same file gives
+`chainlightning`, `frostnova` and `poisonnova` a `NextDelay` of 4 and `tornado`
+25 — the figures those four skills are published with everywhere. A column that
+reproduces four known answers can be trusted for the unknown one.
+
+So:
+
+- **Wake of Fire's wave carries the standard four-frame next hit delay**, and
+  the ceiling is per monster rather than per trap. Five traps on one square is
+  four traps wasted against the thing standing on it. Wake of Fire is a skill
+  for covering ground.
+- **Wake of Inferno carries no next hit delay at all**, so five of them on one
+  target all land. It is the stacked answer to anything that does not walk.
+- **Shock Web's ground missile is 25 frames** — a full second, the longest in
+  the tree, and the reason it is a synergy rather than a clear skill.
+
+That is the whole shape of the Fire Trapsin: lay across the path, then invert
+completely when the target stops moving. It is a different rotation from the
+Lightning Trapsin's five-on-one-square, and it comes out of the data rather than
+out of guide convention.
+
+### Two errors of mine that the repository's own gates caught
+
+Worth recording, because both were confidently written and neither was noticed
+by re-reading.
+
+1. The draft said *"the Ancient Tunnels have no fire immunes among the
+   natives"*. The area's own `commonImmunities` is `["fire", "poison"]` — it is
+   the **cold**-immune-free zone, which is why cold Sorceresses farm it.
+   `build-claims.test.ts` compares every build's farming prose against the
+   area's own data and reported the contradiction.
+2. Following from the same confusion, the whole premise was backwards. The
+   draft led with *"fire immunity is far rarer than lightning immunity"*. This
+   site's own immunity census counts **fire in 13 of 20 farming areas against
+   lightning's 8** — fire is the commonest immunity there is. The lead strength,
+   a new weakness, the immunity plan and the entire farming list were rewritten
+   around areas whose data does not list fire.
+
+The gates are load-bearing rather than decorative, and the second error is the
+kind that would have shaped a reader's whole season.
+
+---
+
+## 7. Phoenix Strike and Mosaic — researched, not yet written
+
+The page is the next cycle's first task. Everything below is from the pinned
+commit and is ready to publish; nothing here has been shipped yet.
+
+### The finding that should lead the page
+
+`Param8 = 1` on **Dragon Claw, Dragon Talon and Dragon Tail alike**, and the
+column comment is explicit about what it means:
+
+```
+Always Hit (0 = disabled | 1 = enabled only when Charges are consumed)
+```
+
+A finisher cannot miss — **but only on the swing that spends charges.** Mosaic's
+entire purpose is a 50% chance *not* to consume them, and on exactly those
+swings the Always Hit flag does not apply.
+
+So Mosaic buys charge uptime at the price of guaranteed hits, and attack rating
+stops being irrelevant on a Mosaic character in a way no guide read this cycle
+mentions. It is also a mechanic that makes the Ladder-legal build easier to
+write honestly: without Mosaic every finisher consumes charges, so every
+finisher always hits.
+
+### Royal Strike, which is Phoenix Strike
+
+```
+progressive = 1, SrcDam = 128        full weapon damage on the swing itself
+auralencalc = 375                    15.0 s, flat — not per level
+Param7 = 25                          "Attack Rating % per Charge"
+Param2 = 6                           meteor explosion radius     (1 charge)
+Param3 / Param4 = 30 + 15 per level  ground fire duration
+Param6 = 10                          "64/# = Total Chain Lightning Missiles"
+                                     -> 6 missiles               (2 charges)
+Param5 = 16                          "# of Ice Bolt Missiles"    (3 charges)
+Param1 = 8                           chain lightning jump radius
+```
+
+Claws of Thunder takes 8% per point from Royal Strike and Fists of Fire 12%;
+both feed back into its missiles, and the graph already carries both directions.
+
+### The three finishers
+
+| Skill | Damage % | Notable |
+| --- | --- | --- |
+| Dragon Claw | 50 + 15 / level, `SrcDam = 128` | `calc1 = ln12 + skill('Claw Mastery'.blvl) * 4` — Claw Mastery is a 4%/point damage synergy |
+| Dragon Talon | 5 + 7 / level, `Kick = 1` | `calc1 = lvl/6 + 1` kicks; knockback 50–100% vs unique, 25–99% vs boss |
+| Dragon Tail | 50 + 20 / level, radius 6, fire | `Param4 = -40`, an attack-speed **penalty** |
+
+### What the page must not do
+
+- **It must not restate the availability modes.** `content/runewords/runewords.ts`
+  already carries Mosaic's full `availability` block — ladder `usable`,
+  non-ladder-online `craftable`, offline `craftable` — with the consequence
+  note, the history note, the source and the baseline. The build page sets
+  `gatedBy: ["mosaic"]` and lets that block render. A restatement is a second
+  copy of a fact that changes on Blizzard's schedule.
+- **It must not treat the historical Mosaic as the current one.** It was
+  Ladder-*only* from Season 3 through Season 12, which is the reverse of
+  today's answer and the reason so much written about it is backwards rather
+  than merely stale.
+- **The Ladder-legal opening is the default section and the Mosaic route is the
+  conditional one**, because on the current baseline the claw cannot be made on
+  Ladder at all. The runeword page already promises exactly this.
+- **Two claims remain unverified and must stay unpublished**: that two Mosaics
+  give 100% preservation — the property is 50 on each claw and the extraction
+  says nothing about how two combine — and that a finisher refreshes the charge
+  timer. No property line expresses either.
