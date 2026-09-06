@@ -207,8 +207,7 @@ export const assassinBuildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "Uma segunda garra com runeword, e a força para uma base elite.",
         picks: {
           "weapon-0": {
-            label: "Chaos — Fal Ohm Um, numa garra de três sockets",
-            why: "**A build.** `oskill Whirlwind` no nível 1, 240–290% de Enhanced Damage, 216–471 de dano mágico, 35% de Increased Attack Speed e dois procs ao golpear. O `itype1 = \"h2h\"` a torna exclusiva de garra, e a Ohm fixa o requisito de nível em 57. Faça na base de três sockets mais rápida que você conseguir usar — Greater Talons a −30 se as bases elite ainda estiverem fora de alcance, e qualidade superior pelo Enhanced Damage extra por baixo do da própria runeword.",
+            why: "**A build.** `oskill Whirlwind` no nível 1, +290–340% de Enhanced Damage, 216–471 de dano mágico, 35% de Increased Attack Speed e dois procs ao golpear. O `itype1 = \"h2h\"` a torna exclusiva de garra, e a Ohm fixa o requisito de nível em 57. Faça na base de três sockets mais rápida que você conseguir usar — Greater Talons a −30 se as bases elite ainda estiverem fora de alcance, e qualidade superior pelo Enhanced Damage extra por baixo do da própria runeword.",
             lookFor: ["Garra de três sockets", "A base mais rápida possível", "Qualidade superior"],
           },
           "offhand-0": { label: "Uma garra com +Shadow Disciplines e Increased Attack Speed", why: "O frame de ataque dela é promediado com o da primeira, então a base dela e o Increased Attack Speed dela contam os dois. Isso é específico do Whirlwind e específico do 2.4.3." },
@@ -227,13 +226,12 @@ export const assassinBuildsPtBr: Overlay<BuildCopy> = {
         goal: "A segunda garra, e a escolha que define o personagem: outro Chaos, ou Fury.",
         nextUpgrade: "Bases de garra elite, e a força e a dexterity para segurar duas.",
         picks: {
-          "weapon-0": { label: "Chaos na melhor garra de três sockets que você conseguir usar", why: "O Enhanced Damage e o dano mágico são lidos da garra que deu o acerto, então a base sob a runeword é o número que se move." },
+          "weapon-0": { why: "O Enhanced Damage e o dano mágico são lidos da garra que deu o acerto, então a base sob a runeword é o número que se move." },
           "offhand-0": {
-            label: "Fury — Jah Gul Eth, numa segunda garra de três sockets",
-            why: "`itype1 = \"mele\"`, e o `itemtypes.json` dá a `h2h` o pai `mele` — **então uma garra aceita.** 209% de Enhanced Damage, 40% de Increased Attack Speed, 66% de Open Wounds, 33% de Deadly Strike e 6% de roubo de vida. Todos são `damagerelated`, então valem para os acertos que *esta* garra dá — que num ataque que alterna são cerca de metade deles. A Jah é nível 65.",
+            why: "`itype1 = \"mele\"`, e o `itemtypes.json` dá a `h2h` o pai `mele` — **então uma garra aceita.** 66% de Open Wounds, 33% de Deadly Strike, 6% de roubo de vida, e **Ignore Target's Defense** por cima de um bônus de +20% de Attack Rating. Todos são `damagerelated`, então valem para os acertos que *esta* garra dá — que num ataque que usa uma das mãos ou as duas são cerca de metade deles, e é por isso que a outra metade ainda precisa do Attack Rating do Claw Mastery. A Jah é nível 65.",
             lookFor: ["Garra de três sockets", "A base mais rápida possível"],
           },
-          "offhand-0-alt0": { label: "Um segundo Chaos", why: "Duas garras com Chaos colocam os 216–471 de dano mágico em cada acerto em vez de metade deles. O Fury traz leech e Open Wounds que o Chaos não tem. Dano contra sustentação, e a mecânica é a mesma dos dois lados." },
+          "offhand-0-alt0": { why: "Um segundo Chaos no lugar: ele coloca os 216–471 de dano mágico em cada acerto em vez de metade deles, e o Enhanced Damage dele é cem pontos maior. O Fury responde ao outro problema — leech, Ignore Target's Defense, e 66% de Open Wounds contra os 25% do Chaos. Dano contra sustentação, e a mecânica é a mesma dos dois lados." },
           "body-0": { why: "300% de Enhanced Damage, e Enhanced Damage de armadura não é restrito a uma arma — ele alcança os acertos das duas garras." },
           "body-0-alt0": { why: "Crushing Blow e recuperação se as runas ainda não estiverem lá." },
           "helm-0": { why: "Leech e redução de dano, ainda a resposta mais barata do slot.", sockets: "Dois — Um e Um." },
@@ -251,8 +249,9 @@ export const assassinBuildsPtBr: Overlay<BuildCopy> = {
         goal: "Bases elite sob as duas runewords, e a força e a dexterity para usá-las.",
         nextUpgrade: "Os últimos pontos de Enhanced Damage, e um elmo que não custe resistência.",
         picks: {
-          "weapon-0": { label: "Chaos em Runic Talons ou Feral Claws", why: "**−30 e −20 de velocidade base, três sockets cada, requisitos 115/115 e 113/113.** A velocidade da base vale mais que o afixo e o requisito é o preço." },
-          "offhand-0": { label: "Fury ou um segundo Chaos em Runic Talons", why: "Os frames de ataque das duas garras são promediados, então uma garra secundária lenta deixa o giro inteiro lento — que é a parte do 2.4.3 que a maioria dos conselhos de equipamento ainda não alcançou." },
+          "weapon-0": { why: "**Em Runic Talons ou Feral Claws: −30 e −20 de velocidade base, três sockets cada, requisitos 115/115 e 113/113.** A velocidade da base vale mais que o afixo e o requisito é o preço." },
+          "offhand-0": { why: "Em Runic Talons, e um segundo Chaos é a alternativa. Os frames de ataque das duas garras são promediados, então uma garra secundária lenta deixa o giro inteiro lento — que é a parte do 2.4.3 que a maioria dos conselhos de equipamento ainda não alcançou." },
+          "offhand-0-alt0": { why: "A resposta de dano em vez da de sustentação, e o mesmo conselho de base vale para ele." },
           "body-0": { why: "300% de Enhanced Damage num personagem cujo dano é todo de arma." },
           "body-0-alt0": { why: "+2 em All Skills e +65 em todas as resistências — os +2 alcançam o Whirlwind, o que quase nada mais faz." },
           "helm-0": { why: "+2 em skills de Assassin, 20% de Increased Attack Speed e 8–10% de roubo de vida. Os +2 não fazem nada pelo Whirlwind e muito por Claw Mastery, Venom e Weapon Block — é o item mais claro da página para essa divisão.", sockets: "Um — um Um, ou um rubi pelos −30% de resistência a fogo." },
@@ -271,8 +270,9 @@ export const assassinBuildsPtBr: Overlay<BuildCopy> = {
         goal: "O teto: duas garras elite com runeword, cada ponto de +All Skills que o jogo oferece, e bloqueio e redução de dano suficientes para ficar dentro do grupo.",
         nextUpgrade: "Nada.",
         picks: {
-          "weapon-0": { label: "Chaos em Runic Talons superiores", why: "−30 de velocidade base e a maior rolagem de Enhanced Damage que a base consegue carregar sob os 240–290% da própria runeword." },
-          "offhand-0": { label: "Um segundo Chaos em Runic Talons superiores", why: "**Duas garras com Chaos colocam 216–471 de dano mágico em cada acerto em vez de metade deles**, e mágico é o único tipo que o censo deste site registra como imunidade comum numa única área. O Fury continua sendo a resposta se o problema for leech e não dano." },
+          "weapon-0": { why: "Em Runic Talons superiores: −30 de velocidade base, e a maior rolagem de Enhanced Damage que a base consegue carregar sob os +290–340% da própria runeword." },
+          "offhand-0": { why: "**Um segundo, e duas garras com Chaos colocam 216–471 de dano mágico em cada acerto em vez de metade deles** — mágico é o único tipo que o censo deste site registra como imunidade comum numa única área. O Fury continua sendo a resposta se leech e Ignore Target's Defense valerem mais para você que o dano mágico.", },
+          "offhand-0-alt0": { why: "A metade de sustentação: 6% de roubo de vida, 66% de Open Wounds e Ignore Target's Defense, todos lidos dos acertos que esta garra dá." },
           "body-0": { why: "+2 em All Skills, +65 em todas as resistências e 8% de redução de dano. Os +2 valem +10% de dano de giro e 10% de Attack Rating além de tudo o mais." },
           "helm-0": { why: "Redução de dano, resistências e dois sockets sem a penalidade de fogo do Andariel's, num personagem que está sempre cercado.", sockets: "Dois — Um e Um, ou joias de 15% de Increased Attack Speed." },
           "gloves-0": { why: "Roubo de vida e Open Wounds." },

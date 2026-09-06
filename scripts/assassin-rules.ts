@@ -896,8 +896,15 @@ const BLOCK_DENIED =
   /\b(cannot|can't|cant|do not|don't|does not|doesn't|no|never|stop\w*|lose[sd]?|reduced|cut|third)\b[^.]{0,40}\bblock\w*\b|\bblock\w*\b[^.]{0,40}\b(is|are)\s+(?:reduced|cut|disabled|off|ignored)\b|\bn[ãa]o\b[^.]{0,40}\bbloque\w*\b|\bbloqueio\b[^.]{0,40}\b(reduzid\w*|cortad\w*|desligad\w*|ignorad\w*|um ter[çc]o)\b/i;
 
 /** The correcting clause: whirling blocks at the full number. */
+/*
+ * The escape clause carries two shapes, and the second was added for a page
+ * this agent does not own. "Whirlwind loses no block at all" is the correct
+ * sentence a Barbarian page would write, and `BLOCK_DENIED` sees `lose … block`
+ * in it — so a denial of the loss has to be recognised as the fix rather than
+ * the error, the same way `DENIES_THE_SHIELD` works one rule up.
+ */
 const BLOCK_IS_FULL =
-  /\bfull[- ]effectiveness\b|\bfull effectiveness\b|\bfull(?:y)? block\w*\b|\bat full\b|\bnamed(?: as)? an exception\b|\bkeeps? (?:its|the) \d+%\b|\bintegralmente\b|\bbloqueio integral\b|\bexce[çc][ãa]o\b/i;
+  /\bfull[- ]effectiveness\b|\bfull effectiveness\b|\bfull(?:y)? block\w*\b|\bat full\b|\bnamed(?: as)? an exception\b|\bkeeps? (?:its|the) \d+%\b|\bintegralmente\b|\bbloqueio integral\b|\bexce[çc][ãa]o\b|\blose[sd]? no\b|\bno (?:block(?:ing)? )?(?:penalty|reduction|loss)\b|\bn[ãa]o perde\b|\bsem (?:penalidade|perda|redu[çc][ãa]o)\b/i;
 
 const SYNERGY_SCOPED_OFF_THE_WEAPON =
   /\b(?:not|does not|doesn't|never|cannot|untouched|separate|two (?:addends|terms|halves)|only the skill|its own damage|n[ãa]o|separad\w*|duas parcelas|apenas o dano)\b/i;

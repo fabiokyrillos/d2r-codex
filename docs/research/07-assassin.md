@@ -1286,7 +1286,7 @@ publishable fact:
 
 **Verdict: NOT ESTABLISHED.** The page says that Chaos's own two procs are not
 established to fire while whirling, claims neither direction, and values the
-claw on the 240–290% Enhanced Damage and 216–471 magic damage that are not in
+claw on the Enhanced Damage and the 216–471 magic damage that are not in
 doubt. Anything a reader wants to *rely* on firing goes on the mercenary. This
 is the §9 precedent applied to a case where the tempting sentence is the
 dramatic one.
@@ -1460,7 +1460,13 @@ Four things the audit turned up, none of them a defect on a shipped page.
   rule reads both and is silent.
 - **Only one Assassin page carries a mode gate**, and it is Phoenix Strike's
   `gatedBy: ["mosaic"]`. Every other page's availability would read the same
-  word three times, which §4 already ruled is omitted rather than padded.
+  word three times, which §4 already ruled is omitted rather than padded. The
+  Whirlwind page tested that rule and it held: Chaos and Fury carry no seasonal
+  flag, so they were catalogued **without** an `availability` block, and
+  `gatedBy` is therefore not available to that page and is not the right tool
+  for it. An item a build cannot exist without is expressed by putting the item
+  in the gear tiers; `gatedBy` is for the narrower case where *making* and
+  *using* are different questions, which exactly one runeword in the file has.
 - **Six of seven carry a search-alias row.** The seventh is proposed rather than
   written, because `lib/search/index.ts` is not this agent's file.
 
@@ -1472,3 +1478,37 @@ now give three different reasons for that — the claw base is an input to the
 same formula (traps, kicks), the cadence is fixed and reads no speed stat at all
 (Blade Fury), and the per-weapon-class constant is unpublished for a claw
 (Whirlwind, §12.6).
+
+### 12.10 Two things this section said that are now wrong, corrected forward
+
+Both were true when §12 was written and stopped being true inside the same
+cycle, which is the reason this heading exists rather than an edit above.
+
+**The runeword's own block is not the published block, and the gap is fifty
+points.** §11.3 and §12.7 both read Chaos's Enhanced Damage straight off
+`runes.json` as **240–290%**. That is a correct transcription of the `dmg%`
+column and it is *not* what the item page shows. `docs/sources/README.md` states
+the composition rule this site has followed since Faith: a runeword's displayed
+stat block is its own properties **plus each constituent rune's mod for that
+item type**. Ohm supplies +50% Enhanced Damage in a weapon, so Chaos publishes
+**+290–340%**. Two more lines arrive the same way and are in neither §11.3 nor
+§12: **25% Chance of Open Wounds** from Um, and **+10 to Strength** from Fal.
+
+The same rule applied to Fury changes no damage number — Jah, Gul and Eth carry
+no `dmg%` — but adds **Ignore Target's Defense**, **+20% Bonus to Attack
+Rating** and **−25% Target Defense**. That is not cosmetic on this page.
+`item_ignoretargetac` is in the 108-stat `damagerelated` set, so a Chaos-and-Fury
+pair ignores defence on the hits *Fury* makes and rolls normally on the hits
+Chaos makes — which is precisely why Claw Mastery's +220% attack rating stays a
+core twenty and is not made redundant by the off-hand.
+
+**The Barbarian exists now.** §12.8 gave two reasons `primarySkill` could not be
+`whirlwind`, and the first — "there is no Barbarian class in the content tree"
+— expired while this cycle was running. `whirlwind` is a real graph node today.
+The second reason is the load-bearing one and is permanent: the allocation gate
+requires the plan to put points in its primary skill, and an item-granted oskill
+can never take any. The control in `assassin.test.ts` was rewritten to match —
+it asserted that no `whirlwind` node existed, which is a check that passes
+because a class is missing and fails when the class arrives. It now asserts the
+permanent thing: the node, if it exists, is not the Assassin's, and this plan
+allocates nothing outside the Assassin's own trees.

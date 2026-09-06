@@ -1,5 +1,30 @@
 # Proposal 2 — add Chaos and Fury to the runeword registry
 
+> **LANDED** as `34dc78d`, "Catalogue the two runewords a whirling Assassin is
+> made of", with two deliberate departures from this document. Both are
+> improvements and both are now reflected on the build page.
+>
+> 1. **The stat blocks below are the runewords' own columns, not the published
+>    blocks.** This site composes: a runeword's displayed block is its own
+>    properties plus each constituent rune's mod for that item type
+>    (`docs/sources/README.md`). Chaos therefore publishes **+290–340%** Enhanced
+>    Damage rather than the +240–290% in the table below — Ohm supplies the other
+>    fifty in a weapon, exactly as it does in Faith — and gains **25% Chance of
+>    Open Wounds** (Um) and **+10 to Strength** (Fal). Fury composes to no change
+>    on damage but gains **Ignore Target's Defense**, **+20% Bonus to Attack
+>    Rating** and **−25% Target Defense**. The tables below are kept as written
+>    because they are what `runes.json` says, and the gap between the two is the
+>    finding — see §12.10 of the research doc.
+> 2. **No `availability` block, and therefore no `gatedBy`.** The "all three
+>    rows, and they are all the same word" section below was the wrong call:
+>    three rows reading "craftable" restate "unrestricted", which is the shape §4
+>    rules is omitted rather than padded. `Availability` is for the one runeword
+>    where *making* and *using* are different questions. The dependency is
+>    expressed by Chaos being in the gear tiers, which it is.
+>
+> The two page edits this document promised are done in
+> `content/builds/whirlwind-assassin.ts` and `content/builds/pt-br-assassin.ts`.
+
 **From** Agent A (Assassin), branch `claude/assassin-finish`
 **Touches** `content/runewords/runewords.ts`, `content/runewords/pt-br.ts`
 **Why** the Whirlwind Assassin page is built entirely on Chaos and neither

@@ -32,6 +32,19 @@ import type { Build } from "@/lib/types";
  * Block, which is why both kinds are worth buying — for different halves of the
  * character.
  *
+ * THE CLAW'S STAT BLOCK IS COMPOSED, AND THE DIFFERENCE IS FIFTY POINTS
+ * ---------------------------------------------------------------------
+ * `runes.json` gives Chaos's own `dmg%` block as **240–290%**. What the item
+ * page publishes, and what this page quotes, is **+290–340%** — because a
+ * runeword's displayed block is its own properties *plus* each constituent
+ * rune's mod for that item type, and **Ohm** supplies the other fifty in a
+ * weapon. The same composition adds **25% Chance of Open Wounds** (Um) and
+ * **+10 to Strength** (Fal), neither of which is in the runeword's own block.
+ * Fury composes to no change on damage — Jah, Gul and Eth carry no `dmg%` —
+ * but gains **Ignore Target's Defense**, **+20% Bonus to Attack Rating** and
+ * **−25% Target Defense**, which is why the off-hand choice below is an
+ * accuracy decision as much as a damage one.
+ *
  * IT IS THE ONE ASSASSIN MELEE BUILD THAT IS NOT A CHARGE-UP BUILD
  * ---------------------------------------------------------------
  * `finishing = 1` appears on six rows in the whole file: `Attack`,
@@ -308,7 +321,7 @@ export const whirlwindAssassin: Build = {
       levelRange: [55, 70],
       nextUpgrade: "A second runeword claw, and the strength for an elite base.",
       slots: [
-        { slot: "weapon", picks: [{ label: "Chaos — Fal Ohm Um, in a three-socket claw", why: "**The build.** `oskill Whirlwind` at level 1, 240–290% Enhanced Damage, 216–471 magic damage, 35% Increased Attack Speed and two on-striking procs. `itype1 = \"h2h\"` makes it claw-only, and Ohm sets the level requirement at 57. Build it in the fastest three-socket base you can wear — Greater Talons at −30 if the elite bases are still out of reach, and superior quality for the extra Enhanced Damage under the runeword's own.", lookFor: ["Three-socket claw", "The fastest base you can wear", "Superior quality"] }] },
+        { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "chaos" }, why: "**The build.** `oskill Whirlwind` at level 1, +290–340% Enhanced Damage, 216–471 magic damage, 35% Increased Attack Speed and two on-striking procs. `itype1 = \"h2h\"` makes it claw-only, and Ohm sets the level requirement at 57. Build it in the fastest three-socket base you can wear — Greater Talons at −30 if the elite bases are still out of reach, and superior quality for the extra Enhanced Damage under the runeword's own.", lookFor: ["Three-socket claw", "The fastest base you can wear", "Superior quality"] }] },
         { slot: "offhand", picks: [{ label: "A claw with +Shadow Disciplines and Increased Attack Speed", why: "Its attack frame is averaged with the first one's, so its base speed and its own Increased Attack Speed both count. That is specific to Whirlwind and specific to 2.4.3." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "duress" }, why: "15% Crushing Blow, Enhanced Damage and Faster Hit Recovery for three mid runes.", alternatives: [{ ref: { kind: "runeword", slug: "smoke" }, why: "+50 to all resistances if the Hell penalty is the immediate problem." }] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "vampire-gaze" }, why: "Leech and damage reduction, socketed for resistances.", sockets: "Two — Um and Um, or attack-speed jewels." }] },
@@ -326,8 +339,8 @@ export const whirlwindAssassin: Build = {
       levelRange: [70, 85],
       nextUpgrade: "Elite claw bases, and the strength and dexterity to hold two of them.",
       slots: [
-        { slot: "weapon", picks: [{ label: "Chaos in the best three-socket claw you can wear", why: "Enhanced Damage and the magic damage are read from the claw that made the hit, so the base under the runeword is the number that moves." }] },
-        { slot: "offhand", picks: [{ label: "Fury — Jah Gul Eth, in a second three-socket claw", why: "`itype1 = \"mele\"`, and `itemtypes.json` gives `h2h` the parent `mele` — **so a claw takes it.** 209% Enhanced Damage, 40% Increased Attack Speed, 66% Open Wounds, 33% Deadly Strike and 6% life steal. Every one of those is `damagerelated`, so they apply to the hits *this* claw makes — which on an attack that alternates is about half of them. Jah is level 65.", lookFor: ["Three-socket claw", "The fastest base you can wear"], alternatives: [{ label: "A second Chaos", why: "Two Chaos claws put the 216–471 magic damage on every hit instead of half of them. Fury brings leech and Open Wounds that Chaos has not got. Damage against sustain, and the mechanism is the same either way." }] }] },
+        { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "chaos" }, why: "Enhanced Damage and the magic damage are read from the claw that made the hit, so the base under the runeword is the number that moves." }] },
+        { slot: "offhand", picks: [{ ref: { kind: "runeword", slug: "fury" }, why: "`itype1 = \"mele\"`, and `itemtypes.json` gives `h2h` the parent `mele` — **so a claw takes it.** 66% Open Wounds, 33% Deadly Strike, 6% life steal, and **Ignore Target's Defense** on top of a +20% attack rating bonus. Every one of those is `damagerelated`, so they apply to the hits *this* claw makes — which on an attack that uses either hand or both is about half of them, and it is why the other half still needs Claw Mastery's attack rating. Jah is level 65.", lookFor: ["Three-socket claw", "The fastest base you can wear"], alternatives: [{ ref: { kind: "runeword", slug: "chaos" }, why: "A second Chaos instead: it puts the 216–471 magic damage on every hit rather than half of them, and its Enhanced Damage is a hundred points higher. Fury answers the other problem — leech, Ignore Target's Defense, and 66% Open Wounds against Chaos's 25%. Damage against sustain, and the mechanism is the same either way." }] }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "300% Enhanced Damage, and Enhanced Damage from armour is not weapon-restricted — it reaches both claws' hits.", alternatives: [{ ref: { kind: "runeword", slug: "duress" }, why: "Crushing Blow and hit recovery if the runes are not there yet." }] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "vampire-gaze" }, why: "Leech and damage reduction, still the cheapest answer in the slot.", sockets: "Two — Um and Um." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "**For the 7–10% life steal and the 25% Open Wounds, not for the Life Tap.** The Life Tap is `hit-skill` — chance to cast on striking — which is the one thing on this page that is not established to fire while whirling. The two lines above it are, and they are enough." }] },
@@ -346,8 +359,8 @@ export const whirlwindAssassin: Build = {
       levelRange: [85, 95],
       nextUpgrade: "The last few points of Enhanced Damage, and a helm that does not cost resistance.",
       slots: [
-        { slot: "weapon", picks: [{ label: "Chaos in Runic Talons or Feral Claws", why: "**−30 and −20 base speed, three sockets each, 115/115 and 113/113 requirements.** The base speed is worth more than the affix and the requirement is the price." }] },
-        { slot: "offhand", picks: [{ label: "Fury or a second Chaos in Runic Talons", why: "Both claws' attack frames are averaged, so a slow off-hand claw slows the whole spin — which is the part of 2.4.3 most gear advice has not caught up with." }] },
+        { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "chaos" }, why: "**In Runic Talons or Feral Claws: −30 and −20 base speed, three sockets each, 115/115 and 113/113 requirements.** The base speed is worth more than the affix and the requirement is the price." }] },
+        { slot: "offhand", picks: [{ ref: { kind: "runeword", slug: "fury" }, why: "In Runic Talons, and a second Chaos is the alternative. Both claws' attack frames are averaged, so a slow off-hand claw slows the whole spin — which is the part of 2.4.3 most gear advice has not caught up with.", alternatives: [{ ref: { kind: "runeword", slug: "chaos" }, why: "The damage answer rather than the sustain one, and the same base advice applies to it." }] }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "300% Enhanced Damage on a character whose damage is all weapon.", alternatives: [{ ref: { kind: "runeword", slug: "chains-of-honor" }, why: "+2 to All Skills and +65 to all resistances — the +2 reaches Whirlwind, which almost nothing else does." }] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "andariels-visage" }, why: "+2 to Assassin Skills, 20% Increased Attack Speed and 8–10% life steal. The +2 does nothing for Whirlwind and a great deal for Claw Mastery, Venom and Weapon Block — this is the clearest item on the page for that split.", sockets: "One — Um, or a ruby for the −30% fire resistance." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Life steal and Open Wounds. The Life Tap is a bonus you cannot plan around." }] },
@@ -366,8 +379,8 @@ export const whirlwindAssassin: Build = {
       levelRange: [95, 99],
       nextUpgrade: "Nothing.",
       slots: [
-        { slot: "weapon", picks: [{ label: "Chaos in superior Runic Talons", why: "−30 base speed and the largest Enhanced Damage roll the base can carry under the runeword's own 240–290%." }] },
-        { slot: "offhand", picks: [{ label: "A second Chaos in superior Runic Talons", why: "**Two Chaos claws put 216–471 magic damage on every hit rather than half of them**, and magic damage is the one type this site's own census records as a common immunity in a single area. Fury stays the answer if leech is the problem rather than damage." }] },
+        { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "chaos" }, why: "In superior Runic Talons: −30 base speed, and the largest Enhanced Damage roll the base can carry under the runeword's own +290–340%." }] },
+        { slot: "offhand", picks: [{ ref: { kind: "runeword", slug: "chaos" }, why: "**A second one, and two Chaos claws put 216–471 magic damage on every hit rather than half of them** — magic damage is the one type this site's own census records as a common immunity in a single area. Fury stays the answer if leech and Ignore Target's Defense are worth more to you than the magic damage.", alternatives: [{ ref: { kind: "runeword", slug: "fury" }, why: "The sustain half: 6% life steal, 66% Open Wounds and Ignore Target's Defense, all read from the hits this claw makes." }] }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "chains-of-honor" }, why: "+2 to All Skills, +65 to all resistances and 8% damage reduction. The +2 is worth +10% whirl damage and 10% attack rating on top of everything else." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "crown-of-ages" }, why: "Damage reduction, resistances and two sockets without Andariel's fire penalty, on a character who is always surrounded.", sockets: "Two — Um and Um, or 15% Increased Attack Speed jewels." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Life steal and Open Wounds." }] },

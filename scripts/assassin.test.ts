@@ -273,10 +273,29 @@ console.log("\nWhirlwind is a borrowed skill, and the columns say what it is not
       !(FINISHERS as readonly string[]).includes("whirlwind"),
   );
 
-  /* It is a Barbarian skill, so the class tree cannot contain it and the plan cannot buy it. */
+  /*
+   * It is a Barbarian skill. The first draft of this asserted that no graph
+   * node called `whirlwind` existed at all, which was true on the day it was
+   * written and stopped being true the moment the Barbarian's thirty skills
+   * landed — a check that passes because a class is missing is a check that
+   * fails when the class arrives. What is permanent is that the node, if it
+   * exists, is not the Assassin's, and that this plan spends nothing outside
+   * the Assassin's own trees.
+   */
+  const whirlwindNode = SKILL_GRAPH["whirlwind"];
   check(
-    "no Assassin skill is called whirlwind, which is why the plan allocates none",
-    !assassinSkills.some((s) => s.slug === "whirlwind") && SKILL_GRAPH["whirlwind"] === undefined,
+    "whirlwind is not an Assassin skill, whoever else owns it",
+    !assassinSkills.some((s) => s.slug === "whirlwind") &&
+      (whirlwindNode === undefined || whirlwindNode.classSlug !== "assassin"),
+    whirlwindNode ? `graph node classSlug=${whirlwindNode.classSlug}` : "no graph node",
+  );
+  const foreign = whirlwindAssassin.skills
+    .filter((a) => SKILL_GRAPH[a.skill]?.classSlug !== "assassin")
+    .map((a) => a.skill);
+  check(
+    "and the plan allocates nothing outside the Assassin's own trees",
+    foreign.length === 0,
+    foreign.join(","),
   );
 
   /*
@@ -903,6 +922,14 @@ ACCEPTED.push(
   {
     note: "pt-BR mirror of the block exception",
     line: "O giro mantém bloqueio integral, e correr é o estado que cai a um terço.",
+  },
+  {
+    note: "the denial of the loss, which is the shape a Barbarian page would use",
+    line: "A whirling Barbarian loses no block at all.",
+  },
+  {
+    note: "pt-BR mirror of the denial",
+    line: "Quem está girando não perde bloqueio nenhum.",
   },
 );
 

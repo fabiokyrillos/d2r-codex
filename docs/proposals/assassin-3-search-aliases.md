@@ -32,11 +32,16 @@ Add, after the `dragon-tail` row:
 - `ww` alone is **not** added. The file's own comment rejects two-letter tokens
   ("`ls` and `ds` are deliberately absent: two-letter tokens match half the item
   list"), and `ww` would behave the same way.
-- `whirlwind` on its own is safe today because there is no Barbarian class in
-  the content tree. **If Agent B lands a Barbarian Whirlwind skill page, the
-  bare token should move to that page and this row should keep only the
-  qualified forms** — a skill page and a build page competing for the same word
-  is exactly what the Phoenix Strike comment warns about.
+- `whirlwind` on its own is **no longer safe, and the row above has been written
+  accordingly.** The Barbarian's thirty skills have landed, so `whirlwind` is a
+  real skill page and the bare token would be an alias that is another entity's
+  page name — the thing `checkAliasesAreNotPages` exists to refuse, and the
+  thing the Phoenix Strike comment warns about with `mosaic`. Every occurrence
+  in the row is qualified: `whirlwind assassin` and `whirlwind sin`. **Run
+  `npm run test:search` after adding it** — if the gate objects to the token
+  appearing inside those phrases at all, drop both and keep `wwsin`,
+  `chaossin` and the pt-BR forms, which carry the same intent and collide with
+  nothing.
 - `claw mastery` is **not** added, even though it is this build's `primarySkill`.
   It is a skill page of its own, and `checkAliasesAreNotPages` exists to refuse
   an alias that is another entity's page name.
