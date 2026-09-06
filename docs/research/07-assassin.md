@@ -1423,3 +1423,52 @@ Cestus and War Fist hold two and cannot take either runeword. Runic Talons ask
   content tree and `check-content` requires the primary skill to resolve; the
   allocation gate additionally requires the plan to put points in it, which an
   item-granted oskill can never do. §12.7 records what was done instead.
+
+### 12.9 The seven, audited
+
+The roster §4 fixed at seven is now seven pages, and the audit was run against
+the registry rather than against the list.
+
+| # | page | core | worst case | primary | packages | pt-BR |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Lightning Trapsin | 90 | 110 | `lightning-sentry` | 1 group, 3 × 20 | yes |
+| 2 | Fire Trapsin | 73 | 110 | `wake-of-fire` | 1 group, 3 × 37 | yes |
+| 3 | Phoenix Strike | 93 | 110 | `phoenix-strike` | 1 group, 3 × 17 | yes |
+| 4 | Kicksin | 74 | 110 | `dragon-talon` | 1 group, 3 × 36 | yes |
+| 5 | Blade Fury | 91 | 110 | `blade-fury` | 1 group, 3 × 19 | yes |
+| 6 | Dragon Tail | 72 | 110 | `dragon-tail` | 1 group, 3 × 38 | yes |
+| 7 | Whirlwind Assassin | 67 | 110 | `claw-mastery` | 1 group, 3 × 43 | yes |
+
+Every page: six gear tiers in progression order, `complete: true`,
+`confidence: "verified"`, no allocation above a skill's `maxLevel`, and no
+`synergy` role without an edge. **All seven close at exactly 110** taking the
+dearest package in the one exclusive group each carries.
+
+Four things the audit turned up, none of them a defect on a shipped page.
+
+- **Riftsin is not a page, and it is not a package either.** §4 recorded the
+  verdict as "PACKAGE INSIDE KICKSIN"; §10.2 then re-decided it as "a gear
+  variant of the Kicksin", and the gear variant is what shipped — Rift appears
+  in `kicksin`'s `optimized` weapon and off-hand picks and nowhere else. The
+  implementation follows the later decision; the row in §4 is the stale one, and
+  it is corrected here rather than rewritten there.
+- **Phoenix Strike's three `synergy` roles resolve through `missileSynergies`,
+  not `synergies`.** Its `synergies` array is empty and its edges run through
+  `royalstrikemeteor`, `royalstrikechainlightning` and `royalstrikechaosice` —
+  §8's finding, still holding. A naive audit that reads only `synergies` reports
+  three false positives here; the repository's own `synergy-role-with-no-edge`
+  rule reads both and is silent.
+- **Only one Assassin page carries a mode gate**, and it is Phoenix Strike's
+  `gatedBy: ["mosaic"]`. Every other page's availability would read the same
+  word three times, which §4 already ruled is omitted rather than padded.
+- **Six of seven carry a search-alias row.** The seventh is proposed rather than
+  written, because `lib/search/index.ts` is not this agent's file.
+
+Breakpoints are consistent across the seven: every page targets 65% Faster Cast
+Rate for the `SC` animation and 48% Faster Hit Recovery; the four pages that
+take Weapon Block to twenty add 86% Faster Block Rate and the two trap pages do
+not. **No Assassin page publishes an Increased Attack Speed row**, and the seven
+now give three different reasons for that — the claw base is an input to the
+same formula (traps, kicks), the cadence is fixed and reads no speed stat at all
+(Blade Fury), and the per-weapon-class constant is unpublished for a claw
+(Whirlwind, §12.6).
