@@ -132,6 +132,22 @@ export const SLUG_OVERRIDES: Record<string, string> = {
   "Inferno Sentry": "wake-of-inferno",
   Quickness: "burst-of-speed",
   "Royal Strike": "phoenix-strike",
+  /*
+   * The Barbarian, one of thirty, and the smallest gap on the site: a single
+   * space. `Pole Arm Mastery` in the table ships as **Polearm Mastery** — its
+   * `str name` is `skillname134`, which resolves to "Polearm Mastery" in
+   * `allstrings-eng.json` at the pinned commit. That is the `Clay Golem` shape
+   * exactly: spelled with a space where nothing a player sees has one.
+   * Slugifying the identifier would publish
+   * `/classes/barbarian/skills/pole-arm-mastery`, a URL nobody types.
+   *
+   * Pinned by its own row: page 2, row 2, column 1, level 6.
+   *
+   * The other twenty-nine Barbarian identifiers are byte-identical to their
+   * shipped names, checked by resolving every `str name` rather than by reading
+   * the ones that looked suspicious.
+   */
+  "Pole Arm Mastery": "polearm-mastery",
 };
 
 const slugify = (name: string) =>
@@ -312,6 +328,33 @@ const SYNERGY_KINDS: Record<string, string> = {
    * it, which is the right outcome.
    */
   "bonus shot per # levels": "shots",
+  /*
+   * The Barbarian's two, both in the game's own words.
+   *
+   * "Attack Rating synergy" is the kind the golem ring already carries, reached
+   * here without a source's name in front of it: Concentrate raises Bash's and
+   * Stun's attack rating through their `ToHitCalc`, which makes these the only
+   * *bare* attack-rating synergies in the extraction. The Necromancer's three
+   * are source-owned and spell the golem out, which is why they need their own
+   * keys above and these do not.
+   */
+  "attack rating": "attack-rating",
+  /*
+   * "% chance synergy" is genuinely new, and it is here for the reason the
+   * whole table exists. Find Potion raises Find Item's chance to roll a second
+   * drop by a point per hard point. That is neither damage nor duration, and a
+   * reader told Find Potion raises Find Item's "damage" would be told something
+   * with no meaning at all.
+   *
+   * The kind is generic and its label is not: `synergyKindChance` reads "find
+   * chance", because the one edge that carries it lands in the sentence "+1%
+   * find chance per level" on the Find Item page, and "chance" alone leaves the
+   * reader asking chance of what. A second `% chance` edge on some other skill
+   * would make that label wrong, and is the moment to revisit it — the game's
+   * other chance synergies ("Chance to Explode", "Chance to Bind") normalise to
+   * different keys and would not land here.
+   */
+  "% chance": "chance",
 };
 
 /**

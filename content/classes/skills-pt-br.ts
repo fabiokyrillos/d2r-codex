@@ -1,5 +1,7 @@
 import type { Overlay, SkillCopy, SkillTreeCopy } from "@/lib/types/copy";
 
+import { barbarianSkillsPtBr, barbarianTreesPtBr } from "./barbarian/pt-br";
+
 /**
  * Copy pt-BR das skills e das árvores.
  *
@@ -120,6 +122,7 @@ export const skillTreesPtBr: Overlay<SkillTreeCopy> = {
     theme:
       "Dano que você posiciona em vez de mirar. Cinco sentinelas ficam de pé ao mesmo tempo e continuam atirando enquanto você anda, e é por isso que a Assassin de traps é uma das personagens mais seguras do jogo — e as três skills de lâmina dividem a árvore sem dividir mais nada.",
   },
+  ...barbarianTreesPtBr,
 };
 
 export const skillsPtBr: Overlay<SkillCopy> = {
@@ -1692,4 +1695,5 @@ export const skillsPtBr: Overlay<SkillCopy> = {
     ],
     synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
   },
+  ...barbarianSkillsPtBr,
 };

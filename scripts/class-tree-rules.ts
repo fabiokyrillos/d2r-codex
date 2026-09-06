@@ -59,7 +59,6 @@ export interface ClassTreeProblem {
  * direction.
  */
 export const TREES_NOT_YET_AUTHORED: readonly string[] = [
-  "barbarian",
   "warlock",
 ];
 

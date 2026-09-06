@@ -80,7 +80,7 @@ const SOURCE_REPO = "blizzhackers/d2data";
  * the tree on the class page, the tree on every build page, the sitemap entries
  * and the search index at once -- there is no second list to keep in step.
  */
-const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer", dru: "druid", ass: "assassin" } as const;
+const classOf = { pal: "paladin", sor: "sorceress", ama: "amazon", nec: "necromancer", dru: "druid", ass: "assassin", bar: "barbarian" } as const;
 
 /**
  * The exact commit the shipped graph was extracted from.
@@ -703,6 +703,28 @@ const PUBLISHES_PHYSICAL = new Set<string>([
    * Mind Blast carries no weapon share at all — the range is the whole of it.
    */
   "blade-sentinel", "blade-fury", "blade-shield", "mind-blast",
+  /*
+   * The Barbarian's two, and each is a shape already on this list.
+   *
+   * Leap Attack is Blade Fury's: `SrcDam = 128` **and** a physical range of its
+   * own, 10-20 at level 1. The weapon's full damage lands and this lands with
+   * it, which is why the skill also carries `damageModel: "weapon-plus-element"`
+   * — without a model the partition in `check-content.ts` drops it into `table`
+   * and it stops being an attack.
+   *
+   * War Cry is Shock Wave's: no `SrcDam` and no `EType`, so the range is the
+   * whole of the skill's damage, 30-40 at level 1. It is the only Barbarian
+   * skill that kills without a weapon.
+   *
+   * A discriminator was tried here and rejected, and is written up in
+   * `docs/research/08-barbarian.md` §2.3 so the next class does not retry it:
+   * every row already on this list prints a physical range in the game's own
+   * tooltip (`desccalca = pnma`/`pxma`) — and so do Holy Shield, Raven and
+   * Spirit of Barbs, which are all excluded. `descdam` comes closer, empty on
+   * five of the six excluded rows, and Psychic Hammer breaks it. The list stays
+   * a list.
+   */
+  "leap-attack", "war-cry",
 ]);
 
 /** Rows whose `MinDam`/`MaxDam` is deliberately not published, and why. */

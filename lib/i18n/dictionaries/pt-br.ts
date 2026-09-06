@@ -717,6 +717,7 @@ export const ptBR: Dictionary = {
     synergyKindHealing: "cura",
     synergyKindDuration: "duração",
     synergyKindShots: "tiros disparados",
+    synergyKindChance: "chance de achar",
     synergyKindFreeze: "tempo de congelamento",
     synergyKindHp: "vida",
     synergyKindAbsorb: "absorção de dano",

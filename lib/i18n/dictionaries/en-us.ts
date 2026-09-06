@@ -725,6 +725,7 @@ export const enUS = {
     // The Assassin's one, where the synergy buys more of the thing rather than a
     // bigger number: Lightning Sentry gives Charged Bolt Sentry extra shots.
     synergyKindShots: "shots fired",
+    synergyKindChance: "find chance",
     synergyKindHp: "life",
     synergyKindAbsorb: "damage absorbed",
     // The Druid's elemental tree is the only place a source raises one of a

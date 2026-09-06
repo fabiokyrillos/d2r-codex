@@ -50,7 +50,7 @@
  *   Critical Strike under no parameter at all -- those columns set the summon's
  *   own skill levels. Neither produces an edge. The Valkyrie's one real synergy
  *   is Decoy, under a parameter the game itself labels "HP % synergy".
- *   Extracted   180 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer, 30 druid, 30 assassin)
+ *   Extracted   210 skills (30 paladin, 30 sorceress, 30 amazon, 30 necromancer, 30 druid, 30 assassin, 30 barbarian)
  *
  *   The commit is pinned, not `master`. Re-running the generator reproduces
  *   this file exactly, or fails; it never silently follows the source forward.
@@ -60,7 +60,7 @@
  * AGREEMENT
  *   Prerequisite sets identical across the repository's two extractions —
  *   the current D2R tables and the pre-D2R Lord of Destruction tables under
- *   `json/base/` — for 180 of 180 skills.
+ *   `json/base/` — for 210 of 210 skills.
  *
  *   These are two snapshots of different game versions from one extraction
  *   project, not two independent publishers. Their agreement shows the values
@@ -99,7 +99,7 @@ export interface BandedScale {
 }
 
 export interface SkillGraphNode {
-  readonly classSlug: Extract<ClassSlug, "amazon" | "assassin" | "druid" | "necromancer" | "paladin" | "sorceress">;
+  readonly classSlug: Extract<ClassSlug, "amazon" | "assassin" | "barbarian" | "druid" | "necromancer" | "paladin" | "sorceress">;
   /** The site's tree slug, derived from the game's 1-based skill page. */
   readonly tree: Slug;
   /** 1-based skill page, straight from the game data. Independent of `tree`. */
@@ -631,6 +631,186 @@ export const SKILL_GRAPH: Record<Slug, SkillGraphNode> = {
     requiredLevel: 30, maxLevel: 20,
     prerequisites: ["blades-of-ice", "cobra-strike"],
     synergies: [], missileSynergies: [{ from: "blades-of-ice", missile: "royalstrikechaosice", element: "cold", magnitude: 10 }, { from: "claws-of-thunder", missile: "royalstrikechainlightning", element: "ltng", magnitude: 13 }, { from: "fists-of-fire", missile: "royalstrikemeteor", element: "fire", magnitude: 10 }, { from: "fists-of-fire", missile: "royalstrikemeteorfire", element: "fire", magnitude: 6 }],
+  },
+  "bash": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [{ from: "concentrate", kinds: ["attack-rating"] }, { from: "stun", kinds: ["damage"] }],
+  },
+  "leap": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "double-swing": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["bash"],
+    synergies: [{ from: "bash", kinds: ["damage"] }],
+  },
+  "stun": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 3, column: 2,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["bash"],
+    synergies: [{ from: "bash", kinds: ["damage"] }, { from: "concentrate", kinds: ["attack-rating"] }, { from: "war-cry", kinds: ["duration"] }],
+  },
+  "double-throw": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["double-swing"],
+    synergies: [{ from: "double-swing", kinds: ["damage"] }],
+  },
+  "leap-attack": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["leap"],
+    synergies: [{ from: "leap", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 10, bands: [4, 8, 12, 16, 20] }, max: { base: 20, bands: [8, 16, 24, 32, 40] } },
+  },
+  "concentrate": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 4, column: 2,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["stun"],
+    synergies: [{ from: "bash", kinds: ["damage"] }, { from: "battle-orders", kinds: ["damage"] }],
+  },
+  "frenzy": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["double-throw"],
+    synergies: [{ from: "double-swing", kinds: ["damage"] }, { from: "taunt", kinds: ["damage"] }],
+  },
+  "whirlwind": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["concentrate", "leap-attack"],
+    synergies: [],
+  },
+  "berserk": {
+    classSlug: "barbarian", tree: "barbarian-combat-skills", page: 1, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["concentrate"],
+    synergies: [{ from: "battle-orders", kinds: ["damage"] }, { from: "howl", kinds: ["damage"] }],
+  },
+  "blade-mastery": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "axe-mastery": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 1, column: 2,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "mace-mastery": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "polearm-mastery": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "throwing-mastery": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "spear-mastery": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 2, column: 3,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "increased-stamina": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 3, column: 1,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "iron-skin": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 4, column: 3,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "increased-speed": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 5, column: 1,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["increased-stamina"],
+    synergies: [],
+  },
+  "natural-resistance": {
+    classSlug: "barbarian", tree: "combat-masteries", page: 2, row: 6, column: 3,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["iron-skin"],
+    synergies: [],
+  },
+  "howl": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 1, column: 1,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "find-potion": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 1, column: 3,
+    requiredLevel: 1, maxLevel: 20,
+    prerequisites: [],
+    synergies: [],
+  },
+  "taunt": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 2, column: 1,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["howl"],
+    synergies: [],
+  },
+  "shout": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 2, column: 2,
+    requiredLevel: 6, maxLevel: 20,
+    prerequisites: ["howl"],
+    synergies: [{ from: "battle-command", kinds: ["duration"] }, { from: "battle-orders", kinds: ["duration"] }],
+  },
+  "find-item": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 3, column: 3,
+    requiredLevel: 12, maxLevel: 20,
+    prerequisites: ["find-potion"],
+    synergies: [{ from: "find-potion", kinds: ["chance"] }],
+  },
+  "battle-cry": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 4, column: 1,
+    requiredLevel: 18, maxLevel: 20,
+    prerequisites: ["taunt"],
+    synergies: [],
+  },
+  "battle-orders": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 5, column: 2,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["shout"],
+    synergies: [{ from: "battle-command", kinds: ["duration"] }, { from: "shout", kinds: ["duration"] }],
+  },
+  "grim-ward": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 5, column: 3,
+    requiredLevel: 24, maxLevel: 20,
+    prerequisites: ["find-item"],
+    synergies: [],
+  },
+  "war-cry": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 6, column: 1,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["battle-cry", "battle-orders"],
+    synergies: [{ from: "battle-cry", kinds: ["damage"] }, { from: "howl", kinds: ["damage"] }, { from: "taunt", kinds: ["damage"] }], physical: { hitShift: 8, min: { base: 30, bands: [8, 9, 10, 12, 14] }, max: { base: 40, bands: [8, 9, 10, 12, 14] } },
+  },
+  "battle-command": {
+    classSlug: "barbarian", tree: "warcries", page: 3, row: 6, column: 2,
+    requiredLevel: 30, maxLevel: 20,
+    prerequisites: ["battle-orders"],
+    synergies: [{ from: "battle-orders", kinds: ["duration"] }, { from: "shout", kinds: ["duration"] }],
   },
   "raven": {
     classSlug: "druid", tree: "druid-summoning", page: 1, row: 1, column: 2,
