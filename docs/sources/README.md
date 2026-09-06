@@ -718,7 +718,7 @@ in this list has been written into user-facing content as fact.
 - Madawc's two Colossal Ancients jewels
 - The exact statue count for the Colossal Ancients recipe
 - What Latent Sunder Charms and Worldstone Shards actually do
-- Stat lines for Authority, Coven, Void, Vigilence and Ritual
+- Set items — 140 across 35 sets exist in the game and none is catalogued here
 - The complete Terror Zone rotation group list
 - Increased Attack Speed tables (weapon- and skill-dependent). Since the Amazon
   pass this is enforced rather than merely intended: `check:content` fails if

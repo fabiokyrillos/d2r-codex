@@ -411,13 +411,13 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     notes:
       "Runas e base vêm do anúncio da Blizzard. Uma runa Zod faz desta uma das runewords mais caras do jogo, independentemente do que ela faça. Estatísticas não publicadas e não verificadas.",
   },
-  vigilence: {
+  vigilance: {
     summary:
       "Uma runeword de escudo do Reign of the Warlock. Runas e base confirmadas; estatísticas ainda não verificadas.",
     basesDisplay: "Qualquer Escudo de 2 sockets",
     stats: [{ text: "Estatísticas ainda não verificadas — veja a nota abaixo." }],
     notes:
-      "Grafada 'Vigilence' no próprio anúncio da Blizzard, o que quase certamente é um erro de digitação de 'Vigilance' — a grafia dentro do jogo não foi confirmada. Runas e base vêm desse mesmo anúncio; estatísticas não publicadas e não verificadas.",
+      "Duas correções aconteceram aqui de uma vez, e as duas vieram dos dados do próprio jogo, não do anúncio. O nome é **Vigilance**, escrito certo — esta entrada carregava o 'Vigilence' da Blizzard, e a nota dela mesma já suspeitava que fosse erro de digitação. E `itype1 = \"grim\"`: é uma runeword de **Grimoire**, não de escudo, e é isso que faz dela a resposta de off-hand do Warlock. Toda base de Grimoire tem exatamente dois sockets, então Spirit e Ancients' Pledge não cabem em uma, e uma runeword de duas runas é o que serve. O Replenish Life e a resistência máxima a veneno vêm do Dol e do Gul.",
   },
   ritual: {
     summary:

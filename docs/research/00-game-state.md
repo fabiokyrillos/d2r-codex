@@ -164,10 +164,10 @@ increased rare-or-better drop chance from **Tier 3+**.
 | Authority | Hel + Shael + Ral | 3-socket body armor |
 | Coven | Ist + Ral + Io | 3-socket helm |
 | Void | Thul + Zod + Ist | 3-socket dagger |
-| Vigilence *(sic — Blizzard's spelling)* | Dol + Gul | 2-socket shield |
+| Vigilance *(the announcement spelled it "Vigilence"; the game's data does not)* | Dol + Gul | **2-socket Grimoire**, not a shield |
 | Ritual | Amn + Shael + Ohm | 3-socket dagger |
 
-> **Unverified:** the stat lines and level requirements of these runewords.
+> **Closed 2026-09-06.** All five are in `json/runes.json` at the pinned commit, and are now published. See open question 7.
 
 ## New unique items (Reign of the Warlock)
 
@@ -217,7 +217,7 @@ Tracked so we don't accidentally write content on unverified ground:
 4. Exact statue count for the Colossal Ancients recipe.
 5. What Latent Sunder Charms do, and how they differ from Sunder Charms.
 6. What Worldstone Shards are used for.
-7. Stat lines for Authority / Coven / Void / Vigilence / Ritual.
+7. ~~Stat lines for Authority / Coven / Void / Vigilence / Ritual.~~ **Closed 2026-09-06.** All five are in `json/runes.json` at the pinned commit and are published, composed with their runes' mods. The exercise corrected two further things the announcement had wrong: the name is **Vigilance**, and it is a **Grimoire** runeword (`itype1 = "grim"`), not a shield one.
 8. Full Terror Zone rotation group list (partially captured).
 9. Whether the classic breakpoint tables (FCR/FHR/IAS) changed at all in 3.x.
 10. ~~Whether Warlock has its own FCR/FHR breakpoint table (near-certain that it
