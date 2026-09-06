@@ -1177,7 +1177,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
             why: "+1 em All Skills num elmo de dois sockets por uma Ort e uma Sol. Barato, e nunca deixa de valer a pena até um Shako.",
           },
           {
-            why: "**+2 em All Skills e até 35% de conjuração** num escudo de quatro sockets no nível 25. A velocidade de conjuração é a velocidade com que você coloca traps, além da de conjurar, então este é um item de dano tanto quanto de utilidade.",
+            why: "**+2 em All Skills e até 35% de conjuração** num escudo de quatro sockets no nível 25. Os +2 skills são o dano; a conjuração acelera o Mind Blast e o Cloak of Shadows, e não faz nada pela velocidade com que uma trap desce.",
           },
         ],
         exitCriteria: "O Baal está morto, o Wake of Fire está em 16, e os quatro pontos de quest do Normal estão gastos.",
@@ -1244,7 +1244,7 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
         ],
         gearTargets: [
           {
-            why: "Num escudo de quatro sockets: +2 em todas as skills e até 35% de conjuração. **Faster Cast Rate é a velocidade com que você coloca traps**, e não só a de conjurar Mind Blast, então 65% é o número a alcançar.",
+            why: "Num escudo de quatro sockets: +2 em todas as skills e até 35% de conjuração. **Conjuração é Mind Blast, não colocação de trap** — colocar uma trap roda na velocidade de ataque e na garra que você segura. 65% ainda vale, pelo atordoamento que abre todo grupo.",
           },
           {
             label: "Garra mágica ou rara: +3 Lightning Sentry, +2 Traps",

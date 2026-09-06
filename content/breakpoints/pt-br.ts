@@ -35,8 +35,14 @@ export const breakpointsPtBr: Overlay<BreakpointTableCopy> = {
   },
   "fcr-assassin": {
     name: "Assassin — Faster Cast Rate",
-    summary: "Vale tanto para colocar armadilhas quanto para conjurar.",
-    guidance: ["**65%** é a meta prática de uma Trapsin; **102%** é o objetivo esticado."],
+    variant: "Apenas a animação de conjuração",
+    summary:
+      "Mind Blast, Cloak of Shadows, Venom, as sombras, o Teleport, e o Fade ou o Burst of Speed que estiver ativo — nunca os dois. Não governa a colocação de armadilhas.",
+    guidance: [
+      "**Esta tabela não cobre a colocação de armadilhas**, e esse é o erro mais comum feito sobre a classe. Uma armadilha usa a animação `S2` da Assassin, que está no cálculo de *velocidade de ataque* — velocidade base da arma, Increased Attack Speed e Burst of Speed. A animação de conjuração que esta tabela descreve é outra animação, de outro comprimento, então os números daqui não são apenas inaplicáveis às armadilhas: são a tabela errada.",
+      "**65%** ainda é uma meta sensata para uma Trapsin, mas pelo **Mind Blast**, que é o botão que abre todo grupo: 16 frames viram 11.",
+      "Veja a nota de Increased Attack Speed abaixo para entender por que a colocação de armadilhas não pode ser tabelada como esta.",
+    ],
   },
   "fcr-druid": {
     name: "Druid — Faster Cast Rate",

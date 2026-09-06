@@ -49,13 +49,27 @@ import type { Build } from "@/lib/types";
  *   than a consolation prize: with Shock Web, Charged Bolt Sentry and Lightning
  *   Sentry all at 20 it is +660%.
  *
- * BREAKPOINTS
- * -----------
- * Faster Cast Rate, and the reasoning is in `docs/research/07-assassin.md` §5.
- * The site's `fcr-assassin` table already states that it covers trap laying;
- * cycle 1's note arguing otherwise from `UseAttackRate` was a misreading of a
- * column that decides whether an action can miss, not how fast it plays. No
- * Increased Attack Speed row: this character never swings anything.
+ * BREAKPOINTS — CORRECTED, cycle 3. See `docs/research/07-assassin.md` §5.
+ * ------------------------------------------------------------------------
+ * Cycle 2 published a sentence putting trap laying on the cast-rate table.
+ * That was wrong, and it is retracted here.
+ *
+ * `anim` is the column that assigns the animation, and every trap on this page
+ * carries `anim = S2`. The Assassin's `SC` family — Mind Blast, Cloak of
+ * Shadows, Fade, Burst of Speed, the shadows — is what Faster Cast Rate
+ * shortens. `S2` is on the attack-speed calculation: weapon base speed,
+ * Increased Attack Speed, and Burst of Speed as an undiminished skill bonus.
+ *
+ * The control that settles it: AnimData gives `AIS2*` as 8 frames at animation
+ * speed 128, and running that through the attack-speed formula reproduces all
+ * fifteen cells of an independently published "IAS needed for 9-frame trap
+ * laying" matrix indexed by both claws' base speed. Under cast rate that would
+ * be one weapon-independent number; it is five different numbers on the
+ * diagonal alone. `scripts/trap-speed.test.ts` re-derives it on every run.
+ *
+ * So this page keeps a Faster Cast Rate target — justified by Mind Blast, which
+ * is genuinely the button that opens every pack — and states trap-laying speed
+ * as scenarios rather than as a row, because the number moves with the claw.
  */
 export const lightningTrapsin: Build = {
   slug: "lightning-trapsin",
@@ -218,7 +232,7 @@ export const lightningTrapsin: Build = {
           rotationNote:
             "Unchanged in what you press. Changed in what you can stand in: Fade at twenty is the difference between leaving a Terror Zone and clearing it.",
           gearNote:
-            "**The largest gear change of the three, in what it stops you needing.** Twenty points of Fade is resistance you no longer buy on rings, amulet and charms, so those slots go to lightning damage and Faster Cast Rate instead. It also stacks with the Treachery proc rather than replacing it.",
+            "**The largest gear change of the three, in what it stops you needing.** Twenty points of Fade is resistance you no longer buy on rings, amulet and charms, so those slots go to lightning damage and trap-laying speed instead. It also stacks with the Treachery proc rather than replacing it.",
           statNote: "No change. Vitality with everything after gear requirements.",
           contentNote:
             "Hell Terror Zones, the Chaos Sanctuary, and every Hardcore character on the site.",
@@ -313,15 +327,8 @@ export const lightningTrapsin: Build = {
       stat: "fcr",
       value: 65,
       frames: 11,
-      priority: "required",
-      why: "**Faster Cast Rate is how fast you lay traps**, not just how fast you cast Mind Blast — the Assassin's table covers both. 65% is the practical target and the difference between laying a field before the pack arrives and laying it after.",
-    },
-    {
-      stat: "fcr",
-      value: 102,
-      frames: 10,
       priority: "recommended",
-      why: "One frame faster, and the last row worth chasing: 174% is one further frame for nearly double the investment.",
+      why: "**For Mind Blast, not for the traps.** Cast rate shortens the Assassin's `SC` animation — Mind Blast, Cloak of Shadows, Fade — and Mind Blast is the button that opens every pack, so 16 frames becoming 11 is a real gain on the one cast this build leans on. It does nothing whatsoever for how fast a sentry goes down.",
     },
     {
       stat: "fhr",
@@ -332,7 +339,7 @@ export const lightningTrapsin: Build = {
     },
   ],
   breakpointNotes:
-    "**There is no Increased Attack Speed row here, deliberately.** This character never swings anything: traps are laid, Fire Blast is thrown, and Mind Blast is cast. Guides that list an IAS target for a trapper are carrying it over from the kick builds, where it is the whole gear axis. The one place attack speed would matter is Burst of Speed — and a trapper runs Fade instead, because the two cannot both be up.",
+    "**Trap-laying speed is attack speed, and it cannot be given as one number.** A trap plays the Assassin's `S2` animation, which runs on the attack-speed calculation: the claw's own base speed, Increased Attack Speed from gear, and Burst of Speed. Faster Cast Rate does not touch it — that is the single commonest error written about this class, and an earlier version of this page made it. There is no Increased Attack Speed row here for the opposite reason to the one you might expect: not because attack speed is irrelevant, but because the claw's base speed is an input to the same formula, so any single percentage would be wrong for most readers. Concrete instead, all derived from the same formula and all with no Burst of Speed up. **Two Runic Talons or Greater Talons** (the fastest claws, base speed −30) lay a trap in 12 frames with no gear at all, 9 frames at 42% IAS. **Two Feral or Greater Claws** (−20): 13 frames bare, 9 at 63%. **A Suwayyah, Quhab, Cestus or Wrist Blade** (0): 15 frames bare, 9 at 125%. **Two Hatchet Hands or Fascia** (+10): 17 frames bare, and 9 frames costs 174%. That is a 30% spread in laying speed before a single point of IAS is bought, which is why the claw base is worth more here than the affix. Three rules that decide whether the IAS you own counts: with two claws the base speed used is the **average of both**; Increased Attack Speed on the **off-hand claw does not count at all**, so put your Shael or your IAS jewel in the main hand; and **Burst of Speed adds its attack speed undiminished** — up to 60% — which is the one real cost of running Fade instead, worth roughly two frames. Being **chilled slows the animation**, so Cannot Be Frozen protects laying speed. If you want a number for your own claws rather than these four, use an attack-speed calculator and give it the claw base, both claws' IAS, and your Burst of Speed level.",
 
   gearSets: [
     {
@@ -355,7 +362,7 @@ export const lightningTrapsin: Build = {
           picks: [
             {
               ref: { kind: "runeword", slug: "spirit" },
-              why: "+2 to All Skills and up to 35% Faster Cast Rate at level 25. Cast rate is trap-laying speed here.",
+              why: "+2 to All Skills and up to 35% Faster Cast Rate at level 25. The skills are the draw; the cast rate speeds up Mind Blast, not the traps.",
               sockets: "Tal, Thul, Ort, Amn into a 4-socket shield.",
               alternatives: [
                 {
@@ -388,7 +395,7 @@ export const lightningTrapsin: Build = {
 
     {
       tier: "nightmare",
-      goal: "65% cast rate, two Spirits if you can, and Treachery the moment three mid runes exist.",
+      goal: "Two Spirits if you can, 65% cast rate for Mind Blast, and Treachery the moment three mid runes exist.",
       levelRange: [45, 60],
       slots: [
         {
@@ -397,7 +404,7 @@ export const lightningTrapsin: Build = {
             {
               label: "Rare or magic claw: +3 Lightning Sentry, +3 Death Sentry",
               why: "A claw carrying both is worth more than any unique at this tier and costs a fraction as much.",
-              lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+              lookFor: ["A Greater Talons or Runic Talons base", "+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Increased Attack Speed"],
             },
           ],
         },
@@ -437,7 +444,7 @@ export const lightningTrapsin: Build = {
         },
         {
           slot: "gloves",
-          picks: [{ ref: { kind: "unique", slug: "magefist" }, why: "20% Faster Cast Rate, which is trap-laying speed." }],
+          picks: [{ ref: { kind: "unique", slug: "magefist" }, why: "20% Faster Cast Rate, and the cheapest source of it. Gloves are also where Increased Attack Speed belongs if you are chasing laying speed." }],
         },
         {
           slot: "belt",
@@ -450,16 +457,16 @@ export const lightningTrapsin: Build = {
 
     {
       tier: "early-hell",
-      goal: "75% resistances, 65% cast rate held, and an answer for lightning immunes.",
+      goal: "75% resistances, 65% cast rate held for Mind Blast, and an answer for lightning immunes.",
       levelRange: [60, 75],
       slots: [
         {
           slot: "weapon",
           picks: [
             {
-              label: "Rare claw: +3 Lightning Sentry, +3 Death Sentry, 20% Faster Cast Rate",
-              why: "Three affixes on one item, and it is still cheaper than any of the runewords on this page.",
-              lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
+              label: "Rare claw on a fast base: +3 Lightning Sentry, +3 Death Sentry, 20% Increased Attack Speed",
+              why: "Three affixes on one item, and it is still cheaper than any of the runewords on this page. **Roll it on a fast base if you can** — Greater Talons and Runic Talons lay a trap three frames faster than a Suwayyah before any affix is counted.",
+              lookFor: ["A Greater Talons or Runic Talons base", "+3 to Lightning Sentry", "+3 to Death Sentry", "20% Increased Attack Speed"],
             },
           ],
         },
@@ -505,27 +512,27 @@ export const lightningTrapsin: Build = {
           picks: [
             {
               label: "Rare ring: 10% Faster Cast Rate, two resistances, life",
-              why: "Where the last few points of cast rate come from on the way to 65%.",
+              why: "Where the last few points of cast rate come from on the way to 65% for Mind Blast.",
               lookFor: ["10% Faster Cast Rate", "Two resistances at 20+", "Life"],
             },
           ],
         },
       ],
-      nextUpgrade: "102% cast rate, and an amulet that is not carrying resistances alone.",
+      nextUpgrade: "A faster claw base for laying speed, and an amulet that is not carrying resistances alone.",
     },
 
     {
       tier: "budget",
-      goal: "102% cast rate reached with items that cost mid runes rather than high ones.",
+      goal: "A fast claw base for laying speed, reached with items that cost mid runes rather than high ones.",
       levelRange: [70, 82],
       slots: [
         {
           slot: "weapon",
           picks: [
             {
-              label: "Rare claw: +3 Lightning Sentry, +3 Death Sentry, 20% Faster Cast Rate",
+              label: "Rare claw on a fast base: +3 Lightning Sentry, +3 Death Sentry, 20% Increased Attack Speed",
               why: "Unchanged from the tier below, because there is nothing to upgrade to — the claw is a vendor roll and it stays best in slot to the end.",
-              lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
+              lookFor: ["A Greater Talons or Runic Talons base", "+3 to Lightning Sentry", "+3 to Death Sentry", "20% Increased Attack Speed"],
             },
           ],
         },
@@ -570,7 +577,7 @@ export const lightningTrapsin: Build = {
           picks: [
             {
               label: "Rare ring: 10% Faster Cast Rate, two resistances, life",
-              why: "35 (Spirit) + 20 (Magefist) + 20 (Arachnid) + 10 (ring) + 20 (Stealth or Vipermagi, if either is still on) clears 102% with room to spare.",
+              why: "35 (Spirit) + 20 (Magefist) + 20 (Arachnid) + 10 (ring) clears 65% for Mind Blast several times over. Past that, cast rate stops paying on this build and the claw base is what buys speed.",
               lookFor: ["10% Faster Cast Rate", "Two resistances at 20+", "Life"],
             },
           ],
@@ -593,16 +600,16 @@ export const lightningTrapsin: Build = {
 
     {
       tier: "optimized",
-      goal: "102% cast rate, resistances over the cap, and enemy lightning resistance in the floor.",
+      goal: "The fastest claw base you can wear, resistances over the cap, and enemy lightning resistance in the floor.",
       levelRange: [75, 90],
       slots: [
         {
           slot: "weapon",
           picks: [
             {
-              label: "Rare claw: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Faster Cast Rate",
-              why: "Four affixes. At this point the claw is worth more than everything else on the character combined and there is no runeword that beats it.",
-              lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+              label: "Rare claw on a fast base: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Increased Attack Speed",
+              why: "Four affixes. At this point the claw is worth more than everything else on the character combined and there is no runeword that beats it — and the base it rolled on is worth as much as the fourth affix, because base speed is what sets laying speed.",
+              lookFor: ["A Greater Talons or Runic Talons base", "+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Increased Attack Speed"],
             },
           ],
         },
@@ -686,9 +693,9 @@ export const lightningTrapsin: Build = {
           slot: "weapon",
           picks: [
             {
-              label: "Rare claw: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Faster Cast Rate",
+              label: "Rare claw on a fast base: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Increased Attack Speed",
               why: "Still the best weapon in the game for this build, and still not a runeword.",
-              lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+              lookFor: ["A Greater Talons or Runic Talons base", "+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Increased Attack Speed"],
             },
           ],
         },

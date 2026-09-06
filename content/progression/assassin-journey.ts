@@ -213,7 +213,7 @@ export const assassinJourney: ProgressionJourney = {
         },
         {
           ref: { kind: "runeword", slug: "spirit" },
-          why: "**+2 to All Skills and up to 35% faster cast** in a four-socket shield at level 25. Cast rate is the Assassin's trap-laying speed as well as her spell speed, so this is a damage item as much as a utility one.",
+          why: "**+2 to All Skills and up to 35% faster cast** in a four-socket shield at level 25. The +2 skills is the damage; the cast rate speeds up Mind Blast and Cloak of Shadows, and does nothing for how fast a trap goes down.",
         },
       ],
       exitCriteria: "Baal is dead, Wake of Fire is at 16, and all four Normal quest points are spent.",
@@ -334,7 +334,7 @@ export const assassinJourney: ProgressionJourney = {
       gearTargets: [
         {
           ref: { kind: "runeword", slug: "spirit" },
-          why: "In a four-socket shield: +2 all skills and up to 35% cast rate. **Faster Cast Rate is how quickly you lay traps**, not only how quickly you cast Mind Blast, so 65% is the number to reach.",
+          why: "In a four-socket shield: +2 all skills and up to 35% cast rate. **Cast rate is Mind Blast, not trap laying** — laying a trap runs on attack speed and on the claw you are holding. 65% is still worth reaching, for the stun that opens every pack.",
         },
         {
           label: "Magic or rare claw: +3 Lightning Sentry, +2 Traps",

@@ -98,9 +98,11 @@ export const breakpointTables: BreakpointTable[] = [
   {
     slug: "fcr-assassin",
     name: "Assassin — Faster Cast Rate",
-    summary: "Applies to trap laying as well as to spells.",
+    summary:
+      "Mind Blast, Cloak of Shadows, Venom, the shadows, Teleport, and whichever of Fade or Burst of Speed you have up — not both. It does not govern trap laying.",
     stat: "fcr",
     classSlug: "assassin",
+    variant: "Cast animation only",
     rows: rows([
       [0, 16],
       [8, 15],
@@ -111,7 +113,11 @@ export const breakpointTables: BreakpointTable[] = [
       [102, 10],
       [174, 9],
     ]),
-    guidance: ["**65%** is the practical target for a Trapsin; **102%** is the stretch goal."],
+    guidance: [
+      "**This table does not cover laying traps**, and that is the commonest mistake made about the class. A trap plays the Assassin's `S2` animation, which is on the *attack speed* calculation — weapon base speed, Increased Attack Speed and Burst of Speed. The cast animation this table describes is a different animation of a different length, so its numbers are not merely inapplicable to traps, they are the wrong table.",
+      "**65%** is a sensible target for a Trapsin anyway, because **Mind Blast** is the button that opens every pack: 16 frames becomes 11.",
+      "See the Increased Attack Speed note below for why trap laying cannot be tabulated the way this can.",
+    ],
     confidence: "verified",
   },
   {

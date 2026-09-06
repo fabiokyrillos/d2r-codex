@@ -105,6 +105,154 @@ export const FRAMES_PER_SECOND = 25;
 export const VENOM_POISON_FRAMES = 10;
 
 // ---------------------------------------------------------------------------
+// Animation modes, and which speed stat shortens each one
+//
+// Cycle 2 published "Faster Cast Rate is how fast you lay traps" and defended it
+// with the claim that "there is no column in skills.txt that assigns an
+// animation-speed source". There is. It is `anim`, and it is the column that
+// decides which animation the character plays — which is what a speed stat
+// shortens. `UseAttackRate`, the column cycle 1 reasoned from, decides whether
+// the action can miss; both readings were wrong about different columns.
+//
+// The Assassin has three animation families and they do not overlap:
+//
+//   SC  cast          Mind Blast, Cloak of Shadows, Fade, Burst of Speed,
+//                     Venom, Psychic Hammer, Shadow Warrior, Shadow Master,
+//                     Weapon Block, Claw Mastery, Blade Shield  -> Faster Cast Rate
+//   S2  trap laying   every placeable trap, plus Fire Blast (`Fire Trauma`),
+//                     Shock Web (`Shock Field`) and Blade Sentinel  -> attack speed
+//   A1 / SQ->A1 / KK  the martial arts, Blade Fury and the kicks   -> attack speed
+//
+// Traps are in NEITHER the cast family nor the ordinary attack family. They are
+// their own animation, and it is governed by weapon speed and Increased Attack
+// Speed rather than by cast rate.
+// ---------------------------------------------------------------------------
+
+/** `anim = S2`. The trap-laying animation, shared by all eight. */
+export const TRAP_LAYING_SKILLS = [
+  "fire-blast",
+  "shock-web",
+  "charged-bolt-sentry",
+  "wake-of-fire",
+  "lightning-sentry",
+  "wake-of-inferno",
+  "death-sentry",
+  "blade-sentinel",
+] as const;
+
+/** `anim = SC`. The cast animation, and the only Assassin family FCR shortens. */
+export const CAST_ANIMATION_SKILLS = [
+  "psychic-hammer",
+  "mind-blast",
+  "cloak-of-shadows",
+  "fade",
+  "burst-of-speed",
+  "venom",
+  "shadow-warrior",
+  "shadow-master",
+  "weapon-block",
+  "claw-mastery",
+  "blade-shield",
+] as const;
+
+/**
+ * Which stat shortens which animation mode. The whole regression in one map.
+ *
+ * `SC` is the only mode Faster Cast Rate touches. Everything else on this class
+ * — including `S2` — is on the attack-speed calculation, which takes the
+ * weapon's base speed as an input and therefore cannot be tabulated as one
+ * class-wide row of percentages.
+ */
+export const SPEED_STAT_BY_ANIM = {
+  SC: "fcr",
+  S2: "ias",
+  A1: "ias",
+  SQ: "ias",
+  KK: "ias",
+  TH: "ias",
+} as const;
+
+/**
+ * AnimData, extracted from d2common.dll — RTB's table, published at
+ * mannm.org/d2library/faqtoids/animspeed.html under the `CCAAWWW` naming
+ * convention (class, animation, weapon class).
+ *
+ * Validated before use: `AISC*` = 17 frames at animation speed 256 reproduces
+ * exactly the Assassin "Casting Base 17 / Animation Speed 256" that Maxroll and
+ * the Diablo Wiki publish independently, and feeding it through `castFrames`
+ * below regenerates the whole published `fcr-assassin` table. A source that
+ * reproduces the known row can be trusted for the unknown one.
+ */
+export const ASSASSIN_CAST_ANIM = { length: 17, speed: 256 } as const;
+/** `AIS2*`, identical for every weapon class: 8 frames at animation speed 128. */
+export const ASSASSIN_TRAP_ANIM = { length: 8, speed: 128 } as const;
+
+/** `Quickness` Param3/Param4, "Attack Speed % Min/Max". Burst of Speed is IAS. */
+export const BURST_OF_SPEED_IAS = { min: 15, max: 60 } as const;
+
+/** Diminishing returns, shared by cast rate and attack speed. Hard-capped at 75. */
+export const effectiveSpeed = (percent: number): number =>
+  Math.min(75, Math.floor((percent * 120) / (percent + 120)));
+
+/** Frames for the `SC` animation at a given Faster Cast Rate. */
+export const castFrames = (fcr: number): number => {
+  const { length, speed } = ASSASSIN_CAST_ANIM;
+  return Math.ceil((256 * length) / Math.floor((speed * (100 + effectiveSpeed(fcr))) / 100) - 1);
+};
+
+/**
+ * Frames for the `S2` animation — trap laying — on the attack-speed calculation.
+ *
+ * `wsm` is the weapon speed modifier: the claw's own base speed, and when two
+ * claws are held, the average of both. `sias` is skill attack speed (Burst of
+ * Speed), which is added undiminished; `ias` is the item bonus, which is not.
+ * Increased Attack Speed on the off-hand claw does not count at all.
+ *
+ * The `wsm` argument is why this build page publishes scenarios instead of a
+ * table: the same 9 frames costs 42% IAS on two Runic Talons and 174% on two
+ * Hatchet Hands.
+ */
+export const trapLayingFrames = ({
+  ias = 0,
+  wsm = 0,
+  sias = 0,
+}: { ias?: number; wsm?: number; sias?: number }): number => {
+  const { length, speed } = ASSASSIN_TRAP_ANIM;
+  const rate = Math.floor((speed * (100 + sias + effectiveSpeed(ias) - wsm)) / 100);
+  return Math.ceil((256 * length) / rate) - 1;
+};
+
+/**
+ * Independent data, transcribed to be confronted rather than matched.
+ *
+ * AsgardPvP publishes "IAS needed for 9-frame trap laying speed" as a matrix
+ * indexed by both claws' base weapon speed — the whole table, not a number.
+ * `trapLayingFrames` above was derived from the animdata and the attack-speed
+ * formula with no sight of these figures, and reproduces all fifteen cells.
+ *
+ * That is the control that separates the two hypotheses. If cast rate governed
+ * trap laying, reaching 9 frames would cost one weapon-independent number. It
+ * takes five different values on the diagonal alone.
+ */
+export const TRAP_NINE_FRAME_IAS: { claws: [number, number]; ias: number }[] = [
+  { claws: [10, 10], ias: 174 },
+  { claws: [10, 0], ias: 147 },
+  { claws: [10, -10], ias: 125 },
+  { claws: [10, -20], ias: 105 },
+  { claws: [10, -30], ias: 89 },
+  { claws: [0, 0], ias: 125 },
+  { claws: [0, -10], ias: 105 },
+  { claws: [0, -20], ias: 89 },
+  { claws: [0, -30], ias: 75 },
+  { claws: [-10, -10], ias: 89 },
+  { claws: [-10, -20], ias: 75 },
+  { claws: [-10, -30], ias: 63 },
+  { claws: [-20, -20], ias: 63 },
+  { claws: [-20, -30], ias: 52 },
+  { claws: [-30, -30], ias: 42 },
+];
+
+// ---------------------------------------------------------------------------
 // Prose rules
 // ---------------------------------------------------------------------------
 
@@ -116,6 +264,11 @@ export const ASSASSIN_RULES = [
   "fade-and-burst-together",
   "venom-as-ordinary-poison",
   "trap-limit-not-five",
+  "trap-laying-on-cast-rate",
+  "cast-action-on-attack-speed",
+  "universal-trap-ias-number",
+  "firing-interval-as-laying-speed",
+  "cast-rate-for-sentry-output",
 ] as const;
 export type AssassinRule = (typeof ASSASSIN_RULES)[number];
 
@@ -219,6 +372,88 @@ const NUMBER_WORD: Record<string, number> = {
   one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8,
   um: 1, dois: 2, "três": 3, tres: 3, quatro: 4, cinco: 5, seis: 6, sete: 7, oito: 8,
 };
+
+/** Laying, setting, dropping, placing a trap — the action, in both languages. */
+const LAYING_A_TRAP =
+  /\b(lay(?:ing|s)?|set(?:ting)?|drop(?:ping|s)?|plac(?:e|ing|es)?|deploy(?:ing|s)?)\b[^.]{0,40}\b(traps?|sentr(?:y|ies)|fields?)\b|\btrap[- ]laying\b|\b(traps?|sentr(?:y|ies))\b[^.]{0,30}\b(lay(?:ing|s)?|set(?:ting)?|deploy(?:ed|ing)?)\b|\b(colocar|colocando|coloca|montar|montando|posicionar)\b[^.]{0,40}\b(traps?|armadilhas?|sentinelas?|campo)\b|\bvelocidade de coloca[çc][ãa]o\b/i;
+
+/** Cast rate named as a speed. `\b` is useless before an accent, hence `(?:^|\s)`. */
+const CAST_RATE =
+  /\bfaster cast rate\b|\bcast(?:ing)? (?:rate|speed)\b|\bFCR\b|\bvelocidade de conjura[çc][ãa]o\b|\btaxa de conjura[çc][ãa]o\b|(?:^|\s)conjura[çc][ãa]o\b/i;
+
+/** Attack speed named as a speed. */
+const ATTACK_SPEED =
+  /\bincreased attack speed\b|\battack speed\b|\bIAS\b|\bweapon speed\b|\bvelocidade de ataque\b|\bvelocidade da arma\b/i;
+
+/** The actions the cast animation really does govern. */
+const CAST_ACTION = "(?:Mind ?Blast|Cloak of Shadows|Teleport|Psychic Hammer|Shadow (?:Master|Warrior))";
+const SPEED_TERM = "(?:increased attack speed|attack speed|IAS|weapon speed|velocidade de ataque)";
+/** A verb that hands one to the other, which co-occurrence alone does not. */
+const ATTRIBUTION = "(?:is|are|runs? on|uses?|scales? with|governed by|comes? from|at|from|com|usa|roda)";
+
+/**
+ * Attack speed *attributed to* a cast action, in either direction.
+ *
+ * Naming both is not the error. The Enchant Sorceress page reads "Increased
+ * Attack Speed matters, and Faster Cast Rate only matters for Teleport" — two
+ * speed terms and a cast action in one correct sentence, which an earlier
+ * co-occurrence draft of this rule flagged.
+ */
+const ATTRIBUTES_ATTACK_SPEED_TO_A_CAST = new RegExp(
+  `${CAST_ACTION}[^.]{0,40}\\b${ATTRIBUTION}\\b[^.]{0,25}${SPEED_TERM}` +
+    `|${SPEED_TERM}[^.]{0,30}\\b(?:governs?|shortens?|speeds? up|makes?|lets? you)\\b[^.]{0,30}${CAST_ACTION}` +
+    `|\\bstack ${SPEED_TERM}[^.]{0,40}${CAST_ACTION}`,
+  "i",
+);
+
+/**
+ * "not just", "not only", "não só" — a widener wearing a negation's clothes.
+ *
+ * Stripped before the denial test below looks, because this is the exact
+ * phrasing the wrong sentence used: "Faster Cast Rate is how fast you lay
+ * traps, **not just** how fast you cast Mind Blast". A plain negation test
+ * reads that as a denial and falls silent on the one sentence the rule exists
+ * for. A planted mutation caught it.
+ *
+ * The Portuguese branch closes on a lookahead rather than a word boundary:
+ * JavaScript defines \b against [A-Za-z0-9_], so "ó" is not a word character
+ * and s[óo]\b never matches after "não só". Same accent trap already
+ * documented on CALLED_A_FINISHER above, and it silenced the pt-BR half of
+ * this rule until a second mutation caught that too.
+ */
+const INTENSIFIED_NOT =
+  /\bnot\s+(?:just|only|merely|simply|solely)\b|(?:^|\s)n[ãa]o\s+(?:s[óo]|apenas|somente|meramente)(?![A-Za-zÀ-ÿ])/gi;
+
+const DISTINCTION =
+  /\b(not|never|rather than|instead of|unlike|no longer|does not|doesn't|does nothing|no effect|nothing to do with)\b|(?:^|\s)(n[ãa]o|em vez de|ao inv[ée]s de|diferente de|nada a ver com|nenhum efeito)\b/i;
+
+/**
+ * A sentence saying the two are different, which is the correcting sentence.
+ *
+ * "not just", "not only", "não só" are wideners wearing a negation's clothes, and
+ * they are stripped before looking. This is not hypothetical: the sentence this
+ * rule exists to catch was "Faster Cast Rate is how fast you lay traps, **not
+ * just** how fast you cast Mind Blast", and a plain negation test reads that as
+ * a denial and falls silent on the one sentence that matters. A planted mutation
+ * caught it.
+ */
+const DRAWS_THE_DISTINCTION = (text: string): boolean =>
+  DISTINCTION.test(text.replace(INTENSIFIED_NOT, " "));
+
+/** A bare percentage offered as the trap-laying target. */
+const A_PERCENTAGE = /\b\d{1,3}\s*%/;
+
+/** Naming the thing the number actually depends on rescues the sentence. */
+const NAMES_THE_WEAPON =
+  /\bclaws?\b|\bweapon(?:'s)? (?:own )?(?:base )?speed\b|\bbase speed\b|\bwsm\b|\bRunic Talons\b|\bGreater Talons\b|\bHatchet Hands\b|\bSuwayyah\b|\bgarras?\b|\bvelocidade base\b|\bda arma\b/i;
+
+/** The sentry firing on its own, which is a fixed interval no stat touches. */
+const SENTRY_FIRES =
+  /\b(fir(?:e|es|ing)|shoot(?:s|ing)?|shots?|volley|interval|rate of fire)\b|\b(dispara|disparo|disparos|intervalo|cadência)\b/i;
+
+/** Sentry damage or output, as distinct from how fast you put one down. */
+const SENTRY_OUTPUT =
+  /\b(damage|dps|output|harder|stronger)\b|\b(dano|sa[íi]da|mais forte)\b/i;
 
 export function checkAssassinClaims(lines: string[], where: string): AssassinProblem[] {
   const problems: AssassinProblem[] = [];
@@ -328,6 +563,108 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
           sentence,
           `Venom overrides poison length to ${VENOM_POISON_FRAMES} frames — four tenths of a ` +
             `second — so describing it as damage over seconds is the one thing it is not`,
+        );
+      }
+
+      /*
+       * The regression this file was extended for. Trap laying plays `anim = S2`
+       * and `S2` is on the attack-speed calculation; the cast animation the
+       * Assassin's Faster Cast Rate table describes is `SC`, a different
+       * animation of a different length. A sentence putting trap laying on cast
+       * rate is wrong twice over — wrong stat, and wrong table even if the stat
+       * were right, because `SC` is 17 frames at speed 256 and `S2` is 8 at 128.
+       */
+      const aboutLaying = LAYING_A_TRAP.test(sentence);
+      if (aboutLaying && CAST_RATE.test(sentence) && !DRAWS_THE_DISTINCTION(sentence)) {
+        add(
+          "trap-laying-on-cast-rate",
+          sentence,
+          `laying a trap plays \`anim = ${"S2"}\`, which is on the attack-speed calculation. ` +
+            `Faster Cast Rate shortens \`SC\` — Mind Blast, Cloak of Shadows, Fade — and the ` +
+            `two animations are not even the same length`,
+        );
+      }
+
+      /*
+       * The same error pointed the other way: Mind Blast is a cast, not a swing.
+       *
+       * Co-occurrence is not the claim, and an earlier draft of this rule proved
+       * it by firing on the Enchant Sorceress, whose page correctly says
+       * "Increased Attack Speed matters, and Faster Cast Rate only matters for
+       * Teleport". Both terms, one sentence, nothing wrong with it. So the
+       * pattern has to see the attack-speed term *attributed* to the cast
+       * action, in one direction or the other.
+       */
+      if (
+        ATTRIBUTES_ATTACK_SPEED_TO_A_CAST.test(sentence) &&
+        !aboutLaying &&
+        !DRAWS_THE_DISTINCTION(sentence)
+      ) {
+        add(
+          "cast-action-on-attack-speed",
+          sentence,
+          "Mind Blast, Cloak of Shadows, Psychic Hammer, the shadows and Teleport all play " +
+            "`anim = SC`, which Faster Cast Rate shortens and Increased Attack Speed does not",
+        );
+      }
+
+      /*
+       * A trap-laying target stated as one percentage, with nothing said about
+       * the claw. The number is real but it is only true of one weapon: 9 frames
+       * costs 42% on two Runic Talons and 174% on two Hatchet Hands.
+       */
+      if (
+        aboutLaying &&
+        ATTACK_SPEED.test(sentence) &&
+        A_PERCENTAGE.test(sentence) &&
+        !NAMES_THE_WEAPON.test(sentence)
+      ) {
+        add(
+          "universal-trap-ias-number",
+          sentence,
+          "an Increased Attack Speed target for trap laying is only true of a stated claw — " +
+            "the weapon's base speed is an input to the same formula, so a bare percentage " +
+            "is wrong for most setups",
+        );
+      }
+
+      /*
+       * How fast you put a sentry down and how fast it then fires are two
+       * different clocks. The second is fixed; no speed stat on the character
+       * touches it.
+       */
+      /*
+       * A speed stat has to be in the sentence. "Charged Bolt Sentry is a trap
+       * that fires by itself while you are laying Lightning Sentries" names both
+       * clocks and confuses neither, and the levelling page needs to say it.
+       */
+      if (
+        aboutLaying &&
+        SENTRY_FIRES.test(sentence) &&
+        (CAST_RATE.test(sentence) || ATTACK_SPEED.test(sentence)) &&
+        !DRAWS_THE_DISTINCTION(line)
+      ) {
+        add(
+          "firing-interval-as-laying-speed",
+          sentence,
+          "how fast a sentry fires once it is down is fixed and is not the speed at which " +
+            "you lay it; treating the two as one clock tells the reader to buy speed for " +
+            "something no stat changes",
+        );
+      }
+
+      /* Cast rate sold as sentry damage or rate of fire. It is neither. */
+      if (
+        CAST_RATE.test(sentence) &&
+        (SENTRY_FIRES.test(sentence) || SENTRY_OUTPUT.test(sentence)) &&
+        /\bsentr(?:y|ies)\b|\bsentinelas?\b|\btraps?\b|\barmadilhas?\b/i.test(sentence) &&
+        !DRAWS_THE_DISTINCTION(sentence)
+      ) {
+        add(
+          "cast-rate-for-sentry-output",
+          sentence,
+          "Faster Cast Rate does not raise a sentry's damage and does not shorten the " +
+            "interval between its shots; it shortens the `SC` animation and nothing else",
         );
       }
 

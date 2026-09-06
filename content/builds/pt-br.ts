@@ -11217,14 +11217,12 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     breakpointWhy: {
       "fcr-65":
-        "**Faster Cast Rate é a velocidade com que você coloca traps**, e não só a de conjurar Mind Blast — a tabela da Assassin cobre as duas. 65% é a meta prática e a diferença entre colocar o campo antes de o grupo chegar e colocar depois.",
-      "fcr-102":
-        "Um frame mais rápido, e a última linha que vale perseguir: 174% é mais um frame por quase o dobro do investimento.",
+        "**Pelo Mind Blast, não pelas traps.** A taxa de conjuração encurta a animação `SC` da Assassin — Mind Blast, Cloak of Shadows, Fade — e o Mind Blast é o botão que abre todo grupo, então 16 frames virarem 11 é ganho real na única conjuração em que esta build se apoia. Não faz absolutamente nada pela velocidade com que uma sentry desce.",
       "fhr-48":
         "A meta padrão da tabela que a Assassin divide com o Paladin e o Barbarian. Você não deveria ser atingida, mas no instante em que for, a recuperação é o que permite terminar o campo.",
     },
     breakpointNotes:
-      "**Não existe linha de Increased Attack Speed aqui, de propósito.** Este personagem nunca golpeia nada: traps são colocadas, o Fire Blast é arremessado, e o Mind Blast é conjurado. Guias que listam uma meta de IAS para uma trapper estão trazendo isso das builds de chute, onde é o eixo inteiro do equipamento. O único lugar em que velocidade de ataque importaria é o Burst of Speed — e uma trapper roda Fade no lugar dele, porque os dois não podem estar ativos juntos.",
+      "**A velocidade de colocação é velocidade de ataque, e não pode ser dada como um número só.** Uma trap usa a animação `S2` da Assassin, que roda no cálculo de velocidade de ataque: a velocidade base da própria garra, o Increased Attack Speed do equipamento e o Burst of Speed. O Faster Cast Rate não encosta nisso — esse é o erro mais comum escrito sobre a classe, e uma versão anterior desta página o cometeu. Não existe linha de Increased Attack Speed aqui pelo motivo oposto ao que você esperaria: não porque velocidade de ataque seja irrelevante, mas porque a velocidade base da garra é uma entrada da mesma fórmula, então qualquer porcentagem única estaria errada para a maioria dos leitores. Concreto no lugar disso, tudo derivado da mesma fórmula e tudo sem Burst of Speed ativo. **Duas Runic Talons ou Greater Talons** (as garras mais rápidas, velocidade base −30) colocam uma trap em 12 frames sem equipamento nenhum, e em 9 frames com 42% de IAS. **Duas Feral ou Greater Claws** (−20): 13 frames sem nada, 9 com 63%. **Uma Suwayyah, Quhab, Cestus ou Wrist Blade** (0): 15 frames sem nada, 9 com 125%. **Duas Hatchet Hands ou Fascia** (+10): 17 frames sem nada, e 9 frames custam 174%. Isso é uma variação de 30% na velocidade de colocação antes de um único ponto de IAS ser comprado, e é por isso que a base da garra vale mais aqui do que o afixo. Três regras decidem se o IAS que você tem conta: com duas garras a velocidade base usada é a **média das duas**; o Increased Attack Speed da garra **secundária não conta de jeito nenhum**, então coloque a Shael ou a joia de IAS na mão principal; e o **Burst of Speed soma a velocidade de ataque dele sem diminuição** — até 60% — que é o único custo real de rodar Fade no lugar, algo em torno de dois frames. Estar **congelada deixa a animação mais lenta**, então Cannot Be Frozen protege a velocidade de colocação. Se você quiser um número para as suas garras em vez destas quatro, use uma calculadora de velocidade de ataque e informe a base da garra, o IAS das duas e o nível do seu Burst of Speed.",
     skillNotes: {
       "lightning-sentry":
         "**Dez disparos por sentry e os raios perfuram.** É por isso que cinco vão no mesmo ponto em vez de espalhadas pela sala, e por que um corredor mata três vezes mais rápido que terreno aberto.",
@@ -11294,7 +11292,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             lookFor: ["+3 to Lightning Sentry", "+2 to Traps", "+3 to Death Sentry"],
           },
           "offhand-0": {
-            why: "+2 em Todas as Skills e até 35% de Faster Cast Rate no nível 25. Velocidade de conjuração aqui é velocidade de colocar trap.",
+            why: "+2 em Todas as Skills e até 35% de Faster Cast Rate no nível 25. As skills são o atrativo; a conjuração acelera o Mind Blast, não as traps.",
             sockets: "Tal, Thul, Ort, Amn num escudo de 4 sockets.",
           },
           "offhand-0-alt0": { why: "Resistências por três runas da Countess, se a Amn ainda não apareceu." },
@@ -11305,7 +11303,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         },
       },
       nightmare: {
-        goal: "65% de velocidade de conjuração, dois Spirits se der, e Treachery no momento em que três runas médias existirem.",
+        goal: "Dois Spirits se der, 65% de conjuração pelo Mind Blast, e Treachery no momento em que três runas médias existirem.",
         nextUpgrade: "Decida o pacote antes do Hell. Ele muda para que servem os seus charms.",
         picks: {
           "weapon-0": {
@@ -11327,7 +11325,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "helm-0": {
             why: "+1 skills e magic find enquanto nada melhor existir. **Um Harlequin Crest exige nível 62 e este tier termina no 60**, então ele pertence ao tier de baixo e não a este.",
           },
-          "gloves-0": { why: "20% de Faster Cast Rate, que é velocidade de colocar trap." },
+          "gloves-0": { why: "20% de Faster Cast Rate, e a fonte mais barata dela. Luvas são também onde o Increased Attack Speed deve ficar, se você estiver atrás de velocidade de colocação." },
           "belt-0": {
             why: "Resistências e dano convertido em mana enquanto o Insight do mercenário ainda está sendo montado.",
           },
@@ -11337,11 +11335,11 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         ],
       },
       "early-hell": {
-        goal: "75% de resistências, 65% de conjuração mantidos, e uma resposta para imunes a raio.",
-        nextUpgrade: "102% de conjuração, e um amuleto que não esteja carregando resistência sozinho.",
+        goal: "75% de resistências, 65% de conjuração mantidos pelo Mind Blast, e uma resposta para imunes a raio.",
+        nextUpgrade: "Uma base de garra mais rápida para a velocidade de colocação, e um amuleto que não esteja carregando resistência sozinho.",
         picks: {
           "weapon-0": {
-            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, 20% Faster Cast Rate",
+            label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, 20% Increased Attack Speed",
             why: "Três afixos num item só, e ainda mais barata do que qualquer runeword desta página.",
             lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
           },
@@ -11360,18 +11358,18 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "ring2-0": {
             label: "Anel raro: 10% Faster Cast Rate, duas resistências, vida",
-            why: "De onde vêm os últimos pontos de conjuração no caminho até 65%.",
+            why: "De onde vêm os últimos pontos de conjuração no caminho até 65% pelo Mind Blast.",
             lookFor: ["10% Faster Cast Rate", "Two resistances at 20+", "Life"],
           },
         },
       },
       budget: {
-        goal: "102% de conjuração alcançados com itens que custam runas médias e não altas.",
+        goal: "Uma base de garra rápida para a velocidade de colocação, alcançada com itens que custam runas médias e não altas.",
         nextUpgrade:
           "Um Griffon's Eye — o único item da página que reduz resistência inimiga em vez de somar dano.",
         picks: {
           "weapon-0": {
-            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, 20% Faster Cast Rate",
+            label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, 20% Increased Attack Speed",
             why: "Igual ao tier abaixo, porque não há para onde subir — a garra é resultado de vendedor e continua best in slot até o fim.",
             lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
           },
@@ -11389,7 +11387,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "ring1-0": { why: "+1 em todas as skills e mana máxima." },
           "ring2-0": {
             label: "Anel raro: 10% Faster Cast Rate, duas resistências, vida",
-            why: "35 (Spirit) + 20 (Magefist) + 20 (Arachnid) + 10 (anel) + 20 (Stealth ou Vipermagi, se algum ainda estiver equipado) passa de 102% com folga.",
+            why: "35 (Spirit) + 20 (Magefist) + 20 (Arachnid) + 10 (anel) passa de 65% pelo Mind Blast com folga de sobra. Passado isso a conjuração para de pagar nesta build, e quem compra velocidade é a base da garra.",
             lookFor: ["10% Faster Cast Rate", "Two resistances at 20+", "Life"],
           },
           "boots-0": { why: "Recuperação e resistências até a sobrevivência estar resolvida." },
@@ -11410,11 +11408,11 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         ],
       },
       optimized: {
-        goal: "102% de conjuração, resistências acima do teto, e resistência a raio inimiga no chão.",
+        goal: "A base de garra mais rápida que você conseguir vestir, resistências acima do teto, e resistência a raio inimiga no chão.",
         nextUpgrade: "Facetas de raio em todo socket que aceitar uma.",
         picks: {
           "weapon-0": {
-            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Faster Cast Rate",
+            label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Increased Attack Speed",
             why: "Quatro afixos. A esta altura a garra vale mais do que todo o resto do personagem somado e não existe runeword que ganhe dela.",
             lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
           },
@@ -11457,7 +11455,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "Nada. Gaste a moeda num segundo personagem.",
         picks: {
           "weapon-0": {
-            label: "Garra rara: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Faster Cast Rate",
+            label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Increased Attack Speed",
             why: "Ainda a melhor arma do jogo para esta build, e ainda não é runeword.",
             lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
           },

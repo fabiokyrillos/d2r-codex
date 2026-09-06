@@ -62,10 +62,10 @@ control in `scripts/assassin-rules.ts`, exercised by `npm run test:assassin`.
 
 Both were encountered in current guides and are **not** published here.
 
-- ~~*"Traps are laid at a rate governed by Faster Cast Rate."*~~ **This note was
-  wrong and is retracted — see §5.** `UseAttackRate = 1` says whether the action
-  can miss, not how fast its animation plays. Faster Cast Rate is the trap-laying
-  table and the site already published it as such.
+- *"Traps are laid at a rate governed by Faster Cast Rate."* **False, and now
+  proven false — see §5.** Cycle 1 doubted it for the wrong reason, cycle 2
+  restored it for a worse one, and cycle 3 settled it against the animation
+  data. Trap laying plays `anim = S2` and runs on attack speed.
 - *"Kick speed comes from the boots."* Boots supply kick *damage*. Nothing in the
   boots' row touches speed.
 
@@ -279,40 +279,173 @@ determinable from the table, so nothing on the site depends on it.
 
 ---
 
-## 5. The breakpoints question, settled
+## 5. The breakpoints question, settled against the animation data
 
-Cycle 1 recorded two claims from secondary sources that it believed the pinned
-data contradicted, and deferred both. Publishing a build page forces the
-question. One of the two was a misreading by cycle 1; the other stands.
+Cycle 1 doubted that Faster Cast Rate governs trap laying, for a bad reason.
+Cycle 2 restored the claim, for a worse one, and published 65% / 102% on the
+Lightning Trapsin and the levelling journey. **Cycle 3 settled it: trap laying
+runs on attack speed, and cycle 2's conclusion is retracted.**
 
-### Faster Cast Rate does govern trap laying. Cycle 1's note was wrong.
+The section is kept long on purpose. The failure was not a wrong number — it was
+three arguments that felt like evidence and were not, and the same three are
+available to anyone editing this page next.
 
-The note reasoned from `UseAttackRate = 1`, which is set on every trap row, to
-"laying a trap is an attack, so attack speed governs it". That inference does
-not hold. `UseAttackRate` is the column that decides **whether an action can
-miss** — whether the game runs a to-hit check against the target's defence, or
-the action simply lands. It says nothing about animation speed, and the two are
-independent: Fire Blast is a thrown missile that can miss and is cast at cast
-rate.
+### What cycle 2 argued, and why none of it was evidence
 
-Three things point the same way and none points the other:
+1. **"This site already publishes the answer."** `fcr-assassin` carried
+   `summary: "Applies to trap laying as well as to spells."` with
+   `confidence: "verified"`. That is the site validating itself. The table was
+   authored before any Assassin research existed and its summary was never
+   independently checked; citing it proves only that the sentence is old.
+2. **"65 and 102 are the two rows every Trapsin guide names."** They are — and
+   they are the numbers of the Assassin's *cast* animation, which those guides
+   also publish, correctly, for Mind Blast. That guides repeat them beside the
+   word "trapper" shows the copy is widespread, not that it is right.
+3. **"There is no column in `skills.txt` that assigns an animation-speed
+   source, so the pinned data is silent rather than opposed."** **This is simply
+   false.** The column is `anim`, it is present on every row, and it is the
+   column that decides which animation the character plays — which is the thing
+   a speed stat shortens. Cycle 1 reasoned from `UseAttackRate`, which decides
+   whether an action can *miss*; cycle 2 correctly rejected that and then
+   concluded the data was silent, without looking one column further.
 
-1. **This site already publishes the answer.** `content/breakpoints/breakpoints.ts`
-   carries `fcr-assassin` with `summary: "Applies to trap laying as well as to
-   spells."`, `confidence: "verified"`, and the eight-row table
-   0 / 8 / 16 / 27 / 42 / 65 / 102 / 174. It shipped before the Assassin cycle
-   and was not written from the trap research.
-2. **The table's shape is specific to the claim.** 65 and 102 are the two rows
-   every Trapsin guide names, and they are named *as trap-laying breakpoints*.
-   A table that governed something else would not have converged on those two.
-3. **Nothing in the extraction contradicts it.** There is no column in
-   `skills.txt` that assigns an animation-speed source, so the pinned data is
-   silent rather than opposed — and cycle 1 treated silence as opposition.
+### What the data says
 
-So the build pages publish **65% Faster Cast Rate as the practical target and
-102% as the stretch**, matching the table the site already has. Nothing claims
-that Burst of Speed speeds up trap laying, and the levelling page's Burst of
-Speed step was rewritten to say what it does buy: run speed, and access to Fade.
+`anim`, from the same pinned commit the skill graph is generated from
+(`blizzhackers/d2data` @ `fc46999`, `json/skills.json`). The Assassin has three
+animation families and they do not overlap:
+
+| `anim` | Skills | Shortened by |
+| --- | --- | --- |
+| `SC` | Mind Blast, Cloak of Shadows, Fade, Burst of Speed, Venom, Psychic Hammer, Shadow Warrior, Shadow Master, Weapon Block, Claw Mastery, Blade Shield | Faster Cast Rate |
+| `S2` | **every placeable trap**, plus Fire Blast (`Fire Trauma`), Shock Web (`Shock Field`) and Blade Sentinel | attack speed |
+| `A1`, `SQ`→`A1`, `KK` | the martial arts, Blade Fury, the kicks | attack speed |
+
+Traps are in **neither** the cast family nor the ordinary attack family. They
+are their own animation. That alone kills the naive form of both hypotheses —
+"it is a cast, so FCR" and "it is an attack, so IAS" are each wrong about which
+animation is playing.
+
+### The animation itself
+
+AnimData extracted from `d2common.dll` — RTB's table, published at
+`mannm.org/d2library/faqtoids/animspeed.html` under the `CCAAWWW` convention
+(class, animation, weapon class):
+
+```
+AISC*  17 frames @ animation speed 256      the cast animation
+AIS2*   8 frames @ animation speed 128      trap laying, identical for every
+                                            weapon class
+```
+
+**The source was validated before being used.** `AISC*` = 17 @ 256 reproduces
+exactly the "Casting Base 17 / Animation Speed 256" that Maxroll and the Diablo
+Wiki publish independently, and pushing it through the cast formula regenerates
+the whole published `fcr-assassin` table — 0/8/16/27/42/65/102/174 →
+16/15/14/13/12/11/10/9, every row minimal. A source that reproduces the row
+everybody has can be trusted for the row nobody has tabulated.
+
+### The empirical control, and why it was needed
+
+At weapon speed 0 with no Burst of Speed, the two hypotheses give **the same
+table**: 0/9/18/30/48/78/125 → 15/14/13/12/11/10/9 either way. That is exactly
+why this error survives — the naive check cannot see it. The discriminator is
+weapon dependence, which only the attack-speed calculation has.
+
+So: derive trap-laying frames from the `S2` animdata using the attack formula
+
+```
+fpa  = ceil(256 × 8 / floor(128 × (100 + SIAS + EIAS − WSM) / 100)) − 1
+EIAS = floor(IAS × 120 / (IAS + 120)), capped at 75
+WSM  = the claw's base speed; dual wielding, the average of both
+```
+
+and confront it with AsgardPvP's independently published matrix, *"IAS needed
+for 9-frame trap laying speed"*, indexed by both claws' base speed. The
+derivation had no sight of it.
+
+**All fifteen cells match.** 10/10 = 174, 10/0 = 147, 10/−10 = 125, 10/−20 = 105,
+10/−30 = 89, 0/0 = 125, 0/−10 = 105, 0/−20 = 89, 0/−30 = 75, −10/−10 = 89,
+−10/−20 = 75, −10/−30 = 63, −20/−20 = 63, −20/−30 = 52, −30/−30 = 42.
+
+Under Faster Cast Rate, reaching nine frames would cost **one weapon-independent
+number**. It takes five different values on the diagonal alone, spanning 42% to
+174%, and it depends on *both* claws. That is a weapon in the formula, and cast
+rate has no weapon in its formula. **H1 is falsified; H2 is confirmed
+quantitatively, not merely asserted.**
+
+Corroborating and not load-bearing: the D2library FCR page states flatly
+*"Assassin's Trap skills gain no profit by Casting Speed, this is a die-hard
+rumour"* — the same failure, named as a known one. The current Maxroll Lightning
+Sentry guide marks Burst of Speed as an attack-speed skill that "increases … the
+rate you lay Traps", tells the reader to shop for Increased Attack Speed, and
+cites Cannot Be Frozen as protecting trap-laying speed. Maxroll's breakpoints
+page publishes no trap-laying table at all — only skill delays.
+
+### Patch 3.3 changed none of this
+
+3.3 (18 August 2026, Ladder Season 15) carries sixteen changes: five item buffs,
+eight runewords moving to Non-Ladder, Terror Zone loot retuning, and seven bug
+fixes. No Assassin trap change, and nothing touching the animation-speed system.
+2.4 changed trap synergies; 2.6 let traps benefit from −% enemy resistance.
+**No patch has ever moved trap laying onto cast rate.** The historical
+behaviour and the current behaviour agree.
+
+### The second defect, which is independent of the first
+
+65% and 102% are the numbers of the `SC` animation: 17 frames at speed 256.
+Trap laying is `S2`: 8 frames at speed 128. So the published figures were wrong
+**under either hypothesis** — even if cast rate had governed traps, the trap
+table would have been 0/9/18/30/48/78/125, never 0/8/16/27/42/65/102/174. Cycle
+2 did not merely pick the wrong stat; it applied one animation's table to a
+different animation.
+
+### What is published now
+
+- **`fcr-assassin` is kept and narrowed**, not deleted. Its rows are a correct
+  derivation of the cast animation and every one is minimal. It gains
+  `variant: "Cast animation only"`, a summary naming what it governs, and
+  guidance stating in the first line that it does *not* cover trap laying.
+- **The Lightning Trapsin keeps a 65% Faster Cast Rate target, rescoped to Mind
+  Blast** — genuinely the button that opens every pack, 16 frames to 11. The
+  102% row is gone: it existed only as "the stretch" for trap laying.
+- **No Increased Attack Speed row, and for the opposite reason to before.** Not
+  because attack speed is irrelevant, but because the claw's base speed is an
+  input to the same formula, so any single percentage is wrong for most readers.
+  This is the house policy the breakpoints page already states for IAS
+  generally: *"a single table cannot express it, and every site that publishes
+  one is simplifying to the point of being wrong for most setups."*
+- **Scenarios instead**, all derived and all re-derived by the test on every run:
+
+  | Claws | Bare | 9 frames costs |
+  | --- | --- | --- |
+  | two Runic Talons / Greater Talons (−30) | 12f | 42% IAS |
+  | two Feral Claws / Greater Claws (−20) | 13f | 63% |
+  | Suwayyah / Quhab / Cestus / Wrist Blade (0) | 15f | 125% |
+  | two Hatchet Hands / Fascia (+10) | 17f | 174% |
+
+  A five-frame spread before a single point of IAS is bought, which is why the
+  page now tells the reader the claw *base* matters more than the affix.
+- **Three rules that decide whether owned IAS counts**, all published: dual
+  wielding averages the two claws; off-hand IAS does not count at all; Burst of
+  Speed adds up to 60% undiminished, which is the real cost of running Fade
+  instead. Being chilled slows the animation, so Cannot Be Frozen protects it.
+
+### The gate that would have caught it
+
+`scripts/trap-speed.test.ts`, wired into `npm run check`. It does not match text.
+It derives the mechanical category from `anim` and the animdata, regenerates
+`fcr-assassin` from the cast animation, and re-derives all fifteen cells of the
+outside matrix; then it checks that the prose agrees with the arithmetic. Eleven
+mutation controls cover both directions of the error, the universal-number
+error, the firing-interval confusion, and the pt-BR half.
+
+Two real bugs surfaced while building it, both in the rules that guard the
+prose. `"not just"` was being read as a denial, which silenced the rule on the
+exact sentence it existed to catch. And `s[óo]\b` never matched, because
+JavaScript defines `\b` against `[A-Za-z0-9_]` and `ó` is not a word character —
+the same accent trap already documented on `CALLED_A_FINISHER`, which had
+silently disabled the pt-BR half of that rule once before.
 
 ### "Kick speed comes from the boots" is still false, and still not published.
 
@@ -320,15 +453,3 @@ Unchanged from cycle 1. Boots supply kick *damage*; nothing in the boots' row
 touches speed. Dragon Talon's kick count is `lvl/6 + 1` from its own row, and
 Dragon Tail carries `Param4 = -40`, an attack-speed *penalty*. The kick pages
 will state those two and nothing about boots and speed.
-
-### What the Lightning Trapsin page therefore publishes
-
-| Stat | Target | Frames | Why |
-| --- | --- | --- | --- |
-| FCR | 65% | 11 | The practical trap-laying target; the site's own table. |
-| FCR | 102% | 10 | The stretch, and the last row worth chasing — 174% is one frame more for double the investment. |
-| FHR | 48% | 5 | The shared Paladin/Assassin/Barbarian table's standard target. |
-
-No IAS row. The build's damage is laid rather than swung, and an Increased
-Attack Speed target on a page whose character never attacks would be the same
-mistake in the other direction.

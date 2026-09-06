@@ -359,7 +359,7 @@ for (const { note, line } of ACCEPTED) {
 }
 
 console.log("\nWiring");
-check("seven rules are exported for the content sweep", ASSASSIN_RULES.length === 7);
+check("twelve rules are exported for the content sweep", ASSASSIN_RULES.length === 12);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) {
