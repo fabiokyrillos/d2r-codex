@@ -560,8 +560,12 @@ for a reason none of these four share.
 - **Immortal King Whirlwind / "IK Barb".** Maxroll's own overview says the set
   "is most frequently used for Whirlwind" and "gets out scaled by setups that
   focus on Uniques and Runewords". That is a description of a budget gear tier,
-  which this site already models as a tier. It is also **unbuildable today**: the
-  registry has no sets at all (see §11).
+  which this site already models as a tier, and that is the whole reason for the
+  refusal. Secondarily it cannot currently be *referenced*: **this site has no
+  set registry** — no `Set` content type, no route, no catalogued pieces — so
+  Immortal King has to be a free-text pick wherever it appears. See §11.1, and
+  note the correction there: an earlier draft of this section said "the registry
+  has no sets at all", which reads as a claim about the game and is false.
 - **PvP — BvB, BvC, PvP Whirlwind, PvP Singer.** These are real and they are
   named as PvP. They are refused on two counts. First, **this site publishes no
   PvP content whatsoever** — the string does not appear in any of the forty-two
@@ -644,33 +648,97 @@ the site, `unique` and `runeword`.
 
 Counted across the eight guides, by how many of them use each:
 
-| Missing | Guides using it | Kind |
-| --- | --- | --- |
-| Gheed's Fortune | 8 of 8 | grand charm |
-| Verdungo's Hearty Cord | 7 | unique belt |
-| Guillaume's Face | 7 | set helm |
-| **Immortal King** | 6 | **set — the registry has no sets at all** |
-| Chance Guards | 6 | unique gloves |
-| **Arreat's Face** | 6 | **the class's defining helm** |
-| Metalgrid | 5 | unique amulet |
-| Goldwrap | 5 | unique belt |
-| Oath | 5 | runeword |
-| Lawbringer | 4 | runeword |
-| Wisdom | 3 | runeword |
-| Wolfhowl | 1 | unique — and the Werewolf build has no substitute for it |
+Counted across the eight guides, by how many of them use each. The **status**
+column is the coordinator's, after they took the catalogue and resolved each row
+against `uniqueitems.json` and `setitems.json` at the pinned commit.
+
+| Missing | Guides using it | Kind | Status |
+| --- | --- | --- | --- |
+| Gheed's Fortune | 8 of 8 | grand charm, level 62 | being catalogued |
+| Verdungo's Hearty Cord | 7 | unique belt, Mithril Coil, level 63 | being catalogued |
+| Guillaume's Face | 7 | **set item** — Orphan's Call, on a Winged Helm | **never catalogable**, see §11.1 |
+| Immortal King | 6 | **set**, six pieces | **never catalogable**, see §11.1 |
+| Chance Guards | 6 | unique gloves, Chain Gloves, level 15 | being catalogued |
+| **Arreat's Face** | 6 | unique, Slayer Guard, level 42 | being catalogued |
+| Metalgrid | 5 | unique amulet, level 81 | being catalogued |
+| Goldwrap | 5 | unique belt, Heavy Belt, level 27 | being catalogued |
+| Oath | 5 | runeword | resolved, §11.2 |
+| Lawbringer | 4 | runeword | outstanding |
+| Wisdom | 3 | runeword | outstanding |
+| Wolfhowl | 1 | unique | outstanding — and it is why §10.3 refuses that build |
 
 Already catalogued and usable: Atma's Scarab, Gore Rider, Highlord's Wrath,
 String of Ears, Razortail, Death's Web, and the runewords Enigma, Grief,
-Fortitude, Beast, Last Wish, Pride, Insight, Treachery, Call to Arms and
-Chains of Honor.
+Fortitude, Beast, Last Wish, Pride, Insight, Treachery, Call to Arms, Chains of
+Honor and — added during this pass — **Fury**, which matters to the Whirlwind
+page for a reason given in §11.3.
 
-A `GearPick` accepts a free-text `label` as well as a `ref`, so the pages *can*
-be authored around the gap. They would be visibly worse than every other class's:
-Arreat's Face would be plain text beside a linked Vampire Gaze, and no Barbarian
-item would appear in any "builds that use this item" index. **This is a
-scheduling input, not a request** — `content/items/uniques.ts` is not a file this
-pass owns, and the decision about whether to catalogue first or author around the
-gap belongs to whoever does.
+A `GearPick` accepts a free-text `label` as well as a `ref`, so the pages can be
+authored around whatever remains. The cost of doing so is not cosmetic: a
+labelled Arreat's Face sits as plain text beside a linked Vampire Gaze, and it
+appears in no "builds that use this item" index.
+
+### 11.1 The site has no set registry, and that is thirty-five sets wide
+
+An earlier draft of this note said the registry "has no sets at all", which
+reads as a claim about the game rather than about this repository. It is wrong
+and it is worth correcting rather than quietly fixing: `setitems.json` at the
+pinned commit carries **140 set items across 35 sets**, and Immortal King is six
+of them — Detail, Forge, Pillar, Soul Cage, Stone Crusher and Will, the last of
+which is a Barbarian helm.
+
+What does not exist is **this site's** side: no `Set` content type, no route, no
+page, and zero of the 140 catalogued. `ItemRef` already reserves `kind: "set"`
+and `kind: "set-item"`, so the type system anticipated them and nothing has
+filled it.
+
+The consequence for this class is concrete and it is larger than Immortal King.
+**Guillaume's Face is a set item too** — Orphan's Call, on a Winged Helm — which
+is why it is absent from `uniqueitems.json` and always will be. Seven of the
+eight Barbarian guides use it, generally worn alone for its Crushing Blow and
+Deadly Strike rather than for the set bonus. Both it and IK have to be labelled
+picks with a sentence saying they are set pieces worn on their own.
+
+Recorded here as an outstanding limitation of the repository, not as a gap in
+the game.
+
+### 11.2 Oath takes axes and maces as well as swords
+
+The coordinator asked whether Oath's `itype1 = "swor"` was swords-only or a
+parent covering axes and maces. Neither: the row declares three types
+explicitly, so no hierarchy has to be resolved.
+
+```
+Oath (Runeword91)   itype1 = swor   itype2 = axe   itype3 = mace
+                    ShaelPulMalLum
+```
+
+For what it is worth to the gear tiers: **the Barbarian guides put it on swords
+anyway** — Balrog Blade, Highland Blade and Cryptic Sword are the three bases
+named — and the Frenzy guide says in as many words that it recommends Blade
+Mastery *for the Oath*. So an axe or maul Oath is legal and nobody plays one,
+and the pages should say the first without recommending the second.
+
+### 11.3 Fury is the one class-scoped stat that lands on this class
+
+Fury is `itype1 = "mele"`, so any Barbarian melee weapon takes it, and it carries
+66% Open Wounds, 33% Deadly Strike and +40% Increased Attack Speed.
+
+Its `+5 to Frenzy (Barbarian only)` line is a dead stat on every other class's
+page and a live one here. That is the exact mirror of why the line sits on the
+item's common-mistakes list everywhere else, and the Frenzy and Whirlwind pages
+should say so from the other side rather than repeating the warning.
+
+### 11.4 One naming defect, and the sweep that found no others
+
+The table index spells the belt **Verdugo's Hearty Cord**; `allstrings-eng.json`
+publishes **Verdungo's Hearty Cord**, with the extra `n`. Same identifier-versus-
+shipped-name shape as `Pole Arm Mastery` in §2.1, and the site publishes the
+shipped name.
+
+The coordinator swept the existing catalogue for the same defect while
+cataloguing: **all 52 published uniques match their shipped names, zero gaps.**
+The problem was confined to skills.
 
 ## 12. Open questions the build cycle inherits
 
@@ -679,9 +747,11 @@ gap belongs to whoever does.
    have a single one.
 2. ~~Whether `Build.primarySkill` may name another class's skill.~~ **Settled —
    see §10.5.** It may not, and it never needs to.
-3. Whether the site takes sets. Immortal King is refused as a page regardless,
-   but it is a real gear tier on the Whirlwind build and cannot currently be
-   referenced.
+3. Whether the site ever grows a set registry. Thirty-five sets and 140 items
+   exist in the extraction and none is catalogued; `ItemRef` already reserves
+   two kinds for them. Immortal King is refused as a *page* regardless, but it
+   and Guillaume's Face are real gear on this class and both must be free-text
+   picks until that changes. See §11.1.
 4. Whether the Berserk page's Gold Find package should carry Travincal in
    `farming` for the *core* build or only for the package. The package changes
    which area is worth running, and nothing in the build model expresses a
