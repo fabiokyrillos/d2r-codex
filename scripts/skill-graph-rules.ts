@@ -401,8 +401,8 @@ const SOFT_LEVEL_SYNERGIES = new Set<string>([
 
 const SKILL_REF = /skill\('([^']+)'\.blvl\)/g;
 /** `skill('X'.parN)` — a parameter belonging to another skill's row. */
-const DONOR_PAR_REF = /skill\('([^']+)'\.par(\d+)\)/g;
-const PAR_REF = /par(\d+)/g;
+const DONOR_PAR_REF = /skill\('([^']+)'\.par?(\d+)\)/g;
+const PAR_REF = /par?(\d+)/g;
 
 /**
  * One row of `skills.json`, as far as this rule cares.
@@ -469,7 +469,8 @@ export function synergiesFor(
             `generator does not load.`,
         );
       }
-      const described = ownerRow[`*Param${index} Description`];
+      const described =
+        ownerRow[`*Param${index} Description`] ?? ownerRow[`*Param${index} Description2`];
       if (typeof described !== "string" || !/synerg/i.test(described)) {
         // Not a synergy parameter. A donor reference to a parameter that does
         // not exist at all is a broken reference and must not pass as one.
