@@ -42,11 +42,15 @@ Two independent checks that the block is the real class and not a fragment:
 - **Exactly thirty, in three pages of ten.** `generate-skill-graph.ts` asserts
   `classes × 30`; the Warlock satisfies it without special-casing.
 
-What is *not* Tier 1, and is not published: the in-game caption of each tree and
-every word of the game's own descriptive prose. `docs/sources/README.md` records
-that the `str name` / `str long` string tables are never extracted and never
-shipped. All prose on the Warlock pages is written here, as it is for the other
-seven classes.
+What is *not* Tier 1, and is not published: a single word of the game's own
+descriptive prose. `docs/sources/README.md` records that the `str name` /
+`str long` tables are never extracted and never shipped, and every sentence on
+the Warlock pages is written here, as it is for the other seven classes.
+
+The proper nouns are a different matter, and §3 is the correction that says so.
+Skill and tree *names* are read from `str name` and published as the game shows
+them — that is what the eighteen existing `SLUG_OVERRIDES` do, and the first pass
+of this document got eight Warlock names wrong by not doing it.
 
 ---
 
@@ -60,8 +64,11 @@ have been guessed the other way.
 | `SkillPage` | Tree slug | Name | The ten it holds |
 | --- | --- | --- | --- |
 | 1 | `demon` | Demon | Summon Goatman, Demonic Mastery, Death Mark, Summon Tainted, Summon Defiler, Blood Oath, Engorge, Blood Boil, Consume, Bind Demon |
-| 2 | `eldritch` | Eldritch | Levitate, Cleave, Echoing Strike, Blade Warp, Mirrored Blades, Hex Bane, Hex Purge, Hex Siphon, Psychic Ward, Eldritch Blast |
-| 3 | `chaos` | Chaos | Miasma Bolt, Ring of Fire, Sigil Lethargy, Miasma Chains, Sigil Rancor, Flame Wave, Sigil Death, Enhanced Entropy, Apocalypse, Abyss |
+| 2 | `eldritch` | Eldritch | Levitation Mastery, Cleave, Echoing Strike, Blade Warp, Mirrored Blades, Hex: Bane, Hex: Purge, Hex: Siphon, Psychic Ward, Eldritch Blast |
+| 3 | `chaos` | Chaos | Miasma Bolt, Ring of Fire, Sigil: Lethargy, Miasma Chain, Sigil: Rancor, Flame Wave, Sigil: Death, Enhanced Entropy, Apocalypse, Abyss |
+
+Named as the game names them, which is not always how the table spells them —
+see §3 for the eight rows where the two differ.
 
 The three slugs are not this document's choice. `content/classes/classes.ts`
 already publishes `trees: ["demon", "eldritch", "chaos"]` for the Warlock, and
@@ -77,41 +84,121 @@ same order the pages do.
 the *Chaos* runeword (`Fal Ohm Um`, claws) that the Assassin pages reference.
 Prose on Warlock pages says "the Chaos tree" rather than "Chaos" alone.
 
-### Tree names
+### Tree names — Tier 1, not the announcement
 
-The tree captions a player sees come from the string table, which this site does
-not extract. The three names used — Demon, Eldritch, Chaos — are Blizzard's, from
-the *Reign of the Warlock* announcement (Tier 2), and the site follows the
-Assassin's precedent of bare nouns ("Traps", "Martial Arts") rather than
-inventing a "… Spells" suffix the source does not give.
+The first pass took the three names from Blizzard's announcement, because the
+tree captions were assumed to be out of reach. They are not:
+
+```
+SkillCategoryWa1  "Demon"
+SkillCategoryWa2  "Eldritch"
+SkillCategoryWa3  "Chaos"
+```
+
+in `json/allstrings-eng.json` at the same pinned commit, in the same series that
+gives `SkillCategoryNe2 = "Poison and Bone"` and `SkillCategoryAs3 = "Traps"`.
+The three bare nouns are the shipped captions, not a house choice, and the
+announcement merely happened to agree with them.
+
+Worth noting for anyone copying the pattern: the site is not literal about tree
+names everywhere. The Necromancer publishes "Summoning Spells" where the caption
+is "Summoning", and the Druid publishes "Elemental Skills" where it is
+"Elemental". The Warlock's three are published exactly as shipped.
 
 ---
 
-## 3. Slugs: thirty checked, zero overrides needed
+## 3. Names and slugs: eight gaps, two of which move a slug
 
-`slugFor` in `scripts/skill-graph-rules.ts` is `SLUG_OVERRIDES[name] ?? slugify(name)`.
-The Warlock needs **no entry in `SLUG_OVERRIDES`**, and this was checked in both
-directions rather than assumed:
+**This section replaces a wrong finding, and the way it was wrong is the part
+worth keeping.**
 
-- **Against the site.** All 198 slugs currently in `content/classes/*/skills.ts`
-  (180 skills plus 18 trees) were extracted and compared against the thirty
-  Warlock slugs and the three tree slugs. Zero collisions.
-- **Against the game.** All 240 skill identifiers across the eight playable
-  `charclass` codes were slugified and grouped. **Zero slugs collide anywhere in
-  the eight-class set** — including the six the brief flagged as plausible
-  (Cleave, Apocalypse, Ring of Fire, Flame Wave, Levitate, Consume). None of
-  those names exists on any other class. `Apocalypse` in particular is a Warlock
-  skill and not, as one might assume from twenty-five years of Sorceress guides,
-  anything the Sorceress has.
+The first pass reported "no `SLUG_OVERRIDES` needed, zero collisions" on the
+strength of two checks: the thirty Warlock slugs against the 198 already on the
+site, and against all 240 identifiers across the eight playable classes. Both
+checks were run correctly and both results are true. Zero collisions anywhere,
+including the six names the brief flagged as plausible — Cleave, Apocalypse,
+Ring of Fire, Flame Wave, Levitate and Consume are Warlock names that no other
+class has.
 
-The second check matters more than the first, because the Barbarian's thirty
-rows are in the extraction and not yet on the site. They were included, so the
-Warlock's slugs are clear of Agent B's class as well as of the six published
-ones.
+**And it was the wrong check.** Collisions govern slug *uniqueness*. What governs
+`SLUG_OVERRIDES` is a different rule, and the comment above that table says so
+plainly: `Clay Golem`'s spelling is "an artifact of how the rows were typed
+rather than anything a player sees", and the Druid's eight are "working titles
+the shipped game replaced". The rule is **the site publishes the name the game
+shows, and the override lets the identifier stay the join key.** A name can
+differ from its identifier and collide with nothing at all — and then a collision
+check returns clean while every published name is wrong.
 
-One near-miss worth recording so nobody re-derives it: the *identifier* is
-`Eldritch Blast` with a space, and the `skilldesc` key is `eldritchblast`
-without one. The slug comes from the identifier, so it is `eldritch-blast`.
+### The rule, checked rather than assumed
+
+Resolved from each row's `skilldesc.json` `str name` key against
+`json/allstrings-eng.json` at the same pinned commit. Across the eight playable
+classes there are **27 identifier/name gaps**: 18 in the six already-authored
+classes, 1 Barbarian (`Pole Arm Mastery` -> "Polearm Mastery"), and 8 Warlock.
+**All 18 of the authored ones publish the shipped name. Eighteen for eighteen,
+no exceptions.**
+
+### The Warlock's eight
+
+| identifier | `str name` | shipped name | slug |
+| --- | --- | --- | --- |
+| `Levitate` | `LevitateName` | **Levitation Mastery** | `levitation-mastery` — **changes** |
+| `Miasma Chains` | `MiasmaChainName` | **Miasma Chain** (singular) | `miasma-chain` — **changes** |
+| `Hex Bane` | `BaneHexName` | **Hex: Bane** | `hex-bane` — same |
+| `Hex Purge` | `PurgeHexName` | **Hex: Purge** | `hex-purge` — same |
+| `Hex Siphon` | `SiphonHexName` | **Hex: Siphon** | `hex-siphon` — same |
+| `Sigil Lethargy` | `LethargySigilName` | **Sigil: Lethargy** | `sigil-lethargy` — same |
+| `Sigil Rancor` | `RancorSigilName` | **Sigil: Rancor** | `sigil-rancor` — same |
+| `Sigil Death` | `DeathSigilName` | **Sigil: Death** | `sigil-death` — same |
+
+The other twenty-two rows resolve to their identifier exactly. Note the shape of
+the four hex and sigil keys: the game stores them as `BaneHexName` and
+`LethargySigilName`, noun last, which is the tell that the shipped name is
+`Hex: Bane` rather than `Hex Bane` and is visible in `skilldesc.json` alone.
+
+### Why a collision check cannot find any of this
+
+Six of the eight slugify identically either way, because `": "` and `" "` both
+collapse to one hyphen: `slugify("Hex: Bane")` and `slugify("Hex Bane")` are
+both `hex-bane`. Those six are **invisible** to every slug-based check the
+repository has — uniqueness, collisions, drift — and would have shipped as
+"Hex Bane" on six pages with nothing anywhere complaining. The two that do move a
+slug are equally invisible, for the same reason: they collide with nothing
+either.
+
+**The lesson, stated so it is not re-derived:** a slug check answers "is this
+name unique?" and never answers "is this the name?" The second question has
+exactly one source — the row's `str name` key resolved against the string table
+— and it has to be asked of every row of a new class, not only of rows that look
+suspicious. Nothing about `Levitate` looks suspicious. It is a real word, it is
+spelled correctly, it describes the skill, and it is not what the game calls it.
+
+One tension to flag rather than resolve, because `docs/sources/README.md` is
+coordinator-owned: that file records the `str name` / `str long` tables as "never
+extracted, never shipped". The eighteen existing overrides show the rule's intent
+is the *descriptive prose* — the long descriptions this site always writes itself
+— and not proper nouns, which the site publishes everywhere. The wording is worth
+tightening so the next class does not read it as a prohibition on the only check
+that catches this.
+
+### Two invariants that hold after the correction
+
+- `slug === slugify(published name)` for all thirty, overrides included.
+  `slugify("Levitation Mastery")` is `levitation-mastery` and `slugify("Hex:
+  Bane")` is `hex-bane`. The override maps *identifier -> slug*; the published
+  name already slugifies to that slug, so the two never have to be reconciled
+  again.
+- Zero collisions, still. The original check was not wasted, only insufficient.
+
+A near-miss worth recording so nobody re-derives it: the *identifier* is
+`Eldritch Blast` with a space, the `skilldesc` key is `eldritchblast` without
+one, and the shipped name is "Eldritch Blast". Three spellings, one slug, no
+override needed.
+
+Throughout the rest of this document, a row is referred to by its **identifier**
+when the subject is a column or an expression in the extraction, and by its
+**shipped name** when the subject is what the site publishes. `Levitate` is the
+row; Levitation Mastery is the skill.
 
 ---
 
@@ -119,8 +206,8 @@ without one. The slug comes from the identifier, so it is `eldritch-blast`.
 
 ### 4.1 Levitation, and the column that carries it
 
-The class passive is a skill: **Levitate**, page 2, row 1, column 1, level 1,
-no prerequisite, `passive = 1`. Its row is a weapon mastery in the same shape as
+The class passive is a skill: **Levitation Mastery** — the row `Levitate` —
+page 2, row 1, column 1, level 1, no prerequisite, `passive = 1`. Its row is a weapon mastery in the same shape as
 the Barbarian's, with one column that is not:
 
 ```
@@ -249,12 +336,12 @@ any skill with `kind === "attack"` whose graph node carries `damage` or
 
 | Skill | `SrcDam` | Table | Model | Why |
 | --- | --- | --- | --- | --- |
-| Hex Bane | — | mag 9-16 | `weapon-plus-element` | `ToHit 20 / LevToHit 9`, `requiresweapon`; the magic range is also written onto the weapon as flat magic damage |
-| Hex Purge | — | mag 10-15 | `weapon-plus-element` | same shape: a weapon swing that rolls attack rating and adds magic |
+| Hex: Bane | — | mag 9-16 | `weapon-plus-element` | `ToHit 20 / LevToHit 9`, `requiresweapon`; the magic range is also written onto the weapon as flat magic damage |
+| Hex: Purge | — | mag 10-15 | `weapon-plus-element` | same shape: a weapon swing that rolls attack rating and adds magic |
 | Blade Warp | **absent** | mag 8-10 | `element-only-attack` | see below |
 | Mirrored Blades | 128 | *none* | *none needed* | no elemental table; plain weapon damage |
 
-Cleave (`SrcDam 128`), Hex Siphon and Echoing Strike are attacks with no
+Cleave (`SrcDam 128`), Hex: Siphon and Echoing Strike are attacks with no
 elemental table and need no model.
 
 ### 5.2 Blade Warp, and why `element-only-attack` rather than a refusal
@@ -308,7 +395,16 @@ Two damage components fed by two different synergies are two components. One
 damage written into two column pairs has no synergy on either. Blood Boil is on
 the Molten Boulder side of that line by the only column that separates them, so
 the recommendation is `PUBLISHES_PHYSICAL`, and the reason is a rule rather than
-a resemblance.
+a resemblance. **Accepted by the coordinator**, who re-derived it independently.
+
+One refinement to the argument, which does not move the conclusion and is worth
+not overstating later: Molten Boulder and Volcano carry **two separately
+labelled parameters** ("Physical Damage synergy" and "Fire Damage synergy"),
+where Blood Boil has a single `par8` labelled only "Damage synergy" and read by
+both expressions. So it is the distinct **donors** that carry the argument —
+`Engorge` into the physical and `Blood Oath` into the fire — and not the labels.
+Psychic Hammer is excluded because it has no donor on either side at all, which
+is a stronger statement than "no label".
 
 Cross-agent note for the coordinator: adding `bar` to `classOf` will hit the
 same guard on **Leap Attack** (`MinDam 10/20`, `SrcDam 128`) and **War Cry**
@@ -350,7 +446,8 @@ Both simply produce `governing.length === 0` and `continue`.
 
 **The `paNN` short form.** `PAR_REF` is `/par(\d+)/g` and `DONOR_PAR_REF` is
 `/skill\('([^']+)'\.par(\d+)\)/g`. Neither matches `pa10`, `pa11` or `pa12`.
-Four expressions in the extraction use that form, and all four are Warlock:
+Five expressions in the extraction use that form. Four are Warlock and are the
+four that matter, because they are the four that name a donor skill:
 
 ```
 Hex Bane   EDmgSymPerCalc  (skill('Consume'.blvl)*pa10)+(skill('Hex Purge'.blvl)*pa10)+(skill('Mirrored Blades'.blvl)*pa10)
@@ -359,14 +456,28 @@ Engorge    aurastatcalc5   (skill('Blood Oath'.blvl)*skill('Blood Oath'.pa11))
 Engorge    aurastatcalc6   (skill('Blood Oath'.pa12)*skill('Blood Oath'.blvl))
 ```
 
-(One Barbarian row, `Throwing Mastery passivecalc6 = pa11`, uses the short form
-with no `skill()` reference, so it is unaffected either way.)
+There is a fifth occurrence of the short form, missed on the first pass and
+supplied by the coordinator: `bar` Throwing Mastery's `passivecalc6 = pa11`. It
+carries no `skill()` donor, so it creates no edge and is unaffected either way —
+but "four" was wrong and the count is five.
 
-**The `Param10` description column is spelled differently.** Every row in the
-file names it `*Param10 Description2`, with a trailing `2`, where 1-9 and 11-12
-are `*ParamN Description`. `readParam` reads `*Param${index} Description`, so a
-`Param10` described as a synergy can never be seen. All six `Param10`-and-above
-synergy descriptions in the entire eight-class extraction are Warlock rows:
+**The `Param10` description column is spelled differently.** It is named
+`*Param10 Description2`, with a trailing `2`, where 1-9 and 11-12 are
+`*ParamN Description`. `readParam` reads `*Param${index} Description`, so a
+`Param10` described as a synergy can never be seen.
+
+Two counts make the shape of a fix clear, and both were measured rather than
+assumed:
+
+- **`*Param10 Description` — the spelling the generator looks for — exists on
+  zero rows in the whole file.** That lookup has never succeeded for any class.
+- **`*Param10 Description2` exists on 13 rows: 1 Barbarian, 11 Warlock, and one
+  non-class row.** So reading the second spelling cannot disturb any of the 180
+  nodes already published; there is no row among the six authored classes for it
+  to reach.
+
+All six `Param10`-and-above synergy descriptions in the entire eight-class
+extraction are Warlock rows:
 
 | Row | Param | Description | Value |
 | --- | --- | --- | --- |
@@ -537,9 +648,12 @@ Mirrored Blades damage synergy in either direction.
   `warlockSkillsPtBr`. Names stay English per ADR 0003.
 - `docs/proposals/warlock-1-wire-skills.md` — every shared-file line the
   coordinator must add, including the two `PUBLISHES_PHYSICAL` entries and the
-  three `SYNERGY_KINDS` entries **without which `gen:skill-graph` throws**.
+  three `SYNERGY_KINDS` entries **without which `gen:skill-graph` throws**, and
+  the two `SLUG_OVERRIDES` entries from §3.
 
-No proposal for `SLUG_OVERRIDES` (§3: none needed) and no proposal for a new
+Two `SLUG_OVERRIDES` entries are needed — `"Levitate": "levitation-mastery"` and
+`"Miasma Chains": "miasma-chain"` — which is a correction of what this document
+said on its first pass; §3 is the whole story. No proposal for a new
 `damageModel` (§5.1: the existing seven cover all four cases).
 
 Phases 2-5 do not start until the graph exists.

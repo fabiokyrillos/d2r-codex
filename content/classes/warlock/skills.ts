@@ -27,7 +27,7 @@ import type { Skill, SkillTree } from "@/lib/types";
  *   total across Goatmen, Tainted and Defilers — not one of each. Bind Demon
  *   uses a different pet type and does not share that cap.
  *
- *   Hexes are applied by hitting something. Hex Bane, Hex Purge and Hex Siphon
+ *   Hexes are applied by hitting something. Hex: Bane, Hex: Purge and Hex: Siphon
  *   install their effect through `domeleeattack` / `domissiledamage` events and
  *   require a weapon. They are not curses and nothing about the Necromancer's
  *   one-curse-per-monster rule applies to them.
@@ -37,7 +37,7 @@ import type { Skill, SkillTree } from "@/lib/types";
  *   unread `Radius` parameter of 7 that the expression overrides. The stepped
  *   values are published; the 7 is not.
  *
- *   Levitate is a mastery that counts weapons, not hands. `passiveitype = weap`
+ *   Levitation Mastery counts weapons, not hands. `passiveitype = weap`
  *   with `passivereqweaponcount = 1`: it pays while exactly one weapon is
  *   equipped and is indifferent to whether that weapon is one- or two-handed.
  *
@@ -46,7 +46,7 @@ import type { Skill, SkillTree } from "@/lib/types";
  * published. `docs/research/09-warlock.md` §9 lists all six such cases.
  *
  * Synergy magnitudes are authored only where the generator emits the edge
- * today. Three rows — Eldritch Blast, Hex Purge and Hex Siphon — name synergy
+ * today. Three rows — Eldritch Blast, Hex: Purge and Hex: Siphon — name synergy
  * parameters whose labels are not yet in `SYNERGY_KINDS`; their relationships
  * are described in prose and left out of `synergies` until the graph carries
  * them. See `docs/proposals/warlock-1-wire-skills.md`.
@@ -69,7 +69,7 @@ export const warlockTrees: SkillTree[] = [
     order: 2,
     summary: "The weapon tree: a mastery, four ways to swing or throw it, and three hexes carried on the hit.",
     theme:
-      "Everything here needs a weapon in hand. Levitate is the class's damage mastery, the four attack skills are different shapes of the same swing — an arc, a throw, a throw that moves you, and a volley of duplicates — and the hexes ride along on whichever of them you are using. It is the only tree where gear choice and skill choice are the same choice.",
+      "Everything here needs a weapon in hand. Levitation Mastery is the class's damage passive, the four attack skills are different shapes of the same swing — an arc, a throw, a throw that moves you, and a volley of duplicates — and the hexes ride along on whichever of them you are using. It is the only tree where gear choice and skill choice are the same choice.",
   },
   {
     slug: "chaos",
@@ -78,7 +78,7 @@ export const warlockTrees: SkillTree[] = [
     order: 3,
     summary: "Ranged fire and void damage, plus three sigils placed on the ground.",
     theme:
-      "Two damage schools and a control branch between them. Fire runs Ring of Fire into Flame Wave into Apocalypse; void runs Miasma Bolt into Miasma Chains into Abyss, all of it magic damage that very little resists. The sigils are neither — they are placed objects that hold ground, and the last of them executes anything that falls below a tenth of its life inside the ring.",
+      "Two damage schools and a control branch between them. Fire runs Ring of Fire into Flame Wave into Apocalypse; void runs Miasma Bolt into Miasma Chain into Abyss, all of it magic damage that very little resists. The sigils are neither — they are placed objects that hold ground, and the last of them executes anything that falls below a tenth of its life inside the ring.",
   },
 ];
 
@@ -251,7 +251,7 @@ export const warlockSkills: Skill[] = [
       "You gain **+5% maximum life with 1% more per level**, and movement speed on a diminishing curve from **+10% toward a 46% ceiling**.",
       "Duration is **1000 frames with 500 more per level**: forty seconds at one point, twenty seconds more for each after it.",
       "It is a **periodic** effect that clears its own aura when it lapses, so the buff ends cleanly rather than being refreshed by re-consuming mid-duration.",
-      "It also feeds **Hex Bane**'s damage, which is the tree's one link into the Eldritch tree and the reason a hex build sometimes takes a single point here.",
+      "It also feeds **Hex: Bane**'s damage, which is the tree's one link into the Eldritch tree and the reason a hex build sometimes takes a single point here.",
     ],
     confidence: "verified",
     release: "reign-of-the-warlock",
@@ -280,8 +280,8 @@ export const warlockSkills: Skill[] = [
   // Eldritch
   // -------------------------------------------------------------------------
   {
-    slug: "levitate",
-    name: "Levitate",
+    slug: "levitation-mastery",
+    name: "Levitation Mastery",
     classSlug: "warlock",
     tree: "eldritch",
     kind: "passive",
@@ -303,7 +303,7 @@ export const warlockSkills: Skill[] = [
     tree: "eldritch",
     kind: "attack",
     requiredLevel: 6,
-    prerequisites: ["levitate"],
+    prerequisites: ["levitation-mastery"],
     synergies: [
       { skill: "eldritch-blast", bonus: "+10% damage per level" },
       { skill: "hex-purge", bonus: "+10% damage per level" },
@@ -326,7 +326,7 @@ export const warlockSkills: Skill[] = [
     tree: "eldritch",
     kind: "attack",
     requiredLevel: 12,
-    prerequisites: ["levitate"],
+    prerequisites: ["levitation-mastery"],
     element: "physical",
     damageModel: "weapon-plus-element",
     synergies: [
@@ -389,7 +389,7 @@ export const warlockSkills: Skill[] = [
   },
   {
     slug: "hex-bane",
-    name: "Hex Bane",
+    name: "Hex: Bane",
     classSlug: "warlock",
     tree: "eldritch",
     kind: "attack",
@@ -403,14 +403,14 @@ export const warlockSkills: Skill[] = [
       "The hex strips **30% of the target's defence with 1% more per level, to a 50% ceiling**, and **25% of its attack rating**.",
       "It lasts **3600 frames with 300 more per level** — around two and a half minutes at one point. This is a debuff you apply once per pack, not one you maintain.",
       "It **cannot be used with hand-to-hand weapons**. Every other weapon type works.",
-      "Consume, Hex Purge and Mirrored Blades each raise its damage in the game's own tables, but through a parameter the graph does not currently read; the relationship is real and no magnitude for it is published here.",
+      "Consume, Hex: Purge and Mirrored Blades each raise its damage in the game's own tables, but through a parameter the graph does not currently read; the relationship is real and no magnitude for it is published here.",
     ],
     confidence: "verified",
     release: "reign-of-the-warlock",
   },
   {
     slug: "hex-purge",
-    name: "Hex Purge",
+    name: "Hex: Purge",
     classSlug: "warlock",
     tree: "eldritch",
     kind: "attack",
@@ -421,10 +421,10 @@ export const warlockSkills: Skill[] = [
     summary: "A hex that detonates. Most hits explode, and the explosion has charges.",
     mechanics: [
       "The weapon's damage lands with a magic table of **10-15 at level 1** on top of it.",
-      "The explosion fires on about **69% of hits at base**, and **Sigil Death raises that by 1% per level** — the tree's one link into the Chaos tree.",
+      "The explosion fires on about **69% of hits at base**, and **Sigil: Death raises that by 1% per level** — the tree's one link into the Chaos tree.",
       "It carries **charges**: one explosion at base, two at 10 hard points and three at 20. Radius is a flat 4. The row also names a per-level radius growth that no expression reads, so none is published.",
       "It grants **+10% attack speed with 1% more per level** while active, which makes it the cheapest attack-speed source the class has.",
-      "Eldritch Blast lengthens its debuff and Hex Bane raises its damage. Both relationships are in the tables; the graph does not carry the second yet, so no magnitudes are published for them here.",
+      "Eldritch Blast lengthens its debuff and Hex: Bane raises its damage. Both relationships are in the tables; the graph does not carry the second yet, so no magnitudes are published for them here.",
       "Like the other two hexes it needs a weapon, and not a hand-to-hand one.",
     ],
     confidence: "verified",
@@ -432,7 +432,7 @@ export const warlockSkills: Skill[] = [
   },
   {
     slug: "hex-siphon",
-    name: "Hex Siphon",
+    name: "Hex: Siphon",
     classSlug: "warlock",
     tree: "eldritch",
     kind: "attack",
@@ -457,12 +457,12 @@ export const warlockSkills: Skill[] = [
     requiredLevel: 18,
     prerequisites: ["cleave"],
     synergies: [
-      { skill: "levitate", bonus: "+15 damage absorbed per level" },
+      { skill: "levitation-mastery", bonus: "+15 damage absorbed per level" },
       { skill: "cleave", bonus: "+15 damage absorbed per level" },
     ],
     summary: "A pool that absorbs damage and stuns whatever melees you while it holds.",
     mechanics: [
-      "The pool absorbs **15 damage at level 1 with 10 more per level**, plus **15 per hard point of Levitate and Cleave** — which means the two skills a weapon build already maxes are most of the ward.",
+      "The pool absorbs **15 damage at level 1 with 10 more per level**, plus **15 per hard point of Levitation Mastery and Cleave** — which means the two skills a weapon build already maxes are most of the ward.",
       "Anything that hits you in melee while it is up is **stunned**, for a length that rises on a curve from **37 frames toward 85**.",
       "Mana is **20 with 2 more per level**, the steepest per-level mana growth in the tree.",
       "It is the prerequisite for Eldritch Blast and lengthens it, so the Eldritch tree's two non-weapon skills are bought as a pair.",
@@ -479,11 +479,11 @@ export const warlockSkills: Skill[] = [
     requiredLevel: 24,
     prerequisites: ["psychic-ward"],
     element: "magic",
-    summary: "A repeating magic nova that re-applies Hex Bane's mark and steals life and mana while it runs.",
+    summary: "A repeating magic nova that re-applies Hex: Bane's mark and steals life and mana while it runs.",
     mechanics: [
-      "It fires **every 30 frames on its own** once cast, rather than per activation, and each nova **re-applies the Hex Bane debuff** to what it touches. It is the only skill in the class that maintains a hex without swinging.",
+      "It fires **every 30 frames on its own** once cast, rather than per activation, and each nova **re-applies the Hex: Bane debuff** to what it touches. It is the only skill in the class that maintains a hex without swinging.",
       "While it runs you gain **5% life steal and 5% mana steal, with 1% more of each per level**.",
-      "Its own damage is small — **2-6 magic at level 1** — and is raised by Blade Warp and Hex Purge. The relationship is in the tables; the graph does not carry it yet, so no magnitude is published here.",
+      "Its own damage is small — **2-6 magic at level 1** — and is raised by Blade Warp and Hex: Purge. The relationship is in the tables; the graph does not carry it yet, so no magnitude is published here.",
       "Base duration is **1000 frames**, with **50 more per hard point of Psychic Ward** — the prerequisite pays twice.",
       "It is also a prerequisite for Mirrored Blades, which is why a pure weapon build still spends a point here.",
     ],
@@ -503,7 +503,7 @@ export const warlockSkills: Skill[] = [
     requiredLevel: 1,
     element: "magic",
     synergies: [
-      { skill: "miasma-chains", bonus: "+10% damage per level" },
+      { skill: "miasma-chain", bonus: "+10% damage per level" },
       { skill: "abyss", bonus: "+10% damage per level" },
     ],
     summary: "The starting bolt, and magic damage that almost nothing in the game resists.",
@@ -511,7 +511,7 @@ export const warlockSkills: Skill[] = [
       "**2-4 magic at level 1** and 4 mana, which makes it the cheapest thing on the class's bar.",
       "Magic is the element with no monster mastery to raise it and very few immunities to stop it — the reason this branch stays useful into Hell without a sunder charm.",
       "Its range is 50, the longest reach in the tree.",
-      "It is fed **10% per level by Miasma Chains and Abyss**, which is why a void build maxes it even after it stops being the skill you cast.",
+      "It is fed **10% per level by Miasma Chain and Abyss**, which is why a void build maxes it even after it stops being the skill you cast.",
     ],
     confidence: "verified",
     release: "reign-of-the-warlock",
@@ -539,7 +539,7 @@ export const warlockSkills: Skill[] = [
   },
   {
     slug: "sigil-lethargy",
-    name: "Sigil Lethargy",
+    name: "Sigil: Lethargy",
     classSlug: "warlock",
     tree: "chaos",
     kind: "spell",
@@ -555,8 +555,8 @@ export const warlockSkills: Skill[] = [
     release: "reign-of-the-warlock",
   },
   {
-    slug: "miasma-chains",
-    name: "Miasma Chains",
+    slug: "miasma-chain",
+    name: "Miasma Chain",
     classSlug: "warlock",
     tree: "chaos",
     kind: "spell",
@@ -579,7 +579,7 @@ export const warlockSkills: Skill[] = [
   },
   {
     slug: "sigil-rancor",
-    name: "Sigil Rancor",
+    name: "Sigil: Rancor",
     classSlug: "warlock",
     tree: "chaos",
     kind: "spell",
@@ -619,7 +619,7 @@ export const warlockSkills: Skill[] = [
   },
   {
     slug: "sigil-death",
-    name: "Sigil Death",
+    name: "Sigil: Death",
     classSlug: "warlock",
     tree: "chaos",
     kind: "spell",
@@ -631,7 +631,7 @@ export const warlockSkills: Skill[] = [
       "A monster inside the sigil that falls below **13% of its life dies outright**, and a champion, unique or superunique below **10%** does the same. Both thresholds are flat — points do not raise them.",
       "What dies **explodes**, which is what turns the skill from an execution into clearing speed.",
       "Size steps at hard points 10 and 20 like the other two sigils.",
-      "It is also the reason a hex build looks at this tree: **Hex Purge's chance to explode rises 1% per hard point here**.",
+      "It is also the reason a hex build looks at this tree: **Hex: Purge's chance to explode rises 1% per hard point here**.",
       "The row carries fire as its element but publishes no damage table of its own — the execution is a life threshold, not damage.",
     ],
     confidence: "verified",
@@ -644,7 +644,7 @@ export const warlockSkills: Skill[] = [
     tree: "chaos",
     kind: "passive",
     requiredLevel: 24,
-    prerequisites: ["miasma-chains"],
+    prerequisites: ["miasma-chain"],
     summary: "A passive that raises the void branch's damage, reach and duration at once.",
     mechanics: [
       "**Miasma: +2% damage with 2% more per level, +5% range with 1% more per level, +2% duration with 2% more per level.**",
@@ -673,7 +673,7 @@ export const warlockSkills: Skill[] = [
       "**80-100 fire at level 1**, several times anything else in the tree, and it grows by roughly 25 a level band.",
       "It **cuts the target's fire resistance by 5, with 1 more per level, to a 40-point ceiling** — the class's only resistance pierce, and the reason the fire branch can function in Hell without outside help.",
       "Radius steps at hard points 10 and 20: **13, then 15, then 17**. Even the smallest is larger than anything else the class casts.",
-      "Reaching it costs a point in Sigil Death as well as the fire chain, which is the tree's one forced crossover.",
+      "Reaching it costs a point in Sigil: Death as well as the fire chain, which is the tree's one forced crossover.",
     ],
     confidence: "verified",
     release: "reign-of-the-warlock",
@@ -689,14 +689,14 @@ export const warlockSkills: Skill[] = [
     element: "magic",
     synergies: [
       { skill: "miasma-bolt", bonus: "+10% damage per level" },
-      { skill: "miasma-chains", bonus: "+10% damage per level" },
+      { skill: "miasma-chain", bonus: "+10% damage per level" },
     ],
     summary: "The void capstone. Collapses an area for magic damage and leaves the ground burning.",
     mechanics: [
       "**20-40 magic at level 1** in a **radius of 6**, and magic is the element the fewest monsters resist — so this is the class's answer to a pack that stops everything else.",
       "It leaves fire on the ground afterwards. The row gives that a duration of **2 with no unit named**, so nothing is published about how long it lasts.",
       "**Mana is charged when the skill resolves rather than when it starts**, which matters for interrupting it.",
-      "It feeds Miasma Bolt and Miasma Chains as well as being fed by them, so the void branch is a closed triangle: every point in it raises the other two.",
+      "It feeds Miasma Bolt and Miasma Chain as well as being fed by them, so the void branch is a closed triangle: every point in it raises the other two.",
       "**Enhanced Entropy** adds damage and duration on top of the synergies, at a steeper rate than it gives the miasma skills.",
     ],
     confidence: "verified",

@@ -85,7 +85,7 @@ normaliser.
   // mirror, and Eldritch Blast writes the same idea as a sentence.
   "debuff duration": "duration",
   "duration per level  (psychic ward)": "duration",
-  // Hex Siphon's heal-after-kill and mana-after-kill. Neither damage nor
+  // Hex: Siphon's heal-after-kill and mana-after-kill. Neither damage nor
   // duration, and folding it into either would be the exact mislabelling this
   // table exists to refuse.
   "life/mana steal": "steal",
@@ -122,12 +122,34 @@ export const allSkills: Skill[] = [ ..., ...warlockSkills ];
 export const allSkillTrees: SkillTree[] = [ ..., ...warlockTrees ];
 ```
 
-**No `SLUG_OVERRIDES` entry is needed.** Checked in both directions and recorded
-in `09-warlock.md` §3: the thirty Warlock slugs collide with none of the 198
-already on the site, and — more usefully, since the Barbarian is not yet
-authored — with none of the 240 skill identifiers across all eight playable
-classes. Cleave, Apocalypse, Ring of Fire, Flame Wave, Levitate and Consume are
-Warlock names and no other class has them.
+**Two `SLUG_OVERRIDES` entries are needed** — you flagged this and you were
+right; the first version of this proposal said none were. Yours to land:
+
+```ts
+  Levitate: "levitation-mastery",
+  "Miasma Chains": "miasma-chain",
+```
+
+I re-derived the whole thing independently before changing anything rather than
+taking the correction on trust, and it confirms your table cell for cell: the
+thirty `str name` keys resolved against `json/allstrings-eng.json` at the pinned
+commit give **8 name gaps and exactly 2 slug changes**. Across all eight classes
+there are 27 such gaps — 18 in the authored six, 1 Barbarian (`Pole Arm Mastery`),
+8 Warlock — and all 18 authored ones publish the shipped name, so the rule is
+18/18. All eight Warlock names are corrected in `skills.ts` and `pt-br.ts`;
+`09-warlock.md` §3 is rewritten around why a collision check could not see them.
+
+Zero collisions remains true and is now recorded as insufficient rather than
+sufficient. A useful invariant fell out of the fix: **`slug === slugify(published
+name)` for all thirty**, overrides included — `slugify("Hex: Bane")` is
+`hex-bane` and `slugify("Levitation Mastery")` is `levitation-mastery` — so the
+override maps identifier to slug and the published name already agrees with it.
+
+One thing for you, since `docs/sources/README.md` is yours: it records the
+`str name` / `str long` tables as "never extracted, never shipped". The eighteen
+existing overrides show the intent is descriptive prose rather than proper nouns,
+but as written it reads as a prohibition on the only check that catches this
+class of defect. Worth one clause.
 
 **No new `damageModel` is needed.** The existing seven cover all four Warlock
 attacks with a table (§5.1). The only judgement call is Blade Warp, argued at
@@ -176,23 +198,29 @@ neither raises anything. Both end at `governing.length === 0 → continue`, so
 `09-warlock.md` §6.2.
 
 **D1. The `paNN` short form.** `PAR_REF` is `/par(\d+)/g` and `DONOR_PAR_REF` is
-`/skill\('([^']+)'\.par(\d+)\)/g`. Neither matches `pa10`, `pa11`, `pa12`. Four
-expressions use that form and all four are Warlock: Hex Bane's `EDmgSymPerCalc`,
-Hex Purge's `calc2`, and both of Engorge's references to Blood Oath.
+`/skill\('([^']+)'\.par(\d+)\)/g`. Neither matches `pa10`, `pa11`, `pa12`. Five
+expressions use that form — thank you for the fifth, `bar` Throwing Mastery's
+`passivecalc6`; my "four" was wrong. The four that name a donor and therefore
+create an edge are all Warlock: Hex: Bane's `EDmgSymPerCalc`, Hex: Purge's
+`calc2`, and both of Engorge's references to Blood Oath.
 
-**D2. `*Param10 Description2`.** Every row spells the `Param10` description
-column with a trailing `2`, where 1-9 and 11-12 do not have one. `readParam`
-reads `*Param${index} Description`, so a `Param10` described as a synergy is
-invisible. All six `Param10`-and-above synergy descriptions in the whole
-eight-class extraction are Warlock rows.
+**D2. `*Param10 Description2`.** The `Param10` description column carries a
+trailing `2` where 1-9 and 11-12 do not. `readParam` reads
+`*Param${index} Description`, so a `Param10` described as a synergy is invisible.
+Two counts I measured after your note, which make the fix safer than I had
+argued: **`*Param10 Description` — the spelling the generator looks for — exists
+on zero rows in the whole file**, so that lookup has never once succeeded; and
+`*Param10 Description2` exists on **13 rows: 1 `bar`, 11 `war`, 1 non-class**.
+Reading the second spelling cannot reach any of the 180 published nodes. All six
+`Param10`-and-above synergy descriptions across the eight classes are Warlock.
 
-Lost between them: Hex Bane ← Consume / Hex Purge / Mirrored Blades (magnitude
-35 each), Hex Purge ← Sigil Death (100), Engorge ← Blood Oath (25).
+Lost between them: Hex: Bane ← Consume / Hex: Purge / Mirrored Blades (magnitude
+35 each), Hex: Purge ← Sigil: Death (100), Engorge ← Blood Oath (25).
 
 I have not touched either file, and nothing I authored depends on the outcome:
 **no `synergies` array in `skills.ts` names an edge from this section.** Where
 the relationship is real and the graph will not carry it, the skill's `mechanics`
-say so in prose without a magnitude — Hex Bane, Hex Purge and Eldritch Blast each
+say so in prose without a magnitude — Hex: Bane, Hex: Purge and Eldritch Blast each
 carry such a bullet. So `check:content` passes either way and nothing has to be
 rewritten if you decline.
 
@@ -267,7 +295,7 @@ is yours and I have not edited it.
    two skill entries rather than leave them describing damage the graph does not
    publish.
 3. Your decision on **D**. If you fix it, tell me and I will add the six
-   magnitudes to Hex Bane, Hex Purge, Hex Siphon, Eldritch Blast and Engorge and
+   magnitudes to Hex: Bane, Hex: Purge, Hex: Siphon, Eldritch Blast and Engorge and
    drop the "no magnitude is published" hedges from their prose. If you decline,
    the files are already correct as they stand.
 
@@ -278,11 +306,15 @@ Phase 2 does not start until the graph exists.
 ## Verification already done on my side
 
 - `npx eslint content/classes/warlock` — clean.
-- 30 skills, 3 trees, all thirty slugs equal to `slugify(name)`, every
+- 30 skills, 3 trees, all thirty slugs equal to `slugify(published name)`, every
   `prerequisites` entry a Warlock skill, no self-synergy, ten skills per tree.
+- **Every published name equals the `str name` string** at the pinned commit,
+  for all thirty, and all three tree names equal `SkillCategoryWa1-3`
+  ("Demon", "Eldritch", "Chaos" — so the tree names are Tier 1 after all, not
+  the announcement's).
 - Every authored `requiredLevel`, `prerequisites` set and `SkillPage → tree`
-  mapping cross-checked programmatically against the pinned extraction: **all
-  thirty rows match**.
+  mapping cross-checked programmatically against the pinned extraction, with
+  your two overrides applied to `slugFor`: **all thirty rows match**.
 - `synergiesFor` run over all thirty rows: 27 pass, 3 throw for the reason in
   **B**, and the six silent drops in **D** identified.
 - pt-BR parity: bullet counts and `synergyBonuses` lengths equal for all thirty.

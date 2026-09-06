@@ -25,13 +25,13 @@ export const warlockTreesPtBr: Overlay<SkillTreeCopy> = {
     name: "Eldritch",
     summary: "A árvore da arma: uma mastery, quatro jeitos de golpear ou arremessar, e três hexes carregados no acerto.",
     theme:
-      "Tudo aqui exige uma arma na mão. Levitate é a mastery de dano da classe, as quatro skills de ataque são formatos diferentes do mesmo golpe — um arco, um arremesso, um arremesso que te move, e uma salva de duplicatas — e os hexes pegam carona em qualquer uma delas. É a única árvore em que escolher equipamento e escolher skill é a mesma escolha.",
+      "Tudo aqui exige uma arma na mão. Levitation Mastery é a passiva de dano da classe, as quatro skills de ataque são formatos diferentes do mesmo golpe — um arco, um arremesso, um arremesso que te move, e uma salva de duplicatas — e os hexes pegam carona em qualquer uma delas. É a única árvore em que escolher equipamento e escolher skill é a mesma escolha.",
   },
   chaos: {
     name: "Chaos",
     summary: "Dano de fogo e de vazio à distância, mais três sigils postos no chão.",
     theme:
-      "Duas escolas de dano e um ramo de controle entre elas. O fogo vai de Ring of Fire para Flame Wave para Apocalypse; o vazio vai de Miasma Bolt para Miasma Chains para Abyss, tudo dano mágico que pouquíssima coisa resiste. Os sigils não são nem um nem outro — são objetos postos no chão que seguram terreno, e o último deles executa qualquer coisa que caia abaixo de um décimo da vida dentro do anel.",
+      "Duas escolas de dano e um ramo de controle entre elas. O fogo vai de Ring of Fire para Flame Wave para Apocalypse; o vazio vai de Miasma Bolt para Miasma Chain para Abyss, tudo dano mágico que pouquíssima coisa resiste. Os sigils não são nem um nem outro — são objetos postos no chão que seguram terreno, e o último deles executa qualquer coisa que caia abaixo de um décimo da vida dentro do anel.",
   },
 };
 
@@ -121,7 +121,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "Você ganha **+5% de vida máxima com mais 1% por nível**, e velocidade de movimento numa curva decrescente de **+10% rumo a um teto de 46%**.",
       "A duração é de **1000 frames com mais 500 por nível**: quarenta segundos com um ponto, vinte segundos a mais para cada seguinte.",
       "É um efeito **periódico** que limpa a própria aura quando acaba, então o buff termina de forma limpa em vez de ser renovado ao consumir de novo no meio da duração.",
-      "Ela também alimenta o dano do **Hex Bane**, que é a única ligação da árvore com a árvore Eldritch e a razão de uma build de hex às vezes gastar um ponto aqui.",
+      "Ela também alimenta o dano do **Hex: Bane**, que é a única ligação da árvore com a árvore Eldritch e a razão de uma build de hex às vezes gastar um ponto aqui.",
     ],
   },
   "bind-demon": {
@@ -138,7 +138,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
   // -------------------------------------------------------------------------
   // Eldritch
   // -------------------------------------------------------------------------
-  levitate: {
+  "levitation-mastery": {
     summary: "A weapon mastery da classe. Conta armas, não mãos — que é o ponto inteiro da classe.",
     mechanics: [
       "Ela paga enquanto **exatamente uma arma estiver equipada**, e a linha é indiferente a se essa arma é de uma ou de duas mãos. É a regra da levitação como as tabelas a expressam, e é por isso que a discussão usual de uma mão contra duas mãos não vale para esta classe.",
@@ -195,7 +195,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "O hex tira **30% da defesa do alvo com mais 1% por nível, até um teto de 50%**, e **25% da attack rating dele**.",
       "Dura **3600 frames com mais 300 por nível** — cerca de dois minutos e meio com um ponto. É um debuff que você aplica uma vez por grupo, não um que você mantém.",
       "Ela **não pode ser usada com armas de mão a mão**. Todo outro tipo de arma funciona.",
-      "Consume, Hex Purge e Mirrored Blades sobem o dano dela nas tabelas do próprio jogo, mas por um parâmetro que o graph não lê atualmente; a relação é real e nenhuma magnitude para ela é publicada aqui.",
+      "Consume, Hex: Purge e Mirrored Blades sobem o dano dela nas tabelas do próprio jogo, mas por um parâmetro que o graph não lê atualmente; a relação é real e nenhuma magnitude para ela é publicada aqui.",
     ],
     synergyBonuses: ["+5 frames de duração do hex por nível"],
   },
@@ -203,10 +203,10 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
     summary: "Um hex que detona. A maioria dos acertos explode, e a explosão tem cargas.",
     mechanics: [
       "O dano da arma cai com uma tabela mágica de **10-15 no nível 1** por cima.",
-      "A explosão dispara em cerca de **69% dos acertos na base**, e **Sigil Death sobe isso em 1% por nível** — a única ligação da árvore com a árvore Chaos.",
+      "A explosão dispara em cerca de **69% dos acertos na base**, e **Sigil: Death sobe isso em 1% por nível** — a única ligação da árvore com a árvore Chaos.",
       "Ela carrega **cargas**: uma explosão na base, duas com 10 hard points e três com 20. O raio é fixo em 4. A linha também nomeia um crescimento de raio por nível que nenhuma expressão lê, então nenhum é publicado.",
       "Dá **+10% de velocidade de ataque com mais 1% por nível** enquanto ativa, o que a torna a fonte de velocidade de ataque mais barata que a classe tem.",
-      "Eldritch Blast alonga o debuff dela e Hex Bane sobe o dano dela. As duas relações estão nas tabelas; o graph ainda não carrega a segunda, então nenhuma magnitude para elas é publicada aqui.",
+      "Eldritch Blast alonga o debuff dela e Hex: Bane sobe o dano dela. As duas relações estão nas tabelas; o graph ainda não carrega a segunda, então nenhuma magnitude para elas é publicada aqui.",
       "Como os outros dois hexes, ela precisa de uma arma, e não de uma de mão a mão.",
     ],
   },
@@ -222,7 +222,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
   "psychic-ward": {
     summary: "Uma reserva que absorve dano e atordoa o que te acerta em corpo a corpo enquanto ela aguenta.",
     mechanics: [
-      "A reserva absorve **15 de dano no nível 1 com mais 10 por nível**, mais **15 por hard point de Levitate e de Cleave** — o que significa que as duas skills que uma build de arma já maximiza são a maior parte do ward.",
+      "A reserva absorve **15 de dano no nível 1 com mais 10 por nível**, mais **15 por hard point de Levitation Mastery e de Cleave** — o que significa que as duas skills que uma build de arma já maximiza são a maior parte do ward.",
       "Qualquer coisa que te acerte em corpo a corpo enquanto ele está de pé é **atordoada**, por um tempo que sobe numa curva de **37 frames rumo a 85**.",
       "A mana é **20 com mais 2 por nível**, o crescimento de mana por nível mais íngreme da árvore.",
       "É o pré-requisito do Eldritch Blast e o alonga, então as duas skills sem arma da árvore Eldritch são compradas como par.",
@@ -230,11 +230,11 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
     synergyBonuses: ["+15 de dano absorvido por nível", "+15 de dano absorvido por nível"],
   },
   "eldritch-blast": {
-    summary: "Uma nova mágica repetida que reaplica a marca do Hex Bane e rouba vida e mana enquanto roda.",
+    summary: "Uma nova mágica repetida que reaplica a marca do Hex: Bane e rouba vida e mana enquanto roda.",
     mechanics: [
-      "Ela dispara **a cada 30 frames sozinha** depois de conjurada, em vez de por ativação, e cada nova **reaplica o debuff do Hex Bane** no que ela toca. É a única skill da classe que mantém um hex sem golpear.",
+      "Ela dispara **a cada 30 frames sozinha** depois de conjurada, em vez de por ativação, e cada nova **reaplica o debuff do Hex: Bane** no que ela toca. É a única skill da classe que mantém um hex sem golpear.",
       "Enquanto roda, você ganha **5% de roubo de vida e 5% de roubo de mana, com mais 1% de cada por nível**.",
-      "O dano próprio dela é pequeno — **2-6 mágico no nível 1** — e é aumentado por Blade Warp e Hex Purge. A relação está nas tabelas; o graph ainda não a carrega, então nenhuma magnitude é publicada aqui.",
+      "O dano próprio dela é pequeno — **2-6 mágico no nível 1** — e é aumentado por Blade Warp e Hex: Purge. A relação está nas tabelas; o graph ainda não a carrega, então nenhuma magnitude é publicada aqui.",
       "A duração base é de **1000 frames**, com **mais 50 por hard point de Psychic Ward** — o pré-requisito paga duas vezes.",
       "Ela também é pré-requisito do Mirrored Blades, e é por isso que uma build de arma pura ainda gasta um ponto aqui.",
     ],
@@ -249,7 +249,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "**2-4 mágico no nível 1** e 4 de mana, o que a torna a coisa mais barata na barra da classe.",
       "Mágico é o elemento sem mastery de monstro para aumentá-lo e com pouquíssimas imunidades para pará-lo — a razão de este ramo continuar útil no Hell sem sunder charm.",
       "O alcance dela é 50, o maior da árvore.",
-      "Ela é alimentada em **10% por nível por Miasma Chains e Abyss**, e é por isso que uma build de vazio a maximiza mesmo depois que ela deixa de ser a skill que você conjura.",
+      "Ela é alimentada em **10% por nível por Miasma Chain e Abyss**, e é por isso que uma build de vazio a maximiza mesmo depois que ela deixa de ser a skill que você conjura.",
     ],
     synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
   },
@@ -271,7 +271,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "Uma terceira linha lê a defesa do alvo a partir de um parâmetro que a linha rotula como dano causado. O stat e o rótulo discordam e nada resolve, então **esse efeito não é quantificado aqui**.",
     ],
   },
-  "miasma-chains": {
+  "miasma-chain": {
     summary: "Gera uma rajada de miasma bolts. Três na base, subindo rumo a doze.",
     mechanics: [
       "A contagem de projéteis sobe numa curva decrescente de **3 rumo a um teto de 12**, então pontos cedo somam projéteis rápido e pontos tarde mal mexem nisso.",
@@ -305,7 +305,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "Um monstro dentro do sigil que caia abaixo de **13% da vida morre na hora**, e um champion, unique ou superunique abaixo de **10%** faz o mesmo. Os dois limiares são fixos — pontos não os aumentam.",
       "O que morre **explode**, que é o que transforma a skill de uma execução em velocidade de limpeza.",
       "O tamanho sobe em degraus nos hard points 10 e 20 como nos outros dois sigils.",
-      "Ela também é a razão de uma build de hex olhar para esta árvore: **a chance de explodir do Hex Purge sobe 1% por hard point aqui**.",
+      "Ela também é a razão de uma build de hex olhar para esta árvore: **a chance de explodir do Hex: Purge sobe 1% por hard point aqui**.",
       "A linha carrega fogo como elemento mas não publica tabela de dano própria — a execução é um limiar de vida, não dano.",
     ],
   },
@@ -324,7 +324,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "**80-100 de fogo no nível 1**, várias vezes qualquer outra coisa da árvore, e cresce cerca de 25 por faixa de nível.",
       "Ela **corta a resistência a fogo do alvo em 5, com mais 1 por nível, até um teto de 40 pontos** — a única quebra de resistência da classe, e a razão de o ramo de fogo funcionar no Hell sem ajuda de fora.",
       "O raio sobe em degraus nos hard points 10 e 20: **13, depois 15, depois 17**. Até o menor é maior que qualquer outra coisa que a classe conjura.",
-      "Chegar nela custa um ponto em Sigil Death além da cadeia de fogo, que é o único cruzamento obrigatório da árvore.",
+      "Chegar nela custa um ponto em Sigil: Death além da cadeia de fogo, que é o único cruzamento obrigatório da árvore.",
     ],
     synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
   },
@@ -334,7 +334,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "**20-40 mágico no nível 1** num **raio de 6**, e mágico é o elemento que menos monstros resistem — então esta é a resposta da classe a um grupo que para todo o resto.",
       "Ela deixa fogo no chão depois. A linha dá a isso uma duração de **2 sem unidade nomeada**, então nada é publicado sobre quanto tempo dura.",
       "**A mana é cobrada quando a skill resolve, não quando ela começa**, o que importa para interrompê-la.",
-      "Ela alimenta Miasma Bolt e Miasma Chains além de ser alimentada por elas, então o ramo de vazio é um triângulo fechado: todo ponto nele sobe as outras duas.",
+      "Ela alimenta Miasma Bolt e Miasma Chain além de ser alimentada por elas, então o ramo de vazio é um triângulo fechado: todo ponto nele sobe as outras duas.",
       "**Enhanced Entropy** soma dano e duração por cima das sinergias, a uma taxa mais íngreme do que dá às skills de miasma.",
     ],
     synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
