@@ -373,9 +373,18 @@ const NUMBER_WORD: Record<string, number> = {
   um: 1, dois: 2, "três": 3, tres: 3, quatro: 4, cinco: 5, seis: 6, sete: 7, oito: 8,
 };
 
-/** Laying, setting, dropping, placing a trap — the action, in both languages. */
+/**
+ * Laying, setting, dropping, placing a trap — the action, in both languages.
+ *
+ * The two halves have to cover the same ground. An earlier draft matched the
+ * bare Portuguese "velocidade de colocação" but required the word *trap* on the
+ * English side, so the identical claim was caught in one locale and waved
+ * through in the other — which is the EN/PT divergence this file exists to
+ * prevent, committed by the file itself. `laying speed` and `trap-setting` are
+ * here to close it.
+ */
 const LAYING_A_TRAP =
-  /\b(lay(?:ing|s)?|set(?:ting)?|drop(?:ping|s)?|plac(?:e|ing|es)?|deploy(?:ing|s)?)\b[^.]{0,40}\b(traps?|sentr(?:y|ies)|fields?)\b|\btrap[- ]laying\b|\b(traps?|sentr(?:y|ies))\b[^.]{0,30}\b(lay(?:ing|s)?|set(?:ting)?|deploy(?:ed|ing)?)\b|\b(colocar|colocando|coloca|montar|montando|posicionar)\b[^.]{0,40}\b(traps?|armadilhas?|sentinelas?|campo)\b|\bvelocidade de coloca[çc][ãa]o\b/i;
+  /\b(lay(?:ing|s)?|set(?:ting)?|drop(?:ping|s)?|plac(?:e|ing|es)?|deploy(?:ing|s)?)\b[^.]{0,40}\b(traps?|sentr(?:y|ies)|fields?)\b|\btrap[- ]laying\b|\blaying speed\b|\btrap[- ]setting\b|\b(traps?|sentr(?:y|ies))\b[^.]{0,30}\b(lay(?:ing|s)?|set(?:ting)?|deploy(?:ed|ing)?)\b|\b(colocar|colocando|coloca|montar|montando|posicionar)\b[^.]{0,40}\b(traps?|armadilhas?|sentinelas?|campo)\b|\bvelocidade de coloca[çc][ãa]o\b/i;
 
 /** Cast rate named as a speed. `\b` is useless before an accent, hence `(?:^|\s)`. */
 const CAST_RATE =

@@ -11484,4 +11484,316 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
     },
   },
+  "fire-trapsin": {
+    summary:
+      "O Wake of Fire lança uma linha de ondas rasteiras que o grupo precisa atravessar; o Wake of Inferno empilha cinco jatos na única coisa que não anda. A resposta da Assassin a um mundo imune a raio, e a build com que ela evolui.",
+    playstyle:
+      "Você lê a sala antes de colocar qualquer coisa. O Wake of Fire joga ondas pelo chão, e um monstro só pode ser atingido por essas ondas uma vez a cada quatro frames, não importa quantas traps estejam rodando — então cinco traps no mesmo ponto são quatro traps desperdiçadas, e cinco traps espalhadas pela boca de um corredor são uma parede de fogo que nada atravessa inteiro. Você coloca atravessando o caminho, não em cima do grupo, e recua enquanto eles vêm até você. Aí a sala acaba e um boss está parado ali sem andar para lugar nenhum, e a rotação se inverte por completo: cinco Wake of Infernos no mesmo ponto, que **empilham**, mais Fire Blast arremessado na mão enquanto eles queimam. Duas skills, duas formas opostas, e saber em qual delas você está é a build inteira.",
+    strengths: [
+      "**Ela não custa respec e não desperdiça ponto.** As três skills que ela maximiza são as três com que ela evolui, então um ponto gasto no nível 12 ainda está trabalhando no 99 — o que a Lightning Trapsin não pode dizer",
+      "**É a build com que você evolui**, então os primeiros sessenta níveis não são desvio — veja a jornada",
+      "O Wake of Inferno não tem next hit delay nenhum, então ele empilha num boss onde o Wake of Fire não consegue",
+      "O Fire Blast é uma skill de verdade aqui, não só sinergia: +440% vindos das duas sentries de fogo antes de qualquer pacote",
+      "Facetas de fogo e −% de resistência a fogo do inimigo realmente chegam nas traps, o que é incomum para um pet",
+    ],
+    weaknesses: [
+      "**O next hit delay de quatro frames do Wake of Fire limita o que um único monstro pode receber**, então esta build não consegue explodir um alvo só como a Lightning Trapsin consegue",
+      "Ela exige mais do seu posicionamento que qualquer outra build de trap. Ondas colocadas onde nada vai passar são ondas que você não colocou",
+      "Cinco traps no total, não cinco por skill. Rodar as duas sentries de fogo divide as mesmas cinco",
+      "O dano publicado do Wake of Inferno é por tique e parece pequeno ao lado de números que não são — comparar exige cuidado",
+      "Não existe Fire Mastery nesta classe, e não existe Conviction que você possa empunhar",
+      "**Fogo é a imunidade mais comum no censo de áreas deste próprio site** — treze das vinte áreas de farm listam fogo, contra oito de raio. Esta build precisa de um plano de imunidade mais do que a irmã de raio, não menos",
+    ],
+    flexPoints: [
+      "**Não existem pontos livres.** O núcleo são 73, cada pacote custa exatamente 37, e 73 + 37 = 110. Se a sua tela de skills mostra um ponto não gasto, uma das três rotas acima não está terminada.",
+      "**Não divida os trinta e sete entre dois pacotes.** Fade em dez são 40% de resistência em vez de 75%, e Death Sentry em dez é a mesma explosão de cadáver com raio menor. Cada um dos três vale inteiro e nenhum vale pela metade.",
+      "**As sinergias que faltam no Fire Blast são a tentação errada.** Shock Web, Charged Bolt Sentry e Lightning Sentry somam 11% por ponto cada um no Fire Blast, então trinta e sete pontos ali quase dobrariam a sua bomba arremessada. Continua errado: o Fire Blast é um alvo por vez, e os três pacotes compram algo que escala com a sala inteira.",
+      "**Venom não está nesta página.** Ele acrescenta veneno a *ataques*, e este personagem não faz nenhum — traps são invocações e o dano delas não é seu.",
+      "**Fire Mastery não existe nesta classe.** Não há equivalente da mastery da Sorceress, que é por que o plano de imunidade se apoia no Sunder Charm em vez de em empilhar o seu próprio dano.",
+    ],
+    skillPackages: {
+      "the-last-thirty-seven": {
+        name: "O terço do personagem que o núcleo não gasta",
+        intro:
+          "O núcleo acima são 73 de 110, e a metade de fogo dele está **terminada**: Wake of Fire e Wake of Inferno alimentam um ao outro, o Fire Blast alimenta os dois, e os três estão maximizados, então nenhum ponto adicional em lugar nenhum sobe as duas skills com que você realmente limpa. Sobram trinta e sete — um terço do personagem. **Pegue exatamente um dos três abaixo.** Cada um custa exatamente trinta e sete, então o plano fecha em 110 qualquer que seja a escolha, e cada um compra algo que o núcleo genuinamente não faz: um segundo elemento, um corpo que sobrevive ao Hell, ou controle de onde o grupo está parado.",
+        packages: {
+          "death-sentry": {
+            name: "Death Sentry",
+            when: "O padrão, e a resposta à imunidade a fogo. Pegue-o a menos que você esteja no Hardcore ou já saiba que as suas resistências estão resolvidas.",
+            tradeoff:
+              "Ele gasta trinta e sete pontos fora da árvore de fogo, e a sentry de raio que ele liga disputa os mesmos cinco slots de trap que as suas traps de fogo querem. Você está comprando um segundo elemento e pagando em slots.",
+            skillNotes: {
+              "death-sentry":
+                "Dezenove pontos em cima do único do núcleo. **Eles não sobem a explosão de cadáver** — ela é 40–80% da vida do monstro morto em qualquer nível. O que eles compram é raio, meio metro por nível a partir de uma base de cinco, e a metade de raio da skill.",
+              "lightning-sentry":
+                "**A única sinergia do Death Sentry, a 12% por ponto duro** — mais dezoito pontos são +216% na metade de raio dele. Ele também alimenta o Fire Blast em mais 11% por ponto, que é a parte que passa despercebida: este pacote deixa a sua bomba arremessada quase duas vezes mais forte de quebra.",
+            },
+            rotationNote:
+              "Um Death Sentry desce junto com todo campo, e é a trap que você substitui por último. Contra um grupo imune a fogo agora você tem duas tarefas: matar uma coisa com raio, e deixar a corrente de cadáveres fazer o resto.",
+            gearNote:
+              "Nada muda, e essa é a maior parte do argumento a favor desta rota. São trinta e sete pontos de skill comprando uma resposta de imunidade que nenhum slot de equipamento precisa pagar.",
+            statNote: "Sem mudança.",
+            contentNote:
+              "Terror Zones do Hell com imunidades mistas, o Pit, e qualquer lugar onde um grupo imune a fogo possa te encurralar.",
+          },
+          fade: {
+            name: "Fade e Cloak",
+            when: "Hardcore, e qualquer personagem cujas resistências estejam sendo seguradas por anéis e charms que poderiam estar fazendo outra coisa.",
+            tradeoff:
+              "Ele não faz absolutamente nada contra imunidade a fogo — uma Trapsin de Fade numa Terror Zone imune a fogo é espectadora. Ele também custa o Burst of Speed, e portanto velocidade de colocação, porque os dois buffs não podem estar ativos ao mesmo tempo.",
+            skillNotes: {
+              fade: "**As quatro resistências subindo em direção a 75%, duração de maldição cortada em até 90%, e 1% de redução de dano físico por nível.** Dezenove pontos em cima do único do núcleo, e a redução física é a metade que importa no Chaos Sanctuary.",
+              "cloak-of-shadows":
+                "**O parceiro certo do Fade nesta build especificamente.** Um grupo cego continua andando, que é exatamente do que uma linha de Wake of Fire precisa — diferente de um atordoamento, a cegueira não congela eles fora das suas ondas. Dezoito pontos compram a duração para cobrir um corredor inteiro.",
+            },
+            rotationNote:
+              "Cloak primeiro, depois a linha, depois recuar. Você não está mais atordoando nada, o que nesta build é uma vantagem.",
+            gearNote:
+              "**A maior mudança de equipamento das três, no que ela deixa de exigir.** Vinte pontos de Fade são resistências que você não compra mais em anéis, amuleto e charms, então esses slots vão para dano de fogo e para o Increased Attack Speed que coloca o campo mais rápido.",
+            statNote: "Sem mudança. Vitality com tudo depois dos requisitos de equipamento.",
+            contentNote: "Hardcore, o Chaos Sanctuary, e Terror Zones do Hell em que você pretende ficar.",
+          },
+          "shadow-master": {
+            name: "Shadow Master e Mind Blast",
+            when: "Jogos de oito jogadores e terreno aberto, onde o problema não é o que você consegue matar e sim se alguma coisa vai passar por onde você colocou o fogo.",
+            tradeoff:
+              "O menos mensurável dos três, e ele tem um custo específico que a irmã de raio não compartilha: **o Shadow Master coloca traps próprias dentro do seu teto de cinco slots**, então um guarda-costas em que você investiu trinta e sete pontos pode sobrescrever o Wake of Inferno que você queria.",
+            skillNotes: {
+              "shadow-master":
+                "Resistências de 5% em direção a 90% — acima do teto do jogador — mais 15% de vida e 40% de attack rating por nível. Ele escolhe skills de Assassin próprias em vez de espelhar as suas.",
+              "mind-blast":
+                "**Raio de atordoamento, duração e até 40% de conversão.** Nesta build a conversão vale mais que o atordoamento: um monstro convertido luta por você *e* continua se movendo, e um grupo que continua se movendo continua cruzando as suas ondas.",
+            },
+            rotationNote:
+              "Coloque a linha primeiro, depois Mind Blast dentro dela para segurar o que já está em cima do fogo. Inverter essas duas coisas é o erro — um grupo atordoado à distância fica parado em algum lugar onde você não colocou nada.",
+            gearNote: "Sem mudança.",
+            statNote: "Sem mudança.",
+            contentNote: "Jogos em players 8, Terror Zones abertas ao ar livre, e a Worldstone Keep.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength:
+        "Exatamente o suficiente para a armadura que você pretende vestir e nada além. Um Dusk Shroud de três sockets para o Treachery é o alvo usual.",
+      dexterity: "**Nenhuma.** Não há arma para acertar, e não há bloqueio que este plano financie — veja a nota abaixo.",
+      vitality: "Todo o resto, a 3 de vida por ponto.",
+      energy: "Nenhuma. O Insight do mercenário resolve a conta de mana inteira.",
+      notes: [
+        "**Weapon Block não é bloqueio de escudo e este plano não o financia.** É um passivo próprio, exige uma garra em cada mão, e um Spirit em escudo desliga ele. Nenhuma Dexterity é gasta atrás de um número que este site não consegue calcular.",
+        "**A conta de mana desta build é maior que a da Lightning Trapsin**, porque cobrir chão significa recolocar com mais frequência e de mais lugares. Insight não é opcional e a Meditation é o plano inteiro.",
+        "Um Call to Arms no swap de arma é Battle Orders, e Battle Orders é vida num personagem com a segunda menor reserva de vida do jogo.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-65":
+        "**Pelo Mind Blast e pelo Cloak of Shadows, não pelas traps.** A taxa de conjuração encurta a animação `SC` da Assassin e nada mais; 16 frames viram 11. Ela não afeta a velocidade com que uma trap desce — veja a nota abaixo, que é onde está a velocidade que importa nesta build.",
+      "fhr-48":
+        "A meta padrão da tabela que a Assassin divide com o Paladin e o Barbarian. Você coloca por trás da linha, mas no instante em que algo te alcança, a recuperação é o que permite terminar.",
+    },
+    breakpointNotes:
+      "**A velocidade de colocação é velocidade de ataque, e ela importa mais aqui do que na Lightning Trapsin.** Aquela build coloca cinco traps num ponto; esta coloca atravessando o chão e recoloca conforme o grupo se move, então a velocidade de colocação chega perto de ser a velocidade de limpeza. Uma trap usa a animação `S2` da Assassin, que roda no cálculo de velocidade de ataque — a velocidade base da própria garra, o Increased Attack Speed do equipamento e o Burst of Speed. O Faster Cast Rate não encosta nisso. Não existe linha de Increased Attack Speed acima porque a velocidade base da garra é uma entrada da mesma fórmula, então uma porcentagem única estaria errada para a maioria dos leitores. Concreto no lugar disso, tudo derivado, tudo sem Burst of Speed ativo: **duas Runic Talons ou Greater Talons** (velocidade base −30) colocam uma trap em 12 frames sem nada e em 9 frames com 42% de IAS; **duas Feral ou Greater Claws** (−20), 13 sem nada e 9 com 63%; **uma Suwayyah, Quhab, Cestus ou Wrist Blade** (0), 15 sem nada e 9 com 125%; **duas Hatchet Hands ou Fascia** (+10), 17 sem nada e 9 só com 174%. Cinco frames de variação antes de um único ponto de IAS ser comprado — a base vale mais que o afixo. Três regras decidem se o IAS que você tem conta: duas garras usam a **média** das duas bases; o Increased Attack Speed da garra **secundária não conta de jeito nenhum**; e o **Burst of Speed soma até 60% sem diminuição**, que são uns dois frames e, como ele não pode estar ativo junto com o Fade, esses dois frames são o preço real do pacote Fade. Estar congelada deixa a animação mais lenta, então Cannot Be Frozen protege a velocidade de colocação. Para garras diferentes destas quatro, use uma calculadora de velocidade de ataque e informe a base, o IAS das duas e o nível do seu Burst of Speed.",
+    skillNotes: {
+      "wake-of-fire":
+        "**Cinco ondas por trap, e um next hit delay de quatro frames na onda.** Esse delay é a build: um monstro só pode ser atingido seis vezes por segundo pelo Wake of Fire, não importa quantas traps estejam no chão, então as traps vão *atravessando* o caminho em vez de umas em cima das outras. Alimentada em 10% por ponto duro pelo Fire Blast e pelo Wake of Inferno, ambos maximizados aqui, para +400%.",
+      "wake-of-inferno":
+        "**Nenhum next hit delay**, que é exatamente o que falta ao Wake of Fire — então esta é a trap que empilha, e a resposta a qualquer coisa parada. Dez tiros cada. Alimentada em 18% por ponto duro pelo Fire Blast e pelo Wake of Fire, para +720%. A linha de dano dela desloca por 4 em vez de 8, então o número que o jogo mostra é **por tique** ao longo de um míssil de 40 frames, não por tiro.",
+      "fire-blast":
+        "**Uma sinergia que também é um botão.** Ele alimenta o Wake of Fire em 10% e o Wake of Inferno em 18% por ponto duro, então estes vinte pontos são obrigatórios faça você o que fizer — e deixam você segurando uma bomba arremessada que recebe 11% por ponto de todas as cinco traps, não é uma sentry, não ocupa slot de trap, e não tem next hit delay. É o que você aperta em algo que o campo não alcança.",
+      "shock-web":
+        "O portão do Charged Bolt Sentry, no caminho para o Death Sentry. Vale saber que o míssil rasteiro dele carrega um next hit delay de **25 frames** — um segundo inteiro — que é o mais longo da árvore e a razão de ele nunca ser skill de limpeza.",
+      "charged-bolt-sentry": "O portão do Lightning Sentry. Um ponto, e você não vai conjurá-lo.",
+      "lightning-sentry":
+        "O portão do Death Sentry. **O pacote Death Sentry leva a dezenove**, onde ele deixa de ser pré-requisito e vira o segundo elemento que esta build não tem de outra forma.",
+      "death-sentry":
+        "**Quatro pontos de pré-requisito pelo melhor ponto único da classe.** A explosão de cadáver dele é 40–80% da vida do próprio monstro morto, metade fogo e metade físico, e não escala com o nível desta skill — então um ponto é a corrente inteira. A metade física é a razão de ele ainda funcionar num grupo imune a fogo, desde que algo naquele grupo tenha morrido.",
+      "claw-mastery": "O portão da árvore de Shadow inteira.",
+      "burst-of-speed":
+        "**Pré-requisito do Fade, e nesta build uma escolha de verdade em vez de formalidade.** Ele soma até 60% de velocidade de ataque sem diminuição, e velocidade de ataque é velocidade de colocação — embora o que esses pontos comprem em frames dependa da base de garra que você segura, assunto da nota de breakpoint abaixo. Isso importa mais numa build que coloca atravessando o chão do que numa que coloca num ponto. Fade e Burst of Speed não podem estar ativos juntos.",
+      fade: "Resistências, redução de duração de maldição e 1% de redução de dano físico por nível. **O pacote Fade leva a vinte**; o custo é a velocidade de colocação que o Burst of Speed estava dando, porque conjurar um derruba o outro, e a página diz qual troca fazer onde.",
+      "weapon-block":
+        "**Não é bloqueio de escudo** — é um passivo próprio, exige uma garra em cada mão, e desliga por completo no instante em que um Spirit em escudo entra. Um ponto, como portão do Shadow Warrior.",
+      "psychic-hammer": "O portão do Cloak of Shadows, e a única razão de ele estar no plano.",
+      "cloak-of-shadows":
+        "Cega uma tela e corta a defesa dela. **O pacote Fade leva a dezenove**, onde a cegueira dura o bastante para cobrir a colocação de um corredor inteiro.",
+      "shadow-warrior":
+        "O portão do Shadow Master. Eles compartilham um tipo de pet com teto de um, então este ponto compra o melhor dos dois em vez de um segundo corpo.",
+      "mind-blast":
+        "**Usado de forma diferente aqui e na build de raio, e errar isso é o engano mais comum.** Um grupo atordoado não anda, e esta build precisa que o grupo ande por cima das ondas. Então você atordoa *depois* que eles já estão dentro do campo, não antes — ou não atordoa e deixa eles virem.",
+      "shadow-master":
+        "Um ponto, e as resistências dele ainda sobem em direção a 90%. **Aviso específico desta build: ele divide o seu teto de cinco traps e coloca traps próprias**, então pode substituir um Wake of Inferno que você queria por algo mais fraco.",
+    },
+    immunityPlan:
+      "**Imunidade a fogo é a parede da build, e é uma parede mais alta do que a maioria das builds de fogo admite.** O censo de áreas deste próprio site lista fogo entre as imunidades comuns em treze das vinte áreas de farm — mais que qualquer outro elemento, e mais que o raio com que a irmã desta build sofre. Quem diz que uma trapper de fogo escapa do problema de imunidade não contou. Então o plano abaixo não é leitura opcional, e o pacote Death Sentry é o padrão por causa disso. Quatro respostas, em ordem de utilidade. Primeira, um **Flame Rift Sunder Charm** coloca monstros imunes a fogo em 95% de resistência a fogo e é a única coisa desta lista que genuinamente quebra a imunidade; custa 70 a 90 pontos da sua própria resistência a fogo e um slot de charm, e exige nível 75. Segunda, o **pacote Death Sentry**: a explosão de cadáver é metade fogo e metade **físico**, e a metade física entra num imune a fogo — mas algo precisa morrer primeiro, que é para isso que servem os dezenove pontos de Lightning Sentry do pacote. Terceira, **facetas de fogo e −% de resistência a fogo do inimigo chegam nas traps**, o que não é óbvio: uma sentry é um pet, e pets normalmente não herdam os stats de dano do dono, mas as linhas de Wake of Fire e Wake of Inferno leem `passive_fire_pierce` e `passive_fire_mastery` de você explicitamente. Quarta, e a menor: **pule o grupo**. Contra uma Terror Zone imune a fogo sem Sunder Charm, passar direto é a resposta certa com muito mais frequência do que os jogadores imaginam. O que **não** funciona é empilhar facetas para quebrar a imunidade — reduzir uma resistência de 100% em 20 deixa ela em 100 para efeito de imunidade.",
+    mercenaryNotes:
+      "**Insight, e não é opcional.** Esta build recoloca com mais frequência que a Lightning Trapsin, então a conta de mana é maior, e a Meditation é a resposta inteira. Pegue a variante de Defiance no Nightmare — o trabalho dele é segurar a outra ponta do corredor enquanto o grupo entra no seu fogo, não matar nada. Um corpo com Treachery dá o proc de Fade a ele também. **Não dê Infinity a ele aqui**: a Conviction baixa resistências, o que é real, mas são runas altas de sobra para fazer o que um charm Flame Rift faz pela imunidade e uma faceta faz pela resistência.",
+    farmingWhy: {
+      "pit-hell":
+        "**O melhor encaixe da pÃ¡gina**, e o dado da Ã¡rea Ã© o motivo: as imunidades comuns do Pit sÃ£o fÃ­sico, frio e raio, e fogo nÃ£o estÃ¡ entre elas. Dois nÃ­veis fechados no maior nÃ­vel de Ã¡rea do Ato 1, que Ã© exatamente o terreno que uma linha de ondas rasteiras quer.",
+      "secret-cow-level-hell":
+        "Uma manada que vem andando atÃ© vocÃª em campo aberto e em linha reta Ã© a melhor coisa que pode acontecer ao Wake of Fire, e a Ãºnica imunidade comum aqui Ã© fÃ­sica. Coloque atravessando a aproximaÃ§Ã£o deles e recue.",
+      "mausoleum-hell":
+        "Uma sala, densidade alta, e nada de fogo entre as imunidades comuns dela. Os cadÃ¡veres fazem metade do trabalho quando o Death Sentry estÃ¡ no chÃ£o, e Ã© o melhor lugar para aprender onde uma linha de ondas quer ficar.",
+      "pindleskin-hell":
+        "Um corredor curto, um grupo fixo, e frio e veneno em vez de fogo na lista de imunidades. Coloque atravessando a porta antes de abri-la.",
+      "chaos-sanctuary-hell":
+        "O terreno Ã© ideal â corredores e aproximaÃ§Ãµes de selo fazem tudo chegar em linha â mas **fogo estÃ¡ na lista de imunidades desta Ã¡rea**, entÃ£o esta Ã© a run que decide se vocÃª pegou o pacote Death Sentry ou comprou um Flame Rift. Sem nenhum dos dois, espere passar direto por grupos.",
+      "andariel-hell":
+        "Veneno em vez de fogo na lista de imunidades, um corredor atÃ© o trono, e um boss que fica parado â que Ã© a metade Wake of Inferno da build e nÃ£o a metade Wake of Fire.",
+    },
+    levelingPath: {
+      summary:
+        "**Esta é a build de evolução.** Fire Blast até 11, depois Wake of Fire a partir do 12, depois Wake of Inferno no 24 — as mesmas três skills que o núcleo do endgame maximiza, na ordem em que a jornada gasta os pontos. Diferente da Lightning Trapsin não há respec no plano e nada é desperdiçado: todo ponto gasto no nível 12 ainda está trabalhando no 99.",
+    },
+    selfFoundNotes:
+      "**O começo self-found mais forte que a Assassin tem, porque também é a build de evolução dela.** Nada nos três primeiros tiers é runeword acima de três runas: Lore, Stealth, Ancients' Pledge, Spirit, Treachery. A arma é uma garra de vendedor, e vendedores renovam o estoque toda vez que você entra na cidade — o que vale caçar de propósito é uma garra com +3 Wake of Fire e +3 Wake of Inferno juntos, numa base Greater Talons ou Runic Talons. O único item da página que você não consegue por vendedor nem por craft é o Flame Rift, e até ele dropar o plano honesto é farmar as zonas que não precisam dele.",
+    hardcoreNotes:
+      "**Pegue o pacote Fade e Cloak**, e aceite que você está abrindo mão da resposta à imunidade a fogo junto com a velocidade de colocação que o Burst of Speed dava. A build já é segura: você nunca entra em corpo a corpo, coloca por trás da linha e anda para trás, e o Shadow Master chega primeiro. As duas coisas que matam uma trapper de Hardcore aqui são colocar uma linha num grupo que já está em cima de você — as ondas desta build precisam de distância de um jeito que as da build de raio não precisam — e a Iron Maiden, que é por que o Chaos Sanctuary merece a redução de duração de maldição que o Fade dá.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao Wake of Inferno no 24 com as resistências intactas. Nada aqui custa mais do que três runas da Countess.",
+        nextUpgrade: "Uma garra com +3 Wake of Fire, e o Spirit no instante em que você fizer 25.",
+        picks: {
+          "weapon-0": {
+            label: "Qualquer garra com +3 Wake of Fire ou +2 Traps",
+            why: "O maior item de dano que você vai segurar, e ele vem de vendedor. Garras rolam skills de Assassin nativamente, e a Charsi e a Akara renovam o estoque toda vez que você volta à cidade.",
+            lookFor: ["+3 to Wake of Fire", "+2 to Traps", "+3 to Fire Blast"],
+          },
+          "offhand-0": { why: "Três runas da Countess por resistências que te carregam até o Nightmare." },
+          "helm-0": { why: "+1 em todas as skills e resistência a raio, por duas runas." },
+          "body-0": { why: "Recuperação, corrida e regeneração de mana, por duas das runas mais comuns do jogo." },
+          "gloves-0": { why: "Velocidade de ataque é velocidade de colocação. Tão cedo, resistências costumam ganhar; do Nightmare em diante, o IAS ganha." },
+          "belt-0": { why: "Quatro fileiras e algo para preencher." },
+          "boots-0": { why: "Você anda muito para trás nesta build." },
+          "ring1-0": { why: "Nada de sofisticado ainda." },
+          "ring2-0": { why: "Idem." },
+          "amulet-0": { why: "+1 em skills de Assassin vale mais que qualquer resistência isolada aqui." },
+        },
+      },
+      nightmare: {
+        goal: "Dois Spirits se der, 65% de conjuração pelo Mind Blast, e Treachery quando três runas médias existirem.",
+        nextUpgrade: "Resistências em 75% antes do Hell, e uma base de garra mais rápida.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara ou mágica em base rápida: +3 Wake of Fire, +3 Wake of Inferno",
+            why: "Ainda um resultado de vendedor, e ainda o maior item do personagem. **Prefira uma base rápida** — Greater Talons e Greater Claws colocam dois a três frames mais rápido que uma Suwayyah antes de qualquer afixo.",
+            lookFor: ["A Greater Talons or Greater Claws base", "+3 to Wake of Fire", "+3 to Wake of Inferno", "+2 to Traps"],
+          },
+          "offhand-0": { why: "+2 em Todas as Skills e até 35% de Faster Cast Rate no nível 25. As skills são o dano; a conjuração é para o Mind Blast." },
+          "offhand-1": { why: "Resistências por três runas da Countess, se a Amn ainda não apareceu." },
+          "helm-0": { why: "+1 em todas as skills e magic find enquanto nada melhor existir." },
+          "body-0": {
+            why: "**+2 em Skills de Assassin, 45% de Increased Attack Speed, e um proc de Fade ao ser atingida.** As três metades entram nesta build: as skills são dano, a velocidade de ataque é velocidade de colocação, e o Fade é resistência que você não precisou apertar.",
+          },
+          "gloves-0": { why: "Velocidade de colocação, e luvas são o lugar mais barato para comprá-la. Magefist é a alternativa se você preferir a conjuração pelo Mind Blast." },
+          "belt-0": { why: "Resistências e dano convertido em mana enquanto o Insight do mercenário ainda está sendo montado." },
+          "boots-0": { why: "Movimento e resistências. Dano de chute em botas é irrelevante — nada nesta página chuta." },
+          "ring1-0": { why: "Resistência é o problema do Nightmare." },
+          "ring2-0": { why: "Idem." },
+          "amulet-0": { why: "+2 em skills de Assassin sobe toda trap da barra." },
+        },
+      },
+      "early-hell": {
+        goal: "75% de resistências, uma resposta para imunes a fogo, e uma base de garra de que você não tenha vergonha.",
+        nextUpgrade: "Facetas de fogo, e um amuleto que não esteja carregando resistência sozinho.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara em base rápida: +3 Wake of Fire, +3 Wake of Inferno, 20% Increased Attack Speed",
+            why: "Quatro afixos num item de vendedor, e nenhuma runeword do jogo bate isso nesta build.",
+            lookFor: ["A Greater Talons or Runic Talons base", "+3 to Wake of Fire", "+3 to Wake of Inferno", "20% Increased Attack Speed"],
+          },
+          "offhand-0": { why: "+2 skills e 35% de conjuração. Note que ele desliga o Weapon Block; nesta build essa é a troca certa." },
+          "helm-0": { why: "+2 em todas as skills, vida, mana e redução de dano. O melhor elmo generalista do jogo." },
+          "body-0": { why: "+2 skills de Assassin, 45% de velocidade de ataque e o proc de Fade, por três runas médias." },
+          "body-1": { why: "+1 skills, 30% de conjuração e até +35 em todas as resistências — a resposta de resistência se você não pegou o pacote Fade." },
+          "gloves-0": { why: "Velocidade de colocação primeiro, resistências depois." },
+          "belt-0": { why: "Redução de dano físico e roubo de vida que a aura do mercenário não fornece." },
+          "boots-0": { why: "Recuperação, stamina e duas resistências." },
+          "ring1-0": { why: "Resistência ainda é a parede no começo do Hell." },
+          "ring2-0": { why: "Cannot Be Frozen, que **protege a velocidade de colocação** — estar congelada deixa a animação mais lenta." },
+          "amulet-0": { why: "Dois trabalhos num slot enquanto o resto do plano ainda é resistência." },
+        },
+        charms: [
+          {
+            why: "**O Sunder Charm de fogo, e a resposta mais limpa que esta build tem para imunidade.** Ele coloca monstros imunes a fogo em 95% de resistência a fogo, ao custo de 70 a 90 pontos da sua própria resistência a fogo e um slot de charm. Note que o Patch 3.3 restringiu os drops de magic find dos Latent Sunder Charms ao Hell, e ele exige nível 75.",
+          },
+        ],
+      },
+      budget: {
+        goal: "Facetas de fogo em todo socket que aceitar uma, e resistências confortavelmente acima do teto.",
+        nextUpgrade: "Chains of Honor, e os últimos pontos de velocidade de colocação.",
+        picks: {
+          "weapon-0": {
+            label: "Garra rara em base rápida: +3 Wake of Fire, +3 Wake of Inferno, +2 Traps, 20% Increased Attack Speed",
+            why: "Sem mudança, porque não há para onde subir. A garra é um resultado de vendedor e continua sendo a melhor da build até o fim.",
+            lookFor: ["A Runic Talons base", "+3 to Wake of Fire", "+3 to Wake of Inferno", "+2 to Traps", "20% Increased Attack Speed"],
+          },
+          "offhand-0": { why: "Ainda a resposta, e uma faceta de fogo no quarto socket se você tiver uma sobrando." },
+          "helm-0": { why: "Coloque uma faceta de fogo nele — **as traps leem o seu fire pierce**, que é por que isso funciona num pet." },
+          "body-0": { why: "+2 skills de Assassin, velocidade de ataque e o proc de Fade. Ainda as três melhores runas da página." },
+          "gloves-0": { why: "Velocidade de colocação e resistências num slot só." },
+          "belt-0": { why: "+1 em todas as skills e 20% de Faster Cast Rate. O +1 é a razão." },
+          "boots-0": { why: "Magic find e corrida, numa build que anda muito para trás." },
+          "ring1-0": { why: "+1 em todas as skills e mana. Toda trap da barra sobe." },
+          "ring2-0": { why: "Cannot Be Frozen, protegendo a velocidade de colocação, mais attack rating que você não precisa e Dexterity que você não gasta." },
+          "amulet-0": { why: "+2 em todas as skills e +20 em todas as resistências. Dois problemas, um slot." },
+        },
+        charms: [
+          { why: "Carregue para zonas imunes a fogo e tire quando a zona não precisar — os 70 a 90 pontos da sua própria resistência a fogo são reais." },
+          { label: "Small charms com dano de skill de fogo e vida", why: "O dano de fogo mais barato por quadrado de inventário disponível para esta build." },
+        ],
+      },
+      optimized: {
+        goal: "Chains of Honor, facetas em tudo, e velocidade de colocação em nove frames.",
+        nextUpgrade: "Enigma, se você preferir teleportar até o corredor em vez de andar até ele.",
+        picks: {
+          "weapon-0": {
+            label: "Runic Talons rara: +3 Wake of Fire, +3 Wake of Inferno, +2 Traps, 20% Increased Attack Speed",
+            why: "Ainda a melhor arma do jogo para esta build, e ainda não é runeword. Numa base Runic Talons, colocar em nove frames custa 42% de Increased Attack Speed — que o Treachery sozinho já cobre.",
+            lookFor: ["A Runic Talons base", "+3 to Wake of Fire", "+3 to Wake of Inferno", "+2 to Traps", "20% Increased Attack Speed"],
+          },
+          "offhand-0": { why: "+2 skills, conjuração, e uma faceta de fogo no socket que sobra." },
+          "helm-0": { why: "+2 skills e uma faceta de fogo. Nada o desloca." },
+          "body-0": { why: "**+2 em todas as skills, +65 em todas as resistências e 8% de redução de dano.** É o item que torna o pacote Fade opcional." },
+          "body-1": { why: "Mantenha se os 45% de velocidade de ataque estiverem fazendo mais pela sua velocidade de colocação na base de garra que você realmente segura do que as resistências do Chains of Honor pela sua sobrevivência. Numa base lenta, muitas vezes estão." },
+          "gloves-0": { why: "Velocidade de colocação, resistências e vida num slot só." },
+          "belt-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find e movimento." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Cannot Be Frozen. Numa build cuja velocidade de limpeza é a velocidade de colocação, isso não é luxo." },
+          "amulet-0": { why: "+2 skills e +20 em todas as resistências." },
+        },
+        charms: [
+          { why: "Trocado para as zonas imunes a fogo." },
+          { label: "Small charms de dano de skill de fogo com vida", why: "O último dano que não é ponto de skill." },
+        ],
+        weaponSwap: [{ why: "Battle Orders, que é o maior aumento de vida disponível para o personagem." }],
+      },
+      bis: {
+        goal: "Não sobrou nada para consertar.",
+        picks: {
+          "weapon-0": {
+            label: "Runic Talons rara: +3 Wake of Fire, +3 Wake of Inferno, +2 Traps, 20% Increased Attack Speed, dois sockets abertos",
+            why: "Duas facetas de fogo nos sockets. As traps leem fire pierce, então as duas contam.",
+            lookFor: ["A Runic Talons base", "+3 to Wake of Fire", "+3 to Wake of Inferno", "+2 to Traps", "Two sockets"],
+          },
+          "offhand-0": { why: "Nada o deslocou em vinte anos." },
+          "helm-0": { why: "+2 skills, vida, e uma faceta de fogo." },
+          "body-0": { why: "**Teleport, que nesta build é ferramenta de posicionamento e não de movimento** — é como você chega do outro lado do corredor antes do grupo. O +1 skills e a Strength são o resto." },
+          "body-1": { why: "+2 skills e +65 de resistências, se você preferir a sobrevivência à mobilidade." },
+          "gloves-0": { why: "Sem mudança. Não existe único que bata um bom craft aqui." },
+          "belt-0": { why: "+1 em todas as skills." },
+          "boots-0": { why: "Magic find e movimento." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Cannot Be Frozen." },
+          "amulet-0": { why: "+2 skills e +20 em todas as resistências." },
+        },
+        charms: [
+          { why: "Para as zonas que precisam." },
+          { label: "Small charms de dano de skill de fogo com vida", why: "Todo quadrado que não é resistência." },
+        ],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+    },
+  },
 };
