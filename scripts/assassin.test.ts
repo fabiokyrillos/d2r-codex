@@ -31,6 +31,10 @@
  */
 import { SKILL_GRAPH } from "../content/classes/skill-graph";
 import { assassinSkills, assassinTrees } from "../content/classes/assassin/skills";
+import { dragonTail } from "../content/builds/dragon-tail";
+import { kicksin } from "../content/builds/kicksin";
+import { whirlwindAssassin } from "../content/builds/whirlwind-assassin";
+import type { Build } from "../lib/types";
 import {
   ASSASSIN_RULES,
   BLADE_SKILLS,
@@ -47,6 +51,10 @@ import {
   TRAP_LIMIT,
   TRAP_SLUGS,
   VENOM_POISON_FRAMES,
+  WEAPON_SELECTION,
+  WEAPSEL_EITHER_OR_BOTH,
+  WEAPSEL_NO_WEAPON,
+  WHIRLWIND_ON_STRIKING,
   checkAssassinClaims,
   type AssassinRule,
 } from "./assassin-rules";
@@ -217,6 +225,120 @@ console.log("\nPhoenix Strike's meteor feeds Fists of Fire twice, at two rates")
     const n = (ps?.missileSynergies ?? []).filter((m) => m.from === from).length;
     check(`${from} feeds one component`, n === 1, `${n}`);
   }
+}
+
+// ===========================================================================
+console.log("\nWhirlwind is a borrowed skill, and the columns say what it is not");
+// ===========================================================================
+/*
+ * The Whirlwind page is the only one on this class built around a skill the
+ * class cannot allocate, so the ordinary graph checks above cannot see it at
+ * all. What is checkable is the shape of the *plan*, and the two transcribed
+ * columns that decide it.
+ *
+ * `whirlwindAssassin` is imported from its module rather than read out of the
+ * registry on purpose: the registry entry is the coordinator's line to add, and
+ * a check that quietly stops running the moment the page is unregistered is a
+ * check that stops running exactly when someone is editing the wiring.
+ */
+{
+  /*
+   * Two independently transcribed lists of the same column. `KICKS` says which
+   * skills take their damage from the boots; `WEAPON_SELECTION` says what
+   * `weapsel` each row carries. Editing one alone breaks this, which is the
+   * whole reason there are two.
+   */
+  const weapselFour = Object.entries(WEAPON_SELECTION)
+    .filter(([, v]) => v === WEAPSEL_NO_WEAPON)
+    .map(([k]) => k)
+    .sort();
+  check(
+    "every kick is `weapsel = 4`, and every `weapsel = 4` row is a kick",
+    weapselFour.join(",") === [...KICKS].sort().join(","),
+    `${weapselFour.join(",")} vs ${[...KICKS].sort().join(",")}`,
+  );
+
+  const eitherOrBoth = Object.entries(WEAPON_SELECTION)
+    .filter(([, v]) => v === WEAPSEL_EITHER_OR_BOTH)
+    .map(([k]) => k);
+  check(
+    "Whirlwind is the only row that uses either hand or both",
+    eitherOrBoth.join(",") === "whirlwind",
+    eitherOrBoth.join(","),
+  );
+
+  check(
+    "Whirlwind is in neither the charge-up set nor the finisher set",
+    !(CHARGE_UPS as readonly string[]).includes("whirlwind") &&
+      !(FINISHERS as readonly string[]).includes("whirlwind"),
+  );
+
+  /* It is a Barbarian skill, so the class tree cannot contain it and the plan cannot buy it. */
+  check(
+    "no Assassin skill is called whirlwind, which is why the plan allocates none",
+    !assassinSkills.some((s) => s.slug === "whirlwind") && SKILL_GRAPH["whirlwind"] === undefined,
+  );
+
+  /*
+   * The expensive mistake, guarded against the page rather than against a
+   * sentence: a charge-up bought on a build whose attack releases none.
+   */
+  const allAllocations = [
+    ...whirlwindAssassin.skills,
+    ...(whirlwindAssassin.skillPackages ?? []).flatMap((g) => g.packages.flatMap((p) => p.skills)),
+  ];
+  const boughtChargeUps = allAllocations
+    .filter((a) => (CHARGE_UPS as readonly string[]).includes(a.skill))
+    .map((a) => a.skill);
+  check(
+    "the Whirlwind plan buys no charge-up, in the core or in any package",
+    boughtChargeUps.length === 0,
+    boughtChargeUps.join(","),
+  );
+
+  /*
+   * Claw Mastery changes sides between the two kinds of page, and this is the
+   * cheapest way to state that as arithmetic. A kick uses no weapon, so the
+   * mastery does nothing and one point is a prerequisite; a whirl swings the
+   * claw, so twenty is the build's own damage.
+   */
+  const masteryOn = (build: Build) =>
+    build.skills.find((a) => a.skill === "claw-mastery")?.points ?? 0;
+  for (const kickBuild of [kicksin, dragonTail]) {
+    check(
+      `${kickBuild.slug} spends one point on Claw Mastery, because a kick uses no weapon`,
+      masteryOn(kickBuild) === 1,
+      `${masteryOn(kickBuild)}`,
+    );
+  }
+  check(
+    "the Whirlwind plan maxes Claw Mastery, because a whirl swings the claw",
+    masteryOn(whirlwindAssassin) === 20,
+    `${masteryOn(whirlwindAssassin)}`,
+  );
+  check(
+    "and it is the page's primary skill, since the skill it is named after takes no points",
+    whirlwindAssassin.primarySkill === "claw-mastery",
+    whirlwindAssassin.primarySkill,
+  );
+
+  /*
+   * No attack-speed row. The 2.4.3 mechanic is published and the numbers are
+   * not, because the per-weapon-class constant that reproduces the Barbarian's
+   * matrix has no published claw value. A page that grows an `ias` row has
+   * published a table this project cannot derive.
+   */
+  check(
+    "the Whirlwind page publishes no Increased Attack Speed breakpoint",
+    !whirlwindAssassin.breakpoints.some((b) => b.stat === "ias"),
+  );
+  check(
+    "and says in prose why there is none",
+    /2\.4\.3/.test(whirlwindAssassin.breakpointNotes ?? ""),
+  );
+
+  /* The hedge is a constant, not a verdict, and the rule below leans on that. */
+  check("the striking-proc question is recorded as unsettled", WHIRLWIND_ON_STRIKING === null);
 }
 
 // ===========================================================================
@@ -479,6 +601,75 @@ const WOULD_HAVE_SHIPPED: { note: string; line: string; rule: AssassinRule }[] =
   },
 ];
 
+/* Whirlwind — five sentences, and every one of them is true of another page. */
+WOULD_HAVE_SHIPPED.push(
+  {
+    note: "the rotation every other melee page on this class teaches, pointed at a whirl",
+    line: "Charge Tiger Strike three times and Whirlwind releases the whole stack into the pack.",
+    rule: "whirlwind-releases-charges",
+  },
+  {
+    note: "pt-BR form of the same rotation",
+    line: "Carregue o Tiger Strike três vezes e o giro libera a pilha inteira.",
+    rule: "whirlwind-releases-charges",
+  },
+  {
+    note: "the 2011 rule, which is still the most repeated sentence about this skill",
+    line: "Whirlwind only profits from Increased Attack Speed socketed into the weapon, so speed on gloves is a wasted affix.",
+    rule: "whirlwind-ias-from-the-weapon-only",
+  },
+  {
+    note: "this site's own off-hand rule, carried onto the one page it is false on",
+    line: "As on the kick pages, Increased Attack Speed on the off-hand claw does not count for Whirlwind.",
+    rule: "whirlwind-ias-from-the-weapon-only",
+  },
+  {
+    note: "pt-BR form of the off-hand rule",
+    line: "Increased Attack Speed na garra secundária não conta para o giro, como nas páginas de chute.",
+    rule: "whirlwind-ias-from-the-weapon-only",
+  },
+  {
+    note: "the optimistic verdict, which is what the item's stat block invites",
+    line: "Chaos's Frozen Orb and Charged Bolt procs fire on every Whirlwind hit, which is half the reason to hold the claw.",
+    rule: "whirlwind-proc-stated-as-fact",
+  },
+  {
+    note: "the pessimistic verdict, which is the 2009 sentence and is equally unpublishable",
+    line: "Whirlwind never triggers a chance to cast on striking, so Dracul's Life Tap does nothing here.",
+    rule: "whirlwind-proc-stated-as-fact",
+  },
+  {
+    note: "pt-BR form of the optimistic verdict",
+    line: "Os procs do Chaos disparam em cada acerto do giro, e é por isso que a garra é boa.",
+    rule: "whirlwind-proc-stated-as-fact",
+  },
+  {
+    note: "the kick page's Claw Mastery sentence, which is correct there and wrong here",
+    line: "Claw Mastery does nothing for Whirlwind, so one point is all this build wants of it.",
+    rule: "claw-mastery-dead-on-a-whirl",
+  },
+  {
+    note: "pt-BR form of the Claw Mastery denial",
+    line: "O Claw Mastery não se aplica ao giro, então um ponto basta.",
+    rule: "claw-mastery-dead-on-a-whirl",
+  },
+  {
+    note: "the running rule applied to whirling, which is the natural reading of the block cap",
+    line: "You cannot block while whirling, so Weapon Block is twenty wasted points on this build.",
+    rule: "blocked-while-whirling",
+  },
+  {
+    note: "the softer version of the same error",
+    line: "Blocking is reduced to a third while you are whirling, exactly as it is while running.",
+    rule: "blocked-while-whirling",
+  },
+  {
+    note: "pt-BR form",
+    line: "Você não bloqueia enquanto está girando, então o Weapon Block é desperdício aqui.",
+    rule: "blocked-while-whirling",
+  },
+);
+
 console.log("\nPlanted mutations — sentences a writer would plausibly produce");
 for (const { note, line, rule } of WOULD_HAVE_SHIPPED) {
   check(`rejects: ${note}`, fires(line, rule), `expected ${rule}`);
@@ -667,6 +858,54 @@ const ACCEPTED: { note: string; line: string }[] = [
   },
 ];
 
+/* Whirlwind — the corrected form of each mutation above, which must be silent. */
+ACCEPTED.push(
+  {
+    note: "the charge-up exclusion stated plainly, which is what the page ships",
+    line: "Whirlwind carries no `finishing` flag, so it releases no charge-up and a standing Tiger Strike stack is wasted on it.",
+  },
+  {
+    note: "pt-BR mirror of the exclusion",
+    line: "O giro não libera carga nenhuma, então uma pilha de Tiger Strike de pé é desperdício.",
+  },
+  {
+    note: "the 2.4.3 rule, which is the sentence that replaces the 2011 one",
+    line: "Since 2.4.3 Whirlwind incorporates Increased Attack Speed from all equipment, so gloves and helm count in full.",
+  },
+  {
+    note: "the dual-wield half of the same patch note",
+    line: "While dual wielding, Whirlwind averages the attack frame of each weapon, so the off-hand claw's own attack speed is half the answer.",
+  },
+  {
+    note: "pt-BR mirror of the patch note",
+    line: "Desde o 2.4.3 o giro lê Increased Attack Speed de todo o equipamento, e as duas garras entram na média.",
+  },
+  {
+    note: "the hedge, which is what the page publishes instead of a verdict",
+    line: "Whether Chaos's two procs fire while whirling is not established, so the claw is valued on its Enhanced Damage instead.",
+  },
+  {
+    note: "pt-BR mirror of the hedge",
+    line: "Se os procs do Chaos disparam durante o giro não está estabelecido, então a garra vale pelo Enhanced Damage.",
+  },
+  {
+    note: "Claw Mastery credited to a whirl, which is this cycle's finding",
+    line: "Claw Mastery applies in full to Whirlwind, because a whirl swings the claw where a kick uses no weapon at all.",
+  },
+  {
+    note: "pt-BR mirror of the mastery finding",
+    line: "O Claw Mastery se aplica inteiro ao giro, porque um giro golpeia com a garra.",
+  },
+  {
+    note: "the block exception stated correctly",
+    line: "Whirlwind blocks at full effectiveness, and running is the state cut to a third.",
+  },
+  {
+    note: "pt-BR mirror of the block exception",
+    line: "O giro mantém bloqueio integral, e correr é o estado que cai a um terço.",
+  },
+);
+
 console.log("\nSentences that must stay silent");
 for (const { note, line } of ACCEPTED) {
   const problems = checkAssassinClaims([line], "control");
@@ -674,7 +913,7 @@ for (const { note, line } of ACCEPTED) {
 }
 
 console.log("\nWiring");
-check("twenty-five rules are exported for the content sweep", ASSASSIN_RULES.length === 25);
+check("thirty rules are exported for the content sweep", ASSASSIN_RULES.length === 30);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) {
