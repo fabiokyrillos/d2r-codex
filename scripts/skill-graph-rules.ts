@@ -148,6 +148,27 @@ export const SLUG_OVERRIDES: Record<string, string> = {
    * the ones that looked suspicious.
    */
   "Pole Arm Mastery": "polearm-mastery",
+  /*
+   * The Warlock, two of thirty — and eight of his rows are named one thing in
+   * the table and another in the game, which is the widest gap since the Druid.
+   * Six of the eight need no entry here because they differ only by a colon:
+   * `Hex Bane` ships as "Hex: Bane" and both slugify to `hex-bane`, since `": "`
+   * and `" "` collapse to the same hyphen. That is precisely why a uniqueness
+   * check cannot find this class of defect — six of the eight are invisible to
+   * it, and the two below are not.
+   *
+   * Resolved from each row's `str name` against `allstrings-eng.json` at the
+   * pinned commit, not from resemblance:
+   *
+   *   Levitate        `LevitateName`     -> Levitation Mastery
+   *   Miasma Chains   `MiasmaChainName`  -> Miasma Chain   (singular)
+   *
+   * The identifiers stay the join key. Cleave and Echoing Strike both require
+   * `Levitate`, and Enhanced Entropy, Psychic Ward, Miasma Bolt and Abyss all
+   * reference these rows; every one resolves through this table.
+   */
+  Levitate: "levitation-mastery",
+  "Miasma Chains": "miasma-chain",
 };
 
 const slugify = (name: string) =>
@@ -346,15 +367,61 @@ const SYNERGY_KINDS: Record<string, string> = {
    * reader told Find Potion raises Find Item's "damage" would be told something
    * with no meaning at all.
    *
-   * The kind is generic and its label is not: `synergyKindChance` reads "find
-   * chance", because the one edge that carries it lands in the sentence "+1%
-   * find chance per level" on the Find Item page, and "chance" alone leaves the
-   * reader asking chance of what. A second `% chance` edge on some other skill
-   * would make that label wrong, and is the moment to revisit it — the game's
-   * other chance synergies ("Chance to Explode", "Chance to Bind") normalise to
-   * different keys and would not land here.
+   * The kind is `find-chance` rather than a bare `chance`, and that is the
+   * revision this comment used to promise. It said a second chance synergy
+   * "would make that label wrong, and is the moment to revisit it". The Warlock
+   * brought one within the hour: Sigil Death raises Hex Purge's **chance to
+   * explode**, and a shared `chance` kind would have printed "+X% find chance
+   * per level" on a Warlock hex.
+   *
+   * So both are specific. Two chances that are not the same chance get two
+   * kinds and two labels, which is the same rule that keeps `shots` apart from
+   * `damage`.
    */
-  "% chance": "chance",
+  "% chance": "find-chance",
+  /*
+   * The Warlock, five labels, and three of them are only *reachable* because
+   * the extractor stopped dropping the `paN` short form and the
+   * `*Param10 Description2` column. They are the first evidence that fix does
+   * anything.
+   *
+   * Three map onto kinds that already exist, and the mapping is decided by the
+   * stat each one feeds rather than by the words in the label:
+   *
+   *   "Synergy Defense per level with Demonic Mastery"  Engorge's aura stat
+   *       reads `skill('Blood Oath'.blvl) * skill('Blood Oath'.pa11)`. The
+   *       stat is defence, so the kind is `armor`. The label names Demonic
+   *       Mastery as context; the donor is Blood Oath, and the donor is what
+   *       the edge is drawn from.
+   *   "Hex Purge Damage synergy"  Hex Bane's own Param10, read three times by
+   *       one expression with three donors. Damage.
+   *   "Debuff Duration synergy"  the mirror of "buff duration", which is
+   *       already here. Both are a length of time a thing lasts.
+   *
+   * "Synergy Duration per level  (psychic ward)" keeps its double space. That
+   * is Blizzard's column, it survives the normaliser, and writing it with one
+   * space here would be a key that never matches — a silent drop reintroduced
+   * by tidying.
+   */
+  "defense per level with demonic mastery": "armor",
+  "hex purge damage": "damage",
+  "debuff duration": "duration",
+  "duration per level  (psychic ward)": "duration",
+  /*
+   * And one that is genuinely a fourth thing. Hex Siphon returns life and mana
+   * on a kill, and folding that into `damage` or `duration` would be exactly
+   * the mislabelling this table exists to refuse — a reader told Hex Siphon
+   * raises something's "damage" would spend points expecting a bigger hit and
+   * get sustain instead.
+   */
+  "life/mana steal": "steal",
+  /*
+   * Sigil Death raises Hex Purge's chance to explode:
+   * `calc2 = (ln21 + (skill('Sigil Death'.blvl) * pa10)) / 100`. See the
+   * `find-chance` note above for why this is its own kind rather than sharing
+   * one with Find Item's.
+   */
+  "chance to explode": "explode-chance",
 };
 
 /**
@@ -1154,6 +1221,24 @@ export const MISSILE_CHILD_COLUMNS = [
 /** `skill('X'.blvl) * 15` or `(skill('X'.blvl)+skill('Y'.blvl))*7`. */
 const MISSILE_SYNERGY_COLUMNS = ["EDmgSymPerCalc", "ELenSymPerCalc"] as const;
 const MISSILE_LITERAL_COEFFICIENT = /\*\s*(\d+)\s*$/;
+/**
+ * The second coefficient shape, which the Warlock introduced.
+ *
+ * Every missile synergy in the extraction used to end in a literal `* N`. Miasma
+ * Bolt's cloud writes the rate as a reference to the *owning skill's* parameter
+ * instead, once per term:
+ *
+ *   (skill('Miasma Chains'.blvl)*skill('Miasma Bolt'.par9))
+ *     +(skill('Abyss'.blvl)*skill('Miasma Bolt'.par9))
+ *
+ * It is the same statement as `(... + ...)*par8` on the skill's own row, spelled
+ * with the parameter named rather than inlined, and it is not a duplicate of
+ * that row: the skill's `par8` is 10 and the cloud's `par9` is 20, so the bolt
+ * and the cloud it leaves behind take different rates from the same two donors.
+ * That is Phoenix Strike's meteor and meteor-fire again, which this function
+ * already keys by (source, component) precisely so both can be published.
+ */
+const MISSILE_PARAM_COEFFICIENT = /skill\('([^']+)'\.par(\d+)\)/g;
 
 /**
  * Every missile-borne synergy reachable from one skill, following sub-missiles.
@@ -1173,6 +1258,7 @@ export function missileSynergiesFor(
   spawns: readonly string[],
   missileByName: ReadonlyMap<string, MissileRow>,
   where: string,
+  rowByName: ReadonlyMap<string, SkillRow>,
 ): MissileSynergy[] {
   const found = new Map<string, MissileSynergy>();
   const seen = new Set<string>();
@@ -1197,15 +1283,43 @@ export function missileSynergiesFor(
         );
       }
 
-      const coefficient = MISSILE_LITERAL_COEFFICIENT.exec(value.trim());
-      if (!coefficient) {
-        throw new Error(
-          `${where}: missile "${row.Missile}" declares ${column} as "${value}", whose ` +
-            `coefficient is not a trailing literal. Every missile synergy in the pinned ` +
-            `extraction ends in \`* N\`; read the new shape deliberately.`,
-        );
+      const literal = MISSILE_LITERAL_COEFFICIENT.exec(value.trim());
+      let magnitude: number;
+      if (literal) {
+        magnitude = Number(literal[1]);
+      } else {
+        /*
+         * The parameter-reference shape. Every term must name the same owner
+         * and the same parameter: one missile carries one rate, and two
+         * different parameters in one expression would be two rates wearing one
+         * column, which is a contradiction rather than a component.
+         */
+        const refs = [...value.matchAll(MISSILE_PARAM_COEFFICIENT)];
+        const distinct = new Set(refs.map((m) => `${m[1]}|${m[2]}`));
+        if (refs.length === 0 || distinct.size !== 1) {
+          throw new Error(
+            `${where}: missile "${row.Missile}" declares ${column} as "${value}", whose ` +
+              `coefficient is neither a trailing literal nor one repeated ` +
+              `\`skill('X'.parN)\` reference; read the new shape deliberately.`,
+          );
+        }
+        const [owner, index] = [refs[0][1], refs[0][2]];
+        const ownerRow = rowByName.get(owner);
+        if (!ownerRow) {
+          throw new Error(
+            `${where}: missile "${row.Missile}" reads Param${index} of "${owner}", which is ` +
+              `not a skill in the extraction.`,
+          );
+        }
+        const raw = ownerRow[`Param${index}`];
+        if (typeof raw !== "number") {
+          throw new Error(
+            `${where}: missile "${row.Missile}" reads Param${index} of "${owner}", which that ` +
+              `row does not carry as a number. The columns moved.`,
+          );
+        }
+        magnitude = raw;
       }
-      const magnitude = Number(coefficient[1]);
 
       const element = row.EType;
       if (typeof element !== "string" || element.length === 0) {

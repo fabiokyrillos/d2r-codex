@@ -7,6 +7,7 @@ import { necromancerSkills, necromancerTrees } from "./necromancer/skills";
 import { druidSkills, druidTrees } from "./druid/skills";
 import { assassinSkills, assassinTrees } from "./assassin/skills";
 import { barbarianSkills, barbarianTrees } from "./barbarian/skills";
+import { warlockSkills, warlockTrees } from "./warlock/skills";
 
 /**
  * Skill registry across all classes.
@@ -29,6 +30,7 @@ export const allSkills: Skill[] = [
   ...druidSkills,
   ...assassinSkills,
   ...barbarianSkills,
+  ...warlockSkills,
 ];
 
 export const allSkillTrees: SkillTree[] = [
@@ -39,4 +41,5 @@ export const allSkillTrees: SkillTree[] = [
   ...druidTrees,
   ...assassinTrees,
   ...barbarianTrees,
+  ...warlockTrees,
 ];

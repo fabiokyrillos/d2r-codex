@@ -939,8 +939,24 @@ for (const locale of LOCALES) {
    * they reach a URL. `skill-page.test.ts` sweeps the built artifacts; this
    * catches it one layer earlier, where the entry is assembled.
    */
-  const serialised = JSON.stringify(index).toLowerCase();
-  const leaked = Object.keys(SLUG_OVERRIDES).filter((id) => serialised.includes(id.toLowerCase()));
+  /*
+   * Matched as a whole word, not as a substring.
+   *
+   * `includes` was right until an override was an ordinary English verb. The
+   * Warlock's `Levitate` ships as "Levitation Mastery", and the class page's
+   * core-mechanic heading "Levitated weapon" — prose about the class passive,
+   * naming no skill — contains it. A substring rule cannot tell an identifier
+   * from an inflection of the same word, and would have forced the prose to
+   * avoid a word the class is *about*.
+   *
+   * It costs no strictness. A leak is the identifier rendered where a name
+   * belongs, and that is always a standalone word: `Levitate` still catches
+   * a skill called "Levitate", and stops catching "levitated" and "levitates".
+   */
+  const serialised = JSON.stringify(index);
+  const leaked = Object.keys(SLUG_OVERRIDES).filter((id) =>
+    new RegExp(`\\b${id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(serialised),
+  );
   check(`${locale}: no overridden identifier reaches the index`, leaked.length === 0, leaked.join(", "));
 }
 

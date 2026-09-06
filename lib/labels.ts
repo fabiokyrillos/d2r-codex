@@ -127,7 +127,9 @@ export const synergyKindLabels = (t: Dictionary): Record<string, string> => ({
   physical: t.skills.synergyKindPhysical,
   fire: t.skills.synergyKindFire,
   shots: t.skills.synergyKindShots,
-  chance: t.skills.synergyKindChance,
+  "find-chance": t.skills.synergyKindFindChance,
+  "explode-chance": t.skills.synergyKindExplodeChance,
+  steal: t.skills.synergyKindSteal,
 });
 
 /**
@@ -151,7 +153,9 @@ export const SYNERGY_KINDS_LABELLED: readonly string[] = [
   "physical",
   "fire",
   "shots",
-  "chance",
+  "find-chance",
+  "explode-chance",
+  "steal",
 ];
 
 /**

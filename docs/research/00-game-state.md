@@ -60,10 +60,17 @@ means generic "2H vs 1H+shield" advice does not apply to this class.
 | **Eldritch** | Imbues weapons with mind magic and hexes (cripple, drain, gore explosion). Higher tiers create ethereal weapon duplicates or throw weapons at range. |
 | **Chaos** | Ranged hellfire/void. Conjures **Miasma** (entropy projectiles); capstones include **Apocalypse** and **Abyss** (draws in and annihilates nearby enemies). |
 
-> **Unverified:** exact skill lists, synergies, level requirements, and numeric
-> values per tree. Blizzard's announcement is prose, not a skill table. Do not
-> write Warlock skill numbers until verified against an in-game source or a
-> detailed community skill database.
+> **Closed 2026-09-06.** The skill lists, their synergies, level requirements
+> and prerequisite edges are Tier 1 and are published. `json/skills.json` in the
+> pinned extraction carries thirty `charclass = war` rows alongside the other
+> seven classes, and `json/skilldesc.json` splits them ten-ten-ten across the
+> three pages above. The tree captions are the game's own:
+> `SkillCategoryWa1/2/3` read "Demon", "Eldritch", "Chaos".
+>
+> This is the attributes exception applied a second time, not an exception to
+> it: published *because* verified, from the same commit, by the same route.
+> What remains unverified is what always was — numeric *balance* commentary, a
+> meta, and anything the tables do not carry.
 
 ### Grimoires (new item type)
 
@@ -201,7 +208,9 @@ a reason to play ladder.
 
 Tracked so we don't accidentally write content on unverified ground:
 
-1. Warlock full skill tables (names, levels, synergies, numbers).
+1. ~~Warlock full skill tables (names, levels, synergies, numbers).~~
+   **Closed 2026-09-06.** Thirty `war` rows in the pinned extraction; see
+   "The Warlock" above and [`09-warlock.md`](09-warlock.md).
 2. ~~Warlock starting attributes, life/mana per level, per-vitality/energy
    gains.~~ **Closed 2026-09-01.** See "The Warlock attributes exception" below.
 3. Madawc's two unique jewels.
@@ -211,7 +220,12 @@ Tracked so we don't accidentally write content on unverified ground:
 7. Stat lines for Authority / Coven / Void / Vigilence / Ritual.
 8. Full Terror Zone rotation group list (partially captured).
 9. Whether the classic breakpoint tables (FCR/FHR/IAS) changed at all in 3.x.
-10. Whether Warlock has its own FCR/FHR breakpoint table (near-certain that it does).
+10. ~~Whether Warlock has its own FCR/FHR breakpoint table (near-certain that it
+    does).~~ **Closed 2026-09-06, against its own prediction. It does not**, and
+    the site already said so: `content/breakpoints/breakpoints.ts` publishes
+    `fcr-paladin-necromancer-warlock`, `fhr-necromancer-druid-warlock` and
+    `fbr-necromancer-druid-warlock`, all at `confidence: "verified"`. The
+    parenthetical guess is struck rather than left to mislead the next reader.
 
 ## The Warlock attributes exception
 
@@ -246,8 +260,8 @@ verified" placeholders for the same reason.
 | **Necromancer** | **30, with pages** | **3** | **Yes** | **Complete as of 2026-09-03; see [`04-necromancer-foundation.md`](04-necromancer-foundation.md) and [`05-necromancer-builds.md`](05-necromancer-builds.md)** |
 | **Druid** | **30, with pages** | **2** | **Yes** | **As of 2026-09-04; see [`06-druid.md`](06-druid.md). Five further build families researched and not yet written** |
 | **Assassin** | **30, with pages** | **6 of a 7-page roster** | **Yes** | **In progress as of 2026-09-06; see [`07-assassin.md`](07-assassin.md). Whirlwind Assassin is researched (§11.3) and not yet written** |
-| Barbarian | — | — | — | Overview pages only |
-| Warlock | — | — | — | Attributes only; see the exception above |
+| **Barbarian** | **30, with pages** | — | — | **Skills and trees as of 2026-09-06; see [`08-barbarian.md`](08-barbarian.md). Builds and journey in progress** |
+| **Warlock** | **30, with pages** | — | — | **Skills and trees as of 2026-09-06; see [`09-warlock.md`](09-warlock.md). Builds and journey in progress** |
 
 ## Related research
 
@@ -267,6 +281,16 @@ verified" placeholders for the same reason.
   control they disarmed; the eight slug overrides; the seven build families,
   the two published and the reasons for the five that are not; and the
   arithmetic that fixes the fire-to-wind respec at level 38. **Executed.**
+- [`08-barbarian.md`](08-barbarian.md) — the Barbarian's three trees and thirty
+  skills; the Warcries-feeds-Combat shape no other class has; the two physical
+  tables; the `Polearm Mastery` naming gap; and the build inventory that folds
+  Gold Find and the Horker into Berserk rather than giving a farming area its
+  own page. **Skills executed; builds in progress.**
+- [`09-warlock.md`](09-warlock.md) — the Warlock's thirty skills, moved from
+  "not established" to Tier 1 on the same argument the attributes were; the
+  eight rows the tables name differently from the game; the two extraction
+  spellings that were dropping synergies in silence; and the Patch 3.3 diff that
+  answered Bind Demon. **Skills executed; builds in progress.**
 - [`05-necromancer-builds.md`](05-necromancer-builds.md) — the three builds, the
   Summoner journey, six dependency pages and the aliases; the summons research
   that answered four of those five questions and reshaped the point plan; the

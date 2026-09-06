@@ -141,8 +141,8 @@ be spent as a result.
 | **Baseline** | D2R Patch 3.3 / Ladder Season 15 extraction |
 | **Regenerate** | `npm run gen:skill-graph` |
 | **Fields taken** | `charclass`, `reqlevel`, `reqskill1`, `reqskill2`, `SkillPage`, the `calc`/`Param` columns for synergies and effects, `mana`/`lvlmana`/`manashift`, and `petmax` |
-| **Normalization** | Filter to the `charclass` codes in scope — currently `pal`, `sor`, `ama`, `nec`, `dru`, `ass`; slugify the identifier through `SLUG_OVERRIDES`; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
-| **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **180 of 180** skills |
+| **Normalization** | Filter to the `charclass` codes in scope — currently `pal`, `sor`, `ama`, `nec`, `dru`, `ass`, `bar`, `war` — all eight; slugify the identifier through `SLUG_OVERRIDES`; sort prerequisite sets; join `SkillPage` on the `skilldesc` key; derive tree slugs by membership, failing if one page maps to two trees |
+| **Agreement** | Prerequisite sets identical across the repository's current D2R tables and its pre-D2R `json/base/` tables for **210 of 240** skills. The thirty that cannot agree are the Warlock's: `json/base/` is a Lord of Destruction extraction and carries seven classes, so no pre-D2R Warlock exists to compare against. That is an absent comparison, not a disagreement, and the number says so rather than quietly reporting 210 of 210 |
 | **Non-drift** | `npm run check:graph-drift` compares every node body against the file as committed at `c785b47` and fails on any change to one that already existed |
 
 > Three of the rows above had gone stale, and they are worth naming because of
@@ -395,8 +395,45 @@ owner cannot license someone else's data. The site's line:
 | Thing | Treatment |
 | --- | --- |
 | **Mechanical facts** — unlock levels, prerequisite edges, tree coordinates, parameter values | Used freely. Facts about a system are not copyrightable. |
-| **The game's descriptive prose** — the `str name` / `str long` string tables | **Never extracted, never shipped.** All prose on this site is written here. |
+| **The game's descriptive prose** — the `str long` / `str short` string tables | **Never extracted, never shipped.** All prose on this site is written here. |
+| **Skill names** — the `str name` key, resolved through `allstrings-eng.json` | **Read, never shipped as prose.** A name is a proper noun, not description, and the site already publishes all of them. It is read during a class pass to check that the name published *is* the name the game shows — see below. |
 | **Artwork** — `IconCel` sprite-sheet indices | **Never extracted, never shipped.** The site draws its own marks. |
+
+### Why `str name` is read, and what a slug check cannot see
+
+The extraction uses the `skill` column as an identifier and slugifies it. For
+most skills that is also the name a player sees; for twenty-seven across the
+eight classes it is not, and the site publishes the shipped name in every one of
+those cases. `SLUG_OVERRIDES` exists to keep the identifier as the join key
+while nothing public carries it.
+
+The check that finds a gap is resolving `str name` and comparing. **A uniqueness
+or collision check cannot substitute for it**, and the Warlock is the proof: six
+of its eight gaps differ from the identifier only by a colon, and `Hex Bane` and
+`Hex: Bane` slugify to the same string, so a collision sweep reports a clean
+class. Nothing about `Levitate` looks suspicious either — a real word, correctly
+spelled, describing the skill, and not what the game calls it (`Levitation
+Mastery`).
+
+Resolve all thirty when a class enters scope. Eighteen gaps across the first six
+classes, one Barbarian, eight Warlock.
+
+### The pinned source's own history is a Tier 1 before-and-after
+
+`json/base/` is the repository's usual historical comparison and it is a Lord of
+Destruction extraction: seven classes, no Warlock. So it cannot answer "did this
+change in the last patch?" for anything the expansion added.
+
+The pinned source can. It is a git repository, and `a99ca28311` (2026-05-23,
+"Updated for newest patch") is the 3.2-era extraction — after the February
+expansion, before the August patch. Diffing its rows against the pinned commit
+is a Tier 1 answer to a question no single snapshot can settle. It established
+that exactly two of thirty Warlock rows changed in 3.3: Bind Demon's
+`passivecalc9` was rewritten and gained two "flat damage bonus" parameters, and
+Sigil Death gained `EType: "fire"` where it had no element at all.
+
+**Read only.** `SOURCE_SHA` stays where it is; an earlier commit is evidence,
+never a generator input.
 
 `localestrings-*.json` covers eng, deu, esp, fra, ita, pol, chi and kor — and no
 Portuguese. That independently confirms ADR 0003: no official pt-BR string
