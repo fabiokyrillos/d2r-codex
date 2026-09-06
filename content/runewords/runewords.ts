@@ -1823,4 +1823,90 @@ export const runewords: Runeword[] = [
       "`disallowCraftingInLadder` is set on **exactly one** of the 181 runewords in the pinned extraction, and this is it. Blizzard's stated reason was a graphics fault that could crash clients, not balance — and `charge-noconsume` is still 50, unchanged, so the runeword has not been nerfed. It has been made unmakeable in one mode, which is a different thing.",
     confidence: "verified",
   },
+  {
+    slug: "chaos",
+    name: "Chaos",
+    summary:
+      "The only route any Assassin has to Whirlwind. Three sockets in a claw, and the skill arrives at level 1 from the item.",
+    runes: ["fal", "ohm", "um"],
+    sockets: 3,
+    requiredLevel: 57,
+    tier: "optimized",
+    bases: {
+      categories: ["claw"],
+      display: "Any 3-socket Assassin claw",
+      exclusions: [
+        "Claws only — `itype1 = h2h`. It cannot be made in any other weapon, and no other class can hold one.",
+        "The base must take three sockets. Battle Cestus, War Fist, Hand Scythe, Katar, Cestus, Wrist Blade, Wrist Spike, Fascia and Hatchet Hands take two at most and can never hold it.",
+      ],
+    },
+    stats: [
+      { text: "+1 to Whirlwind", notable: true },
+      { text: "+290-340% Enhanced Damage", variable: true, notable: true },
+      { text: "Adds 216-471 Magic Damage", variable: true, notable: true },
+      { text: "+35% Increased Attack Speed", notable: true },
+      { text: "9% Chance to cast level 11 Frozen Orb on striking" },
+      { text: "11% Chance to cast level 9 Charged Bolt on striking" },
+      { text: "25% Chance of Open Wounds" },
+      { text: "+10 to Strength" },
+      { text: "+15 Life after each Demon Kill" },
+    ],
+    recommendedBases: [
+      "Runic Talons — the fastest elite claw at -30 weapon speed, and the reason to pay 115 Strength and 115 Dexterity for it.",
+      "Feral Claws — -20 speed, and a much cheaper stat requirement than Runic Talons.",
+      "Greater Talons — the exceptional -30 base, at 79 Strength and 79 Dexterity. The sensible target before elite.",
+    ],
+    usedBy:
+      "Whirlwind Assassins, and nobody else. The whole build exists because of the `oskill` line: Whirlwind is a Barbarian skill and this is the only item that puts it on an Assassin's bar.",
+    commonMistakes: [
+      "Expecting `+skills` to raise the Whirlwind. It cannot. `+2 to Assassin Skills` is keyed to a class and `+3 to Martial Arts` to a tab, and Whirlwind belongs to neither — only `+1 to All Skills` from a non-class source reaches it.",
+      "Reading the two proc rows as damage ranges. The columns are chance and level: 9% at level 11, and 11% at level 9.",
+      "Sinking runes into a two-socket claw. Nine of the eighteen claw bases can never take a third socket.",
+    ],
+    notes:
+      "The Enhanced Damage published here is **+290-340%**, where the runeword's own block gives +240-290%. Ohm's weapon mod supplies the other fifty, exactly as it does in Faith. See `docs/sources/README.md` — a runeword's displayed block is its own properties plus each rune's mod for that item type.",
+    confidence: "verified",
+  },
+
+  {
+    slug: "fury",
+    name: "Fury",
+    summary:
+      "Open Wounds, Deadly Strike and life steal in any melee weapon — including a claw, because a claw is a melee weapon.",
+    runes: ["jah", "gul", "eth"],
+    sockets: 3,
+    requiredLevel: 65,
+    tier: "bis",
+    bases: {
+      categories: ["sword", "axe", "mace", "hammer", "scepter", "polearm", "spear", "dagger", "claw"],
+      display: "Any 3-socket melee weapon",
+      exclusions: [
+        "`itype1 = mele`, and item type membership is a hierarchy: `itemtypes.json` gives `h2h` the parent `mele` and `h2h2` the parent `h2h`, **so an Assassin claw takes it**. That is not an exception — it follows from the tree.",
+        "Not bows, crossbows, javelins, staves, wands or orbs. None of them is under `mele`.",
+      ],
+    },
+    stats: [
+      { text: "+209% Enhanced Damage", notable: true },
+      { text: "66% Chance of Open Wounds", notable: true },
+      { text: "33% Deadly Strike", notable: true },
+      { text: "+40% Increased Attack Speed", notable: true },
+      { text: "6% Life stolen per hit" },
+      { text: "Prevent Monster Heal" },
+      { text: "Ignore Target's Defense" },
+      { text: "+20% Bonus to Attack Rating" },
+      { text: "-25% Target Defense" },
+      { text: "+5 to Frenzy (Barbarian only)" },
+    ],
+    recommendedBases: [
+      "A Phase Blade, for the indestructibility — the usual choice on any melee build that can hold one.",
+      "A claw, if you are an Assassin pairing it with Chaos in the other hand. Claws are melee weapons and this is legal.",
+    ],
+    usedBy:
+      "Melee builds that want Open Wounds and Deadly Strike rather than a flat damage number — and, on an Assassin, the off-hand beside Chaos.",
+    commonMistakes: [
+      "Making it for the Frenzy line. `+5 to Frenzy` is class-scoped — `item_singleskill` carries `Save Param Bits 3` and its tooltip reads \"+# to [Skill] ([Class] only)\" — so it is the biggest-looking line on the item and does nothing at all for seven of the eight classes.",
+      "Assuming a claw cannot take it. `mele` is a parent of `h2h`, and the hierarchy is what decides.",
+    ],
+    confidence: "verified",
+  },
 ];

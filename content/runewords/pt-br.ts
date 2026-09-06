@@ -700,4 +700,46 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     notes:
       "`disallowCraftingInLadder` está marcado em **exatamente uma** das 181 runewords da extração fixada, e é esta. A razão declarada pela Blizzard foi uma falha gráfica capaz de derrubar clientes, não balanceamento — e `charge-noconsume` continua 50, inalterado, então a runeword não sofreu nerf. Ela foi tornada infabricável num modo, o que é outra coisa.",
   },
+  chaos: {
+    summary:
+      "O único caminho que uma Assassin tem para o Whirlwind. Três sockets numa claw, e a skill chega no nível 1 pelo item.",
+    basesDisplay: "Qualquer claw de Assassin com 3 sockets",
+    basesExclusions: [
+      "Só claws — `itype1 = h2h`. Não dá para fazer em nenhuma outra arma, e nenhuma outra classe consegue segurar uma.",
+      "A base precisa aceitar três sockets. Battle Cestus, War Fist, Hand Scythe, Katar, Cestus, Wrist Blade, Wrist Spike, Fascia e Hatchet Hands aceitam no máximo dois e nunca podem carregá-la.",
+    ],
+    recommendedBases: [
+      "Runic Talons — a claw elite mais rápida, com -30 de weapon speed, e a razão para pagar 115 de Strength e 115 de Dexterity por ela.",
+      "Feral Claws — -20 de velocidade, e um requisito de atributos muito mais barato que o da Runic Talons.",
+      "Greater Talons — a base exceptional de -30, com 79 de Strength e 79 de Dexterity. O alvo sensato antes da elite.",
+    ],
+    usedBy:
+      "Whirlwind Assassins, e mais ninguém. A build inteira existe por causa da linha de `oskill`: o Whirlwind é uma skill de Barbarian e este é o único item que o coloca na barra de uma Assassin.",
+    commonMistakes: [
+      "Esperar que `+skills` aumente o Whirlwind. Não aumenta. `+2 to Assassin Skills` é atrelado a uma classe e `+3 to Martial Arts` a uma aba, e o Whirlwind não pertence a nenhuma das duas — só `+1 to All Skills` de uma fonte que não seja de classe alcança ele.",
+      "Ler as duas linhas de proc como faixas de dano. As colunas são chance e nível: 9% no nível 11, e 11% no nível 9.",
+      "Gastar runas numa claw de dois sockets. Nove das dezoito bases de claw nunca aceitam um terceiro socket.",
+    ],
+    notes:
+      "O Enhanced Damage publicado aqui é **+290-340%**, enquanto o bloco da própria runeword dá +240-290%. O mod de arma do Ohm fornece os outros cinquenta, exatamente como acontece no Faith. Ver `docs/sources/README.md` — o bloco exibido de uma runeword são as propriedades dela mais o mod de cada runa para aquele tipo de item.",
+  },
+  fury: {
+    summary:
+      "Open Wounds, Deadly Strike e roubo de vida em qualquer arma corpo a corpo — inclusive numa claw, porque uma claw é uma arma corpo a corpo.",
+    basesDisplay: "Qualquer arma corpo a corpo com 3 sockets",
+    basesExclusions: [
+      "`itype1 = mele`, e pertencimento a tipo de item é uma hierarquia: o `itemtypes.json` dá a `h2h` o pai `mele` e a `h2h2` o pai `h2h`, **então uma claw de Assassin aceita**. Isso não é exceção — decorre da árvore.",
+      "Não serve em arcos, bestas, javelins, staves, wands nem orbs. Nenhum deles está sob `mele`.",
+    ],
+    usedBy:
+      "Builds corpo a corpo que querem Open Wounds e Deadly Strike em vez de um número seco de dano — e, numa Assassin, a mão secundária ao lado do Chaos.",
+    commonMistakes: [
+      "Fazer por causa da linha de Frenzy. `+5 to Frenzy` é atrelado à classe — o `item_singleskill` carrega `Save Param Bits 3` e o tooltip dele diz \"+# to [Skill] ([Class] only)\" — então é a maior linha do item e não faz absolutamente nada para sete das oito classes.",
+      "Presumir que uma claw não aceita. `mele` é pai de `h2h`, e é a hierarquia que decide.",
+    ],
+    recommendedBases: [
+      "Uma Phase Blade, pela indestrutibilidade — a escolha de sempre em qualquer build corpo a corpo que consiga segurar uma.",
+      "Uma claw, se você for uma Assassin combinando com o Chaos na outra mão. Claws são armas corpo a corpo e isso é legítimo.",
+    ],
+  },
 };
