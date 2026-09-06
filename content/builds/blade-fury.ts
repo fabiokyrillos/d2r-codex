@@ -110,7 +110,7 @@ import type { Build } from "@/lib/types";
  * NO SHOTGUN, NO PIERCE, NO NEXT HIT DELAY
  * -----------------------------------------
  * `bladefragment1`: `NumDirections 1`, `CollideKill 1`, `Vel 22`, `Range 40`,
- * `Pierce` unset, and **no `NextHit` and no `NextDelay` at all**.
+ * `Pierce` unset, and **no next-hit delay at all** (`NextHit` and `NextDelay` are both absent).
  *
  *   - One missile per throw. `Param4` is a delay *between* missiles, so the
  *     blades are separated in time rather than fired in a spread. Nothing here
@@ -193,7 +193,7 @@ export const bladeFury: Build = {
   weaknesses: [
     "**Physical immunity is the wall**, and it closes eight of this site's twenty farming areas to the larger half of the damage",
     "**No shotgun and no pierce.** One missile per throw, and the first thing it touches is the last — this is not a crowd-clearing skill",
-    "It can miss. `ToHitCalc = lvl*10` helps a great deal and does not make attack rating free",
+    "It can miss. Its +10% attack rating per level helps a great deal and does not make attack rating free",
     "**Burst of Speed does nothing for the attack**, which is the single most common way this build is built wrong",
     "Mana is charged per blade rather than per press, so a held button is a held drain",
     "Blade Sentinel competes for the same five trap slots as any sentry, so the trap tree is not a second act here",
@@ -245,7 +245,7 @@ export const bladeFury: Build = {
     { skill: "wake-of-fire", points: 1, role: "prerequisite", note: "Blade Fury's second prerequisite. One point, and never pressed." },
     { skill: "claw-mastery", points: 1, role: "prerequisite", note: "The gateway to the whole Shadow tree: Weapon Block sits behind it, and so does the Fade that Venom needs. **Unlike on the kick page, this one is a damage skill here**: Claw Mastery's bonus is applied to Blade Fury. Whether to spend nineteen more on it is the first package." },
     { skill: "burst-of-speed", points: 1, role: "prerequisite", note: "**One point, and understand what it is for.** It is Fade's prerequisite and it is run speed. Its attack speed cannot touch a fixed five-frame cadence, and treating it as a damage buff here is the standard error." },
-    { skill: "fade", points: 1, role: "utility", note: "Venom's prerequisite, and the resistance answer. One point unless you take the Fade package. It excludes Burst of Speed — `fade` and `quickness` are the only two members of `group = 2` in `states.json` — and on this build that exclusion costs almost nothing." },
+    { skill: "fade", points: 1, role: "utility", note: "Venom's prerequisite, and the resistance answer. One point unless you take the Fade package. It excludes Burst of Speed, and the two are the only members of their exclusion group in `states.json` — which on this build costs almost nothing." },
     { skill: "weapon-block", points: 1, role: "utility", note: "One point, and it only does anything with a claw in each hand. If you end on a one-handed weapon and a shield, this stays at one forever." },
     { skill: "psychic-hammer", points: 1, role: "prerequisite", note: "Cloak of Shadows' prerequisite." },
     { skill: "cloak-of-shadows", points: 1, role: "utility", note: "Blinds a room, which for a build that stands still and channels is worth more than it looks. Prerequisite for Mind Blast and the shadows." },
@@ -327,7 +327,7 @@ export const bladeFury: Build = {
 
   stats: {
     strength: "Enough for your gear, and the number depends entirely on which weapon you end on. A claw route needs almost none; a one-handed weapon and a shield can need well over a hundred.",
-    dexterity: "**More than most Assassin pages want, and the reason is that this skill rolls to hit.** `ToHitCalc = lvl*10` does most of the work, so this is not an Amazon's dexterity budget — but attack rating is live, and if you have not taken the Claw Mastery package, dexterity is where it comes from.",
+    dexterity: "**More than most Assassin pages want, and the reason is that this skill rolls to hit.** Its +10% attack rating per level does most of the work, so this is not an Amazon's dexterity budget — but attack rating is live, and if you have not taken the Claw Mastery package, dexterity is where it comes from.",
     vitality: "Everything left, and it is a lot. This is a build with no strength requirement it cannot choose and no dexterity requirement at all if Claw Mastery is paying.",
     energy: "None. Mana is charged per blade and the answer is leech and a Spirit, not attribute points.",
     notes: [
@@ -594,7 +594,7 @@ export const bladeFury: Build = {
     "**Take the Fade package, and take the Iron Maiden problem seriously.** The curse reflects a share of the damage you deal, and this build deals it in five instalments a second with no way to slow down — the cadence is fixed, so you cannot even choose to attack less often within an activation. Fade's curse-length reduction is the mitigation, and eighteen points of it cuts the duration by as much as 90%. Beyond that, the shape of the build is unusually kind to Hardcore: it is genuinely ranged at 40 units, it has no rotation to be interrupted, and being hit-stunned costs output rather than a life — which is why the Faster Hit Recovery breakpoint is marked required and the block breakpoint is not. The two real dangers are the Chaos Sanctuary, which is the worst room on the site for this specific curse, and running out of mana mid-pack: a per-blade cost with a held button empties a pool very fast, and a mercenary carrying Insight is the difference between a fight and a retreat.",
 
   selfFoundNotes:
-    "**The most self-found-complete build on the class, and the reason is that half its damage does not come from an item at all.** Sixty points in the triangle multiply Blade Fury's own damage fivefold with no gear involved whatever, and twenty in Venom add a poison that no drop improves. The weapon half is the only part that wants a good item, and it accepts *any* one-handed weapon — a rare sword, a crafted claw, a Steel, a Passion — because what it reads is the damage range, not a specific affix. Nothing in the first four tiers is a runeword above four runes: Steel, Stealth, Lore, Treachery, Smoke, Duress, Spirit, Passion. There is no ladder gate anywhere on this page and no high rune until the optimized tier, which is optional by construction because the claw alternative sits beside it. **The one thing that is genuinely worth hunting is `+skills`**, and claws roll Assassin skills natively from the Act 1 vendor, who restocks on every town entry.",
+    "**The most self-found-complete build on the class, and the reason is that half its damage does not come from an item at all.** Sixty points in the triangle multiply Blade Fury's own damage fivefold with no gear involved whatever, and twenty in Venom add a poison that no drop improves. The weapon half is the only part that wants a good item, and it accepts *any* one-handed weapon — a rare sword, a crafted claw, a Steel, a Passion — because what it reads is the damage range, not a specific affix. Nothing in the first four tiers is a runeword above four runes: Steel, Stealth, Lore, Treachery, Smoke, Duress, Spirit, Passion. There is no ladder gate anywhere on this page and no high rune until the optimized tier, which is optional by construction because the claw alternative sits beside it. **The one thing that is genuinely worth hunting is a plus to your skills**, and claws roll Assassin skills natively from the Act 1 vendor, who restocks on every town entry.",
 
   levelingPath: {
     summary:

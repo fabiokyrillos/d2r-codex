@@ -12448,7 +12448,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     weaknesses: [
       "**Imunidade a físico é a parede**, e ela fecha oito das vinte áreas de farm deste site para a maior metade do dano",
       "**Sem shotgun e sem pierce.** Um míssil por arremesso, e a primeira coisa que ele encosta é a última — esta não é uma skill de limpar sala",
-      "Ela pode errar. `ToHitCalc = lvl*10` faz muito trabalho e não torna Attack Rating de graça",
+      "Ela pode errar. Os +10% de Attack Rating por nível fazem muito trabalho e não tornam Attack Rating de graça",
       "**O Burst of Speed não faz nada pelo ataque**, que é de longe a forma mais comum de montar esta build errado",
       "Mana é cobrada por lâmina e não por aperto, então botão segurado é dreno segurado",
       "O Blade Sentinel disputa os mesmos cinco slots de trap que qualquer sentry, então a árvore de traps não é um segundo ato aqui",
@@ -12507,7 +12507,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     },
     statPlan: {
       strength: "O suficiente para o seu equipamento, e o número depende inteiramente da arma em que você vai terminar. A rota de garras quase não pede nada; uma arma de uma mão com escudo pode pedir bem mais de cem.",
-      dexterity: "**Mais do que a maioria das páginas de Assassin quer, e a razão é que esta skill rola acerto.** O `ToHitCalc = lvl*10` faz a maior parte do trabalho, então este não é um orçamento de dexterity de Amazon — mas Attack Rating está vivo, e se você não pegou o pacote de Claw Mastery, dexterity é de onde ele vem.",
+      dexterity: "**Mais do que a maioria das páginas de Assassin quer, e a razão é que esta skill rola acerto.** Os +10% de Attack Rating por nível fazem a maior parte do trabalho, então este não é um orçamento de dexterity de Amazon — mas Attack Rating está vivo, e se você não pegou o pacote de Claw Mastery, dexterity é de onde ele vem.",
       vitality: "Todo o resto, e é bastante. Esta é uma build sem requisito de força que ela não possa escolher e sem requisito de dexterity nenhum se o Claw Mastery estiver pagando.",
       energy: "Nenhum. Mana é cobrada por lâmina e a resposta é leech e um Spirit, não pontos de atributo.",
       notes: [
@@ -12541,7 +12541,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "A porta de entrada da árvore Shadow inteira: o Weapon Block fica atrás dele, e o Fade de que o Venom precisa também. **Diferente da página de chute, aqui ele é uma skill de dano**: o bônus do Claw Mastery é aplicado ao Blade Fury. Se vale gastar mais dezenove nele é o primeiro pacote.",
       "burst-of-speed":
         "**Um ponto, e entenda para que ele serve.** É pré-requisito do Fade e é velocidade de corrida. A velocidade de ataque dele não alcança uma cadência fixa de cinco frames, e tratá-lo como buff de dano aqui é o erro padrão.",
-      fade: "Pré-requisito do Venom, e a resposta de resistência. Um ponto, a menos que você pegue o pacote de Fade. Ele exclui o Burst of Speed — `fade` e `quickness` são os dois únicos membros do `group = 2` no `states.json` — e nesta build essa exclusão custa quase nada.",
+      fade: "Pré-requisito do Venom, e a resposta de resistência. Um ponto, a menos que você pegue o pacote de Fade. Ele exclui o Burst of Speed, e os dois são os únicos membros do grupo de exclusão deles no `states.json` — o que nesta build custa quase nada.",
       "weapon-block": "Um ponto, e ele só faz alguma coisa com uma garra em cada mão. Se você terminar com arma de uma mão e escudo, isto fica em um para sempre.",
       "psychic-hammer": "Pré-requisito do Cloak of Shadows.",
       "cloak-of-shadows": "Cega a sala, o que para uma build que fica parada canalizando vale mais do que parece. Pré-requisito do Mind Blast e das sombras.",
@@ -12580,7 +12580,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "Nenhum necessário. Se você gastou pontos em Burst of Speed esperando que eles acelerassem as lâminas, esse é o único respec que esta página justificaria — e é o erro mais comum desta build.",
     },
     selfFoundNotes:
-      "**A build mais completa em self-found da classe, e a razão é que metade do dano dela não vem de item nenhum.** Sessenta pontos no triângulo multiplicam por cinco o dano próprio do Blade Fury sem envolver equipamento nenhum, e vinte no Venom somam um veneno que drop nenhum melhora. A metade da arma é a única parte que quer um item bom, e ela aceita *qualquer* arma de uma mão — uma espada rara, uma garra craftada, um Steel, um Passion — porque o que ela lê é a faixa de dano, não um afixo específico. Nada nos quatro primeiros tiers é runeword acima de quatro runas: Steel, Stealth, Lore, Treachery, Smoke, Duress, Spirit, Passion. Não há trava de ladder em lugar nenhum desta página e não há runa alta até o tier optimized, que é opcional por construção porque a alternativa de garra fica ao lado dele. **A única coisa que vale a pena caçar de verdade é `+skills`**, e garras rolam skills de Assassin nativamente na vendedora do Ato 1, que renova o estoque toda vez que você entra na cidade.",
+      "**A build mais completa em self-found da classe, e a razão é que metade do dano dela não vem de item nenhum.** Sessenta pontos no triângulo multiplicam por cinco o dano próprio do Blade Fury sem envolver equipamento nenhum, e vinte no Venom somam um veneno que drop nenhum melhora. A metade da arma é a única parte que quer um item bom, e ela aceita *qualquer* arma de uma mão — uma espada rara, uma garra craftada, um Steel, um Passion — porque o que ela lê é a faixa de dano, não um afixo específico. Nada nos quatro primeiros tiers é runeword acima de quatro runas: Steel, Stealth, Lore, Treachery, Smoke, Duress, Spirit, Passion. Não há trava de ladder em lugar nenhum desta página e não há runa alta até o tier optimized, que é opcional por construção porque a alternativa de garra fica ao lado dele. **A única coisa que vale a pena caçar de verdade é um bônus de skills**, e garras rolam skills de Assassin nativamente na vendedora do Ato 1, que renova o estoque toda vez que você entra na cidade.",
     hardcoreNotes:
       "**Pegue o pacote de Fade, e leve o problema do Iron Maiden a sério.** A maldição reflete uma parte do dano que você causa, e esta build causa em cinco parcelas por segundo sem jeito de desacelerar — a cadência é fixa, então você não consegue nem escolher atacar menos vezes dentro de uma ativação. A redução de duração de maldição do Fade é a mitigação, e dezoito pontos dela cortam a duração em até 90%. Fora isso, o formato da build é incomumente gentil com o Hardcore: ela é genuinamente à distância em 40 unidades, não tem rotação para ser interrompida, e ser atordoada custa rendimento e não uma vida — que é por que o breakpoint de Faster Hit Recovery está marcado como obrigatório e o de bloqueio não está. Os dois perigos reais são o Chaos Sanctuary, que é a pior sala do site para essa maldição específica, e ficar sem mana no meio de um grupo: um custo por lâmina com o botão segurado esvazia uma reserva muito rápido, e um mercenário carregando Insight é a diferença entre uma luta e uma retirada.",
     gearSets: {
@@ -12696,6 +12696,254 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "amulet-0": { why: "+2 em skills e +30 em resistências." },
         },
         charms: [{ label: "Annihilus, Hellfire Torch, e todo grand charm com +1 Traps", why: "Todo `+1 Traps` é um degrau nas faixas de nível, e as faixas valem 8 de dano por nível nesta região." }],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+    },
+  },
+  "dragon-tail": {
+    summary:
+      "Um chute, e ele detona. O fogo é calculado a partir do dano físico que de fato entrou — então esta é a chutadora que limpa sala, e um imune a físico não leva metade nenhuma.",
+    playstyle:
+      "Você carrega o Tiger Strike três vezes no que estiver mais perto, depois coloca um Dragon Tail no meio do grupo, e o grupo explode. É esse o loop inteiro, e ele é um loop e não um botão segurado: as cargas ficam de pé por quinze segundos, então você as constrói no caminho e as gasta onde elas alcancem mais. O chute é quarenta por cento mais lento que os outros ataques do mesmo personagem, e essa é a troca deliberada — você não está dando muitos acertos, está dando um acerto muito grande e deixando ele se espalhar. O que precisa entrar na cabeça é que a explosão não é um segundo tipo de dano para o qual você pode recuar. Ela é calculada a partir do dano físico que passou, então é enorme em qualquer coisa que o chute machuca e exatamente nada em qualquer coisa que ele não machuca.",
+    strengths: [
+      "**O único chute que limpa uma sala.** Um aperto, uma explosão, tudo dentro do raio",
+      "**+430% de dano de chute em vinte pontos**, contra os +138% da Kicksin — é esse número que faz das duas builds diferentes em vez de duas grafias da mesma",
+      "O Tiger Strike multiplica o chute em +480% *por carga* e carrega +150% de Attack Rating em três, então as duas skills que fazem a build também resolvem o problema uma da outra",
+      "As cargas duram quinze segundos fixos, então a rotação sobrevive à caminhada entre grupos",
+      "**Um imune a fogo te custa a explosão e nada do chute** — o inverso de como a maioria dos jogadores lê esta build",
+      "As botas são a arma, então o item de dano é barato e não pede dexterity nenhuma",
+      "O Dragon Flight custa um ponto e é a única skill de movimento nativa da classe",
+    ],
+    weaknesses: [
+      "**Um imune a físico não leva fogo nenhum também**, porque o fogo é derivado do físico que entrou. Esta é a parede da build e ela é dura",
+      "**−40% de velocidade de ataque, impresso na linha da skill.** Este é o ataque mais lento da classe e equipamento nenhum o deixa rápido",
+      "**O Crushing Blow vale um quarto do que vale na Kicksin**, porque aqui há uma rolagem por aperto e não quatro a sete",
+      "Uma rolagem de acerto por aperto, então errar custa a ativação inteira e Attack Rating não é opcional",
+      "Deadly Strike e Claw Mastery não fazem nada num chute, e os dois estão em itens que esta build quer por outros motivos",
+      "É corpo a corpo, sem bônus de vida próprio e sem resposta à distância",
+      "Apertado sem cargas de pé ele é fraco e ainda pode errar — a rotação não é decorativa",
+    ],
+    flexPoints: [
+      "Não existem. Setenta e dois no núcleo, trinta e oito em exatamente um pacote, e 110 é o total.",
+      "**Não gaste em Claw Mastery.** Ele não se aplica ao dano de chute, e é o destino mais recomendado para pontos sobrando numa Assassin de artes marciais.",
+      "**Não gaste em Dragon Talon.** É outra build — a alavanca dele é contagem de chutes e esta build dá um chute — e as duas não somam mais que qualquer uma delas.",
+    ],
+    skillPackages: {
+      "dragon-tail-38": {
+        name: "Os últimos trinta e oito pontos",
+        intro:
+          "O núcleo são 72 de 110, e ele está fechado: **o Dragon Tail não tem sinergia em direção nenhuma**, e Tiger Strike e Venom estão os dois em vinte, então nenhum ponto adicional em lugar nenhum sobe um número de dano. Sobram trinta e oito, e as três rotas abaixo compram sobrevivência ou velocidade em vez de dano — que é no que uma build sem sinergias precisa gastar pontos. **Pegue exatamente uma.** Cada uma custa exatamente trinta e oito e fecha em 110. Note que as duas primeiras são mutuamente exclusivas por mecânica além de por orçamento: o Burst of Speed e o Fade escrevem o mesmo tipo de estado e conjurar um derruba o outro.",
+        packages: {
+          speed: {
+            name: "Burst of Speed e Weapon Block — atacar a penalidade",
+            when: "**Pegue para limpar.** Os −40% da linha são o custo definidor desta build, e os até 60% de velocidade de ataque do Burst of Speed são sem diminuição — não é o afixo de item, não passa pela fórmula de retorno decrescente, e é a maior resposta isolada à penalidade que existe.",
+            tradeoff: "Você abre mão do Fade, e portanto das resistências e da redução de duração de maldição dele. No Hell isso é perda real e no Chaos Sanctuary é a escolha errada.",
+            skillNotes: {
+              "burst-of-speed": "**Até 60% de velocidade de ataque, sem diminuição, mais velocidade de corrida.** O único buff da classe que paga diretamente a penalidade impressa na própria linha da skill.",
+              "weapon-block": "65% de chance de bloqueio com duas garras e nenhum escudo. Numa build que fica no meio do que acabou de explodir, este é o plano de sobrevivência.",
+            },
+            gearNote: "Increased Attack Speed na garra primária acumula com isto e vale slots de verdade. Velocidade de ataque na mão secundária não é lida.",
+            rotationNote: "Igual em formato e materialmente mais rápida na prática: as três cargas chegam antes, então a janela de quinze segundos cobre mais terreno.",
+            contentNote: "Terror Zones, o Cow Level, Travincal, e qualquer lugar onde o problema é uma sala.",
+            remainderNote: "Nenhum. Trinta e oito pontos, e o plano fecha em 110.",
+          },
+          survival: {
+            name: "Fade e Cloak of Shadows — atacar a sala",
+            when: "**Pegue para o Hell e para o Hardcore.** O Fade leva a resistência elemental ao teto e a duração de maldição para baixo em até 90%, e o Cloak of Shadows corta a defesa de tudo por perto — o que numa build com uma rolagem de acerto por aperto é um atributo de ataque vestido de defesa.",
+            tradeoff: "Você abre mão do Burst of Speed e portanto convive com os −40% inteiros. A rotação fica mais lenta e o personagem fica muito mais difícil de matar.",
+            skillNotes: {
+              fade: "Resistências, redução de dano físico a 1% por nível, e a linha de duração de maldição que responde ao Iron Maiden. Ele exclui o Burst of Speed, e é essa a troca que este pacote é.",
+              "cloak-of-shadows": "**Uma cegueira longa e uma redução grande de defesa em tudo na sala.** A cegueira é a sobrevivência; a redução de defesa é por que a única rolagem de acerto entra.",
+            },
+            gearNote: "Resistência deixa de ser aquilo pelo qual todo anel e todo charm é escolhido, então esses slots viram Attack Rating e vida.",
+            contentNote: "Chaos Sanctuary, Worldstone Keep, e qualquer personagem de Hardcore.",
+            remainderNote: "Nenhum. Trinta e oito pontos exatos.",
+          },
+          shadow: {
+            name: "Shadow Master e Mind Blast — atacar o aggro",
+            when: "**Pegue se o problema é estar cercada e não estar lenta.** Uma sombra de vinte pontos tem até 90% de resistências e usa as suas skills, e o Mind Blast converte parte do grupo para lutar por você.",
+            tradeoff: "Você abre mão das duas de cima: nada de velocidade de ataque sem diminuição e nada de Fade. O personagem continua lento e frágil e deixa de ser o único alvo.",
+            skillNotes: {
+              "shadow-master": "Ela substitui o Shadow Warrior em vez de se somar a ele — os dois dividem um `pettype` com `petmax = 1`. O que ela compra é o que uma build corpo a corpo lenta mais precisa: outra coisa em direção à qual o grupo caminhe enquanto as cargas sobem.",
+              "mind-blast": "Atordoamento, e uma chance de conversão que sobe até 40%. Monstros convertidos são corpos na sua frente e dano que você não precisou causar.",
+            },
+            gearNote: "A Faster Cast Rate finalmente faz alguma coisa — pelo Mind Blast, e por nada com que você ataque.",
+            contentNote: "Jogos em players 8, Terror Zones densas, e o Hell inteiro antes de o plano de equipamento estar pronto.",
+            remainderNote: "Nenhum. Trinta e oito pontos exatos.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "**Mais do que uma Kicksin quer, e a fórmula de dano das botas é o motivo.** O termo de força multiplica o dano próprio das botas antes de a porcentagem da skill entrar, então força aqui não é só requisito de equipamento. Fora isso, decida em quais botas você vai terminar: Gore Rider pede cerca de 93, upgradeada pede cerca de 156.",
+      dexterity: "**O suficiente para a única rolagem por aperto entrar.** Três cargas de Tiger Strike carregam +150% de Attack Rating, e o Cloak of Shadows corta a defesa do alvo, então este não é um número enorme — mas uma Kicksin pode se dar ao luxo de errar um chute e esta build não pode errar o aperto.",
+      vitality: "Todo o resto. É corpo a corpo sem bônus de vida próprio.",
+      energy: "Nenhum.",
+      notes: [
+        "**Toda bota do jogo não pede dexterity nenhuma** (`reqdex 0` em todas as linhas), então nada no plano de dano pede dexterity. O que pede é a rolagem de acerto, e o Tiger Strike responde a maior parte disso de graça.",
+        "A decisão de força é a mesma que a página da Kicksin descreve e importa um pouco mais aqui, porque o dano das botas é multiplicado por uma porcentagem de skill maior antes de qualquer outra coisa tocar nele.",
+        "Se você pegar o pacote de sobrevivência, resistência chega do Fade e aqueles slots de equipamento viram Attack Rating.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48":
+        "**Obrigatório.** Uma rotação com preparação é uma rotação que pode ser interrompida, e ser atordoada entre a terceira carga e a liberação desperdiça a pilha inteira.",
+      "fbr-86":
+        "Vale a pena com o pacote de velocidade, que leva o Weapon Block a vinte e a 65% de chance de bloqueio. Sem esse pacote isto é luxo.",
+      "fcr-65":
+        "**Só para o Mind Blast e os buffs.** A taxa de conjuração encurta a animação `SC` da Assassin de 16 frames para 11 e não toca num chute.",
+    },
+    breakpointNotes:
+      "**Não há linha de Increased Attack Speed, e a razão é a mesma que a outra página de chute dá, mais uma que é específica desta skill.** Um chute toca a animação `KK` e roda em velocidade de ataque, então as garras que você está segurando são entrada da mesma fórmula que o afixo alimenta — mesmo que o dano seja o das botas. Uma porcentagem única publicada estaria errada para a maioria dos leitores, porque o requisito muda com a base das duas garras, com em qual mão elas estão, e com a contribuição sem diminuição do Burst of Speed. Valem três regras e as três pegam gente de surpresa: **duas garras usam a média das duas bases**, **Increased Attack Speed na garra da mão secundária não conta**, e **o Burst of Speed acrescenta até 60% sem retorno decrescente** — que é por que ele é um pacote de vinte pontos aqui e não vale nada na página do Blade Fury. E o número do qual esta build parte é pior que o da classe: `Param4 = -40`, uma redução de velocidade de ataque impressa na linha da própria skill, então uma barra de Dragon Tail começa quarenta por cento atrás de uma barra de Dragon Talon no mesmo personagem. Para um par específico de garras, use uma calculadora de velocidade de ataque e informe as duas bases, o Increased Attack Speed só da mão principal, e o seu nível de Burst of Speed.",
+    skillNotes: {
+      "dragon-tail":
+        "**+430% de dano de chute em vinte**, vindos de `Param1 = 50` de base e `Param2 = 20` por nível, mais uma explosão de `Param3 = 6` de raio em volta do alvo. Não há sinergia para comprar em lugar nenhum — todo ponto de dano desta skill está nesta skill.",
+      "tiger-strike":
+        "**O multiplicador, e é o maior dos dois números.** +100% de base e +20% por nível, aplicados *por carga*, então vinte pontos são +480% por carga e três cargas são o maior multiplicador da árvore. O `Param4 = 50` também dá +50% de Attack Rating por carga, que é como uma build com uma rolagem por aperto consegue bancar essa rolagem.",
+      venom:
+        "**O único dano desta página que um imune a físico não para.** Veneno não é físico nem derivado dele, e pega carona em cada chute. A duração dele é fixada em dez frames em vez de acumular, então um ataque lento tira menos proveito que um rápido — o que é honesto, e ainda deixa ele o terceiro maior número aqui e o único que sobrevive à parede.",
+      "dragon-talon": "A cadeia até o Dragon Tail vai Talon → Claw → Tail. Um ponto, e vale ter na barra para um alvo único que não precisa de explosão.",
+      "dragon-claw": "O segundo elo. É o único finisher que *é* um ataque de arma — `SrcDam = 128` e o Claw Mastery escrito na fórmula dele — então é outra skill vestindo a mesma árvore, e um ponto é tudo que esta build quer dele.",
+      "dragon-flight": "**Um ponto, e é a única skill de movimento da classe.** Ela teleporta até um alvo e o chuta, e é um finisher — então gasta uma pilha de Tiger Strike de pé do outro lado da sala. Engajar, escapar e abrir, num botão só.",
+      "claw-mastery": "**Um ponto e nada além, e a razão é específica.** O Claw Mastery não se aplica ao dano de chute. Ele está aqui porque é a porta de entrada da árvore Shadow inteira.",
+      "burst-of-speed": "Pré-requisito do Fade, e a resposta aos −40%. Um ponto, a menos que você pegue o pacote de velocidade, que é onde o caso pelos vinte é feito.",
+      fade: "Pré-requisito do Venom. Um ponto, a menos que você pegue o pacote de sobrevivência. Ele exclui o Burst of Speed, e os dois são os únicos membros do grupo de exclusão deles no `states.json` — então aqueles dois pacotes são genuinamente opostos.",
+      "weapon-block": "Um ponto, e ele só funciona com uma garra em cada mão — o que esta build tem, porque as garras não estão fazendo mais nada.",
+      "psychic-hammer": "Pré-requisito do Cloak of Shadows.",
+      "cloak-of-shadows": "Cega o grupo e corta a defesa dele, o que numa build com uma rolagem de acerto por aperto vale mais que a cegueira.",
+      "mind-blast": "Atordoamento e conversão, e a única skill aqui para a qual a Faster Cast Rate faz alguma coisa.",
+      "shadow-warrior": "Pré-requisito do Shadow Master, e substituído por ele — os dois dividem um `pettype`.",
+      "shadow-master": "Um ponto é uma sombra. Mais dezenove é o terceiro pacote.",
+    },
+    immunityPlan:
+      "**Imunidade a físico fecha esta build duas vezes, e é esse o fato que a página existe para publicar.** Toda outra build elemental deste site responde a um tipo de dano resistido tendo outro. Esta parece responder — ela causa físico e fogo — e não responde, porque **o fogo é calculado a partir do dano físico que o alvo de fato sofreu**. Contra um monstro com 100% ou mais de resistência a físico não há nada de onde a explosão possa ser derivada, então um imune a físico não leva fogo nenhum. Não menos: nenhum. O censo deste site lista físico entre as imunidades comuns em oito das vinte áreas de farm, incluindo o Pit, o Cow Level, o Chaos Sanctuary e a Worldstone Keep. As respostas, em ordem de quanto ajudam. Primeiro e melhor, um **sunder charm Bone Break**, que coloca um imune a físico em 95% de resistência a físico — e como o fogo é derivado do físico, restaurar um restaura os dois. É o único item do jogo que reabre o dano inteiro desta build num imune a físico, e um Flame Rift não faz nada aqui, porque fogo nunca foi a metade bloqueada. Segundo, o **Venom**, que são vinte pontos do núcleo exatamente por isso: veneno não é físico nem derivado dele, então fica intacto. Terceiro, **passe direto**, que é a resposta certa com mais frequência do que os jogadores gostam. E a imagem espelhada vale ser dita porque se lê ao contrário: **um imune a fogo te custa só a explosão**. O chute entra inteiro, o dano de alvo único fica igual, e o que você perde é a limpeza — então um grupo imune a fogo é uma luta lenta e um grupo imune a físico não é luta nenhuma.",
+    mercenaryNotes:
+      "**Um mercenário com Might, e aqui a aura compõe em vez de somar.** Might sobe dano físico, o chute é físico, e a explosão é calculada a partir do dano físico que entrou — então uma porcentagem no primeiro termo chega de novo no segundo. É o único lugar deste site onde uma aura de mercenário paga duas vezes pelo mesmo motivo. A ressalva é a óbvia: contra um imune a físico ela paga nada duas vezes, porque as duas metades são zero. O **Insight** é a alternativa se mana for o problema, embora uma build que aperta quatro botões em quinze segundos raramente seque. E se imunidade a físico for o problema recorrente e não ocasional, note que um mercenário de Might também é físico — a resposta ali é um charm Bone Break ou outra área, não outra aura.",
+    farmingWhy: {
+      "travincal-hell":
+        "**A melhor run da página.** Fogo e raio são as imunidades comuns e físico não é, então o chute entra, a explosão vem atrás dele, e o Conselho fica perto o bastante para um aperto pegar os três. Curta, repetível, e larga as runas que o plano de equipamento quer.",
+      "mausoleum-hell":
+        "Veneno e frio são as imunidades comuns, então o chute e a explosão entram nos dois em tudo — e a densidade é exatamente para o que um finisher em área serve. O seu Venom não faz nada aqui, o que custa menos do que parece porque as outras duas metades estão trabalhando.",
+      "countess-hell":
+        "Fogo é a imunidade comum, não físico — e como a explosão é derivada do físico em vez de substituí-lo, o chute continua entrando inteiro e só a detonação fica sem graça. Os grupos da torre são apertados o bastante para o raio se pagar.",
+      "andariel-hell":
+        "Só veneno, então as duas metades do chute entram e **o seu Venom não faz absolutamente nada** — a demonstração mais clara da página de que os vinte pontos nele são resposta a um problema específico e não dano de graça. Uma luta rápida e repetível.",
+      "mephisto-hell":
+        "Fogo e raio, então o chute entra inteiro. Ele é alvo único, que é o formato em que esta build é pior — mas três cargas de Tiger Strike num Dragon Tail ainda é um acerto muito grande, e os drops são a razão de vir.",
+      "pindleskin-hell":
+        "Frio e veneno em vez de físico, um superunique fixo, e um corredor. O Venom é peso morto e o chute não é.",
+      "lower-kurast-hell":
+        "Fogo e veneno são as imunidades comuns e físico não é, então o chute entra — e os baús é que são o ponto, não os monstros, o que combina com uma build que limpa uma tela e segue.",
+      "pit-hell":
+        "**Nível de área 85, e físico é uma das imunidades comuns** — o que nesta página significa que a explosão vai junto, porque ela é derivada do físico que entrou. Traga um charm Bone Break ou aceite que o Venom é quem está trabalhando naqueles grupos.",
+      "secret-cow-level-hell":
+        "**Físico é a imunidade listada aqui, e as vacas vêm exatamente na densidade para a qual esta skill foi feita.** É essa a tensão: a melhor geometria da lista fica atrás da única imunidade que fecha as duas metades. Com um charm Bone Break esta é uma das melhores runs da página e sem ele é uma run de Venom.",
+    },
+    levelingPath: {
+      summary:
+        "**O Tiger Strike existe no nível 1 e o Dragon Tail no 18, então o primeiro ato é a rotação com a segunda metade faltando.** Carregar e depois golpear normalmente é um plano de evolução de verdade: a linha genérica de Attack carrega `finishing = 1` igual aos três chutes, então um golpe comum libera as cargas e leva o multiplicador junto. O Dragon Claw chega no caminho como pré-requisito e é uma skill perfeitamente boa de nível 12 por direito próprio. Do 18 em diante a build é ela mesma, e as botas fazem o resto: botas normais são 3–20, exceptional 23–80 no nível 25, elite 50–149 a partir do 45. O Venom cai no 30 e vale um ponto no instante em que cai.",
+      respecAt:
+        "Nenhum necessário. Se você gastou pontos em Claw Mastery esperando que eles subissem o chute, esse é o único respec que esta página justificaria.",
+    },
+    selfFoundNotes:
+      "**Amigável a self-found pelo mesmo motivo que a Kicksin: o item de dano é uma bota.** A Gore Rider é uma unique comum numa base exceptional, e tudo que multiplica ela — os +430% do próprio Dragon Tail e três cargas de Tiger Strike — são pontos de skill e não drops. Garras vêm da vendedora do Ato 1, renovam toda vez que você entra na cidade, e rolam skills de Assassin nativamente, então a metade de `+skills` do plano é compra e não farm. Nada nos quatro primeiros tiers é runeword acima de quatro runas: Stealth, Lore, Treachery, Smoke, Duress. **O único item genuinamente difícil é o sunder charm**, que é travado a drop de Terror Zone, e a observação honesta é que a build está completa sem ele e simplesmente farma uma lista menor de áreas.",
+    hardcoreNotes:
+      "**Pegue o pacote de Fade, e trate a preparação como o risco.** A rotação desta build tem um formato — três cargas, depois uma liberação — e o momento perigoso não é a liberação, são os três golpes antes dela, gastos em corpo a corpo com 40% de velocidade de ataque a menos. A Faster Hit Recovery está marcada como obrigatória por isso: um atordoamento entre a segunda e a terceira carga é um atordoamento no meio de um grupo sem nada para mostrar. A redução de duração de maldição do Fade é a resposta ao Iron Maiden e importa aqui, embora menos que numa página de múltiplos acertos — um acerto grande refletido é sobrevivível de um jeito que sete pequenos empilhados num segundo não são. O Weapon Block precisa de duas garras, que esta build está segurando de qualquer forma. E a armadilha específica de Hardcore desta página é o Chaos Sanctuary: ele lista físico entre as imunidades comuns, então a build é fraca lá *e* é a sala onde o Iron Maiden mora. Há muito pouca razão para estar nela.",
+    gearSets: {
+      starter: {
+        goal: "Chegar ao nível 18 e à explosão. Até lá isto é Tiger Strike num ataque normal, que é uma forma perfeitamente boa de evoluir.",
+        nextUpgrade: "Botas exceptional assim que você fizer 25, e duas garras com +skills.",
+        picks: {
+          "boots-0": { label: "Botas quaisquer com faixa de dano", why: "**As botas são a arma.** De 217 linhas de armadura só escudos, escudos áuricos e botas carregam faixa de dano, e este é o slot do qual a build inteira é calculada. Botas normais são 3–20; exceptional são 23–80 a partir do nível 25.", lookFor: ["Qualquer dano mín/máx", "Faster Run/Walk"] },
+          "weapon-0": { label: "Qualquer garra com +skills", why: "A garra não contribui com o dano do chute. O que ela contribui é `+skills`, que aqui são +20% de dano de chute por ponto em vez de um chute a mais." },
+          "body-0": { why: "Duas runas, e a Faster Hit Recovery é o que protege uma rotação com preparação." },
+          "helm-0": { why: "+1 em skills, que são +20% no chute." },
+          "belt-0": { label: "O maior cinto que você conseguir usar", why: "Poções. Isto é corpo a corpo sem leech até o plano de equipamento fornecer." },
+        },
+      },
+      nightmare: {
+        goal: "A rotação completa, e o Venom a partir do nível 30. É aqui que a build vira ela mesma.",
+        nextUpgrade: "Treachery, e as primeiras botas de verdade.",
+        picks: {
+          "boots-0": { label: "Botas exceptional com dano e resistências", why: "Base 23–80 no nível 25, e essa base é multiplicada por +430% antes de qualquer outra coisa tocar nela.", lookFor: ["Faixa de dano", "Resistências", "Faster Run/Walk"] },
+          "weapon-0": { label: "Uma garra com +3 Martial Arts", why: "Três níveis efetivos são +60% de dano de chute. A Charsi renova garras toda vez que você entra na cidade e elas rolam skills de Assassin nativamente." },
+          "offhand-0": { label: "Uma segunda garra com +skills", why: "Os `+skills` das duas garras são lidos. Mais nada da mão secundária é — nem a velocidade de ataque, nem os procs." },
+          "body-0": { why: "45% de Increased Attack Speed, que esta build genuinamente quer, e uma chance de conjurar Fade ao ser atingida." },
+          "helm-0": { why: "Roubo de vida e redução de dano. Leech funciona a partir de um chute." },
+          "gloves-0": { label: "Luvas raras com Attack Rating e vida", why: "Attack Rating, porque há uma rolagem por aperto." },
+          "belt-0": { label: "Cinto raro com vida e resistências", why: "A penalidade de resistência do Hell está vindo." },
+          "ring1-0": { why: "Attack Rating e magic find." },
+        },
+      },
+      "early-hell": {
+        goal: "Sobreviver à penalidade de −100% e começar a encontrar imunes a físico. É o tier em que o plano de imunidade deixa de ser teórico.",
+        nextUpgrade: "Gore Rider, e um charm Bone Break se aparecer.",
+        picks: {
+          "boots-0": { why: "**Base 39–80 mais 15% de Crushing Blow e 10% de Open Wounds.** Os 15% de Deadly Strike não fazem nada — Deadly Strike não se aplica ao dano de chute — e as botas continuam sendo as melhores do slot por larga margem, porque o dano base é o que os +430% multiplicam." },
+          "weapon-0": { label: "Uma garra com +3 Dragon Tail e Increased Attack Speed", why: "A velocidade de ataque da garra primária é lida e a da secundária não, então coloque a velocidade aqui e os `+skills` nas duas.", lookFor: ["+3 Dragon Tail", "Increased Attack Speed", "+2 Martial Arts"] },
+          "offhand-0": { label: "Uma segunda garra com +3 Martial Arts", why: "`+skills` e Weapon Block. A velocidade de ataque dela não é contada." },
+          "body-0": { why: "15% de Crushing Blow, Enhanced Damage e Faster Hit Recovery, por três runas médias." },
+          "body-0-alt0": { why: "+50 em todas as resistências se a penalidade do Hell for o problema imediato." },
+          "helm-0": { why: "Leech e redução de dano, com sockets para resistências." },
+          "gloves-0": { label: "Luvas de sangue craftadas", why: "Vida, leech e Attack Rating — as três coisas que acabam numa build corpo a corpo lenta." },
+          "belt-0": { why: "Redução de dano e roubo de vida." },
+          "ring1-0": { why: "Cannot Be Frozen e 150–250 de Attack Rating. Estar congelada deixa mais lenta uma animação que já é 40% lenta." },
+          "ring2-0": { label: "Um anel raro com Attack Rating e resistências", why: "Attack Rating primeiro." },
+          "amulet-0": { label: "Um amuleto raro com +2 em skills de Assassin", why: "+2 em skills são +40% de dano de chute." },
+        },
+      },
+      budget: {
+        goal: "Um personagem de Hell terminado. A rotação está rápida o bastante e a explosão grande o bastante; o que sobra é o plano de imunidade.",
+        nextUpgrade: "Botas upgradeadas, e o sunder charm que realmente importa aqui.",
+        picks: {
+          "boots-0": { why: "Continua sendo o item. Crushing Blow e Open Wounds valem menos aqui do que na Kicksin — uma rolagem por aperto em vez de quatro — e o dano base vale mais." },
+          "weapon-0": { label: "Uma garra rara ou craftada com +3 Dragon Tail e 20% de Increased Attack Speed", why: "As duas metades do que a mão principal serve." },
+          "offhand-0": { label: "Uma segunda garra com +3 Martial Arts e +3 Shadow Disciplines", why: "Só `+skills`. Não pague por velocidade de ataque aqui — ela não é lida." },
+          "body-0": { why: "Crushing Blow, dano e recuperação." },
+          "helm-0": { why: "Leech e redução de dano.", sockets: "Dois — Um e Um, ou joias de Attack Rating." },
+          "gloves-0": { why: "**Life Tap ao golpear.** É um proc de `domeleedamage` e um chute levanta esse evento, então ele dispara — e numa build que dá um acerto grande, um Life Tap rende muito." },
+          "belt-0": { why: "Redução de dano e leech." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills e mana." },
+          "amulet-0": { why: "**+1 em skills e 20% de Increased Attack Speed.** Não pelo Deadly Strike dele, que um chute não usa." },
+        },
+        charms: [{ label: "Grand charms com +1 Martial Arts, e um sunder charm Bone Break", why: "**O Bone Break é o sunder charm que esta build quer, e a razão é a ordem do dano.** Ele coloca um imune a físico em 95% de resistência a físico, e como o fogo é derivado do físico que entra, restaurar o físico restaura as duas metades. Um Flame Rift não faz nada aqui — fogo nunca foi a metade bloqueada." }],
+        weaponSwap: [{ why: "Battle Orders, no nível 57." }],
+      },
+      optimized: {
+        goal: "Botas upgradeadas e a rotação na velocidade cheia. É aqui que os +430% passam a multiplicar um número que vale a pena multiplicar.",
+        nextUpgrade: "Garras best-in-slot, e a força para usar a base elite.",
+        picks: {
+          "boots-0": { why: "**Upgradeadas para base Myrmidon Greaves: 39–80 vira 83–149.** É o maior upgrade isolado da página, porque praticamente dobra o número que a porcentagem da skill multiplica. Custa cerca de sessenta de força." },
+          "weapon-0": { label: "Garra primária best-in-slot: +3 Dragon Tail, +3 Martial Arts, 40% de Increased Attack Speed", why: "Todo `+skill` são +20% de dano de chute, e a velocidade de ataque aqui é a única que o jogo lê." },
+          "offhand-0": { label: "Uma segunda garra com o maior +skills que você achar", why: "`+skills` e Weapon Block, e mais nada desta mão é lido." },
+          "body-0": { why: "+2 em skills, +65 em todas as resistências e 8% de redução de dano. As skills são +40% de dano de chute." },
+          "helm-0": { why: "+2 em skills de Assassin, 20% de Increased Attack Speed e roubo de vida — as três coisas que esta build usa. Os −30% de resistência a fogo são o preço.", sockets: "Um — um Um, ou um rubi para a penalidade de fogo." },
+          "gloves-0": { why: "Life Tap ao golpear, e Open Wounds por cima." },
+          "belt-0": { why: "+1 em skills, que aqui é uma linha de dano." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills." },
+          "amulet-0": { why: "+2 em skills e +30 em todas as resistências." },
+        },
+        charms: [{ label: "Annihilus, Hellfire Torch, grand charms com +1 Martial Arts, Bone Break", why: "Todo `+1` são +20% de dano de chute, e o Bone Break é o que abre as áreas que o plano de imunidade fecha." }],
+        weaponSwap: [{ why: "Battle Orders." }],
+      },
+      bis: {
+        goal: "O teto. Tudo que sobe a base das botas, o nível da skill, ou o número de vezes que você chega a apertar o botão.",
+        nextUpgrade: "Nada.",
+        picks: {
+          "boots-0": { why: "Upgradeadas. 83–149 antes de uma porcentagem de skill de +430% e três cargas de Tiger Strike." },
+          "weapon-0": { label: "Garra primária best-in-slot com +3 Dragon Tail e 40% de Increased Attack Speed", why: "Skills e velocidade, na única mão lida para velocidade." },
+          "offhand-0": { label: "Garra secundária best-in-slot com o maior +skills", why: "Skills e Weapon Block." },
+          "body-0": { why: "+2 em skills, resistências, redução de dano." },
+          "helm-0": { why: "Redução de dano, resistências e dois sockets, sem a penalidade de fogo do Andariel's.", sockets: "Dois — Um e Um, ou joias de 15% de Increased Attack Speed." },
+          "gloves-0": { why: "Life Tap ao golpear." },
+          "belt-0": { why: "+1 em skills." },
+          "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
+          "ring2-0": { why: "+1 em skills." },
+          "amulet-0": { why: "+2 em skills e resistências." },
+        },
+        charms: [{ label: "Annihilus, Hellfire Torch, grand charms com +1 Martial Arts, Bone Break", why: "Skills são dano nesta página, e o sunder é a única coisa que abre um imune a físico para qualquer uma das metades." }],
         weaponSwap: [{ why: "Battle Orders." }],
       },
     },

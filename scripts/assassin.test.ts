@@ -400,6 +400,23 @@ const WOULD_HAVE_SHIPPED: { note: string; line: string; rule: AssassinRule }[] =
     line: "A sinergia do Blade Fury multiplica também a parcela da arma, então os 75% viram muito mais.",
     rule: "blade-synergy-scales-the-weapon-share",
   },
+
+  /* Dragon Tail: the explosion sold as a second damage type. */
+  {
+    note: "the explosion sold as a fallback against physical immunity",
+    line: "Dragon Tail's fire explosion still lands on a physical immune, so it is a second damage type to fall back on.",
+    rule: "tail-fire-independent-of-physical",
+  },
+  {
+    note: "the same claim from the immune's side",
+    line: "A physical immune still takes the full fire explosion from Dragon Tail.",
+    rule: "tail-fire-independent-of-physical",
+  },
+  {
+    note: "the pt-BR mirror",
+    line: "A explosão de fogo do Dragon Tail entra de qualquer jeito, independente do dano físico.",
+    rule: "tail-fire-independent-of-physical",
+  },
   {
     note: "the preserved swing given the guarantee it specifically loses",
     line: "A swing that preserves charges still cannot miss, so attack rating stays irrelevant.",
@@ -634,6 +651,20 @@ const ACCEPTED: { note: string; line: string }[] = [
     note: "Blade Sentinel laid at attack speed, which is true and must not be caught by the Blade Fury rule",
     line: "Blade Sentinel plays the S2 trap animation, so it is laid at attack speed like a sentry rather than thrown.",
   },
+
+  /* Dragon Tail's corrected sentences. */
+  {
+    note: "the derivation stated plainly, which is what now ships",
+    line: "Dragon Tail's explosion is computed from the physical damage that actually got through, so a physical immune takes no fire either.",
+  },
+  {
+    note: "the mirror-image fact, which reads backwards and is true",
+    line: "A fire immune costs Dragon Tail only the explosion; the kick still lands in full, because the fire is derived from it rather than replacing it.",
+  },
+  {
+    note: "the pt-BR mirror of the derivation",
+    line: "A explosão do Dragon Tail é calculada a partir do dano físico que entrou, então um imune a físico não leva fogo nenhum.",
+  },
 ];
 
 console.log("\nSentences that must stay silent");
@@ -643,7 +674,7 @@ for (const { note, line } of ACCEPTED) {
 }
 
 console.log("\nWiring");
-check("twenty-four rules are exported for the content sweep", ASSASSIN_RULES.length === 24);
+check("twenty-five rules are exported for the content sweep", ASSASSIN_RULES.length === 25);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) {

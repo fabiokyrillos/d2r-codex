@@ -286,6 +286,7 @@ export const ASSASSIN_RULES = [
   "two-hander-not-halved",
   "blade-shotgun-or-pierce",
   "blade-synergy-scales-the-weapon-share",
+  "tail-fire-independent-of-physical",
 ] as const;
 export type AssassinRule = (typeof ASSASSIN_RULES)[number];
 
@@ -759,6 +760,31 @@ const DENIES_SPREAD =
 /** Crediting the blade synergy with raising the weapon share. */
 const SYNERGY_RAISES_WEAPON =
   /(?:\bsynerg\w*|\bsinergi\w*|\+\s*400\s*%|\b400\s*%)[^.]{0,90}\b(?:weapon (?:share|damage|half)|75\s*%|parcela da arma|metade da arma|dano da arma)\b|\b(?:weapon (?:share|damage|half)|parcela da arma|metade da arma)\b[^.]{0,90}(?:\bsynerg\w*|\bsinergi\w*|\+\s*400\s*%)/i;
+/* ---------------------------------------------------------------------------
+ * DRAGON TAIL — the explosion is derived, not independent.
+ *
+ * `Dragon Tail` carries `EType = fire` and no `EMin`, no `EMax`, no `EMinLev`,
+ * no `EMaxLev` and no `calc4` — and `calc4`'s own description is "% Damage
+ * Dealt as Elemental (Used only if there is an Etype)". Berserk carries
+ * `calc4 = 100`, Corpse Explosion carries `Param5 = 50`; skills that convert a
+ * stated share state it. This one states nothing, because the quantity is
+ * computed from the physical damage the target actually suffered — which the
+ * mechanics reference says of this family by name, adding that they therefore
+ * "won't do elemental damage to physical immune enemies".
+ *
+ * So the order is physical, then derive, then fire resistance — and a page that
+ * sells the explosion as a second damage type to fall back on is selling the
+ * reader the one thing this build cannot do.
+ * ------------------------------------------------------------------------- */
+
+/** The explosion presented as independent of, or prior to, the physical hit. */
+const FIRE_STANDS_ALONE =
+  /\b(?:fire|explosion|fogo|explos[ãa]o)\b[^.]{0,90}\b(?:regardless|independent\w*|even (?:if|against|on)|still (?:lands?|hits?|applies)|anyway|separate damage type|second damage type|falls? back|independente|mesmo (?:contra|que|em)|ainda (?:cai|entra|acerta)|de qualquer (?:forma|jeito)|segundo tipo de dano)\b|\b(?:physical immune|imune a f[íi]sico)\w*\b[^.]{0,90}\b(?:still (?:takes?|suffers?)|takes? (?:the|full|normal)|leva (?:a|o|dano))\b[^.]{0,40}\b(?:fire|explosion|fogo|explos[ãa]o)\b/i;
+
+/** The escape clause: saying the fire is derived from the physical that landed. */
+const FIRE_IS_DERIVED =
+  /\b(?:derived|computed|based on|comes from|share of|function of|no fire|none|nothing|derivad\w*|calculad\w*|a partir d|parcela d|em cima d|nenhum fogo|nada)\b/i;
+
 const SYNERGY_SCOPED_OFF_THE_WEAPON =
   /\b(?:not|does not|doesn't|never|cannot|untouched|separate|two (?:addends|terms|halves)|only the skill|its own damage|n[ãa]o|separad\w*|duas parcelas|apenas o dano)\b/i;
 
@@ -946,6 +972,18 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
               "missile per throw, separated in time, and the first thing it touches is the last",
           );
         }
+      }
+
+      /* Dragon Tail's explosion is derived from the physical damage that landed. */
+      if (mentions(sentence, "dragon-tail") && FIRE_STANDS_ALONE.test(sentence) && !FIRE_IS_DERIVED.test(sentence)) {
+        add(
+          "tail-fire-independent-of-physical",
+          sentence,
+          "Dragon Tail carries `EType = fire` and no elemental damage column and no `calc4` " +
+            "anywhere — the explosion is computed from the physical damage the target actually " +
+            "suffered, so a physical immune takes no fire either. Presenting it as a second " +
+            "damage type to fall back on sells the one thing this build cannot do",
+        );
       }
 
       if (/\bWeapon Block\b/i.test(sentence) && NEEDS_A_SHIELD.test(sentence) && !DENIES_THE_SHIELD.test(sentence)) {

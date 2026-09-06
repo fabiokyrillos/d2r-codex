@@ -994,3 +994,166 @@ Two escape clauses were forced onto `kick-scales-with-weapon` by correct
 sentences it rejected: a weapon credit scoped to the elemental or magic half is
 true, and a sentence *denying* the credit is the thing the rule wants said.
 Neither clause reaches the three mutations the rule was written for.
+
+## 11. Cycle 5 — Blade Fury and Dragon Tail, and what is left
+
+### 11.1 Blade Fury: the four unknowns, closed
+
+Section 9 listed four things the page could not publish. All four are answered,
+and the fourth reorganised the build.
+
+**The cadence is fixed.** `Param4 = 5`, and the D2library mechanics reference
+states the consequence: "Shooting speed is five Frames per attack and is neither
+subject to attack speed nor to cast rate." So the page publishes no Increased
+Attack Speed row and no cast-rate row for the attack, and says why. Two things
+follow that catch people out: Increased Attack Speed is a *dead* affix on this
+build, and Burst of Speed is run speed and nothing else — which is what makes
+the Fade package cheap.
+
+**Venom rides it**, and the timing is better here than anywhere on the class.
+The 75% weapon share "also includes elemental damage from equipment and buffing
+skills like Venom", and Venom pins poison to ten frames rather than stacking it.
+A blade every 0.2 seconds against a 0.4-second window is total uptime. That is
+why Venom is core here and a package on the kick page.
+
+**What a blade carries.** Crushing Blow works and is **halved**, because a
+Crushing Blow delivered by a ranged attack is cut in half. Open Wounds works and
+is **not** halved — the ranged column of its target modifier is 1 against
+ordinary monsters. Deadly Strike works. Both leeches work; the reference says so
+of this skill by name. Chance to cast **on striking** works, because
+`item_skillonhit` carries `itemevent2 = domissiledamage`. Chance to cast **on
+attack** is not established and is not sold: the trigger is documented as not
+working with ranged attacks and this skill is treated as ranged elsewhere, but
+no source says it of this pairing.
+
+**The synergy does not scale the weapon share**, and this is the one that
+matters. The Skills.txt file guide: "DmgSymPerCalc: This field controls the
+synergy bonus (a percentage) added to the physical damage done by the skill
+(this does not influence physical damage passed over by SrcDamage)." And the
+formula it publishes alongside:
+
+```
+damage = ((base_damage × srcdamage / 128) + (skill_damage × effectiveshift × (100 + synergy) / 100)) × (100 + enhancer) / 100
+```
+
+Two addends, not a product. So the build has two levers that never meet: sixty
+points in the triangle multiply Blade Fury's own 101–103 fivefold, and the
+weapon in your hand contributes three quarters of a normal attack untouched by
+any of them. The gear plan forks rather than climbing, and the fork *is* the
+package.
+
+One correction follows from `Half2HSrc`, which the reference quantifies: 75% on
+a one-handed weapon, **37.5% on a two-hander**. Claws are one-handed and are
+never penalised. The Blade Fury *skill page* had said the 96/128 fraction "is
+the whole reason the build holds a large normal weapon rather than claws", which
+is the opposite of what the flag does. Corrected in both locales.
+
+And a distinction section 9 blurred: `DmgSymPerCalc` reads `blvl`, so `+skills`
+do not feed the synergy — but the skill's own damage is a level band, and level
+bands read the effective level. Twenty hard points is 101–103; +6 is 149–151;
++10 is 181–183. `+skills` raise one half and not the other, and the page says
+which.
+
+### 11.2 Dragon Tail: the order, proved from two directions
+
+The universal description of Dragon Tail's explosion — "it adds fire damage" —
+is wrong in the one way that decides where the character can farm.
+
+**Tier 3.** The mechanics reference, of this family by name: some of the
+Assassin's combat kicks "deliver elemental damage based on enemy's suffered
+physical damage, so they won't do elemental damage to physical immune enemies."
+
+**Tier 1, by absence, with controls.** `Dragon Tail` carries `EType = fire` and
+**no `EMin`, no `EMax`, no `EMinLev`, no `EMaxLev` and no `calc4`** — and
+`calc4`'s own description column reads "% Damage Dealt as Elemental (Used only
+if there is an Etype)". Its missile carries none of them either. The controls
+sit in the same file: Berserk carries `calc4 = 100` and converts everything;
+Corpse Explosion carries `Param5 = 50` and splits it in half; Concentrate and
+Frenzy carry `calc4 = skill('Berserk'.blvl)`. A skill that converts a stated
+share states it in a column. This one has nothing to state, because the quantity
+is not authored — it is computed at the moment of the hit.
+
+So the order is: roll to hit, physical damage, **physical** resistance, derive
+the explosion from what got through, **fire** resistance. And the two
+consequences invert the usual advice:
+
+- a physical immune takes **no fire either** — not less, none;
+- a fire immune loses **only the explosion**, and the kick lands in full.
+
+Three things follow that no guide read this cycle says. The sunder charm this
+build wants is **Bone Break**, not Flame Rift: restoring the physical restores
+both halves, and fire was never the blocked one. A **Might mercenary pays
+twice**, because the second term is a function of the first — the only aura on
+this site that does. And Crushing Blow, which is the Kicksin's signature, is
+worth roughly a quarter as much here: it is a per-hit roll and this build makes
+one hit per press rather than four to seven.
+
+The rest of the row, with its own description columns, which the pinned
+extraction turns out to carry: `Param1 = 50` "Damage % baseline" and
+`Param2 = 20` "Damage % per level" — **+430% at twenty points**, against Dragon
+Talon's +138% — `Param3 = 6` "Radius", `Param4 = -40` "Attack Speed %
+Reduction", and `Param8 = 1` "Always Hit (0 = disabled | 1 = enabled only when
+Charges are consumed)". Tiger Strike is the multiplier at +100% baseline and
++20% per level **per charge**, plus `Param4 = 50` attack rating per charge.
+
+`localdelay` is the cast-delay column, and it settles a 2.4 note: Blade Sentinel
+carries 25 — one second — where Blizzard carries 45, Meteor 30 and Frozen Orb
+25. Blade Fury carries none.
+
+### 11.3 Whirlwind — researched, not yet written
+
+Everything below is from the pinned commit unless marked. The page is the next
+cycle's first task.
+
+**Where the skill comes from.** `Whirlwind` is `charclass = bar`. The Assassin
+gets it from **Chaos** (`Fal Ohm Um`, `itype1 = "h2h"` — claws only), which
+grants `oskill Whirlwind` at level 1, alongside 240–290% Enhanced Damage,
+216–471 magic damage, 35% Increased Attack Speed, and two `hit-skill` procs
+(9% Frozen Orb, 11% Charged Bolt). `*Patch Release: 110`, so it carries no
+ladder restriction of its own.
+
+**The skill's own numbers are small.** `Param1 = 30` baseline and `Param2 = 5`
+per level, and Chaos grants it at level 1 — so the damage bonus is +30% and the
+build's damage is the weapon's (`SrcDam = 128`, the full share) rather than the
+skill's. `ToHit = 50 / LevToHit = 5`. `weapsel = 2`, which in the distribution
+means "alternate between both hands" — the same value Talic's Whirlwind carries
+and nothing else does.
+
+**Claws are melee weapons**, and this is load-bearing: `itemtypes.json` gives
+`h2h` the parent `Equiv1 = "mele"`, and `h2h2` the parent `h2h`. So **Fury**
+(`Jah Gul Eth`, `itype1 = "mele"`) can be made in a claw — 209% Enhanced Damage,
+40% Increased Attack Speed, 66% Open Wounds, 33% Deadly Strike, 6% life steal.
+Chaos in one hand and Fury in the other is a real configuration rather than a
+guess.
+
+**The claw speed table, which the breakpoint scenarios need** (`speed` column,
+the weapon speed modifier):
+
+```
+-30  Runic Talons, Greater Talons
+-20  Feral Claws, Greater Claws, Blade Talons
+-10  Battle Cestus, Hand Scythe, Wrist Sword, Wrist Spike, Claws, Katar, Scissors Katar
+  0  Suwayyah, Scissors Suwayyah, Quhab, Scissors Quhab, Cestus, Wrist Blade
++10  War Fist, Fascia, Hatchet Hands
+```
+
+**Three 1.1x-era claims that MUST be reconciled against the 3.x baseline before
+anything is published.** All three are from the same reference this project has
+otherwise validated, and all three would change the page if they still hold:
+
+1. "Whirlwind does profit from IAS Item only when it's socketed into the
+   weapon." If true, every Increased Attack Speed source that is not in the
+   weapon is dead, which is a gear plan rather than a footnote.
+2. "While using dual-wielding attacks IAS item on secondary weapon doesn't
+   count." Consistent with the rest of this class's contract.
+3. "Barbarian's Whirlwind triggers none of the six mentioned chances." If that
+   still holds, **Chaos's own two `hit-skill` procs do not fire while you are
+   whirling** — which is an irony the page would have to lead with, and a
+   serious claim that must not be published on a 2009 source alone.
+
+**The editorial question the mission raises is real and is not yet answered.**
+The skill arrives at level 1 from an item, its own damage bonus is +30%, and the
+weapon share is the whole build — which points at a gear-gated late build rather
+than a general PvM recommendation. Nothing here has been decided, and the
+ratings, filters and summary must follow whatever the answer is rather than
+being written first.
