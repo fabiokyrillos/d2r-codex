@@ -1157,3 +1157,269 @@ weapon share is the whole build — which points at a gear-gated late build rath
 than a general PvM recommendation. Nothing here has been decided, and the
 ratings, filters and summary must follow whatever the answer is rather than
 being written first.
+
+
+## 12. Cycle 6 — Whirlwind, and three claims from 2009 and 2011
+
+§11.3 ended with three claims from a 1.1x-era reference and an editorial
+question nobody had answered. All three are now traced to their exact sentences,
+and all three resolve. Two of them resolve **against** the reference, on
+Blizzard's own patch notes. The third resolves into a "not established", because
+the reference contradicts itself and nothing above community tier settles it.
+
+### 12.1 Where the three claims actually come from
+
+They are three separate sentences on two pages of the same site, and finding the
+sentences is most of the work — the paraphrase in §11.3 was stronger than one of
+them and weaker than another.
+
+| # | Verbatim | Page | Last updated |
+| --- | --- | --- | --- |
+| 1 | "Keep in mind tha[t] Whirlwind does profit from IAS Item only when it's socketed into the weapon." | `mannm.org/d2library/faqtoids/ias_eng.html` | 2011 |
+| 1b | "A Barbarian using Whirlwind profits only by IAS on his weapon, not on other gear." | `mannm.org/d2library/faqtoids/stattab_eng.html` | 04 March 2011 |
+| 2 | "While using dual-wielding attacks IAS item on secondary weapon doesn't count." | `ias_eng.html`, chapter "dual-wielding attacks" | 2011 |
+| 3 | "Barbarian's Whirlwind triggers none of the six mentioned chances." | `ctc_eng.html` | 24 April 2009 |
+
+Two things about the page carrying claims 1 and 2 matter before either is
+weighed, and both are the author's own words.
+
+- **He says he did not research Whirlwind.** "His Whirlwind uses an animation of
+  its very own, which is described to an extend in various threads listed below,
+  **so I've omitted it in FAQtoids**, since I don't want to include too much
+  class-specific stuff." Claim 1 is the sentence immediately after that
+  disclaimer. It is a remembered aside rather than a derivation, and the page
+  names four external threads instead of doing the work.
+- **Claim 2 is scoped to a family Whirlwind is not in.** It opens the chapter
+  "dual-wielding attacks — Assassin and Barbarian only", and that chapter's
+  three worked formulas are **Frenzy, Double Swing and Double Throw**. In the
+  pinned data those three are exactly `weapsel = 3`; Whirlwind is `weapsel = 2`,
+  and it is the skill the author had just excluded. So claim 2 was never a
+  statement about Whirlwind at all.
+
+Claim 2's own formula also contradicts claim 1 on the same page:
+
+```
+EIAS = [120 * (SUM IAS item - IAS 2nd) / (120 + SUM IAS item - IAS 2nd)]
+```
+
+The sum is every point of Increased Attack Speed the character wears, and only
+the *secondary weapon's* share is subtracted. If non-weapon Increased Attack
+Speed were dead, the formula would subtract far more than one term. One of the
+two sentences on that page has to be wrong even in 2011.
+
+### 12.2 Claim 1 — refuted outright, and by Blizzard
+
+Patch **2.4.3** (28 June 2022), Quality of Life, Gameplay, verbatim:
+
+> Changed the logic for determining how often Whirlwind attacks occur.
+> **Whirlwind now incorporates Increased Attack Speed (IAS) from all
+> equipment.** The frames between each Whirlwind attack are equal to the attack
+> frame of a basic attack for that character (modified by increased attack
+> speed). **While dual wielding, the attack frame for each weapon will be
+> averaged (rounding up).** Overall, Whirlwind attacks should be at least as
+> fast as they were before. Slower weapons will attack notably faster.
+
+That is Tier 2, it is about this exact sentence, and it says the sentence
+described the old behaviour. **Claim 1 was true and is now false.** It is not a
+mistake in the reference; it is a patch note the reference predates by eleven
+years.
+
+The same note settles **claim 2 for Whirlwind** in the same breath, and in the
+opposite direction to the paraphrase in §11.3: the off-hand weapon is not
+ignored, it is *half the answer*. Two weapons, two attack frames, averaged and
+rounded up. The site's existing rule — "Increased Attack Speed on the off-hand
+claw does not count" — is correct for the class's `weapsel = 3` claw finishers
+and for an ordinary swing, and **must not be carried onto this page**.
+
+**The same patch is the provenance of the numbers §11.3 read out of the data.**
+The undocumented half of 2.4.3, from the tester whose thread the patch notes
+were amended after: "it changed from baseline −50% ed (+8% per level) to
+baseline 30% ed (+5% per level) … it also gains a baseline bonus of 50% ar". The
+pinned commit carries `Param1 = 30`, `Param2 = 5`, `ToHit = 50`. So the
+extraction is post-2.4.3 and the two agree — which is a control on the
+extraction, not only on the patch note.
+
+Three further lines belong on the page:
+
+- 2.4.3: "Players can now start a new Whirlwind, Leap, or Leap Attack
+  immediately after a Whirlwind ends."
+- 2.4.3: "Fixed an issue where the first attack of Whirlwind was treated
+  different from the rest. **When dual wielding, the first attack will choose
+  two targets**, just like all the other attacks."
+- 2.4: "Whirlwind will be performed even when targeting adjacent enemies", and
+  the Barbarian "will move to the initial position of the enemy — it will not
+  track them as they move".
+
+### 12.3 Claim 3 — not established, and the page must say so
+
+The "six mentioned chances" are the six trigger events the page itself lists:
+**on attack, on strike, when hit, when you level up, when you die, when you
+kill**. Two things follow from reading the page rather than its last sentence.
+
+- **The page's own body excludes exactly one of the six.** Under "on attack",
+  and only there: "this mechanism doesn't work with Barbarian's Whirlwind or
+  ranged attacks". The trailing sentence generalises that to all six.
+- **The generalisation is impossible on three of them.** "When you level up",
+  "when you die" and "when you kill" are not attacks, and no attack skill can
+  suppress them. The pinned data agrees structurally: `item_skillonlevelup` and
+  `item_skillondeath` do not even carry `damagerelated`, so they never enter the
+  per-swing statlist an attack skill could gate.
+
+So the trailing sentence is a loose summary its own table does not support, and
+it is not evidence about the interesting case.
+
+**The interesting case is `on striking`, and it is the one Chaos uses.** In
+`properties.json`, `hit-skill` maps to `item_skillonhit`, tooltip "#% Chance to
+cast level # [Skill] **on striking**"; `att-skill` maps to
+`item_skillonattack`, "**on attack**". Chaos's two procs are `hit-skill`. So the
+reference's one specific, in-table exclusion is about a column Chaos does not
+use.
+
+What is left is community-tier, in both directions, and does not add up to a
+publishable fact:
+
+- A 2022 suggestion thread titled "Whirlwind and War Cry Should Proc Casts on
+  Striking" reads as though it does not, and carries no Blizzard reply.
+- Maxroll's Whirlwind Barbarian guide places every on-striking proc it
+  recommends — Reaper's Toll, Lawbringer — on the **mercenary**, and praises the
+  mercenary's attack speed for proccing them. Suggestive, and never stated.
+
+**Verdict: NOT ESTABLISHED.** The page says that Chaos's own two procs are not
+established to fire while whirling, claims neither direction, and values the
+claw on the 240–290% Enhanced Damage and 216–471 magic damage that are not in
+doubt. Anything a reader wants to *rely* on firing goes on the mercenary. This
+is the §9 precedent applied to a case where the tempting sentence is the
+dramatic one.
+
+### 12.4 What does work, with the mechanism named
+
+`damagerelated` (kb 448, quoted in §10.1) is again the column that decides it,
+and this time the guide's own parenthetical is about the exact case: the flag
+exists "to prevent barbarians who dual wield from for example having 50%
+lifesteal if one weapon has 1% and the other 49% **no matter what weapon they
+swing**".
+
+Whirlwind is an ordinary weapon attack in every column that says so:
+`itypea1 = mele`, `durability = 1`, `SrcDam = 128` — the full weapon share —
+and `weapsel = 2`, which kb 440 (the `Skills.txt` file guide, same author and
+series as kb 448) documents as "2 in this field means that it can either use the
+Right or the Left or Both weapons (used by Whirlwind)". So a Whirlwind hit **is**
+a swing of a specific weapon, and every `damagerelated` stat on that weapon is
+read for it.
+
+| effect | during Whirlwind | basis |
+| --- | --- | --- |
+| Crushing Blow, Open Wounds, Deadly Strike | yes, from the weapon that made the hit | `damagerelated`, and Maxroll builds the Barbarian around Deadly Strike |
+| life and mana leech | yes, from the weapon that made the hit | `damagerelated` |
+| Venom | yes | `aurastate = venomclaws` writes `poisonmindam`/`poisonmaxdam` on the character rather than on a weapon, so it is not weapon-restricted |
+| Claw Mastery | **yes** | `passive_mastery_melee_th / _dmg / _crit`, gated `itypea1 = h2h`, and a whirl is a claw melee attack |
+| Weapon Block | **yes, at full effectiveness** | Maxroll's block resource names Whirlwind as a full-block state |
+| Increased Attack Speed from any slot | yes | patch 2.4.3 |
+| chance to cast **on attack** | no | the reference's one specific exclusion |
+| chance to cast **on striking** | **not established** | §12.3 |
+| martial-arts charge-ups | **no** | §12.5 |
+
+Weapon Block's cap is the skill's own `Param2 = 65`, not the 75 of a shield.
+Maxroll, verbatim: "Chance to Block is capped at 75% while using Skills without
+movement, standing, walking **or using Whirlwind**. When running, the % Chance
+to Block is reduced to 1/3, reducing the cap to 25%." Whirlwind is named as an
+exception rather than covered by silence, which is what makes it usable.
+
+### 12.5 The finding that gives the page its identity
+
+`finishing = 1` appears on **six rows in the whole file**: `Attack`,
+`Left Hand Swing`, `Dragon Talon`, `Dragon Claw`, `Dragon Tail` and
+`Dragon Flight`. Whirlwind carries neither `finishing` nor
+`prgchargesconsumed`.
+
+**So Whirlwind releases no charge-up.** Tiger Strike, Cobra Strike, Phoenix
+Strike, Fists of Fire, Claws of Thunder and Blades of Ice are all dead on this
+build — and a plain normal attack, which does carry `finishing`, is not. This is
+the only Assassin melee page on the site that is not a charge-up page, and it is
+what most reliably catches a reader carrying advice across from the Kicksin or
+the Dragon Tail.
+
+The mirror of §10.2 belongs beside it. On a kick, Claw Mastery does nothing and
+Deadly Strike does nothing. On a whirl, **both work** — because a whirl swings
+the claw and a kick does not. Two pages on the same class, opposite answers, one
+column apart.
+
+### 12.6 Breakpoints — the model is reverse-engineered and the Assassin row is not
+
+Since 2.4.3 the cadence is stated rather than guessed, but the *numbers* are
+published only for the Barbarian. The one independently published D2R matrix
+(Ubeogesh, 1 July 2022, "Whirlwind breakpoints for all single-wielding (1H and
+2H) weapons") reproduces exactly from
+
+```
+fpa  = floor(256 * L / floor(256 * (100 + SIAS + EIAS - WSM) / 100))
+EIAS = floor(120 * IAS / (120 + IAS))
+```
+
+with `L = 7` for one-handers and two-handed swords and `L = 9` for other
+two-handers. Every populated cell of that table checks out, including each
+breakpoint's predecessor — weapon speed 20 with a two-hander gives 11 frames at
+0% and 10 at 4%; weapon speed 0 with a one-hander gives 7 at 0%, 6 at 2%, 5 at
+20% and 4 at 63%. Note the rounding: this is a **floor**, and the ordinary
+animation formula is a ceiling minus one. It is not the same formula.
+
+**And `L` for a claw is not derivable.** `BAA11HS` is 16 frames and yields 7;
+`BAA12HS` is 18 and `BAA12HT` is 19, and the two-hander group needs 9 — so
+`floor((length − 1) / 2)` fits the first and the third and not the second, and
+the thread does not say which animation its "2H except swords" column was
+measured on. The Assassin's claw attack is `AIA1HT1` / `AIA1HT2` = 11 frames at
+animation speed **208**, a second animation speed the Barbarian rows never use,
+so there is not even a constant to carry across.
+
+**No Whirlwind frame table is published on this page.** What is published is the
+official mechanic, the direction it points, and the rules that decide whether
+the Increased Attack Speed you own counts — which since 2.4.3 are not the rules
+the rest of this class uses.
+
+### 12.7 The editorial question, answered
+
+**PvM, late, and a specialist.** Not PvP: an Assassin whirling at skill level
+six with a claw's damage is a worse Barbarian, and the class has no mastery, no
+Battle Orders and no Berserk to make the comparison close. Not a general
+recommendation either — the button does not exist until Chaos is in your hand,
+and Chaos needs **Ohm**, so the runeword's level requirement is **57** and its
+real availability is later than that.
+
+What the Assassin's own points buy is everything the weapon cannot:
+
+- **Claw Mastery** — `ln12` on attack rating is 30% plus 10% per level, `ln34`
+  on damage is 35% plus 4% per level, and `dm56` reaches 25% critical hit.
+  Twenty hard points is +220% attack rating, +111% Enhanced Damage and a quarter
+  of hits doubled, on a skill that is one point on every other Assassin page and
+  worth nothing at all on the two kick pages.
+- **Venom** — the only damage on the page a physical immune does not stop.
+- **Weapon Block** — 65%, at full effectiveness while whirling, on a character
+  holding two claws and owning no shield slot.
+- **Fade or Burst of Speed**, and since 2.4.3 that choice is genuinely close:
+  Burst of Speed's `Param3/4 = 15 → 60` attack speed now reaches Whirlwind.
+
+So the page is named after a skill it spends no points in, and its
+`primarySkill` is **Claw Mastery** — the skill the plan maxes first and the one
+whose applicability to a whirl is this cycle's finding. Stating that plainly is
+better than naming the build after a row it cannot allocate.
+
+Base data the gear plan rests on. Chaos is `Fal Ohm Um`, `itype1 = "h2h"`, so
+three sockets in a claw; Ohm is level 57 and sets the requirement. Fury is
+`Jah Gul Eth`, `itype1 = "mele"`, and `itemtypes.json` gives `h2h` the parent
+`Equiv1 = "mele"` and `h2h2` the parent `h2h`, so a claw takes it; Jah is level
+65. Three-socket claws are Blade Talons, Claws and Scissors Katar (normal);
+Quhab, Greater Claws, Scissors Quhab and Greater Talons (exceptional); Suwayyah,
+Feral Claws, Scissors Suwayyah, Runic Talons and Wrist Sword (elite). Battle
+Cestus and War Fist hold two and cannot take either runeword. Runic Talons ask
+115 strength and 115 dexterity, which is the stat plan's real constraint.
+
+### 12.8 Two things this cycle could not do
+
+- **Chaos and Fury are not in the runeword registry.** Fifty runewords are, and
+  neither of these is. The page therefore names both in `label` picks rather
+  than linking them, and `docs/proposals/assassin-2-add-chaos-and-fury.md`
+  carries the verified rows for the coordinator.
+- **`primarySkill` cannot be `whirlwind`.** There is no Barbarian class in the
+  content tree and `check-content` requires the primary skill to resolve; the
+  allocation gate additionally requires the plan to put points in it, which an
+  item-granted oskill can never do. §12.7 records what was done instead.
