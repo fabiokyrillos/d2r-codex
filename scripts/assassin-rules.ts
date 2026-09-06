@@ -278,6 +278,10 @@ export const ASSASSIN_RULES = [
   "preserved-swing-called-always-hit",
   "charge-order-wrong",
   "make-a-blocked-runeword-here",
+  "kick-blocks-every-weapon-effect",
+  "deadly-strike-on-a-kick",
+  "proc-limited-to-one-kick",
+  "charge-timer-refreshed-by-a-finisher",
 ] as const;
 export type AssassinRule = (typeof ASSASSIN_RULES)[number];
 
@@ -496,8 +500,24 @@ const SENTRY_OUTPUT =
  * longer applying.
  * ------------------------------------------------------------------------- */
 
-/** `charge-noconsume` on Mosaic, from `runes.json` at the pinned commit. */
+/**
+ * `charge-noconsume` on Mosaic, from `runes.json` at the pinned commit — and
+ * what two of them come to, which cycle 5 derived rather than repeated.
+ *
+ * `item_charge_noconsume` (`*ID 200`) carries no `damagerelated` flag, so it is
+ * not restricted to one weapon the way every elemental damage pair, both
+ * leeches and `item_fasterattackrate` are; no `Save Param Bits`, so two sources
+ * sum into one entry instead of rolling separately; and no `maxstat`, which
+ * only four stats in the file have. So 50 and 100 are the two figures a
+ * sentence about charge preservation may publish, and **which one it may
+ * publish depends on how many claws it is talking about.**
+ */
 const CHARGE_NOCONSUME_PER_CLAW = 50;
+const CHARGE_NOCONSUME_BOTH_CLAWS = 100;
+
+/** A sentence that is talking about two Mosaics rather than one. */
+const TWO_CLAWS =
+  /\b(?:two|both|second|2)\s+(?:mosaics?|claws?)\b|\b(?:a\s+second|another)\s+mosaic\b|\b(?:duas|ambas|segunda)\s+(?:mosaics?|garras?)\b|\bmosaics\b|\bdual\s+mosaic/i;
 
 /** An ordinary denial anywhere in the sentence. */
 const DENIES_ANYWHERE =
@@ -609,6 +629,83 @@ const MAKE_IT_ON_LADDER = new RegExp(
  */
 const ABOUT_PHOENIX_STRIKE = /\b(phoenix strike|royal strike)\b/i;
 
+/* ---------------------------------------------------------------------------
+ * WHAT A KICK CARRIES — the cycle-5 corrections
+ *
+ * `weapsel = 4` says which item supplies the *damage*. It does not say that the
+ * weapon has stopped existing, and reading it that way is how this project
+ * published two false sentences about Rift: that its magic and fire damage
+ * "a kick structurally cannot use", and that whether an on-striking proc fires
+ * from a kick "is not establishable".
+ *
+ * The damage order has two separate steps. Plain minimum and maximum damage
+ * from equipment is added at one step, from which Smite, Vengeance and the
+ * Assassin's kicks are explicitly excluded. Elemental and magic damage from
+ * skills and equipment is added at a later step, from which they are not. So:
+ *
+ *   travels   Crushing Blow, Open Wounds, life and mana leech, elemental and
+ *             magic damage from equipment, poison, Venom, Prevent Monster Heal,
+ *             the on-hit statuses, and chance to cast on striking and on attack
+ *   does not  Deadly Strike, Claw Mastery, + min/max PHYSICAL damage, and
+ *             anything whatever on the off-hand claw
+ * ------------------------------------------------------------------------- */
+
+/** Naming a weapon-borne effect that a kick does in fact carry. */
+const A_WEAPON_EFFECT =
+  /\b(on[- ]strik\w*|on[- ]attack|chance to cast|procs?|proc[s]?\b|leech|life steal|steal life|elemental damage|magic damage|fire damage|cold damage|lightning damage|dano elemental|dano m[áa]gico|dano de fogo|ao golpear|ao atacar|conjurar)\b/i;
+
+/**
+ * Denying a kick everything the weapon has, rather than the physical share.
+ *
+ * Both directions, because the shipped defect was written in the second one:
+ * "Rift's magic and fire damage are weapon damage a kick structurally cannot
+ * use" puts the denial after the noun.
+ */
+const NOTHING_FROM_THE_WEAPON =
+  /\b(?:nothing|none of (?:its|the|your)|cannot use|can't use|structurally cannot|does not (?:read|use|see)|never fires?|ignores?|n[ãa]o (?:consegue |pode )?(?:usar|ler)|nada)\b[^.]{0,80}\b(?:weapon|claws?|arma|garras?)\b|\b(?:weapon|claws?|arma|garras?)\b[^.]{0,80}\b(?:contributes? nothing|does nothing|cannot use|can't use|structurally cannot|never fires?|worth nothing|is (?:completely |entirely )?(?:dead|inert|ignored)|n[ãa]o (?:contribui|serve|funciona)|nada)\b/i;
+
+/**
+ * The scope a correct total denial has to carry.
+ *
+ * The true half of the claim is about *physical* damage — the `SrcDam` column
+ * and the plain min/max adds. A sentence that says which half it is denying is
+ * correct; a sentence that denies the weapon outright is the shipped defect.
+ */
+const SCOPED_TO_PHYSICAL =
+  /\b(physical|srcdam|min(?:imum)?\s+and\s+max(?:imum)?|f[íi]sic\w*|m[íi]nimo e m[áa]ximo)\b/i;
+
+/** The weapon credit scoped to the half that genuinely does travel with a kick. */
+const ELEMENTAL_CREDIT =
+  /\b(elemental|magic(?:al)?|fire|cold|lightning|poison|venom|leech|procs?|on[- ]strik\w*|on[- ]attack|chance to cast|trigger|m[áa]gic\w*|fogo|frio|raio|veneno|roubo de vida)\b/i;
+
+/** A sentence that denies the weapon credit rather than making it. */
+const DENIES_THE_WEAPON_CREDIT =
+  /\b(?:no|not|nothing|never|worth nothing|takes nothing|contributes nothing|does not|doesn't|n[ãa]o|nada|nenhum\w*)\b[^.]{0,90}\b(?:kick|chute|dragon (?:talon|tail|flight))\b|\b(?:kick|chute)\b[^.]{0,90}\b(?:nothing|worth nothing|not\b|n[ãa]o\b|nada)\b/i;
+
+/** Crediting Deadly Strike to a kick. */
+const CREDITS_DEADLY_STRIKE =
+  /\bdeadly strike\b(?![^.]{0,60}\b(?:does nothing|dead weight|not applied|does not apply|is not|never|no(?:t)? use[sd]?)\b)/i;
+
+/** The escape clause a correct Deadly Strike sentence must carry. */
+const DENIES_DEADLY_STRIKE =
+  /\b(?:does nothing|dead weight|not applied|does not apply|do not apply|never|is not on the table|was never|n[ãa]o se aplica|n[ãa]o faz nada|peso morto|n[ãa]o usa|n[ãa]o o usa|nunca esteve)\b/i;
+
+/** Confining an on-striking proc to one kick of a multi-kick activation. */
+const PROC_ON_ONE_KICK =
+  /\b(?:only|just|apenas|s[óo])\b[^.]{0,40}\b(?:first|one|1|primeiro|primeira)\s+(?:kick|chute)\b|\b(?:first|primeiro)\s+(?:kick|chute)\b[^.]{0,20}\b(?:only|alone|apenas|s[óo])\b/i;
+
+/** Claiming something restarts the fifteen seconds that does not. */
+const REFRESHES_THE_TIMER =
+  /\b(?:refresh\w*|reset\w*|restart\w*|renew\w*|extend\w*|reinicia\w*|renova\w*|prorrog\w*)\b[^.]{0,70}\b(?:charge|timer|fifteen seconds|15 seconds|duration|carga|temporizador|quinze segundos|dura[çc][ãa]o)\b|\b(?:charge|timer|carga|temporizador)\w*\b[^.]{0,70}\b(?:refresh\w*|reset\w*|restart\w*|renew\w*|reinicia\w*|renova\w*)\b/i;
+
+/** The two things that legitimately restart a charge timer: another charge of the same charge-up. */
+const A_LEGITIMATE_REFRESH =
+  /\b(?:another|a second|second|second hit|same charge[- ]up|re-?appl\w*|outro|outra|mais uma|mesma? charge[- ]up|reaplic\w*)\b/i;
+
+/** A sentence attributing the refresh to a finisher or to a preserved swing. */
+const BY_A_FINISHER =
+  /\b(?:finisher|finishing move|dragon (?:talon|claw|tail|flight)|preserv\w*|releas\w*|libera\w*|golpe final)\b/i;
+
 export function checkAssassinClaims(lines: string[], where: string): AssassinProblem[] {
   const problems: AssassinProblem[] = [];
   const add = (rule: AssassinRule, sentence: string, why: string) =>
@@ -667,12 +764,67 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
         const named = sentence.toLowerCase().indexOf(NAME[slug].toLowerCase());
         const contrast = CONTRASTED.exec(sentence);
         if (contrast && contrast.index < named) continue;
-        if (CREDITS_THE_WEAPON.test(sentence) && !CREDITS_THE_BOOTS.test(sentence)) {
+        /*
+         * Two escape clauses added in cycle 5, and both were forced by correct
+         * sentences this rule rejected. The weapon's *elemental* and *magic*
+         * damage does travel with a kick, so a credit scoped to that half is
+         * true; and a sentence denying the credit is the very thing the rule
+         * wants said. Neither clause reaches the three mutations it was written
+         * for, none of which names an element or denies anything.
+         */
+        if (
+          CREDITS_THE_WEAPON.test(sentence) &&
+          !CREDITS_THE_BOOTS.test(sentence) &&
+          !ELEMENTAL_CREDIT.test(sentence) &&
+          !DENIES_THE_WEAPON_CREDIT.test(sentence)
+        ) {
           add(
             "kick-scales-with-weapon",
             sentence,
             `${NAME[slug]} carries \`Kick = 1\` and no weapon-damage share. Its damage is the ` +
               `boots', so crediting the weapon or the claws sends the reader after the wrong item`,
+          );
+        }
+
+        /*
+         * The opposite error, and the one this project actually shipped. Saying
+         * the kick takes *nothing* from the weapon is only true of the physical
+         * damage share; elemental and magic damage, leech and the on-striking
+         * and on-attack procs all travel. A total denial has to keep that half.
+         */
+        if (
+          NOTHING_FROM_THE_WEAPON.test(sentence) &&
+          A_WEAPON_EFFECT.test(sentence) &&
+          !SCOPED_TO_PHYSICAL.test(sentence)
+        ) {
+          add(
+            "kick-blocks-every-weapon-effect",
+            sentence,
+            `\`weapsel = 4\` chooses which item supplies the damage; it does not switch the ` +
+              `weapon off. Elemental and magic damage, both leeches and chance-to-cast on ` +
+              `striking and on attack all travel with a ${NAME[slug]} kick — only the plain ` +
+              `min/max physical adds do not`,
+          );
+        }
+
+        /* Deadly Strike is not applied to kick damage, on any item. */
+        if (CREDITS_DEADLY_STRIKE.test(sentence) && !DENIES_DEADLY_STRIKE.test(sentence)) {
+          add(
+            "deadly-strike-on-a-kick",
+            sentence,
+            `Deadly Strike is not applied to kick damage, so crediting it to ${NAME[slug]} sends ` +
+              "the reader shopping for an affix that does nothing on this build",
+          );
+        }
+
+        /* Confining a per-hit proc to the first kick, which nothing establishes. */
+        if (PROC_ON_ONE_KICK.test(sentence) && A_WEAPON_EFFECT.test(sentence) && !DENIES_ANYWHERE.test(sentence)) {
+          add(
+            "proc-limited-to-one-kick",
+            sentence,
+            "every kick of an activation rolls its own to-hit check and its own Crushing Blow, " +
+              "and nothing establishes that a proc is confined to the first one; publish the " +
+              "per-hit reading or publish neither",
           );
         }
       }
@@ -844,27 +996,81 @@ export function checkAssassinClaims(lines: string[], where: string): AssassinPro
       }
 
       /*
-       * Charge preservation, in numbers and in words. 50 per claw is the only
-       * figure the data supports, so any other percentage — and any wording
-       * that makes it total — has to be a denial.
+       * Charge preservation, in numbers and in words — and the arithmetic now
+       * has two legal answers rather than one.
+       *
+       * Cycle 4 could only defend 50, because how two claws combine had not
+       * been derived. Cycle 5 derived it from three columns of
+       * `item_charge_noconsume`, so the rule has to change shape: 50 is right
+       * for one claw and wrong for two, 100 is right for two and wrong for one,
+       * and the sentence itself says which it is about. A rule that still
+       * rejected 100 would now be enforcing the error.
        */
       if (CHARGE_PRESERVATION.test(sentence) && !DENIES_ANYWHERE.test(scrubClaimWords(sentence))) {
-        const wrong = percentagesIn(sentence).filter((p) => p !== CHARGE_NOCONSUME_PER_CLAW);
-        if (wrong.length) {
+        const twoClaws = TWO_CLAWS.test(sentence);
+        const allowed = twoClaws
+          ? [CHARGE_NOCONSUME_PER_CLAW, CHARGE_NOCONSUME_BOTH_CLAWS]
+          : [CHARGE_NOCONSUME_PER_CLAW];
+        const found = percentagesIn(sentence);
+        const wrong = found.filter((p) => !allowed.includes(p));
+        /*
+         * A two-claw sentence that publishes 50 and never reaches 100 is
+         * quoting one claw's row as if it were the pair's. It is the exact
+         * inverse of the cycle-4 error and just as wrong.
+         */
+        if (
+          twoClaws &&
+          !wrong.length &&
+          found.includes(CHARGE_NOCONSUME_PER_CLAW) &&
+          !found.includes(CHARGE_NOCONSUME_BOTH_CLAWS)
+        ) {
           add(
             "charge-preservation-overstated",
             sentence,
-            `\`charge-noconsume\` is ${CHARGE_NOCONSUME_PER_CLAW} on each claw and nothing ` +
-              `establishes how two combine; this publishes ${wrong.join("/")}%`,
+            `two Mosaics sum to ${CHARGE_NOCONSUME_BOTH_CLAWS}%; publishing ` +
+              `${CHARGE_NOCONSUME_PER_CLAW}% as the figure for the pair reads one claw's row ` +
+              "as if it were both",
           );
-        } else if (new RegExp(TOTAL_IN_WORDS.source, "i").test(sentence)) {
+        } else if (wrong.length) {
           add(
             "charge-preservation-overstated",
             sentence,
-            `\`charge-noconsume\` is a ${CHARGE_NOCONSUME_PER_CLAW}% chance per claw; ` +
-              "describing it as never, always or guaranteed states a certainty the data does not",
+            `\`charge-noconsume\` is ${CHARGE_NOCONSUME_PER_CLAW} per claw and sums to ` +
+              `${CHARGE_NOCONSUME_BOTH_CLAWS} across two — it is not weapon-restricted, not ` +
+              `parameter-keyed and not capped. ${twoClaws ? "This sentence is about two claws and" : "This sentence is about one claw and"}` +
+              ` publishes ${wrong.join("/")}%`,
+          );
+        } else if (!twoClaws && new RegExp(TOTAL_IN_WORDS.source, "i").test(sentence)) {
+          add(
+            "charge-preservation-overstated",
+            sentence,
+            `one Mosaic is a ${CHARGE_NOCONSUME_PER_CLAW}% chance; describing it as never, ` +
+              "always or guaranteed is the two-claw figure attached to one claw",
           );
         }
+      }
+
+      /*
+       * Something restarting the fifteen seconds that does not restart them.
+       *
+       * Only re-applying the *same* charge-up's state does. The property Mosaic
+       * carries skips the consumption step and touches nothing else, so a
+       * preserved finisher leaves the timer where it was — and a release
+       * certainly does not extend it.
+       */
+      if (
+        REFRESHES_THE_TIMER.test(sentence) &&
+        BY_A_FINISHER.test(sentence) &&
+        !A_LEGITIMATE_REFRESH.test(sentence) &&
+        !DENIES_ANYWHERE.test(scrubClaimWords(sentence))
+      ) {
+        add(
+          "charge-timer-refreshed-by-a-finisher",
+          sentence,
+          `charges stand for ${CHARGE_DURATION_FRAMES} frames and only another charge of the ` +
+            "same charge-up re-applies that state; a finisher — preserving or spending — does not " +
+            "restart the timer",
+        );
       }
 
       /*

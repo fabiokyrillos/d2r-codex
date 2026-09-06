@@ -48,6 +48,22 @@ import type { Build } from "@/lib/types";
  * Charges stand for `auralencalc = 375` frames. Fifteen seconds, flat, at
  * every level.
  *
+ * AND EACH CHARGE-UP RUNS ITS OWN FIFTEEN SECONDS
+ * -----------------------------------------------
+ * `states.json` gives every one of the six a `pgsv = 1` row with its own
+ * `stat` and its own `pgsvoverlay`, and **none of the six sits in a `group`**.
+ * `group` is the column that makes states exclude each other — the control is
+ * `group = 1`, which holds exactly the Sorceress armours (`bonearmor`,
+ * `chillingarmor`, `frozenarmor`, `shiverarmor`, `mindbarrier`,
+ * `psychicward`) whose mutual exclusion nobody disputes. So the timers are
+ * six, they are independent, and:
+ *
+ *   - a second Phoenix Strike hit re-applies `progressive_other` and therefore
+ *     restarts *that* fifteen seconds;
+ *   - charging Tiger Strike starts `progressive_damage` and does not touch it;
+ *   - the charge *count* lives in those stats, which are `Send Bits 3` —
+ *     three bits, which is why three is the ceiling.
+ *
  * THE MOSAIC CONSEQUENCE, AND WHY IT IS NOT WHAT GUIDES SAY
  * ---------------------------------------------------------
  * `Param8 = 1` on Dragon Claw, Dragon Talon and Dragon Tail, and the row's own
@@ -73,14 +89,42 @@ import type { Build } from "@/lib/types";
  * a Mosaic one. That is the opposite of the usual advice, and it is why the
  * Claw Mastery package exists.
  *
- * WHAT IS NOT ESTABLISHED, AND IS NOT PUBLISHED
- * ---------------------------------------------
- * - **That two Mosaics give 100% preservation.** `charge-noconsume` is 50 on
- *   each claw and resolves to `item_charge_noconsume`, whose tooltip reads
- *   "+#% chance for finishing moves to not consume charges" — a percent chance.
- *   Whether two claws add, roll independently, or only one counts is engine
- *   behaviour that `runes.txt` does not express. The page says 50 per claw.
- * - **That a finisher refreshes the charge timer.** No property line says so.
+ * TWO MOSAICS DO GIVE 100%, AND IT IS DERIVED RATHER THAN REPEATED
+ * ----------------------------------------------------------------
+ * Cycle 4 left this open. It is not open: `item_charge_noconsume` (`*ID 200`)
+ * settles it in three columns, each with a control inside the same file.
+ *
+ *   - **`damagerelated` is absent (0).** That flag is what restricts a stat to
+ *     one weapon — d2mods.info's ItemStatCost guide: "restricted to a single
+ *     weapon and not stack with the item owners accumulated total ... the game
+ *     copies all these stats (from the weapon involved) to a temporary
+ *     statlist". 108 stats carry it, and they are exactly the ones nobody
+ *     expects to stack across two weapons: every elemental damage pair, both
+ *     leeches, `tohit`, `item_fasterattackrate` — the last of which is the
+ *     off-hand-IAS rule this project already proved 15/15 in cycle 3. The
+ *     sibling property `item_noconsume` **does** carry the flag. This one does
+ *     not, so both claws' values reach the accumulated total, the same path
+ *     that makes two claws' `+skills` add.
+ *   - **No `Save Param Bits`.** Instances are not keyed by a parameter, so two
+ *     sources sum into one entry rather than standing as two. The contrast is
+ *     `item_skillonhit`, which carries `Save Param Bits 16` precisely so that
+ *     two different procs stay separate.
+ *   - **No `maxstat`.** Only four stats in the whole file carry one —
+ *     `durability`, `hitpoints`, `mana`, `stamina` — and all four are
+ *     current/max pairs. There is no cap. `Save Bits 7` holds 0–127, so 100
+ *     is representable.
+ *
+ * One claw 50%. Two claws 100%. **One roll, not two**, because the stat is a
+ * single summed value — so there is no application order and no second chance.
+ * A finisher that misses spends nothing, so the roll only matters on the one
+ * that lands. And because the property's only job is to skip the consumption
+ * step, a preserved finisher leaves the fifteen seconds where they were: it
+ * does not restart them. That last sentence is derived from the mechanism
+ * rather than measured, and the page says so where it says it.
+ *
+ * WHAT IS STILL NOT ESTABLISHED, AND IS NOT PUBLISHED
+ * ---------------------------------------------------
+ * - Whether swapping weapons or changing area clears the charge states.
  * - The semantics of `prgchargesconsumed = 1` beyond "charges are consumed".
  *   Whether the 1 counts charges or is a flag is not determinable, so the page
  *   says "spends the standing charges", which is what the skill pages say.
@@ -434,7 +478,7 @@ export const phoenixStrike: Build = {
       tier: "optimized",
       goal: "The Mosaic character. **This tier is not reachable on the current Ladder** — see the availability block at the top of the page — and everything in it assumes Non-Ladder online or offline.",
       levelRange: [85, 99],
-      nextUpgrade: "A second Mosaic, and the honest caveat that goes with it.",
+      nextUpgrade: "A second Mosaic, which is the difference between half your finishers preserving and all of them.",
       slots: [
         {
           slot: "weapon",
@@ -452,7 +496,7 @@ export const phoenixStrike: Build = {
           picks: [
             {
               ref: { kind: "runeword", slug: "mosaic" },
-              why: "**A second Mosaic is a second 50% chance, and this page will not tell you it is 100%.** The property is 50 on each claw and the extraction says nothing whatever about how two are combined — whether they add, roll independently, or only the main hand is read. It is more preservation than one; how much more is not established, and anyone quoting you a figure is quoting a guess.",
+              why: "**A second Mosaic takes the chance to 100%, and that is derived rather than repeated.** `item_charge_noconsume` carries no `damagerelated` flag, so unlike weapon damage or leech it is not restricted to one hand and both claws reach the character's accumulated total. It carries no `Save Param Bits`, so the two values sum into one entry rather than rolling separately — **one roll per finisher, at 100%, not two rolls at 50%**. And only four stats in the entire file carry a `maxstat` cap; this is not one of them. So the second claw is the whole build: every finisher preserves, and the three-swings-then-release cadence stops existing. What it does not do is restart the fifteen seconds — the property skips the consumption step and touches nothing else.",
               sockets: "Mal, Gul, Amn again.",
               modes: { ladder: ["non-ladder"] },
               alternatives: [{ label: "A rare Runic Talons with +3 Phoenix Strike", why: "One Mosaic and one good rare is a perfectly reasonable stopping point, and it is three high runes cheaper." }],
@@ -478,7 +522,7 @@ export const phoenixStrike: Build = {
       nextUpgrade: "Nothing. Roll a Kicksin and take the boots you have been ignoring.",
       slots: [
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "mosaic" }, why: "On the fastest elite claw base you can find. Runic Talons at −30 base speed is the usual answer.", sockets: "Mal, Gul, Amn.", modes: { ladder: ["non-ladder"] } }] },
-        { slot: "offhand", picks: [{ ref: { kind: "runeword", slug: "mosaic" }, why: "The second one. **Still 50% on its own row**, and still not a documented 100% together.", sockets: "Mal, Gul, Amn.", modes: { ladder: ["non-ladder"] } }] },
+        { slot: "offhand", picks: [{ ref: { kind: "runeword", slug: "mosaic" }, why: "The second one, and the reason this tier exists. 50 on its own row plus 50 on the other reaches **100% preservation on a single roll**, because the stat is neither weapon-restricted nor parameter-keyed nor capped. Charges stop being a resource.", sockets: "Mal, Gul, Amn.", modes: { ladder: ["non-ladder"] } }] },
         { slot: "helm", picks: [{ ref: { kind: "runeword", slug: "dream" }, why: "An aura you wear, on a build that wants to be standing next to things anyway." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "Teleport. On a melee build with a fifteen-second charge window, the ability to arrive is worth more than another damage line." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Life Tap on striking." }] },

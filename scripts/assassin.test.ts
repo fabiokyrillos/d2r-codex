@@ -286,19 +286,69 @@ const WOULD_HAVE_SHIPPED: { note: string; line: string; rule: AssassinRule }[] =
     rule: "charge-preservation-overstated",
   },
   {
-    note: "dual Mosaic sold as fifty between the pair",
+    note: "dual Mosaic given a figure that is neither 50 nor 100",
     line: "Two Mosaics give you a 75% chance to preserve charges between them.",
     rule: "charge-preservation-overstated",
   },
   {
-    note: "total preservation stated in words instead of a number",
-    line: "A dual Mosaic Assassin never consumes her charges, so the rotation is one button.",
+    note: "dual Mosaic demoted back to one claw's figure",
+    line: "Two Mosaics are still only a 50% chance for finishing moves to preserve charges.",
     rule: "charge-preservation-overstated",
   },
   {
-    note: "the pt-BR form of the same certainty",
-    line: "Com duas Mosaics as cargas nunca são consumidas e você só aperta o finisher.",
+    note: "one Mosaic given the pair's certainty, in words",
+    line: "With a Mosaic the Assassin never consumes her charges, so the rotation is one button.",
     rule: "charge-preservation-overstated",
+  },
+  {
+    note: "the pt-BR form of the same certainty on one claw",
+    line: "Com a Mosaic as cargas nunca são consumidas e você só aperta o finisher.",
+    rule: "charge-preservation-overstated",
+  },
+  {
+    note: "an invented cap on a stat that has no maxstat",
+    line: "Charge preservation is capped at 60% however many Mosaics you hold.",
+    rule: "charge-preservation-overstated",
+  },
+  {
+    note: "the fifteen seconds restarted by the wrong event",
+    line: "Each finisher refreshes the charge timer, so the charges never run out while you are attacking.",
+    rule: "charge-timer-refreshed-by-a-finisher",
+  },
+  {
+    note: "the pt-BR mirror of the same wrong event",
+    line: "Um finisher que preserva as cargas renova o temporizador de quinze segundos.",
+    rule: "charge-timer-refreshed-by-a-finisher",
+  },
+
+  /*
+   * What a kick carries. Cycle 5's corrections, and the first two are the
+   * sentences this project itself published.
+   */
+  {
+    note: "weapsel read as switching the weapon off entirely",
+    line: "Rift's magic and fire damage are weapon damage a Dragon Talon kick structurally cannot use.",
+    rule: "kick-blocks-every-weapon-effect",
+  },
+  {
+    note: "the on-striking proc denied to the kick",
+    line: "A Dragon Talon kick takes nothing from the weapon, so a chance to cast on striking never fires.",
+    rule: "kick-blocks-every-weapon-effect",
+  },
+  {
+    note: "Deadly Strike sold as a kick affix",
+    line: "Gore Rider gives 15% Deadly Strike, and every Dragon Talon kick rolls it separately.",
+    rule: "deadly-strike-on-a-kick",
+  },
+  {
+    note: "Deadly Strike on the amulet slot of a kicker",
+    line: "Highlord's Wrath is here for its Deadly Strike, which scales with level on Dragon Talon.",
+    rule: "deadly-strike-on-a-kick",
+  },
+  {
+    note: "a per-hit proc confined to one kick with nothing establishing it",
+    line: "The Tornado only fires on the first kick of a Dragon Talon activation, so the chance to cast is worth less than it looks.",
+    rule: "proc-limited-to-one-kick",
   },
   {
     note: "the preserved swing given the guarantee it specifically loses",
@@ -458,6 +508,52 @@ const ACCEPTED: { note: string; line: string }[] = [
     note: "saying plainly that it cannot be made on Ladder",
     line: "Mosaic cannot be crafted on Ladder, so nothing on that mode can make one.",
   },
+
+  /*
+   * Cycle 5's corrections have to be *publishable*. Each of these is a sentence
+   * that now ships, and a rule that rejected one of them would be enforcing the
+   * error it was written to remove.
+   */
+  {
+    note: "the derived two-claw figure, which is now the correct one",
+    line: "A second Mosaic takes the chance to 100%, because the stat is neither weapon-restricted nor parameter-keyed nor capped.",
+  },
+  {
+    note: "one claw at its own figure, unchanged",
+    line: "Mosaic gives a 50% chance for finishing moves to not consume charges, and that is a percent chance, not a guarantee.",
+  },
+  {
+    note: "the pt-BR mirror of the two-claw figure",
+    line: "A segunda garra leva a chance a 100%, porque o stat não é restrito a uma arma nem tem teto.",
+  },
+  {
+    note: "totality claimed for two claws, which is what two claws buy",
+    line: "With two Mosaics every finisher preserves the charges and the three-swings-then-release cadence stops existing.",
+  },
+  {
+    note: "the one event that does restart the fifteen seconds",
+    line: "Another Phoenix Strike hit re-applies the same state and therefore restarts that fifteen seconds.",
+  },
+  {
+    note: "saying plainly that a preserved finisher does not restart the timer",
+    line: "A preserved finisher does not restart the fifteen seconds; the property skips the consumption step and touches nothing else.",
+  },
+  {
+    note: "the corrected Rift sentence, which credits the elemental half",
+    line: "A Dragon Talon kick takes nothing from the weapon's physical damage, but Rift's magic and fire damage transfer and its on-striking Tornado fires.",
+  },
+  {
+    note: "the corrected Gore Rider sentence, which denies the Deadly Strike",
+    line: "Gore Rider's 15% Deadly Strike does nothing, because Deadly Strike is not applied to kick damage on any item.",
+  },
+  {
+    note: "the pt-BR mirror of the Deadly Strike denial",
+    line: "O Deadly Strike das Gore Rider não faz nada numa chutadora, porque ele não se aplica ao dano de chute.",
+  },
+  {
+    note: "the physical-only denial, which is the true half and must stay sayable",
+    line: "Dragon Talon carries no SrcDam at all, so the plain minimum and maximum physical damage on your claws is worth nothing to a kick.",
+  },
 ];
 
 console.log("\nSentences that must stay silent");
@@ -467,7 +563,7 @@ for (const { note, line } of ACCEPTED) {
 }
 
 console.log("\nWiring");
-check("sixteen rules are exported for the content sweep", ASSASSIN_RULES.length === 16);
+check("twenty rules are exported for the content sweep", ASSASSIN_RULES.length === 20);
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) {

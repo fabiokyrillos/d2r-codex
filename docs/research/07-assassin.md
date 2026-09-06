@@ -836,3 +836,161 @@ search.
 
 One controlled in-game test settles (1) and (2) together: Venom up, Blade Fury
 only, against a high-HP monster.
+
+
+## 10. Cycle 5 — the three published debts, closed
+
+Cycle 4 shipped four pages and three open questions. All three are now answered,
+and two of them turned out to be answers *against* what had been published.
+
+### 10.1 The column that decides all of it
+
+`itemstatcost.txt` carries a boolean called `damagerelated`. The Phrozen Keep
+file guide states what it does:
+
+> DamageRelated: this boolean controls whenever the stat will be restricted to a
+> single weapon and not stack with the item owners accumulated total of that
+> stat when he equips the weapon … when you swing your weapon the game copies
+> all these stats (from the weapon involved) to a temporary statlist that is
+> then flushed after the attack is completed.
+
+108 stats carry it in the pinned data, and the set is exactly the one that
+reading predicts: `mindamage`/`maxdamage`, every elemental damage pair, both
+leeches, `tohit`, `item_fasterattackrate`, `item_crushingblow`,
+`item_openwounds`, `item_deadlystrike`, `item_skillonhit`, `item_skillonattack`.
+
+`item_fasterattackrate` is the control that matters, because this project has
+already tested it. Cycle 3's trap-speed contract rests on off-hand Increased
+Attack Speed not counting, and that was confirmed 15/15 against an independently
+published matrix. Off-hand IAS does not count *because IAS is damagerelated*. So
+the flag's meaning is not being taken on trust; it was verified here first, by
+accident, a cycle early.
+
+### 10.2 Debt A — a weapon proc does fire from a kick, and Rift is better than
+### the page said
+
+The question cycle 4 left open was whether a weapon-sourced `item_skillonhit`
+survives a `weapsel = 4` strike. It does. The D2library mechanics reference
+lists what a kick carries and **trigger events are on the list**, beside
+Crushing Blow, Open Wounds and both leeches. It also says the thing that decides
+where the proc has to sit: "Secondary claw doesn't count for special events."
+
+Two corrections follow, and the second is the more serious.
+
+**The caveat comes off.** Riftsin survives as a gear variant of the Kicksin, and
+its central claim is now supported rather than hedged.
+
+**And the page had the other half backwards.** It told the reader that Rift's
+160–250 magic and 60–180 fire damage were "weapon-damage adds a kick
+structurally cannot use". They are not. The damage order adds plain minimum and
+maximum damage from equipment at one step — from which Smite, Vengeance and the
+Assassin's kicks are excluded — and adds elemental and magic damage from skills
+and equipment at a *later* step, from which they are not. The page collapsed two
+steps into one and threw away the two largest lines on the item.
+
+The full list, as published on the build page:
+
+| effect | on a Dragon Talon kick |
+| --- | --- |
+| chance to cast on striking / on attack | yes |
+| Crushing Blow, Open Wounds | yes |
+| life and mana leech | yes |
+| elemental and magic damage from equipment | yes |
+| poison damage, Venom | yes |
+| Deadly Strike | **no** |
+| Claw Mastery | **no** |
+| + minimum and maximum *physical* damage | **no** |
+| anything at all on the off-hand claw | **no** |
+
+Deadly Strike is the third correction. It was sold on the Kicksin page in five
+places — three on Gore Rider, two on Highlord's Wrath — and it does nothing on a
+kick. Both items are still right for the slot; the reason given was wrong.
+
+Claw Mastery is the one place cycle 4's conclusion survives intact. It spent one
+point there rather than twenty, on the strength of an asymmetry in the formulas
+alone, and marked the mechanism "not determinable". It is determinable, and the
+answer agrees: Claw Mastery is not applied to kick damage.
+
+Crushing Blow's magnitude was also marked unavailable. It is available:
+100 / (2 × (players + 1)) percent of the monster's **current** life, taken from
+its single-player pool even in a full game; halved against champions and bosses,
+halved again for a ranged hit, a tenth against objects; uncapped chance, and
+nothing over 100% helps. Positive physical resistance cuts it, which is why a
+physical immune takes none — the wall the page already named, now with a number.
+
+### 10.3 Debt B — two Mosaics do give 100%, and it is derived
+
+Cycle 4 refused to publish a combined figure and said so on the page. The refusal
+was right at the time and is wrong now. `item_charge_noconsume` (`*ID 200`)
+settles it in three columns, each with a control inside the same file:
+
+- **no `damagerelated`** — so it is not restricted to one weapon. The contrast is
+  its own sibling: `item_noconsume` *does* carry the flag. A stat without it
+  reaches "the item owners accumulated total", which is the same path that makes
+  two claws' `+skills` add — a fact this site already publishes, for kick count.
+- **no `Save Param Bits`** — instances are not keyed by a parameter, so two
+  sources sum into one entry rather than standing as two. `item_skillonhit`
+  carries `Save Param Bits 16` precisely so two different procs stay separate.
+- **no `maxstat`** — only four stats in the entire file have one, and all four
+  are current/max pairs (`durability`, `hitpoints`, `mana`, `stamina`). There is
+  no cap, and `Save Bits 7` holds 0–127.
+
+So: one claw 50%, two claws 100%, **one roll rather than two**, no application
+order, and no second chance. A finisher that misses spends nothing, so the roll
+only matters on the one that lands.
+
+### 10.4 Debt C — the charge timer
+
+Fifteen seconds flat, at every level, for all six charge-ups: `auralencalc` is
+`par3 = 375` on the five martial arts charge-ups and a literal 375 on Royal
+Strike, and 375 / 25 = 15.0.
+
+`states.json` adds the part that was missing. The six are
+`progressive_damage`, `progressive_steal`, `progressive_fire`,
+`progressive_lightning`, `progressive_cold` and `progressive_other`; each is
+`pgsv = 1` with its own `stat` and its own overlay, and **none of them is in a
+`group`**. `group` is the column that makes two states exclude each other. So
+the six timers are independent: a second Phoenix Strike hit re-applies
+`progressive_other` and restarts *that* fifteen seconds, and charging Tiger
+Strike starts a different state without touching it. The charge count lives in
+those stats at `Send Bits 3`, which is why three is the ceiling.
+
+A finisher that consumes clears them. A finisher that *preserves* them leaves
+the timer where it was — the property's only job is to skip the consumption
+step, so nothing else is touched. That last step is derived from the mechanism
+rather than measured, and the page says which.
+
+Not established, and not published: whether swapping weapons or changing area
+clears the states.
+
+### 10.5 A fourth item closed for free
+
+The Kicksin page published Fade and Burst of Speed's mutual exclusion as resting
+"on behaviour, not on a column", because `states.txt` was outside the
+extraction. It is inside it now: `fade` and `quickness` are the only two members
+of `group = 2`. The control is `group = 1`, which holds exactly the Sorceress
+armours. `venomclaws` carries no group, which is why Venom stacks with either.
+
+### 10.6 New controls
+
+Four rules were added and one was rewritten, taking `scripts/assassin-rules.ts`
+from sixteen to twenty.
+
+- `kick-blocks-every-weapon-effect` — the shipped defect: denying a kick every
+  weapon property rather than the physical share. A correct total denial has to
+  name what it is denying.
+- `deadly-strike-on-a-kick` — crediting an affix that does nothing.
+- `proc-limited-to-one-kick` — confining a per-hit proc to the first kick, which
+  nothing establishes in either direction.
+- `charge-timer-refreshed-by-a-finisher` — the wrong event restarting the
+  fifteen seconds.
+- `charge-preservation-overstated` was **inverted where it needed inverting**.
+  It previously rejected 100 as unfounded; it now knows that 50 is right for one
+  claw and 100 for two, reads the sentence to see which it is about, and rejects
+  each figure attached to the wrong number of claws. A rule left as it was would
+  have been enforcing the error.
+
+Two escape clauses were forced onto `kick-scales-with-weapon` by correct
+sentences it rejected: a weapon credit scoped to the elemental or magic half is
+true, and a sentence *denying* the credit is the thing the rule wants said.
+Neither clause reaches the three mutations the rule was written for.

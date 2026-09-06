@@ -12061,14 +12061,14 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       },
       optimized: {
         goal: "O personagem com Mosaic. **Este tier não é alcançável no Ladder atual** — veja o bloco de disponibilidade no topo da página — e tudo nele pressupõe Non-Ladder online ou offline.",
-        nextUpgrade: "Uma segunda Mosaic, e a ressalva honesta que vem junto.",
+        nextUpgrade: "Uma segunda Mosaic, que é a diferença entre metade dos seus finishers preservarem e todos eles preservarem.",
         picks: {
           "weapon-0": {
             why: "**50% de chance de os finishers não consumirem cargas — e isso é uma chance percentual, não uma garantia.** Ela também carrega +2 Martial Arts, +20% de Increased Attack Speed e 200–250% de Enhanced Damage. O que ela muda não é dano, é cadência: cargas que sobrevivem a um finisher são cargas que você não gastou três golpes reconstruindo. **O que ela te custa é o acerto garantido** — um golpe que preserva cargas não é um golpe que as consome, então a marca de Always Hit fica desligada e ele rola acerto. Pegue o pacote de Claw Mastery com esta garra.",
             sockets: "Mal, Gul, Amn, nessa ordem, numa garra de 3 sockets. Errar a ordem custa três runas altas.",
           },
           "offhand-0": {
-            why: "**Uma segunda Mosaic é uma segunda chance de 50%, e esta página não vai te dizer que isso é 100%.** A propriedade vale 50 em cada garra e a extração não diz absolutamente nada sobre como duas se combinam — se somam, se rolam independentes, ou se só a mão principal é lida. É mais preservação que uma; quanto mais não está estabelecido, e quem te der um número está dando um palpite.",
+            why: "**Uma segunda Mosaic leva a chance a 100%, e isso é derivado e não repetido.** O `item_charge_noconsume` não carrega a marca `damagerelated`, então, diferente de dano de arma ou de roubo de vida, ele não fica restrito a uma mão e as duas garras chegam ao total acumulado do personagem. Ele também não carrega `Save Param Bits`, então os dois valores somam numa entrada só em vez de rolarem separados — **uma rolagem por finisher, a 100%, e não duas rolagens a 50%**. E só quatro stats no arquivo inteiro carregam um teto `maxstat`; este não é um deles. Então a segunda garra é a build inteira: todo finisher preserva, e a cadência de três-golpes-e-libera deixa de existir. O que ela não faz é reiniciar os quinze segundos — a propriedade pula a etapa de consumo e não toca em mais nada.",
             sockets: "Mal, Gul, Amn de novo.",
           },
           "offhand-0-alt0": { why: "Uma Mosaic e uma boa rara é um ponto de parada perfeitamente razoável, e sai três runas altas mais barato." },
@@ -12094,7 +12094,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "Nada. Faça uma Kicksin e pegue as botas que você vinha ignorando.",
         picks: {
           "weapon-0": { why: "Na base de garra elite mais rápida que você achar. Runic Talons a −30 de velocidade base é a resposta usual.", sockets: "Mal, Gul, Amn." },
-          "offhand-0": { why: "A segunda. **Continua sendo 50% na linha dela**, e continua não sendo 100% documentado juntas.", sockets: "Mal, Gul, Amn." },
+          "offhand-0": { why: "A segunda, e a razão de este tier existir. 50 na linha dela mais 50 na da outra chega a **100% de preservação numa rolagem só**, porque o stat não é restrito a uma arma, não é indexado por parâmetro e não tem teto. Cargas deixam de ser um recurso.", sockets: "Mal, Gul, Amn." },
           "helm-0": { why: "Uma aura vestida, numa build que quer estar parada ao lado das coisas de qualquer jeito." },
           "body-0": { why: "Teleport. Numa build corpo a corpo com janela de quinze segundos, conseguir chegar vale mais que outra linha de dano." },
           "gloves-0": { why: "Life Tap ao golpear." },
@@ -12116,6 +12116,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "Você chega perto e aperta um botão, e o botão chuta quatro vezes — cinco, seis ou sete quando os seus +skills forem altos o bastante. Cada chute é um acerto separado que rola Crushing Blow, Open Wounds e roubo de vida por conta própria, então um boss com uma barra de vida enorme cai para uma build cujo dano listado parece modesto ao lado do de uma Sorceress. O Venom fica ativo o tempo todo e pega carona em cada um desses chutes. O resto do plano é sobre ter permissão para ficar ali: Weapon Block em vinte dá chance de bloqueio com duas garras e nenhum escudo, o Burst of Speed deixa os chutes mais rápidos, e um ponto em Death Sentry transforma o primeiro cadáver no resto da sala. O que você não faz é bater num monstro imune a físico, porque os chutes são físicos e não existe versão desta build em que isso não seja verdade.",
     strengths: [
       "**Cada chute rola Crushing Blow separadamente**, o que faz desta a melhor matadora de boss da classe e a razão de ela ser a build de Uber",
+      "Cada uma dessas rolagens tira **um quarto da vida atual do monstro** em players 1 — metade disso num boss, e metade de novo a cada degrau de players — e é por isso que o número da ficha de personagem é irrelevante aqui",
+      "**Dano elemental e mágico do seu equipamento pega carona no chute.** Adições de dano físico não pegam, e as duas coisas são etapas diferentes da ordem de dano — então uma arma cujo dano é fogo ou mágico não é o slot morto que parece ser",
+      "**O Open Wounds não pode ser resistido**, então ele é a única linha do plano de equipamento contra a qual um imune a físico não tem resposta — desde que outra coisa já tenha tirado sangue",
       "**O dano está nas botas**, que são baratas, e upgradeá-las praticamente dobra esse dano — o maior upgrade isolado de qualquer página de Assassin",
       "+skills compram chutes inteiros nos níveis efetivos 6, 12, 18, 24, 30, 36, 42 e 48",
       "O Weapon Block dá chance de bloqueio de verdade com duas garras e nenhum escudo",
@@ -12124,6 +12127,8 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     weaknesses: [
       "**Imunidade a físico é uma parede, e o Crushing Blow também não atravessa** — ele é dano físico como o resto do chute",
+      "**Deadly Strike não faz nada numa chutadora.** Ele está em dois dos itens-símbolo da própria build e não se aplica ao dano de chute, então não saia comprando mais",
+      "**Nada na garra da mão secundária é lido para eventos especiais** — nem os procs, nem o Crushing Blow, nem a velocidade de ataque. Aquela mão é `+skills` e defesa, só",
       "Oito das vinte áreas de farm deste site listam físico entre as imunidades comuns, incluindo o Pit, o Cow Level e o Chaos Sanctuary",
       "**Iron Maiden.** Uma ativação de sete chutes contra uma maldição de dano refletido é a forma mais rápida de se matar neste site",
       "É corpo a corpo sem bônus de vida, sem leech próprio até o plano de equipamento fornecer, e sem opção à distância nenhuma",
@@ -12241,7 +12246,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "shadow-master": "Um segundo corpo para o grupo bater enquanto você chuta uma coisa até a morte.",
     },
     immunityPlan:
-      "**Imunidade a físico é a parede desta build, e é uma parede mais alta do que a maioria das páginas corpo a corpo admite — inclusive para o Crushing Blow.** O Crushing Blow é dano físico; um monstro com 100% ou mais de resistência a físico não recebe essencialmente nada dele, então o mecanismo que faz desta a melhor matadora de boss da classe é exatamente o mecanismo que para de funcionar. O censo de áreas deste próprio site lista físico entre as imunidades comuns em **oito das vinte áreas de farm**, e não são áreas obscuras: o Pit, o Cow Level, o Chaos Sanctuary, a Worldstone Keep, o River of Flame, o templo do Nihlathak, a Stony Tomb e os templos de Kurast. Metade da lista popular de farm do Hell está fechada para os chutes. Quatro respostas, em ordem de quanto ajudam. Primeiro, o **Venom**, e é por isso que ele são vinte pontos do núcleo e não de um pacote: veneno não é físico, ele pega carona em cada chute, e quase nada da lista de farm resiste a ele. Segundo, o **pacote de Death Sentry** — a explosão de cadáver é metade fogo e metade físico, e a metade de fogo cai num imune a físico, mas alguma coisa precisa morrer antes, então é resposta a uma sala e não a um monstro. Terceiro, **um mercenário que não seja você**: um mercenário de Might do Ato 2 também é físico, então se imunidade a físico é o problema, a resposta é um Iron Wolf do Ato 3 ou um Bárbaro do Ato 5, e não mais aura. Quarto, e o mais frequentemente correto: **passe direto**. Um grupo imune a físico numa Terror Zone não é um enigma que esta build resolve, e fingir que é é como o personagem morre. O que **não** funciona é empilhar Crushing Blow, Deadly Strike ou Open Wounds, os três físicos e os três parando na mesma parede.",
+      "**Imunidade a físico é a parede desta build, e é uma parede mais alta do que a maioria das páginas corpo a corpo admite — inclusive para o Crushing Blow.** O Crushing Blow é dano físico; um monstro com 100% ou mais de resistência a físico não recebe essencialmente nada dele, então o mecanismo que faz desta a melhor matadora de boss da classe é exatamente o mecanismo que para de funcionar. O censo de áreas deste próprio site lista físico entre as imunidades comuns em **oito das vinte áreas de farm**, e não são áreas obscuras: o Pit, o Cow Level, o Chaos Sanctuary, a Worldstone Keep, o River of Flame, o templo do Nihlathak, a Stony Tomb e os templos de Kurast. Metade da lista popular de farm do Hell está fechada para os chutes. Quatro respostas, em ordem de quanto ajudam. Primeiro, o **Venom**, e é por isso que ele são vinte pontos do núcleo e não de um pacote: veneno não é físico, ele pega carona em cada chute, e quase nada da lista de farm resiste a ele. Segundo, o **pacote de Death Sentry** — a explosão de cadáver é metade fogo e metade físico, e a metade de fogo cai num imune a físico, mas alguma coisa precisa morrer antes, então é resposta a uma sala e não a um monstro. Terceiro, **um mercenário que não seja você**: um mercenário de Might do Ato 2 também é físico, então se imunidade a físico é o problema, a resposta é um Iron Wolf do Ato 3 ou um Bárbaro do Ato 5, e não mais aura. Quarto, e o mais frequentemente correto: **passe direto**. Um grupo imune a físico numa Terror Zone não é um enigma que esta build resolve, e fingir que é é como o personagem morre. O que **não** funciona é empilhar Crushing Blow, que é físico e para na mesma parede — e o Deadly Strike nunca esteve em jogo, porque um chute não o usa em lugar nenhum. **O Open Wounds é a única exceção, e ela é de verdade.** O dano dele não é veneno e não pode ser resistido de forma alguma, então um imune a físico não tem defesa contra ele. A pegadinha é a condição: o estado só começa num inimigo que não seja jogador e que já esteja abaixo da vida cheia. Sozinho, contra um monstro que os seus chutes não arranham, ele nunca começa — mas no instante em que o Venom tirar a primeira lasca, o Open Wounds tem onde cair. Essa é uma segunda razão para os dois estarem no mesmo plano, e é a única linha quase-física desta página que atravessa a parede.",
     mercenaryNotes:
       "**Might, e não chega a ser disputa.** A aura do mercenário sobe o dano físico de todo chute, e dano físico é o que esta build é. Holy Freeze é a resposta corpo a corpo usual em outros lugares e é pior aqui: congelar um boss não faz nada por uma build cujo problema nunca foi o boss se mexer. Dê Insight a ele até o leech estar resolvido, depois Fortitude ou uma Infinity se existir — embora a **Conviction da Infinity não faça nada por uma build física**, então ali ela é item de sobrevivência do mercenário e não de dano. No que nenhum mercenário ajuda é no Iron Maiden, que é em você.",
     farmingWhy: {
@@ -12342,7 +12347,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "gloves-0": { why: "Velocidade de ataque e leech. **O Dracul's Grasp é o upgrade e pede nível 76**, que é um tier adiante." },
           "belt-0": { why: "Redução de dano físico é o que mantém uma Assassin corpo a corpo viva no Hell." },
           "boots-0": {
-            why: "**O item da build.** 15% de Crushing Blow, 10% de Open Wounds e 15% de Deadly Strike, no slot de onde o dano já vem — e cada chute rola os três separadamente. Não há o que rolar: os afixos são fixos. A pergunta deste slot é se você consegue bancar a força para upgradear a base depois.",
+            why: "**O item da build.** 15% de Crushing Blow e 10% de Open Wounds, no slot de onde o dano já vem, e cada chute rola os dois separadamente. Os 15% de Deadly Strike são a única linha aqui que não faz nada — **Deadly Strike não se aplica ao dano de chute**, em item nenhum, e esta página prefere te contar isso a te deixar sair comprando mais. Não há o que rolar: os afixos são fixos. A pergunta deste slot é se você consegue bancar a força para upgradear a base depois.",
             lookFor: ["A War Boots base", "Strength for the upgrade"],
           },
           "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
@@ -12367,10 +12372,10 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "body-1": { why: "+2 em skills, +65 de resistências e 8% de redução de dano, se as runas existirem." },
           "gloves-0": { why: "**Life Tap ao golpear, numa build que golpeia de quatro a sete vezes por aperto.** Nada mais no slot chega perto para uma Assassin corpo a corpo." },
           "belt-0": { why: "Redução de dano físico." },
-          "boots-0": { why: "Crushing Blow, Open Wounds e Deadly Strike, por chute.", sockets: "Nenhum — elas não são socketáveis e não querem ser." },
+          "boots-0": { why: "Crushing Blow e Open Wounds, por chute. O Deadly Strike delas não faz nada numa chutadora.", sockets: "Nenhum — elas não são socketáveis e não querem ser." },
           "ring1-0": { why: "Cannot Be Frozen." },
           "ring2-0": { why: "+1 em skills e a mana para continuar chutando." },
-          "amulet-0": { why: "Deadly Strike escalando com o nível, +1 em skills e 20% de Increased Attack Speed — três das quatro alavancas desta build num slot só." },
+          "amulet-0": { why: "+1 em skills — que é contagem de chutes — e 20% de Increased Attack Speed. **Não** pelo Deadly Strike, que um chute não usa; duas alavancas desta build num slot só, não três." },
         },
         charms: [{ why: "Só a Torch são +3 em skills de Assassin, que é meio breakpoint de chute." }],
         weaponSwap: [{ why: "Battle Orders, numa garra. Nível 57, então já está disponível há um tempo aqui." }],
@@ -12386,7 +12391,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "weapon-1": {
             label: "Rift, numa polearm ou cetro de 4 sockets — a variante \"Riftsin\"",
-            why: "**Uma variante de equipamento desta build e não uma build própria, e não é troca de graça.** Como um chute não tira nada da arma, segurar uma polearm não custa dano nenhum ao chute — é essa exatamente a razão de a variante existir. O que custa é o **Weapon Block**, cuja linha exige garra nas duas mãos, e os +skills das duas garras, que podem valer um chute inteiro. O que compra é uma linha: `hit-skill`, 20% de chance de conjurar Tornado nível 16, e isso dispara em `domeleedamage` — o mesmo evento por acerto que o Crushing Blow usa, então uma ativação de vários chutes rola isso repetidamente. **Duas ressalvas honestas.** Os dois maiores mods da Rift, 160–250 de dano mágico e 60–180 de fogo, são adições de dano de arma que um chute estruturalmente não consegue usar. E se um proc on-striking vindo da arma dispara de um armour-strike com `weapsel = 4` **não é estabelecível a partir dos dados fixados** — se não dispara, esta variante não vale nada. Voulge ou Bill são as bases baratas de 4 sockets, as duas `reqdex 0`.",
+            why: "**Uma variante de equipamento desta build e não uma build própria, e as duas ressalvas do ciclo 4 foram respondidas — uma a favor dela, uma contra esta página.** Como um chute não tira nada do dano **físico** da arma, segurar uma polearm não custa nada ao chute, e é essa a razão de a variante existir. **O proc funciona.** Eventos de trigger estão na lista curta do que um chute carrega, ao lado de Crushing Blow e Open Wounds, então o `hit-skill` da Rift — 20% de chance de conjurar Tornado nível 16 — dispara nos chutes, e dispara pela arma **primária**, que é o que uma Rift empunhada sozinha é. **E esta página tinha a outra metade invertida.** Os 160–250 de dano mágico e 60–180 de fogo *não* são as adições de mínimo e máximo físico que os chutes pulam; são dano elemental e mágico, aplicados numa etapa posterior da ordem de dano da qual os chutes não estão excluídos. Eles transferem. São a maior coisa que a Rift dá a uma chutadora, e a página antes te dizia que não valiam nada. O que a troca custa de verdade é o **Weapon Block**, cuja linha exige garra nas duas mãos, e os +skills das duas garras, que podem valer um chute inteiro — pague isso só depois de ter contado o chute que está perdendo. Voulge ou Bill são as bases baratas de 4 sockets, as duas `reqdex 0`.",
             sockets: "Hel, Ko, Lem, Gul, nessa ordem, numa polearm ou cetro de 4 sockets.",
           },
           "offhand-0": { label: "Uma segunda Runic Talons com +3 Dragon Talon", why: "Weapon Block e contagem de chutes. Vazio se você estiver rodando a variante Rift, que é a maior parte do que essa variante custa." },
@@ -12401,7 +12406,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "boots-1": { why: "Se a força para Gore Riders upgradeados custar vitalidade demais: já é base elite em 60–110, com atributos muito melhores." },
           "ring1-0": { why: "Cannot Be Frozen e Attack Rating." },
           "ring2-0": { why: "+1 em skills." },
-          "amulet-0": { why: "Deadly Strike, +1 em skills e velocidade de ataque." },
+          "amulet-0": { why: "+1 em skills e velocidade de ataque. O Deadly Strike é peso morto aqui, e o slot continua valendo a pena." },
         },
         charms: [{ why: "Some o total e confira contra a tabela de chutes: efetivo 24, 30, 36 e 42 são onde um charm vira um chute." }],
         weaponSwap: [{ why: "Battle Orders." }],
@@ -12416,10 +12421,10 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "body-0": { why: "+2 em skills, resistências e redução de dano." },
           "gloves-0": { why: "Life Tap ao golpear, que contra um Uber é a diferença entre a luta ser sobrevivível e não ser." },
           "belt-0": { why: "Redução de dano físico." },
-          "boots-0": { why: "Upgradeadas. Base 83–149, mais Crushing Blow, Open Wounds e Deadly Strike por chute." },
+          "boots-0": { why: "Upgradeadas. Base 83–149, mais Crushing Blow e Open Wounds por chute." },
           "ring1-0": { why: "Cannot Be Frozen." },
           "ring2-0": { why: "+1 em skills." },
-          "amulet-0": { why: "Deadly Strike e velocidade de ataque." },
+          "amulet-0": { why: "+1 em skills e velocidade de ataque." },
         },
         charms: [{ why: "+skills até o próximo breakpoint de chute, depois vida com tudo o que sobrar." }],
         weaponSwap: [{ why: "Battle Orders antes de todo portal de Uber." }],

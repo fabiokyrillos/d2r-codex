@@ -43,11 +43,15 @@ import type { Build } from "@/lib/types";
  * Dragon Claw's damage is `calc1 = ln12 + skill('Claw Mastery'.blvl) * par7`
  * with `par7 = 4` — an explicit Claw Mastery term written into the formula.
  * **Dragon Talon's `calc1` is `lvl/6+1` and names nothing.** Claw Mastery's own
- * row is `passive = 1` with `passiveitype = "h2h"` and three
- * `passive_mastery_melee_*` stats, so whether the generic passive still reaches
- * an attack whose damage comes from the boots is not determinable here. What is
- * determinable is that the game wrote the link into one kick-tree skill and not
- * the other, so this page spends one point there and not twenty.
+ * row is `passive = 1` with `passiveitype = "h2h"`, and a kick is not an h2h
+ * weapon attack, so the passive has nothing to attach to.
+ *
+ * Cycle 4 shipped this as "not determinable here" and spent one point on the
+ * strength of the asymmetry alone. It is determinable, and the answer is the
+ * same: the D2library mechanics reference states it outright — "**Deadly Strike
+ * and/or Claw Mastery are not applied to kick damage**". Two independent
+ * routes, one conclusion. One point, because Burst of Speed and Weapon Block
+ * require it, and not one more.
  *
  * DRAGON TALON HAS NO SYNERGIES IN EITHER DIRECTION
  * -------------------------------------------------
@@ -56,13 +60,44 @@ import type { Build } from "@/lib/types";
  * Claw's `reqskill1`. That is why the core is 74 rather than 90: there is no
  * synergy to buy, so the points go to what the kicks are delivered *through*.
  *
- * WHAT THE KICKS CARRY
- * --------------------
+ * WHAT THE KICKS CARRY — AND THE LIST IS NOT THE ONE YOU WOULD GUESS
+ * ------------------------------------------------------------------
  * `item_crushingblow` and `item_openwounds` both fire on `itemevent1 =
  * "domeleedamage"` — a per-hit event, not a per-activation one, which is why
  * this build's listed damage bears no relation to what it does to a boss.
  * How many `domeleedamage` events one Dragon Talon activation emits is engine
  * behaviour and not in any table; the site does not multiply a number by it.
+ *
+ * What travels with a kick and what does not is settled, and it splits in a
+ * place most gear advice does not look. The damage order has two separate
+ * steps: **plain min/max damage from equipment**, and later **elemental damage
+ * from skills and equipment**. Kicks are excluded from the first and not from
+ * the second.
+ *
+ *   travels   Crushing Blow · Open Wounds · life and mana leech
+ *             elemental damage from equipment · magic damage
+ *             poison damage · Venom · Prevent Monster Heal
+ *             blind / flee / freeze / slow on hit
+ *             **chance to cast on striking and on attack**
+ *   does not  Deadly Strike · Claw Mastery
+ *             + minimum and maximum PHYSICAL damage from equipment
+ *             anything at all on the **off-hand** claw
+ *
+ * The last line is the one that changes a gear plan: the secondary claw is read
+ * for `+skills` and defence and for nothing else — not its Increased Attack
+ * Speed, not its procs, not its Crushing Blow.
+ *
+ * CRUSHING BLOW'S ACTUAL SIZE
+ * ---------------------------
+ * Cycle 4 published that this was unavailable. It is available, and it is the
+ * number this build lives on: a Crushing Blow removes
+ * **100 / (2 × (players + 1)) percent of the monster's *current* life**, taken
+ * from its single-player life pool even in a full game — so 25% at players 1,
+ * 12.5% at players 3, 6.25% at players 7. **Halved against champions and
+ * bosses**, halved again if the hit was ranged, and a tenth against objects.
+ * The chance is uncapped and additive, but over 100% buys nothing. And
+ * positive physical resistance cuts the damage, so a physical immune takes
+ * none of it — which is the wall this page already names.
  *
  * VENOM DOES NOT MULTIPLY WITH KICKS
  * ----------------------------------
@@ -72,17 +107,23 @@ import type { Build } from "@/lib/types";
  * foundation publishes and the reason Venom is worth twenty points here and
  * would not be worth twenty on a slower attack.
  *
+ * FADE AND BURST OF SPEED — NOW A COLUMN, NOT A BEHAVIOUR
+ * -------------------------------------------------------
+ * Cycle 4 published this claim as resting "on behaviour, not on a column",
+ * because `states.txt` was outside the extraction. It is inside it now.
+ * `fade` and `quickness` are the **only two members of `group = 2`**, and
+ * `group` is the column that makes states exclude each other — the control
+ * being `group = 1`, which holds exactly the Sorceress armours. `venomclaws`
+ * carries no group at all, which is why Venom stacks with either of them.
+ *
  * WHAT IS NOT ESTABLISHED, AND IS NOT PUBLISHED
  * ---------------------------------------------
- * - Whether each of N kicks is its own `domeleedamage` event.
+ * - Whether each of N kicks is its own `domeleedamage` event. Every kick rolls
+ *   its own to-hit check, and Crushing Blow is checked per hit, so the page
+ *   speaks of per-kick rolls — but the count of events per activation is not
+ *   in a table and no number here is multiplied by it.
  * - Whether Always Hit (`Param8 = 1`, "enabled only when Charges are consumed")
  *   covers every kick of an activation or only the one that spends the charge.
- * - Crushing Blow's magnitude and its boss and ranged reductions. No column in
- *   `itemstatcost.json` or `properties.json` encodes any of it.
- * - Whether Fade and Burst of Speed exclude each other *in the pinned data*.
- *   They do exclude each other in play, and this site has said so since the
- *   foundation; the mechanism lives in `states.txt`, which is not in the
- *   extraction. The claim stands on behaviour, not on a column.
  */
 export const kicksin: Build = {
   slug: "kicksin",
@@ -96,6 +137,9 @@ export const kicksin: Build = {
     "You walk up and press one button, and the button kicks four times — five, six or seven once your +skills are high enough. Each kick is a separate hit that rolls Crushing Blow, Open Wounds and life leech on its own, so a boss with a large health bar falls to a build whose listed damage looks unimpressive next to a Sorceress's. Venom runs the whole time and rides every one of those kicks. The rest of the plan is about being allowed to stand there: Weapon Block at twenty gives a block chance with two claws and no shield, Burst of Speed makes the kicks faster, and one point in Death Sentry turns the first corpse into the rest of the room. What you do not do is hit a physically immune monster, because the kicks are physical and there is no version of this build where that is not true.",
   strengths: [
     "**Every kick rolls Crushing Blow separately**, so this is the best boss-killer on the class and the reason it is the Uber build",
+    "Each of those rolls takes **a quarter of the monster's current life** at players 1 — halved on a boss, and halved by every step up the player count — which is why the character sheet number is beside the point",
+    "**Elemental and magic damage from your gear rides the kick.** Physical damage adds do not, and the two are different steps of the damage order — so a weapon whose damage is fire or magic is not the dead slot it looks like",
+    "**Open Wounds cannot be resisted**, so it is the one line on the gear plan that a physical immune has no answer to — as long as something else has already drawn blood",
     "**The damage is in the boots**, which are cheap, and upgrading them roughly doubles it — the largest single upgrade on any Assassin page",
     "+skills buy whole extra kicks at effective level 6, 12, 18, 24, 30, 36, 42 and 48",
     "Weapon Block gives a real block chance with two claws and no shield at all",
@@ -104,6 +148,8 @@ export const kicksin: Build = {
   ],
   weaknesses: [
     "**Physical immunity is a wall, and Crushing Blow does not get through it either** — it is physical damage like the rest of the kick",
+    "**Deadly Strike does nothing on a kicker.** It is on two of the build's own signature items and it is not applied to kick damage, so do not shop for more of it",
+    "**Nothing on the off-hand claw is read for special events** — not its procs, not its Crushing Blow, not its attack speed. That hand is `+skills` and defence only",
     "Eight of this site's twenty farming areas list physical among their common immunities, including the Pit, the Cow Level and the Chaos Sanctuary",
     "**Iron Maiden.** A seven-kick activation against a reflected-damage curse is the fastest way to kill yourself on this site",
     "It is melee with no life bonus, no innate leech until the gear plan provides it, and no ranged option at all",
@@ -360,7 +406,7 @@ export const kicksin: Build = {
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "treachery" }, why: "Still 45% attack speed, still a free Fade." }, { ref: { kind: "runeword", slug: "duress" }, why: "**15% Crushing Blow on the armour**, which stacks with the boots and applies per kick." }] },
         { slot: "gloves", picks: [{ label: "Crafted or rare gloves with 20% Increased Attack Speed and leech", why: "Attack speed and leech. **Dracul's Grasp is the upgrade and needs level 76**, which is a tier away." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "string-of-ears" }, why: "Physical damage reduction is what keeps a melee Assassin alive in Hell." }] },
-        { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "**The build's item.** 15% Crushing Blow, 10% Open Wounds and 15% Deadly Strike, on the slot the damage already comes from — and every kick rolls all three separately. There is nothing to roll for: the affixes are fixed. The question this slot asks is whether you can afford the strength to upgrade the base later.", lookFor: ["A War Boots base", "Strength for the upgrade"] }] },
+        { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "**The build's item.** 15% Crushing Blow and 10% Open Wounds, on the slot the damage already comes from, and every kick rolls both separately. Its 15% Deadly Strike is the one line here that does nothing — **Deadly Strike is not applied to kick damage**, on any item, and this page would rather tell you that than let you go shopping for more of it. There is nothing to roll for: the affixes are fixed. The question this slot asks is whether you can afford the strength to upgrade the base later.", lookFor: ["A War Boots base", "Strength for the upgrade"] }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "raven-frost" }, why: "Cannot Be Frozen and attack rating." }] },
         { slot: "ring2", picks: [{ label: "A rare ring with leech and resistances", why: "The Hell resistance tax." }] },
         { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "maras-kaleidoscope" }, why: "+2 skills and +30 resistances, which is both problems in one slot." }] },
@@ -379,10 +425,10 @@ export const kicksin: Build = {
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "duress" }, why: "15% Crushing Blow, and cheap." }, { ref: { kind: "runeword", slug: "chains-of-honor" }, why: "+2 skills, +65 resistances and 8% damage reduction, if the runes exist." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "**Life Tap on striking, on a build that strikes four to seven times per press.** Nothing else in the slot comes close for a melee Assassin." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "string-of-ears" }, why: "Physical damage reduction." }] },
-        { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "Crushing Blow, Open Wounds and Deadly Strike, per kick.", sockets: "None — these are not socketable and do not want to be." }] },
+        { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "Crushing Blow and Open Wounds, per kick. Its Deadly Strike does nothing on a kicker.", sockets: "None — these are not socketable and do not want to be." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "raven-frost" }, why: "Cannot Be Frozen." }] },
         { slot: "ring2", picks: [{ ref: { kind: "unique", slug: "stone-of-jordan" }, why: "+1 skills and the mana to keep kicking." }] },
-        { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "highlords-wrath" }, why: "Deadly Strike scaling with level, +1 skills and 20% Increased Attack Speed — three of this build's four levers in one slot." }] },
+        { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "highlords-wrath" }, why: "+1 skills — which is kick count — and 20% Increased Attack Speed. **Not** for its Deadly Strike, which a kick does not use; two of this build's levers in one slot, not three." }] },
       ],
       charms: [{ label: "Martial Arts skillers, Annihilus, Hellfire Torch", why: "The Torch alone is +3 Assassin skills, which is half a kick breakpoint." }],
       weaponSwap: [{ ref: { kind: "runeword", slug: "call-to-arms" }, why: "Battle Orders, on a claw. Level 57, so it has been available for a while by here." }],
@@ -399,7 +445,7 @@ export const kicksin: Build = {
             { label: "A rare or crafted Runic Talons with +3 Dragon Talon, +2 Martial Arts and 20% Increased Attack Speed", why: "Still a +skills item. There is no claw upgrade that raises kick damage, only ones that raise kick count and rate.", lookFor: ["+3 to Dragon Talon", "+2 to Martial Arts", "20% Increased Attack Speed"] },
             {
               label: "Rift, in a 4-socket polearm or scepter — the \"Riftsin\" variant",
-              why: "**A gear variant of this build rather than a build of its own, and it is not a free swap.** Because a kick takes nothing from the weapon, holding a polearm costs the kick no damage at all — which is the entire reason the variant exists. What it does cost is **Weapon Block**, whose row requires a claw in both hands, and both claws' +skills, which can be a whole kick. What it buys is one line: `hit-skill`, a 20% chance to cast level 16 Tornado, and that fires on `domeleedamage` — the same per-hit event Crushing Blow uses, so a multi-kick activation rolls it repeatedly. **Two honest caveats.** Rift's two largest mods, 160–250 magic and 60–180 fire damage, are weapon-damage adds a kick structurally cannot use. And whether a weapon-sourced on-striking proc fires from a `weapsel = 4` armour-strike at all is **not establishable from the pinned data** — if it does not, this variant is worthless. Voulge or Bill are the cheap 4-socket bases, both `reqdex 0`.",
+              why: "**A gear variant of this build rather than a build of its own, and cycle 4's two caveats have both been answered — one for it, one against the page.** Because a kick takes nothing from the weapon's *physical* damage, holding a polearm costs the kick nothing, which is why the variant exists at all. **The proc works.** Trigger events are on the short list of things a kick carries, alongside Crushing Blow and Open Wounds, so Rift's `hit-skill` — 20% to cast level 16 Tornado — fires from kicks, and it fires from the **primary** weapon, which a Rift held alone is. **And this page had the other half backwards.** Its 160–250 magic and 60–180 fire are *not* the physical min/max adds that kicks skip; they are elemental and magic damage, which the damage order applies at a later step that kicks are not excluded from. They transfer. They are the largest thing Rift gives a kicker, and the page previously told you they were worthless. What the swap genuinely costs is **Weapon Block**, whose row requires a claw in both hands, and both claws' +skills, which can be a whole kick — pay that only if you have counted the kick you are losing. Voulge or Bill are the cheap 4-socket bases, both `reqdex 0`.",
               sockets: "Hel, Ko, Lem, Gul, in that order, into a 4-socket polearm or scepter.",
               tradeOnly: false,
             },
@@ -413,7 +459,7 @@ export const kicksin: Build = {
         { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "**Upgraded to a Myrmidon Greaves base, which takes 39–80 to 83–149.** That is roughly double the number the whole build is computed from, and it costs about sixty strength. It is the single largest upgrade on this page." }, { ref: { kind: "unique", slug: "sandstorm-trek" }, why: "If the strength for upgraded Gore Riders would cost too much vitality: already an elite base at 60–110, with far better attributes." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "raven-frost" }, why: "Cannot Be Frozen and attack rating." }] },
         { slot: "ring2", picks: [{ ref: { kind: "unique", slug: "stone-of-jordan" }, why: "+1 skills." }] },
-        { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "highlords-wrath" }, why: "Deadly Strike, +1 skills and attack speed." }] },
+        { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "highlords-wrath" }, why: "+1 skills and attack speed. The Deadly Strike is dead weight here and the slot is still worth it." }] },
       ],
       charms: [{ label: "Martial Arts skillers, Annihilus, Hellfire Torch", why: "Count the total and check it against the kick table: effective 24, 30, 36 and 42 are where a charm becomes a kick." }],
       weaponSwap: [{ ref: { kind: "runeword", slug: "call-to-arms" }, why: "Battle Orders." }],
@@ -430,10 +476,10 @@ export const kicksin: Build = {
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "chains-of-honor" }, why: "+2 skills, resistances and damage reduction." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Life Tap on striking, which against an Uber is the difference between the fight being survivable and not." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "string-of-ears" }, why: "Physical damage reduction." }] },
-        { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "Upgraded. 83–149 base, plus Crushing Blow, Open Wounds and Deadly Strike per kick." }] },
+        { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "Upgraded. 83–149 base, plus Crushing Blow and Open Wounds per kick." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "raven-frost" }, why: "Cannot Be Frozen." }] },
         { slot: "ring2", picks: [{ ref: { kind: "unique", slug: "stone-of-jordan" }, why: "+1 skills." }] },
-        { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "highlords-wrath" }, why: "Deadly Strike and attack speed." }] },
+        { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "highlords-wrath" }, why: "+1 skills and attack speed." }] },
       ],
       charms: [{ label: "Annihilus, Hellfire Torch, Martial Arts skillers with life", why: "+skills to the next kick breakpoint, then life with everything after it." }],
       weaponSwap: [{ ref: { kind: "runeword", slug: "call-to-arms" }, why: "Battle Orders before every Uber portal." }],
@@ -490,7 +536,7 @@ export const kicksin: Build = {
   ],
 
   immunityPlan:
-    "**Physical immunity is this build's wall, and it is a harder wall than most melee pages admit — including for Crushing Blow.** Crushing Blow is physical damage; a monster with 100% or more physical resistance takes essentially nothing from it, so the mechanic that makes this the best boss-killer on the class is exactly the mechanic that stops working. This site's own area census lists physical among the common immunities in **eight of twenty farming areas**, and they are not obscure ones: the Pit, the Cow Level, the Chaos Sanctuary, the Worldstone Keep, the River of Flame, Nihlathak's temple, the Stony Tomb and the Kurast temples. Half the popular Hell farming list is closed to the kicks. Four answers, in order of how much they help. First, **Venom**, which is why it is twenty points of the core rather than a package: poison is not physical, it rides every kick, and almost nothing on the farming list resists it. Second, the **Death Sentry package** — its corpse explosion is half fire and half physical, and the fire half lands on a physical immune, but something has to die first, so it is an answer to a room rather than to a monster. Third, **a mercenary who is not you**: an Act 2 Might mercenary is also physical, so if physical immunity is the problem the answer is an Act 3 Iron Wolf or an Act 5 Barbarian rather than more aura. Fourth, and most often correct: **walk past**. A physical-immune pack in a Terror Zone is not a puzzle this build solves, and pretending otherwise is how the character dies. What does **not** work is stacking Crushing Blow, Deadly Strike or Open Wounds, all three of which are physical and all three of which stop at the same wall.",
+    "**Physical immunity is this build's wall, and it is a harder wall than most melee pages admit — including for Crushing Blow.** Crushing Blow is physical damage; a monster with 100% or more physical resistance takes essentially nothing from it, so the mechanic that makes this the best boss-killer on the class is exactly the mechanic that stops working. This site's own area census lists physical among the common immunities in **eight of twenty farming areas**, and they are not obscure ones: the Pit, the Cow Level, the Chaos Sanctuary, the Worldstone Keep, the River of Flame, Nihlathak's temple, the Stony Tomb and the Kurast temples. Half the popular Hell farming list is closed to the kicks. Four answers, in order of how much they help. First, **Venom**, which is why it is twenty points of the core rather than a package: poison is not physical, it rides every kick, and almost nothing on the farming list resists it. Second, the **Death Sentry package** — its corpse explosion is half fire and half physical, and the fire half lands on a physical immune, but something has to die first, so it is an answer to a room rather than to a monster. Third, **a mercenary who is not you**: an Act 2 Might mercenary is also physical, so if physical immunity is the problem the answer is an Act 3 Iron Wolf or an Act 5 Barbarian rather than more aura. Fourth, and most often correct: **walk past**. A physical-immune pack in a Terror Zone is not a puzzle this build solves, and pretending otherwise is how the character dies. What does **not** work is stacking Crushing Blow, which is physical and stops at the same wall — and Deadly Strike was never on the table, because a kick does not use it anywhere. **Open Wounds is the one exception, and it is a real one.** Its damage is not poison and it cannot be resisted at all, so a physical immune has no defence against it. The catch is the condition: the state only starts on a non-player enemy that is already below full life. On its own, against a monster your kicks cannot scratch, it never begins — but the moment Venom has taken the first sliver off, Open Wounds has somewhere to land. That is a second reason the two belong in the same plan, and it is the only physical-adjacent line on this page that goes through the wall.",
 
   hardcoreNotes:
     "**Take the Tiger Strike and Fade package, and stay out of the Chaos Sanctuary.** The Iron Maiden problem is worse for this build than for any other on the site, and the reason is arithmetic: the curse reflects a share of the damage you deal, and a seven-kick Dragon Talon deals it in seven instalments in about a second. Fade's curse-length reduction is the mitigation and eighteen points of it cuts the duration by up to 90%, but the real mitigation is not being there — the Chaos Sanctuary lists physical among its common immunities anyway, so this build has little reason to be in the room. Beyond that: Weapon Block at twenty is not optional, which means two claws is not optional; Life Tap from Dracul's Grasp is the largest survivability item in the game for a build that strikes this often; and Cannot Be Frozen protects the kick rate, which on Hardcore is the difference between finishing an activation and being interrupted halfway through it.",
