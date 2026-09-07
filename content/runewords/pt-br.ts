@@ -4,8 +4,13 @@ import type { Overlay, RunewordCopy } from "@/lib/types/copy";
  * Copy pt-BR das runewords.
  *
  * As linhas de estatística NÃO estão aqui: são strings do jogo e permanecem em
- * inglês nos dois idiomas, junto dos dados invariantes. A única exceção são os
- * marcadores de "não verificado" das runewords da expansão. Ver ADR 0003.
+ * inglês nos dois idiomas, junto dos dados invariantes. Ver ADR 0003.
+ *
+ * Havia uma exceção — os marcadores de "não verificado" das cinco runewords da
+ * expansão, que eram o único caso em que uma linha de status precisava ser
+ * traduzida porque não era uma string do jogo, e sim uma admissão nossa. As
+ * cinco estão publicadas com as linhas reais desde 2026-09-06, então a exceção
+ * acabou e o campo `stats` sumiu deste arquivo inteiro.
  */
 export const runewordsPtBr: Overlay<RunewordCopy> = {
   stealth: {
@@ -119,7 +124,7 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
   rhyme: {
     summary:
       "Duas runas baratas por Cannot Be Frozen, resistências e magic find num escudo.",
-    basesDisplay: "Qualquer Escudo de 2 sockets",
+    basesDisplay: "Qualquer Grimoire, Escudo, Escudo de Paladin ou Shrunken Head de 2 sockets",
     usedBy:
       "Personagens de magic find, e qualquer um que precise de Cannot Be Frozen sem gastar uma runa Cham.",
     notes:
@@ -388,45 +393,40 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
   // ---------------------------------------------------------------------------
   authority: {
     summary:
-      "Uma runeword de armadura do Reign of the Warlock. Runas e base confirmadas; estatísticas ainda não verificadas.",
+      "Uma runeword de armadura do Reign of the Warlock. +2 nos níveis de skill do Warlock, e um Miasma Chain ao acertar.",
     basesDisplay: "Qualquer Armadura de 3 sockets",
-    stats: [{ text: "Estatísticas ainda não verificadas — veja a nota abaixo." }],
     notes:
-      "A combinação de runas e o tipo de base vêm do anúncio do Reign of the Warlock da Blizzard. As estatísticas não foram publicadas lá e não foram confirmadas em jogo, então ficam em branco em vez de adivinhadas. O nível mostrado é o mínimo implicado pela runa mais alta — Shael no nível 29, não Ral no 19; a Hel não tem nível mínimo — e o requisito real pode ser maior.",
+      "As linhas de status estão verificadas contra o `json/runes.json` do commit fixado. A linha de `dmg%` está mesmo numa armadura de corpo, o que é incomum e é o que a coluna diz. O Faster Hit Recovery, a resistência a fogo e a redução de requisitos vêm do Shael, do Ral e do Hel, não da runeword em si.",
   },
   coven: {
     summary:
-      "Uma runeword de elmo do Reign of the Warlock. Runas e base confirmadas; estatísticas ainda não verificadas.",
+      "Uma runeword de elmo do Reign of the Warlock. +1 em todas as skills, 20% de Faster Cast Rate e até 40% de magic find.",
     basesDisplay: "Qualquer Elmo de 3 sockets",
-    stats: [{ text: "Estatísticas ainda não verificadas — veja a nota abaixo." }],
     notes:
-      "Runas e base vêm do anúncio da Blizzard. Estatísticas não publicadas e não verificadas. O nível mostrado é o mínimo implicado pela Ist (nível 51).",
+      "As linhas de status estão verificadas contra o `json/runes.json` do commit fixado. O magic find é publicado em **26-40%** onde o bloco da própria runeword dá 1-15%: o mod de elmo do Ist fornece os outros vinte e cinco, do mesmo jeito que o Ohm fornece os cinquenta do Faith.",
   },
   void: {
     summary:
-      "Uma runeword de dagger do Reign of the Warlock, e uma das pouquíssimas que usam uma Zod. Estatísticas ainda não verificadas.",
+      "Uma runeword de dagger do Reign of the Warlock, e uma das pouquíssimas que usam uma Zod. +2 em todas as skills e ela concede o Abyss.",
     basesDisplay: "Qualquer Dagger de 3 sockets",
     basesExclusions: ["Só daggers — não swords, não claws."],
-    stats: [{ text: "Estatísticas ainda não verificadas — veja a nota abaixo." }],
     notes:
-      "Runas e base vêm do anúncio da Blizzard. Uma runa Zod faz desta uma das runewords mais caras do jogo, independentemente do que ela faça. Estatísticas não publicadas e não verificadas.",
+      "As linhas de status estão verificadas contra o `json/runes.json` do commit fixado. O `oskill Abyss` põe uma capstone do Warlock em qualquer classe capaz de segurar uma dagger, e é o único item deste site além do Chaos que concede uma skill entre classes. A linha de cargas se lê quantidade-e-depois-nível como todas as outras: `min=35 max=4` são trinta e cinco cargas de um Decrepify de nível 4.",
   },
   vigilance: {
     summary:
-      "Uma runeword de escudo do Reign of the Warlock. Runas e base confirmadas; estatísticas ainda não verificadas.",
+      "Uma runeword de Grimoire do Reign of the Warlock, e a resposta de off-hand do Warlock. Resistências, taxa de bloqueio, vida e mana.",
     basesDisplay: "Qualquer Escudo de 2 sockets",
-    stats: [{ text: "Estatísticas ainda não verificadas — veja a nota abaixo." }],
     notes:
       "Duas correções aconteceram aqui de uma vez, e as duas vieram dos dados do próprio jogo, não do anúncio. O nome é **Vigilance**, escrito certo — esta entrada carregava o 'Vigilence' da Blizzard, e a nota dela mesma já suspeitava que fosse erro de digitação. E `itype1 = \"grim\"`: é uma runeword de **Grimoire**, não de escudo, e é isso que faz dela a resposta de off-hand do Warlock. Toda base de Grimoire tem exatamente dois sockets, então Spirit e Ancients' Pledge não cabem em uma, e uma runeword de duas runas é o que serve. O Replenish Life e a resistência máxima a veneno vêm do Dol e do Gul.",
   },
   ritual: {
     summary:
-      "Uma runeword de dagger do Reign of the Warlock. Runas e base confirmadas; estatísticas ainda não verificadas.",
+      "Uma runeword de dagger do Reign of the Warlock. Dano físico enorme, +150-250% contra demônios, e Slain Monsters Rest in Peace.",
     basesDisplay: "Qualquer Dagger de 3 sockets",
     basesExclusions: ["Só daggers."],
-    stats: [{ text: "Estatísticas ainda não verificadas — veja a nota abaixo." }],
     notes:
-      "Runas e base vêm do anúncio da Blizzard. Estatísticas não publicadas e não verificadas. O nível mostrado é o mínimo implicado pela Ohm (nível 57).",
+      "As linhas de status estão verificadas contra o `json/runes.json` do commit fixado. O Enhanced Damage é publicado em **+250-320%** onde o bloco da própria runeword dá +200-270%, e a velocidade de ataque em 40% onde a linha dela é 20%: o Ohm e o Shael fornecem a diferença. O `rip` é o Slain Monsters Rest in Peace, que é o motivo de esta ser uma dagger que um summoner não quer.",
   },
   dream: {
     summary:
@@ -741,5 +741,26 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "Uma Phase Blade, pela indestrutibilidade — a escolha de sempre em qualquer build corpo a corpo que consiga segurar uma.",
       "Uma claw, se você for uma Assassin combinando com o Chaos na outra mão. Claws são armas corpo a corpo e isso é legítimo.",
     ],
+  },
+  oath: {
+    summary:
+      "50% de velocidade de ataque, até +340% de dano e um Bone Spirit de nível 20 ao acertar, em qualquer espada, machado ou maça.",
+    basesDisplay: "Qualquer Espada, Machado ou Maça de 4 sockets",
+    basesExclusions: [
+      "A linha nomeia os três tipos explicitamente - `itype1 = swor`, `itype2 = axe`, `itype3 = mace` - então não há hierarquia de tipo de item para resolver aqui e nenhum quarto tipo que ela cubra por baixo dos panos.",
+      "Não serve em polearms, lanças, adagas nem armas de arremesso, apesar de todas as quatro serem corpo a corpo.",
+    ],
+    recommendedBases: [
+      "Uma Balrog Blade, Highland Blade ou Cryptic Sword - as espadas elite que a Blade Mastery de um Barbarian já cobre, que é o motivo de os guias de Frenzy recomendarem essa mastery para esta runeword pelo nome.",
+      "Um Berserker Axe, se a mastery do personagem for em machados. A linha permite e nada na runeword prefere uma espada.",
+    ],
+    usedBy:
+      "Personagens corpo a corpo que querem velocidade de ataque e um roll grande de dano sem uma runa alta, e mercenários. O proc de Bone Spirit dispara o tempo todo e faz trabalho de verdade contra qualquer coisa que não seja imune a magia.",
+    commonMistakes: [
+      "Ler a velocidade de ataque da coluna da própria runeword. A linha dela é 30%; o Shael fornece os outros vinte, e o item mostra 50%.",
+      "Fazer para um mercenário de polearm. Os três tipos estão nomeados na linha e polearm não é um deles.",
+    ],
+    notes:
+      "A velocidade de ataque é publicada em **50%** onde o bloco da própria runeword dá 30%, pela mesma regra que põe o Faith em +330% em vez de +280%: o bloco exibido de uma runeword são as propriedades dela mais o mod de cada runa para aquele tipo de item. O Shael são os vinte; o Mal fornece o Prevent Monster Heal, o Pul o dano e o attack rating contra demônios, e o Lum a energia.",
   },
 };

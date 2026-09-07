@@ -418,6 +418,34 @@ Mastery`).
 Resolve all thirty when a class enters scope. Eighteen gaps across the first six
 classes, one Barbarian, eight Warlock.
 
+### Name the artefact you searched, not the world
+
+Four claims went wrong the same way on the eight-class pass, and the rule that
+covers all four was written by the agent who made three of them:
+
+> When reporting that something does not exist, name the artefact that was
+> searched. "Not in `uniques.ts`" and "not in the game" are different claims,
+> and only one of them was made.
+
+| The claim | What was searched | What was true |
+| --- | --- | --- |
+| "Warlock skill tables are unverified" | the announcement | thirty rows in `skills.json` |
+| "the Grimoire uniques have no stat lines" | the site's catalogue | four complete rows in `uniqueitems.json` |
+| "stat lines for the five expansion runewords are unverified" | the announcement | four complete blocks in `runes.json` |
+| "there is no before to compare against" | `json/base/skills.json` | the pinned repository has earlier commits |
+
+The fourth is the same error seen from the other side, and it is the one worth
+guarding hardest because **no gate can see it**. A Necromancer build page said
+"there is no +% Magic Skill Damage on any item". It was true when written. The
+expansion then shipped `extra-mag` and `pierce-mag` on five items, and nothing
+in this repository noticed, because a sentence about an absence has no row to
+drift against. A claim that something exists can be checked against the thing;
+a claim that nothing exists can only be checked against a search, and the
+search has a scope that the sentence does not state.
+
+So: scope the sentence to what was looked at. "No Necromancer item carries it"
+is checkable and stays true. "No item carries it" was neither.
+
 ### The pinned source's own history is a Tier 1 before-and-after
 
 `json/base/` is the repository's usual historical comparison and it is a Lord of

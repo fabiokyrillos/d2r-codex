@@ -133,7 +133,7 @@ export const REFUSED_FILTERS: readonly { readonly id: string; readonly why: stri
   },
   {
     id: "patch",
-    why: "`release` is optional on `Build` and set on none of them. Every build is written against the one baseline patch.",
+    why: "`release` is set on four builds, all of them the Warlock's and all `reign-of-the-warlock`. A filter on it would select exactly what `class=warlock` already selects, which is a control that cannot change anything a reader could not already do. It becomes a real group the day a non-Warlock build carries one.",
   },
   {
     id: "playstyle",

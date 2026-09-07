@@ -424,7 +424,7 @@ console.log("\nThe live sweep: every build, both locales");
   const classes = new Set(getBuilds("en-us").map((b) => b.classSlug));
   check(
     "and the sweep covers every class, with nothing reported-not-failed",
-    classes.size === 6,
+    classes.size === 8,
     [...classes].join(", "),
   );
 }

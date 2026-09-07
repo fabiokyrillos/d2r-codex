@@ -698,7 +698,8 @@ export const ptBR: Dictionary = {
     unlocksTitle: "Destrava",
     unlocksBody: "Skills que exigem esta.",
     synergiesTitle: "Sinergias recebidas",
-    synergiesBody: "Skills que aumentam os números desta quando você coloca pontos nelas.",
+    synergiesBody:
+      "Skills que aumentam os números desta quando você coloca pontos nelas. Só pontos fixos — ao contrário dos valores acima, equipamento que soma níveis de skill não alimenta uma sinergia, então uma linha que diz \"por nível\" quer dizer por ponto fixo.",
     synergiesNote:
       "A identidade das sinergias é extraída das próprias fórmulas de skill do jogo, não de consenso da comunidade. As magnitudes, quando informadas, são verificadas à parte.",
     feedsTitle: "Skills que esta alimenta",
