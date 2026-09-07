@@ -30,6 +30,21 @@
  * No game text and no game artwork enters this repository. Skill names are
  * used only as identifiers to derive slugs, which the site already publishes.
  *
+ * ALSO NOT EXTRACTED HERE: THE dm/ln BOUNDS
+ * -----------------------------------------
+ * The `dm<a><b>` and `ln<a><b>` calculation columns — which of a skill's
+ * numbers is a value a character reaches and which is a ceiling a curve climbs
+ * toward — are extracted by `scripts/skill-param-bounds.ts` into the sibling
+ * file `content/classes/skill-param-bounds.ts`, from the same pinned SHA.
+ *
+ * Do not fold them in here. `scripts/graph-drift.ts` proves the node bodies
+ * this file emits are byte-identical against a pinned baseline, and it parses
+ * this file alone; four hundred bound records inside those bodies would change
+ * every one of them and force the baseline forward for a reason that has
+ * nothing to do with the graph. The bounds generator reads `SOURCE_SHA` back
+ * out of the header written below and refuses to run if the two artifacts have
+ * drifted onto different extractions, so re-pinning means re-pinning both.
+ *
  * NORMALIZATION
  * -------------
  * 1. Filter to the `charclass` codes in `classOf`.
