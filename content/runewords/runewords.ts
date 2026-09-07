@@ -1233,7 +1233,7 @@ export const runewords: Runeword[] = [
     stats: [
       { text: "Level 9 Fanaticism Aura When Equipped", notable: true },
       { text: "+3 to Werebear (Oskill)", notable: true },
-      { text: "+3 to Shape Shifting (Oskill)", notable: true },
+      { text: "+3 to Lycanthropy (Oskill)", notable: true },
       { text: "+40% Increased Attack Speed", notable: true },
       { text: "+240-270% Enhanced Damage", variable: true },
       { text: "20% Chance of Crushing Blow" },
@@ -1255,7 +1255,7 @@ export const runewords: Runeword[] = [
       "Expecting the Fanaticism to stack with a Paladin's own. It does not — one aura is active at a time, and a Paladin running Fanaticism gains nothing from Beast's.",
     ],
     notes:
-      "The `Oskill` on Werebear and Shape Shifting is the unusual part: an Oskill is granted to every class rather than only to the one that owns the tree. That single word is what makes the Werebear Sorceress and Werebear Barbarian possible at all.",
+      "The `Oskill` on Werebear and Lycanthropy is the unusual part: an Oskill is granted to every class rather than only to the one that owns the tree. That single word is what makes the Werebear Sorceress and Werebear Barbarian possible at all.",
     confidence: "verified",
   },
 

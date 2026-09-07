@@ -250,7 +250,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
                         why: "Fique com o Burnt Text se 82 de Strength for mais do que você quer pagar. Três níveis de Ring of Fire e Flame Wave contra dois de tudo é mais próximo do que parece.",
           },
           "body-0": {
-            why: "Hel, Shael e Ral numa armadura de três sockets: +2 em Warlock skills, 40-60% de defesa aumentada e uma chance de lançar Miasma Chains ao ser atingido. Um runeword da expansão que faz pelo slot de corpo o que o Spirit faz pela arma.",
+            why: "Hel, Shael e Ral numa armadura de três sockets: +2 em Warlock skills, 40-60% de defesa aumentada e uma chance de lançar Miasma Chain ao ser atingido. Um runeword da expansão que faz pelo slot de corpo o que o Spirit faz pela arma.",
           },
           "body-1": { why: "Se o cast rate for mais necessário que o segundo nível de skill." },
           "gloves-0": { why: "Sem mudança." },
@@ -520,7 +520,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "body-0": { why: "Sem mudança." },
           "amulet-0": {
             label: "Entropy Locket",
-            why: "**+5-10% de Dano de Skills Mágicas** e 4-19% de chance de lançar Miasma Chains ao golpear. O primeiro item do jogo que multiplica dano mágico, e é um amuleto de nível 54.",
+            why: "**+5-10% de Dano de Skills Mágicas** e 4-19% de chance de lançar Miasma Chain ao golpear. O primeiro item do jogo que multiplica dano mágico, e é um amuleto de nível 54.",
             lookFor: ["+10% to Magic Skill Damage", "+40 Lightning Resist"],
           },
           "gloves-0": { why: "A reserva de mana, que é a única coisa que luvas oferecem a esta build — nada no catálogo carrega +Magic Skills." },
@@ -545,7 +545,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             lookFor: ["+2 Warlock Skills", "−20% to Enemy Magic Resistance", "30% Faster Cast Rate"],
           },
           "body-0": {
-            why: "Hel Shael Ral: +2 em Warlock skills e uma chance de lançar Miasma Chains ao ser atingido, o que nesta build é o seu próprio tipo de dano voltando no que te acertou.",
+            why: "Hel Shael Ral: +2 em Warlock skills e uma chance de lançar Miasma Chain ao ser atingido, o que nesta build é o seu próprio tipo de dano voltando no que te acertou.",
           },
           "amulet-0": { label: "Entropy Locket", why: "Sem mudança. Nada mais no jogo carrega +% de Dano de Skills Mágicas neste slot." },
           "gloves-0": { why: "Sem mudança." },

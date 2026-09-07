@@ -502,7 +502,7 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
       "Esperar que a Fanaticism empilhe com a de um Paladin. Ela não empilha — só uma aura fica ativa por vez, e um Paladin rodando Fanaticism não ganha nada com a do Beast.",
     ],
     notes:
-      "O `Oskill` no Werebear e no Shape Shifting é a parte incomum: um Oskill é concedido a todas as classes em vez de só à dona da árvore. Essa única palavra é o que torna a Werebear Sorceress e o Werebear Barbarian possíveis.",
+      "O `Oskill` no Werebear e na Lycanthropy é a parte incomum: um Oskill é concedido a todas as classes em vez de só à dona da árvore. Essa única palavra é o que torna a Werebear Sorceress e o Werebear Barbarian possíveis.",
   },
 
   // Arcos, bestas e a Amazon

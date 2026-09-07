@@ -231,7 +231,7 @@ export const classesPtBr: Overlay<ClassCopy> = {
     summary:
       "A primeira classe nova de Diablo II em 25 anos. Escraviza demônios, encanta armas e é a única classe que combina qualquer arma de duas mãos, sem exceção, com uma mão secundária.",
     overview:
-      "Adicionado pela expansão Reign of the Warlock em fevereiro de 2026, o Warlock é um erudito sombrio da magia proibida dos Vizjerei. Ele levita a arma em vez de segurá-la, o que permite equipar uma arma de duas mãos numa mão e ainda usar um Grimoire na outra — O Barbarian tem uma versão mais estreita disso — dezoito espadas de duas mãos carregam a flag `1or2handed` e só ele pode segurar uma delas com uma das mãos — mas a regra do Warlock não se limita a uma lista de espadas, e ela invalida o raciocínio habitual de uma-mão-versus-duas-mãos para toda arma que ele consiga levantar.",
+      "Adicionado pela expansão Reign of the Warlock em fevereiro de 2026, o Warlock é um erudito sombrio da magia proibida dos Vizjerei. Ele levita a arma em vez de segurá-la, o que permite equipar uma arma de duas mãos numa mão e ainda usar um Grimoire na outra — O Barbarian tem uma versão mais estreita disso — dezoito espadas de duas mãos carregam uma flag de uma-ou-duas-mãos e só ele pode segurar uma delas com uma das mãos — mas a regra do Warlock não se limita a uma lista de espadas, e ela invalida o raciocínio habitual de uma-mão-versus-duas-mãos para toda arma que ele consiga levantar.",
     strengths: [
       "A única classe que combina qualquer arma de duas mãos com uma mão secundária — o Barbarian consegue com dezoito espadas específicas, e com mais nada",
       "Três estilos genuinamente distintos: minions, hexes de arma, elemental à distância",

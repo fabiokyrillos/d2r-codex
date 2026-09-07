@@ -503,7 +503,7 @@ export const apocalypseWarlock: Build = {
         {
           slot: "body",
           picks: [
-            { ref: { kind: "runeword", slug: "authority" }, why: "Hel, Shael and Ral in a three-socket body armour: +2 to Warlock skills, 40-60% enhanced defence, and a chance to cast Miasma Chains when struck. An expansion runeword that does for the body slot what Spirit does for the weapon." },
+            { ref: { kind: "runeword", slug: "authority" }, why: "Hel, Shael and Ral in a three-socket body armour: +2 to Warlock skills, 40-60% enhanced defence, and a chance to cast Miasma Chain when struck. An expansion runeword that does for the body slot what Spirit does for the weapon." },
             { ref: { kind: "unique", slug: "skin-of-the-vipermagi" }, why: "If the cast rate is needed more than the second skill level." },
           ],
         },

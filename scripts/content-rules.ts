@@ -408,3 +408,93 @@ export function checkSiteScopedClaims(
   }
   return found;
 }
+
+/* -------------------------------------------------------------------------
+ * Rule D — a skill granted by an item is named the way the game ships it.
+ *
+ * `SLUG_OVERRIDES` exists because an identifier in `skills.txt` and the name
+ * the game publishes are not always the same string. The identifier stays the
+ * join key; the site publishes the shipped name. `skill-page.test.ts` sweeps
+ * built artifacts for leaked identifiers, and it works — it caught six item
+ * stat lines that said `Miasma Chains` where the game says `Miasma Chain`.
+ *
+ * But that sweep carries an exemption list, and it has to. Three identifiers
+ * are also ordinary published English: `Vines`, `Levitate`, and `Shape
+ * Shifting`, which is the published name of the Druid's second tree. A
+ * substring sweep cannot tell the tree from the skill, so all three are exempt
+ * — and that exemption is a blind spot on three of twenty-one.
+ *
+ * Beast shipped through it. `+3 to Shape Shifting (Oskill)` sat directly below
+ * a correctly translated `+3 to Werebear`, on a live page, for as long as the
+ * runeword has been published. The identifier `Shape Shifting` ships as
+ * `Lycanthropy`; the identifier `Wearbear` ships as `Werebear`. Same stat
+ * block, same author, one translated and one not.
+ *
+ * Grammar closes the gap without an exemption list. A tab is never granted as
+ * an Oskill, never cast on striking, and never has a level. So rather than ask
+ * "does this line contain the identifier", this asks "does this line grant a
+ * SKILL, and name it with the identifier" — a question the tree name cannot
+ * answer yes to. That is why this rule needs no exclusions and does not go
+ * stale as the override table grows.
+ * ------------------------------------------------------------------------- */
+
+export type ShippedNameRule = "identifier-published-as-skill-name";
+
+export interface ShippedNameProblem {
+  rule: ShippedNameRule;
+  message: string;
+}
+
+/**
+ * The grammars that can only describe a skill.
+ *
+ * Each carries the identifier as `%s`. Deliberately narrow: `+3 to X` is NOT
+ * here, because in English a tab grant reads `+3 to X Skills` and in pt-BR it
+ * reads `+3 em X` with no trailing noun — the one shape where grammar cannot
+ * separate them. Nothing is lost, because an item that grants a tab and an
+ * item that grants a skill both eventually say one of these.
+ */
+const SKILL_GRANT_GRAMMARS: readonly { id: string; pattern: (id: string) => RegExp }[] = [
+  { id: "oskill", pattern: (i) => new RegExp(`${i}\\s*\\((?:o|O)skill\\)`) },
+  { id: "cast-en", pattern: (i) => new RegExp(`(?:chance to cast|casts?|to cast)\\s+${i}\\b`, "i") },
+  { id: "cast-pt", pattern: (i) => new RegExp(`(?:chance de lançar|lança|lançar)\\s+${i}\\b`, "i") },
+  { id: "level-charges", pattern: (i) => new RegExp(`\\bLevel\\s+\\d+\\s+${i}\\b`) },
+  { id: "level-charges-pt", pattern: (i) => new RegExp(`\\bNível\\s+\\d+\\s+(?:de\\s+)?${i}\\b`) },
+  { id: "trigger-en", pattern: (i) => new RegExp(`${i}\\s+(?:on|when)\\s+(?:striking|struck|attack|death|kill)`, "i") },
+  { id: "trigger-pt", pattern: (i) => new RegExp(`${i}\\s+ao\\s+(?:golpear|ser atingido|matar)`, "i") },
+];
+
+const escapeId = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * @param shippedFor maps an identifier to the name the game publishes for it.
+ *   Only identifiers whose shipped name actually differs are worth checking —
+ *   for the rest the identifier IS the shipped name and the rule is vacuous.
+ */
+export function checkShippedSkillNames(
+  lines: readonly string[],
+  where: string,
+  shippedFor: ReadonlyMap<string, string>,
+): ShippedNameProblem[] {
+  const found: ShippedNameProblem[] = [];
+  for (const line of lines) {
+    for (const [identifier, shipped] of shippedFor) {
+      if (identifier === shipped) continue;
+      if (!line.includes(identifier)) continue;
+      const id = escapeId(identifier);
+      for (const g of SKILL_GRANT_GRAMMARS) {
+        const m = g.pattern(id).exec(line);
+        if (!m) continue;
+        found.push({
+          rule: "identifier-published-as-skill-name",
+          message:
+            `${where}: "${m[0].trim()}" grants a skill and names it with the ` +
+            `skills.txt identifier "${identifier}". The game ships it as ` +
+            `"${shipped}". (${g.id})`,
+        });
+        break;
+      }
+    }
+  }
+  return found;
+}

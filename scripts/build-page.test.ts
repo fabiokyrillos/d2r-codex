@@ -413,10 +413,34 @@ console.log("\nOptional packages survive rendering, in both locales and with no 
     }
   }
 
+  /*
+   * The sweep has to have read something, or every assertion above passes by
+   * never running. This used to pin the census as two literals — 18 and 54 —
+   * which held until a class shipped builds with packages and then failed on
+   * arithmetic rather than on a defect.
+   *
+   * So the expectation is counted from the registry instead, in its own pass.
+   * That is not a constant compared with itself: the loop increments only for
+   * a build whose page was actually prerendered and read, while this counts
+   * every build that *should* have one. A page that fails to render still
+   * fails the check, which is the property the two literals were there for.
+   */
+  let expectedPages = 0;
+  let expectedPackages = 0;
+  for (const locale of LOCALES) {
+    for (const build of getBuilds(locale)) {
+      const groups = build.skillPackages ?? [];
+      if (groups.length === 0) continue;
+      expectedPages++;
+      for (const group of groups) expectedPackages += group.packages.length;
+    }
+  }
   check(
-    "the sweep read the pages that publish packages, in both locales",
-    pagesWithPackages === 18 && routesChecked === 54,
-    `${pagesWithPackages} pages, ${routesChecked} routes`,
+    "the sweep read every page that publishes packages, in both locales",
+    expectedPages > 0 &&
+      pagesWithPackages === expectedPages &&
+      routesChecked === expectedPackages,
+    `${pagesWithPackages}/${expectedPages} pages, ${routesChecked}/${expectedPackages} packages`,
   );
 
   /*

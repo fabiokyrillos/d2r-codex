@@ -50,6 +50,7 @@ import {
 import {
   MIN_PROSE_LENGTH,
   SITE_SCOPED_CLAIMS,
+  checkShippedSkillNames,
   checkSiteScopedClaims,
   exitCodeFor,
   fingerprint,
@@ -1346,6 +1347,64 @@ check("problems fail", exitCodeFor(["x"], []) === 1);
 // The rule this slice exists to add: a known warning is not a silent success.
 check("warnings alone fail", exitCodeFor([], ["w"]) === 1);
 check("both fail", exitCodeFor(["x"], ["w"]) === 1);
+
+
+// ===========================================================================
+console.log("\nRule D — an item grants a skill by the name the game ships");
+// ===========================================================================
+{
+  /*
+   * Both entries are real. `Shape Shifting` ships as `Lycanthropy` and shipped
+   * wrong on Beast; `Miasma Chains` ships as `Miasma Chain` and shipped wrong
+   * in six Warlock stat lines. The map is built the same way `check-content`
+   * builds it, from the override table and the published skill name.
+   */
+  const shipped = new Map([
+    ["Shape Shifting", "Lycanthropy"],
+    ["Miasma Chains", "Miasma Chain"],
+  ]);
+  const fires = (line: string) => checkShippedSkillNames([line], "planted", shipped).length;
+
+  /*
+   * The line that was live on Beast, directly below a correctly translated
+   * `+3 to Werebear`. It is the whole reason this rule exists, and the reason
+   * it could not be left to the built-artifact sweep, which exempts this
+   * identifier because it is also the Druid's published tree name.
+   */
+  check("catches the identifier granted as an Oskill", fires("+3 to Shape Shifting (Oskill)") === 1);
+  check(
+    "and says which name the game ships",
+    checkShippedSkillNames(["+3 to Shape Shifting (Oskill)"], "planted", shipped)[0]
+      ?.message.includes('ships it as "Lycanthropy"') === true,
+  );
+  check("catches a cast-on-striking grant", fires("4-19% chance to cast Miasma Chains on striking") === 1);
+  check("and its Portuguese form, which is a different regex", fires("4-19% de chance de lançar Miasma Chains ao golpear") === 1);
+  check("catches a levelled charge", fires("Level 13 Shape Shifting (5 Charges)") === 1);
+  check("catches a when-struck trigger", fires("a chance to cast Miasma Chains when struck") === 1);
+
+  /*
+   * The exemption this rule replaces. A substring sweep cannot pass these; a
+   * grammar sweep must, or the Druid's own tree becomes unpublishable.
+   */
+  check("silent on the tree the identifier shares a name with", fires("+3 to Shape Shifting Skills (Druid Only)") === 0);
+  check("silent on the tree named in prose", fires("The Shape Shifting tree is where the Druid's forms live.") === 0);
+  check("silent on the Portuguese tab form it deliberately does not claim", fires("+3 em Shape Shifting") === 0);
+
+  /*
+   * Vacuous rows are skipped rather than matched, so adding an override whose
+   * identifier already IS the shipped name cannot start reporting every page
+   * that names the skill at all.
+   */
+  const identity = new Map([["Frenzy", "Frenzy"]]);
+  check(
+    "an identifier that already is the shipped name is not a finding",
+    checkShippedSkillNames(["+3 to Frenzy (Oskill)"], "planted", identity).length === 0,
+  );
+
+  /* The correct line, which is what the repair actually produced. */
+  check("silent on the repaired Beast line", fires("+3 to Lycanthropy (Oskill)") === 0);
+  check("silent on the repaired Warlock line", fires("4-19% chance to cast Miasma Chain on striking") === 0);
+}
 
 // ===========================================================================
 console.log(

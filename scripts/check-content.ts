@@ -65,8 +65,10 @@ import {
   checkSynergies,
   checkSynergyKindLabels,
   MAX_HARD_POINTS,
+  SLUG_OVERRIDES,
 } from "./skill-graph-rules";
 import {
+  checkShippedSkillNames,
   checkSiteScopedClaims,
   checkSourcedDivergence,
   exitCodeFor,
@@ -1199,6 +1201,31 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
     `  ${siteScoped.length === 0 ? "ok" : " x"} ${"unregistered-site-scoped-claim".padEnd(38)} ${siteScoped.length}`,
   );
   for (const h of siteScoped) problems.push(h.message);
+
+  /*
+   * Rule D rides the same sweep for the third time, and for the reason that
+   * keeps recurring: the defect it guards was in a runeword's `stats`, and
+   * before that in three builds' gear notes. Nothing that walks one content
+   * type looks at those together.
+   *
+   * The map is built here rather than in the rule because both halves are
+   * already in this repository: `SLUG_OVERRIDES` carries identifier -> slug,
+   * and the skills registry carries slug -> the name the site publishes. So
+   * the rule needs no game data of its own and cannot drift from what the
+   * pages actually say.
+   */
+  const shippedFor = new Map<string, string>();
+  for (const [identifier, slug] of Object.entries(SLUG_OVERRIDES)) {
+    const skill = getSkills(DEFAULT_LOCALE).find((s) => s.slug === slug);
+    if (skill) shippedFor.set(identifier, skill.name);
+  }
+  const shippedNames = pages.flatMap(({ where, lines }) =>
+    checkShippedSkillNames(lines, where, shippedFor),
+  );
+  console.log(
+    `  ${shippedNames.length === 0 ? "ok" : " x"} ${"identifier-published-as-skill-name".padEnd(38)} ${shippedNames.length}`,
+  );
+  for (const h of shippedNames) problems.push(h.message);
 
   const divergence = pages.flatMap(({ where, lines }) => checkSourcedDivergence(lines, where));
   for (const rule of ["unsourced-divergence-claim", "undated-divergence-claim"] as const) {
