@@ -10,6 +10,261 @@ import type { BuildCopy, Overlay } from "@/lib/types/copy";
  * nunca por posição.
  */
 export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
+  "leap-attack-barbarian": {
+    summary:
+      "O maior golpe isolado que a classe tem, entregue do outro lado da sala. Setecentos e setenta por cento do dano da arma, mais uma faixa física própria.",
+    playstyle:
+      "Você não anda até nada. Todo confronto começa com um salto que atravessa paredes, desníveis e o grupo que está entre você e a coisa que você quer morta, e aterrissa como o maior golpe da classe num raio de sete. Depois você salta para fora, ou salta para o próximo. É o maior teto de habilidade dos seis porque o salto é um compromisso — você não consegue mudar a direção depois de apertar, você *pode* ser interrompido ao aterrissar, e um salto mal mirado te coloca no meio de algo que você pretendia pular por cima. Bem jogado, ele nunca toca o chão entre elites; mal jogado, é um personagem corpo a corpo lento com um botão de movimento caro. O Berserk fica no segundo botão do mouse para imunes a físico, e é também o que você aperta quando algo sobrevive à aterrissagem.",
+    strengths: [
+      "**O maior golpe isolado da classe** — 770% do dano da arma com vinte, mais os 150-300 físicos próprios em cima",
+      "O maior bônus de attack rating da classe, +100% e mais 20% por nível, então o golpe encaixa sem o equipamento carregar isso",
+      "Atravessa paredes e grupos: isto é uma skill de movimento e um ataque no mesmo aperto",
+      "Dano em área num raio de sete ao aterrissar, coisa que nenhum outro ataque de alvo único do Barbarian tem",
+      "Os quarenta pontos dele vão para Leap e Leap Attack, pelos quais nada mais na classe compete",
+    ],
+    weaknesses: [
+      "**Ele pode ser interrompido**, diferente de Concentrate, Frenzy e Whirlwind — os três ataques com que ele é agrupado",
+      "Um aperto é uma aterrissagem, então dano sustentado contra um alvo único é ruim",
+      "O maior teto de habilidade dos seis: um salto mal mirado é um salto para dentro do grupo que você queria pular",
+      "10 de mana por aperto, o ataque de Barbarian mais caro que existe",
+      "Dano físico, e a resposta custa um dos dois pacotes",
+    ],
+    flexPoints: [
+      "**Não há nenhum.** O núcleo é 94 e qualquer um dos pacotes é exatamente 16, então uma tela de nível 99 mostra 110 gastos e nada sem destino.",
+      "Abaixo do 99 a ordem é Leap Attack, Leap, a mastery, depois Battle Orders, depois o pacote. Leap em segundo é a parte que as pessoas erram: ele parece uma skill de movimento e é quarenta por cento do seu dano.",
+      "O ponto único em Berserk deve vir cedo seja qual for o pacote pretendido. Saltar em cima de um imune a físico sem resposta é como esta build desperdiça mais tempo.",
+    ],
+    skillPackages: {
+      "the-last-sixteen": {
+        name: "Os últimos dezesseis pontos",
+        intro:
+          "O núcleo é 94 e fecha todos os pré-requisitos. Os dezesseis restantes vão para os mesmos dois lugares que os da página do Berserk, e pelo mesmo motivo — esta build caça elites isolados por mapas inteiros, então a escolha dela é entre matar o que não consegue ferir e tirar mais do que mata.",
+        packages: {
+          berserk: {
+            name: "Berserk — a resposta para imunidade",
+            when: "Você joga sozinho, não tem uma Bone Break, e prefere nunca saltar em cima de algo que não consegue ferir.",
+            tradeoff: "O Find Item fica em um ponto, o que custa a maior parte do loot que uma build que caça elites juntaria.",
+            skillNotes: {
+              berserk: "Todo o dano dele é entregue como mágico, então um imune a físico recebe tudo. Nesta build ele também é a continuação: você salta para dentro, e o que ainda estiver de pé leva Berserk em vez de outro salto. Sua defesa é zero enquanto ele golpeia — cerca de 1,3 segundo neste nível — o que importa mais aqui que em outros lugares porque você já está parado no grupo em que aterrissou.",
+            },
+            rotationNote: "Leap Attack para dentro, Berserk no que sobrevive ou resiste. Concentrate em vez de Berserk quando a aterrissagem deu errado e defesa zero não cabe.",
+            contentNote: "Hell solo, o Pit, o Chaos Sanctuary — qualquer lugar onde um grupo de elite pode acabar sendo imune ao único dano que a skill principal causa.",
+            remainderNote: "Não sobra nada. 94 + 16 = 110.",
+          },
+          hork: {
+            name: "Find Item — o segundo trabalho do caçador de elites",
+            when: "Você carrega uma Bone Break, ou joga onde imunidades são problema de outra pessoa, e quer que os saltos rendam.",
+            tradeoff: "O Berserk fica em um ponto, então um imune a físico é uma luta lenta em vez de rápida.",
+            skillNotes: {
+              "find-item": "Uma segunda rolagem de drop em cada cadáver, com todo o seu Magic Find aplicado. Esta build salta de elite em elite por um mapa inteiro e deixa exatamente os cadáveres que valem rolar — as duas metades se encaixam melhor aqui que em qualquer página exceto a do próprio Berserk.",
+            },
+            gearNote: "Magic find passa a valer a pena nos slots que não estão carregando dano: War Traveler, Chance Guards e Gheed's Fortune todos ganham lugar assim que o Find Item for real.",
+            contentNote: "Qualquer área com campeões e uniques espalhados — que é quase todo o Hell, e é por isso que o guia desta build a chama de build que farma qualquer lugar.",
+            remainderNote: "Não sobra nada. 94 + 16 = 110.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "O suficiente para uma arma grande e para a armadura de corpo. Esta build segura uma arma só, então diferente do Frenzy e do Double Throw há só um requisito a cumprir — e ela pode bancar um pesado.",
+      dexterity: "O suficiente para a arma, mais bloqueio máximo se você segurar escudo. Escudo é uma opção de verdade aqui, porque a build carrega uma arma em vez de duas.",
+      vitality: "Todo o resto. Você aterrissa no meio dos grupos de propósito.",
+      energy: "Nenhum. O Leap Attack custa 10 de mana, o mais caro de qualquer ataque de Barbarian, e a Insight no mercenário cobre isso.",
+      notes: [
+        "**Uma arma, então um requisito** — e é isso que permite a esta build carregar a arma mais pesada das seis sem o problema de Strength que o Frenzy tem.",
+        "Escudo é viável e frequentemente correto, o que não é verdade no Frenzy nem no Double Throw. Se você segurar um, o breakpoint de bloqueio vale ser alcançado.",
+        "Prefira dano por acerto a velocidade de ataque quando os dois competirem. Um aperto é uma aterrissagem, então a taxa de golpe não é o que define o seu dano.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48": "Cinco frames na tabela dividida com o Paladin e a Assassin. **O Leap Attack pode ser interrompido** — a coluna que Concentrate, Frenzy e Whirlwind deixam em branco, esta preenche — então recuperação importa mais aqui que em qualquer outro ataque comprometido do Barbarian.",
+      "fhr-86": "Quatro frames, e valem os slots numa build que aterrissa dentro de grupos por design.",
+      "fbr-42": "Com escudo, que esta build consegue segurar porque carrega uma arma. Quatro frames de bloqueio num personagem que se compromete com uma aterrissagem é uma linha defensiva de verdade.",
+      "fcr-63": "Só com uma Enigma — e esta é a única build em que o Teleport de fato compete com a skill que ele substituiria, já que o Leap Attack já é um fecha-distância. Pegue pelo +1 skills e pelo Strength mais que pelo deslocamento.",
+    },
+    breakpointNotes:
+      "**Sem linha de velocidade de ataque, e nesta página ela importa menos que nas seis.** Os frames dependem da velocidade base da arma e da skill, então nenhuma porcentagem única está correta para uma classe e este site não publica nenhuma. Mas o motivo para se importar é mais fraco aqui que em qualquer lugar: um aperto é uma aterrissagem, e a taxa é definida pelo salto e não pelo golpe. Onde as páginas do Whirlwind e do Frenzy mandam perseguir Increased Attack Speed continuamente, esta manda comprar dano bruto por acerto — uma arma mais lenta e maior costuma ser a escolha melhor, que é o conselho oposto e decorre do mesmo fato.",
+    skillNotes: {
+      "leap-attack":
+        "**+200% de dano e mais 30% por nível** — 770% com vinte, onde o Whirlwind chega a 125% e o Berserk a 435%. O dano cheio da arma é carregado e a faixa física própria dele entra por cima: 10-20 com um ponto, **150-300 com vinte**. Raio 7 ao aterrissar. Attack rating +100% e 20% por nível, o maior da classe. Custa 10 de mana, o mais alto de qualquer ataque de Barbarian, e **ele pode ser interrompido** — a coluna que os outros ataques comprometidos deixam em branco, esta preenche.",
+      leap:
+        "+10% de dano do Leap Attack por ponto duro, e **a única sinergia dele**. Nenhuma outra build de Barbarian deste site dá ao Leap mais de um ponto, que é exatamente o que faz desta uma página separada em vez de uma variante do Berserk. Ele também não rola attack rating e não causa dano próprio — é um knockback e um salto, e aqui é quarenta por cento do dano da skill principal.",
+      "axe-mastery":
+        "+28% de dano e 5% por nível, +44% de attack rating e 8% por nível, crítico em direção a 35%. **Axe em vez de Blade por um motivo que dá para conferir**: das trinta e duas runewords de arma que este site cataloga, catorze aceitam um machado e treze uma espada — mais bases elite para uma build que quer uma arma muito grande. Troque se a sua arma for outra coisa; a mastery é presa ao tipo de item, não à build.",
+      "battle-orders":
+        "+92% de vida máxima com vinte. Não é sinergia do Leap Attack — o Leap é a única — então está aqui porque depois da skill principal, do Leap e da mastery não há mais nada que valha vinte pontos, e um personagem que aterrissa no meio de grupos precisa da vida.",
+      bash: "Pré-requisito do Stun.",
+      stun: "Pré-requisito do Concentrate.",
+      concentrate: "Pré-requisito do Berserk, e o golpe para usar quando você aterrissou e não consegue saltar para fora — ele dobra sua defesa e não pode ser interrompido, coisa que o próprio Leap Attack não pode dizer.",
+      berserk: "Um ponto no núcleo e dezessete no pacote dele. Todo o dano dele é mágico, então é a resposta para um imune a físico — e é também o botão para qualquer coisa que sobreviveu à aterrissagem, já que um segundo salto custa 10 de mana e um momento que você pode não ter.",
+      howl: "Pré-requisito do Shout, e uma fuga de verdade para um personagem que acabou de aterrissar onde não devia.",
+      shout: "Defesa para o grupo, e 5 segundos por ponto duro na duração do Battle Orders.",
+      "battle-command": "+1 em todas as skills, fixo em todo nível. Conjure primeiro: Battle Command, Battle Orders, Shout, depois a cura.",
+      "find-potion": "Pré-requisito do Find Item, e 5% por ponto duro no debuff do Grim Ward.",
+      "find-item": "Uma segunda rolagem de drop num cadáver, e pré-requisito do Grim Ward. Dezessete pontos no pacote dele: uma build que salta entre elites é uma build que deixa um rastro de cadáveres de alto valor.",
+      "grim-ward": "A lentidão, principalmente. Um personagem que se compromete com uma aterrissagem quer tudo à volta dele se movendo o mais devagar possível.",
+      "increased-stamina": "Pré-requisito do Increased Speed.",
+      "increased-speed": "Velocidade de corrida sempre ativa, para o chão que você cobre entre saltos.",
+      "iron-skin": "Pré-requisito do Natural Resistance.",
+      "natural-resistance": "As quatro resistências, somadas antes do teto. Você aterrissa no meio das coisas por design.",
+    },
+    immunityPlan:
+      "**Físico, e esta build encontra isso no pior momento possível** — você já se comprometeu com o salto e aterrissou no meio de um grupo que não consegue ferir. Então a resposta precisa estar na barra antes de você saltar, e não ser comprada depois. O pacote de Berserk é a direta: dezessete pontos de um ataque cujo dano é inteiramente mágico, e nesta build ele serve também de continuação para o que sobreviveu à aterrissagem. A alternativa é uma **Bone Break**, o Sunder Charm físico, que torna um imune em algo meramente resistente por um slot de charm e libera os dezesseis pontos para o Find Item. O Atma's Scarab ajuda contra tudo que não seja totalmente imune, e uma aterrissagem aplica o Amplify Damage dele no raio inteiro. Escolha o que escolher, mantenha o ponto único de Berserk no núcleo: saltar em cima de um imune sem literalmente nenhuma resposta é como esta build desperdiça mais tempo.",
+    mercenaryNotes:
+      "**Ato 2, Nightmare, Might** — a aura dele aumenta dano físico, que é o que um multiplicador de 770% está multiplicando. A Insight resolve a mana, e esta é a build que mais precisa disso: 10 de mana por aperto é o custo mais alto de qualquer ataque de Barbarian, e um salto que você não pode pagar é um salto que você não dá. **A The Reaper's Toll é a escolha forte mais adiante** por um motivo específico desta build: Decrepify ao golpear é −50% de resistência física, e diferente de um personagem de muitos acertos você tem uma aplicação por aterrissagem, então um mercenário aplicando isso por conta própria vale mais aqui que numa build que o aplicaria sozinha. Ele também tem que acompanhar você, e nada equipa para isso — espere ultrapassá-lo nos saltos e aterrissar sozinho mais vezes que nas outras cinco builds. Mantenha-o vivo com uma Fortitude e um Vampire Gaze.",
+    farmingWhy: {
+      "pit-hell": "Área de nível 85 e cheia de grupos de campeões espalhados por dois níveis, que é exatamente o formato que esta build atravessa mais rápido. Os imunes a físico dela são o motivo de o pacote de Berserk existir.",
+      "worldstone-keep-hell": "Três andares de área de nível 85 cheios de elites, e uma build que salta entre eles sem limpar o lixo do caminho os cobre mais rápido do que parece.",
+      "mausoleum-hell": "Área de nível 85 com quase nada imune a físico dentro, o que permite que o pacote de Find Item seja o escolhido.",
+      "ancient-tunnels-hell": "Área de nível 85, sem imunes a físico na população, e um traçado compacto — a zona 85 mais amigável que esta build tem.",
+      "chaos-sanctuary-hell": "Saltar entre os selos atravessa o chão que esta build cobre pior a pé. Os Oblivion Knights são o perigo, porque uma aterrissagem é um compromisso e as maldições deles caem num alvo parado.",
+      "pindleskin-hell": "Área de nível 83, um alvo, e um golpe muito grande combina bem — mas um monstro isolado também é onde uma build de um aperto por aterrissagem tem menos a oferecer do que simplesmente golpear.",
+    },
+    levelingPath: {
+      summary:
+        "Siga a jornada da classe até o nível 40 e faça respec para este plano. A rota serve bem a ele: ela já gasta um ponto em Leap no 6 e em Leap Attack no 18 como pré-requisitos do Whirlwind, então as duas skills que esta build maximiza já estão na barra quando o respec chega — você está subindo elas em vez de descobri-las.",
+      respecAt: "Nightmare Ato 4, nível 40, depois do The Fallen Angel. Os 47 pontos voltam e vão para Leap Attack, Leap e a mastery.",
+    },
+    selfFoundNotes:
+      "Mediana, e por um motivo incomum: a build quer uma arma muito grande em vez de duas boas ou de uma runeword específica, então quase qualquer machado ou espada elite com uma rolagem grande de dano a coloca para funcionar. A Oath no nível 49 são quatro runas relativamente comuns e a carrega por muito tempo; Arreat's Face, Gore Rider, Raven Frost e Atma's Scarab dropam com facilidade; e a linha de escudo faz da Ancients' Pledge e da Rhyme respostas reais. A Grief e a Death são os muros, e nenhuma é obrigatória — um Leap Attack Barbarian self-found com uma Oath num machado limpa o Hell perfeitamente bem, porque 770% de uma arma mediana mais 150-300 próprios continua sendo o maior golpe da classe.",
+    hardcoreNotes:
+      "**A mais perigosa das seis, e o motivo é uma coluna.** O Leap Attack carrega `interrupt = 1` onde Concentrate, Frenzy e Whirlwind deixam em branco — então diferente dos outros ataques comprometidos da classe, este pode ser interrompido, e ele te coloca no meio de um grupo por design. O salto não pode ser cancelado depois de apertado e não pode ser conduzido. Então: segure escudo e alcance o breakpoint de bloqueio, pegue 86% de recuperação em vez de 48%, e trate o Concentrate como o segundo botão de verdade em vez do Berserk — ele dobra a defesa e não pode ser interrompido, que é exatamente o que você quer depois de uma aterrissagem que deu errado. Pegue o pacote de Berserk mesmo assim, porque um grupo imune em que você já aterrissou é pior que um do qual você pode se afastar. E salte para *fora* com a mesma facilidade com que salta para dentro; o botão é uma skill de movimento nas duas direções e jogadores de Hardcore esquecem a segunda.",
+    gearSets: {
+      starter: {
+        goal: "Leap Attack na barra no 18, Leap subindo atrás dele, e uma arma grande o bastante para uma aterrissagem significar algo.",
+        nextUpgrade: "Arreat's Face no 42, e uma arma com que valha a pena saltar.",
+        picks: {
+          "weapon-0": { why: "Duas runas da Countess em qualquer espada, machado ou maça. Neste tier o ponto é simplesmente ter uma arma cujo dano valha ser multiplicado por 200%.", sockets: "Tir + El numa base de 2 sockets." },
+          "offhand-0": { why: "+43-48% em cada resistência no nível 21. Esta build segura uma arma, então um escudo é de graça — pegue." },
+          "helm-0": { why: "+1 em todas as skills em qualquer elmo de 2 sockets.", sockets: "Ort + Sol." },
+          "body-0": { why: "Velocidade de corrida e recuperação. Recuperação importa aqui desde o primeiro nível, porque o Leap Attack pode ser interrompido." },
+          "belt-0": { why: "Ouro e magic find no nível 27, numa build que vai acabar caçando elites." },
+          "boots-0": { label: "Qualquer bota rara ou mágica com Faster Run/Walk e resistências", why: "O chão entre os saltos." },
+          "gloves-0": { why: "Nível 15, ouro e magic find, e nada neste tier compete numa build que vai pegar o pacote de Find Item." },
+          "ring1-0": { why: "Attack rating e magic find." },
+          "ring2-0": { label: "Um anel raro com attack rating e vida", why: "Attack rating é menos problema aqui que em qualquer outra build de Barbarian, mas ainda não é zero." },
+          "amulet-0": { label: "Um amuleto raro ou mágico com +2 Barbarian skills", why: "+2 skills são +2 Leap Attack e +2 Leap — que nesta build é +2 na skill e na única sinergia dela." },
+        },
+        charms: [{ label: "Small charms com vida e resistências", why: "Nada exótico existe ainda." }],
+      },
+      nightmare: {
+        goal: "Uma arma grande, o Arreat's Face, e o Leap alto o bastante para a sinergia estar fazendo trabalho de verdade.",
+        nextUpgrade: "Grief ou Death, e a decisão sobre manter o escudo.",
+        picks: {
+          "weapon-0": { why: "**+210-340% de dano aprimorado** no nível 49 numa espada, machado ou maça de 4 sockets, mais 50% de velocidade de ataque e Prevent Monster Heal. Numa build que multiplica um golpe, uma linha grande de dano aprimorado vale mais que em qualquer outro lugar da classe.", sockets: "Shael + Pul + Mal + Lum. Num machado, se você pegou Axe Mastery." },
+          "weapon-0-alt0": { why: "Nível 53 numa espada ou machado de 4 sockets: −25% de defesa do alvo e Crushing Blow, os dois adequados a uma aterrissagem enorme." },
+          "weapon-0-alt1": { why: "Nível 47 num machado, espada ou polearm de 3 sockets, e os −35% de resistência a raio inimiga dela não fazem nada aqui — pegue pelos Open Wounds e pelas runas mais baratas apenas." },
+          "offhand-0": { why: "Cannot Be Frozen, +25 em todas as resistências e magic find no nível 29, e nenhum requisito de Strength digno do nome." },
+          "helm-0": { why: "+2 Barbarian skills e +2 Combat Skills — **+4 no Leap Attack e +4 no Leap**, já que os dois são Combat Skills. Isso é +4 na skill principal e na única sinergia dela vindos de um slot." },
+          "body-0": { why: "+30 em todas as resistências, +50 de vida e +25 de Strength, que paga por uma arma mais pesada." },
+          "body-1": { why: "+50 em todas as resistências no lugar, quando é isso que está falhando." },
+          "belt-0": { why: "Redução de dano e roubo de vida, e roubo de vida num golpe de 770% devolve muito de uma vez." },
+          "boots-0": { why: "Crushing Blow, Deadly Strike e Open Wounds. Deadly Strike dobrando um golpe muito grande vale mais aqui que numa build de muitos acertos." },
+          "boots-1": { why: "Magic find no lugar, na rota de Find Item." },
+          "gloves-0": { label: "Luvas craftadas Blood com roubo de vida e attack rating", why: "Velocidade de ataque importa menos aqui que em qualquer outra página de Barbarian — pegue o roubo e o attack rating no lugar." },
+          "ring1-0": { why: "Cannot Be Frozen, e um salto resfriado é um salto que aterrissa tarde." },
+          "ring2-0": { label: "Um anel raro com vida, resistências e attack rating", why: "Vida primeiro: você aterrissa onde os monstros estão." },
+          "amulet-0": { why: "Amplify Damage ao golpear é −100% de resistência física, e o dano principal desta build é físico. Uma aterrissagem aplica isso em tudo no raio 7." },
+        },
+        charms: [{ label: "Grand charms de Combat Skills, e small charms de vida/resistência", why: "Um skiller de Combat Skills é +1 Leap Attack e +1 Leap ao mesmo tempo — a skill e a única sinergia dela." }],
+        weaponSwap: [{ why: "Battle Orders acima do seu próprio nível." }],
+      },
+      "early-hell": {
+        goal: "Uma arma cujo golpe único encerra um elite, e resistência o bastante para sobreviver à aterrissagem.",
+        nextUpgrade: "Enigma, e a questão de se você ainda a quer.",
+        picks: {
+          "weapon-0": { why: "**+340-400 de dano seco, somado depois de cada multiplicador percentual** — e esta build tem o maior multiplicador da classe na frente dele. Num machado de 5 sockets se você pegou Axe Mastery, numa Phase Blade se pegou Blade.", sockets: "Eth + Tir + Lo + Mal + Ral." },
+          "weapon-1": { why: "Nível 55 numa espada ou machado de 5 sockets: 100% de Crushing Blow num único golpe enorme, mais chance de conjurar Glacial Spike ao golpear. Um encaixe excepcionalmente bom para uma aterrissagem grande." },
+          "offhand-0": { why: "35% de redução de dano e o maior bloqueio do jogo, no nível 73. Esta build consegue segurar escudo e provavelmente deveria." },
+          "offhand-1": { why: "O escudo mais barato, com Cannot Be Frozen e magic find." },
+          "helm-0": { why: "+4 no Leap Attack e +4 no Leap vindos de um slot." },
+          "body-0": { why: "+300% de dano aprimorado, aplicado ao golpe que já está sendo multiplicado por 770%." },
+          "belt-0": { why: "Redução de dano, Vitality e os 10% de recuperação que costumam alcançar cinco frames — de que esta build precisa mais que os outros ataques comprometidos." },
+          "boots-0": { why: "Crushing Blow e Deadly Strike, os dois no melhor deles num golpe muito grande." },
+          "gloves-0": { why: "Life Tap ao golpear, e uma aterrissagem num grupo aplica isso em tudo no raio 7." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 em todas as skills, e a mana para um ataque de custo 10." },
+          "amulet-0": { why: "+1 em todas as skills e Deadly Strike que cresce com o seu nível — dobrar um golpe de 770% é a maior linha de dano isolada disponível a esta build." },
+        },
+        charms: [
+          { why: "Magic find e ouro, numa build que deixa cadáveres de elite atrás de si." },
+          { label: "Skillers de Combat Skills e small charms de vida/resistência", why: "Cada skiller aumenta a skill principal e a única sinergia dela juntas." },
+        ],
+        weaponSwap: [{ why: "Battle Orders acima do seu próprio nível." }],
+      },
+      budget: {
+        goal: "Um personagem de Hell pronto que atravessa um mapa de elite em elite sem tocar o chão.",
+        nextUpgrade: "O resto do dano por acerto, e rolagens perfeitas de Deadly Strike.",
+        picks: {
+          "weapon-0": { why: "O dano seco depois dos multiplicadores, na frente do maior multiplicador da classe." },
+          "weapon-1": { why: "100% de Crushing Blow no lugar — num golpe único isso é um quarto da vida atual de um elite a cada aterrissagem." },
+          "offhand-0": { why: "Redução de dano e bloqueio, os dois sobrevivem à aterrissagem." },
+          "helm-0": { why: "+4 na skill e +4 na sinergia dela." },
+          "body-0": { why: "+300% de dano aprimorado. **Nesta build a Fortitude costuma bater a Enigma**, o que não é verdade em nenhuma outra página de Barbarian — o Leap Attack já é um fecha-distância, então o Teleport compra menos aqui que o dano." },
+          "body-1": { why: "Teleport mesmo assim, pelo +1 skills e pelo Strength, se você preferir a utilidade ao dano.", sockets: "Jah + Ith + Ber." },
+          "belt-0": { why: "Redução de dano e o frame de recuperação." },
+          "boots-0": { why: "Crushing Blow e Deadly Strike." },
+          "gloves-0": { why: "Life Tap no raio inteiro." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 skills e a mana." },
+          "amulet-0": { why: "Deadly Strike no maior golpe da classe." },
+          "amulet-1": { why: "Attack rating e resistências, embora esta build precise do primeiro menos que qualquer outra." },
+        },
+        charms: [
+          { why: "Magic find e ouro." },
+          { why: "O Sunder Charm físico, e o que torna o pacote de Find Item viável — ele responde à imunidade sem gastar os dezesseis pontos." },
+          { label: "Skillers de Combat Skills, Annihilus, Hellfire Torch", why: "A Torch é +3 Barbarian skills, o que é +3 Leap Attack e +3 Leap." },
+        ],
+        weaponSwap: [{ why: "Os gritos." }],
+      },
+      optimized: {
+        goal: "Uma aterrissagem mata um grupo de elite. Tudo depois disso são rolagens.",
+        nextUpgrade: "Bases etéreas, e a decisão entre Death e Grief numa rolagem perfeita.",
+        picks: {
+          "weapon-0": { why: "100% de Crushing Blow e 50% de Deadly Strike no maior golpe isolado da classe. Num machado elite de 5 sockets." },
+          "weapon-1": { why: "O dano seco no lugar, que é o número bruto maior e o teto menor contra reservas grandes de vida." },
+          "offhand-0": { why: "Redução de dano e bloqueio." },
+          "helm-0": { why: "+4 na skill e na sinergia dela." },
+          "helm-1": { why: "30% de redução de dano e dois sockets, para as aterrissagens que dão errado." },
+          "body-0": { why: "+300% de dano aprimorado." },
+          "belt-0": { why: "15% de redução de dano na rolagem máxima." },
+          "boots-0": { why: "Upgradeadas." },
+          "gloves-0": { why: "Life Tap." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 skills." },
+          "amulet-0": { why: "Deadly Strike, que dobra o maior golpe da classe." },
+        },
+        charms: [
+          { why: "Find e ouro." },
+          { why: "O Sunder físico, liberando o pacote para o Find Item." },
+          { label: "Skillers de Combat Skills, Annihilus, Hellfire Torch", why: "Duas skills aumentadas por ponto de +skills, e são as duas únicas que importam." },
+        ],
+        weaponSwap: [{ why: "Os gritos." }],
+      },
+      bis: {
+        goal: "Nada mais para comprar. Um aperto atravessa a sala e remove o que estava lá.",
+        notes: "Nenhum item de set nesta lista. O Immortal King é um set de orçamento para Whirlwind e o Guillaume's Face é um elmo de Uber; esta build quer dano bruto por acerto e recuperação, e os sets de Barbarian não oferecem bem nenhum dos dois.",
+        picks: {
+          "weapon-0": { why: "Num machado elite etéreo. 100% de Crushing Blow num golpe deste tamanho é o maior dano prático que a classe alcança contra um alvo único." },
+          "offhand-0": { why: "Upgradeado, redução de dano perfeita." },
+          "helm-0": { why: "Upgradeado, com rolagem perfeita de roubo de vida." },
+          "body-0": { why: "+300% de dano aprimorado, numa base etérea." },
+          "belt-0": { why: "15% de redução de dano, 40 de Vitality." },
+          "boots-0": { why: "Upgradeadas, pelo Crushing Blow e pelo Deadly Strike." },
+          "gloves-0": { why: "Life Tap em todo o raio da aterrissagem." },
+          "ring1-0": { why: "Cannot Be Frozen e 250 de attack rating." },
+          "ring2-0": { why: "+1 skills e a reserva de mana." },
+          "amulet-0": { why: "Deadly Strike na rolagem máxima, dobrando o maior golpe que a classe tem." },
+        },
+        charms: [
+          { why: "40% de magic find na rolagem máxima." },
+          { why: "O Sunder Charm físico." },
+          { label: "Skillers de Combat Skills, um Annihilus máximo, uma Hellfire Torch máxima", why: "Cada +1 aumenta Leap Attack e Leap juntos — a skill e a única sinergia que ela tem." },
+        ],
+        weaponSwap: [{ why: "Um Battle Orders de nível 6 antes da run." }],
+      },
+    },
+  },
   "double-throw-barbarian": {
     summary:
       "O único Barbarian que luta à distância, e a única build da classe cujo mecanismo central não é dano e sim munição.",

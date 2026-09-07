@@ -48,6 +48,7 @@ import { frenzyBarbarian } from "./frenzy-barbarian";
 import { berserkBarbarian } from "./berserk-barbarian";
 import { warCryBarbarian } from "./war-cry-barbarian";
 import { doubleThrowBarbarian } from "./double-throw-barbarian";
+import { leapAttackBarbarian } from "./leap-attack-barbarian";
 
 import { apocalypseWarlock } from "./apocalypse-warlock";
 import { abyssWarlock } from "./abyss-warlock";
@@ -61,4 +62,4 @@ import { bloodBoilWarlock } from "./blood-boil-warlock";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon, jabFendAmazon, summonerNecromancer, poisonNovaNecromancer, boneSpearNecromancer, windDruid, fireDruid, furyDruid, summonDruid, maulDruid, fireClawsDruid, rabiesDruid, lightningTrapsin, fireTrapsin, phoenixStrike, kicksin, bladeFury, dragonTail, whirlwindAssassin, whirlwindBarbarian, apocalypseWarlock, abyssWarlock, cleaveWarlock, bloodBoilWarlock, frenzyBarbarian, berserkBarbarian, warCryBarbarian, doubleThrowBarbarian];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon, jabFendAmazon, summonerNecromancer, poisonNovaNecromancer, boneSpearNecromancer, windDruid, fireDruid, furyDruid, summonDruid, maulDruid, fireClawsDruid, rabiesDruid, lightningTrapsin, fireTrapsin, phoenixStrike, kicksin, bladeFury, dragonTail, whirlwindAssassin, whirlwindBarbarian, apocalypseWarlock, abyssWarlock, cleaveWarlock, bloodBoilWarlock, frenzyBarbarian, berserkBarbarian, warCryBarbarian, doubleThrowBarbarian, leapAttackBarbarian];
