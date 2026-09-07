@@ -206,14 +206,14 @@ export const bloodBoilWarlock: Build = {
       levelRange: [30, 50],
       slots: [
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "spirit" }, why: "+2 to All Skills and 25-35% Faster Cast Rate. Two levels of Blood Boil and two of Blood Oath from four Countess runes." }] },
-        { slot: "offhand", picks: [{ label: "Any Grimoire with +2 Warlock skills and a Demon tab", why: "The Demon tab is index 21. A +2 there is two levels on every skill in the plan at once.", lookFor: ["+2 to Warlock Skills", "+2 to Demon Skills"], alternatives: [{ ref: { kind: "runeword", slug: "vigilance" }, why: "Dol and Gul in a Grimoire: all resistances, life, mana and defence, for two runes that drop constantly. Two runes is also the only count a Grimoire's sockets allow." }] }] },
+        { slot: "offhand", picks: [{ label: "Any Grimoire with +2 Warlock skills and a Demon tab", why: "The Demon tab is index 21. A +2 there is two levels on every skill in the plan at once.", lookFor: ["+2 to Warlock Skills", "+2 to Demon Skills"], alternatives: [{ ref: { kind: "runeword", slug: "rhyme" }, why: "**The class's own off-hand answer does not arrive in this tier, and that is worth knowing rather than working around.** Vigilance is the runeword built for a Grimoire, and it needs a Gul at level 53 — three levels past where this tier ends. Rhyme is Shael and Eth, it fits a Grimoire for the same reason Vigilance does, and it holds the slot until then. Splendor at 37 is the other two-rune option if you would rather have the skill than the resistances." }] }] },
         { slot: "body", picks: [{ ref: { kind: "unique", slug: "skin-of-the-vipermagi" }, why: "+1 skills, 30% cast rate and resistances." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "tarnhelm" }, why: "+1 to All Skills and magic find." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "nightsmoke" }, why: "Resistances and damage-to-mana." }] },
         { slot: "boots", picks: [{ ref: { kind: "unique", slug: "waterwalk" }, why: "Life and stamina." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "nagelring" }, why: "Magic find in a placeholder slot." }] },
       ],
-      nextUpgrade: "Bloodpact Shard at level 67, which is the single largest item upgrade on the character.",
+      nextUpgrade: "**Vigilance at 53**, the moment a Gul appears — then Bloodpact Shard at 67, which is the single largest item upgrade on the character.",
     },
     {
       tier: "early-hell",
@@ -222,9 +222,9 @@ export const bloodBoilWarlock: Build = {
       slots: [
         { slot: "helm", picks: [{ ref: { kind: "runeword", slug: "coven" }, why: "Ist Ral Io: +1 to All Skills, 20% Faster Cast Rate and 26-40% magic find once Ist's helm modifier is counted.", sockets: "Ist Ral Io in a three-socket circlet." }] },
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "spirit" }, why: "Held until Bloodpact Shard." }] },
-        { slot: "offhand", picks: [{ label: "Measured Wrath", why: "A Burnt Text at level 52 with +1 to Warlock skills, +20-30 all resistance and 25% Faster Cast Rate, at 38 Strength. Its fire skills are dead weight; the resistances and the cast rate are not.", alternatives: [{ ref: { kind: "runeword", slug: "vigilance" }, why: "If the resistances matter more than the skill level." }] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "measured-wrath" }, why: "A Burnt Text at level 52 with +1 to Warlock skills, +20-30 all resistance and 25% Faster Cast Rate, at 38 Strength. Its fire skills are dead weight; the resistances and the cast rate are not.", alternatives: [{ ref: { kind: "runeword", slug: "vigilance" }, why: "If the resistances matter more than the skill level." }] }] },
         { slot: "body", picks: [{ ref: { kind: "unique", slug: "skin-of-the-vipermagi" }, why: "Unchanged." }] },
-        { slot: "belt", picks: [{ ref: { kind: "unique", slug: "arachnid-mesh" }, why: "+1 to All Skills and 20% Faster Cast Rate — the loop is three casts per pack and this shortens all three." }] },
+        { slot: "belt", picks: [{ ref: { kind: "unique", slug: "nightsmoke" }, why: "Nightsmoke, and it stays. **The belt this build actually wants is a level 80 item** — Arachnid Mesh's +1 skills and 20% Faster Cast Rate are two tiers away, and nothing between here and there replaces it. Fifty percent of damage taken to mana and free resistances is what the slot does for thirty levels. The loop is three casts per pack, so the cast rate this slot is missing is felt three times over — and there is still nothing to do about it until 80." }] },
         { slot: "boots", picks: [{ ref: { kind: "unique", slug: "sandstorm-trek" }, why: "Strength and Vitality, and the Strength is going toward a 95-point bill." }] },
         { slot: "amulet", picks: [{ label: "Any amulet with +2 Warlock skills", why: "Two levels across the whole plan." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "stone-of-jordan" }, why: "+1 to All Skills and the mana for three summons." }] },
@@ -238,7 +238,7 @@ export const bloodBoilWarlock: Build = {
       levelRange: [70, 85],
       slots: [
         { slot: "weapon", picks: [{ label: "Bloodpact Shard", why: "A Mithril Point at level 67: **+1 to All Skills, +2-3 Blood Oath, +2-3 Blood Boil, +1-3 Bind Demon, 30% Faster Cast Rate and +10-15% maximum life**, with 25% slow on top. It raises the two skills the whole build is made of and pays a cast-rate breakpoint at the same time.", lookFor: ["+3 to Blood Boil", "+3 to Blood Oath", "+15% Maximum Life"] }] },
-        { slot: "offhand", picks: [{ label: "Ars Tor'Baalos", why: "A Blasphemous Compendium at level 73: **+2 to Demon Skills, +2-3 Demonic Mastery, +2-4 Blood Boil, +2-3 Engorge, +2-3 Consume**, 12 life per character level and 5-10% damage reduction. It raises four of this build's six skills from one slot and there is nothing else like it in the game. It asks 95 Strength.", lookFor: ["+4 to Blood Boil", "+3 to Engorge", "+3 to Demonic Mastery"], alternatives: [{ label: "Measured Wrath", why: "If 95 Strength is more than you want to pay yet. It is 38, and the gap is roughly forty stat points." }] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-tor-baalos" }, why: "A Blasphemous Compendium at level 73: **+2 to Demon Skills, +2-3 Demonic Mastery, +2-4 Blood Boil, +2-3 Engorge, +2-3 Consume**, +1.5 life per character level and 5-10% damage reduction. The tab alone raises all six skills in the plan; on top of that it names three of them again — Demonic Mastery, Blood Boil and Engorge — and Consume for the bound-demon package. Nothing else in the game does that from one slot. It asks 95 Strength.", lookFor: ["+4 to Blood Boil", "+3 to Engorge", "+3 to Demonic Mastery"], alternatives: [{ ref: { kind: "unique", slug: "measured-wrath" }, why: "If 95 Strength is more than you want to pay yet. It is 38, and the gap is roughly forty stat points." }] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "+2 to All Skills, life and mana per level, and 10% damage reduction." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "authority" }, why: "Hel Shael Ral: +2 to Warlock skills and 40-60% enhanced defence, and the Hel takes a bite out of that Strength requirement." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "arachnid-mesh" }, why: "Unchanged." }] },
@@ -259,7 +259,7 @@ export const bloodBoilWarlock: Build = {
       levelRange: [85, 99],
       slots: [
         { slot: "weapon", picks: [{ label: "Bloodpact Shard", why: "Unchanged. Nothing else in the game carries +Blood Boil and +Blood Oath together." }] },
-        { slot: "offhand", picks: [{ label: "Ars Tor'Baalos", why: "Unchanged, and now worth the 95 Strength.", lookFor: ["+4 to Blood Boil", "+3 to Engorge"] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-tor-baalos" }, why: "Unchanged, and now worth the 95 Strength.", lookFor: ["+4 to Blood Boil", "+3 to Engorge"] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "Unchanged." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "Teleport. Death Mark pulls the demons to a marked target across 38 units, so a teleporting Warlock and three demons arrive together — this is the build where Enigma changes the rotation rather than just the travel time." }, { ref: { kind: "runeword", slug: "chains-of-honor" }, why: "If a Jah is out of reach." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "magefist" }, why: "+1 to Fire Skills raises Blood Boil's fire half and not its physical half — half an item, and still the best gloves available to the build." }] },
@@ -282,7 +282,7 @@ export const bloodBoilWarlock: Build = {
       levelRange: [90, 99],
       slots: [
         { slot: "weapon", picks: [{ label: "Bloodpact Shard", why: "At +3 Blood Boil, +3 Blood Oath and +15% maximum life." }] },
-        { slot: "offhand", picks: [{ label: "Ars Tor'Baalos", why: "At +4 Blood Boil and +3 to both Engorge and Demonic Mastery." }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-tor-baalos" }, why: "At +4 Blood Boil and +3 to both Engorge and Demonic Mastery." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "Socketed with a Rainbow Facet of fire — half the damage is fire and the facet only reads that half." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "Unchanged." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "magefist" }, why: "Unchanged." }] },

@@ -46,7 +46,32 @@ your call, and I did not want to reformat a literal you own.
 
 ---
 
-## B. Free-text labels to convert to refs
+## B. Free-text labels — the four Grimoires are done
+
+All 22 of their picks are real `ref`s now, across both locales and the journey:
+`ars-al-diablolos`, `ars-tor-baalos`, `ars-dul-mephistos`, `measured-wrath`.
+Nothing left to convert for those four.
+
+Two of your values corrected the prose rather than confirming it. `Ars
+Tor'Baalos` publishes **+1.5 life per character level**, not the 12 I read out
+of the raw `hp/lvl par=12` column — twelve eighths, and the item page has the
+published form. And "it raises four of this build's six skills" was loose: the
+tab raises all six, and it then names three of them again plus Consume for the
+bound-demon package. Both fixed in both locales.
+
+**One line to confirm on `ars-dul-mephistos`.** Your table lists the magic
+pierce, +2 Warlock Skills, 20-30% FCR, 30% FHR and 10-25% MF. The pinned row
+also carries `dmg% 70-115` and `att% 50-70`, and the Cleave page leans on both —
+it calls that Grimoire the only one in the game that raises weapon damage, and
+picks it over the Blasphemous Grimoire because of them. If the item entry does
+not carry those two lines, the Cleave page is the only thing asserting them,
+which is the quiet disagreement we just fixed for Rhyme and Splendor.
+
+**Still labels, because they are not catalogued yet:** `Dreadfang`,
+`Bloodpact Shard`, `Wraithstep`, `Entropy Locket`, `Sling`, `Opalvein`,
+`Gheed's Wager`.
+
+### The conversion table, for the seven that remain
 
 Every gear pick that names one of the nine class uniques uses `label` free text,
 as you asked, because those entries are not catalogued yet. **The exact strings

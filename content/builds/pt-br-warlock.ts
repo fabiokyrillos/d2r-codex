@@ -179,7 +179,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       },
       "early-hell": {
         goal: "Apocalypse sendo lançado, 75% de Faster Cast Rate mantidos, e resistências de volta ao máximo depois da penalidade do Hell.",
-        nextUpgrade: "Harlequin Crest, e então a decisão sobre pagar ou não 106 de Strength.",
+        nextUpgrade: "**Nível 75 por um Flame Rift**, que é o portão de verdade desta build, e não um drop qualquer. Depois Harlequin Crest, um Arachnid Mesh no 80, e a decisão sobre pagar ou não 106 de Strength.",
         picks: {
           "helm-0": {
             why: "Ist, Ral e Io num elmo de três sockets: +1 em Todas as Skills, 20% de Faster Cast Rate e 26-40% de magic find quando se conta o modificador de elmo da própria Ist. Um runeword da expansão e um dos elmos de +1 skills mais baratos do jogo.",
@@ -187,8 +187,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           },
           "weapon-0": { why: "Continua a melhor arma de cast rate neste tier, e continua +2 skills." },
           "offhand-0": {
-            label: "Measured Wrath",
-            why: "Um Burnt Text no nível 52: +1 em Warlock skills, +1-3 Ring of Fire, +1-3 Flame Wave, 25% de Faster Cast Rate e +20-30 de resistência total. Pede 38 de Strength, que é justamente o ponto — é o trabalho da mão secundária elite feito por um terço do custo em atributos.",
+                        why: "Um Burnt Text no nível 52: +1 em Warlock skills, +1-3 Ring of Fire, +1-3 Flame Wave, 25% de Faster Cast Rate e +20-30 de resistência total. Pede 38 de Strength, que é justamente o ponto — é o trabalho da mão secundária elite feito por um terço do custo em atributos.",
             lookFor: ["+3 Ring of Fire", "+3 Flame Wave", "+30 all resistance"],
           },
           "offhand-0-alt0": {
@@ -196,7 +195,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           },
           "body-0": { why: "Sem mudança. Nada neste tier ganha de +1 skills e 30% de Faster Cast Rate pelo preço." },
           "gloves-0": { why: "Sem mudança, e ainda as únicas luvas de fogo." },
-          "belt-0": { why: "+1 em Todas as Skills e 20% de Faster Cast Rate. O maior item isolado de cast rate do jogo fora uma arma." },
+          "belt-0": { why: "Nightsmoke, e ele fica. **O cinto que esta build realmente quer é um item de nível 80** — o +1 skills e os 20% de Faster Cast Rate do Arachnid Mesh estão a dois tiers de distância, e nada entre aqui e lá o substitui. Cinquenta por cento do dano recebido indo para a mana e resistências de graça é o que o slot faz por trinta níveis." },
           "boots-0": { why: "Strength, Vitality, redução de duração de veneno, e é a bota que ajuda a pagar a conta de Strength do Grimoire." },
           "amulet-0": { why: "30% de Faster Run/Walk e 20% de Increased Attack Speed que você não vai usar — pego pela velocidade e pela Dexterity, e trocado pelo Mara's assim que um cair." },
           "ring1-0": { why: "+1 em Todas as Skills e a reserva de mana que permite continuar lançando." },
@@ -204,7 +203,8 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         },
         charms: [
           {
-            why: "Quebra imunidade a fogo ao custo de 70 a 90 pontos da sua própria resistência a fogo. É o item que abre doze das dezoito áreas catalogadas para esta build, e vale reorganizar o resto do equipamento em volta dele.",
+            label: "Charms pequenos com vida e resistência",
+            why: "**O charm que importa aqui ainda não pode ser pego.** Um Flame Rift é o item que abre doze das dezoito áreas catalogadas para esta build, e ele exige nível 75 — então este tier é gasto chegando lá. Preencha a grade com vida e com as resistências que a penalidade do Hell acabou de tirar.",
           },
         ],
       },
@@ -216,13 +216,11 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "helm-1": { why: "Fique com o Coven se for o cast rate que fecha o seu breakpoint. O Shako dá mais skills; o Coven dá mais velocidade." },
           "weapon-0": { why: "Mantido até o Heart of the Oak. Não existe +2 skills com 35% de cast rate mais barato no jogo." },
           "offhand-0": {
-            label: "Ars Dul'Mephistos",
-            why: "Um Occult Tome no nível 78: +2 em Warlock skills, 20-30% de Faster Cast Rate e 10-20% de Resistência Mágica do Inimigo a menos. A quebra de mágico é peso morto nesta build — ele está aqui pelos dois níveis de skill e pelo cast rate, e por pedir 82 de Strength em vez de 106.",
+                        why: "Um Occult Tome no nível 78: +2 em Warlock skills, 20-30% de Faster Cast Rate e 10-20% de Resistência Mágica do Inimigo a menos. A quebra de mágico é peso morto nesta build — ele está aqui pelos dois níveis de skill e pelo cast rate, e por pedir 82 de Strength em vez de 106.",
             lookFor: ["+2 Warlock Skills", "30% Faster Cast Rate"],
           },
           "offhand-0-alt0": {
-            label: "Measured Wrath",
-            why: "Fique com o Burnt Text se 82 de Strength for mais do que você quer pagar. Três níveis de Ring of Fire e Flame Wave contra dois de tudo é mais próximo do que parece.",
+                        why: "Fique com o Burnt Text se 82 de Strength for mais do que você quer pagar. Três níveis de Ring of Fire e Flame Wave contra dois de tudo é mais próximo do que parece.",
           },
           "body-0": {
             why: "Hel, Shael e Ral numa armadura de três sockets: +2 em Warlock skills, 40-60% de defesa aumentada e uma chance de lançar Miasma Chains ao ser atingido. Um runeword da expansão que faz pelo slot de corpo o que o Spirit faz pela arma.",
@@ -250,13 +248,11 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             sockets: "Ko Vex Pul Thul num staff de quatro sockets. Um Warlock não tem motivo para usar a versão em maça.",
           },
           "offhand-0": {
-            label: "Ars Al'Diablolos",
-            why: "Um Blasphemous Grimoire no nível 80: **+2 em Chaos Skills, +3-5 em Apocalypse, +15-25% de Dano de Skills de Fogo**, 25% de Faster Cast Rate e +20-30 de resistência a fogo. É o único item do jogo que sobe o dano desta build duas vezes — uma por níveis de skill e outra por um multiplicador de dano para o qual a classe não tem skill nenhuma.",
+                        why: "Um Blasphemous Grimoire no nível 80: **+2 em Chaos Skills, +3-5 em Apocalypse, +15-25% de Dano de Skills de Fogo**, 25% de Faster Cast Rate e +20-30 de resistência a fogo. É o único item do jogo que sobe o dano desta build duas vezes — uma por níveis de skill e outra por um multiplicador de dano para o qual a classe não tem skill nenhuma.",
             lookFor: ["+5 to Apocalypse", "+25% to Fire Skill Damage", "+30 Fire Resist"],
           },
           "offhand-0-alt0": {
-            label: "Ars Dul'Mephistos",
-            why: "82 de Strength em vez de 106, e nenhum Dano de Skills de Fogo. A diferença de Strength é cerca de vinte pontos de atributo, que são 60 de vida.",
+                        why: "82 de Strength em vez de 106, e nenhum Dano de Skills de Fogo. A diferença de Strength é cerca de vinte pontos de atributo, que são 60 de vida.",
           },
           "helm-0": { why: "Sem mudança, e com um facet ou um rubi perfeito no socket." },
           "body-0": { why: "Teleport. A build não tem skill de movimento própria e esta é a única disponível para ela." },
@@ -281,7 +277,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "Não existe elmo de fogo, armadura de fogo nem amuleto de fogo no catálogo que um Warlock possa vestir — os três orbs que carregam +% de Dano de Skills de Fogo são restritos à Sorceress. O Ars Al'Diablolos é o plano de equipamento de dano de fogo inteiro, e é por isso que a mão secundária vale 106 de Strength.",
         picks: {
           "weapon-0": { why: "De duas mãos e sem custo nenhum, o que continua sendo a melhor coisa de jogar esta classe." },
-          "offhand-0": { label: "Ars Al'Diablolos", why: "Rolado com +5 de Apocalypse e +25% de Dano de Skills de Fogo. Não existe segundo candidato.", lookFor: ["+5 to Apocalypse", "+25% to Fire Skill Damage"] },
+          "offhand-0": { why: "Rolado com +5 de Apocalypse e +25% de Dano de Skills de Fogo. Não existe segundo candidato.", lookFor: ["+5 to Apocalypse", "+25% to Fire Skill Damage"] },
           "helm-0": { why: "Com um Rainbow Facet de fogo no socket." },
           "body-0": { why: "Teleport vale mais que qualquer linha de status que o substituísse." },
           "gloves-0": { why: "Sem mudança, e o ponto em que o catálogo fica sem equipamento de fogo." },
@@ -458,8 +454,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           },
           "weapon-0": { why: "Mantido até uma Zod. Void é um runeword de nível 69 e uma Zod não é runa de começo de Hell." },
           "offhand-0": {
-            label: "Measured Wrath",
-            why: "Um Burnt Text no nível 52 com +1 em Warlock skills, 25% de Faster Cast Rate e +20-30 de resistência total. Pede 38 de Strength, que é o motivo de usá-lo em vez do Occult Tome por enquanto.",
+                        why: "Um Burnt Text no nível 52 com +1 em Warlock skills, 25% de Faster Cast Rate e +20-30 de resistência total. Pede 38 de Strength, que é o motivo de usá-lo em vez do Occult Tome por enquanto.",
           },
           "offhand-0-alt0": { why: "Dol e Gul num Grimoire — resistências, vida, mana e defesa, por duas runas que caem o tempo todo." },
           "body-0": { why: "Sem mudança." },
@@ -469,7 +464,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             lookFor: ["+10% to Magic Skill Damage", "+40 Lightning Resist"],
           },
           "gloves-0": { why: "A reserva de mana, que é a única coisa que luvas oferecem a esta build — nada no catálogo carrega +Magic Skills." },
-          "belt-0": { why: "+1 em Todas as Skills e 20% de Faster Cast Rate." },
+          "belt-0": { why: "Nightsmoke, e ele fica. **O cinto que esta build realmente quer é um item de nível 80** — o +1 skills e os 20% de Faster Cast Rate do Arachnid Mesh estão a dois tiers de distância, e nada entre aqui e lá o substitui. Cinquenta por cento do dano recebido indo para a mana e resistências de graça é o que o slot faz por trinta níveis." },
           "boots-0": { why: "Magic find e a Strength que ajuda a pagar a mão secundária." },
           "ring1-0": { why: "+1 em Todas as Skills e a mana para continuar lançando." },
           "ring2-0": {
@@ -486,8 +481,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "helm-1": { why: "Mantido no lugar dele se o breakpoint de 125% de cast rate estiver mais perto assim." },
           "weapon-0": { why: "Ainda +2 skills e 35% de cast rate. O Void o substitui e mais nada." },
           "offhand-0": {
-            label: "Ars Dul'Mephistos",
-            why: "Um Occult Tome no nível 78: **+2 em Warlock skills, 20-30% de Faster Cast Rate e −10-20% de Resistência Mágica do Inimigo**. A maior quebra de mágico em qualquer item do jogo, no slot que só esta classe tem.",
+                        why: "Um Occult Tome no nível 78: **+2 em Warlock skills, 20-30% de Faster Cast Rate e −10-20% de Resistência Mágica do Inimigo**. A maior quebra de mágico em qualquer item do jogo, no slot que só esta classe tem.",
             lookFor: ["+2 Warlock Skills", "−20% to Enemy Magic Resistance", "30% Faster Cast Rate"],
           },
           "body-0": {
@@ -513,7 +507,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             why: "Thul Zod Ist numa adaga de três sockets: **+2 em Todas as Skills, 40% de Faster Cast Rate, +10-15% de Dano de Skills Mágicas, +8-12 em todos os atributos**, e ainda concede Abyss 1-3 por cima dos vinte que você já tem. A expansão construiu este runeword para esta build.",
             sockets: "Thul Zod Ist. A Zod é o custo inteiro e não existe substituto.",
           },
-          "offhand-0": { label: "Ars Dul'Mephistos", why: "Sem mudança, e agora é a segunda metade de um conjunto de quebra em vez da única metade.", lookFor: ["−20% to Enemy Magic Resistance"] },
+          "offhand-0": { why: "Sem mudança, e agora é a segunda metade de um conjunto de quebra em vez da única metade.", lookFor: ["−20% to Enemy Magic Resistance"] },
           "helm-0": { why: "Sem mudança." },
           "body-0": { why: "Teleport, para o qual esta build não tem outro caminho." },
           "body-1": { why: "Se uma Jah estiver fora de alcance — +2 skills e +65 em todas as resistências." },
@@ -537,7 +531,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "Três itens e até 32 pontos de resistência mágica do inimigo removidos, mais 25% a mais de dano mágico entre o Void e o Locket. Nenhum outro personagem do jogo monta qualquer um dos dois conjuntos, porque até a expansão nenhum dos dois existia.",
         picks: {
           "weapon-0": { why: "Com +15% de Dano de Skills Mágicas." },
-          "offhand-0": { label: "Ars Dul'Mephistos", why: "Com −20% de Resistência Mágica do Inimigo." },
+          "offhand-0": { why: "Com −20% de Resistência Mágica do Inimigo." },
           "helm-0": { why: "Com um Rainbow Facet no socket — não existe facet de mágico, então leve uma jóia defensiva ou uma gema perfeita." },
           "body-0": { why: "Sem mudança." },
           "amulet-0": { label: "Entropy Locket", why: "Com +10% de Dano de Skills Mágicas." },
@@ -660,13 +654,16 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       },
       nightmare: {
         goal: "Mirrored Blades ainda está dez níveis longe, então este tier é sobre a arma e sobre continuar vivo até chegar lá.",
-        nextUpgrade: "Mirrored Blades no nível 30, e depois uma base elite de arma que valha as runas.",
+        nextUpgrade: "Mirrored Blades no nível 30, e depois o **Kingslayer no 53** na melhor base que você tiver guardado.",
         picks: {
           "weapon-0": {
             why: "Dol Ort Eth Lem: 160-210% de dano aumentado e 25% de Increased Attack Speed em qualquer coisa com quatro sockets. Barato, e aguenta até uma base elite valer os sockets.",
             sockets: "Dol Ort Eth Lem numa arma de duas mãos com quatro sockets.",
           },
-          "weapon-1": { why: "Se houver uma Mal e uma Um disponíveis: mais dano, Crushing Blow e Open Wounds — embora valha ler a nota do Mirrored Blades sobre Crushing Blow." },
+          "weapon-1": {
+            label: "Uma base superior de duas mãos com três ou quatro sockets",
+            why: "Guarde toda arma superior grande de duas mãos que cair. O Cleave carrega o dano **cheio** da arma, então uma base melhor vale mais que uma runeword melhor numa base pior — e a runeword que este tier está esperando, o Kingslayer, pede nível 53.",
+          },
           "offhand-0": {
             label: "Qualquer Grimoire com +2 Warlock skills",
             why: "Não existe aba de Eldritch em nenhum item do jogo, então +Warlock skills genérico é o melhor que este slot consegue até um unique elite.",
@@ -682,19 +679,21 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       },
       "early-hell": {
         goal: "As cinco skills centrais destravadas, os hexes caindo, e roubo suficiente para ficar em alcance de corpo a corpo no Hell.",
-        nextUpgrade: "Dreadfang, que é a única arma do jogo com +Mirrored Blades.",
+        nextUpgrade: "Dreadfang, que é a única arma do jogo com +Mirrored Blades — e o **Dracul's Grasp no 76** pelo Life Tap.",
         picks: {
           "weapon-0": { why: "Mantido. Cada runa gasta aqui é uma runa não gasta na arma que o substitui." },
           "weapon-1": {
             why: "Amn Shael Ohm numa adaga de três sockets: 250-320% de dano aumentado, 200-260% de attack rating, 40% de Increased Attack Speed e 150-250% de dano contra demônios, além de uma chance de lançar Sigil: Death ao ser atingido. Um runeword da expansão, e a linha de dano contra demônios vale mais no Act 4 e 5 do que o número sugere.",
           },
           "offhand-0": {
-            label: "Measured Wrath",
-            why: "Um Burnt Text no nível 52. +1 em Warlock skills, +20-30 de resistência total e 25% de Faster Cast Rate para o Blade Warp, com 38 de Strength. As skills de fogo nele são peso morto e ele ainda é o melhor Grimoire que esta build veste neste nível.",
+                        why: "Um Burnt Text no nível 52. +1 em Warlock skills, +20-30 de resistência total e 25% de Faster Cast Rate para o Blade Warp, com 38 de Strength. As skills de fogo nele são peso morto e ele ainda é o melhor Grimoire que esta build veste neste nível.",
           },
           "body-0": { why: "Shael Um Thul: 15% de Crushing Blow, 33% de Open Wounds e 150-200% de defesa aumentada, e o dano de frio é uma lentidão que uma build de corpo a corpo sente." },
           "helm-0": { why: "Sem mudança, e a redução de dano agora está fazendo mais que o roubo." },
-          "gloves-0": { why: "Roubo de vida, chance de lançar Life Tap ao golpear, e Open Wounds. Life Tap numa build que golpeia com esta frequência é a maior parte de um plano de sobrevivência." },
+          "gloves-0": {
+            label: "Quaisquer luvas raras com 20% de Increased Attack Speed e roubo de vida",
+            why: "As duas stats que mantêm um personagem de corpo a corpo vivo no Hell, vindas de um slot sem nenhum unique que esta build já possa vestir — **o Dracul's Grasp exige nível 76** e é a resposta do próximo tier.",
+          },
           "belt-0": { why: "Sem mudança." },
           "boots-0": { why: "Sem mudança." },
           "amulet-0": { label: "Qualquer amuleto com +2 Warlock skills e vida", why: "Dois níveis em cinco skills maximizadas. Não existe amuleto específico de Eldritch no jogo." },
@@ -713,8 +712,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           },
           "weapon-1": { why: "Mais dano bruto e 40% de velocidade de ataque contra três níveis de Mirrored Blades e um Amplify Damage de graça. O Amplify costuma ganhar." },
           "offhand-0": {
-            label: "Ars Dul'Mephistos",
-            why: "Um Occult Tome no nível 78: **+2 em Warlock skills, 70-115% de dano aumentado e 50-70% de attack rating**, mais 20-30% de Faster Cast Rate. O único Grimoire do jogo que sobe dano de arma, e pede 82 de Strength em vez de 106.",
+                        why: "Um Occult Tome no nível 78: **+2 em Warlock skills, 70-115% de dano aumentado e 50-70% de attack rating**, mais 20-30% de Faster Cast Rate. O único Grimoire do jogo que sobe dano de arma, e pede 82 de Strength em vez de 106.",
             lookFor: ["+2 Warlock Skills", "115% Enhanced Damage", "70% Attack Rating"],
           },
           "body-0": { why: "El Sol Dol Lo: 300% de dano aumentado e +15 em todas as resistências. O maior item de dano isolado disponível a um personagem de corpo a corpo." },
@@ -741,10 +739,9 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             why: "O dano fixo do Grief é somado depois do dano aumentado em vez de multiplicado por ele, o que numa build com três sinergias de 10% por nível atrás da arma é uma fatia menor que o normal. Vale testar contra o Dreadfang em vez de assumir que ganha.",
           },
           "offhand-0": {
-            label: "Ars Al'Diablolos",
-            why: "Um Blasphemous Grimoire com 106 de Strength. A aba de Chaos e o +Apocalypse dele são inúteis nesta build, e os 170-200% de defesa aumentada e 25% de Faster Cast Rate não são. **Pegue o Ars Dul'Mephistos no lugar dele a menos que você já esteja pagando a Strength** — o dano de arma do Occult Tome vale mais aqui do que qualquer coisa no Grimoire.",
+                        why: "Um Blasphemous Grimoire com 106 de Strength. A aba de Chaos e o +Apocalypse dele são inúteis nesta build, e os 170-200% de defesa aumentada e 25% de Faster Cast Rate não são. **Pegue o Ars Dul'Mephistos no lugar dele a menos que você já esteja pagando a Strength** — o dano de arma do Occult Tome vale mais aqui do que qualquer coisa no Grimoire.",
           },
-          "offhand-0-alt0": { label: "Ars Dul'Mephistos", why: "A resposta correta para esta build, e não é perto. +2 Warlock skills, 115% de dano aumentado e 70% de attack rating." },
+          "offhand-0-alt0": { why: "A resposta correta para esta build, e não é perto. +2 Warlock skills, 115% de dano aumentado e 70% de attack rating." },
           "helm-0": { why: "Redução de dano, todas as resistências e dois sockets no elmo mais duro do jogo." },
           "body-0": { why: "Sem mudança. 300% de dano aumentado." },
           "gloves-0": { why: "Sem mudança." },
@@ -765,7 +762,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "O personagem pronto veste uma arma de duas mãos e uma mão secundária ao mesmo tempo, que é a única coisa desta classe que nenhuma quantidade de equipamento em nenhum outro personagem imita. Todo guia genérico de corpo a corpo que você vai ler assume que você abriu mão de um escudo por aquela arma. Você não abriu.",
         picks: {
           "weapon-0": { label: "Dreadfang", why: "Com +3 Mirrored Blades e 166% de dano aumentado." },
-          "offhand-0": { label: "Ars Dul'Mephistos", why: "Com 115% de dano aumentado e 70% de attack rating. O Blasphemous Grimoire é o item melhor no papel e o pior aqui." },
+          "offhand-0": { why: "Com 115% de dano aumentado e 70% de attack rating. O Blasphemous Grimoire é o item melhor no papel e o pior aqui." },
           "helm-0": { why: "Dois sockets, e os dois com jóias de dano aumentado e velocidade de ataque." },
           "body-0": { why: "Sem mudança." },
           "gloves-0": { why: "Sem mudança." },
@@ -917,7 +914,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       },
       nightmare: {
         goal: "Blood Boil no 18 e Engorge no 24 — o ciclo fechando pela primeira vez.",
-        nextUpgrade: "Bloodpact Shard no nível 67, que é a maior melhoria isolada do personagem.",
+        nextUpgrade: "**Vigilance no 53**, assim que uma Gul aparecer — depois o Bloodpact Shard no 67, que é a maior melhoria isolada do personagem.",
         picks: {
           "weapon-0": { why: "+2 em Todas as Skills e 25-35% de Faster Cast Rate. Dois níveis de Blood Boil e dois de Blood Oath por quatro runas da Countess." },
           "offhand-0": {
@@ -926,7 +923,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             lookFor: ["+2 to Warlock Skills", "+2 to Demon Skills"],
           },
           "offhand-0-alt0": {
-            why: "Dol e Gul num Grimoire: todas as resistências, vida, mana e defesa, por duas runas que caem o tempo todo. Duas runas também é a única contagem que os sockets de um Grimoire permitem.",
+            why: "**A resposta de mão secundária da própria classe não chega neste tier, e isso vale saber em vez de contornar.** O Vigilance é a runeword feita para um Grimoire, e ele precisa de uma Gul no nível 53 — três níveis além de onde este tier termina. O Rhyme é Shael e Eth, cabe num Grimoire pelo mesmo motivo que o Vigilance cabe, e segura o slot até lá. O Splendor no 37 é a outra opção de duas runas se você preferir o nível de skill às resistências.",
           },
           "body-0": { why: "+1 skills, 30% de cast rate e resistências." },
           "helm-0": { why: "+1 em Todas as Skills e magic find." },
@@ -945,12 +942,11 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           },
           "weapon-0": { why: "Mantido até o Bloodpact Shard." },
           "offhand-0": {
-            label: "Measured Wrath",
-            why: "Um Burnt Text no nível 52 com +1 em Warlock skills, +20-30 de resistência total e 25% de Faster Cast Rate, com 38 de Strength. As skills de fogo dele são peso morto; as resistências e o cast rate não.",
+                        why: "Um Burnt Text no nível 52 com +1 em Warlock skills, +20-30 de resistência total e 25% de Faster Cast Rate, com 38 de Strength. As skills de fogo dele são peso morto; as resistências e o cast rate não.",
           },
           "offhand-0-alt0": { why: "Se as resistências importarem mais que o nível de skill." },
           "body-0": { why: "Sem mudança." },
-          "belt-0": { why: "+1 em Todas as Skills e 20% de Faster Cast Rate — o ciclo são três conjurações por grupo e isso encurta as três." },
+          "belt-0": { why: "Nightsmoke, e ele fica. **O cinto que esta build realmente quer é um item de nível 80** — o +1 skills e os 20% de Faster Cast Rate do Arachnid Mesh estão a dois tiers de distância, e nada entre aqui e lá o substitui. Cinquenta por cento do dano recebido indo para a mana e resistências de graça é o que o slot faz por trinta níveis. O ciclo são três conjurações por grupo, então o cast rate que falta neste slot é sentido três vezes — e ainda não há o que fazer a respeito até o 80." },
           "boots-0": { why: "Strength e Vitality, e a Strength está indo em direção a uma conta de 95 pontos." },
           "amulet-0": { label: "Qualquer amuleto com +2 Warlock skills", why: "Dois níveis no plano inteiro." },
           "ring1-0": { why: "+1 em Todas as Skills e a mana para três invocações." },
@@ -967,13 +963,11 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             lookFor: ["+3 to Blood Boil", "+3 to Blood Oath", "+15% Maximum Life"],
           },
           "offhand-0": {
-            label: "Ars Tor'Baalos",
-            why: "Um Blasphemous Compendium no nível 73: **+2 em Demon Skills, +2-3 Demonic Mastery, +2-4 Blood Boil, +2-3 Engorge, +2-3 Consume**, 12 de vida por nível de personagem e 5-10% de redução de dano. Ele sobe quatro das seis skills desta build a partir de um slot só e não existe nada igual no jogo. Pede 95 de Strength.",
+                        why: "Um Blasphemous Compendium no nível 73: **+2 em Demon Skills, +2-3 Demonic Mastery, +2-4 Blood Boil, +2-3 Engorge, +2-3 Consume**, +1,5 de vida por nível de personagem e 5-10% de redução de dano. Só a aba já sobe as seis skills do plano; além disso ele nomeia três delas de novo — Demonic Mastery, Blood Boil e Engorge — e o Consume para o pacote do demônio vinculado. Nada mais no jogo faz isso a partir de um slot só. Pede 95 de Strength.",
             lookFor: ["+4 to Blood Boil", "+3 to Engorge", "+3 to Demonic Mastery"],
           },
           "offhand-0-alt0": {
-            label: "Measured Wrath",
-            why: "Se 95 de Strength for mais do que você quer pagar ainda. Ele pede 38, e a diferença são cerca de quarenta pontos de atributo.",
+                        why: "Se 95 de Strength for mais do que você quer pagar ainda. Ele pede 38, e a diferença são cerca de quarenta pontos de atributo.",
           },
           "helm-0": { why: "+2 em Todas as Skills, vida e mana por nível, e 10% de redução de dano." },
           "body-0": { why: "Hel Shael Ral: +2 em Warlock skills e 40-60% de defesa aumentada, e a Hel dá uma mordida naquele requisito de Strength." },
@@ -996,7 +990,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "Rolagens melhores. O plano não muda de novo.",
         picks: {
           "weapon-0": { label: "Bloodpact Shard", why: "Sem mudança. Nada mais no jogo carrega +Blood Boil e +Blood Oath juntos." },
-          "offhand-0": { label: "Ars Tor'Baalos", why: "Sem mudança, e agora vale os 95 de Strength.", lookFor: ["+4 to Blood Boil", "+3 to Engorge"] },
+          "offhand-0": { why: "Sem mudança, e agora vale os 95 de Strength.", lookFor: ["+4 to Blood Boil", "+3 to Engorge"] },
           "helm-0": { why: "Sem mudança." },
           "body-0": {
             why: "Teleport. Death Mark puxa os demônios até um alvo marcado através de 38 unidades, então um Warlock que teleporta e três demônios chegam juntos — esta é a build em que o Enigma muda a rotação e não só o tempo de deslocamento.",
@@ -1022,7 +1016,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "Dois dos dez slots do personagem pronto são itens que só existem porque esta classe existe, e os dois foram feitos para esta build especificamente. Isso não vale para nenhuma outra página de Warlock.",
         picks: {
           "weapon-0": { label: "Bloodpact Shard", why: "Com +3 Blood Boil, +3 Blood Oath e +15% de vida máxima." },
-          "offhand-0": { label: "Ars Tor'Baalos", why: "Com +4 Blood Boil e +3 tanto em Engorge quanto em Demonic Mastery." },
+          "offhand-0": { why: "Com +4 Blood Boil e +3 tanto em Engorge quanto em Demonic Mastery." },
           "helm-0": { why: "Com um Rainbow Facet de fogo no socket — metade do dano é fogo e o facet só lê essa metade." },
           "body-0": { why: "Sem mudança." },
           "gloves-0": { why: "Sem mudança." },

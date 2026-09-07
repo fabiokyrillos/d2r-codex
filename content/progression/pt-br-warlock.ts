@@ -210,7 +210,7 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
         gearTargets: [
           { why: "Uma Ist e duas runas comuns por +1 skills e 20% de cast rate." },
           { why: "A runeword de Grimoire, no 53. Duas runas, porque dois sockets." },
-          { label: "Measured Wrath", why: "O primeiro unique de Warlock que não é item de endgame. Nível 52, 38 de Strength." },
+          { why: "O primeiro unique de Warlock que não é item de endgame. Nível 52, 38 de Strength." },
         ],
         exitCriteria: "O Mephisto e o Diablo do Hell estão mortos, o Enhanced Entropy está em vinte, e você tem um item de Warlock na mão secundária.",
       },
@@ -241,7 +241,7 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
           "**Não faça respec para perseguir um pacote.** Os dois estão dentro do mesmo núcleo, e a diferença entre eles são vinte pontos que dá para reconquistar subindo de nível em vez de gastando um token que você pode querer para outra build depois.",
         ],
         gearTargets: [
-          { label: "Ars Dul'Mephistos", why: "Um Occult Tome no nível 78 com +2 em Warlock skills e −10-20% de Resistência Mágica do Inimigo. A maior quebra de mágico em qualquer item do jogo." },
+          { why: "Um Occult Tome no nível 78 com +2 em Warlock skills e −10-20% de Resistência Mágica do Inimigo. A maior quebra de mágico em qualquer item do jogo." },
           { label: "Entropy Locket", why: "Um amuleto de nível 54 com +5-10% de Dano de Skills Mágicas. Vestível muito antes deste estágio e digno de ser usado desde a hora em que cai." },
           { why: "+2 em Todas as Skills, vida e mana por nível, e 10% de redução de dano — o melhor elmo geral para qualquer uma das quatro." },
         ],

@@ -362,7 +362,7 @@ export const apocalypseWarlock: Build = {
           slot: "offhand",
           picks: [
             {
-              label: "Measured Wrath",
+              ref: { kind: "unique", slug: "measured-wrath" },
               why: "A Burnt Text at level 52: +1 to Warlock skills, +1-3 Ring of Fire, +1-3 Flame Wave, 25% Faster Cast Rate and +20-30 all resistance. It asks 38 Strength, which is the point — this is the elite off-hand's job done at a third of the stat cost.",
               lookFor: ["+3 Ring of Fire", "+3 Flame Wave", "+30 all resistance"],
               alternatives: [
@@ -381,7 +381,7 @@ export const apocalypseWarlock: Build = {
         },
         {
           slot: "belt",
-          picks: [{ ref: { kind: "unique", slug: "arachnid-mesh" }, why: "+1 to All Skills and 20% Faster Cast Rate. The single largest cast-rate item in the game outside a weapon." }],
+          picks: [{ ref: { kind: "unique", slug: "nightsmoke" }, why: "Nightsmoke, and it stays. **The belt this build actually wants is a level 80 item** — Arachnid Mesh's +1 skills and 20% Faster Cast Rate are two tiers away, and nothing between here and there replaces it. Fifty percent of damage taken to mana and free resistances is what the slot does for thirty levels." }],
         },
         {
           slot: "boots",
@@ -401,9 +401,9 @@ export const apocalypseWarlock: Build = {
         },
       ],
       charms: [
-        { ref: { kind: "unique", slug: "flame-rift" }, why: "Sunders fire immunity at the cost of 70 to 90 points of your own fire resistance. This is the item that opens twelve of the eighteen catalogued areas to this build, and it is worth reorganising the rest of the gear around.", tradeOnly: false },
+        { label: "Small charms with life and resistance", why: "**The charm that matters here cannot be picked up yet.** A Flame Rift is the item that opens twelve of the eighteen catalogued areas to this build, and it requires level 75 — so this tier is spent getting there. Fill the grid with life and the resistances the Hell penalty just took." },
       ],
-      nextUpgrade: "Harlequin Crest, and then the decision about whether to pay 106 Strength.",
+      nextUpgrade: "**Level 75 for a Flame Rift**, which is the real gate on this build rather than any drop. Then Harlequin Crest, an Arachnid Mesh at 80, and the decision about whether to pay 106 Strength.",
     },
     {
       tier: "budget",
@@ -425,11 +425,11 @@ export const apocalypseWarlock: Build = {
           slot: "offhand",
           picks: [
             {
-              label: "Ars Dul'Mephistos",
+              ref: { kind: "unique", slug: "ars-dul-mephistos" },
               why: "An Occult Tome at level 78: +2 to Warlock skills, 20-30% Faster Cast Rate, and 10-20% to Enemy Magic Resistance. The magic pierce is dead weight on this build — it is here for the two skills and the cast rate, and for the 82 Strength rather than 106.",
               lookFor: ["+2 Warlock Skills", "30% Faster Cast Rate"],
               alternatives: [
-                { label: "Measured Wrath", why: "Keep the Burnt Text if 82 Strength is more than you want to pay. Three levels of Ring of Fire and Flame Wave against two of everything is closer than it looks." },
+                { ref: { kind: "unique", slug: "measured-wrath" }, why: "Keep the Burnt Text if 82 Strength is more than you want to pay. Three levels of Ring of Fire and Flame Wave against two of everything is closer than it looks." },
               ],
             },
           ],
@@ -476,11 +476,11 @@ export const apocalypseWarlock: Build = {
           slot: "offhand",
           picks: [
             {
-              label: "Ars Al'Diablolos",
+              ref: { kind: "unique", slug: "ars-al-diablolos" },
               why: "A Blasphemous Grimoire at level 80: **+2 to Chaos Skills, +3-5 to Apocalypse, +15-25% to Fire Skill Damage**, 25% Faster Cast Rate and +20-30 fire resistance. It is the only item in the game that raises this build's damage twice — once through skill levels and once through a damage multiplier the class has no skill for.",
               lookFor: ["+5 to Apocalypse", "+25% to Fire Skill Damage", "+30 Fire Resist"],
               alternatives: [
-                { label: "Ars Dul'Mephistos", why: "82 Strength instead of 106, and no Fire Skill Damage. The Strength difference is roughly twenty stat points, which is 60 life." },
+                { ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "82 Strength instead of 106, and no Fire Skill Damage. The Strength difference is roughly twenty stat points, which is 60 life." },
               ],
             },
           ],
@@ -520,7 +520,7 @@ export const apocalypseWarlock: Build = {
         {
           slot: "offhand",
           picks: [
-            { label: "Ars Al'Diablolos", why: "Rolled at +5 Apocalypse and +25% Fire Skill Damage. There is no second candidate.", lookFor: ["+5 to Apocalypse", "+25% to Fire Skill Damage"] },
+            { ref: { kind: "unique", slug: "ars-al-diablolos" }, why: "Rolled at +5 Apocalypse and +25% Fire Skill Damage. There is no second candidate.", lookFor: ["+5 to Apocalypse", "+25% to Fire Skill Damage"] },
           ],
         },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "Socketed with a Rainbow Facet of fire." }] },

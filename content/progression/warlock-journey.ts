@@ -388,7 +388,7 @@ export const warlockJourney: ProgressionJourney = {
       gearTargets: [
         { ref: { kind: "runeword", slug: "coven" }, why: "One Ist and two common runes for +1 skills and 20% cast rate." },
         { ref: { kind: "runeword", slug: "vigilance" }, why: "The Grimoire runeword, at 53. Two runes, because two sockets." },
-        { label: "Measured Wrath", why: "The first Warlock unique that is not an endgame item. Level 52, 38 Strength." },
+        { ref: { kind: "unique", slug: "measured-wrath" }, why: "The first Warlock unique that is not an endgame item. Level 52, 38 Strength." },
       ],
       exitCriteria: "Hell Mephisto and Diablo are dead, Enhanced Entropy is at twenty, and you have a Warlock item in your off-hand.",
     },
@@ -444,7 +444,7 @@ export const warlockJourney: ProgressionJourney = {
         },
       ],
       gearTargets: [
-        { label: "Ars Dul'Mephistos", why: "An Occult Tome at level 78 with +2 to Warlock skills and −10-20% to Enemy Magic Resistance. The largest magic pierce on any item in the game." },
+        { ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "An Occult Tome at level 78 with +2 to Warlock skills and −10-20% to Enemy Magic Resistance. The largest magic pierce on any item in the game." },
         { label: "Entropy Locket", why: "A level 54 amulet with +5-10% to Magic Skill Damage. Wearable long before this stage and worth wearing from the moment it drops." },
         { ref: { kind: "unique", slug: "harlequin-crest" }, why: "+2 to All Skills, life and mana per level, and 10% damage reduction — the best all-round helm for any of the four." },
       ],

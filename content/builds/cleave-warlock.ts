@@ -161,7 +161,7 @@ export const cleaveWarlock: Build = {
       goal: "Mirrored Blades is still ten levels away, so this tier is about the weapon and staying alive to reach it.",
       levelRange: [30, 50],
       slots: [
-        { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "passion" }, why: "Dol Ort Eth Lem: 160-210% enhanced damage and 25% Increased Attack Speed in anything with four sockets. Cheap, and it holds until an elite base is worth socketing.", sockets: "Dol Ort Eth Lem in a four-socket two-hander." }, { ref: { kind: "runeword", slug: "kingslayer" }, why: "If a Mal and a Um are available: more damage, Crushing Blow and Open Wounds — though see the Mirrored Blades note about Crushing Blow." }] },
+        { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "passion" }, why: "Dol Ort Eth Lem: 160-210% enhanced damage and 25% Increased Attack Speed in anything with four sockets. Cheap, and it holds until an elite base is worth socketing.", sockets: "Dol Ort Eth Lem in a four-socket two-hander." }, { label: "A superior two-handed base with three or four sockets", why: "Hold every large superior two-hander that drops. Cleave carries the weapon's **full** damage, so a better base is worth more than a better runeword in a worse one — and the runeword this tier is saving for, Kingslayer, needs level 53." }] },
         { slot: "offhand", picks: [{ label: "Any Grimoire with +2 Warlock skills", why: "There is no +Eldritch tab on any item in the game, so generic +Warlock skills is the best this slot can do until an elite unique.", lookFor: ["+2 to Warlock Skills", "+3 to Cleave"], alternatives: [{ ref: { kind: "runeword", slug: "rhyme" }, why: "Two runes and all resistances. It fits because a Grimoire is a shield by type and because two is the only rune count its sockets allow." }] }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "lionheart" }, why: "Hel Lum Fal: +25 to all attributes and 15-20% enhanced damage, and the Hel reduces requirements on top of Levitation Mastery." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "vampire-gaze" }, why: "Life and mana steal before Eldritch Blast supplies them, and 15-20% damage reduction that this build will keep wanting." }] },
@@ -169,7 +169,7 @@ export const cleaveWarlock: Build = {
         { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "Crushing Blow, Open Wounds and Deadly Strike, all of which land on the first swing of a Mirrored Blades volley at full value." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "raven-frost" }, why: "Cannot be frozen, and the Dexterity pays part of the weapon requirement." }] },
       ],
-      nextUpgrade: "Mirrored Blades at level 30, and then an elite weapon base worth its runes.",
+      nextUpgrade: "Mirrored Blades at level 30, then **Kingslayer at 53** in the best base you have kept.",
     },
     {
       tier: "early-hell",
@@ -177,17 +177,17 @@ export const cleaveWarlock: Build = {
       levelRange: [50, 70],
       slots: [
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "passion" }, why: "Held. Every rune spent here is a rune not spent on the weapon that replaces it." }, { ref: { kind: "runeword", slug: "ritual" }, why: "Amn Shael Ohm in a three-socket dagger: 250-320% enhanced damage, 200-260% attack rating, 40% Increased Attack Speed and 150-250% damage to demons, plus a chance to cast Sigil: Death when struck. An expansion runeword, and the damage-to-demons line is worth more in Act 4 and 5 than the number suggests." }] },
-        { slot: "offhand", picks: [{ label: "Measured Wrath", why: "A Burnt Text at level 52. +1 to Warlock skills, +20-30 all resistance and 25% Faster Cast Rate for Blade Warp, at 38 Strength. The fire skills on it are dead weight and it is still the best Grimoire this build can wear at this level." }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "measured-wrath" }, why: "A Burnt Text at level 52. +1 to Warlock skills, +20-30 all resistance and 25% Faster Cast Rate for Blade Warp, at 38 Strength. The fire skills on it are dead weight and it is still the best Grimoire this build can wear at this level." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "duress" }, why: "Shael Um Thul: 15% Crushing Blow, 33% Open Wounds and 150-200% enhanced defence, and the cold damage is a slow that a melee build feels." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "vampire-gaze" }, why: "Unchanged, and the damage reduction is doing more now than the leech is." }] },
-        { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Life steal, a chance to cast Life Tap on striking, and Open Wounds. Life Tap on a build that swings this often is most of a survivability plan." }] },
+        { slot: "gloves", picks: [{ label: "Any rare gloves with 20% Increased Attack Speed and life steal", why: "The two stats that keep a melee character alive in Hell, from a slot with no unique this build can wear yet — **Dracul's Grasp requires level 76** and is the next tier's answer." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "string-of-ears" }, why: "Unchanged." }] },
         { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "Unchanged." }] },
         { slot: "amulet", picks: [{ label: "Any amulet with +2 Warlock skills and life", why: "Two levels across five maxed skills. There is no Eldritch-specific amulet in the game." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "raven-frost" }, why: "Unchanged." }] },
         { slot: "ring2", picks: [{ label: "Any rare ring with life, resistance and attack rating", why: "Attack rating is the stat this build is short of before Levitation Mastery is maxed." }] },
       ],
-      nextUpgrade: "Dreadfang, which is the only weapon in the game with +Mirrored Blades on it.",
+      nextUpgrade: "Dreadfang, which is the only weapon in the game with +Mirrored Blades on it — and **Dracul's Grasp at 76** for the Life Tap.",
     },
     {
       tier: "budget",
@@ -195,7 +195,7 @@ export const cleaveWarlock: Build = {
       levelRange: [70, 85],
       slots: [
         { slot: "weapon", picks: [{ label: "Dreadfang", why: "A Legend Sword at level 61: **+3 to Mirrored Blades**, 133-166% enhanced damage, 33% Increased Attack Speed, 33% Deadly Strike, 33% chance to cast Amplify Damage on striking, and −33% requirements. It is the only weapon in the game that raises an Eldritch skill, and the Amplify Damage answers the eight areas that record physical immunity.", lookFor: ["+3 to Mirrored Blades", "166% Enhanced Damage", "33% Deadly Strike"] }, { ref: { kind: "runeword", slug: "ritual" }, why: "More raw damage and 40% attack speed against three levels of Mirrored Blades and a free Amplify Damage. The Amplify usually wins." }] },
-        { slot: "offhand", picks: [{ label: "Ars Dul'Mephistos", why: "An Occult Tome at level 78: **+2 to Warlock skills, 70-115% enhanced damage and 50-70% attack rating**, plus 20-30% Faster Cast Rate. The only Grimoire in the game that raises weapon damage, and it asks 82 Strength rather than 106.", lookFor: ["+2 Warlock Skills", "115% Enhanced Damage", "70% Attack Rating"] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "An Occult Tome at level 78: **+2 to Warlock skills, 70-115% enhanced damage and 50-70% attack rating**, plus 20-30% Faster Cast Rate. The only Grimoire in the game that raises weapon damage, and it asks 82 Strength rather than 106.", lookFor: ["+2 Warlock Skills", "115% Enhanced Damage", "70% Attack Rating"] }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "El Sol Dol Lo: 300% enhanced damage and +15 to all resistances. The single largest damage item available to a melee character." }, { ref: { kind: "runeword", slug: "duress" }, why: "If a Lo is out of reach — the Crushing Blow is worth keeping." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "vampire-gaze" }, why: "Held for the damage reduction until Crown of Ages." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Unchanged. Life Tap is the reason." }] },
@@ -217,7 +217,7 @@ export const cleaveWarlock: Build = {
       levelRange: [85, 99],
       slots: [
         { slot: "weapon", picks: [{ label: "Dreadfang", why: "Unchanged. Nothing replaces +3 Mirrored Blades and a free Amplify Damage.", lookFor: ["+3 to Mirrored Blades", "166% Enhanced Damage"] }, { ref: { kind: "runeword", slug: "grief" }, why: "The flat damage on Grief is added after enhanced damage rather than multiplied by it, which on a build with three 10%-per-level synergies behind the weapon is a smaller share than usual. Worth testing against Dreadfang rather than assumed to beat it." }] },
-        { slot: "offhand", picks: [{ label: "Ars Al'Diablolos", why: "A Blasphemous Grimoire at 106 Strength. Its Chaos tab and its +Apocalypse are dead on this build, and its 170-200% enhanced defence and 25% Faster Cast Rate are not. **Take Ars Dul'Mephistos instead unless you are already paying the Strength** — the weapon damage on the Occult Tome is worth more here than anything on the Grimoire.", alternatives: [{ label: "Ars Dul'Mephistos", why: "The correct answer for this build, and it is not close. +2 Warlock skills, 115% enhanced damage and 70% attack rating." }] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-al-diablolos" }, why: "A Blasphemous Grimoire at 106 Strength. Its Chaos tab and its +Apocalypse are dead on this build, and its 170-200% enhanced defence and 25% Faster Cast Rate are not. **Take Ars Dul'Mephistos instead unless you are already paying the Strength** — the weapon damage on the Occult Tome is worth more here than anything on the Grimoire.", alternatives: [{ ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "The correct answer for this build, and it is not close. +2 Warlock skills, 115% enhanced damage and 70% attack rating." }] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "crown-of-ages" }, why: "Damage reduction, all resistances and two sockets on the sturdiest helm in the game." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "Unchanged. 300% enhanced damage." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Unchanged." }] },
@@ -240,7 +240,7 @@ export const cleaveWarlock: Build = {
       levelRange: [90, 99],
       slots: [
         { slot: "weapon", picks: [{ label: "Dreadfang", why: "At +3 Mirrored Blades and 166% enhanced damage." }] },
-        { slot: "offhand", picks: [{ label: "Ars Dul'Mephistos", why: "At 115% enhanced damage and 70% attack rating. The Blasphemous Grimoire is the better item on paper and the worse item here." }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "At 115% enhanced damage and 70% attack rating. The Blasphemous Grimoire is the better item on paper and the worse item here." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "crown-of-ages" }, why: "Two sockets, and both of them jewels of enhanced damage and attack speed." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "Unchanged." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Unchanged." }] },

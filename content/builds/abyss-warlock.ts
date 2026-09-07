@@ -235,11 +235,11 @@ export const abyssWarlock: Build = {
       slots: [
         { slot: "helm", picks: [{ ref: { kind: "runeword", slug: "coven" }, why: "+1 to All Skills, 20% Faster Cast Rate, and 26-40% magic find once Ist's helm modifier is counted.", sockets: "Ist Ral Io in a three-socket circlet." }] },
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "spirit" }, why: "Held until a Zod. Void is a level 69 runeword and a Zod is not an early-Hell rune." }] },
-        { slot: "offhand", picks: [{ label: "Measured Wrath", why: "A Burnt Text at level 52 with +1 to Warlock skills, 25% Faster Cast Rate and +20-30 all resistance. It asks 38 Strength, which is the reason to use it rather than the Occult Tome yet.", alternatives: [{ ref: { kind: "runeword", slug: "vigilance" }, why: "Dol and Gul in a Grimoire — resistances, life, mana and defence, for two runes that drop constantly." }] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "measured-wrath" }, why: "A Burnt Text at level 52 with +1 to Warlock skills, 25% Faster Cast Rate and +20-30 all resistance. It asks 38 Strength, which is the reason to use it rather than the Occult Tome yet.", alternatives: [{ ref: { kind: "runeword", slug: "vigilance" }, why: "Dol and Gul in a Grimoire — resistances, life, mana and defence, for two runes that drop constantly." }] }] },
         { slot: "body", picks: [{ ref: { kind: "unique", slug: "skin-of-the-vipermagi" }, why: "Unchanged." }] },
         { slot: "amulet", picks: [{ label: "Entropy Locket", why: "**+5-10% to Magic Skill Damage** and 4-19% chance to cast Miasma Chains on striking. The first item in the game that multiplies magic damage, and it is a level 54 amulet.", lookFor: ["+10% to Magic Skill Damage", "+40 Lightning Resist"] }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "frostburn" }, why: "The mana pool, which is the only thing gloves offer this build — nothing in the catalogue carries +Magic Skills." }] },
-        { slot: "belt", picks: [{ ref: { kind: "unique", slug: "arachnid-mesh" }, why: "+1 to All Skills and 20% Faster Cast Rate." }] },
+        { slot: "belt", picks: [{ ref: { kind: "unique", slug: "nightsmoke" }, why: "Nightsmoke, and it stays. **The belt this build actually wants is a level 80 item** — Arachnid Mesh's +1 skills and 20% Faster Cast Rate are two tiers away, and nothing between here and there replaces it. Fifty percent of damage taken to mana and free resistances is what the slot does for thirty levels." }] },
         { slot: "boots", picks: [{ ref: { kind: "unique", slug: "war-traveler" }, why: "Magic find and the Strength that helps pay for the off-hand." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "stone-of-jordan" }, why: "+1 to All Skills and the mana to keep casting." }] },
         { slot: "ring2", picks: [{ label: "Sling", why: "**−3-5% to Enemy Magic Resistance**, 10% Faster Cast Rate, and an oskill Town Portal. A level 50 ring and the cheapest magic pierce in the game." }] },
@@ -253,7 +253,7 @@ export const abyssWarlock: Build = {
       slots: [
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "+2 to All Skills, life and mana per level and 10% damage reduction." }, { ref: { kind: "runeword", slug: "coven" }, why: "Kept instead if the 125% cast-rate breakpoint is closer with it." }] },
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "spirit" }, why: "Still +2 skills and 35% cast rate. Void replaces it and nothing else does." }] },
-        { slot: "offhand", picks: [{ label: "Ars Dul'Mephistos", why: "An Occult Tome at level 78: **+2 to Warlock skills, 20-30% Faster Cast Rate and −10-20% to Enemy Magic Resistance**. The largest magic pierce on any item in the game, in the slot only this class has.", lookFor: ["+2 Warlock Skills", "−20% to Enemy Magic Resistance", "30% Faster Cast Rate"] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "An Occult Tome at level 78: **+2 to Warlock skills, 20-30% Faster Cast Rate and −10-20% to Enemy Magic Resistance**. The largest magic pierce on any item in the game, in the slot only this class has.", lookFor: ["+2 Warlock Skills", "−20% to Enemy Magic Resistance", "30% Faster Cast Rate"] }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "authority" }, why: "Hel Shael Ral: +2 to Warlock skills and a chance to cast Miasma Chains when struck, which on this build is your own damage type coming back at whatever hit you." }] },
         { slot: "amulet", picks: [{ label: "Entropy Locket", why: "Unchanged. Nothing else in the game carries +% Magic Skill Damage in this slot." }] },
         { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "frostburn" }, why: "Unchanged." }] },
@@ -274,7 +274,7 @@ export const abyssWarlock: Build = {
       levelRange: [85, 99],
       slots: [
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "void" }, why: "Thul Zod Ist in a three-socket dagger: **+2 to All Skills, 40% Faster Cast Rate, +10-15% to Magic Skill Damage, +8-12 to all attributes**, and it grants Abyss 1-3 on top of the twenty you already have. The expansion built this runeword for this build.", sockets: "Thul Zod Ist. The Zod is the whole cost and there is no substitute." }] },
-        { slot: "offhand", picks: [{ label: "Ars Dul'Mephistos", why: "Unchanged, and now the second half of a pierce stack rather than the only half.", lookFor: ["−20% to Enemy Magic Resistance"] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "Unchanged, and now the second half of a pierce stack rather than the only half.", lookFor: ["−20% to Enemy Magic Resistance"] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "Unchanged." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "Teleport, which this build has no other route to." }, { ref: { kind: "runeword", slug: "chains-of-honor" }, why: "If a Jah is out of reach — +2 skills and +65 all resistances." }] },
         { slot: "amulet", picks: [{ label: "Entropy Locket", why: "Unchanged." }] },
@@ -297,7 +297,7 @@ export const abyssWarlock: Build = {
       levelRange: [90, 99],
       slots: [
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "void" }, why: "At +15% Magic Skill Damage." }] },
-        { slot: "offhand", picks: [{ label: "Ars Dul'Mephistos", why: "At −20% to Enemy Magic Resistance." }] },
+        { slot: "offhand", picks: [{ ref: { kind: "unique", slug: "ars-dul-mephistos" }, why: "At −20% to Enemy Magic Resistance." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "harlequin-crest" }, why: "Socketed with a Rainbow Facet — there is no magic facet, so take a defensive jewel or a perfect gem." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "Unchanged." }] },
         { slot: "amulet", picks: [{ label: "Entropy Locket", why: "At +10% Magic Skill Damage." }] },
