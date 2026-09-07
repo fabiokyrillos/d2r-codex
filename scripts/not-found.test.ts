@@ -34,6 +34,18 @@ import { join } from "node:path";
 import { assertFreshBuild } from "./build-freshness";
 import { BCP47, LOCALES } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
+import {
+  getBuilds,
+  getClasses,
+  getFarmingAreas,
+  getJourneys,
+  getMechanics,
+  getRunes,
+  getRunewords,
+  getSkillsForClass,
+  getUniques,
+} from "../lib/registry";
+import { CLASSES_WITH_SKILL_PAGES } from "../lib/skills";
 
 let passed = 0;
 const failures: string[] = [];
@@ -276,22 +288,29 @@ async function main() {
   }
 
   /*
-   * The one shape that does not reach this page, recorded rather than hidden.
+   * The shape that used to be the exception, and no longer is.
    *
    * `proxy.ts` skips anything ending in a file extension, because that rule is
    * what lets real files under `public/` be served instead of being redirected
-   * to `/en-us/logo.png`. A path like `/foo.php` therefore never enters the
-   * route tree and Next answers it with its own shell. It is still a correct,
-   * `noindex` 404, and it is very nearly all bot traffic — worth a truthful
-   * assertion, not worth weakening the rule that keeps assets working.
+   * to `/en-us/logo.png`. So `/foo.php` arrives unprefixed — but it does *not*
+   * miss the route tree, which is what the note here used to claim. It matches
+   * `app/[lang]/page.tsx` with `lang="foo.php"`, and the layout's `isLocale`
+   * guard throws `notFound()` during render. That is the same escape hatch that
+   * left every bad slug blank, and it produced the same empty shell.
+   *
+   * `dynamicParams = false` decides it earlier: `foo.php` is not one of the two
+   * enumerated locales, so it is a routing miss before any component runs, and
+   * the reader gets the real page. The assertion is inverted rather than
+   * deleted, because the thing worth guarding is unchanged — that this path
+   * stays a truthful 404 — and the old wording is now the failure case.
    */
   for (const path of ["/foo.php", "/foo.html"]) {
     const res = await get(path);
     check(`${path} is still a real 404`, res.status === 404, `got ${res.status}`);
     check(
-      `  ...though served as the framework shell, not this page`,
-      !visibleBody(await res.text()).includes(dictionaryFor("en-us").notFound.title),
-      "it reaches the page now — tighten the assertion above",
+      `  ...and now reaches this page rather than the framework shell`,
+      visibleBody(await res.text()).includes(dictionaryFor("en-us").notFound.title),
+      "back to Next's empty error document",
     );
   }
 
@@ -302,7 +321,127 @@ async function main() {
   );
 
   // -------------------------------------------------------------------------
-  console.log("\n6. Serving this page did not cost the site its prerender");
+  console.log("\n6. A slug that does not exist, inside a route that does");
+  // -------------------------------------------------------------------------
+  /*
+   * The half of "page not found" that section 5 cannot reach, and that this
+   * suite was blind to for long enough to ship.
+   *
+   * Every URL in section 5 misses the route tree outright, so Next never runs
+   * a page and answers from the prerendered `_not-found.html`. A bad *slug* is
+   * the opposite: `/en-us/items/bogus-item` matches `items/[slug]` exactly, the
+   * layout renders, and only then does the page call `notFound()`. A throw
+   * during render never reaches a not-found boundary here — it escapes to
+   * Next's error payload, which emits `<html id="__next_error__">` with an
+   * empty body and leaves the content to the client. The status line was right
+   * and the page was blank, which is why greps over the whole document, and
+   * every assertion above, passed while nine route families served nothing.
+   *
+   * So each family is asserted as a pair: a real slug still answers 200, and a
+   * missing one answers 404 *with the page in the markup*. The 200 half is not
+   * decoration — without it, a change that made every URL 404 would pass.
+   *
+   * The last two rows are the cross-field misses, where every segment is real
+   * and only the pairing is wrong. They take a different branch in the page
+   * (`build.classSlug !== classSlug`) and are the shape most likely to come
+   * back if the fix is ever narrowed to "look the slug up in one table".
+   *
+   * Slugs come from the same getters each route's `generateStaticParams` uses,
+   * so the 200 controls cannot drift out of the prerendered set.
+   */
+  for (const locale of LOCALES) {
+    const t = dictionaryFor(locale);
+
+    const classSlugs = getClasses(locale).map((c) => String(c.slug));
+    const otherClassThan = (slug: string) => {
+      const found = classSlugs.find((c) => c !== slug);
+      if (!found) throw new Error(`${locale}: no second class to build a mismatch from`);
+      return found;
+    };
+
+    const build = getBuilds(locale)[0];
+    const skillClass = String(CLASSES_WITH_SKILL_PAGES[0]);
+    const skill = getSkillsForClass(locale, CLASSES_WITH_SKILL_PAGES[0])[0];
+    const otherSkillClass = CLASSES_WITH_SKILL_PAGES.map(String).find((c) => c !== skillClass);
+    if (!otherSkillClass) throw new Error("no second class with skill pages");
+
+    const families = [
+      { name: "items", ok: `/${locale}/items/${getUniques(locale)[0].slug}` },
+      { name: "runes", ok: `/${locale}/runes/${getRunes(locale)[0].slug}` },
+      { name: "runewords", ok: `/${locale}/runewords/${getRunewords(locale)[0].slug}` },
+      { name: "mechanics", ok: `/${locale}/mechanics/${getMechanics(locale)[0].slug}` },
+      { name: "farming", ok: `/${locale}/farming/${getFarmingAreas(locale)[0].slug}` },
+      { name: "classes", ok: `/${locale}/classes/${classSlugs[0]}` },
+      { name: "leveling", ok: `/${locale}/leveling/${getJourneys(locale)[0].classSlug}` },
+      { name: "skills", ok: `/${locale}/classes/${skillClass}/skills/${skill.slug}` },
+      { name: "builds", ok: `/${locale}/builds/${build.classSlug}/${build.slug}` },
+    ].map((f) => ({ ...f, miss: `${f.ok.slice(0, f.ok.lastIndexOf("/"))}/${MISSING}` }));
+
+    families.push(
+      {
+        name: "builds (real build, wrong class)",
+        ok: `/${locale}/builds/${build.classSlug}/${build.slug}`,
+        miss: `/${locale}/builds/${otherClassThan(String(build.classSlug))}/${build.slug}`,
+      },
+      {
+        name: "skills (real skill, wrong class)",
+        ok: `/${locale}/classes/${skillClass}/skills/${skill.slug}`,
+        miss: `/${locale}/classes/${otherSkillClass}/skills/${skill.slug}`,
+      },
+    );
+
+    for (const { name, ok, miss } of families) {
+      check(`${locale} ${name}: a real slug still answers 200`, (await get(ok)).status === 200, ok);
+
+      const res = await get(miss);
+      const page = await res.text();
+      const body = visibleBody(page);
+
+      check(`${locale} ${name}: a missing slug is a 404`, res.status === 404, `${miss} → ${res.status}`);
+      check(
+        `${locale} ${name}: the page is in the HTML, not behind JavaScript`,
+        body.includes(t.notFound.title),
+        `${body.length} bytes of body without scripts`,
+      );
+      check(`${locale} ${name}: it offers a way out`, body.includes(t.notFound.returnHome));
+      check(`${locale} ${name}: it has a <main> landmark`, /<main[\s>]/.test(body));
+      check(
+        `${locale} ${name}: it has exactly one <h1>`,
+        (body.match(/<h1[\s>]/g) ?? []).length === 1,
+        `${(body.match(/<h1[\s>]/g) ?? []).length}`,
+      );
+      check(
+        `${locale} ${name}: it is not the framework error shell`,
+        !page.includes('id="__next_error__"'),
+        "served Next's empty error document",
+      );
+
+      /*
+       * The soft-404 half. These pages inherit their metadata from
+       * `[lang]/layout.tsx`, so a dead URL was answering with the layout's
+       * canonical and both hreflang alternates — telling a crawler this URL is
+       * a real page with a real translation. Section 3 already forbids that,
+       * and only ever asked URLs on the other code path.
+       */
+      check(
+        `${locale} ${name}: it claims no canonical`,
+        !/<link rel="canonical"/.test(page),
+        "a dead URL that names a canonical can be indexed",
+      );
+      check(
+        `${locale} ${name}: it claims no hreflang`,
+        !/hreflang=/i.test(page),
+        "hreflang would assert this dead URL has a translation",
+      );
+      check(
+        `${locale} ${name}: it is marked noindex`,
+        /<meta name="robots" content="[^"]*noindex/.test(page),
+      );
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  console.log("\n7. Serving this page did not cost the site its prerender");
   // -------------------------------------------------------------------------
   /*
    * The 404 lives in a boundary that belongs to every route's tree, so a dynamic
