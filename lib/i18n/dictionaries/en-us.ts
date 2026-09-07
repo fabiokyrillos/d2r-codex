@@ -704,7 +704,8 @@ export const enUS = {
     unlocksTitle: "Unlocks",
     unlocksBody: "Skills that require this one.",
     synergiesTitle: "Synergies received",
-    synergiesBody: "Skills that raise this one's numbers when you put points in them.",
+    synergiesBody:
+      "Skills that raise this one's numbers when you put points in them. Hard points only — unlike the values above, gear that adds skill levels does not feed a synergy, so a row reading \"per level\" means per hard point.",
     synergiesNote:
       "Synergy identities are extracted from the game's own skill formulas, not from community consensus. Magnitudes, where given, are verified separately.",
     feedsTitle: "Skills this feeds",

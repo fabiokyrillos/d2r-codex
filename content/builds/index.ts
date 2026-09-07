@@ -42,6 +42,11 @@ import { kicksin } from "./kicksin";
 import { bladeFury } from "./blade-fury";
 import { dragonTail } from "./dragon-tail";
 import { whirlwindAssassin } from "./whirlwind-assassin";
+import { whirlwindBarbarian } from "./whirlwind-barbarian";
+import { apocalypseWarlock } from "./apocalypse-warlock";
+import { abyssWarlock } from "./abyss-warlock";
+import { cleaveWarlock } from "./cleave-warlock";
+import { bloodBoilWarlock } from "./blood-boil-warlock";
 
 /**
  * Build registry.
@@ -50,4 +55,4 @@ import { whirlwindAssassin } from "./whirlwind-assassin";
  * else — routing, the class page listing, the "builds that use this item"
  * reverse index, the farming recommendations — derives from the data.
  */
-export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon, jabFendAmazon, summonerNecromancer, poisonNovaNecromancer, boneSpearNecromancer, windDruid, fireDruid, furyDruid, summonDruid, maulDruid, fireClawsDruid, rabiesDruid, lightningTrapsin, fireTrapsin, phoenixStrike, kicksin, bladeFury, dragonTail, whirlwindAssassin];
+export const builds: Build[] = [blizzardSorceress, hammerdin, smiter, zealot, fohdin, avenger, tesladin, holyFirePaladin, lightningSorceress, fireballMeteorSorceress, frozenOrbSorceress, novaSorceress, enchantSorceress, hydraSorceress, meteorbSorceress, frostNovaSorceress, fireWallSorceress, meleeSorceress, lightningFuryAmazon, lightningStrikeAmazon, strafeAmazon, multipleShotAmazon, freezingArrowAmazon, explodingArrowAmazon, poisonJavelinAmazon, jabFendAmazon, summonerNecromancer, poisonNovaNecromancer, boneSpearNecromancer, windDruid, fireDruid, furyDruid, summonDruid, maulDruid, fireClawsDruid, rabiesDruid, lightningTrapsin, fireTrapsin, phoenixStrike, kicksin, bladeFury, dragonTail, whirlwindAssassin, whirlwindBarbarian, apocalypseWarlock, abyssWarlock, cleaveWarlock, bloodBoilWarlock];

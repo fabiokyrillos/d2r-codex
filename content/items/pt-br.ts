@@ -450,4 +450,33 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "É um charm, então não ocupa slot de equipamento e funciona a partir do inventário. Só um pode estar equipado por vez — a mesma restrição que as joias dos Colossal Ancients da expansão carregam.",
   },
+  "ars-al-diablolos": {
+    summary:
+      "O Grimoire best-in-slot do Warlock de Chaos. +2 em Chaos Skills, +3-5 no Apocalypse, e dano de skill de fogo por cima.",
+    dropSummary: "Nível de área 85. Exige o Reign of the Warlock.",
+    notes:
+      "Duas linhas de skill num item só, as duas atreladas à classe: `skilltab par=23` é a terceira aba do Warlock, que é Chaos, e `skill par=Apocalypse` nomeia a capstone direto. Os índices de aba andam de três em três por classe, na ordem de `SkillPage`, então os do Warlock são 21, 22 e 23 — a mesma aritmética que faz os do Necromancer serem 6, 7 e 8.",
+  },
+  "ars-tor-baalos": {
+    summary:
+      "A árvore Demon inteira numa off-hand: +2 em Demon Skills e mais quatro linhas de skill em cima disso.",
+    dropSummary: "Nível de área 85. Exige o Reign of the Warlock.",
+    notes:
+      "Quatro skills nomeadas mais a aba, e todas são atreladas à classe — o `item_singleskill` carrega `Save Param Bits 3`, então nada disso faz qualquer coisa para as outras sete. A linha de vida é um `par=12` bruto lido pelo divisor de oito por nível, a mesma conversão que a do Harlequin Crest.",
+  },
+  "ars-dul-mephistos": {
+    summary:
+      "O Grimoire de perfuração mágica: -10-20% de resistência a mágico do inimigo, e um Blizzard de nível 28 ao ser atingido.",
+    dropSummary: "Nível de área 85. Exige o Reign of the Warlock.",
+    notes:
+      "A linha de perfuração mágica é a que importa e é fácil de passar batido. O `pierce-mag` resolve para \"-X% to Enemy Magic Resistance\", e é a razão de o dano mágico do Warlock ser mais bem servido por equipamento do que o dano de fogo dele — a única *skill* da classe que quebra resistência é a perfuração de fogo do Apocalypse.",
+  },
+  "measured-wrath": {
+    summary:
+      "A primeira off-hand de verdade do Warlock, no nível 52. +1 em todas as skills dele, três linhas de fogo nomeadas, e resistências.",
+    dropSummary:
+      "Nível de área 58. Exige o Reign of the Warlock. É o unique específico de Warlock que aparece mais cedo.",
+    notes:
+      "O nível 52 é o requisito mais baixo de qualquer unique de Warlock, e os três seguintes são 73, 78 e 80. Ou seja: a off-hand de um Warlock em evolução é uma runeword de dois sockets — Rhyme, Splendor ou Vigilance — até este cair, e isso é um fato sobre jogar a classe que o jogo lançou por último, não uma lacuna deste catálogo.",
+  },
 };

@@ -45,11 +45,14 @@ import type { Skill, SkillTree } from "@/lib/types";
  * parameter that would size it, the effect is described and the number is not
  * published. `docs/research/09-warlock.md` §9 lists all six such cases.
  *
- * Synergy magnitudes are authored only where the generator emits the edge
- * today. Three rows — Eldritch Blast, Hex: Purge and Hex: Siphon — name synergy
- * parameters whose labels are not yet in `SYNERGY_KINDS`; their relationships
- * are described in prose and left out of `synergies` until the graph carries
- * them. See `docs/proposals/warlock-1-wire-skills.md`.
+ * Every synergy the game declares is an edge in the graph now, and every one of
+ * them carries its magnitude here. Six were being dropped in silence when this
+ * file was first written: the Warlock is the only class that writes `paNN`
+ * inside a `skill()` expression, and the only one whose synergy parameters live
+ * above `Param9`, whose description column is spelled with a trailing `2`. Both
+ * are fixed upstream. Engorge's +25 defence from Blood Oath is the one
+ * magnitude the graph carries itself, because it is the one the game stores on
+ * the donor's row rather than the receiver's.
  */
 
 export const warlockTrees: SkillTree[] = [
@@ -95,7 +98,7 @@ export const warlockSkills: Skill[] = [
     requiredLevel: 1,
     summary: "A melee demon that learns four abilities of its own as the skill grows.",
     mechanics: [
-      "It gains a skill of its own at each of the first five hard points: **Stun at 2, Berserk at 3, Frenzy at 4 and Cleave at 5**. The first four points buy behaviour rather than numbers, which makes them cheap and the ones after them ordinary.",
+      "It gains a skill of its own at each of hard points **two through five**: Stun at 2, Berserk at 3, Frenzy at 4 and Cleave at 5. Nothing arrives at the first point and nothing after the fifth, so those four buy behaviour rather than numbers — which makes them cheap and the ones after them ordinary.",
       "Its damage starts at **+10% and climbs 10% per level**, its attack rating at **140 with 40 more per level**, and its defence at **100 with 20 more per level**. Demonic Mastery adds to the first two on top of that.",
       "**How many you get is not decided here.** All three summons share the `demon` pet type and the same cap — one, rising to two at 5 hard points of Demonic Mastery and three at 10 — so the ceiling is a total across every demon type, not one of each.",
       "Points in **Death Mark** give it Crushing Blow: **5% at one point, plus 1% per Death Mark level**.",
@@ -226,6 +229,7 @@ export const warlockSkills: Skill[] = [
     kind: "buff",
     requiredLevel: 24,
     prerequisites: ["blood-boil"],
+    synergies: [{ skill: "blood-oath", bonus: "+25 defence per level" }],
     summary: "Feeds a corpse to your demons. Heals them and gives them life steal, speed and damage reduction.",
     mechanics: [
       "It targets a **corpse**, which makes it the one skill in the tree with an economy outside your own demons.",
@@ -363,7 +367,7 @@ export const warlockSkills: Skill[] = [
       "**The magic table is the whole of the damage.** Unlike Echoing Strike and Mirrored Blades, which run on the same server function and both declare a weapon share, this row declares none and sets its damage and flat-damage columns to zero. If a later extraction gives it a weapon share, this is the sentence that changes.",
       "It is the class's **movement skill**: the warp is the point, and the 8-10 magic explosion in a radius of 4 is what you get for using it offensively.",
       "It costs a **flat 15 mana at every level**, which makes it cheap to spam late and expensive early.",
-      "Its synergy is the largest in the tree at **24% per level**, from two skills a weapon build already wants.",
+      "Its synergy is **24% per level** from each of two skills a weapon build already wants — nearly five times the rate Echoing Strike collects from the same pair.",
     ],
     confidence: "single",
     release: "reign-of-the-warlock",
@@ -396,14 +400,19 @@ export const warlockSkills: Skill[] = [
     requiredLevel: 1,
     element: "magic",
     damageModel: "weapon-plus-element",
-    synergies: [{ skill: "eldritch-blast", bonus: "+5 frames of hex duration per level" }],
+    synergies: [
+      { skill: "consume", bonus: "+35% damage per level" },
+      { skill: "hex-purge", bonus: "+35% damage per level" },
+      { skill: "mirrored-blades", bonus: "+35% damage per level" },
+      { skill: "eldritch-blast", bonus: "+5 frames of hex duration per level" },
+    ],
     summary: "A weapon swing that adds magic damage and leaves the target easier to hit and easier to hurt.",
     mechanics: [
       "The weapon's full damage lands and the magic table lands with it — **9-16 at level 1**. The same rolled range is also written onto your character as flat magic weapon damage, so the skill is an imbue as well as an attack.",
       "The hex strips **30% of the target's defence with 1% more per level, to a 50% ceiling**, and **25% of its attack rating**.",
       "It lasts **3600 frames with 300 more per level** — around two and a half minutes at one point. This is a debuff you apply once per pack, not one you maintain.",
       "It **cannot be used with hand-to-hand weapons**. Every other weapon type works.",
-      "Consume, Hex: Purge and Mirrored Blades each raise its damage in the game's own tables, but through a parameter the graph does not currently read; the relationship is real and no magnitude for it is published here.",
+      "**Three skills raise its damage by 35% per level each** — Consume, Hex: Purge and Mirrored Blades, one from each of the three trees. Sixty hard points spread that wide comes to +2100% on a single hex; only Eldritch Blast approaches it, at +2000% from two sources of 50%.",
     ],
     confidence: "verified",
     release: "reign-of-the-warlock",
@@ -418,13 +427,18 @@ export const warlockSkills: Skill[] = [
     prerequisites: ["hex-bane"],
     element: "magic",
     damageModel: "weapon-plus-element",
+    synergies: [
+      { skill: "hex-bane", bonus: "+10% damage per level" },
+      { skill: "eldritch-blast", bonus: "+10% damage and +5 frames of debuff duration per level" },
+      { skill: "sigil-death", bonus: "+1 percentage point of explosion chance per level" },
+    ],
     summary: "A hex that detonates. Most hits explode, and the explosion has charges.",
     mechanics: [
       "The weapon's damage lands with a magic table of **10-15 at level 1** on top of it.",
       "The explosion fires on about **69% of hits at base**, and **Sigil: Death raises that by 1% per level** — the tree's one link into the Chaos tree.",
       "It carries **charges**: one explosion at base, two at 10 hard points and three at 20. Radius is a flat 4. The row also names a per-level radius growth that no expression reads, so none is published.",
       "It grants **+10% attack speed with 1% more per level** while active, which makes it the cheapest attack-speed source the class has.",
-      "Eldritch Blast lengthens its debuff and Hex: Bane raises its damage. Both relationships are in the tables; the graph does not carry the second yet, so no magnitudes are published for them here.",
+      "Hex: Bane and Eldritch Blast each raise its damage by **10% per level**, and Eldritch Blast lengthens the debuff on top of that. A hex build takes all three or none of them.",
       "Like the other two hexes it needs a weapon, and not a hand-to-hand one.",
     ],
     confidence: "verified",
@@ -438,6 +452,10 @@ export const warlockSkills: Skill[] = [
     kind: "attack",
     requiredLevel: 24,
     prerequisites: ["hex-purge"],
+    synergies: [
+      { skill: "engorge", bonus: "+1 life and mana stolen per kill, per level" },
+      { skill: "eldritch-blast", bonus: "+5 frames of debuff duration per level" },
+    ],
     summary: "A hex that cuts what the target deals and returns life and mana on every kill.",
     mechanics: [
       "The hex cuts the target's damage by **33%**. The row also carries a per-level increase to that figure which no expression reads, so **whether it grows past 33% is not established** and only the flat value is published.",
@@ -479,11 +497,16 @@ export const warlockSkills: Skill[] = [
     requiredLevel: 24,
     prerequisites: ["psychic-ward"],
     element: "magic",
+    synergies: [
+      { skill: "blade-warp", bonus: "+50% damage per level" },
+      { skill: "hex-purge", bonus: "+50% damage per level" },
+      { skill: "psychic-ward", bonus: "+50 frames of duration per level" },
+    ],
     summary: "A repeating magic nova that re-applies Hex: Bane's mark and steals life and mana while it runs.",
     mechanics: [
       "It fires **every 30 frames on its own** once cast, rather than per activation, and each nova **re-applies the Hex: Bane debuff** to what it touches. It is the only skill in the class that maintains a hex without swinging.",
       "While it runs you gain **5% life steal and 5% mana steal, with 1% more of each per level**.",
-      "Its own damage is small — **2-6 magic at level 1** — and is raised by Blade Warp and Hex: Purge. The relationship is in the tables; the graph does not carry it yet, so no magnitude is published here.",
+      "Its own damage is small — **2-6 magic at level 1** — but Blade Warp and Hex: Purge each raise it by **50% per level**, the largest damage coefficient in the class. Forty points in those two is +2000%, and it is still a support skill: the steal and the hex are why it is on the bar.",
       "Base duration is **1000 frames**, with **50 more per hard point of Psychic Ward** — the prerequisite pays twice.",
       "It is also a prerequisite for Mirrored Blades, which is why a pure weapon build still spends a point here.",
     ],
@@ -632,7 +655,8 @@ export const warlockSkills: Skill[] = [
       "What dies **explodes**, which is what turns the skill from an execution into clearing speed.",
       "Size steps at hard points 10 and 20 like the other two sigils.",
       "It is also the reason a hex build looks at this tree: **Hex: Purge's chance to explode rises 1% per hard point here**.",
-      "The row carries fire as its element but publishes no damage table of its own — the execution is a life threshold, not damage.",
+      "**The explosion is fire, and that is new in Patch 3.3.** The row had no element at all in the 3.2 extraction and gained `EType: \"fire\"` in 3.3 — one of only two Warlock rows the patch touched. It publishes no damage table of its own, because the execution is a life threshold rather than damage, but what the corpse throws off is fire and a fire immune eats none of it.",
+      "That makes the sigil part of the Chaos tree's fire problem rather than a way around it, and it is the one skill whose element a guide written before August 2026 would have wrong.",
     ],
     confidence: "verified",
     release: "reign-of-the-warlock",
@@ -673,7 +697,7 @@ export const warlockSkills: Skill[] = [
       "**80-100 fire at level 1**, several times anything else in the tree, and it grows by roughly 25 a level band.",
       "It **cuts the target's fire resistance by 5, with 1 more per level, to a 40-point ceiling** — the class's only resistance pierce, and the reason the fire branch can function in Hell without outside help.",
       "Radius steps at hard points 10 and 20: **13, then 15, then 17**. Even the smallest is larger than anything else the class casts.",
-      "Reaching it costs a point in Sigil: Death as well as the fire chain, which is the tree's one forced crossover.",
+      "Reaching it costs a point in Sigil: Death as well as the fire chain, which is the tree's one forced crossover — and since 3.3 made that sigil's explosion fire too, the pierce here now covers it. The two are **not** linked by a synergy: nothing in the graph runs between them, and a page that implies one is wrong.",
     ],
     confidence: "verified",
     release: "reign-of-the-warlock",
