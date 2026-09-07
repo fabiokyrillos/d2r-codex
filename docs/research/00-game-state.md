@@ -260,8 +260,8 @@ verified" placeholders for the same reason.
 | **Necromancer** | **30, with pages** | **3** | **Yes** | **Complete as of 2026-09-03; see [`04-necromancer-foundation.md`](04-necromancer-foundation.md) and [`05-necromancer-builds.md`](05-necromancer-builds.md)** |
 | **Druid** | **30, with pages** | **7** | **Yes** | **Complete as of 2026-09-06; see [`06-druid.md`](06-druid.md). The five further build families this row used to list as unwritten are written** |
 | **Assassin** | **30, with pages** | **7** | **Yes** | **Complete as of 2026-09-06; see [`07-assassin.md`](07-assassin.md). The seventh page, Whirlwind Assassin, closed the roster; Riftsin is a gear variant of Kicksin and not a page** |
-| **Barbarian** | **30, with pages** | **6** | **Yes** | **As of 2026-09-07; see [`08-barbarian.md`](08-barbarian.md). Class controls still being written; not yet published** |
-| **Warlock** | **30, with pages** | **4** | **Yes** | **As of 2026-09-07; see [`09-warlock.md`](09-warlock.md). Ten class controls in `scripts/warlock.test.ts`; awaiting the integrated visual audit** |
+| **Barbarian** | **30, with pages** | **6** | **Yes** | **Complete as of 2026-09-07; see [`08-barbarian.md`](08-barbarian.md). Eight class controls in `scripts/barbarian.test.ts`, each derived from a mistake this class made** |
+| **Warlock** | **30, with pages** | **4** | **Yes** | **Complete as of 2026-09-07; see [`09-warlock.md`](09-warlock.md). Ten class controls in `scripts/warlock.test.ts`. The first class that is DLC-gated, so every page states the gate** |
 
 ## Related research
 
