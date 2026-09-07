@@ -418,6 +418,48 @@ Mastery`).
 Resolve all thirty when a class enters scope. Eighteen gaps across the first six
 classes, one Barbarian, eight Warlock.
 
+#### And what a substring sweep cannot see either
+
+Resolving `str name` keeps the *skill pages* honest. It does not keep the item
+pages honest, because an item's stat line names a skill in prose, and prose is
+where the identifier comes back.
+
+`skill-page.test.ts` sweeps every built artifact for the override identifiers,
+which is the right instrument and it works — it caught six Warlock stat lines
+saying `Miasma Chains` where the game says `Miasma Chain`. But it carries an
+exemption list, and it has to: three identifiers are also ordinary published
+English. `Vines` is a word. `Levitate` is a word. **`Shape Shifting` is the
+published name of the Druid's second tree.** A substring sweep cannot tell the
+tree from the skill, so all three are exempt, and that exemption is a blind spot
+on three of twenty-one.
+
+Beast shipped through it, and stayed shipped:
+
+```
+"+3 to Werebear (Oskill)"          identifier Wearbear   -> ships as Werebear
+"+3 to Shape Shifting (Oskill)"    identifier Shape Shifting -> ships as Lycanthropy
+```
+
+Adjacent lines in one stat block. One identifier translated, one not.
+
+**Grammar closes it where substring cannot.** A tree is never granted as an
+Oskill, never cast on striking, and never has a level. So the question to ask is
+not *does this line contain the identifier* but *does this line grant a skill
+and name it with the identifier* — which the tree name cannot answer yes to.
+That is Rule D, and it needs no exclusion list and does not go stale as
+`SLUG_OVERRIDES` grows.
+
+One shape is deliberately out of scope. `+N to X` cannot be classified by
+grammar: in English a tab grant reads `+3 to X Skills`, but in Portuguese it
+reads `+3 em X` with no trailing noun, identical to a skill grant. Excluding it
+costs nothing, because an item that grants either eventually also says
+`(Oskill)`, `chance to cast`, `Level N`, or a trigger.
+
+The rule reads no game data. `SLUG_OVERRIDES` carries identifier to slug and the
+skills registry carries slug to published name; both halves are already in the
+repository, which is what makes this a gate rather than an assertion — the
+distinction the section below is about.
+
 ### What a gate can catch, and what it cannot
 
 Fourteen defects on the eight-class pass shared one property: **wrong, and read
