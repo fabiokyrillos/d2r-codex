@@ -998,6 +998,13 @@ export const ptBR: Dictionary = {
       "Este site é escrito em inglês e traduzido para português do Brasil. Nomes de itens, skills, runewords e áreas são mantidos em inglês nas duas versões, porque é o que a comunidade, os canais de troca e todas as bases de dados principais usam — e porque as strings oficiais em português dentro do jogo não foram verificadas contra fonte primária. Inventar traduções para elas quebraria a própria regra de precisão do projeto.",
   },
 
+  notFound: {
+    title: "Página não encontrada",
+    description: "Esta página pode ter mudado de endereço ou não existir mais.",
+    browseBuilds: "Ver builds",
+    returnHome: "Voltar ao início",
+  },
+
   common: {
     strengths: "Pontos fortes",
     weaknesses: "Pontos fracos",

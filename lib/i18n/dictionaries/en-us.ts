@@ -1061,6 +1061,23 @@ export const enUS = {
       "This site is written in English and translated into Brazilian Portuguese. Item, skill, runeword and area names are kept in English in both versions, because that is what the community, trade channels and every major database use — and because the official Portuguese in-game strings have not been verified against a primary source. Inventing translations for them would break the project's own accuracy rule.",
   },
 
+  /*
+   * The 404 page. `title` is both the `<title>` and the `<h1>`: a reader who
+   * only hears the tab and a reader who only sees the page should be told the
+   * same thing, and there is nothing more specific to say about a URL that
+   * does not exist.
+   *
+   * The two actions are ordered by usefulness rather than by convention.
+   * Builds is the site's spine and the likeliest thing a broken link was
+   * pointing at, so it leads; home is the safe fallback behind it.
+   */
+  notFound: {
+    title: "Page not found",
+    description: "This page may have moved or no longer exists.",
+    browseBuilds: "Browse builds",
+    returnHome: "Return home",
+  },
+
   common: {
     strengths: "Strengths",
     weaknesses: "Weaknesses",
