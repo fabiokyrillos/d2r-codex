@@ -42,7 +42,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
   "summon-goatman": {
     summary: "Um demônio corpo a corpo que aprende quatro habilidades próprias conforme a skill cresce.",
     mechanics: [
-      "Ele ganha uma skill própria em cada um dos cinco primeiros hard points: **Stun no 2, Berserk no 3, Frenzy no 4 e Cleave no 5**. Os quatro primeiros pontos compram comportamento em vez de números, o que os torna baratos e torna os seguintes comuns.",
+      "Ele ganha uma skill própria em cada um dos hard points **dois a cinco**: Stun no 2, Berserk no 3, Frenzy no 4 e Cleave no 5. Nada chega no primeiro ponto e nada depois do quinto, então esses quatro compram comportamento em vez de números — o que os torna baratos e torna os seguintes comuns.",
       "O dano dele começa em **+10% e sobe 10% por nível**, a attack rating em **140 com mais 40 por nível**, e a defesa em **100 com mais 20 por nível**. Demonic Mastery soma aos dois primeiros por cima disso.",
       "**Quantos você tem não se decide aqui.** Os três summons compartilham o pet type `demon` e o mesmo teto — um, subindo para dois com 5 hard points em Demonic Mastery e três com 10 — então o limite é o total entre todo tipo de demônio, não um de cada.",
       "Pontos em **Death Mark** dão Crushing Blow a ele: **5% com um ponto, mais 1% por nível de Death Mark**.",
@@ -113,6 +113,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "Duas das linhas da aura vêm do **Blood Oath**, não desta skill: +25 de defesa e +5 de regeneração de vida por hard point lá.",
       "Ela também é a sinergia de dano físico do **Blood Boil**, então as duas costumam ser pegas juntas em vez de qualquer uma sozinha.",
     ],
+    synergyBonuses: ["+25 de defesa por nível"],
   },
   consume: {
     summary: "Destrói um dos seus próprios demônios de vez e toma a força vital dele como vida máxima e velocidade.",
@@ -174,7 +175,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "**A tabela mágica é o dano inteiro.** Diferente de Echoing Strike e Mirrored Blades, que rodam na mesma função de servidor e ambas declaram uma parcela da arma, esta linha não declara nenhuma e zera as colunas de dano e de dano fixo. Se uma extração futura der a ela uma parcela de arma, é esta frase que muda.",
       "É a **skill de movimento** da classe: o warp é o ponto, e a explosão mágica de 8-10 num raio de 4 é o que você ganha por usá-la ofensivamente.",
       "Custa **15 de mana fixos em todo nível**, o que a torna barata para repetir tarde e cara cedo.",
-      "A sinergia dela é a maior da árvore, com **24% por nível**, vinda de duas skills que uma build de arma já quer.",
+      "A sinergia dela é de **24% por nível** vinda de cada uma de duas skills que uma build de arma já quer — quase cinco vezes a taxa que o Echoing Strike recolhe do mesmo par.",
     ],
     synergyBonuses: ["+24% de dano por nível", "+24% de dano por nível"],
   },
@@ -195,9 +196,14 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "O hex tira **30% da defesa do alvo com mais 1% por nível, até um teto de 50%**, e **25% da attack rating dele**.",
       "Dura **3600 frames com mais 300 por nível** — cerca de dois minutos e meio com um ponto. É um debuff que você aplica uma vez por grupo, não um que você mantém.",
       "Ela **não pode ser usada com armas de mão a mão**. Todo outro tipo de arma funciona.",
-      "Consume, Hex: Purge e Mirrored Blades sobem o dano dela nas tabelas do próprio jogo, mas por um parâmetro que o graph não lê atualmente; a relação é real e nenhuma magnitude para ela é publicada aqui.",
+      "**Três skills sobem o dano dela em 35% por nível cada** — Consume, Hex: Purge e Mirrored Blades, uma de cada uma das três árvores. Sessenta hard points espalhados assim chegam a +2100% num único hex; só o Eldritch Blast chega perto, com +2000% vindos de duas fontes de 50%.",
     ],
-    synergyBonuses: ["+5 frames de duração do hex por nível"],
+    synergyBonuses: [
+      "+35% de dano por nível",
+      "+35% de dano por nível",
+      "+35% de dano por nível",
+      "+5 frames de duração do hex por nível",
+    ],
   },
   "hex-purge": {
     summary: "Um hex que detona. A maioria dos acertos explode, e a explosão tem cargas.",
@@ -206,8 +212,13 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "A explosão dispara em cerca de **69% dos acertos na base**, e **Sigil: Death sobe isso em 1% por nível** — a única ligação da árvore com a árvore Chaos.",
       "Ela carrega **cargas**: uma explosão na base, duas com 10 hard points e três com 20. O raio é fixo em 4. A linha também nomeia um crescimento de raio por nível que nenhuma expressão lê, então nenhum é publicado.",
       "Dá **+10% de velocidade de ataque com mais 1% por nível** enquanto ativa, o que a torna a fonte de velocidade de ataque mais barata que a classe tem.",
-      "Eldritch Blast alonga o debuff dela e Hex: Bane sobe o dano dela. As duas relações estão nas tabelas; o graph ainda não carrega a segunda, então nenhuma magnitude para elas é publicada aqui.",
+      "Hex: Bane e Eldritch Blast sobem o dano dela em **10% por nível** cada, e o Eldritch Blast ainda alonga o debuff por cima disso. Uma build de hex pega as três ou nenhuma.",
       "Como os outros dois hexes, ela precisa de uma arma, e não de uma de mão a mão.",
+    ],
+    synergyBonuses: [
+      "+10% de dano por nível",
+      "+10% de dano e +5 frames de duração do debuff por nível",
+      "+1 ponto percentual de chance de explosão por nível",
     ],
   },
   "hex-siphon": {
@@ -217,6 +228,10 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "Dá **cura por abate e mana por abate de 1, com mais 1 por nível**, os dois aumentados ainda mais por hard points em **Engorge**. Numa build limpando grupos, é a sustentação da classe.",
       "Ela **não carrega tabela de dano própria** — a arma é o dano inteiro, diferente dos outros dois hexes.",
       "A duração acompanha o resto da família em **3600 frames com mais 300 por nível**, e Eldritch Blast a alonga.",
+    ],
+    synergyBonuses: [
+      "+1 de vida e mana roubadas por abate, por nível",
+      "+5 frames de duração do debuff por nível",
     ],
   },
   "psychic-ward": {
@@ -234,9 +249,14 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "Ela dispara **a cada 30 frames sozinha** depois de conjurada, em vez de por ativação, e cada nova **reaplica o debuff do Hex: Bane** no que ela toca. É a única skill da classe que mantém um hex sem golpear.",
       "Enquanto roda, você ganha **5% de roubo de vida e 5% de roubo de mana, com mais 1% de cada por nível**.",
-      "O dano próprio dela é pequeno — **2-6 mágico no nível 1** — e é aumentado por Blade Warp e Hex: Purge. A relação está nas tabelas; o graph ainda não a carrega, então nenhuma magnitude é publicada aqui.",
+      "O dano próprio dela é pequeno — **2-6 mágico no nível 1** — mas Blade Warp e Hex: Purge sobem cada um em **50% por nível**, o maior coeficiente de dano da classe. Quarenta pontos nas duas dão +2000%, e ainda assim é uma skill de suporte: o roubo e o hex são o motivo de ela estar na barra.",
       "A duração base é de **1000 frames**, com **mais 50 por hard point de Psychic Ward** — o pré-requisito paga duas vezes.",
       "Ela também é pré-requisito do Mirrored Blades, e é por isso que uma build de arma pura ainda gasta um ponto aqui.",
+    ],
+    synergyBonuses: [
+      "+50% de dano por nível",
+      "+50% de dano por nível",
+      "+50 frames de duração por nível",
     ],
   },
 
@@ -306,7 +326,8 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "O que morre **explode**, que é o que transforma a skill de uma execução em velocidade de limpeza.",
       "O tamanho sobe em degraus nos hard points 10 e 20 como nos outros dois sigils.",
       "Ela também é a razão de uma build de hex olhar para esta árvore: **a chance de explodir do Hex: Purge sobe 1% por hard point aqui**.",
-      "A linha carrega fogo como elemento mas não publica tabela de dano própria — a execução é um limiar de vida, não dano.",
+      "**A explosão é de fogo, e isso é novo no Patch 3.3.** A linha não tinha elemento nenhum na extração do 3.2 e ganhou `EType: \"fire\"` no 3.3 — uma das únicas duas linhas do Warlock que o patch tocou. Ela não publica tabela de dano própria, porque a execução é um limiar de vida e não dano, mas o que o cadáver solta é fogo, e um imune a fogo não toma nada disso.",
+      "Isso faz do sigil parte do problema de fogo da árvore Chaos, e não um jeito de contorná-lo. É a única skill cujo elemento um guia escrito antes de agosto de 2026 teria errado.",
     ],
   },
   "enhanced-entropy": {
@@ -324,7 +345,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "**80-100 de fogo no nível 1**, várias vezes qualquer outra coisa da árvore, e cresce cerca de 25 por faixa de nível.",
       "Ela **corta a resistência a fogo do alvo em 5, com mais 1 por nível, até um teto de 40 pontos** — a única quebra de resistência da classe, e a razão de o ramo de fogo funcionar no Hell sem ajuda de fora.",
       "O raio sobe em degraus nos hard points 10 e 20: **13, depois 15, depois 17**. Até o menor é maior que qualquer outra coisa que a classe conjura.",
-      "Chegar nela custa um ponto em Sigil: Death além da cadeia de fogo, que é o único cruzamento obrigatório da árvore.",
+      "Chegar nela custa um ponto em Sigil: Death além da cadeia de fogo, que é o único cruzamento obrigatório da árvore — e como o 3.3 tornou a explosão daquele sigil também de fogo, a quebra daqui agora cobre ela. As duas **não** são ligadas por sinergia: nada no graph corre entre elas, e uma página que sugira isso está errada.",
     ],
     synergyBonuses: ["+10% de dano por nível", "+10% de dano por nível"],
   },

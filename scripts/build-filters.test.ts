@@ -155,7 +155,28 @@ console.log("\nRefused filters still have no data behind them");
     emptyModes.every((b) => !b.modes?.ladder && !b.modes?.life && !b.modes?.online),
     emptyModes.map((b) => b.slug).join(","),
   );
-  check("no build carries a `release`", catalogue.every((b) => b.release === undefined));
+  /*
+   * `release` used to be set on no build at all, and the `patch` refusal said
+   * so. Four builds carry one now - the Warlock's, all `reign-of-the-warlock` -
+   * so the old assertion was true only until the expansion had content.
+   *
+   * The refusal still stands, on a different and stronger reason: **every build
+   * carrying a release is a Warlock build**, so a release filter would select
+   * exactly what `class=warlock` already selects. This file's own principle
+   * covers it - an option with no independent power is a control that cannot
+   * change anything - and it is the same argument that keeps a class filter off
+   * a single-class page.
+   *
+   * So the assertion now guards the reason rather than the old absence. The day
+   * a non-Warlock build carries a release, the refusal loses its justification
+   * and this goes red, which is exactly when it should.
+   */
+  const released = catalogue.filter((b) => b.release !== undefined);
+  check(
+    "every build carrying a `release` is a Warlock build, so the filter would be the class filter",
+    released.length > 0 && released.every((b) => b.classSlug === "warlock"),
+    released.map((b) => `${b.slug}:${b.classSlug}`).join(", "),
+  );
   check(
     "`complete` is uniform, so it cannot separate levelling from endgame",
     new Set(catalogue.map((b) => b.complete)).size === 1,

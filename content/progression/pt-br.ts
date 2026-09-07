@@ -1,6 +1,7 @@
 import type { JourneyCopy, Overlay } from "@/lib/types/copy";
 
 import { barbarianJourneyPtBr } from "./pt-br-barbarian";
+import { warlockJourneyPtBr } from "./pt-br-warlock";
 
 /**
  * Copy pt-BR das jornadas de evolução, com chave pelo slug da classe.
@@ -1348,4 +1349,5 @@ export const journeysPtBr: Overlay<JourneyCopy> = {
     },
   },
   barbarian: barbarianJourneyPtBr,
+  ...warlockJourneyPtBr,
 };
