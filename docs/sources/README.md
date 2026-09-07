@@ -574,10 +574,17 @@ the table by hand in a rules file makes it a claim about something the repositor
 has no representation of — the exact shape this section says a gate cannot check,
 rebuilt as a gate.
 
-The honest form is a third thing: put the `dm`/`ln` classification in the graph
-deliberately, as its own change with its own baseline update, and write the rule
-against generated data. Until then the sweep is an instrument a person runs, and
-this section is where its result is recorded.
+There is a third form, and it is better than either. **`check:graph-drift` reads
+exactly one file** — `content/classes/skill-graph.ts`. So the bounds can be a
+*separate* generated artifact carrying only the skills whose calc uses a `dm`
+token, with their two parameters. Generated from the pinned extraction, so it is
+re-derivable rather than an authored claim; outside drift’s scope by
+construction, so no baseline churn and no node bodies touched. That is what
+giving the repository a representation of something actually looks like, and it
+was found by asking whether the two bad options were the only two.
+
+Until it exists the sweep is an instrument a person runs, and this section is
+where its result is recorded.
 
 **The prediction it falsified is the argument for running it.** The agent that
 found the first two skills expected the rest to be clean — *"Fade's 75 is stated
