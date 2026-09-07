@@ -272,7 +272,7 @@ export const bladeFury: Build = {
               skill: "claw-mastery",
               points: 20,
               role: "utility",
-              note: "**Attack rating and off-weapon damage, on the half the synergies cannot reach — and it is a mastery rather than a synergy.** The skill graph draws no hard-point edge from Claw Mastery to Blade Fury, and it is right not to: what this buys is +220% attack rating, +111% damage and a 25% chance of a critical hit, all of which land on the weapon term rather than on the skill's own. The attack rating half matters more than it looks, because this skill rolls to hit.",
+              note: "**Attack rating and off-weapon damage, on the half the synergies cannot reach — and it is a mastery rather than a synergy.** The skill graph draws no hard-point edge from Claw Mastery to Blade Fury, and it is right not to: what this buys is +220% attack rating, +111% damage and a critical-hit chance climbing toward 25%, all of which land on the weapon term rather than on the skill's own. The attack rating half matters more than it looks, because this skill rolls to hit.",
             },
           ],
           gearNote: "This package chooses claws for you. Two claws also switch Weapon Block on, so the one core point in it stops being dead.",
