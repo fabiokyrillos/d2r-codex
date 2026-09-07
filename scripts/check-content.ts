@@ -751,6 +751,162 @@ for (const locale of LOCALES) {
 }
 
 // ---------------------------------------------------------------------------
+// A translated pick must not be another pick's copy
+// ---------------------------------------------------------------------------
+
+/*
+ * Localised gear copy is addressed by a key built from the slot name and the
+ * pick's index *within that slot* — `weapon-0`. That is unique only while a
+ * gear set names each slot once, and one set does not: `blade-fury`'s fourth
+ * tier lists `weapon` twice, once for the claws and once for the Call to Arms
+ * weapon switch. Both resolved to `weapon-0`, so the pt-BR reader was shown the
+ * claw explanation on the weapon-switch row — "four runes… Berserk charges…
+ * 25% Increased Attack Speed" — and the line that row exists for, "Battle
+ * Orders. This build has no life bonus of its own.", was unreachable in
+ * Portuguese.
+ *
+ * The rule is written against the *symptom* rather than against the key,
+ * because the key is an implementation detail and the symptom is not: two
+ * picks that say different things in the source locale must not say the same
+ * thing in a translation. That holds whatever the overlay is keyed on, and it
+ * would catch a copy-paste in a hand-written translation just as well.
+ *
+ * Identical source copy is left alone — two slots may legitimately share an
+ * explanation, and the translation should then share it too.
+ */
+console.log("\nTranslated gear copy is not another pick's:");
+{
+  /** Every pick in a set, flattened, with a stable address for reporting. */
+  const flatten = (build: ReturnType<typeof getBuilds>[number]) =>
+    build.gearSets.flatMap((set, si) => [
+      ...set.slots.flatMap((entry, ei) =>
+        entry.picks.flatMap((pick, pi) => [
+          { at: `gearSets[${si}].slots[${ei}].picks[${pi}]`, tier: set.tier, slot: entry.slot, why: pick.why },
+          ...(pick.alternatives ?? []).map((alt, ai) => ({
+            at: `gearSets[${si}].slots[${ei}].picks[${pi}].alternatives[${ai}]`,
+            tier: set.tier,
+            slot: entry.slot,
+            why: alt.why,
+          })),
+        ]),
+      ),
+    ]);
+
+  const source = new Map(getBuilds(SOURCE).map((b) => [b.slug, flatten(b)]));
+  let compared = 0;
+  let collisions = 0;
+
+  for (const locale of TRANSLATED) {
+    for (const build of getBuilds(locale)) {
+      const from = source.get(build.slug);
+      const to = flatten(build);
+      if (!from || from.length !== to.length) continue;
+
+      // Group translated picks by their text, then complain where a group holds
+      // two picks whose source text differed.
+      const byTranslated = new Map<string, number[]>();
+      to.forEach((pick, i) => {
+        const list = byTranslated.get(pick.why) ?? [];
+        list.push(i);
+        byTranslated.set(pick.why, list);
+      });
+
+      for (const indices of byTranslated.values()) {
+        if (indices.length < 2) continue;
+        const distinctSources = new Set(indices.map((i) => from[i].why));
+        compared++;
+        if (distinctSources.size < 2) continue;
+        collisions++;
+        problems.push(
+          `${locale} > ${build.slug} > ${to[indices[0]].tier}: ` +
+            `${indices.length} gear picks share one translation while their ${SOURCE} ` +
+            `originals differ — ${indices.map((i) => `${to[i].at} (${to[i].slot})`).join(", ")}. ` +
+            `One pick is showing another's copy, so the text this row exists for is ` +
+            `unreachable in ${locale}. Source originals: ` +
+            `${[...distinctSources].map((w) => `"${w.slice(0, 60)}…"`).join(" vs ")}`,
+        );
+      }
+    }
+  }
+  console.log(
+    `  ${compared} shared-translation groups examined, ${collisions} showing another pick's copy`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Every translated gear key addresses a pick that exists
+// ---------------------------------------------------------------------------
+
+/*
+ * The other half of the same failure, and the half that would have found it
+ * first. A key naming no pick is a translation nobody will ever read: the
+ * overlay is a lookup, so a miss is silent by construction. `blade-fury`'s
+ * Portuguese weapon-switch copy was written, keyed `weapon-1` on the natural
+ * assumption that a second `weapon` slot is the second `weapon`, and dropped —
+ * the index is the pick's position *within* a slot, and that slot has one pick.
+ * The reader got the other slot's copy and the translator's work was invisible.
+ *
+ * `orphanOverlaySlugs` already does this one level up, for whole entities. This
+ * is the same idea one level down.
+ */
+console.log("\nTranslated gear copy addresses a pick that exists:");
+{
+  const base = getBuilds(SOURCE);
+  let keys = 0;
+  let orphans = 0;
+
+  for (const locale of TRANSLATED) {
+    const overlay = (OVERLAYS.builds as Record<string, Record<string, unknown> | undefined>)[locale];
+    if (!overlay) continue;
+
+    for (const build of base) {
+      const copy = overlay[build.slug] as
+        | { gearSets?: Record<string, { picks?: Record<string, unknown> }> }
+        | undefined;
+      if (!copy?.gearSets) continue;
+
+      for (const [tier, setCopy] of Object.entries(copy.gearSets)) {
+        const set = build.gearSets.find((s) => s.tier === tier);
+        if (!set) {
+          orphans++;
+          fail(`${locale} > ${build.slug}`, `gear copy for tier "${tier}", which the build has not`);
+          continue;
+        }
+
+        // The same keys the registry builds, derived the same way.
+        const addressable = new Set<string>();
+        const seen = new Map<string, number>();
+        for (const entry of set.slots) {
+          const nth = seen.get(entry.slot) ?? 0;
+          seen.set(entry.slot, nth + 1);
+          const slotKey = nth === 0 ? entry.slot : `${entry.slot}#${nth}`;
+          entry.picks.forEach((pick, i) => {
+            addressable.add(`${slotKey}-${i}`);
+            (pick.alternatives ?? []).forEach((_, ai) =>
+              addressable.add(`${slotKey}-${i}-alt${ai}`),
+            );
+          });
+        }
+
+        for (const key of Object.keys(setCopy.picks ?? {})) {
+          keys++;
+          if (addressable.has(key)) continue;
+          orphans++;
+          fail(
+            `${locale} > ${build.slug} > ${tier}`,
+            `gear copy keyed "${key}" addresses no pick, so it is never read. ` +
+              `The key is \`<slot>-<index of the pick within that slot>\`, with ` +
+              `\`#1\`, \`#2\`… on a slot name the set repeats, and \`-altN\` for an ` +
+              `alternative. This set offers: ${[...addressable].sort().join(", ")}`,
+          );
+        }
+      }
+    }
+  }
+  console.log(`  ${keys} overlay pick keys, ${orphans} addressing nothing`);
+}
+
+// ---------------------------------------------------------------------------
 // The skill graph
 // ---------------------------------------------------------------------------
 

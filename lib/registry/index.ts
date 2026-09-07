@@ -306,10 +306,30 @@ const buildsFor = memoByLocale((locale) => {
           goal: setCopy.goal,
           nextUpgrade: setCopy.nextUpgrade ?? set.nextUpgrade,
           notes: setCopy.notes ?? set.notes,
-          slots: set.slots.map((entry) => ({
-            ...entry,
-            picks: entry.picks.map((p, i) => applyPick(p, `${entry.slot}-${i}`)),
-          })),
+          /*
+           * The overlay key is the slot name and the pick's index within it.
+           * That is unique only while a set names each slot once, and one set
+           * does not: `blade-fury`'s budget tier lists `weapon` twice, for the
+           * claws and for the Call to Arms switch. Both keyed to `weapon-0`,
+           * so the pt-BR reader got the claw explanation on the weapon-switch
+           * row and the line that row exists for was unreachable.
+           *
+           * A repeat gets `#1`, `#2`… and the *first* occurrence keeps the bare
+           * name, so every overlay key written before this still resolves and
+           * no translation had to move.
+           */
+          slots: (() => {
+            const seen = new Map<string, number>();
+            return set.slots.map((entry) => {
+              const nth = seen.get(entry.slot) ?? 0;
+              seen.set(entry.slot, nth + 1);
+              const slotKey = nth === 0 ? entry.slot : `${entry.slot}#${nth}`;
+              return {
+                ...entry,
+                picks: entry.picks.map((p, i) => applyPick(p, `${slotKey}-${i}`)),
+              };
+            });
+          })(),
           charms: set.charms?.map((p, i) => ({
             ...p,
             why: setCopy.charms?.[i]?.why ?? p.why,

@@ -775,15 +775,9 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "belt-0": { why: "+1 skills e 20% de Faster Cast Rate." },
           "belt-1": { why: "Troca as skills e a velocidade de conjuração por redução de dano físico." },
-          "belt-0-alt0": {
-            why: "Troque o skill e o cast rate por redução de dano físico.",
-          },
           "gloves-0": { why: "20% de Faster Cast Rate." },
           "boots-0": { why: "Faster Hit Recovery e Strength." },
           "boots-1": { why: "Até 50% de magic find numa configuração voltada a magic find." },
-          "boots-0-alt0": {
-            why: "Até 50% de magic find num conjunto voltado para isso.",
-          },
           "ring1-0": { why: "+1 skills." },
           "ring2-0": {
             label: "Anel raro: 10% de Faster Cast Rate com resistências",
@@ -12643,7 +12637,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         picks: {
           "weapon-0": { why: "**Quatro runas, e leia as linhas com atenção.** O +dano e as cargas de Berserk são reais; os 25% de Increased Attack Speed são mortos aqui. Pegue pelo dano, não pela velocidade." },
           "weapon-0-alt0": { label: "Uma garra rara com +3 Blade Fury e duas joias de dano", why: "A versão da rota de garras do mesmo tier, e ela não custa runa nenhuma." },
-          "weapon-1": { label: "Troca de arma: Call to Arms e um escudo Spirit", why: "Battle Orders. Esta build não tem bônus de vida próprio." },
+          "weapon#1-0": { label: "Troca de arma: Call to Arms e um escudo Spirit", why: "Battle Orders. Esta build não tem bônus de vida próprio." },
           "offhand-0": { why: "+2 em skills e as resistências. Ou a segunda garra, se essa for a rota." },
           "body-0": { why: "Crushing Blow, Enhanced Damage e Faster Hit Recovery, por três runas médias." },
           "helm-0": { why: "Leech e redução de dano, com sockets para resistências.", sockets: "Dois — um Um em cada, ou joias de dano se as resistências já estiverem resolvidas." },
