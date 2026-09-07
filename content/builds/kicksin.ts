@@ -351,7 +351,7 @@ export const kicksin: Build = {
       value: 86,
       frames: 3,
       priority: "recommended",
-      why: "Weapon Block at twenty gives a 65% block chance, and a block you recover from slowly is a block that still cost you the fight. This is the breakpoint that makes those twenty points pay.",
+      why: "Weapon Block at twenty gives a block chance climbing toward its 65% ceiling, and a block you recover from slowly is a block that still cost you the fight. This is the breakpoint that makes those twenty points pay.",
     },
   ],
   breakpointNotes:

@@ -216,7 +216,7 @@ export const dragonTail: Build = {
           tradeoff: "You give up Fade, and therefore its resistances and its curse-length reduction. On Hell that is a real loss and in the Chaos Sanctuary it is the wrong choice.",
           skills: [
             { skill: "burst-of-speed", points: 20, role: "utility", note: "**Up to 60% attack speed, undiminished, plus run speed.** The one buff on this class that directly repays the row's own penalty." },
-            { skill: "weapon-block", points: 20, role: "utility", note: "65% block chance with two claws and no shield. On a build that stands in the middle of what it just exploded, this is the survivability plan." },
+            { skill: "weapon-block", points: 20, role: "utility", note: "A block chance climbing toward 65% with two claws and no shield. On a build that stands in the middle of what it just exploded, this is the survivability plan." },
           ],
           gearNote: "Increased Attack Speed on the primary claw stacks with this and is worth real slots. Off-hand attack speed is not read.",
           rotationNote: "Unchanged in shape and materially faster in practice: three charges arrive sooner, so the fifteen-second window covers more ground.",
@@ -284,7 +284,7 @@ export const dragonTail: Build = {
       value: 86,
       frames: 3,
       priority: "recommended",
-      why: "Worth it with the speed package, which takes Weapon Block to twenty and a 65% block chance. Without that package this is a luxury.",
+      why: "Worth it with the speed package, which takes Weapon Block to twenty and a block chance climbing toward 65%. Without that package this is a luxury.",
     },
     {
       stat: "fcr",
