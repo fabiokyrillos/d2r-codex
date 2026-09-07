@@ -267,25 +267,25 @@ export const SITE_SCOPED_CLAIMS: { id: string; fingerprint: string; why: string 
     fingerprint: "180eb1db",
     why: "true: enumerate `breakpoints` where `stat === \"fcr\"` across the six Barbarian builds — war-cry is the only one carrying it at `priority: \"required\"` (105%); the other five carry 63% at recommended or luxury.",
   },
-  { id: "war-cry-barbarian/only-barbarian-build-whose-primary-breakpoint-is-cast-rate-pt", fingerprint: "1a1421e4", why: "pt-BR mirror; same enumeration." },
+  { id: "war-cry-barbarian/only-barbarian-build-whose-primary-breakpoint-is-cast-rate-pt", fingerprint: "1a1421e4", why: "the pt-BR mirror of the row above; the enumeration is the same and is stated there rather than restated here in another language." },
   {
     id: "war-cry-barbarian/only-barbarian-build-wanting-a-warcries-skiller",
     fingerprint: "f873cfa3",
     why: "true: enumerate `gearSets[].charms[].label` across the six Barbarian builds — war-cry is the only one naming a Warcries skiller; the other five name Combat Skills.",
   },
-  { id: "war-cry-barbarian/only-barbarian-build-wanting-a-warcries-skiller-pt", fingerprint: "b6fd3a5b", why: "pt-BR mirror; same enumeration." },
+  { id: "war-cry-barbarian/only-barbarian-build-wanting-a-warcries-skiller-pt", fingerprint: "b6fd3a5b", why: "the pt-BR mirror of the row above; the enumeration is the same and is stated there rather than restated here in another language." },
   {
     id: "war-cry-barbarian/only-catalogued-belt-with-skills-and-cast-rate",
     fingerprint: "342d7e39",
     why: "true: enumerate `uniques` where `category === \"belt\"` for a stat line matching `+N to All Skills` or `Faster Cast Rate` — Arachnid Mesh is the only one of the seven catalogued.",
   },
-  { id: "war-cry-barbarian/only-catalogued-belt-with-skills-and-cast-rate-pt", fingerprint: "dac70e9b", why: "pt-BR mirror; same enumeration." },
+  { id: "war-cry-barbarian/only-catalogued-belt-with-skills-and-cast-rate-pt", fingerprint: "dac70e9b", why: "the pt-BR mirror of the row above; the enumeration is the same and is stated there rather than restated here in another language." },
   {
     id: "leap-attack-barbarian/only-barbarian-build-giving-leap-more-than-a-point",
     fingerprint: "a8e7e192",
     why: "true: enumerate the `leap` allocation across the six Barbarian build cores — leap-attack 20, whirlwind 1, war-cry 1, the other three 0.",
   },
-  { id: "leap-attack-barbarian/only-barbarian-build-giving-leap-more-than-a-point-pt", fingerprint: "fc0916d5", why: "pt-BR mirror; same enumeration." },
+  { id: "leap-attack-barbarian/only-barbarian-build-giving-leap-more-than-a-point-pt", fingerprint: "fc0916d5", why: "the pt-BR mirror of the row above; the enumeration is the same and is stated there rather than restated here in another language." },
   {
     id: "maul-druid/only-other-build-taking-both-runeword-halves",
     fingerprint: "d19cfd7c",
@@ -294,7 +294,7 @@ export const SITE_SCOPED_CLAIMS: { id: string; fingerprint: string; why: string 
   {
     id: "maul-druid/only-other-build-taking-both-runeword-halves-pt",
     fingerprint: "65451d20",
-    why: "the pt-BR mirror of `maul-druid/only-other-build-taking-both-runeword-halves`; same enumeration.",
+    why: "the pt-BR mirror of `maul-druid/only-other-build-taking-both-runeword-halves`: enumerate every build's `gearSets[].picks[].ref` for two picks naming the same runeword slug.",
   },
   {
     id: "void/one-of-a-handful-granting-a-skill-across-classes",
@@ -304,7 +304,7 @@ export const SITE_SCOPED_CLAIMS: { id: string; fingerprint: string; why: string 
   {
     id: "void/one-of-a-handful-granting-a-skill-across-classes-pt",
     fingerprint: "76c0818b",
-    why: "the pt-BR mirror of `void/one-of-a-handful-granting-a-skill-across-classes`; same enumeration.",
+    why: "the pt-BR mirror of `void/one-of-a-handful-granting-a-skill-across-classes`: enumerate `runewords[].stats[]` for a named skill carrying no class scope — seven of them.",
   },
   {
     id: "abyss-warlock/only-build-with-magic-skill-damage",
