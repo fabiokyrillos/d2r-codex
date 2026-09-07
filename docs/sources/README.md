@@ -531,7 +531,15 @@ parameters:
 | function | parameters | reading |
 | --- | --- | --- |
 | `ln78` | `Param7` *baseline*, `Param8` *per level* | linear — `base + per × (level − 1)` |
-| `dm12` | `Param1` *Min*, `Param2` *Max* | diminishing — approaches Max, never arrives |
+| `dm12` | `Param1` *Min*, `Param2` *Max* | diminishing — climbs from Min toward Max |
+
+The interpolation between Min and Max is in the engine and not in these tables,
+which is why no figure at a level is published for a `dm` column. Two rows write
+an equivalent longhand and are the only place the shape is visible at all —
+Berserk's `desccalca1` is
+`par4-min(((110*lvl)/(lvl+6)*(par4-par3)/100),(par4-par3))` and Feral Rage's
+`desccalcb3` is the same expression without the clamp. Neither is a `dm` token,
+and neither licenses publishing a curve for the skills that are.
 
 **Claw Mastery proves the distinction inside one row.** Attack rating is
 `ln12` = 30 + 10 × 19 = **220%**, damage is `ln34` = 35 + 4 × 19 = **111%**, and
@@ -560,11 +568,11 @@ half wants taking whole. The clause *"Twenty points of Fade is 75% resistance an
 breath**, with the correct half computed from the linear column sitting beside
 the incorrect half read off the diminishing one.
 
-#### Why the rule for this is recorded and not built
+#### Why the rule for this was recorded before it was built
 
 The check is mechanical — collect every `dm` high parameter, refuse prose that
 pairs one with an achieved-value verb — and a script found all ten in one pass.
-It is not built, and the reason is worth more than the rule:
+It was not built, and the reason is worth more than the rule:
 
 **the bounds are not in this repository.** `content/classes/assassin/skills.ts`
 states Weapon Block's curve as a sentence, not as data. So a gate has two options
@@ -583,8 +591,42 @@ construction, so no baseline churn and no node bodies touched. That is what
 giving the repository a representation of something actually looks like, and it
 was found by asking whether the two bad options were the only two.
 
-Until it exists the sweep is an instrument a person runs, and this section is
-where its result is recorded.
+**That third form is now what ships.** `content/classes/skill-param-bounds.ts`
+is written by `npx tsx scripts/skill-param-bounds.ts` from the same pinned SHA
+the graph uses — read back out of the graph's own provenance header at
+generation time, so the two artifacts cannot come from two snapshots. It carries
+399 records across 150 skills, 115 of them diminishing, keyed by class, skill,
+source file, column and token; each one names the two parameter indices, the two
+`*Param<N> Description` labels the tables give them, and either a Min/Max pair or
+a linear base and per-level value. `--check` regenerates into memory and fails if
+the committed file has moved. `check:graph-drift` reports the same 150
+byte-identical baseline nodes it did before, because it parses `skill-graph.ts`
+and this is not in it.
+
+`scripts/diminishing-claims.ts` reads that artifact and runs over every string
+the site publishes in both locales. Two rules: a ceiling written as a figure you
+have, and a correctly hedged ceiling quoting a figure the row does not carry.
+
+**Ten tokens are not covered and are listed rather than dropped.** Eight name a
+non-consecutive parameter pair, which a one-digit index cannot tell apart from a
+reference to `Param10` — Throwing Mastery's no-consume chance is `dm91`, and
+`Param10` is 66, which is the figure the Barbarian page publishes. Two name a
+cell the sparse export omitted. Twelve further `dm` bounds are radii, durations,
+widths and counts rather than percentages, and the rule deliberately does not
+read them, because a page writing "20%" near Cloak of Shadows is not claiming its
+`Radius Max`. A skill whose bounds live only behind an opaque engine call —
+`math`, `macr`, `madm` — carries no record at all; Claw Mastery is covered only
+because its *skill* row spells the same three values out as `ln12`, `ln34` and
+`dm56` where its description row uses the opaque calls.
+
+**The first pass over all content found four more sentences**, three years of
+careful reading later: a kicksin skill note reading "20% at one point, 65% at
+twenty" in both locales, a dragon-tail note saying Mind Blast's conversion
+chance "rises to 40%" where the Portuguese mirror already said "sobe até 40%",
+and a Blade Mastery bullet comparing its 35% to "what the Assassin's Claw
+Mastery reaches" one bullet after a bullet that hedged the same number
+correctly. The prediction that the manual pass had found them all was falsified
+again, by the instrument the manual pass asked for.
 
 **The prediction it falsified is the argument for running it.** The agent that
 found the first two skills expected the rest to be clean — *"Fade's 75 is stated
