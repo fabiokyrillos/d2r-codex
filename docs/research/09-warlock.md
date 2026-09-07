@@ -978,3 +978,92 @@ present them as nicknames the way "Hammerdin" or "Shako" are presented.
    build's swing. It is an off-hand affix and the Cleave page would want to know;
    nothing in the files reached so far settles it, and nothing is published
    either way.
+
+---
+
+## 12. The journey audit, and the third instance of one mistake
+
+An independent audit read the journey against the graph, the registries and the
+pinned tables and returned eight findings. All eight were real. They fall into
+three groups, and only one of the three is interesting.
+
+### 12.1 The census, and why this one matters most
+
+The journey and all four build pages said **"eighteen catalogued areas"** with
+**"twelve for fire"**. The registry holds **twenty**, and **thirteen** record
+fire immunity. Every other number in the family was right — magic in one,
+physical in eight, fire and physical together in six — so the error was the
+denominator, repeated eleven times across seven files, plus one count.
+
+The cause is the part worth keeping. §11 was written from a `sed` extraction of
+`areas.ts` that walked part of the file, returned eighteen areas, and was
+treated as the file. Uber Tristram and the Throne of Destruction were never in
+the sample, and Uber Tristram is fire-immune — which is where the missing
+thirteenth went.
+
+**That is the same mistake as §3, §7.1 and §11.5, and the second time the fault
+was in a script written to avoid exactly it.** §3 checked slug uniqueness and
+concluded about names; §7.1 checked one file's history and concluded there was
+none; §11.5 checked the catalogue and concluded about the game. Here a partial
+read of a file was reported as the file.
+
+The rule from §11.5 already covers it and needs one clause added: **name the
+artefact that was searched, and check that the search actually reached all of
+it.** A count derived from a script is a claim about the script until the count
+is reconciled with the file's own length. `farmingAreas.length` is one
+expression; the `sed` range was a guess.
+
+Four shipped pages already published the right figures — `fire-trapsin` says
+"thirteen of twenty", `blade-fury` and `dragon-tail` say "eight of … twenty" —
+so the correct number was on the site the whole time, one grep away.
+
+### 12.2 The ledger, restated as a convention
+
+Five arithmetic findings were one missing convention. **A character at level N
+has N−1 skill points from levels**, because level 1 grants none; quest points
+are Den of Evil, Radament and Izual's two, four per difficulty, and only the
+ones whose act you have reached.
+
+The route now states the split at every stage rather than a bare total:
+
+| Stage | Levels | From levels | Quest | Spent |
+| --- | --- | --- | --- | --- |
+| 1 | 1-11 | 10 | 1 | **11** |
+| 2 | 12-20 | 19 | 2 | **21** |
+| 3 | 21-30 | 29 | 4 | **33** |
+| 4 | 31-48 | 47 | 8 | **55** |
+| 5 | 49-70 | 69 | 12 | **81** |
+| 6 | 71-99 | 98 | 12 | **110** |
+
+The stage that was actually broken rather than merely under-stated was the
+third: it told the reader to take Miasma Chain from nine to twenty across levels
+21-23, which needs eleven points where five exist. It now reaches fifteen there
+and eighteen by level 30, with the last two bought early in Nightmare.
+
+**The stage bands were also overlapping** — 30-48 and 48-70 shared an endpoint
+with their neighbours, which is what made "points at level 48" ambiguous in the
+first place. Every other journey on the site is disjoint; this one is now too.
+
+### 12.3 Three claims that were simply wrong
+
+- **A Crystal Sword asks 43 Strength, not 25.** 25 is Spirit's required level
+  and the two numbers are unrelated. Checked in `weapons.json` at the pin.
+- **"The only point no finished build keeps" was false.** `blood-boil-warlock`'s
+  core carries `summon-goatman: 1` and `apocalypse-warlock`'s demon-wall package
+  carries it too. The true statement is narrower and still worth making: it is
+  the point the *Abyss core* does not list.
+- **Miasma Bolt's range is the longest in the tree, not in the class**, which is
+  what the skill page says. A superlative widened in transit between two files.
+
+### 12.4 What the audit found nothing wrong with
+
+The transition section — the argument that the levelling route *is* a finished
+build. Every number in it checked: the Abyss core at 83, the fire package at 20,
+`83 + 20 = 103` with the Goatman making 104 and six free, Apocalypse's 103 as
+core 63 plus void 40, Cleave's 104, and `83 + 20 + 22 = 125` as the reason 110
+does not hold both Abyss packages at once.
+
+That is worth noting beside the census failure, because the two were written the
+same day by the same process. The arithmetic that was derived from the build
+files — which the gates read — held. The arithmetic that was derived from a
+script nobody re-ran did not.
