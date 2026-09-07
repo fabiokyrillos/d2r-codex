@@ -256,7 +256,7 @@ export const cleaveWarlock: Build = {
         { ref: { kind: "runeword", slug: "spirit" }, why: "Unchanged." },
       ],
       notes:
-        "The finished character wears a two-handed weapon and an off-hand at the same time — and **Dreadfang is a Legend Sword, one of the eighteen `1or2handed` swords a Barbarian may also hold in one hand**, so on this exact weapon the trick is shared. What is not shared is the rule behind it: the Warlock does this with any two-hander and the Barbarian only with those eighteen, which is why a Ritual dagger or a Colossus Blade changes nothing here and would change everything for him. Every generic melee guide you will read assumes you gave up a shield for that weapon. You did not.",
+        "The finished character wears a two-handed weapon and an off-hand at the same time — and **Dreadfang is a Legend Sword, and it is one of the eighteen two-handed swords a Barbarian may also hold in a single hand** — the rows flagged `1or2handed` — so on this exact weapon the trick is shared. What is not shared is the rule behind it: the Warlock does this with any two-hander and the Barbarian only with those eighteen, which is why a Ritual dagger or a Colossus Blade changes nothing here and would change everything for him. Every generic melee guide you will read assumes you gave up a shield for that weapon. You did not.",
     },
   ],
 

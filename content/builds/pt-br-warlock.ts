@@ -430,7 +430,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       "fhr-56": "O alvo de sempre. Miasma Chain é interrompido como qualquer outra coisa.",
     },
     breakpointNotes:
-      "Uma ressalva que a página de fogo não precisa. **Miasma Chain marca `UseAttackRate`, e nenhuma outra skill de Chaos faz isso** — a animação dela segue a velocidade de ataque e não a de conjuração. O que isso significa para um breakpoint de Faster Cast Rate naquela skill específica não está estabelecido, e nenhuma tabela de velocidade de ataque é publicada para nenhuma classe deste site, então nada é afirmado em nenhuma direção. Os alvos de cast rate acima valem para o Abyss, que é uma conjuração comum.",
+      "Uma ressalva que a página de fogo não precisa. **Miasma Chain é a única skill de Chaos que roda na animação de ataque em vez da de conjuração** — a linha dela marca `UseAttackRate` e nenhuma outra skill da árvore faz isso. O que isso significa para um breakpoint de Faster Cast Rate naquela skill específica não está estabelecido, e nenhuma tabela de velocidade de ataque é publicada para nenhuma classe deste site, então nada é afirmado em nenhuma direção. Os alvos de cast rate acima valem para o Abyss, que é uma conjuração comum.",
     skillNotes: {
       abyss: "20-40 mágico num raio de 6, e a mana é cobrada quando ele resolve, não quando começa.",
       "miasma-chain": "+10% de dano do Abyss por nível, e a skill que você de fato segura apertada: três projéteis subindo rumo a um teto de doze.",
@@ -819,7 +819,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       bis: {
         goal: "Nada mais sobre o que discutir.",
         notes:
-          "O personagem pronto veste uma arma de duas mãos e uma mão secundária ao mesmo tempo — e o **Dreadfang é uma Legend Sword, uma das dezoito espadas `1or2handed` que um Barbarian também pode segurar com uma mão**, então nesta arma específica o truque é compartilhado. O que não é compartilhado é a regra por trás dele: o Warlock faz isso com qualquer arma de duas mãos e o Barbarian só com aquelas dezoito, e é por isso que uma adaga com Ritual ou uma Colossus Blade não muda nada aqui e mudaria tudo para ele. Todo guia genérico de corpo a corpo que você vai ler assume que você abriu mão de um escudo por aquela arma. Você não abriu.",
+          "O personagem pronto veste uma arma de duas mãos e uma mão secundária ao mesmo tempo — e o **Dreadfang é uma Legend Sword, e é uma das dezoito espadas de duas mãos que um Barbarian também pode segurar com uma mão** — as linhas marcadas `1or2handed` — então nesta arma específica o truque é compartilhado. O que não é compartilhado é a regra por trás dele: o Warlock faz isso com qualquer arma de duas mãos e o Barbarian só com aquelas dezoito, e é por isso que uma adaga com Ritual ou uma Colossus Blade não muda nada aqui e mudaria tudo para ele. Todo guia genérico de corpo a corpo que você vai ler assume que você abriu mão de um escudo por aquela arma. Você não abriu.",
         picks: {
           "weapon-0": { label: "Dreadfang", why: "Com +3 Mirrored Blades e 166% de dano aumentado." },
           "offhand-0": { why: "Com 115% de dano aumentado e 70% de attack rating. O Blasphemous Grimoire é o item melhor no papel e o pior aqui." },
