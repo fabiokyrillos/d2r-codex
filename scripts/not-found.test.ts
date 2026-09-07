@@ -303,6 +303,15 @@ async function main() {
    * the reader gets the real page. The assertion is inverted rather than
    * deleted, because the thing worth guarding is unchanged — that this path
    * stays a truthful 404 — and the old wording is now the failure case.
+   *
+   * Scope, measured against the deployment rather than assumed: this is a
+   * statement about the app, not about the public URL. Vercel's edge answers
+   * every `.php` request itself with a 59-byte `text/plain` 403 before the
+   * deployment is reached — `/foo.php`, `/bar.php` and `/wp-login.php` come
+   * back byte-identical under `server: Vercel`. So `next start` is the only
+   * place this row is observable, which is where it runs. `/foo.html` takes
+   * the same route through the app and is not intercepted, which is why both
+   * are asserted here and why a public smoke should use the `.html` one.
    */
   for (const path of ["/foo.php", "/foo.html"]) {
     const res = await get(path);
