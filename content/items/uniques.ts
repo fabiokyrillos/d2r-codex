@@ -1941,6 +1941,7 @@ export const uniques: UniqueItem[] = [
     tier: "elite",
     slots: ["offhand"],
     requiredLevel: 80,
+    requiredStrength: 106,
     maxSockets: 2,
     stats: [
       { text: "+2 to Chaos Skills (Warlock only)", notable: true },
@@ -1976,6 +1977,7 @@ export const uniques: UniqueItem[] = [
     tier: "elite",
     slots: ["offhand"],
     requiredLevel: 73,
+    requiredStrength: 95,
     maxSockets: 2,
     stats: [
       { text: "+2 to Demon Skills (Warlock only)", notable: true },
@@ -2011,6 +2013,7 @@ export const uniques: UniqueItem[] = [
     tier: "elite",
     slots: ["offhand"],
     requiredLevel: 78,
+    requiredStrength: 82,
     maxSockets: 2,
     stats: [
       { text: "-10-20% to Enemy Magic Resistance", variable: true, notable: true },
@@ -2046,6 +2049,7 @@ export const uniques: UniqueItem[] = [
     tier: "exceptional",
     slots: ["offhand"],
     requiredLevel: 52,
+    requiredStrength: 38,
     maxSockets: 2,
     stats: [
       { text: "+1 to Warlock Skill Levels", notable: true },
