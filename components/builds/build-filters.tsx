@@ -3,11 +3,10 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { Badge, cn } from "@/components/ui";
+import { Badge } from "@/components/ui";
 import {
   FILTER_GROUPS,
   MAX_QUERY_LENGTH,
-  activeCount,
   filterBuilds,
   filterQueryString,
   isEmptyState,
@@ -18,7 +17,9 @@ import {
   type FilterGroup,
   type OptionSets,
 } from "@/lib/builds/filter";
+import { applyFilterDraft, sheetFilterCount } from "@/lib/builds/filter-sheet";
 import { draftForUrl, echoOf, needsWrite } from "@/lib/builds/query-draft";
+import { FilterGroupFieldsets, MobileFilterSheet } from "./mobile-filter-sheet";
 
 /**
  * Filters for any listing of build cards.
@@ -45,6 +46,22 @@ import { draftForUrl, echoOf, needsWrite } from "@/lib/builds/query-draft";
  * stays on the client with no RSC round-trip. Toggling a filter pushes, so Back
  * undoes exactly one decision; typing replaces, so a search box does not bury
  * the previous page under thirty history entries.
+ *
+ * **Below `sm` the groups are somewhere else, and they commit differently.**
+ * They move into `MobileFilterSheet`, a modal bottom sheet whose selections are
+ * a draft: the count in its primary action follows every tick while the listing
+ * and the URL stay put, and Apply writes one entry. Desktop is unchanged —
+ * inline, immediate, one push per tick — because there the reader can see what
+ * each tick does. The search box and the results summary stay in the page on
+ * both layouts, so search keeps its own trailing-edge `replaceState` either way.
+ *
+ * The groups are rendered *once*, in whichever of the two places is live, and
+ * `sm` is asked with `matchMedia` rather than guessed. Two copies in the DOM
+ * would mean two elements sharing an `id`, two checkboxes claiming the same
+ * label, and a hidden set of zero-height rows for any gate measuring targets.
+ * The first client render deliberately matches the server's — the inline panel,
+ * `display: none` below `sm` — so there is nothing to mismatch during
+ * hydration; the swap happens in an effect, on a panel nobody can see.
  */
 
 export interface FilterGroupView {
@@ -70,6 +87,18 @@ export interface BuildFilterStrings {
   showFilters: string;
   hideFilters: string;
   searchChipPrefix: string;
+  /** The mobile sheet's heading, and its accessible name. */
+  sheetTitle: string;
+  /** Accessible name of the sheet's ✕. */
+  sheetClose: string;
+  /** The sheet's discard action, beside Apply. */
+  sheetCancel: string;
+  /** Empties the sheet's draft. Not the search box, which is outside it. */
+  sheetClear: string;
+  /** `Show {count} build` — the sheet's primary action, singular. */
+  showResultsOne: string;
+  /** `Show {count} builds` — plural. */
+  showResultsMany: string;
   /**
    * What "Good at" means, already interpolated. Omitted when the surface does
    * not offer that group, because a note explaining a control the page does not
@@ -100,7 +129,33 @@ export function BuildFilters({
 }) {
   const searchParams = useSearchParams();
   const panelId = useId();
-  const [panelOpen, setPanelOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  /*
+   * Which of the two layouts is live.
+   *
+   * `40rem` is Tailwind's `sm`, written once here so the query and the classes
+   * that hide each layout cannot drift apart. It starts `false` on purpose: the
+   * server renders the inline panel, the first client render has to agree, and
+   * the panel it renders is `display: none` below `sm` anyway — so the swap
+   * happens in an effect, on something nobody can see.
+   *
+   * The listener is what makes a resize honest. Growing past `sm` while the
+   * sheet is open closes it, which drops the draft and hands the reader the
+   * desktop panel showing the state the URL actually carries.
+   */
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 40rem)");
+    const sync = () => {
+      setNarrow(!mq.matches);
+      if (mq.matches) setSheetOpen(false);
+    };
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const options: OptionSets = useMemo(() => {
     const sets: Record<string, string[]> = {};
@@ -176,11 +231,42 @@ export function BuildFilters({
     write({ q: "", class: [], damage: [], difficulty: [], budget: [], goodAt: [] }, "push");
   };
 
-  const visible = useMemo(
-    () => filterBuilds(items.map((i) => i.row), state),
-    [items, state],
-  );
+  const rows = useMemo(() => items.map((i) => i.row), [items]);
+  const visible = useMemo(() => filterBuilds(rows, state), [rows, state]);
   const visibleSlugs = useMemo(() => new Set(visible.map((r) => r.slug)), [visible]);
+
+  /*
+   * The sheet's primary action has to say what applying its draft *would*
+   * produce, so it asks the same `filterBuilds` the listing is rendered from
+   * rather than estimating. The rows are the parent's; the sheet only holds a
+   * state.
+   */
+  const resultCountFor = useCallback(
+    (candidate: BuildFilterState) => filterBuilds(rows, candidate).length,
+    [rows],
+  );
+
+  const closeSheet = useCallback(() => {
+    setSheetOpen(false);
+    // Before the sheet unmounts, so focus is never left on a removed node.
+    triggerRef.current?.focus();
+  }, []);
+
+  const applyDraft = useCallback(
+    (next: BuildFilterState) => {
+      /*
+       * One `pushState`, so Back undoes the whole visit to the sheet at once.
+       * The search box is deliberately not touched: `applyFilterDraft` trims
+       * the query for the URL, and handing that trimmed value back to the input
+       * is the exact edit that once deleted the space out of "cold " while it
+       * was still being typed. `write` records the echo, and the resync above
+       * recognises its own write and leaves the box alone.
+       */
+      write(applyFilterDraft(next, options), "push");
+      closeSheet();
+    },
+    [options, write, closeSheet],
+  );
 
   const labelFor = (group: FilterGroup, value: string) =>
     groups.find((g) => g.group === group)?.options.find((o) => o.value === value)?.label ?? value;
@@ -215,15 +301,23 @@ export function BuildFilters({
             />
           </div>
 
+          {/*
+            The badge counts what the sheet holds, not `activeCount`, which
+            counts the query too. That was right while the query and the boxes
+            shared one panel; with the box outside the sheet it would badge a
+            "1" the reader cannot find, opening onto nothing ticked.
+          */}
           <button
+            ref={triggerRef}
             type="button"
-            onClick={() => setPanelOpen((v) => !v)}
-            aria-expanded={panelOpen}
+            onClick={() => setSheetOpen(true)}
+            aria-expanded={sheetOpen && narrow}
+            aria-haspopup="dialog"
             aria-controls={panelId}
             className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink-muted transition-colors hover:border-border-strong hover:text-ink sm:hidden"
           >
-            {panelOpen ? strings.hideFilters : strings.showFilters}
-            {activeCount(state) > 0 && <Badge tone="ember">{activeCount(state)}</Badge>}
+            {strings.showFilters}
+            {sheetFilterCount(state) > 0 && <Badge tone="ember">{sheetFilterCount(state)}</Badge>}
           </button>
 
           <p aria-live="polite" className="ml-auto text-sm text-ink-subtle">
@@ -231,71 +325,23 @@ export function BuildFilters({
           </p>
         </div>
 
-        <div
-          id={panelId}
-          className={cn(
-            "grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3",
-            panelOpen ? "grid" : "hidden sm:grid",
-          )}
-        >
-          {groups.map((group) => (
-            <fieldset key={group.group} className="min-w-0">
-              <legend className="text-xs font-semibold tracking-widest text-ink-subtle uppercase">
-                {group.legend}
-              </legend>
-              {/*
-                The row *is* the label, rather than a wrapper holding a box and
-                a label side by side. That is what makes the whole strip —
-                checkbox, the gap between them, the option name and its count —
-                one target: `<label>` activation covers its own padding, so
-                there is no dead space inside the row, and no second handler to
-                fire twice. The `for` and the nesting resolve to the same
-                control, which is one labelled control either way.
-
-                The drawn checkbox stays 14×14; what had to change is the target
-                it sits in. `py-1` around a 20px line makes each row 28px tall,
-                so the rule these rows satisfy is the 24×24 minimum itself
-                rather than the spacing exception they were leaning on at 20px.
-              */}
-              <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5">
-                {group.options.map((option) => {
-                  const id = `${panelId}-${group.group}-${option.value}`;
-                  const checked = state[group.group].includes(option.value);
-                  return (
-                    <label
-                      key={option.value}
-                      htmlFor={id}
-                      className={cn(
-                        "flex min-h-6 cursor-pointer items-center gap-1.5 py-1 text-sm",
-                        checked ? "text-ink" : "text-ink-muted",
-                      )}
-                    >
-                      <input
-                        id={id}
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() => onToggle(group.group, option.value)}
-                        className="size-3.5 shrink-0 accent-[var(--color-ember)]"
-                      />
-                      <span>
-                        {option.label}{" "}
-                        <span className="text-xs text-ink-subtle">({option.count})</span>
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
-          ))}
-        </div>
-
         {/*
-          Directly under the group it defines. It used to sit after the whole
-          listing — four screens below the "Good at" checkboxes on the
-          unfiltered catalogue, and in the no-JS HTML, where it explained a
-          control that is not rendered at all.
+          Desktop, and the first client render everywhere. Below `sm` this is
+          `display: none` and, once the effect has run, not rendered at all —
+          the groups are in the sheet instead, and rendering both would put two
+          checkboxes on every option and two elements on every `id`.
         */}
-        {strings.goodAtNote && <p className="text-xs text-ink-subtle">{strings.goodAtNote}</p>}
+        {!narrow && (
+          <FilterGroupFieldsets
+            groups={groups}
+            state={state}
+            id={panelId}
+            idPrefix={panelId}
+            onToggle={onToggle}
+            note={strings.goodAtNote}
+            className="hidden gap-x-6 gap-y-4 sm:grid sm:grid-cols-2 lg:grid-cols-3"
+          />
+        )}
 
         {showChips && (
           <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
@@ -343,6 +389,34 @@ export function BuildFilters({
           </div>
         )}
       </section>
+
+      {/*
+        Mounted only while it is open, so a shut sheet leaves nothing in the
+        accessibility tree — and `narrow` is required as well as `sheetOpen`, so
+        a click that reaches the hidden trigger above `sm` (a script, a stale
+        tap during a resize) cannot lock the scroll of a page it would not
+        cover.
+      */}
+      {sheetOpen && narrow && (
+        <MobileFilterSheet
+          applied={state}
+          groups={groups}
+          options={options}
+          labelledBy={panelId}
+          note={strings.goodAtNote}
+          resultCountFor={resultCountFor}
+          onApply={applyDraft}
+          onCancel={closeSheet}
+          strings={{
+            title: strings.sheetTitle,
+            close: strings.sheetClose,
+            cancel: strings.sheetCancel,
+            clear: strings.sheetClear,
+            showOne: strings.showResultsOne,
+            showMany: strings.showResultsMany,
+          }}
+        />
+      )}
 
       {/*
         The leading cell is not a build and never disappears, so a class page

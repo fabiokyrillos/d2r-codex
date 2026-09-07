@@ -160,6 +160,14 @@ export async function FilterableBuildList({
           showFilters: t.builds.filters.showFilters,
           hideFilters: t.builds.filters.hideFilters,
           searchChipPrefix: t.builds.filters.searchChipPrefix,
+          // The mobile sheet's own copy. Named here, like everything else the
+          // client component renders, so the dictionary stays out of the bundle.
+          sheetTitle: t.builds.filters.sheetTitle,
+          sheetClose: t.builds.filters.sheetClose,
+          sheetCancel: t.builds.filters.sheetCancel,
+          sheetClear: t.builds.filters.sheetClear,
+          showResultsOne: t.builds.filters.showResultsOne,
+          showResultsMany: t.builds.filters.showResultsMany,
           // Interpolated here, where the dictionary and the threshold both
           // live; the client component only has to place it.
           goodAtNote: views.some((v) => v.group === "goodAt")
