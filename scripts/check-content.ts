@@ -66,7 +66,12 @@ import {
   checkSynergyKindLabels,
   MAX_HARD_POINTS,
 } from "./skill-graph-rules";
-import { checkSourcedDivergence, exitCodeFor, isUntranslatedProse } from "./content-rules";
+import {
+  checkSiteScopedClaims,
+  checkSourcedDivergence,
+  exitCodeFor,
+  isUntranslatedProse,
+} from "./content-rules";
 import { FREEZE_RULES, checkFreezeLengthClaims } from "./freeze-length-claims";
 import { ASSASSIN_RULES, checkAssassinClaims } from "./assassin-rules";
 import {
@@ -1182,6 +1187,18 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
     console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
     for (const h of hits) problems.push(h.message);
   }
+
+  /*
+   * Rule C rides the same sweep, and it has to for the same reason: the three
+   * "everything else" claims that shipped this cycle were in a runeword's
+   * `notes`, a journey's `overview` and a build's `immunityPlan`. No per-type
+   * collector looks at those together.
+   */
+  const siteScoped = pages.flatMap(({ where, lines }) => checkSiteScopedClaims(lines, where));
+  console.log(
+    `  ${siteScoped.length === 0 ? "ok" : " x"} ${"unregistered-site-scoped-claim".padEnd(38)} ${siteScoped.length}`,
+  );
+  for (const h of siteScoped) problems.push(h.message);
 
   const divergence = pages.flatMap(({ where, lines }) => checkSourcedDivergence(lines, where));
   for (const rule of ["unsourced-divergence-claim", "undated-divergence-claim"] as const) {
