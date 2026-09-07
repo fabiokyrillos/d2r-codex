@@ -245,7 +245,7 @@ export const summonerNecromancer: Build = {
           picks: [
             {
               label: "Any Necromancer shrunken head with +skills",
-              why: "A shrunken head is a shield that also carries +Necromancer skills and +to a skill tab. Nothing else in the game puts both in the off-hand.",
+              why: "A shrunken head is a shield that also carries +Necromancer skills and +to a skill tab. The only other off-hand that carries class skills is Herald of Zakarum, and that is a Paladin shield.",
               lookFor: ["+2 Necromancer Skills", "+3 to Raise Skeleton", "2 sockets"],
               alternatives: [
                 { ref: { kind: "runeword", slug: "ancients-pledge" }, why: "Resistances for three Countess runes if no head has dropped." },

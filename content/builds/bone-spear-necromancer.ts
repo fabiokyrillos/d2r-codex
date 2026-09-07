@@ -53,7 +53,7 @@ export const boneSpearNecromancer: Build = {
     "**No damage until the synergies are in.** A level-30 Bone Spear with nothing behind it is weak, and the build only becomes itself in the high 70s",
     "You are the one dealing the damage, so you are in range of what you are killing — with no army, no life steal and a small life pool",
     "Mana-hungry: Bone Spear costs about 12 at high levels and you cast constantly",
-    "Damage does not scale with gear the way an elemental build's does. There is no +% Magic Skill Damage anywhere",
+    "Damage does not scale with gear the way an elemental build's does. No Necromancer item carries +% Magic Skill Damage",
   ],
   difficulty: "moderate",
   budget: "medium",
@@ -150,7 +150,7 @@ export const boneSpearNecromancer: Build = {
     notes: [
       "**This is the most mana-hungry Necromancer.** A mercenary with Insight is not a luxury here; it is the difference between casting and drinking.",
       "Your resistances drop 40 in Nightmare and 100 in Hell, and there is no army standing between you and the consequences.",
-      "Faster Cast Rate is the damage stat. There is no +% Magic Skill Damage in the game, so casting more often is the only way the number goes up outside +skills.",
+      "Faster Cast Rate is the damage stat. Nothing a Necromancer can wear carries +% Magic Skill Damage — `extra-mag` exists and ships on the Void runeword, Entropy Locket and Guardian's Light, none of them reachable from this bar — so casting more often is the only way the number goes up outside +skills.",
     ],
   },
   breakpoints: [
@@ -542,7 +542,7 @@ export const boneSpearNecromancer: Build = {
         { ref: { kind: "runeword", slug: "spirit" }, why: "The off-hand for the swap." },
       ],
       notes:
-        "**There is no damage item for this build**, and that is the honest summary of its endgame. No armor gives +% Magic Skill Damage, no charm does, and no curse lowers magic resistance. Everything above raises skill levels or cast rate, and those are the only two levers. The upside is that the levers are cheap and the element they raise is the one nothing resists.",
+        "**There is no damage item a Necromancer can wear for this build**, and that is the honest summary of its endgame. No armor gives +% Magic Skill Damage, no charm does, and no curse lowers magic resistance. Everything above raises skill levels or cast rate, and those are the only two levers. The upside is that the levers are cheap and the element they raise is the one nothing resists.",
     },
   ],
 

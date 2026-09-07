@@ -7416,7 +7416,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       respecAt: "Não é necessário. Guarde os tokens.",
     },
     selfFoundNotes:
-      "Barata de começar e genuinamente travada no fim. Titan's Revenge, Razortail, Raven Frost e Atma's Scarab são todos achados comuns do Hell, Peace e Spirit são runas da Countess, e as duas skills principais estão disponíveis antes do nível 20. **O Bramble é a parede**: Ral, Ohm, Sur e Eth é um investimento sério de runas, e é a única fonte de dano de skills de veneno do jogo. Uma versão self-found funciona e simplesmente causa menos dano — o que numa build de dano ao longo do tempo significa lutas mais longas, não lutas perdidas.",
+      "Barata de começar e genuinamente travada no fim. Titan's Revenge, Razortail, Raven Frost e Atma's Scarab são todos achados comuns do Hell, Peace e Spirit são runas da Countess, e as duas skills principais estão disponíveis antes do nível 20. **O Bramble é a parede**: Ral, Ohm, Sur e Eth é um investimento sério de runas, e é a única fonte de dano de skills de veneno num slot de armadura, e os dois rolls de Rainbow Facet são as únicas outras que existem. Uma versão self-found funciona e simplesmente causa menos dano — o que numa build de dano ao longo do tempo significa lutas mais longas, não lutas perdidas.",
     hardcoreNotes:
       "Melhor que a reputação dela. Você arremessa à distância, carrega escudo, bloqueia bem, e a coisa que entra no grupo é uma Valkyrie com quatrocentos por cento a mais de vida que uma invocação de um ponto. O perigo real é o ritmo: veneno mata devagar, então as lutas duram mais e você passa mais tempo na sala do que qualquer outra Amazon. Alcance as metas de 32% de bloqueio e de recuperação de golpe, mantenha **Slow Missiles** para os grupos à distância que desmontariam a Valkyrie, e trate um grupo imune a veneno como problema da Valkyrie em vez de um quebra-cabeça para encarar parada. Holy Freeze no mercenário combina mais com esta build do que Might, se você joga para sobreviver.",
     gearSets: {
@@ -8013,7 +8013,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           },
           "offhand-0": {
             label: "Qualquer shrunken head de Necromancer com +skills",
-            why: "Uma shrunken head é um escudo que também carrega +Necromancer skills e + numa aba de skills. Nada mais no jogo coloca as duas coisas na mão secundária.",
+            why: "Uma shrunken head é um escudo que também carrega +Necromancer skills e + numa aba de skills. A única outra mão secundária que carrega skills de classe é o Herald of Zakarum, e aquilo é um escudo de Paladin.",
             lookFor: ["+2 Necromancer Skills", "+3 to Raise Skeleton", "2 sockets"],
           },
           "offhand-0-alt0": { why: "Resistências por três runas da Countess, se nenhuma head tiver caído." },
@@ -8172,7 +8172,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
 
   "poison-nova-necromancer": {
     summary:
-      "Um anel de veneno que impede uma sala inteira de regenerar, o único item do jogo que reduz resistência a veneno do inimigo, e Corpse Explosion para tudo que é imune aos dois.",
+      "Um anel de veneno que impede uma sala inteira de regenerar, a maior fonte isolada de redução de resistência a veneno do inimigo que existe, e Corpse Explosion para tudo que é imune aos dois.",
     playstyle:
       "Você anda até o meio de um grupo e lança uma nova, e tudo ao seu redor fica envenenado por dois segundos. Nada morre na conjuração — veneno é dano ao longo do tempo e esta build nunca finge o contrário — então você lança de novo, e de novo, mantendo a sala coberta enquanto o dano entra. O Lower Resist vai primeiro se o grupo for problema, e o Death's Web está fazendo o resto quer você perceba ou não. Aí algo morre, e o Corpse Explosion o transforma numa explosão física e de fogo que limpa o que o veneno não conseguiu tocar. O ritmo é nova, nova, maldição, detonar, e a build inteira é sobre saber de qual dos quatro a sala precisa.",
     strengths: [
@@ -8351,7 +8351,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "Um Enigma, para que ficar no meio do grupo vire escolha em vez de compromisso.",
         picks: {
           "weapon-0": {
-            why: "**−40-50% de resistência a veneno do inimigo, e nada mais no jogo tem isso.** Com o Lower Resist por cima, um monstro resistente deixa de ser resistente. Repare no que ele não tem: nenhuma linha de +% Poison Skill Damage — esse atributo vem do Bramble, que é outro slot, então os dois empilham.",
+            why: "**−40-50% de resistência a veneno do inimigo.** Os dois rolls de Rainbow Facet e o Defender's Bile carregam de 3 a 10% disso; nada chega perto dos vinte e cinco do Death's Web. Com o Lower Resist por cima, um monstro resistente deixa de ser resistente. Repare no que ele não tem: nenhuma linha de +% Poison Skill Damage — esse atributo vem do Bramble, que é outro slot, então os dois empilham.",
             lookFor: ["-50% to Enemy Poison Resistance", "+2 to Poison and Bone Skills"],
           },
           "weapon-0-alt0": { why: "Até existir um. Não é substituto — nada é — mas são três níveis de skill." },
@@ -8448,7 +8448,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "**Sem dano antes das sinergias entrarem.** Um Bone Spear de nível 30 sem nada atrás dele é fraco, e a build só vira ela mesma lá pelos 70 e poucos",
       "Você é quem causa o dano, então você está no alcance do que está matando — sem exército, sem roubo de vida e com pouca vida",
       "Come mana: o Bone Spear custa cerca de 12 em níveis altos e você conjura sem parar",
-      "O dano não escala com equipamento como o de uma build elemental. Não existe +% de dano de skill mágica em lugar nenhum",
+      "O dano não escala com equipamento como o de uma build elemental. Nenhum item que um Necromancer possa vestir carrega +% de dano de skill mágica",
     ],
     flexPoints: [
       "**O núcleo são 105 pontos e os cinco flexíveis acima são os outros cinco**, então este plano realmente fecha em 110 em vez de ser inflado até lá. Os cem da árvore de osso não são negociáveis: cada uma das cinco skills alimenta os outros dois ataques, então cortar qualquer uma corta os dois.",
@@ -8465,7 +8465,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       notes: [
         "**Este é o Necromancer que mais come mana.** Um mercenário com Insight não é luxo aqui; é a diferença entre conjurar e beber poção.",
         "As suas resistências caem 40 no Nightmare e 100 no Hell, e não há exército entre você e as consequências.",
-        "Faster Cast Rate é o atributo de dano. Não existe +% de dano de skill mágica no jogo, então conjurar mais vezes é o único jeito de o número subir fora de +skills.",
+        "Faster Cast Rate é o atributo de dano. Nada que um Necromancer possa vestir carrega +% de dano de skill mágica — o `extra-mag` existe e vem na runeword Void, no Entropy Locket e no Guardian's Light, nenhum deles alcançável a partir desta barra — então conjurar mais vezes é o único jeito de o número subir fora de +skills.",
       ],
     },
     breakpointWhy: {
@@ -10841,7 +10841,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
         "O urso mantém o grupo junto enquanto o veneno trabalha, o que importa mais aqui do que em qualquer outro Druid: um grupo espalhado é um grupo que a infecção não atravessa.",
     },
     immunityPlan:
-      "**Veneno é o único elemento do jogo sem mastery e sem nenhuma aura que reduza a resistência a ele, e isso molda tudo abaixo.** Tome as quatro coisas que tocam resistência a veneno do inimigo na ordem certa. O **Rotting Fissure**, o Sunder Charm de veneno, quebra uma imunidade a veneno de vez — e ele não tem substituto, porque a alternativa habitual não existe aqui. O **Lower Resist**, de um Necromancer no seu grupo, é a única outra coisa capaz de quebrar uma: é uma maldição, então é cortada a um quinto contra um alvo que ainda está imune e mesmo assim quebra a imunidade quando um quinto basta. O **Death's Web e os facets de veneno** carregam −% to Enemy Poison Resistance, que é pierce de item: aplicado depois da verificação de imunidade, e essa etapa é pulada enquanto a imunidade está de pé — então contra um imune a veneno eles estão ausentes, não fracos, e incidem com valor cheio no instante em que o charm ou a maldição tiver quebrado a imunidade. O **+% to Poison Skill Damage do Bramble não é redução de resistência**; ele sobe o seu dano antes de a resistência deles ser aplicada, então ajuda contra tudo que não é imune e não ajuda em nada contra tudo que é. E o **Conviction não aparece nesta lista**, porque ele reduz resistência a fogo, frio e raio e deixa o veneno em paz — que é o erro mais caro disponível nesta build. A metade da arma de cada mordida acerta por inteiro de qualquer forma, então um imune a veneno ainda morre, devagar, de um ataque corpo a corpo comum.",
+      "**Veneno é um de dois elementos sem mastery e sem nenhuma aura que reduza a resistência a ele — mágico é o outro, e a diferença é que veneno costuma ser resistido onde mágico quase não é, e isso molda tudo abaixo.** Tome as quatro coisas que tocam resistência a veneno do inimigo na ordem certa. O **Rotting Fissure**, o Sunder Charm de veneno, quebra uma imunidade a veneno de vez — e ele não tem substituto, porque a alternativa habitual não existe aqui. O **Lower Resist**, de um Necromancer no seu grupo, é a única outra coisa capaz de quebrar uma: é uma maldição, então é cortada a um quinto contra um alvo que ainda está imune e mesmo assim quebra a imunidade quando um quinto basta. O **Death's Web e os facets de veneno** carregam −% to Enemy Poison Resistance, que é pierce de item: aplicado depois da verificação de imunidade, e essa etapa é pulada enquanto a imunidade está de pé — então contra um imune a veneno eles estão ausentes, não fracos, e incidem com valor cheio no instante em que o charm ou a maldição tiver quebrado a imunidade. O **+% to Poison Skill Damage do Bramble não é redução de resistência**; ele sobe o seu dano antes de a resistência deles ser aplicada, então ajuda contra tudo que não é imune e não ajuda em nada contra tudo que é. E o **Conviction não aparece nesta lista**, porque ele reduz resistência a fogo, frio e raio e deixa o veneno em paz — que é o erro mais caro disponível nesta build. A metade da arma de cada mordida acerta por inteiro de qualquer forma, então um imune a veneno ainda morre, devagar, de um ataque corpo a corpo comum.",
     mercenaryNotes:
       "**Um Act 2 Desert Mercenary com Might, e o motivo é que não existe nada melhor para uma build de veneno.** O dano aprimorado do Might sobe a metade da arma da sua mordida e as mortes do próprio mercenário; no topo, o Concentration do Pride faz o mesmo, maior. O que importa mais é o que evitar: **o Infinity não faz nada por esta build.** A aura Conviction dele reduz resistência a fogo, frio e raio e não toca em veneno, então a arma de mercenário mais cara do jogo vale menos aqui do que um Fortitude que mantenha o mercenário vivo. Uma **Act 1 Rogue Scout com Faith** é a alternativa que vale considerar — a velocidade de ataque do Fanaticism são grupos infectados por minuto — e só compensa se a sua própria mão não estiver carregando um Beast.",
     farmingWhy: {
@@ -11004,7 +11004,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             why: "Roubo de vida e redução de dano físico, para um personagem sem escudo.",
           },
           "body-0": {
-            why: "**+25–50% to Poison Skill Damage, e é o único item do jogo que multiplica o dano desta build.** Não existe mastery de veneno nem aura que reduza resistência a veneno, então uma armadura que sobe o dano da própria skill faz um trabalho que nada mais faz. A aura Thorns dela é um bônus que ninguém planeja.",
+            why: "**+25–50% to Poison Skill Damage, e é o único item num slot de armadura que multiplica o dano desta build.** Não existe mastery de veneno nem aura que reduza resistência a veneno, então uma armadura que sobe o dano da própria skill faz um trabalho que nada mais faz. A aura Thorns dela é um bônus que ninguém planeja.",
             sockets: "Ral + Ohm + Sur + Eth em qualquer armadura de 4 soquetes.",
           },
           "body-0-alt0": {

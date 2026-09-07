@@ -1342,7 +1342,7 @@ export const runewords: Runeword[] = [
     release: "reign-of-the-warlock",
     confidence: "verified",
     notes:
-      "The stat lines are verified against `json/runes.json` at the pinned commit. `oskill Abyss` puts a Warlock capstone on any class that can hold a dagger, and it is the only item on this site besides Chaos that grants a skill across classes. The charge line reads count-then-level like every other: `min=35 max=4` is thirty-five charges of a level 4 Decrepify.",
+      "The stat lines are verified against `json/runes.json` at the pinned commit. `oskill Abyss` puts a Warlock capstone on any class that can hold a dagger, and it is one of a handful on this site that grant a skill across classes — Enigma, Call to Arms, Beast and Passion do it too — and the only one that hands over a capstone. The charge line reads count-then-level like every other: `min=35 max=4` is thirty-five charges of a level 4 Decrepify.",
   },
   {
     slug: "vigilance",

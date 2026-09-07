@@ -391,7 +391,7 @@ export const uniques: UniqueItem[] = [
       confidence: "verified",
     },
     notes:
-      "The Chu-Ko-Nu base is the fastest crossbow in the game — its weapon speed modifier is −60, further than any other. Combined with 66% Piercing Attack, each bolt carries whatever elemental damage you have added onto it through several targets at once, which is the entire mechanism behind the Enchant Sorceress. The 95 Dexterity requirement is the real cost, and it is not small for a caster.",
+      "The Chu-Ko-Nu base is the fastest crossbow in the game — its weapon speed modifier is −60, matched only by the Demon Crossbow and bettered by nothing. Combined with 66% Piercing Attack, each bolt carries whatever elemental damage you have added onto it through several targets at once, which is the entire mechanism behind the Enchant Sorceress. The 95 Dexterity requirement is the real cost, and it is not small for a caster.",
     confidence: "verified",
   },
 

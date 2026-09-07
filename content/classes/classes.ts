@@ -330,13 +330,13 @@ export const classes: CharacterClass[] = [
     slug: "warlock",
     name: "Warlock",
     summary:
-      "The first new Diablo II class in 25 years. Binds demons, hexes weapons, and is the only class that can wield a two-handed weapon alongside an off-hand.",
+      "The first new Diablo II class in 25 years. Binds demons, hexes weapons, and the only class that can pair *any* two-handed weapon with an off-hand.",
     overview:
-      "Added by the Reign of the Warlock expansion in February 2026, the Warlock is a dark scholar of forbidden Vizjerei magic. He levitates his weapon rather than holding it, which lets him equip a two-handed weapon in one hand and still use an off-hand Grimoire — a gear rule that applies to no other class and invalidates the usual one-hand-versus-two-hand reasoning. His three trees bind demons as minions, hex weapons with mind magic, or rain hellfire and void damage from range.",
+      "Added by the Reign of the Warlock expansion in February 2026, the Warlock is a dark scholar of forbidden Vizjerei magic. He levitates his weapon rather than holding it, which lets him equip a two-handed weapon in one hand and still use an off-hand Grimoire. The Barbarian gets a narrower version of this — eighteen two-handed swords carry the `1or2handed` flag and he alone may hold one in a single hand — but the Warlock's rule is not limited to a list of swords, and it invalidates the usual one-hand-versus-two-hand reasoning for every weapon he can hold. His three trees bind demons as minions, hex weapons with mind magic, or rain hellfire and void damage from range.",
     release: "reign-of-the-warlock",
     requiresDlc: "Reign of the Warlock",
     strengths: [
-      "The only class that can wield a two-handed weapon and an off-hand at the same time",
+      "The only class that can pair any two-handed weapon with an off-hand — the Barbarian manages it with eighteen specific swords, and nothing else",
       "Three genuinely distinct playstyles: minions, weapon hexes, ranged elemental",
       "Can bind demons encountered in the world, not just summon fixed minions",
       "Higher life per Vitality point than the Sorceress (3 vs 2)",
@@ -349,7 +349,7 @@ export const classes: CharacterClass[] = [
     coreMechanics: [
       {
         title: "Levitated weapon",
-        body: "The Warlock's class passive levitates the weapon in his right hand. In practice this means a two-handed weapon occupies only the weapon slot, leaving the off-hand free for a Grimoire. No other class can do this.",
+        body: "The Warlock's class passive levitates the weapon in his right hand. In practice this means a two-handed weapon occupies only the weapon slot, leaving the off-hand free for a Grimoire. One other class comes close and it is worth knowing which: `weapons.json` flags eighteen two-handed swords `1or2handed`, and a Barbarian may hold one of those in a single hand. That is a list of eighteen swords; this is every two-handed weapon the Warlock can lift.",
       },
       {
         title: "Grimoires",

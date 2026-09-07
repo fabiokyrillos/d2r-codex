@@ -48,13 +48,13 @@ export const poisonNovaNecromancer: Build = {
   name: "Poison Nova Necromancer",
   classSlug: "necromancer",
   summary:
-    "A ring of poison that stops a whole room regenerating, the only item in the game that lowers enemy poison resistance, and Corpse Explosion for everything immune to both.",
+    "A ring of poison that stops a whole room regenerating, the largest single source of lowered enemy poison resistance in the game, and Corpse Explosion for everything immune to both.",
   damageTypes: ["poison", "physical", "fire"],
   primarySkill: "poison-nova",
   playstyle:
     "You walk into the middle of a pack and cast a nova, and everything around you is poisoned for two seconds. Nothing dies on the cast — poison is damage over time and this build never pretends otherwise — so you cast again, and again, keeping the room covered while the damage lands. Lower Resist goes on first if the pack is a problem, and Death's Web is doing the rest whether you notice it or not. Then something dies, and Corpse Explosion turns it into a physical and fire explosion that clears whatever the poison could not touch. The rhythm is nova, nova, curse, detonate, and the whole build is about knowing which of those the room needs.",
   strengths: [
-    "**Death's Web is the only item in the game with −% to Enemy Poison Resistance**, and it stacks with Lower Resist",
+    "**Death's Web is the largest −% to Enemy Poison Resistance in the game, and the only one on a body slot worth building around**, and it stacks with Lower Resist",
     "Poison stops a monster regenerating for as long as it is applied, which is what makes it work on things with large life pools",
     "Two damage types on one bar: poison from the nova, and physical plus fire from Corpse Explosion",
     "The nova is centred on you and hits everything around you, so a full room is one cast",
@@ -344,7 +344,7 @@ export const poisonNovaNecromancer: Build = {
           picks: [
             {
               ref: { kind: "unique", slug: "deaths-web" },
-              why: "**−40-50% to Enemy Poison Resistance, and nothing else in the game has it.** With Lower Resist on top, a resistant monster stops being resistant. Note what it does not have: no +% Poison Skill Damage line — that stat comes from the Bramble, which is a different slot, so the two stack.",
+              why: "**−40-50% to Enemy Poison Resistance, and the two Rainbow Facet rolls and Defender's Bile carry 3-10% of it; nothing else comes near Death's Web's twenty-five.** With Lower Resist on top, a resistant monster stops being resistant. Note what it does not have: no +% Poison Skill Damage line — that stat comes from the Bramble, which is a different slot, so the two stack.",
               lookFor: ["-50% to Enemy Poison Resistance", "+2 to Poison and Bone Skills"],
               tradeOnly: true,
               alternatives: [{ ref: { kind: "runeword", slug: "white" }, why: "Until one exists. It is not a substitute — nothing is — but it is three skill levels." }],

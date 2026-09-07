@@ -229,11 +229,11 @@ export const classesPtBr: Overlay<ClassCopy> = {
 
   warlock: {
     summary:
-      "A primeira classe nova de Diablo II em 25 anos. Escraviza demônios, encanta armas e é a única classe que empunha uma arma de duas mãos junto de uma mão secundária.",
+      "A primeira classe nova de Diablo II em 25 anos. Escraviza demônios, encanta armas e é a única classe que combina *qualquer* arma de duas mãos com uma mão secundária.",
     overview:
-      "Adicionado pela expansão Reign of the Warlock em fevereiro de 2026, o Warlock é um erudito sombrio da magia proibida dos Vizjerei. Ele levita a arma em vez de segurá-la, o que permite equipar uma arma de duas mãos numa mão e ainda usar um Grimoire na outra — uma regra de equipamento que não vale para nenhuma outra classe e que invalida o raciocínio habitual de uma mão versus duas mãos. As três árvores dele escravizam demônios como minions, encantam armas com magia mental, ou chovem fogo do inferno e dano de vazio à distância.",
+      "Adicionado pela expansão Reign of the Warlock em fevereiro de 2026, o Warlock é um erudito sombrio da magia proibida dos Vizjerei. Ele levita a arma em vez de segurá-la, o que permite equipar uma arma de duas mãos numa mão e ainda usar um Grimoire na outra — O Barbarian tem uma versão mais estreita disso — dezoito espadas de duas mãos carregam a flag `1or2handed` e só ele pode segurar uma delas com uma das mãos — mas a regra do Warlock não se limita a uma lista de espadas, e ela invalida o raciocínio habitual de uma-mão-versus-duas-mãos para toda arma que ele consiga levantar.",
     strengths: [
-      "A única classe que empunha uma arma de duas mãos e uma mão secundária ao mesmo tempo",
+      "A única classe que combina qualquer arma de duas mãos com uma mão secundária — o Barbarian consegue com dezoito espadas específicas, e com mais nada",
       "Três estilos genuinamente distintos: minions, hexes de arma, elemental à distância",
       "Pode escravizar demônios encontrados no mundo, não apenas invocar minions fixos",
       "Mais vida por ponto de Vitality que a Sorceress (3 contra 2)",
@@ -246,7 +246,7 @@ export const classesPtBr: Overlay<ClassCopy> = {
     coreMechanics: [
       {
         title: "Arma levitada",
-        body: "A passiva de classe do Warlock levita a arma na mão direita. Na prática isso significa que uma arma de duas mãos ocupa apenas o slot de arma, deixando a mão secundária livre para um Grimoire. Nenhuma outra classe consegue isso.",
+        body: "A passiva de classe do Warlock levita a arma na mão direita. Na prática isso significa que uma arma de duas mãos ocupa apenas o slot de arma, deixando a mão secundária livre para um Grimoire. Uma outra classe chega perto e vale saber qual: o `weapons.json` marca dezoito espadas de duas mãos como `1or2handed`, e um Barbarian pode segurar uma delas com uma das mãos. Aquilo é uma lista de dezoito espadas; isto é toda arma de duas mãos que o Warlock consiga levantar.",
       },
       {
         title: "Grimoires",
