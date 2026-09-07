@@ -76,6 +76,12 @@ import {
   isUntranslatedProse,
 } from "./content-rules";
 import { FREEZE_RULES, checkFreezeLengthClaims } from "./freeze-length-claims";
+import {
+  DIMINISHING_RULES,
+  checkDiminishingClaims,
+  claimEntriesFor,
+  type ClaimEntry,
+} from "./diminishing-claims";
 import { ASSASSIN_RULES, checkAssassinClaims } from "./assassin-rules";
 import {
   AVAILABILITY_RULES,
@@ -1163,6 +1169,15 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
   };
 
   const pages: { where: string; lines: string[] }[] = [];
+  /*
+   * The same sweep, split by the skill each string belongs to.
+   *
+   * `checkDiminishingClaims` needs to know which skill a note is about, and four
+   * of the six sentences it exists to catch never say. A skill-plan entry is
+   * `{ skill: "weapon-block", note }` and a `skillNotes` map is keyed by slug,
+   * so the structure is the only thing that carries it.
+   */
+  const claimEntries: ClaimEntry[] = [];
   for (const locale of LOCALES) {
     const catalogue: [string, readonly unknown[]][] = [
       ["mechanics", getMechanics(locale)],
@@ -1180,6 +1195,7 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
           (entity as { classSlug?: string }).classSlug ??
           "?";
         pages.push({ where: `${locale} ${kind} ${slug}`, lines: allStrings(entity) });
+        claimEntries.push(...claimEntriesFor(entity, locale, `${locale} ${kind} ${slug}`));
       }
     }
   }
@@ -1250,6 +1266,20 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
   const freeze = pages.flatMap(({ where, lines }) => checkFreezeLengthClaims(lines, where));
   for (const rule of FREEZE_RULES) {
     const hits = freeze.filter((p) => p.rule === rule);
+    console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
+    for (const h of hits) problems.push(h.message);
+  }
+
+  /*
+   * The `dm`/`ln` families ride the same sweep, and for the reason that keeps
+   * recurring: the six sentences that stated a diminishing ceiling as a figure
+   * you have were spread over a kicksin summary, two dragon-tail fields, a
+   * blade-fury skill note and a whirlwind-assassin paragraph, in both locales.
+   * Nothing that walks one content type sees those together.
+   */
+  const diminishing = checkDiminishingClaims(claimEntries);
+  for (const rule of DIMINISHING_RULES) {
+    const hits = diminishing.filter((p) => p.rule === rule);
     console.log(`  ${hits.length === 0 ? "ok" : " x"} ${rule.padEnd(38)} ${hits.length}`);
     for (const h of hits) problems.push(h.message);
   }
