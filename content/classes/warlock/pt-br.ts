@@ -63,7 +63,7 @@ export const warlockSkillsPtBr: Overlay<SkillCopy> = {
       "A marca corta a redução de dano do alvo em **5, e mais 2 por nível**, e a defesa dele em **50, e mais 35 por nível**. Os dois são grandes cedo e a linha de defesa continua grande.",
       "Seus demônios **teleportam até o alvo marcado** — a linha carrega uma distância de warp de 38 — que é o que transforma três minions lentos de corpo a corpo em algo que chega. Esta é a skill que torna a árvore Demon jogável à distância.",
       "Ela **exige um demônio em campo**. Sem pet, a skill não tem o que comandar.",
-      "Ela também limpa parte do controle de grupo do pet que envia, e alimenta duas outras skills: o Crushing Blow do Summon Goatman, e a chance de captura do Bind Demon.",
+      "Ela também limpa parte do controle de grupo do pet que envia. Duas outras skills leem o nível de hard points dela diretamente — o Crushing Blow do Summon Goatman e a chance de captura do Bind Demon — o que o jogo não rotula como sinergia e o graph portanto não desenha.",
       "A duração é de **125 frames com mais 13 por nível** — cerca de cinco segundos com um ponto, e a ideia é reconjurar no próximo alvo em vez de manter.",
     ],
   },
