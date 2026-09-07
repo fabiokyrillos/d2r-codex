@@ -328,7 +328,7 @@ export const fireTrapsin: Build = {
 
   flexPoints: [
     "**There are no flex points.** The core is 73, each package costs exactly 37, and 73 + 37 = 110. If your skill screen shows an unspent point, one of the three routes above is not finished.",
-    "**Do not split the thirty-seven across two packages.** Fade at ten is 40% resistance rather than 75%, and Death Sentry at ten is the same corpse explosion with a smaller radius. Each of the three is worth taking whole and none is worth half.",
+    "**Do not split the thirty-seven across two packages.** Death Sentry at ten is the same corpse explosion with a smaller radius, and Fade at ten is half the physical damage reduction — that half of the skill is flat, a point per level, so the second ten buys exactly what the first did. Each of the three is worth taking whole and none is worth half.",
     "**Fire Blast's remaining synergies are the tempting wrong answer.** Shock Web, Charged Bolt Sentry and Lightning Sentry each add 11% per point to Fire Blast, so thirty-seven points there would nearly double your thrown bomb. It is still wrong: Fire Blast is one target at a time, and all three packages buy something that scales with the whole room.",
     "**Venom is not on this page.** It adds poison to *attacks*, and this character makes none — traps are summons and their damage is not yours.",
     "**Fire Mastery does not exist on this class.** There is no Assassin equivalent of the Sorceress's mastery, which is why the immunity plan leans on the Sunder Charm rather than on stacking your own damage.",

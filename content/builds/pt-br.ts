@@ -11133,7 +11133,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "**Não existem pontos livres.** O núcleo são 90, cada pacote custa exatamente 20, e 90 + 20 = 110. Se a sua tela de skills mostra um ponto não gasto, uma das três rotas acima não está terminada.",
-      "**Não divida os vinte entre dois pacotes.** Fade em dez são 40% de resistência em vez de 75%; Fire Blast em dez é uma bomba que não mata o grupo imune que você pegou ele para matar. Cada uma das três vale pega inteira e nenhuma vale pela metade.",
+      "**Não divida os vinte entre dois pacotes.** Fade em dez é metade da redução de dano físico, que é fixa em um ponto por nível; Fire Blast em dez é uma bomba que não mata o grupo imune que você pegou ele para matar. Cada uma das três vale pega inteira e nenhuma vale pela metade.",
       "**Venom não está nesta página**, e é a resposta errada mais comum. Ele acrescenta veneno a *ataques*, e este personagem não faz nenhum — traps são invocações e o dano delas não é seu.",
       "**Blade Fury e Blade Shield também não estão.** Eles vivem na mesma árvore, levam três quartos do dano da sua arma, e esta build carrega uma garra escolhida por +skills e não por dano.",
     ],
@@ -11277,7 +11277,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     selfFoundNotes:
       "**Esta é a build self-found mais forte que a Assassin tem e uma das mais fortes do site.** Nada nos três primeiros tiers é runeword acima de três runas: Stealth, Lore, Spirit, Ancients' Pledge, Treachery. A arma — o maior item de dano da build — é uma garra mágica ou rara de vendedor, e vendedores renovam estoque toda vez que você volta à cidade. A única coisa que vale caçar de propósito é uma garra com +3 Lightning Sentry e +3 Death Sentry juntos.",
     hardcoreNotes:
-      "**Pegue o pacote Fade.** Vinte pontos de Fade são 75% de resistência e 20% de redução de dano físico que nenhum slot de equipamento precisa pagar, e a redução de duração de maldição é o que impede o Amplify Damage de um Oblivion Knight de ser fatal. Fora isso, a build já é uma das mais seguras do jogo: você nunca entra em corpo a corpo, o Mind Blast atordoa antes de você se comprometer, o Cloak of Shadows cega uma tela, e o Shadow Master chega primeiro. As duas coisas que matam trappers de Hardcore são colocar um campo num grupo que já estava em movimento, e a Iron Maiden.",
+      "**Pegue o pacote Fade.** Vinte pontos de Fade são 20% de redução de dano físico que nenhum slot de equipamento precisa pagar — essa metade é fixa, um ponto por nível — com a resistência elemental subindo em direção ao teto de 75% por cima, e a redução de duração de maldição é o que impede o Amplify Damage de um Oblivion Knight de ser fatal. Fora isso, a build já é uma das mais seguras do jogo: você nunca entra em corpo a corpo, o Mind Blast atordoa antes de você se comprometer, o Cloak of Shadows cega uma tela, e o Shadow Master chega primeiro. As duas coisas que matam trappers de Hardcore são colocar um campo num grupo que já estava em movimento, e a Iron Maiden.",
     gearSets: {
       starter: {
         goal: "Chegar ao Lightning Sentry com as resistências intactas. Nada aqui custa mais do que três runas da Countess.",
@@ -11506,7 +11506,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
     ],
     flexPoints: [
       "**Não existem pontos livres.** O núcleo são 73, cada pacote custa exatamente 37, e 73 + 37 = 110. Se a sua tela de skills mostra um ponto não gasto, uma das três rotas acima não está terminada.",
-      "**Não divida os trinta e sete entre dois pacotes.** Fade em dez são 40% de resistência em vez de 75%, e Death Sentry em dez é a mesma explosão de cadáver com raio menor. Cada um dos três vale inteiro e nenhum vale pela metade.",
+      "**Não divida os trinta e sete entre dois pacotes.** Death Sentry em dez é a mesma explosão de cadáver com raio menor, e Fade em dez é metade da redução de dano físico — essa metade da skill é fixa, um ponto por nível, então os segundos dez compram exatamente o que os primeiros compraram. Cada um dos três vale inteiro e nenhum vale pela metade.",
       "**As sinergias que faltam no Fire Blast são a tentação errada.** Shock Web, Charged Bolt Sentry e Lightning Sentry somam 11% por ponto cada um no Fire Blast, então trinta e sete pontos ali quase dobrariam a sua bomba arremessada. Continua errado: o Fire Blast é um alvo por vez, e os três pacotes compram algo que escala com a sala inteira.",
       "**Venom não está nesta página.** Ele acrescenta veneno a *ataques*, e este personagem não faz nenhum — traps são invocações e o dano delas não é seu.",
       "**Fire Mastery não existe nesta classe.** Não há equivalente da mastery da Sorceress, que é por que o plano de imunidade se apoia no Sunder Charm em vez de em empilhar o seu próprio dano.",
@@ -12216,7 +12216,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "fhr-48":
         "**Obrigatório, porque o método inteiro desta build é ficar parada ao lado da coisa.** Ser atordoada no meio de uma ativação custa o resto dos chutes, e os chutes são o dano.",
       "fbr-86":
-        "O Weapon Block em vinte dá 65% de chance de bloqueio, e um bloqueio do qual você se recupera devagar é um bloqueio que ainda te custou a luta. É este breakpoint que faz aqueles vinte pontos pagarem.",
+        "O Weapon Block em vinte dá uma chance de bloqueio subindo em direção ao teto de 65%, e um bloqueio do qual você se recupera devagar é um bloqueio que ainda te custou a luta. É este breakpoint que faz aqueles vinte pontos pagarem.",
     },
     breakpointNotes:
       "**Chutes rodam em velocidade de ataque, e não há linha de Increased Attack Speed acima porque um número único estaria errado para a maioria dos leitores.** O Dragon Talon toca a animação `KK`, que está no cálculo de velocidade de ataque — então a velocidade base das garras é entrada da mesma fórmula que o afixo alimenta, mesmo que o dano em si seja das botas. É essa a parte que pega as pessoas: **as garras que você segura mudam a rapidez do chute, e as botas decidem a força.** Valem as mesmas três regras de toda esta classe: duas garras usam a média das duas bases, Increased Attack Speed na garra secundária não conta, e o Burst of Speed acrescenta até 60% sem diminuição — que é o que o terceiro pacote compra e o que o pacote de Fade abre mão. Estar congelado alonga a animação, então Cannot Be Frozen é um atributo de velocidade aqui. **A Faster Cast Rate não faz nada por nada disso**, e é por isso que a linha dela acima está marcada como luxo em vez de omitida: omitir convida o leitor a achar que foi esquecimento.",
@@ -12471,7 +12471,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             tradeoff: "Você abre mão das resistências do Fade e do corpo do Shadow Master. Numa build que fica parada à distância, as duas coisas são reais.",
             skillNotes: {
               "claw-mastery":
-                "**Attack Rating e dano fora da arma, na metade que as sinergias não alcançam — e é uma mastery, não uma sinergia.** O grafo de skills não desenha aresta de ponto duro do Claw Mastery para o Blade Fury, e faz bem: o que isto compra é +220% de Attack Rating, +111% de dano e 25% de chance de acerto crítico, e as três coisas caem no termo da arma e não no dano próprio da skill. A metade do Attack Rating importa mais do que parece, porque esta skill rola acerto.",
+                "**Attack Rating e dano fora da arma, na metade que as sinergias não alcançam — e é uma mastery, não uma sinergia.** O grafo de skills não desenha aresta de ponto duro do Claw Mastery para o Blade Fury, e faz bem: o que isto compra é +220% de Attack Rating, +111% de dano e uma chance de acerto crítico subindo em direção a 25%, e as três coisas caem no termo da arma e não no dano próprio da skill. A metade do Attack Rating importa mais do que parece, porque esta skill rola acerto.",
             },
             gearNote: "Este pacote escolhe garras por você. Duas garras também ligam o Weapon Block, então o ponto único do núcleo nele deixa de ser morto.",
             rotationNote: "Sem mudança. Não há rotação para mudar — a cadência é fixa.",
@@ -12740,7 +12740,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
             tradeoff: "Você abre mão do Fade, e portanto das resistências e da redução de duração de maldição dele. No Hell isso é perda real e no Chaos Sanctuary é a escolha errada.",
             skillNotes: {
               "burst-of-speed": "**Até 60% de velocidade de ataque, sem diminuição, mais velocidade de corrida.** O único buff da classe que paga diretamente a penalidade impressa na própria linha da skill.",
-              "weapon-block": "65% de chance de bloqueio com duas garras e nenhum escudo. Numa build que fica no meio do que acabou de explodir, este é o plano de sobrevivência.",
+              "weapon-block": "Uma chance de bloqueio subindo em direção a 65% com duas garras e nenhum escudo. Numa build que fica no meio do que acabou de explodir, este é o plano de sobrevivência.",
             },
             gearNote: "Increased Attack Speed na garra primária acumula com isto e vale slots de verdade. Velocidade de ataque na mão secundária não é lida.",
             rotationNote: "Igual em formato e materialmente mais rápida na prática: as três cargas chegam antes, então a janela de quinze segundos cobre mais terreno.",
@@ -12789,7 +12789,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       "fhr-48":
         "**Obrigatório.** Uma rotação com preparação é uma rotação que pode ser interrompida, e ser atordoada entre a terceira carga e a liberação desperdiça a pilha inteira.",
       "fbr-86":
-        "Vale a pena com o pacote de velocidade, que leva o Weapon Block a vinte e a 65% de chance de bloqueio. Sem esse pacote isto é luxo.",
+        "Vale a pena com o pacote de velocidade, que leva o Weapon Block a vinte e a uma chance de bloqueio subindo em direção a 65%. Sem esse pacote isto é luxo.",
       "fcr-65":
         "**Só para o Mind Blast e os buffs.** A taxa de conjuração encurta a animação `SC` da Assassin de 16 frames para 11 e não toca num chute.",
     },

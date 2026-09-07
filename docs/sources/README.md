@@ -480,6 +480,70 @@ One rule *is* worth building, and it is the narrow one: a claim of the form
 site" means these registries. It needs no game data and it catches the subset
 that is about us rather than about Blizzard.
 
+### A parameter labelled Max is not a figure twenty points reach
+
+The game computes a skill's scaling with a named function in its `calc` columns.
+Two of them carry almost all the load, and they pair with differently named
+parameters:
+
+| function | parameters | reading |
+| --- | --- | --- |
+| `ln78` | `Param7` *baseline*, `Param8` *per level* | linear — `base + per × (level − 1)` |
+| `dm12` | `Param1` *Min*, `Param2` *Max* | diminishing — approaches Max, never arrives |
+
+**Claw Mastery proves the distinction inside one row.** Attack rating is
+`ln12` = 30 + 10 × 19 = **220%**, damage is `ln34` = 35 + 4 × 19 = **111%**, and
+this site publishes both figures exactly. Critical chance on the same row is
+`dm56` with `Param6 = 25`. The author who computed the two linear values
+correctly wrote the third as "a 25% chance of a critical hit".
+
+Ten sentences across three skills and both locales stated a `dm` Max as achieved.
+The repair states the ceiling and publishes no derived figure, because the site
+does not publish a curve it cannot validate against an accepted source — the
+same §5 policy that keeps the trap-laying table off the page.
+
+**Two of them were wrong in a second way, and it is the more interesting one.**
+*"Fade at ten is 40% resistance rather than 75%"* argues against splitting a
+package: half the points, far less than half the benefit. But 10 → 40 → 75 is an
+*accelerating* curve, and the game reads that parameter through `dm12`. A
+diminishing curve makes the opposite argument — the later points buy less, so
+splitting costs less than linear, not more. The sentence's own numbers contradict
+the function that produces them.
+
+The argument survives on the half of the skill where it is true. Fade's physical
+damage reduction is `ln78`, `Param7 = 1` baseline and `Param8 = 1` per level, so
+twenty points is 20% and the second ten buys exactly what the first did. That
+half wants taking whole. The clause *"Twenty points of Fade is 75% resistance and
+20% physical damage reduction"* is half right and half wrong **in the same
+breath**, with the correct half computed from the linear column sitting beside
+the incorrect half read off the diminishing one.
+
+#### Why the rule for this is recorded and not built
+
+The check is mechanical — collect every `dm` high parameter, refuse prose that
+pairs one with an achieved-value verb — and a script found all ten in one pass.
+It is not built, and the reason is worth more than the rule:
+
+**the bounds are not in this repository.** `content/classes/assassin/skills.ts`
+states Weapon Block's curve as a sentence, not as data. So a gate has two options
+and both are bad. Adding the bounds to the generated graph adds a field to every
+node, changes every node body, and fails `check:graph-drift` by design. Authoring
+the table by hand in a rules file makes it a claim about something the repository
+has no representation of — the exact shape this section says a gate cannot check,
+rebuilt as a gate.
+
+The honest form is a third thing: put the `dm`/`ln` classification in the graph
+deliberately, as its own change with its own baseline update, and write the rule
+against generated data. Until then the sweep is an instrument a person runs, and
+this section is where its result is recorded.
+
+**The prediction it falsified is the argument for running it.** The agent that
+found the first two skills expected the rest to be clean — *"Fade's 75 is stated
+as a ceiling everywhere I looked, but I only checked the seven Assassin pages."*
+Three English sentences state it as achieved, and one of them sits two files from
+an Assassin journey step that gets it right. A careful reader checked and was
+wrong about the reach of their own finding; the data was not.
+
 ### Name the artefact you searched, not the world
 
 Four claims went wrong the same way on the eight-class pass, and the rule that
