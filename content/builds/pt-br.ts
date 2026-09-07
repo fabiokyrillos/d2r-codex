@@ -12226,7 +12226,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
       venom:
         "**A segunda fonte de dano, e a que responde a um imune a físico.** Ele escreve dano de veneno em você como atributo de personagem, então pega carona nos chutes e não nas garras. A duração é `ELen = 10` sob `skill_poison_override_length` — quatro décimos de segundo, *sobrescrevendo* em vez de acumular — então uma build que chuta sete vezes por segundo é a que o mantém de pé, não a que o multiplica.",
       "weapon-block":
-        "**20% em um ponto, 65% em vinte**, com duas garras e nenhum escudo. É por isso que uma Assassin corpo a corpo consegue ficar onde esta build fica, e é a razão de as garras continuarem nas mãos dela mesmo sem contribuir nada para o chute.",
+        "**20% em um ponto, subindo em direção ao teto de 65%**, com duas garras e nenhum escudo. É por isso que uma Assassin corpo a corpo consegue ficar onde esta build fica, e é a razão de as garras continuarem nas mãos dela mesmo sem contribuir nada para o chute.",
       "tiger-strike":
         "**Um charge-up, não um ataque.** Três cargas multiplicam o dano do chute que as gasta, e enquanto ele as gasta o `Param8 = 1` faz o chute não poder errar. Um ponto basta para tê-lo; veja os pacotes para o argumento a favor de vinte.",
       "fire-blast": "A única skill de nível 1 da árvore de Traps, e o primeiro de quatro pontos no caminho até o Death Sentry.",

@@ -189,7 +189,7 @@ export const kicksin: Build = {
       points: 20,
       role: "utility",
       order: 3,
-      note: "**20% at one point, 65% at twenty**, with two claws and no shield. This is why a melee Assassin can stand where this build stands, and it is the reason the claws stay in her hands at all when they contribute nothing to the kick.",
+      note: "**20% at one point, climbing toward a 65% ceiling**, with two claws and no shield. This is why a melee Assassin can stand where this build stands, and it is the reason the claws stay in her hands at all when they contribute nothing to the kick.",
     },
     {
       skill: "tiger-strike",
