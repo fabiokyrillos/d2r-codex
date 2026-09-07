@@ -170,9 +170,9 @@ export const warCryBarbarian: Build = {
     vitality: "Everything else. Four life per point, and Battle Orders on top of it.",
     energy: "None, and it is worth saying because this build casts. War Cry costs 10 mana rather than 40 — the raw column is shifted — and Insight on the mercenary covers the press rate.",
     notes: [
-      "**This is the only Barbarian stat plan with no weapon requirement in it.** A Singer's weapon is chosen for +skills and cast rate, and the usual candidates need little Strength.",
+      "**There is no weapon requirement in this stat plan at all.** A Singer's weapon is chosen for +skills and cast rate rather than for damage, and the usual candidates need little Strength — a Heart of the Oak in a mace asks almost none.",
       "Block is worth more here than on any other page on this class, because the build's whole method is to stand still inside the pack it is stunning.",
-      "Faster Cast Rate is bought with gear, not with attributes — but it is the stat to plan the gear around, which no other Barbarian page can say.",
+      "Faster Cast Rate is bought with gear, not with attributes — but it is the stat to plan the whole gear list around, which is not how any other Barbarian is built.",
     ],
   },
   breakpoints: [
@@ -307,12 +307,12 @@ export const warCryBarbarian: Build = {
   ],
   mercenary: "act-2-desert-mercenary",
   mercenaryNotes:
-    "**This is the only Barbarian on the site whose mercenary aura is not chosen for his own damage.** Might multiplies weapon damage, and War Cry carries no weapon damage at all — its range is its own. So take **Holy Freeze**, the Act 2 Nightmare defensive aura: it slows everything around him, which stacks with the stun and with Grim Ward's slow to produce a pack that is barely moving at all. Insight in a polearm answers the mana cost of a very high press rate, and it is the best weapon he can hold until an Infinity, whose Conviction lowers enemy resistances — including physical, which is the one this build cares about. The Reaper's Toll is the strong alternative: Decrepify on striking is −50% enemy physical resistance and a slow, and both halves land on the damage type War Cry actually deals. Keep him alive with a Fortitude and a Vampire Gaze.",
+    "**The aura here is not chosen for your own damage, which is unusual for this class.** Might multiplies weapon damage, and War Cry carries no weapon damage at all — its range is its own, so the aura that raises every other Barbarian's hits does nothing for this one. So take **Holy Freeze**, the Act 2 Nightmare defensive aura: it slows everything around him, which stacks with the stun and with Grim Ward's slow to produce a pack that is barely moving at all. Insight in a polearm answers the mana cost of a very high press rate, and it is the best weapon he can hold until an Infinity, whose Conviction lowers enemy resistances — including physical, which is the one this build cares about. The Reaper's Toll is the strong alternative: Decrepify on striking is −50% enemy physical resistance and a slow, and both halves land on the damage type War Cry actually deals. Keep him alive with a Fortitude and a Vampire Gaze.",
   farming: [
     { area: "secret-cow-level", difficulty: "hell", why: "Wall-to-wall density, which is exactly the shape a radius-7 shout wants — **and its own immunity list carries physical**, which is the one thing this build has no answer to in the plan. With a Bone Break it is the best area a Singer has; without one, the packs you cannot hurt are the packs you meet most.", minTier: "budget", rating: 4 },
-    { area: "worldstone-keep", difficulty: "hell", why: "Area level 85 and dense enough that every shout lands on a dozen things. The standard endgame loop, and the Singer runs it faster than any other Barbarian.", minTier: "early-hell", rating: 5 },
+    { area: "worldstone-keep", difficulty: "hell", why: "Area level 85 and dense enough that every shout lands on a dozen things. **But it records physical immunity, and this build has no second damage type in the plan** — so a Bone Break is not an upgrade here, it is what makes the area runnable at all.", minTier: "budget", rating: 4 },
     { area: "lower-kurast", difficulty: "hell", why: "Chests rather than monsters, and a build with this much magic find and Teleport clears the supers faster than it clears anything else.", minTier: "budget", rating: 4 },
-    { area: "chaos-sanctuary", difficulty: "hell", why: "Dense and lucrative, and the stun handles the Oblivion Knights before their curses land. Diablo himself is the problem — one target is this build's worst case.", minTier: "budget", rating: 3 },
+    { area: "chaos-sanctuary", difficulty: "hell", why: "Dense and lucrative, and the stun handles the Oblivion Knights before their curses land. Two problems: Diablo himself, because one target is this build's worst case, and **the recorded physical immunity**, which a physical-only build answers with a Bone Break or not at all.", minTier: "budget", rating: 3 },
     { area: "pit", difficulty: "hell", why: "Area level 85 and dense, but its physical immunes are the wall this build has the least answer to. Bring the Bone Break.", minTier: "early-hell", rating: 3 },
     { area: "travincal", difficulty: "hell", why: "Three targets standing together and a short run. Fine rather than exceptional — three monsters is not the density this build is built for.", minTier: "nightmare", rating: 3 },
   ],
