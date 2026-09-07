@@ -283,8 +283,8 @@ export const runewords: Runeword[] = [
     requiredLevel: 29,
     tier: "starter",
     bases: {
-      categories: ["shield", "paladin-shield", "necromancer-head"],
-      display: "Any 2-socket Shield",
+      categories: ["shield", "paladin-shield", "necromancer-head", "grimoire"],
+      display: "Any 2-socket Shield, Paladin shield, Shrunken Head or Grimoire",
     },
     stats: [
       { text: "+60% Faster Block Rate" },
@@ -1730,8 +1730,8 @@ export const runewords: Runeword[] = [
     requiredLevel: 37,
     tier: "starter",
     bases: {
-      categories: ["shield", "paladin-shield", "necromancer-head"],
-      display: "Any 2-socket Shield",
+      categories: ["shield", "paladin-shield", "necromancer-head", "grimoire"],
+      display: "Any 2-socket Shield, Paladin shield, Shrunken Head or Grimoire",
       exclusions: [
         "**Necromancer shrunken heads and Paladin auric shields both count.** The game resolves each to the shield type, so either can hold this.",
       ],

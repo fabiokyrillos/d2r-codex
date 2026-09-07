@@ -81,7 +81,33 @@ export function checkClassPagesComplete(
     if (!build.hardcoreNotes) fail(build.slug, "has no hardcore notes");
     if (!build.selfFoundNotes) fail(build.slug, "has no self-found notes");
     if (!build.levelingPath) fail(build.slug, "has no leveling path");
-    if (!build.flexPoints || build.flexPoints.length === 0) {
+    /*
+     * "Says nothing about the rest" is the clause, and `flexPoints` was the
+     * only way it could be satisfied. That was too narrow, in the way the
+     * breakpoint clause below was too narrow before it: it named one field
+     * rather than the thing the field is for.
+     *
+     * `SkillPackage.remainderNote` is documented as "where any genuinely free
+     * points go once the package is paid for" — the same fact, told per
+     * package. On a build whose packages are `choose: "one"` and leave
+     * different amounts over, that is the *better* place for it, and requiring
+     * `flexPoints` as well would demand a second copy of a fact that has to be
+     * kept in step with the first.
+     *
+     * So the contract is "name the remainder", and there are two honest ways
+     * to do it. Partial coverage is still silence: every package in every
+     * group must carry one, or the build-level list must exist. A build with
+     * no packages at all has only the one route open to it.
+     */
+    const groups = build.skillPackages ?? [];
+    const everyPackageNamesIt =
+      groups.length > 0 &&
+      groups.every(
+        (g) =>
+          g.packages.length > 0 &&
+          g.packages.every((pkg) => (pkg.remainderNote ?? "").trim().length > 0),
+      );
+    if ((!build.flexPoints || build.flexPoints.length === 0) && !everyPackageNamesIt) {
       fail(build.slug, "spends fewer than 110 points and says nothing about the rest");
     }
     /*

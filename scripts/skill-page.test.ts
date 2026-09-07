@@ -341,6 +341,39 @@ for (const locale of LOCALES) {
   const CORPSE = marker(t.noProgressionCorpse);
   const NONE = marker(t.noProgressionNone);
 
+  /*
+   * Every authored synergy magnitude on this site reads "per level", and every
+   * one of them means "per hard point". That is not a drafting habit: a synergy
+   * reads `blvl`, and `scripts/skill-graph-rules.ts` **stops the generator** on
+   * an expression governed by a synergy parameter that references anything
+   * else. The four skills that behave otherwise - Revive and three summons -
+   * are excluded from the graph entirely rather than emitted with a different
+   * kind. So there is no mixed population, and no row for which "per level" is
+   * literally right.
+   *
+   * Fifteen skill pages across four classes say both things in one sentence:
+   * the row reads "+10% damage per level" above prose reading "10% per hard
+   * point of Howl". The reader is owed the distinction, because gear that adds
+   * skill levels raises the values in the section above and does *not* feed a
+   * synergy.
+   *
+   * The heading carries it, which is the move the two sibling sections on the
+   * same page already make - `effectsBody` and `progressionBody` both open
+   * "Hard points only". This asserts the clause survives, so it cannot be
+   * softened back into a sentence that leaves 192 rows reading as a
+   * contradiction.
+   */
+  check(
+    `${locale}: the synergy heading says hard points only`,
+    /hard point|ponto fixo/i.test(t.synergiesBody),
+    t.synergiesBody,
+  );
+  check(
+    `${locale}: and says gear does not feed one`,
+    /does not feed|nao alimenta|não alimenta/i.test(t.synergiesBody),
+    t.synergiesBody,
+  );
+
   // =========================================================================
   console.log(`\n${locale}: the damage section says the right thing`);
   // =========================================================================
