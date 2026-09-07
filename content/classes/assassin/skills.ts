@@ -258,9 +258,9 @@ export const assassinSkills: Skill[] = [
     requiredLevel: 30,
     prerequisites: ["cobra-strike", "blades-of-ice"],
     summary:
-      "A charge-up whose three charges are three different elements. The reason a Martial Arts Assassin has no immunity problem.",
+      "A charge-up whose three charges are three different elements. The reason a Martial Arts Assassin almost never meets an immunity wall.",
     mechanics: [
-      "**Three charges, three elements.** The first releases a meteor, the second chain lightning and the third a burst of ice — fire, lightning and cold from one skill, which is why nothing in the game is immune to all of it.",
+      "**Three charges, three elements.** The first releases a meteor, the second chain lightning and the third a burst of ice — fire, lightning and cold from one skill, so stopping all of it takes three immunities at once. **Exactly one row in the extraction has them**: a Hell-level-84 `megademon` carrying 145 to fire, cold and lightning. It displays as *Pit Lord*, and two other rows display that same name and are fire-immune only — so the wall exists, it is one monster, and its name does not tell you which one you are looking at.",
       "**It is a charge-up, not a finisher.** The elements release when a *finisher* spends the charges. Pressing Phoenix Strike alone builds them and swings the weapon.",
       "It feeds Fists of Fire, Claws of Thunder and Blades of Ice rather than the other way round, so points here raise three other skills as well.",
       "Charges stand for 15 seconds and each carries +25% attack rating — half what the other charge-ups give.",
