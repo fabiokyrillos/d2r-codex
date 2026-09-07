@@ -11309,7 +11309,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "weapon-0": {
             label: "Garra rara ou mágica: +3 Lightning Sentry, +3 Death Sentry",
             why: "Uma garra com as duas vale mais do que qualquer unique deste tier e custa uma fração.",
-            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+            lookFor: ["Base Greater Talons ou Runic Talons", "+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% de Increased Attack Speed"],
           },
           "offhand-0": {
             why: "35% de conjuração e +2 skills. Note que ele desliga o Weapon Block — essa é a troca, e nesta build é a certa.",
@@ -11341,7 +11341,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "weapon-0": {
             label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, 20% Increased Attack Speed",
             why: "Três afixos num item só, e ainda mais barata do que qualquer runeword desta página.",
-            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
+            lookFor: ["Base Greater Talons ou Runic Talons", "+3 to Lightning Sentry", "+3 to Death Sentry", "20% de Increased Attack Speed"],
           },
           "offhand-0": { why: "+2 skills e 35% de conjuração." },
           "body-0": { why: "+2 em skills de Assassin e o proc de Fade." },
@@ -11371,7 +11371,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "weapon-0": {
             label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, 20% Increased Attack Speed",
             why: "Igual ao tier abaixo, porque não há para onde subir — a garra é resultado de vendedor e continua best in slot até o fim.",
-            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "20% Faster Cast Rate"],
+            lookFor: ["Base Greater Talons ou Runic Talons", "+3 to Lightning Sentry", "+3 to Death Sentry", "20% de Increased Attack Speed"],
           },
           "offhand-0": { why: "35% de conjuração e +2 skills. Ainda os 35% mais baratos do personagem." },
           "body-0": { why: "+2 em skills de Assassin e o proc de Fade, por três runas médias." },
@@ -11414,7 +11414,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "weapon-0": {
             label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Increased Attack Speed",
             why: "Quatro afixos. A esta altura a garra vale mais do que todo o resto do personagem somado e não existe runeword que ganhe dela.",
-            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+            lookFor: ["Base Greater Talons ou Runic Talons", "+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% de Increased Attack Speed"],
           },
           "offhand-0": {
             why: "35% de conjuração e +2 skills, com uma faceta de raio num escudo que tenha o socket.",
@@ -11457,7 +11457,7 @@ export const buildsPtBr: Overlay<BuildCopy> = {
           "weapon-0": {
             label: "Garra rara em base rápida: +3 Lightning Sentry, +3 Death Sentry, +2 Traps, 20% Increased Attack Speed",
             why: "Ainda a melhor arma do jogo para esta build, e ainda não é runeword.",
-            lookFor: ["+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% Faster Cast Rate"],
+            lookFor: ["Base Greater Talons ou Runic Talons", "+3 to Lightning Sentry", "+3 to Death Sentry", "+2 to Traps", "20% de Increased Attack Speed"],
           },
           "offhand-0": { why: "Com uma faceta de raio no socket." },
           "body-0": { why: "Teleport, e a velocidade de limpeza que vem de nunca mais andar." },

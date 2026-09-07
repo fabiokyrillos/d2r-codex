@@ -208,7 +208,7 @@ export const berserkBarbarian: Build = {
     { stat: "fcr", value: 63, frames: 9, why: "Only with an Enigma. Teleport turns this from a build that walks between corpses into one that arrives at them, and it is the single largest quality-of-life upgrade the build has.", priority: "luxury" },
   ],
   breakpointNotes:
-    "**No attack-speed row.** Increased Attack Speed frames depend on the weapon's base speed and the skill, so no single percentage is correct for a class, and this site does not publish one. It matters less here than on any other Barbarian page: Berserk is one large swing rather than a stream of small ones, so raw damage per hit is worth more than the extra hit. Prefer damage and attack rating over speed when the two compete.",
+    "**No attack-speed row.** Increased Attack Speed frames depend on the weapon's base speed and the skill, so no single percentage is correct for a class, and this site does not publish one. Attack speed is low-value on this build for a reason of its own: Berserk is one large swing rather than a stream of small ones, so raw damage per hit is worth more than another swing per second. Prefer damage and attack rating over speed when the two compete.",
   gearSets: [
     {
       tier: "starter",
@@ -332,7 +332,7 @@ export const berserkBarbarian: Build = {
   ],
   mercenary: "act-2-desert-mercenary",
   mercenaryNotes:
-    "**Act 2, Nightmare, Might** — his aura raises the *physical* damage that Berserk then converts, so it works despite the conversion. Insight ends the mana question; The Reaper's Toll is the better late choice, because Decrepify on striking slows a champion that would otherwise be hitting a character with no defence. **The gold detail worth knowing: if the mercenary lands the killing blow, his Extra Gold From Monsters and yours are added together.** On the Travincal route that makes his belt and gloves a real part of the gold plan rather than an afterthought, and it is the one piece of mercenary gearing on this site that is about loot rather than survival. Keep him alive with a Fortitude and a Vampire Gaze; **do not take Defiance**, whose defence aura helps a character whose own defence is zero by design not at all.",
+    "**Act 2, Nightmare, Might** — his aura raises the *physical* damage that Berserk then converts, so it works despite the conversion. Insight ends the mana question; The Reaper's Toll is the better late choice, because Decrepify on striking slows a champion that would otherwise be hitting a character with no defence. **The gold detail worth knowing: if the mercenary lands the killing blow, his Extra Gold From Monsters and yours are added together.** On the Travincal route that makes his belt and gloves a real part of the gold plan rather than an afterthought, and it is the rare piece of mercenary gearing that is about loot rather than survival. Keep him alive with a Fortitude and a Vampire Gaze; **do not take Defiance**, whose defence aura helps a character whose own defence is zero by design not at all.",
   farming: [
     { area: "pit", difficulty: "hell", why: "Area level 85, and every physical immune in it is a target rather than an obstacle. This is the build's home and the reason it exists.", minTier: "nightmare", rating: 5 },
     { area: "travincal", difficulty: "hell", why: "**The gold route.** Three Council members standing together, enormous gold drops, and a corpse each to hork. Short enough that the run is measured in seconds.", minTier: "nightmare", rating: 5 },

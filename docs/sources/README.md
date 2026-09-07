@@ -453,6 +453,28 @@ will do it: a full pass over every authored string, checking each enumerable
 universal against the data, is a task with a cost and a schedule, not a thing to
 be automated away. A rule can shorten the next sweep. It cannot replace it.
 
+Two clauses the eight-class pass added to that, both earned by a defect rather
+than reasoned into place:
+
+> **A correction to a universal is a universal, and wants the same check the
+> original didn't get.**
+
+Twice in one pass the *replacement* was the defect. A runeword note claiming
+"the only item on this site besides Chaos that grants a skill across classes"
+was rewritten to "the only one that hands over a capstone" — and Passion grants
+`oskill Berserk` and Call to Arms `+2-6 Battle Command`, both level 30, which is
+what this site calls a capstone. The fix for a false exclusive was a false
+exclusive.
+
+> **A gate does not replace the sweep. It shortens the next one.**
+
+And one about counting, which went wrong three times in three different dresses:
+an `areas.ts` census taken from a `sed` range that walked part of the file, a
+`weapsel` column count grouped by eye, and a `damageTypes` figure that was right
+against a working tree and wrong against the corpus the gate reads. **Name the
+tree you counted, and count it with an expression rather than a sample.**
+`farmingAreas.length` is one expression; a `sed` range is a guess.
+
 One rule *is* worth building, and it is the narrow one: a claim of the form
 *"the only … **on this site**"* is checkable by construction, because "on this
 site" means these registries. It needs no game data and it catches the subset

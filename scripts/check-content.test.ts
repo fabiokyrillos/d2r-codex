@@ -47,7 +47,14 @@ import {
   physicalAtLevel,
   unclassifiedElementalAttacks,
 } from "../lib/skills";
-import { MIN_PROSE_LENGTH, exitCodeFor, isUntranslatedProse } from "./content-rules";
+import {
+  MIN_PROSE_LENGTH,
+  SITE_SCOPED_CLAIMS,
+  checkSiteScopedClaims,
+  exitCodeFor,
+  fingerprint,
+  isUntranslatedProse,
+} from "./content-rules";
 import {
   checkChargeLines,
   checkProcLines,
@@ -1265,6 +1272,74 @@ console.log("\nMinion counts — the shape the Druid's wolves and ravens use");
 }
 
 // ===========================================================================
+
+// ===========================================================================
+console.log("\nRule C — site-scoped claims must be registered");
+// ===========================================================================
+{
+  /*
+   * The comparative control goes first on purpose. A rule that quietly
+   * swallowed rankings would read as though it had checked them, and half the
+   * site-scoped absolutes in the corpus are rankings.
+   */
+  check(
+    "a comparative is out of scope rather than silently allowed",
+    checkSiteScopedClaims(
+      ["This build takes less damage than any other Sorceress on the site."],
+      "planted",
+    ).length === 0,
+  );
+  check(
+    "and its Portuguese form is too, which is not the same regex",
+    checkSiteScopedClaims(
+      ["Esta build toma menos dano que qualquer outra Sorceress do site."],
+      "planted",
+    ).length === 0,
+  );
+
+  /*
+   * The sentence this rule was built for: shipped, false, and refuted by four
+   * entries in the file it was written in.
+   */
+  const shipped =
+    "`oskill Abyss` puts a Warlock capstone on any class that can hold a dagger, and it " +
+    "is the only item on this site besides Chaos that grants a skill across classes.";
+  const caught = checkSiteScopedClaims([shipped], "planted");
+  check("rejects an unregistered site-scoped exclusivity claim", caught.length === 1);
+  check(
+    "and names the fingerprint the author has to register",
+    caught[0]?.message.includes(fingerprint(shipped)) === true,
+  );
+
+  /* A registered claim is silent, which is what makes the table load-bearing. */
+  const registered = "**Fifteen points, which no other build on the site spends here.";
+  check(
+    "accepts a claim that carries its enumeration",
+    checkSiteScopedClaims([registered], "planted").length === 0,
+  );
+  check(
+    "and the row it matches is the one that names the enumeration",
+    SITE_SCOPED_CLAIMS.find((c) => c.fingerprint === fingerprint(registered))?.why.includes(
+      "pierce",
+    ) === true,
+  );
+
+  /* Editing a registered sentence re-trips it — the whole reason the key is the sentence. */
+  check(
+    "an edited registered claim is unregistered again",
+    checkSiteScopedClaims(
+      ["**Sixteen points, which no other build on the site spends here."],
+      "planted",
+    ).length === 1,
+  );
+
+  const fps = SITE_SCOPED_CLAIMS.map((c) => c.fingerprint);
+  check("no two rows share a fingerprint", new Set(fps).size === fps.length);
+  check(
+    "every row names an enumeration rather than asserting a conclusion",
+    SITE_SCOPED_CLAIMS.every((c) => c.why.length > 40 && !/^true: checked/i.test(c.why)),
+  );
+}
 
 check("a clean run exits 0", exitCodeFor([], []) === 0);
 check("problems fail", exitCodeFor(["x"], []) === 1);

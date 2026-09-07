@@ -45,8 +45,10 @@ import type { Build } from "@/lib/types";
  * WHY FURY IS ON THIS PAGE AND NOT ONLY IN ITS TIER
  * ------------------------------------------------
  * `+5 to Frenzy (Barbarian only)` is a dead line on every other page on this
- * site and the largest single skill bonus available to this one. It is the only
- * class-scoped stat in the catalogue that lands on the build it names.
+ * site and the largest single skill bonus available to this one. Not unique in
+ * kind — White's `+2 to Bone Spear (Necromancer Only)` lands on that class's
+ * Bone Spear page the same way — but there are two such lines in the catalogue
+ * and this is the Barbarian's.
  */
 export const frenzyBarbarian: Build = {
   slug: "frenzy-barbarian",
@@ -63,7 +65,7 @@ export const frenzyBarbarian: Build = {
     "Cannot be interrupted, so the stack does not break when something hits you",
     "Two damage synergies at 8% a point each, where most Barbarian attacks have one or none",
     "The class's Uber build: Crushing Blow from several slots on an attack that lands constantly",
-    "Fury's +5 to Frenzy is the only class-scoped item stat on this site that lands on the build it names",
+    "Fury's +5 to Frenzy is a class-scoped item stat that lands squarely on the build it names — a dead line on every other page and the largest single skill bonus on this one",
   ],
   weaknesses: [
     "**Two weapons are mandatory** — no shield, no block, and no Faster Block Rate row on this page",
@@ -242,7 +244,7 @@ export const frenzyBarbarian: Build = {
       levelRange: [65, 75],
       slots: [
         { slot: "weapon", picks: [{ ref: { kind: "runeword", slug: "grief" }, why: "**The main hand.** Its +340-400 damage is added after every percentage multiplier in the game, and Frenzy applies it on every hit of a very fast attack.", sockets: "Eth + Tir + Lo + Mal + Ral in a Phase Blade." }] },
-        { slot: "offhand", picks: [{ ref: { kind: "runeword", slug: "fury" }, why: "**+5 to Frenzy, and it is the only class-scoped item stat on this site that lands on the build it names.** Level 65 in any 3-socket melee weapon: +209% enhanced damage, 66% Open Wounds, 33% Deadly Strike, +40% attack speed, Ignore Target's Defense and −25% target defence. The Ignore Target's Defense line is worth as much as the damage on a build whose attack rating is spread across two hands.", alternatives: [{ label: "A second Grief Phase Blade", why: "A matched pair averages to the best possible frame, and two flat-damage lines is a great deal of damage. Fury usually wins on this build because of the +5 Frenzy and the defence lines." }] }] },
+        { slot: "offhand", picks: [{ ref: { kind: "runeword", slug: "fury" }, why: "**+5 to Frenzy — a class-scoped line that lands on the build it names, which is dead weight on every other page and the largest single skill bonus on this one.** Level 65 in any 3-socket melee weapon: +209% enhanced damage, 66% Open Wounds, 33% Deadly Strike, +40% attack speed, Ignore Target's Defense and −25% target defence. The Ignore Target's Defense line is worth as much as the damage on a build whose attack rating is spread across two hands.", alternatives: [{ label: "A second Grief Phase Blade", why: "A matched pair averages to the best possible frame, and two flat-damage lines is a great deal of damage. Fury usually wins on this build because of the +5 Frenzy and the defence lines." }] }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "arreats-face" }, why: "Still +4 Frenzy from one slot." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "+300% enhanced damage, applied to both weapons." }, { ref: { kind: "runeword", slug: "treachery" }, why: "The attack speed instead, if you are short of it. On a stacking attack that is a defensible choice rather than a budget one." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "verdungos-hearty-cord" }, why: "Damage reduction, Vitality, and the 10% hit recovery that often reaches the five-frame breakpoint." }] },
@@ -322,8 +324,8 @@ export const frenzyBarbarian: Build = {
     "**Act 2, Nightmare, Might**, for the same reason as every physical Barbarian: his aura multiplies the damage you already deal. Insight ends the mana question early and its Meditation aura is worth more than any weapon he can hold until Infinity, whose Conviction cuts enemy defence as well as resistance — and defence is what a two-weapon build fights hardest. The Reaper's Toll is the other real option and it is a strong one here: Decrepify on striking is −50% enemy physical resistance and a slow, and on the Ubers a slowed boss is a boss that hits you less. Keep him alive with a Fortitude and a Vampire Gaze; **do not take Defiance**, because a defence aura does nothing for a character whose problem is landing hits on two weapons at once.",
   farming: [
     { area: "uber-tristram", difficulty: "hell", why: "This is the build's headline. Crushing Blow from boots and helm, Open Wounds from Fury, Life Tap from Dracul's, and an attack rate that applies all three constantly. The Barbarian who kills the three bosses is this one.", minTier: "budget", rating: 5 },
-    { area: "worldstone-keep", difficulty: "hell", why: "Area level 85 and dense, and the stack never has time to fall off. Frenzy's run speed makes the route between packs quick without a Teleport.", minTier: "early-hell", rating: 5 },
-    { area: "chaos-sanctuary", difficulty: "hell", why: "Dense and lucrative, and the seal bosses die to Crushing Blow. The Oblivion Knights are the hazard — their curses land on a character who is standing still by design.", minTier: "budget", rating: 4 },
+    { area: "worldstone-keep", difficulty: "hell", why: "Area level 85 and dense, and the stack never has time to fall off. Frenzy's run speed makes the route between packs quick without a Teleport. **It records physical immunity**, so this is a Berserk-package run or a Bone Break run — the Taunt package stops dead on what it cannot hurt.", minTier: "early-hell", rating: 5 },
+    { area: "chaos-sanctuary", difficulty: "hell", why: "Dense and lucrative, and the seal bosses die to Crushing Blow. The Oblivion Knights are the hazard — their curses land on a character who is standing still by design — and **it records physical immunity**, which the Berserk package or a Bone Break has to answer.", minTier: "budget", rating: 4 },
     { area: "pit", difficulty: "hell", why: "Area level 85 with the best density-to-danger ratio in the game. Bring the Berserk package or a Bone Break, because the physical immunes here are the build's one real wall.", minTier: "early-hell", rating: 4 },
     { area: "travincal", difficulty: "hell", why: "Three high-value targets standing together and nothing immune to physical among them. Short, and the stack is up before you reach them.", minTier: "nightmare", rating: 4 },
     { area: "mausoleum", difficulty: "hell", why: "Area level 85 with almost nothing physical-immune in it, which makes it the friendliest 85 zone for the Taunt package.", minTier: "early-hell", rating: 4 },
