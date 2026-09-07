@@ -90,7 +90,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
       leap:
         "+10% de dano do Leap Attack por ponto duro, e **a única sinergia dele**. Nenhuma outra build de Barbarian deste site dá ao Leap mais de um ponto, que é exatamente o que faz desta uma página separada em vez de uma variante do Berserk. Ele também não rola attack rating e não causa dano próprio — é um knockback e um salto, e aqui é quarenta por cento do dano da skill principal.",
       "axe-mastery":
-        "+28% de dano e 5% por nível, +44% de attack rating e 8% por nível, crítico em direção a 35%. **Axe em vez de Blade por um motivo que dá para conferir**: das trinta e duas runewords de arma que este site cataloga, catorze aceitam um machado e treze uma espada — mais bases elite para uma build que quer uma arma muito grande. Troque se a sua arma for outra coisa; a mastery é presa ao tipo de item, não à build.",
+        "+28% de dano e 5% por nível, +40% de attack rating e 8% por nível, crítico em direção a 35%. **Axe em vez de Blade por um motivo que dá para conferir**: das trinta e duas runewords de arma que este site cataloga, catorze aceitam um machado e treze uma espada — mais bases elite para uma build que quer uma arma muito grande. Troque se a sua arma for outra coisa; a mastery é presa ao tipo de item, não à build.",
       "battle-orders":
         "+92% de vida máxima com vinte. Não é sinergia do Leap Attack — o Leap é a única — então está aqui porque depois da skill principal, do Leap e da mastery não há mais nada que valha vinte pontos, e um personagem que aterrissa no meio de grupos precisa da vida.",
       bash: "Pré-requisito do Stun.",

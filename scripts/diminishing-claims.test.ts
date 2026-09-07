@@ -29,6 +29,8 @@
  * Run with `npx tsx scripts/diminishing-claims.test.ts`.
  */
 import { SKILL_PARAM_BOUNDS, SKILL_PARAM_BOUNDS_UNRESOLVED } from "../content/classes/skill-param-bounds";
+import { LOCALES } from "../lib/i18n/config";
+import { getBuilds, getClasses, getJourneys, getSkills } from "../lib/registry";
 import {
   DIMINISHING_RULES,
   checkDiminishingClaims,
@@ -580,6 +582,86 @@ console.log("\nA missing or mutated artifact fails loudly");
     threwOnFlip = true;
   }
   check("a dm record relabelled linear throws rather than going quiet", threwOnFlip);
+}
+
+// ===========================================================================
+// The linear half, on the family that publishes it in a fixed shape
+// ===========================================================================
+
+/**
+ * Every mastery's attack-rating baseline, as published, against the row.
+ *
+ * The `ln` half of this artifact exists so a page *can* state an achieved
+ * figure, and the eight masteries are the family that does it in one sentence
+ * shape on every page that mentions them: "+28% damage and 5% per level, +40%
+ * attack rating and 8% per level". The baselines are not all the same — axe,
+ * blade and mace are 40 and polearm, spear and throwing are 44 — which is
+ * exactly the kind of near-miss a translator copies from the wrong page.
+ *
+ * One did. `pt-br-barbarian.ts` gave Axe Mastery Throwing Mastery's 44 while
+ * the English beside it said 40, and every existing gate was green because 44
+ * is a real number on a real mastery row.
+ *
+ * Scoped to `*-mastery` skills on purpose. The same sweep over every skill
+ * reports sixty pairs, most of them a figure that belongs to a parameter this
+ * artifact does not carry — Golem Mastery's golem life is not an `ln` token —
+ * and a rule that cannot tell those apart is not a rule.
+ */
+console.log("\nEvery published mastery attack-rating figure, against its row");
+{
+  const ATTACK_RATING =
+    /\+?(\d+)\s*%\s*(?:de\s+)?attack\s+rating[^.;]{0,40}?\b(?:and|e)\s+(?:more\s+|mais\s+)?\+?(\d+)\s*%\s*(?:more\s+)?(?:per\s+level|por\s+n[íi]vel)/gi;
+
+  const rowFor = (slug: string) =>
+    Object.values(SKILL_PARAM_BOUNDS).find(
+      (r) =>
+        r.skillSlug === slug &&
+        r.family === "linear" &&
+        r.labels[0] === "Attack Rating % baseline" &&
+        r.labels[1] === "Attack Rating % per level",
+    );
+
+  const entries: ClaimEntry[] = [];
+  for (const locale of LOCALES) {
+    for (const [kind, get] of [
+      ["build", getBuilds],
+      ["class", getClasses],
+      ["journey", getJourneys],
+      ["skill", getSkills],
+    ] as const) {
+      for (const e of get(locale) as { slug?: string; classSlug?: string }[]) {
+        const slug = e.slug ?? e.classSlug ?? "?";
+        entries.push(...claimEntriesFor(e, locale, `${locale} ${kind} ${slug}`));
+      }
+    }
+  }
+
+  const wrong: string[] = [];
+  let checked = 0;
+  for (const e of entries) {
+    for (const slug of e.skills) {
+      if (!slug.endsWith("-mastery")) continue;
+      const row = rowFor(slug);
+      if (!row || row.family !== "linear") continue;
+      for (const line of e.lines) {
+        ATTACK_RATING.lastIndex = 0;
+        for (const m of line.matchAll(ATTACK_RATING)) {
+          checked++;
+          if (Number(m[1]) === row.base && Number(m[2]) === row.perLevel) continue;
+          wrong.push(
+            `${e.path} ${slug}: publishes "${m[0].slice(0, 60)}" where ${row.token} carries ` +
+              `base ${row.base} and ${row.perLevel} per level`,
+          );
+        }
+      }
+    }
+  }
+  check("some mastery pages state the pair at all", checked > 0, `${checked} statements`);
+  check(
+    "every one of them matches its own row, in both locales",
+    wrong.length === 0,
+    wrong.join(" | "),
+  );
 }
 
 console.log("\nWiring");
