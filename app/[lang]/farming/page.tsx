@@ -35,8 +35,26 @@ export default async function FarmingPage() {
   const card = (area: FarmingArea) => (
     <li key={area.slug}>
       <LinkCard href={r.farmingArea(area.slug)} className="h-full">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display text-lg text-ink transition-colors group-hover:text-ember-bright">
+        {/*
+          `flex-wrap` on the row, and `min-w-0` on the heading, are both
+          load-bearing at 320px.
+
+          The badge cluster is `shrink-0` on purpose — `AreaLevelBadge` is a
+          `truncate` span, so a cluster that shrinks does not reflow, it hides
+          the words "top TC". But `shrink-0` next to a heading whose
+          `min-width: auto` also refuses to go below its longest word made the
+          row exactly as wide as its parts: 342px of content inside a 288px
+          card at a 320px viewport, which took the whole document sideways in
+          both languages.
+
+          So the cluster keeps its size and the *row* yields instead. Below the
+          width where both fit, the cluster drops to its own line, still
+          right-aligned; the heading wraps its own text rather than forcing the
+          row wide. Above that width nothing moves, because a single flex line
+          lays out exactly as it did before.
+        */}
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <h3 className="min-w-0 font-display text-lg text-ink transition-colors group-hover:text-ember-bright">
             {area.name}
           </h3>
           <div className="flex shrink-0 flex-wrap justify-end gap-1.5">

@@ -30,7 +30,16 @@
  */
 import { assertFreshBuild } from "./build-freshness";
 import { Page, startSite } from "./headless";
-import { getBuilds, getClasses, getSkillsForClass } from "../lib/registry";
+import {
+  getBuilds,
+  getClasses,
+  getFarmingAreas,
+  getMechanics,
+  getRunes,
+  getRunewords,
+  getSkillsForClass,
+  getUniques,
+} from "../lib/registry";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import { routes } from "../lib/routes";
@@ -131,6 +140,39 @@ const SURFACES: Surface[] = [
     path: (l) => routes(l).skill(firstClass(l).slug as Slug, firstSkill(l).slug as Slug),
   },
   { name: "leveling page", path: (l) => routes(l).leveling() },
+
+  /*
+   * Every remaining route type.
+   *
+   * These were the blind spot, and it cost a defect: the farming index laid a
+   * `shrink-0` badge cluster beside a heading that also would not shrink, so
+   * the row was as wide as its parts and ran 22px (en-US) and 27px (pt-BR)
+   * past a 320px viewport — on every visit, in both languages. Nothing caught
+   * it, because the list above held the homepage, the catalogue, a class, a
+   * build, a skill and levelling, and the site has fourteen other page types.
+   *
+   * A type is listed once, at its first instance. The instances of one type
+   * share a template, so the second one measures the same boxes as the first;
+   * what a type *not* being here measures is nothing at all.
+   */
+  { name: "classes index", path: (l) => routes(l).classes() },
+  { name: "farming index", path: (l) => routes(l).farming() },
+  {
+    name: "farming area",
+    path: (l) => routes(l).farmingArea(getFarmingAreas(l)[0].slug as Slug),
+  },
+  { name: "leveling class", path: (l) => routes(l).levelingFor(firstClass(l).slug as Slug) },
+  { name: "items index", path: (l) => routes(l).items() },
+  { name: "item page", path: (l) => routes(l).item(getUniques(l)[0].slug as Slug) },
+  { name: "runes index", path: (l) => routes(l).runes() },
+  { name: "rune page", path: (l) => routes(l).rune(getRunes(l)[0].slug as Slug) },
+  { name: "runewords index", path: (l) => routes(l).runewords() },
+  { name: "runeword page", path: (l) => routes(l).runeword(getRunewords(l)[0].slug as Slug) },
+  { name: "breakpoints", path: (l) => routes(l).breakpoints() },
+  { name: "mercenaries", path: (l) => routes(l).mercenaries() },
+  { name: "mechanics index", path: (l) => routes(l).mechanics() },
+  { name: "mechanic page", path: (l) => routes(l).mechanic(getMechanics(l)[0].slug as Slug) },
+  { name: "sources", path: (l) => routes(l).sources() },
 ];
 
 /**
