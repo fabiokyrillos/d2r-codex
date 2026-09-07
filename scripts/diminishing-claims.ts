@@ -22,7 +22,7 @@
  *
  * WHAT IS GATED
  * -------------
- * Two rules, run over every string the site publishes in both locales:
+ * Three rules, run over every string the site publishes in both locales:
  *
  *   diminishing-bound-stated-as-achieved     a sentence that pairs a skill with
  *                                            its own diminishing ceiling and no
@@ -31,10 +31,20 @@
  *                                            a sentence that correctly hedges a
  *                                            ceiling and then quotes a figure
  *                                            that is not on the row
+ *   diminishing-bound-described-as-reached   a skill named as arriving at a
+ *                                            ceiling, whatever the sentence
+ *                                            hedges elsewhere
  *
  * The second exists because the first can be satisfied by writing "up to" in
  * front of a wrong number, and a hedged wrong number is worse than an unhedged
  * right one: it reads as though somebody checked.
+ *
+ * The third exists because the first asks its question of the whole sentence,
+ * which is right for a sentence about one skill and wrong for a sentence
+ * comparing two. whirlwind-barbarian hedged its own 35% correctly and then said
+ * the Assassin's Claw Mastery "reaches" its 25%; rule 1 stood down on a hedge
+ * that belonged to the other skill, in both languages, and the identical
+ * sentence on the Blade Mastery page had already been repaired without it.
  *
  * HOW A CLAIM IS MATCHED TO A SKILL
  * ---------------------------------
@@ -93,6 +103,7 @@ const unresolved = new Set(SKILL_PARAM_BOUNDS_UNRESOLVED.map((g) => g.skillSlug)
 export const DIMINISHING_RULES = [
   "diminishing-bound-stated-as-achieved",
   "diminishing-bound-does-not-match-the-data",
+  "diminishing-bound-described-as-reached",
 ] as const;
 export type DiminishingRule = (typeof DIMINISHING_RULES)[number];
 
@@ -343,6 +354,50 @@ function attributedByName(sentence: string, slug: string, figureAt: number): boo
   return ACHIEVED_CUE.test(between);
 }
 
+/**
+ * A skill's name followed by the verb of arrival.
+ *
+ * Rule 1 asks whether a *sentence* hedges, which is the right question when the
+ * sentence is about one skill. It is the wrong question when the sentence
+ * compares two: whirlwind-barbarian said "a critical strike chance climbing
+ * toward 35% — ten points above what the Assassin's Claw Mastery reaches", in
+ * both languages. The hedge is real and belongs to the 35; the second half
+ * states Claw Mastery's `dm56` ceiling of 25 as a figure it arrives at, and the
+ * sentence-level hedge hid it. The identical sentence on the Blade Mastery page
+ * was repaired without this one, so the two pages disagreed about the same
+ * number on the same skill.
+ *
+ * Deliberately narrow, and every narrowing was measured against the corpus
+ * rather than guessed. A bare search for these verbs beside a diminishing skill
+ * finds fourteen strings; most are physical reach ("Fanaticism the bear cannot
+ * reach"), a negation, or a quantity that is nobody's ceiling ("Miasma Chain
+ * reaches 50 units"). Two narrowings remove all of them:
+ *
+ * **The name must be the subject.** The verb has to follow the skill's name
+ * within a few words, so "a bar of Dragon Tail does not reach the breakpoints a
+ * Dragon Talon one reaches" is about bars, not about a bound.
+ *
+ * **The verb must not be hedged where it stands.** "reaches toward 90" is
+ * correct prose — it is the arrival that is wrong, not the verb. Without this
+ * the rule accused whirlwind-assassin's Fade sentence, which is right.
+ *
+ * A negation is checked around the name rather than only before the verb,
+ * because "não alcança" puts the negative in front of the whole clause.
+ */
+const REACHES =
+  /^(?:\s*\S+){0,3}?\s*(?:reaches|reached|alcan[çc]am?|chegam?\s+a)\b(?!\s*(?:toward|towards|for\b|up\s+to|em\s+dire[çc][ãa]o|rumo|at[ée]\b|perto))/i;
+/*
+ * The negative is deliberately wider than the positive. `REACHES` excludes the
+ * bare infinitive, because "the bear cannot reach" is physical distance rather
+ * than a bound; the suppression must still recognise it, or "does not reach the
+ * breakpoints a Dragon Talon bar reaches" is read as a claim about Dragon
+ * Talon. Widening a suppression can only cost a missed defect that some other
+ * sentence would show again; widening the accusation costs a false one.
+ */
+const NOT_REACHED =
+  /\b(?:not|never|n[ãa]o|nunca)\s+(?:\S+\s+){0,2}?(?:reach(?:es|ed)?|alcan[çc]a(?:r|m)?|chega(?:r|m)?)/i;
+
+
 export function checkDiminishingClaims(
   entries: readonly ClaimEntry[],
   bounds: Bounds = SKILL_PARAM_BOUNDS,
@@ -380,6 +435,31 @@ export function checkDiminishingClaims(
               if (!claimed) continue;
               problems.push(violation("diminishing-bound-stated-as-achieved", entry, record, sentence));
             }
+          }
+        }
+
+        /*
+         * Rule 3 — the ceiling described as arrived at, whatever the sentence
+         * hedges elsewhere. Runs regardless of `hedged`, because the hedge that
+         * makes rule 1 stand down may belong to a different skill entirely.
+         */
+        {
+          for (const slug of named) {
+            if (unresolved.has(slug)) continue;
+            const records = (index.diminishing.get(slug) ?? []).filter(
+              (r): r is SkillParamBound & { family: "diminishing" } => r.family === "diminishing",
+            );
+            if (records.length === 0) continue;
+            const claimed = nameAt(sentence, slug).some((at) => {
+              const name = nameOf.get(slug) ?? slug;
+              if (!REACHES.test(sentence.slice(at + name.length))) return false;
+              const around = sentence.slice(Math.max(0, at - 60), at + name.length + 40);
+              return !NOT_REACHED.test(around);
+            });
+            if (!claimed) continue;
+            problems.push(
+              violation("diminishing-bound-described-as-reached", entry, records[0], sentence),
+            );
           }
         }
 
@@ -444,7 +524,14 @@ function violation(
   const quote = sentence.trim().slice(0, 140);
   const coordinate = `\`${record.token}\` in ${record.source}'s \`${record.column}\``;
   const message =
-    rule === "diminishing-bound-stated-as-achieved"
+    rule === "diminishing-bound-described-as-reached"
+      ? `${entry.path}: says ${name} *reaches* a figure — "${quote}". ${coordinate} is the ` +
+        `game's diminishing column, so Param${b} = ${record.maximum} ("${record.labels[1]}") is ` +
+        `a ceiling the curve climbs toward and never arrives at. A sentence may hedge one ` +
+        `skill's ceiling correctly and still say a second one reaches its own; that is what ` +
+        `this rule is for. Compare against the ceiling — "above ${name}'s ceiling", ` +
+        `"acima do teto da ${name}".`
+    : rule === "diminishing-bound-stated-as-achieved"
       ? `${entry.path}: states ${name}'s Param${b} = ${record.maximum} as a figure the character ` +
         `has — "${quote}". ${coordinate} is the game's diminishing column: Param${a} = ` +
         `${record.minimum} ("${record.labels[0]}") is the floor and Param${b} = ${record.maximum} ` +

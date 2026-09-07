@@ -664,8 +664,72 @@ console.log("\nEvery published mastery attack-rating figure, against its row");
   );
 }
 
+/*
+ * Rule 3, and the reason it is not rule 1 with a wider net.
+ *
+ * Rule 1 asks whether the *sentence* hedges, which is the right question about
+ * a sentence describing one skill and the wrong one about a sentence comparing
+ * two. whirlwind-barbarian hedged its own 35% correctly and then said Claw
+ * Mastery "reaches" its 25%, in both languages, and rule 1 stood down on the
+ * hedge that belonged to the other skill.
+ *
+ * The controls below are the sentences that made the rule narrow: each one is a
+ * shape that shipped, or nearly did, and each would be a false accusation.
+ */
+console.log("\nA diminishing ceiling described as reached");
+{
+  const at = (line: string, skills: string[] = []): ClaimEntry[] => [
+    { locale: "en-us", path: "en-us build control", skills, lines: [line] },
+  ];
+  const fires = (line: string, skills: string[] = []) =>
+    checkDiminishingClaims(at(line, skills)).some(
+      (p) => p.rule === "diminishing-bound-described-as-reached",
+    );
+
+  check(
+    "rejects: the sentence that shipped, hedging one ceiling and arriving at another",
+    fires(
+      "A critical strike chance climbing toward 35% — ten points above what the Assassin's Claw Mastery reaches.",
+    ),
+  );
+  check(
+    "rejects: its pt-BR mirror",
+    fires("Dez pontos acima do que a Claw Mastery da Assassin alcança."),
+  );
+  check(
+    "silent on: the repair, which compares a ceiling to a ceiling",
+    !fires(
+      "A critical strike chance climbing toward 35% — ten points above the one on the Assassin's Claw Mastery.",
+    ),
+  );
+  check("silent on: the pt-BR repair", !fires("Dez pontos acima do teto do Claw Mastery da Assassin."));
+
+  // The narrowings, each one a real string from the corpus.
+  check(
+    "silent on: a hedge sitting on the verb itself",
+    !fires("Fade's curse-length reduction reaches toward 90, which is the difference."),
+  );
+  check(
+    "silent on: a negation",
+    !fires("Ranged packs with Fanaticism that the bear never reaches."),
+  );
+  check(
+    "silent on: pt-BR negation",
+    !fires("O Burst of Speed não alcança uma cadência fixa de cinco frames."),
+  );
+  check(
+    "silent on: a skill that is not the subject of the verb",
+    !fires("A bar of Dragon Tail does not reach the breakpoints a Dragon Talon bar reaches."),
+  );
+  check(
+    "silent on: a linear figure a skill genuinely does reach",
+    !fires("Battle Orders reaches 35% more life at twenty."),
+    "no diminishing record is named here",
+  );
+}
+
 console.log("\nWiring");
-check("both rules are exported for the content sweep", DIMINISHING_RULES.length === 2, DIMINISHING_RULES.join(", "));
+check("all three rules are exported for the content sweep", DIMINISHING_RULES.length === 3, DIMINISHING_RULES.join(", "));
 
 console.log(`\n${passed} passed, ${failures.length} failed`);
 if (failures.length > 0) {

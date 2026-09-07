@@ -91,7 +91,7 @@ export const whirlwindBarbarian: Build = {
       points: 20,
       role: "main",
       order: 2,
-      note: "+28% damage and 5% per level, +40% attack rating and 8% per level, and a critical strike chance climbing toward 35% — ten points above what the Assassin's Claw Mastery reaches. **Swap this for the mastery your weapon actually is.** It is gated on the item type the game calls Swords and Knives; a Grief Phase Blade is a sword and takes it, a Grief Berserker Axe is not and takes Axe Mastery instead.",
+      note: "+28% damage and 5% per level, +40% attack rating and 8% per level, and a critical strike chance climbing toward 35% — ten points above the one on the Assassin's Claw Mastery. **Swap this for the mastery your weapon actually is.** It is gated on the item type the game calls Swords and Knives; a Grief Phase Blade is a sword and takes it, a Grief Berserker Axe is not and takes Axe Mastery instead.",
     },
     {
       skill: "battle-orders",
