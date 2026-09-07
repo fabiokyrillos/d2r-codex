@@ -418,6 +418,46 @@ Mastery`).
 Resolve all thirty when a class enters scope. Eighteen gaps across the first six
 classes, one Barbarian, eight Warlock.
 
+### What a gate can catch, and what it cannot
+
+Fourteen defects on the eight-class pass shared one property: **wrong, and read
+as correct by every gate in the repository.** Not one was caught by a rule. All
+were found by a directed read or a deliberate sweep.
+
+The reason is structural, and it is worth stating so nobody proposes a rule that
+cannot exist:
+
+> A gate catches drift between two things this repository already knows. It
+> cannot catch a claim about something the repository has no representation of.
+
+The repository knows its own registries, the generated graph, and the pinned
+tables. It has no representation of *the game as a whole*, so "no item in the
+game carries X" is uncheckable unless X happens to be a property code the tables
+enumerate. It has no representation of *the syntactic shape of a generated
+line*, so `export const builds: Build[] = [] = [...]` typechecks, passes
+`check:content`, and yields the correct registry — empty array destructuring
+being legal JavaScript.
+
+The four shapes this produced:
+
+| shape | example |
+| --- | --- |
+| a claim about an absence | "there is no +% Magic Skill Damage on any item" |
+| a claim about everything else | "the only class that can wield a two-handed weapon alongside an off-hand" |
+| a check name that overstates what it computes | "every kick is `weapsel = 4`", computed over a map scoped to one class |
+| a generated line that is wrong and valid | the merge artifact above |
+
+Two rules follow. **Scope every claim to the artefact you actually searched** —
+see the section below. And **sweep for the rest deliberately**, because no gate
+will do it: a full pass over every authored string, checking each enumerable
+universal against the data, is a task with a cost and a schedule, not a thing to
+be automated away. A rule can shorten the next sweep. It cannot replace it.
+
+One rule *is* worth building, and it is the narrow one: a claim of the form
+*"the only … **on this site**"* is checkable by construction, because "on this
+site" means these registries. It needs no game data and it catches the subset
+that is about us rather than about Blizzard.
+
 ### Name the artefact you searched, not the world
 
 Four claims went wrong the same way on the eight-class pass, and the rule that
