@@ -10,6 +10,263 @@ import type { BuildCopy, Overlay } from "@/lib/types/copy";
  * nunca por posição.
  */
 export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
+  "war-cry-barbarian": {
+    summary:
+      "O Barbarian que mata gritando. Sem dano de arma, sem mastery, e o único da classe cujo breakpoint é velocidade de conjuração.",
+    playstyle:
+      "Você fica no meio e grita, e tudo num raio de sete leva dano e é atordoado ao mesmo tempo. O atordoamento é tão importante quanto o dano: uma tela de monstros permanentemente atordoada é uma tela que nunca ataca, que é por que o Singer é um dos personagens mais seguros do jogo apesar de ficar onde nenhum caster ficaria. O ritmo é um War Cry para abrir, e então War Cry de novo antes de o atordoamento expirar, e de novo, e de novo — esta é uma build de um botão e uma taxa de aperto altíssima. O Battle Cry entra primeiro em qualquer coisa dura, porque cortar defesa pela metade é dano de graça. O Grim Ward entra no primeiro cadáver de uma luta longa.",
+    strengths: [
+      "**Causa dano e atordoa tudo num raio de uma vez**, e o atordoamento renova mais rápido do que expira",
+      "Sem dano de arma não há requisito de arma — cada slot de equipamento pode perseguir skills, velocidade de conjuração e magic find",
+      "Três sinergias de dano a 6% por ponto duro cada, mais do que qualquer outra skill de Barbarian tem",
+      "Battle Orders e Battle Command fazem dele o melhor suporte de grupo do jogo enquanto ele faz isso",
+      "Nada nele depende de attack rating, que é a stat contra a qual todo outro Barbarian luta",
+    ],
+    weaknesses: [
+      "**Dano só físico**, e diferente de toda outra build da classe não há espaço no plano para um segundo tipo",
+      "Não consegue matar um boss de ato com eficiência — um alvo numa skill de raio é quase todo o raio desperdiçado",
+      "Taxa de aperto altíssima. Este é o Barbarian mais exigente de APM de longe",
+      "O teto de dano dele é a tabela da própria skill, então equipamento não o aumenta como uma arma aumenta todo o resto",
+      "O best-in-slot é uma lista de caster e compete com todo caster da ladder pelos mesmos itens",
+    ],
+    flexPoints: [
+      "**Não há nenhum.** O núcleo é 106 e qualquer um dos pacotes é exatamente 4, então uma tela de nível 99 mostra 110 gastos e nada sem destino.",
+      "Abaixo do 99 a ordem é War Cry, depois Battle Cry — porque ele é sinergia e debuff ao mesmo tempo — depois Battle Orders até dezesseis, depois Taunt e Howl. Os pontos únicos podem esperar.",
+      "Este é o plano mais apertado dos seis. Três sinergias mais o Battle Orders deixam menos espaço que qualquer outra build de Barbarian, e é por isso que a escolha no fim é de quatro pontos em vez de dezesseis ou trinta e três.",
+    ],
+    skillPackages: {
+      "the-last-four": {
+        name: "Os últimos quatro pontos",
+        intro:
+          "Três sinergias maximizadas mais a própria skill são oitenta pontos, e o Battle Orders leva isso a noventa e seis. O núcleo deixa exatamente quatro, e eles vão para um de dois lugares: mais vida, ou a única rota que esta build tem para um tipo de dano que não seja físico.",
+        packages: {
+          louder: {
+            name: "Battle Orders até vinte",
+            when: "Você joga em grupo, ou tem uma Bone Break e não precisa de um segundo tipo de dano.",
+            tradeoff: "Você não tem resposta nenhuma para um imune a físico além do equipamento. Nesta build isso é uma lacuna de verdade, porque não há mais nada no plano em que se apoiar.",
+            skillNotes: {
+              "battle-orders": "+92% de vida máxima com vinte em vez de +80% com dezesseis, em você, no mercenário e em todo mundo do grupo — e 20 segundos a mais de duração para cada ponto duro de Shout e Battle Command estenderem.",
+            },
+            contentNote: "Jogo em grupo, Terror Zones, e qualquer conteúdo em que um Sunder Charm cubra a imunidade por você.",
+            remainderNote: "Não sobra nada. 106 + 4 = 110.",
+          },
+          "magic-answer": {
+            name: "Quatro pontos para o Berserk",
+            when: "Você joga sozinho sem uma Bone Break, e prefere ter uma resposta lenta a um imune a físico do que resposta nenhuma.",
+            tradeoff: "O Battle Orders fica em dezesseis, o que são doze pontos percentuais de vida em você e em todo mundo perto de você.",
+            skillNotes: {
+              bash: "O primeiro degrau. Nunca apertado.",
+              stun: "O segundo degrau.",
+              concentrate: "O terceiro, e vale ter de qualquer forma: ele dobra sua defesa enquanto golpeia e não pode ser interrompido.",
+              berserk: "**Um ponto, e é dano inteiramente mágico.** Ele não vai matar nada rápido no nível 1 sem sinergia nenhuma atrás — mas mata um imune a físico, e a alternativa é ir embora. Esta é a resposta mais barata da classe para imunidade e custa a esta build quatro pontos que ela preferiria gastar em outro lugar.",
+            },
+            rotationNote: "War Cry para tudo. Quando um grupo se revelar imune a físico, Battle Cry nele, e então golpeie com Berserk um alvo por vez. É lento e funciona.",
+            contentNote: "Hell solo, o Pit, o Chaos Sanctuary — qualquer lugar em que você não escolhe o que encontra e não tem charm para isso.",
+            remainderNote: "Não sobra nada. 106 + 4 = 110.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "O suficiente para a armadura de corpo que você pretende usar, e nada para arma — uma Heart of the Oak numa maça pede quase nenhum, que é parte do motivo de essa arma ser escolhida.",
+      dexterity: "O suficiente para bloqueio máximo se você segurar escudo, e deveria: esta build fica no meio do que está matando.",
+      vitality: "Todo o resto. Quatro de vida por ponto, e o Battle Orders em cima.",
+      energy: "Nenhum, e vale dizer porque esta build conjura. O War Cry custa 10 de mana em vez de 40 — a coluna crua é deslocada — e a Insight no mercenário cobre a taxa de aperto.",
+      notes: [
+        "**Este é o único plano de atributos de Barbarian sem requisito de arma nenhum.** A arma de um Singer é escolhida por +skills e velocidade de conjuração, e as candidatas usuais pedem pouco Strength.",
+        "Bloqueio vale mais aqui que em qualquer outra página desta classe, porque o método inteiro da build é ficar parado dentro do grupo que ela está atordoando.",
+        "Faster Cast Rate é comprado com equipamento, não com atributos — mas é a stat em torno da qual planejar o equipamento, coisa que nenhuma outra página de Barbarian pode dizer.",
+      ],
+    },
+    breakpointWhy: {
+      "fcr-105": "**O breakpoint que define esta build.** O War Cry é conjurado e não golpeado, então usa a tabela de cast rate do Barbarian, e o método inteiro depende de gritar de novo antes de o atordoamento expirar. 105% são oito frames e é o alvo prático.",
+      "fcr-63": "Nove frames, e alcançável muito antes dos 105 — só um Spirit numa espada ou escudo já é quase todo o caminho. Mire aqui primeiro.",
+      "fcr-200": "Sete frames, e custa quase todos os slots para alcançar. Só vale se o resto do personagem já estiver terminado.",
+      "fhr-48": "Cinco frames na tabela dividida com o Paladin e a Assassin. Um Singer fica em campo aberto cercado, e um travamento de recuperação é como o método falha.",
+      "fbr-42": "Com escudo, que esta build deveria segurar. Bloquear é a mitigação que não custa nada a ela, porque não há uma segunda arma para abrir mão.",
+    },
+    breakpointNotes:
+      "**Sem linha de velocidade de ataque, e aqui não é uma recusa e sim uma ausência.** Toda outra página de Barbarian omite uma tabela de Increased Attack Speed porque os frames dependem da arma e da skill. Esta omite porque a build não ataca: o War Cry é conjurado, o dano dele é a faixa publicada dele próprio e não a da arma, e Increased Attack Speed não faz absolutamente nada por ele. Faster Cast Rate é a stat no lugar, e esta é a única build de Barbarian deste site para a qual isso é verdade.",
+    skillNotes: {
+      "war-cry":
+        "**Ele não carrega dano de arma nenhum.** A faixa publicada é tudo — 30-40 com um ponto, 198-208 com vinte — que é por que esta build não pega mastery e por que a arma dela é escolhida por skills em vez de dano. Ele atordoa por 25 frames com um ponto e mais 5 por nível, dentro do raio 7. **Custa 10 de mana, não os 40 que a coluna crua mostra**, subindo para cerca de 24 com vinte.",
+      howl: "+6% de dano do War Cry por ponto duro. Uma skill de nível 1 carregando um quinto do dano desta build.",
+      taunt: "+6% de dano do War Cry por ponto duro, e um botão de verdade: ele corta o attack rating e o dano do alvo em 5% e mais 2% por nível, e o arrasta até você — que numa build que quer tudo dentro do raio 7 é exatamente o efeito certo.",
+      "battle-cry":
+        "+6% de dano do War Cry por ponto duro, **e** −50% de defesa inimiga e mais 2% por nível. A única skill da classe que é sinergia de dano e debuff ao mesmo tempo, e esta build a aperta além de maximizá-la.",
+      "battle-orders":
+        "Pré-requisito do War Cry, e +35% de vida máxima mais 3% por nível para você e o grupo. Dezesseis em vez de vinte porque os últimos quatro pontos são uma escolha — veja o pacote abaixo. Não é sinergia do War Cry; as três que são já estão maximizadas acima.",
+      shout: "Pré-requisito do Battle Orders, defesa para o grupo, e 5 segundos por ponto duro na duração do Battle Orders.",
+      "battle-command": "+1 em todas as skills, fixo em todo nível — e nesta build esse +1 aumenta o War Cry e as três sinergias dele ao mesmo tempo. Conjure primeiro: Battle Command, Battle Orders, Shout, depois a cura.",
+      "find-potion": "Pré-requisito do Find Item, e 5% por ponto duro no debuff de dano recebido do Grim Ward. Um ponto é o que este plano consegue bancar.",
+      "find-item": "Uma segunda rolagem de drop num cadáver, e pré-requisito do Grim Ward. Na build com mais magic find da classe, um ponto aqui é valor de graça.",
+      "grim-ward": "Apavora, desacelera até 75%, e aumenta o dano que tudo lá dentro recebe. Numa build que quer monstros reunidos e atordoados, a lentidão vale tanto quanto o debuff.",
+      leap: "A única mobilidade que esta build tem antes da Enigma, e ela passa por cima de paredes. Também é a fuga quando um travamento de atordoamento finalmente quebra.",
+      "increased-stamina": "Pré-requisito do Increased Speed.",
+      "increased-speed": "Velocidade de corrida sempre ativa. Um Singer entra no meio das coisas, então chegar lá importa.",
+      "iron-skin": "Pré-requisito do Natural Resistance.",
+      "natural-resistance": "As quatro resistências, somadas antes do teto. Esta build fica em campo aberto cercada por coisas, então isso vale mais aqui do que em quase qualquer lugar.",
+    },
+    immunityPlan:
+      "**Esta é a build com menos espaço para responder a imunidade, e a página não vai fingir o contrário.** O dano do War Cry é físico e não há mais nada no plano: três sinergias maximizadas e o Battle Orders deixam quatro pontos, e comprar um segundo tipo de dano significa gastar os quatro na corrente de pré-requisito do Berserk por um Berserk de nível 1 que mata devagar. A resposta melhor para a maioria dos jogadores é uma **Bone Break** — o Sunder Charm físico transforma um imune em algo meramente resistente pelo custo de um slot de charm, e é por isso que o pacote de Battle Orders existe. Um mercenário com Infinity faz o mesmo trabalho para um grupo, e o Decrepify da The Reaper's Toll é −50% de resistência física em qualquer coisa já abaixo do limiar de imunidade. O Atma's Scarab funciona aqui onde não funciona na página do Berserk, porque o Amplify Damage dele reduz resistência *física* e físico é o que esta build causa.",
+    mercenaryNotes:
+      "**Este é o único Barbarian do site cuja aura de mercenário não é escolhida pelo dano dele próprio.** Might multiplica dano de arma, e o War Cry não carrega dano de arma nenhum — a faixa dele é própria. Então pegue **Holy Freeze**, a aura defensiva do Ato 2 no Nightmare: ela desacelera tudo em volta dele, o que acumula com o atordoamento e com a lentidão do Grim Ward para produzir um grupo que mal se move. A Insight numa polearm responde ao custo de mana de uma taxa de aperto muito alta, e é a melhor arma que ele pode segurar até uma Infinity, cuja Conviction reduz resistências inimigas — inclusive física, que é a que esta build se importa. A The Reaper's Toll é a alternativa forte: Decrepify ao golpear é −50% de resistência física inimiga e uma lentidão, e as duas metades caem sobre o tipo de dano que o War Cry de fato causa. Mantenha-o vivo com uma Fortitude e um Vampire Gaze.",
+    farmingWhy: {
+      "secret-cow-level-hell": "Densidade de parede a parede sem nada dentro imune a físico, que é exatamente o que um grito de raio 7 quer. A melhor área isolada do jogo para esta build.",
+      "worldstone-keep-hell": "Área de nível 85 e densa o bastante para cada grito pegar uma dúzia de coisas. O loop padrão de endgame, e o Singer o roda mais rápido que qualquer outro Barbarian.",
+      "lower-kurast-hell": "Baús em vez de monstros, e uma build com tanto magic find e Teleport limpa os supers mais rápido do que limpa qualquer outra coisa.",
+      "chaos-sanctuary-hell": "Denso e lucrativo, e o atordoamento resolve os Oblivion Knights antes de as maldições deles caírem. O próprio Diablo é o problema — um alvo é o pior caso desta build.",
+      "pit-hell": "Área de nível 85 e densa, mas os imunes a físico dela são o muro para o qual esta build tem a menor resposta. Leve a Bone Break.",
+      "travincal-hell": "Três alvos parados juntos e uma corrida curta. Aceitável em vez de excepcional — três monstros não é a densidade para a qual esta build foi feita.",
+    },
+    levelingPath: {
+      summary:
+        "**Este é o destino que a jornada da classe não serve.** Aquela rota se compromete com uma mastery de arma no nível 3 e faz respec no 40 para acertar a mastery — e esta build não pega mastery nenhuma, porque o War Cry não carrega dano de arma. Quem for para cá deveria seguir a jornada até o nível 30 e então fazer respec ainda no Nightmare em vez de no 40, e colocar tudo no War Cry e nas três sinergias dele a partir dali.",
+      respecAt: "Nightmare, assim que o War Cry abrir no nível 30 — não o respec do nível 40 que a jornada da classe planeja, que existe para consertar uma mastery que esta build nunca pega.",
+    },
+    selfFoundNotes:
+      "Desajeitada no começo e excelente no fim. A build não existe até o nível 30 e só é ela mesma quando as sinergias entram, então um Singer self-found evolui como outra coisa por muito tempo — a rota da jornada serve a ela pior que às outras cinco e diz isso. Mas o equipamento dela é excepcionalmente encontrável: a Spirit são quatro runas comuns numa Crystal Sword, a Splendor são duas, a Rhyme são duas, a Stealth são duas, e a Magefist e a Skin of the Vipermagi são drops comuns. A Heart of the Oak pede uma Vex e a Enigma pede uma Jah e uma Ber, e nenhuma das duas é necessária para farmar o Hell — um Singer com duas Spirit e uma Vipermagi limpa o Cow Level indefinidamente, que é como um self-found financia todo o resto.",
+    hardcoreNotes:
+      "O Barbarian mais seguro do site, e por um motivo fácil de não notar: uma tela permanentemente atordoada nunca ataca. O atordoamento renova mais rápido do que expira em qualquer velocidade de conjuração razoável, então o modo de falha não é ser sobrepujado — é ser *interrompido*, por um congelamento, um travamento de recuperação ou mana acabando. Então alcance o breakpoint de 48% de recuperação, trate Cannot Be Frozen como obrigatório, segure escudo e bloqueie, e mantenha a Insight no mercenário desde o momento em que der para fazê-la. Pegue o pacote de Battle Orders em vez do Berserk: um Berserk de nível 1 não vai te salvar de nada, e doze pontos percentuais de vida vão. Carregue a Bone Break para que um imune a físico seja uma luta lenta em vez de uma luta da qual você precisa sair de costas.",
+    gearSets: {
+      starter: {
+        goal: "War Cry na barra no nível 30, e a primeira velocidade de conjuração. Antes do 30 você está evoluindo como outra coisa completamente.",
+        nextUpgrade: "O breakpoint de 63% de cast rate, e o Battle Orders em dezesseis.",
+        picks: {
+          "weapon-0": { why: "**+2 em todas as skills e +25-35% de Faster Cast Rate no nível 25**, numa Crystal Sword que não custa nada. Este é o melhor item isolado que um Singer pode segurar durante a maior parte do jogo e ele está disponível antes da skill.", sockets: "Tal + Thul + Ort + Amn numa espada de 4 sockets." },
+          "offhand-0": { why: "Cannot Be Frozen, +25 em todas as resistências e 25% de magic find no nível 29 — e ser congelado é o que quebra o ritmo do grito.", sockets: "Shael + Eth em qualquer escudo de 2 sockets." },
+          "offhand-1": { why: "+43-48% em cada resistência no lugar, se as resistências forem o problema." },
+          "helm-0": { why: "+1 em todas as skills, que nesta build é +1 no War Cry e nas três sinergias.", sockets: "Ort + Sol." },
+          "body-0": { why: "+25% de Faster Cast Rate no nível 17. Numa Sorceress isso é um quebra-galho; aqui é o primeiro item de cast rate de verdade que você vai ter." },
+          "belt-0": { why: "Ouro e magic find no nível 27, e esta build vai farmar mais que qualquer outro Barbarian." },
+          "boots-0": { label: "Qualquer bota rara ou mágica com Faster Run/Walk e resistências", why: "Você entra no meio das coisas. Chegue mais rápido." },
+          "gloves-0": { why: "**+20% de Faster Cast Rate no nível 23.** O bônus de skill de fogo dela é morto num Barbarian e a cast rate não é — esta é uma luva de caster numa página de Barbarian, que é o formato desta lista inteira." },
+          "ring1-0": { why: "Magic find, e não há nada melhor tão cedo." },
+          "ring2-0": { label: "Um anel raro com Faster Cast Rate e resistências", why: "10% de cast rate num anel vale mais aqui que qualquer linha de dano." },
+          "amulet-0": { label: "Um amuleto raro ou mágico com +2 Barbarian skills", why: "+2 skills são +2 War Cry e +2 em cada sinergia." },
+        },
+        charms: [{ label: "Small charms com vida e resistências", why: "Nada mais exótico existe ainda." }],
+      },
+      nightmare: {
+        goal: "Nove frames de cast rate, resistências para o Hell, e as três sinergias em andamento.",
+        nextUpgrade: "A Heart of the Oak, e o breakpoint de 105% de cast rate.",
+        picks: {
+          "weapon-0": { why: "Continua sendo +2 skills e até 35% de cast rate, e continua barata. Nada a desloca até a Heart of the Oak." },
+          "offhand-0": { why: "**+1 em todas as skills e +10-20% de Faster Cast Rate num escudo**, no nível 37, por duas runas. Skills e cast rate vindos do slot de escudo é exatamente o que esta build quer.", sockets: "Eth + Lum num escudo de 2 sockets." },
+          "offhand-1": { why: "O magic find e o Cannot Be Frozen no lugar." },
+          "helm-0": { why: "+2 Barbarian skills, 30% de recuperação e +30 em todas as resistências. **Repare que os +2 Combat Skills dele não fazem nada aqui** — War Cry é um Warcry, então metade do bônus de skill do Arreat's é para a árvore errada. Ele continua bom; só vale menos nesta página que em qualquer outra de Barbarian." },
+          "body-0": { why: "+30 em todas as resistências, +50 de vida e +25 de Strength por três runas. Resistência é o que te deixa ficar parado." },
+          "body-1": { why: "**+1 em todas as skills, +30% de Faster Cast Rate e +20-35 em todas as resistências** no nível 29 — uma armadura de Sorceress que é quase ideal aqui." },
+          "belt-0": { why: "Redução de dano e roubo de vida — embora o roubo de vida não faça nada por um grito, então esta é a linha de redução de dano." },
+          "boots-0": { why: "Magic find no nível 42, na build que vai farmar mais que qualquer outro Barbarian." },
+          "gloves-0": { why: "+20% de cast rate, ainda." },
+          "ring1-0": { why: "+1 em todas as skills e a reserva de mana que uma taxa de aperto alta quer." },
+          "ring2-0": { label: "Um anel raro com 10% de Faster Cast Rate, vida e resistências", why: "Os dez por cento de cast rate mais baratos que você vai achar." },
+          "amulet-0": { why: "O Amplify Damage ao golpear dele é −100% de resistência física — e **o dano do War Cry é físico**, então diferente da página do Berserk isso funciona. Ele dispara no grito." },
+        },
+        charms: [{ label: "Grand charms de Warcries, e small charms de vida/resistência", why: "**Um skiller de Warcries, não de Combat Skills** — esta é a única build de Barbarian do site para a qual isso é verdade." }],
+        weaponSwap: [{ why: "Battle Orders e Battle Command acima do seu próprio nível. Grite, troque de volta para a Spirit, lute." }],
+      },
+      "early-hell": {
+        goal: "Oito frames de cast rate e resistência o bastante para ficar onde a build quer ficar.",
+        nextUpgrade: "Enigma, e o resto da cast rate.",
+        picks: {
+          "weapon-0": { why: "**A arma do Singer.** +3 em todas as skills, +40% de Faster Cast Rate e +30-40 em todas as resistências no nível 55. As bases dela são cajados e maças, e maça é uma arma que esta classe consegue segurar — que é o único lugar em que ser Barbarian ajuda em vez de atrapalhar nesta lista.", sockets: "Ko + Vex + Pul + Thul numa maça de 4 sockets." },
+          "weapon-1": { why: "A resposta de orçamento, e ela não fica muito atrás: +2 skills e 35% de cast rate." },
+          "offhand-0": { why: "Uma Spirit de **escudo** além da de espada — +2 skills e até 35% mais de cast rate. Uma Monarch pede 156 de Strength, que é o custo." },
+          "offhand-1": { why: "+1 skill e 20% de cast rate por duas runas e quase nenhum Strength." },
+          "helm-0": { why: "**+2 em todas as skills, redução de dano e magic find** no nível 62. Nesta build ele bate o Arreat's Face com folga, porque todo o bônus de skill dele entra e metade do do Arreat's não." },
+          "helm-1": { why: "As resistências e a recuperação no lugar, se você estiver com pouco dos dois." },
+          "body-0": { why: "+1 skill, +30% de cast rate e resistências, ainda uma das melhores armaduras para esta build a qualquer preço." },
+          "body-1": { why: "+50 em todas as resistências no lugar, quando resistência é o que está falhando." },
+          "belt-0": { why: "Redução de dano, Vitality e 10% de recuperação." },
+          "boots-0": { why: "Magic find, e esta build tem slots de sobra para isso." },
+          "boots-1": { why: "Recuperação e Strength no lugar, se uma Spirit Monarch for o objetivo." },
+          "gloves-0": { why: "+20% de cast rate, e nada mais no slot compete." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Cannot Be Frozen, que mantém o ritmo — pegue se o escudo não for uma Rhyme." },
+          "ring2-1": { label: "Um anel raro com 10% de Faster Cast Rate", why: "Se o congelamento já estiver coberto, a cast rate vale mais." },
+          "amulet-0": { why: "+2 em todas as skills e +20-30 em todas as resistências no nível 67. Numa build com quatro skills para aumentar, +2 é enorme." },
+        },
+        charms: [
+          { why: "Magic find e ouro, no Barbarian com mais slots livres para os dois." },
+          { label: "Skillers de Warcries, small charms de vida e resistência", why: "Cada skiller de Warcries é +1 War Cry e +1 nas três sinergias." },
+        ],
+        weaponSwap: [{ why: "Os gritos, acima do seu próprio nível." }],
+      },
+      budget: {
+        goal: "105% de cast rate, Teleport, e resistências no teto. A build está pronta aqui e tudo depois é refinamento.",
+        nextUpgrade: "O breakpoint de sete frames, se você quiser.",
+        picks: {
+          "weapon-0": { why: "+3 skills, 40% de cast rate, +30-40 de resistências. Nada a substitui." },
+          "offhand-0": { why: "A versão Monarch: +2 skills e até 35% de cast rate, e é de onde o breakpoint de 105% normalmente vem." },
+          "helm-0": { why: "+2 em todas as skills, magic find, e redução de dano — as três coisas que esta build quer." },
+          "body-0": { why: "**Teleport**, +1 em todas as skills e o Strength para uma Spirit Monarch num item só. Numa build que precisa estar no meio do grupo, chegar lá instantaneamente vale tanto quanto o dano.", sockets: "Jah + Ith + Ber." },
+          "body-1": { why: "+2 em todas as skills e +65 em todas as resistências no lugar, se você preferir as skills ao Teleport." },
+          "belt-0": { why: "**+1 em todas as skills e +20% de Faster Cast Rate** no nível 80 — o único cinto do jogo que dá qualquer um dos dois, e esta build quer os dois." },
+          "belt-1": { why: "Redução de dano e Vitality no lugar, quando sobrevivência é o problema." },
+          "boots-0": { why: "Magic find." },
+          "gloves-0": { why: "+20% de cast rate." },
+          "ring1-0": { why: "+1 em todas as skills." },
+          "ring2-0": { why: "Um segundo, por mais +1 em tudo." },
+          "ring2-1": { why: "Cannot Be Frozen, se nada mais fornecer." },
+          "amulet-0": { why: "+2 em todas as skills e as resistências que te deixam ficar parado." },
+        },
+        charms: [
+          { why: "Magic find e ouro." },
+          { why: "**O Sunder Charm físico, e nesta página ele é quase obrigatório** — o War Cry é só físico, e esta é a alternativa a gastar o pacote no Berserk." },
+          { label: "Skillers de Warcries, Annihilus, Hellfire Torch", why: "A Torch é +3 Barbarian skills, o que aumenta o War Cry e as três sinergias ao mesmo tempo." },
+        ],
+        weaponSwap: [{ why: "Um Battle Orders mais alto do que os seus próprios dezesseis ou vinte pontos compram." }],
+      },
+      optimized: {
+        goal: "Tudo que a build quer, com magic find nos slots que sobram.",
+        nextUpgrade: "Rolagens perfeitas, e a decisão sobre se sete frames valem os slots.",
+        picks: {
+          "weapon-0": { why: "Numa maça, que um Barbarian consegue segurar e uma Sorceress não." },
+          "offhand-0": { why: "A Monarch, pelos +2 skills e pela cast rate." },
+          "helm-0": { why: "+2 skills, magic find, redução de dano." },
+          "helm-1": { why: "30% de redução de dano, +1 skills e dois sockets, no nível 82 — a escolha durável em vez da de magic find." },
+          "body-0": { why: "Teleport." },
+          "belt-0": { why: "+1 skills e 20% de cast rate." },
+          "boots-0": { why: "Magic find." },
+          "boots-1": { why: "Recuperação e Strength no lugar." },
+          "gloves-0": { why: "A cast rate." },
+          "ring1-0": { why: "+1 skills." },
+          "ring2-0": { why: "O segundo." },
+          "amulet-0": { why: "+2 skills e +30 de resistências." },
+        },
+        charms: [
+          { why: "Magic find e ouro." },
+          { why: "O Sunder físico, que libera o pacote para o Battle Orders." },
+          { label: "Skillers de Warcries, Annihilus, Hellfire Torch", why: "Quatro skills aumentadas por ponto de +skills — mais do que qualquer outra build de Barbarian consegue." },
+        ],
+        weaponSwap: [{ why: "Os gritos." }],
+      },
+      bis: {
+        goal: "Nada mais para comprar. Oito frames ou sete, +6 em cada skill da barra, e uma tela que nunca chega a atacar.",
+        notes: "Não há itens de set nesta lista e nenhum Immortal King. Esta build quer skills, velocidade de conjuração e resistências, e os sets de Barbarian não oferecem nenhum dos três.",
+        picks: {
+          "weapon-0": { why: "+3 skills e 40% de cast rate, numa maça." },
+          "offhand-0": { why: "Uma rolagem de 35% de cast rate numa Monarch." },
+          "helm-0": { why: "+2 skills, 50% de magic find, 10% de redução de dano, socketado com o que estiver faltando." },
+          "body-0": { why: "Teleport, na base mais leve que o requisito de Strength da Spirit Monarch deixar." },
+          "belt-0": { why: "+1 skill e 20% de cast rate — não existe alternativa que dê nenhum dos dois." },
+          "boots-0": { why: "50% de magic find na rolagem máxima." },
+          "gloves-0": { why: "20% de cast rate, e nada mais no slot dá nenhuma." },
+          "ring1-0": { why: "+1 skills." },
+          "ring2-0": { why: "O segundo +1." },
+          "amulet-0": { why: "+2 skills e +30 em todas as resistências." },
+        },
+        charms: [
+          { why: "40% de magic find na rolagem máxima." },
+          { why: "O Sunder Charm físico, que é o que permite ao pacote ir para o Battle Orders em vez do Berserk." },
+          { label: "Skillers de Warcries, um Annihilus máximo, uma Hellfire Torch máxima", why: "Cada +1 aumenta War Cry, Howl, Taunt e Battle Cry juntos — quatro skills, onde toda outra build de Barbarian aumenta uma ou duas." },
+        ],
+        weaponSwap: [{ why: "Um Battle Orders de nível 6 é mais vida do que os quatro pontos do pacote jamais foram." }],
+      },
+    },
+  },
   "berserk-barbarian": {
     summary:
       "Dano mágico vindo de uma arma física, e uma segunda rolagem em cada cadáver. O Barbarian a que nada é imune, e o que farma ouro.",
@@ -157,7 +414,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "A Grief, e a decisão entre o escudo de ouro e uma mão secundária de dano.",
         picks: {
           "weapon-0": { why: "**+1 em Berserk** além de +25% de velocidade de ataque no nível 43 — uma runeword que nomeia a própria skill da build, em qualquer arma de 4 sockets." },
-          "weapon-0-alt0": { label: "Oath (`oath`) numa espada de 4 sockets — Balrog Blade ou Cryptic Sword", why: "Nível 49: +210-340% de dano aprimorado, e dano aprimorado é convertido junto com o resto, então não é desperdiçado num ataque mágico." },
+          "weapon-0-alt0": { why: "Nível 49: +210-340% de dano aprimorado, e **dano aprimorado é convertido junto com o resto**, então nada dele é desperdiçado num ataque mágico. As bases dela são espadas, machados e maças, então serve para qualquer mastery." },
           "weapon-0-alt1": { why: "Nível 53, −25% de defesa do alvo a partir do slot da arma." },
           "offhand-0": { why: "**50% de Extra Gold e 25% de Magic Find num escudo**, mais Cannot Be Frozen e +25 em todas as resistências, no nível 29. Na rota de ouro este é um dos melhores slots do personagem." },
           "helm-0": { why: "+2 Barbarian skills e +2 Combat Skills — +4 Berserk vindos de um slot — com 30% de recuperação, +30 em todas as resistências e roubo de vida." },
@@ -415,7 +672,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         picks: {
           "weapon-0": { why: "Nível 43 em qualquer arma de 4 sockets: +25% de velocidade de ataque e +1 em Berserk, que nesta build é +1% do dano do Frenzy convertido em mágico além de um botão de emergência melhor." },
           "weapon-0-alt0": { why: "Nível 53, e os −25% de defesa do alvo respondem ao problema de attack rating desta build a partir do slot da arma." },
-          "weapon-0-alt1": { label: "Oath (`oath`) numa espada de 4 sockets — Balrog Blade ou Cryptic Sword", why: "Nível 49: +210-340% de dano aprimorado e 50% de velocidade de ataque contada a contribuição da Shael. Legal em machados e maças também; os guias colocam em espada e pegam Blade Mastery para ela." },
+          "weapon-0-alt1": { why: "Nível 49: +210-340% de dano aprimorado e 50% de velocidade de ataque — os 30% da própria runeword mais os 20% da Shael. As bases dela são espadas, machados e maças, então um par igual de Oath é possível em qualquer uma das três; os guias usam espadas." },
           "offhand-0": { why: "Uma segunda igual. Duas da mesma base resultam na melhor média de frame; duas bases diferentes resultam em algo pior que a mais rápida delas." },
           "helm-0": { why: "+2 Barbarian skills e +2 Combat Skills são +4 Frenzy vindos de um slot, com 30% de recuperação, +30 em todas as resistências e 3-6% de roubo de vida em cima. Nada o desloca por cinco tiers." },
           "body-0": { why: "+45% de velocidade de ataque no nível 43, e nesta build velocidade de ataque se acumula em velocidade de corrida e na pilha. Costuma estar certo por cima da Lionheart aqui." },
@@ -682,7 +939,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         goal: "Whirlwind em vinte com uma mastery que combina com a arma, e as resistências para entrar no Hell sem morrer para a penalidade.",
         nextUpgrade: "Grief e Fortitude, as duas no nível 59, e as duas uma mudança de patamar.",
         picks: {
-          "weapon-0": { label: "Oath (`oath`) numa espada de 4 sockets — Balrog Blade, Highland Blade ou Cryptic Sword", why: "Shael Pul Mal Lum no nível 49: +210-340% de dano aprimorado, 50% de velocidade de ataque uma vez contada a contribuição da Shael, e Prevent Monster Heal. Ela é legal em machados e maças também e ninguém joga assim — os guias colocam em espada e pegam Blade Mastery para ela." },
+          "weapon-0": { why: "Shael Pul Mal Lum no nível 49: +210-340% de dano aprimorado, 50% de velocidade de ataque, e Prevent Monster Heal. As bases dela são espadas, machados **e** maças, então serve para qualquer mastery em que você tenha parado — mas os guias colocam em espada e pegam Blade Mastery para ela, e uma Balrog Blade ou Cryptic Sword é a escolha usual.", sockets: "Quatro sockets. Os 50% de velocidade de ataque são os 30% da própria runeword mais os 20% da Shael, que é por que ela supera a própria coluna." },
           "weapon-0-alt0": { why: "Nível 43, quatro sockets, +1 em Berserk e +25% de velocidade de ataque — o substituto mais barato, e serve para qualquer mastery em que você tenha parado." },
           "weapon-0-alt1": { why: "Nível 53, e os −25% de defesa do alvo fazem o mesmo trabalho do Battle Cry a partir do slot da arma." },
           "offhand-0": { label: "Uma segunda Oath, ou uma espada rara com +3 Whirlwind", why: "O Whirlwind alterna pelas duas mãos e o frame de ataque é a média entre elas, então a arma mais lenta arrasta a mais rápida." },
