@@ -206,6 +206,60 @@ console.log("\n3. Every page declares a canonical and both hreflang alternates")
 }
 
 // ---------------------------------------------------------------------------
+console.log("\n3b. A page's social preview is its own, not the site's default");
+// ---------------------------------------------------------------------------
+/*
+ * `lib/metadata.ts` exists because Next *replaces* rather than merges nested
+ * metadata objects between a layout and its pages, so a page that sets none
+ * inherits the root layout's whole block. That was fixed for `openGraph` and
+ * left undone for `twitter`: every one of the thousand pages advertised the
+ * home page's title and description to any consumer that prefers `twitter:*`
+ * over `og:*` — which is worse than declaring nothing, because a present
+ * `twitter:title` overrides a correct `og:title` rather than falling back to
+ * it.
+ *
+ * Asserted as "the two blocks agree" rather than "twitter:title is non-empty",
+ * because the second passes on exactly the markup that was wrong.
+ */
+{
+  const problems: string[] = [];
+  let checked = 0;
+
+  for (const [page, file] of pages) {
+    if (page === "/_not-found" || page === "/_global-error") continue;
+    checked++;
+    const head = readFileSync(file, "utf8").split("</head>")[0];
+    const og = (p: string) =>
+      head.match(new RegExp(`<meta property="og:${p}" content="([^"]*)"`))?.[1];
+    const tw = (n: string) =>
+      head.match(new RegExp(`<meta name="twitter:${n}" content="([^"]*)"`))?.[1];
+
+    for (const field of ["title", "description"] as const) {
+      const o = og(field);
+      const t = tw(field);
+      if (o === undefined) problems.push(`${page}: no og:${field}`);
+      else if (t === undefined) problems.push(`${page}: no twitter:${field}`);
+      else if (t !== o) problems.push(`${page}: twitter:${field} "${t}" != og:${field} "${o}"`);
+    }
+  }
+
+  check(
+    `all ${checked} pages carry their own twitter:title and twitter:description`,
+    problems.length === 0,
+    problems.slice(0, 4).join("; "),
+  );
+  // Control: the comparison would report a page whose two blocks disagree.
+  {
+    const stub =
+      '<meta property="og:title" content="Hammerdin"/>' +
+      '<meta name="twitter:title" content="D2 Codex"/>';
+    const o = stub.match(/<meta property="og:title" content="([^"]*)"/)?.[1];
+    const t = stub.match(/<meta name="twitter:title" content="([^"]*)"/)?.[1];
+    check("and a page whose two blocks disagree would be reported", o !== t, `${o} vs ${t}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 console.log("\n4. The two locales cover exactly the same pages");
 // ---------------------------------------------------------------------------
 {
