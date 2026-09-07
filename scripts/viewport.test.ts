@@ -120,13 +120,28 @@ const SURFACES: Surface[] = [
       `document.body.textContent.includes(${JSON.stringify(dictionaryFor(l).builds.filters.emptyTitle)})`,
   },
   {
-    name: "builds catalogue, filter panel open",
+    /*
+     * Below `sm` this now opens a modal sheet rather than an inline panel, and
+     * the surface is still worth measuring for the same reason: an open sheet
+     * puts `overflow: hidden` on the body, and a clipped document could have
+     * made `scrollWidth <= clientWidth` true for free. It does not — measured
+     * at 320px with the dialog open and a deliberately over-wide element
+     * planted, `scrollWidth` reported 620 against a `clientWidth` of 320, so
+     * the rule still has teeth. From `sm` up the trigger is `display: none`,
+     * the click is a no-op, and the inline desktop panel supplies the boxes.
+     *
+     * The raise matters: the click used to be allowed to find nothing and carry
+     * on to a `waitFor` that timed out and reported "the checkboxes render:
+     * FAIL" without saying why.
+     */
+    name: "builds catalogue, filter sheet open",
     path: (l) => routes(l).builds(),
     ready: () => `document.querySelector('button[aria-controls]') !== null`,
     after: async (page) => {
-      await page.evaluate<boolean>(
+      const clicked = await page.evaluate<boolean>(
         `(() => { const b = [...document.querySelectorAll('button[aria-controls]')].find(x => x.getAttribute('aria-expanded') === 'false'); if (!b) return false; b.click(); return true; })()`,
       );
+      if (!clicked) throw new Error("no filter trigger to activate");
       await page.waitFor(`document.querySelector('input[type="checkbox"]') !== null`);
     },
   },
@@ -258,7 +273,7 @@ async function main(): Promise<void> {
       await openMenu(page);
       const items = await page.evaluate<{ count: number; outside: number; widest: number }>(
         `(() => {
-          const links = [...document.querySelectorAll('header details > div a')];
+          const links = [...document.querySelectorAll('header details nav a')];
           const vw = document.documentElement.clientWidth;
           return {
             count: links.length,
@@ -288,7 +303,7 @@ async function main(): Promise<void> {
       check(
         `${locale}: the first item is reachable from the trigger`,
         await page.evaluate<boolean>(
-          `(() => { const a = document.querySelector('header details > div a'); if (!a) return false; a.focus(); return document.activeElement === a; })()`,
+          `(() => { const a = document.querySelector('header details nav a'); if (!a) return false; a.focus(); return document.activeElement === a; })()`,
         ),
       );
       await page.evaluate(`document.querySelector('header summary').focus()`);
