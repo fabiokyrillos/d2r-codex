@@ -411,7 +411,7 @@ export const runewordsPtBr: Overlay<RunewordCopy> = {
     basesDisplay: "Qualquer Dagger de 3 sockets",
     basesExclusions: ["Só daggers — não swords, não claws."],
     notes:
-      "As linhas de status estão verificadas contra o `json/runes.json` do commit fixado. O `oskill Abyss` põe uma capstone do Warlock em qualquer classe capaz de segurar uma dagger, e é o um punhado deste site que concedem uma skill entre classes — Enigma, Call to Arms, Beast e Passion também fazem isso — e o único que entrega uma capstone. A linha de cargas se lê quantidade-e-depois-nível como todas as outras: `min=35 max=4` são trinta e cinco cargas de um Decrepify de nível 4.",
+      "As linhas de status estão verificadas contra o `json/runes.json` do commit fixado. O `oskill Abyss` põe uma capstone do Warlock em qualquer classe capaz de segurar uma dagger, e é o um punhado deste site que concedem uma skill entre classes — Enigma, Call to Arms, Beast, Passion, Harmony e Kingslayer também fazem isso, e tanto o Passion quanto o Call to Arms entregam uma skill de nível 30, então esta também não é a única capstone da lista. O que ela é é a única que concede uma skill de Warlock. A linha de cargas se lê quantidade-e-depois-nível como todas as outras: `min=35 max=4` são trinta e cinco cargas de um Decrepify de nível 4.",
   },
   vigilance: {
     summary:

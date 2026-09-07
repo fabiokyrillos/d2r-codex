@@ -36,7 +36,7 @@ export const hydraSorceress: Build = {
   playstyle:
     "Place hydras where something is going to be, then leave. They fire on their own for their whole duration, which means you can stack several sets onto a boss and teleport out while they work. Against packs this is slower than any other Sorceress — the hydras have to acquire targets — but against a single large health pool it is one of the safest damage patterns in the game, because you are never the thing being attacked.",
   strengths: [
-    "Damage that continues after you have moved away. Nothing else on the site does this",
+    "Damage that continues after you have moved away — the same trick Fire Wall, the Assassin's sentries, Blade Sentinel and the Warlock's sigils use, and the only one a Sorceress gets that also seeks its target",
     "Genuinely safe against bosses: you place, you leave, they die",
     "Cheap to gear and easy to reach the 105% cast rate target with",
     "Excellent at key farming, where the targets are single super uniques",

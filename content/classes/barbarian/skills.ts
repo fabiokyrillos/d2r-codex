@@ -224,7 +224,7 @@ export const barbarianSkills: Skill[] = [
     mechanics: [
       "**+35% maximum life at one point and 3% more per level**, and the identical figure applies to mana and to stamina. At twenty hard points that is +92% life on everyone within radius 19.",
       "It is why every class eventually carries a Call to Arms: the runeword grants this skill, and a Sorceress with it has half again the life she was built with.",
-      "**Cast it before the other buffs, always.** It raises maximum life by a percentage, and the life you have when it lands is not scaled up with the maximum — so a Barbarian shouts, then heals, then fights.",
+      "**The order is Battle Command, then this, then Shout, then heal.** Battle Command's +1 to all skills raises this shout's own level, so it has to land first to count. The heal comes last because this raises your *maximum* life and does not scale the life you are already carrying up with it — shouting at half health leaves you at half of a bigger number.",
       "30 seconds at one point and 10 more per level, extended a further 5 seconds per hard point of Shout and of Battle Command.",
       "It gives Concentrate and Berserk +10% damage each per hard point, which makes it a damage skill on two builds that press neither shout for the life.",
       "7 mana.",
@@ -292,7 +292,7 @@ export const barbarianSkills: Skill[] = [
     mechanics: [
       "**The +1 does not scale.** The row reads it straight off a parameter that is 1 at every level, so the twentieth hard point grants exactly what the first did.",
       "Points here buy duration and nothing else — 30 seconds at one point, 10 more per level, plus 5 seconds per hard point of Shout and of Battle Orders.",
-      "**Cast it before Battle Orders.** The extra skill level raises Battle Orders' own level, so the life buff that follows is larger; done the other way round it is not.",
+      "**Cast it first, before Battle Orders.** Its +1 to all skills raises Battle Orders' own level, so the life buff that follows is larger — done the other way round the extra level arrives too late to count. The full order is Battle Command, Battle Orders, Shout, then heal.",
       "11 mana, radius 19, and it reaches the whole party.",
     ],
     confidence: "verified",
@@ -459,7 +459,7 @@ export const barbarianSkills: Skill[] = [
       "All four resistances, permanently, without a buff to keep up. The best defensive passive on the class.",
     mechanics: [
       "Fire, cold, lightning and poison resistance together, from 0% climbing toward 80% on a diminishing curve.",
-      "**It is added before the cap, not after**, so it is exactly the answer to Hell's −100 penalty, and it is free of the upkeep every other class pays for the same thing.",
+      "**It is added before the cap, not after**, so it is exactly the answer to Hell's −100 penalty — and it is the only *passive* source of player resistances any class has. The Paladin's resist auras occupy his one aura slot and the Assassin's Fade is a buff to keep re-casting; the Amazon, Sorceress, Necromancer and Druid have no resistance skill for themselves at all.",
       "The curve means the early points are the valuable ones: a handful gets a Barbarian most of the way and the last few are worth a fraction each.",
       "It is the reason a Barbarian can wear damage gear where another melee character wears resistances.",
     ],
@@ -654,7 +654,7 @@ export const barbarianSkills: Skill[] = [
     mechanics: [
       "**It has no synergies in either direction.** Nothing raises it and it raises nothing — the only attack on the class with both lists empty, where the other eleven skills in that position are passives and Grim Ward. It is why a Whirlwind build's spare forty points go to a mastery and the shouts.",
       "+30% damage and 5% more per level, which is a small multiplier; the skill's damage comes from the number of hits and from the weapon, not from the bonus.",
-      "**It has a weapon-selection mode of its own**, shared with no other skill in the game. Double Swing, Double Throw and Frenzy share a different one, and the difference is real even though the extraction does not name what either mode does.",
+      "**It is the only player skill with its weapon-selection mode.** Two rows in the game carry `weapsel = 2` — this one and the Ancients' copy of it — and the Phrozen Keep file guide gives that mode as using the right weapon, the left, or both. The seven skills on mode 3, which are Double Swing, Double Throw, Frenzy and the Assassin's four two-claw attacks, always use both.",
       "It cannot be interrupted, and you are not steerable once it starts — the path is fixed when you press it.",
       "**It costs 12.5 mana, not 25.** The row is shifted by 7, and the cost climbs to 22 by level 20.",
       "Its attack rating bonus is +50% and 5% more per level, the smallest of any Barbarian attack, which is why attack rating is the build's real constraint.",

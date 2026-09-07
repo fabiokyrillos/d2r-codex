@@ -401,7 +401,7 @@ export const maulDruid: Build = {
           picks: [
             {
               ref: { kind: "runeword", slug: "beast" },
-              why: "**Fanaticism and +3 to Werebear from the same weapon.** The aura is attack speed, attack rating and enhanced damage — the bear's three shortages — and the +3 is three more levels of the form's +15% damage and +10% defence per level. No other build on this site gets both halves of a runeword.",
+              why: "**Fanaticism and +3 to Werebear from the same weapon.** The aura is attack speed, attack rating and enhanced damage — the bear's three shortages — and the +3 is three more levels of the form's +15% damage and +10% defence per level. The only other build on this site that takes both halves of the same runeword is the Fire Claws Druid's Werebear variant, which takes them from this same Beast.",
               sockets: "Ber + Tir + Um + Mal + Lum in a 5-socket Axe, Scepter or Hammer.",
             },
           ],

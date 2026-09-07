@@ -104,7 +104,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "**+35% de vida máxima com um ponto e mais 3% por nível**, e o número idêntico vale para mana e para stamina. Com vinte pontos duros são +92% de vida em todo mundo dentro do raio 19.",
       "É por isso que toda classe acaba carregando uma Call to Arms: a runeword concede esta skill, e uma Sorceress com ela tem metade a mais da vida com que foi construída.",
-      "**Conjure antes dos outros buffs, sempre.** Ela aumenta a vida máxima por porcentagem, e a vida que você tem quando ela entra não é escalada junto com o máximo — então um Barbarian grita, depois se cura, depois luta.",
+      "**A ordem é Battle Command, depois esta, depois Shout, depois a cura.** O +1 em todas as skills do Battle Command aumenta o nível deste próprio grito, então ele precisa entrar primeiro para contar. A cura vem por último porque esta aumenta a sua vida *máxima* e não escala junto a vida que você já está carregando — gritar com meia vida deixa você com metade de um número maior.",
       "30 segundos com um ponto e mais 10 por nível, estendida em mais 5 segundos por ponto duro de Shout e de Battle Command.",
       "Dá +10% de dano ao Concentrate e ao Berserk por ponto duro, o que a torna uma skill de dano em duas builds que não apertam grito nenhum pela vida.",
       "7 de mana.",
@@ -144,7 +144,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "**O +1 não escala.** A linha lê o valor direto de um parâmetro que é 1 em todo nível, então o vigésimo ponto duro concede exatamente o que o primeiro concedeu.",
       "Pontos aqui compram duração e mais nada — 30 segundos com um ponto, mais 10 por nível, mais 5 segundos por ponto duro de Shout e de Battle Orders.",
-      "**Conjure antes do Battle Orders.** O nível de skill extra aumenta o nível do próprio Battle Orders, então o buff de vida que vem depois é maior; na ordem inversa, não é.",
+      "**Conjure primeiro, antes do Battle Orders.** O +1 em todas as skills dele aumenta o nível do próprio Battle Orders, então o buff de vida que vem depois é maior — na ordem inversa o nível extra chega tarde demais para contar. A ordem completa é Battle Command, Battle Orders, Shout, depois a cura.",
       "11 de mana, raio 19, e alcança o grupo inteiro.",
     ],
     synergyBonuses: ["+5 segundos de duração por nível", "+5 segundos de duração por nível"],
@@ -239,7 +239,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
       "As quatro resistências, permanentemente, sem buff para manter. A melhor passiva defensiva da classe.",
     mechanics: [
       "Resistência a fogo, frio, raio e veneno juntas, de 0% subindo em direção a 80% numa curva decrescente.",
-      "**Ela é somada antes do teto, não depois**, então é exatamente a resposta para a penalidade de −100 do Hell, e é livre da manutenção que toda outra classe paga pela mesma coisa.",
+      "**Ela é somada antes do teto, não depois**, então é exatamente a resposta para a penalidade de −100 do Hell — e é a única fonte *passiva* de resistência para o próprio personagem que alguma classe tem. As auras de resistência do Paladin ocupam o único slot de aura dele e o Fade da Assassin é um buff para ficar reconjurando; a Amazon, a Sorceress, o Necromancer e o Druid não têm skill de resistência para si mesmos nenhuma.",
       "A curva faz dos primeiros pontos os valiosos: um punhado leva o Barbarian quase até o fim e os últimos valem uma fração cada.",
       "É o motivo de um Barbarian conseguir vestir equipamento de dano onde outro personagem corpo a corpo veste resistência.",
     ],
@@ -353,7 +353,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "**Ela não tem sinergia em nenhuma direção.** Nada a aumenta e ela não aumenta nada — o único ataque da classe com as duas listas vazias, sendo que as outras onze skills nessa posição são passivas e o Grim Ward. É por isso que os quarenta e poucos pontos sobrando de uma build de Whirlwind vão para uma mastery e para os gritos.",
       "+30% de dano e mais 5% por nível, que é um multiplicador pequeno; o dano da skill vem da quantidade de acertos e da arma, não do bônus.",
-      "**Ela tem um modo de seleção de arma só dela**, não compartilhado com nenhuma outra skill do jogo. Double Swing, Double Throw e Frenzy compartilham um modo diferente, e a diferença é real mesmo que a extração não diga o que cada modo faz.",
+      "**Ela é a única skill de jogador com o modo de seleção de arma dela.** Duas linhas no jogo carregam `weapsel = 2` — esta e a cópia dela dos Ancients — e o guia de arquivos do Phrozen Keep descreve esse modo como usar a arma da direita, a da esquerda, ou as duas. As sete skills do modo 3, que são Double Swing, Double Throw, Frenzy e os quatro ataques de duas garras da Assassin, sempre usam as duas.",
       "Ela não pode ser interrompida, e você não consegue mudar a direção depois que começa — o caminho é fixado no momento do aperto.",
       "**Custa 12,5 de mana, não 25.** A linha é deslocada por 7, e o custo sobe para 22 no nível 20.",
       "O bônus de attack rating dela é +50% e mais 5% por nível, o menor de qualquer ataque de Barbarian, e é por isso que attack rating é a restrição real da build.",

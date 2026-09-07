@@ -241,17 +241,24 @@ The direction of the column is settled by the game's own text rather than by the
 company it keeps: Concentrate's description is "attack that is **not
 interruptible** and improves attack rating and defense".
 
-### 3.5 Weapon selection, read off the column rather than off a guide
+### 3.5 Weapon selection — the column, and the guide that names it
 
-`weapsel` is populated on eleven rows in the whole game and falls into four
-groups. Nothing in the file names the modes, so only what the grouping supports
-is published.
+`weapsel` is populated on sixteen rows in the whole game and falls into four
+groups. **Counted rather than eyeballed**, because the first draft of this
+section said "eleven rows" and grouped them by eye:
+
+```
+weapsel=1  rows=2   playerSkills=0
+weapsel=2  rows=2   playerSkills=1
+weapsel=3  rows=7   playerSkills=7
+weapsel=4  rows=5   playerSkills=4
+```
 
 | `weapsel` | Rows | What the site says |
 | --- | --- | --- |
 | 1 | `Left Hand Throw`, `Left Hand Swing` (internal) | nothing; not player skills |
-| 2 | **Whirlwind**, and the Ancients' copy of it | Whirlwind has a weapon-selection mode of its own, shared with no other skill in the game |
-| 3 | **Double Swing, Double Throw, Frenzy**, and the Assassin's four two-claw skills | strikes with both weapons |
+| 2 | **Whirlwind**, and `Talic's Whirlwind` | the right weapon, the left, or both. Whirlwind is the only **player** skill with this mode — 2 rows, 1 of them a player skill |
+| 3 | **Double Swing, Double Throw, Frenzy**, and the Assassin's Fists of Fire, Dragon Claw, Claws of Thunder and Blades of Ice | always both weapons. **Seven skills, not three** |
 | 4 | Kick, Smite, Dragon Talon, Dragon Tail, Dragon Flight | the damage is not the held weapon's — the site already models these as `kick` and `shield` |
 
 Group 3 is corroborated by the rows themselves: every skill in it carries both
@@ -259,9 +266,17 @@ Group 3 is corroborated by the rows themselves: every skill in it carries both
 Stun, Concentrate, Berserk and Leap Attack carry only `itypea1`. Frenzy's own
 description closes it — "requires you to equip two weapons".
 
-**What is not published:** that `weapsel = 2` means Whirlwind alternates between
-the two weapons on successive hits. That is the community's account and it may
-well be right; the extraction says only that Whirlwind's mode is its own.
+**The modes are named, and this note previously said they were not.** The
+Phrozen Keep `Skills.txt` file guide (kb 440) gives 2 as "it can either use the
+Right or the Left or Both weapons (used by Whirlwind)", 3 as always both, and 4
+as no weapon. That is the same author and series as kb 448, which this project
+has already validated and which the Assassin's Whirlwind page cites, so it sits
+at a tier this repository accepts.
+
+What is **still** not published is the community's stronger claim that
+`weapsel = 2` means Whirlwind *alternates* between the two weapons on successive
+hits. The guide says the mode can use either or both; it does not say the engine
+alternates, and that is a different sentence.
 
 ### 3.6 What each mastery actually covers
 
@@ -381,7 +396,9 @@ the skills a player presses most.
 - **Whether on-striking procs fire during a whirl.** Not established at any
   acceptable tier, and to be published as *not established* rather than resolved
   in either direction. See §3.2.1.
-- **That `weapsel = 2` means alternating weapons.** See §3.5.
+- **That `weapsel = 2` means Whirlwind *alternates* between the two weapons.**
+  The mode itself is now sourced — see §3.5 — but "either or both" is not
+  "alternates", and only the first is published.
 - **Which mastery applies to a thrown swing** where two cover the same item.
   See §3.6.
 - **Stun's length at level 20.** The row bands it through `ELevLen 5/5/2` and

@@ -805,7 +805,7 @@ export const summonDruid: Build = {
   levelingPath: {
     summary:
       "There is no respec and no detour. Raven at 1, Spirit Wolf at 6, Oak Sage at 6, Dire Wolf at 18, Heart of Wolverine at 18 and Grizzly at 30 form one straight line in which every skill is the prerequisite of the next — so the character you level is the character you finish with, and points spent at level 6 are still working at level 99.",
-    respecAt: "None. This is the only Druid build on the site that never needs one.",
+    respecAt: "None. Four of the seven Druid builds on this site say the same, and this one is the least surprising of them: nothing in the plan is a levelling compromise.",
   },
 
   confidence: "verified",
