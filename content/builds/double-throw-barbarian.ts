@@ -202,8 +202,8 @@ export const doubleThrowBarbarian: Build = {
       goal: "The mastery's no-consume chance high enough that ammunition stops mattering, and enough resistance to enter Hell.",
       levelRange: [40, 65],
       slots: [
-        { slot: "weapon", picks: [{ label: "Lacerator (Winged Axe) — a label, not a link", why: "The classic thrower unique: it casts Amplify Damage on striking, which is a physical-resistance reduction on the damage type this build deals. **Its stat lines are not quoted here because the item is not catalogued on this site.**" }, { label: "A rare Winged Axe or Winged Knife with Increased Attack Speed and Replenish Quantity", why: "Frequently better than the uniques, and a rare with attack speed and its own replenish stacks with the mastery's." }] },
-        { slot: "offhand", picks: [{ label: "Warshrike (Winged Knife) — a label, not a link", why: "The other classic thrower unique, and the one built around piercing. Uncatalogued here, so its lines are described rather than quoted." }] },
+        { slot: "weapon", picks: [{ label: "A rare Winged Axe or Winged Knife with Increased Attack Speed and Replenish Quantity", why: "The thrower uniques are all level 68 and above, so this tier is rares. That is not a consolation prize — a rare with attack speed and its own replenish stacks with the mastery's, and is frequently better than the uniques that follow it." }] },
+        { slot: "offhand", picks: [{ label: "A second rare or magic throwing weapon, matched to the first for speed", why: "The two hands do not have to match, but their attack speeds do or the slower one sets the cadence. Warshrike, the piercing unique this slot eventually wants, requires level 75 and belongs three tiers later." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "arreats-face" }, why: "+2 Barbarian skills and +2 Combat Skills — and unlike the War Cry page, **both halves land here**: Double Throw and Double Swing are both Combat Skills, so this is +4 to the primary and +4 to its synergy." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "treachery" }, why: "+45% Increased Attack Speed at level 43, and attack speed is this build's best damage stat." }, { ref: { kind: "runeword", slug: "lionheart" }, why: "The resistances and Strength instead, if the second weapon's requirement is what is blocking you." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "razortail" }, why: "Still the belt. Pierce does not stop being the build's defining stat." }] },
@@ -222,7 +222,7 @@ export const doubleThrowBarbarian: Build = {
       goal: "Enough pierce that a throw hits three things, enough resistance to survive what closes, and the mastery finished.",
       levelRange: [65, 75],
       slots: [
-        { slot: "weapon", picks: [{ label: "Gimmershred (Flying Axe) — a label, not a link", why: "The elemental thrower unique. Its fire, lightning and cold damage is the one route this build has to damage that is not physical *without* swapping to melee — which makes it worth considering even against the Berserk package. Uncatalogued here, so no lines are quoted." }, { label: "Lacerator (Winged Axe)", why: "Amplify Damage on striking, on a build that deals physical damage. Still excellent." }] },
+        { slot: "weapon", picks: [{ ref: { kind: "unique", slug: "gimmershred" }, why: "The elemental thrower unique. Its fire, lightning and cold damage is the one route this build has to damage that is not physical *without* swapping to melee — which makes it worth considering even against the Berserk package. It is catalogued, so follow the link for the rolled lines." }, { label: "Lacerator (Winged Axe)", why: "Amplify Damage on striking, on a build that deals physical damage. Still excellent." }] },
         { slot: "offhand", picks: [{ label: "Warshrike (Winged Knife), or a rare elite throwing weapon", why: "The two hands do not need to match, so the correct off-hand is simply the best throwing weapon you own that is not in the main hand." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "arreats-face" }, why: "+4 to the primary and its synergy, plus 30% faster hit recovery and +30 all resistances." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "+300% enhanced damage, which applies to a thrown weapon exactly as it does to a swung one." }, { ref: { kind: "runeword", slug: "treachery" }, why: "The attack speed instead, when the damage is already sufficient and the throw rate is not." }] },
@@ -242,7 +242,7 @@ export const doubleThrowBarbarian: Build = {
       goal: "A finished Hell thrower: pierce, attack speed, and the ability to leave any distance that gets closed.",
       levelRange: [75, 85],
       slots: [
-        { slot: "weapon", picks: [{ label: "Gimmershred (Flying Axe) or Lacerator (Winged Axe) — labels, not links", why: "The two elite thrower uniques, and the choice between them is elemental damage or Amplify Damage. Neither is catalogued on this site, so neither is linked and neither has its lines quoted." }] },
+        { slot: "weapon", picks: [{ ref: { kind: "unique", slug: "gimmershred" }, why: "The two elite thrower uniques, and the choice between them is elemental damage or Amplify Damage. Both are catalogued, so follow either link for the rolled lines rather than taking them from this page." }] },
         { slot: "offhand", picks: [{ label: "The best throwing weapon you own that is not in the main hand", why: "Two different weapons is what the skill throws, so there is no pair to complete." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "arreats-face" }, why: "+4 to the primary and its synergy." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "**Teleport, used defensively.** Every other Barbarian takes Enigma to arrive; this one takes it to leave. A thrower whose spacing has been closed can restore it instantly, which is the single largest survivability upgrade the build has.", sockets: "Jah + Ith + Ber." }, { ref: { kind: "runeword", slug: "fortitude" }, why: "The damage instead, if the runes are not there." }] },
@@ -262,7 +262,7 @@ export const doubleThrowBarbarian: Build = {
       goal: "Maximum pierce and throw rate, with Teleport to keep the distance the build depends on.",
       levelRange: [85, 95],
       slots: [
-        { slot: "weapon", picks: [{ label: "Gimmershred (Flying Axe) — a label, not a link", why: "The elemental lines are the closest this build gets to a second damage type without giving up the range." }] },
+        { slot: "weapon", picks: [{ ref: { kind: "unique", slug: "gimmershred" }, why: "The elemental lines are the closest this build gets to a second damage type without giving up the range." }] },
         { slot: "offhand", picks: [{ label: "Lacerator (Winged Axe) or a perfect rare elite throwing weapon", why: "Amplify Damage on striking in the second hand, or whichever rare rolls better attack speed and damage." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "arreats-face" }, why: "+4 to the two skills that matter." }, { ref: { kind: "unique", slug: "crown-of-ages" }, why: "30% damage reduction and two sockets, for a build with no shield to provide any." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "Teleport, defensively." }] },
@@ -282,7 +282,7 @@ export const doubleThrowBarbarian: Build = {
       goal: "Nothing left to buy. Maximum pierce, maximum throw rate, and a distance that cannot be closed.",
       levelRange: [90, 99],
       slots: [
-        { slot: "weapon", picks: [{ label: "A perfect Gimmershred (Flying Axe) — a label, not a link", why: "The elemental damage, at the top of its rolls." }] },
+        { slot: "weapon", picks: [{ ref: { kind: "unique", slug: "gimmershred" }, why: "The elemental damage, at the top of its rolls." }] },
         { slot: "offhand", picks: [{ label: "A perfect Lacerator (Winged Axe), or the best rare elite throwing weapon in the game", why: "Two different weapons is the skill's own requirement, so the best pair is simply the best two." }] },
         { slot: "helm", picks: [{ ref: { kind: "unique", slug: "arreats-face" }, why: "Upgraded, with a perfect life-steal roll." }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "enigma" }, why: "Teleport, in the lightest base your Strength allows." }] },

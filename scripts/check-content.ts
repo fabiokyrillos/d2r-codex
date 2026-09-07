@@ -68,6 +68,7 @@ import {
   SLUG_OVERRIDES,
 } from "./skill-graph-rules";
 import {
+  checkAuthoringNotes,
   checkShippedSkillNames,
   checkSiteScopedClaims,
   checkSourcedDivergence,
@@ -1214,6 +1215,12 @@ console.log("\nImmunity model and sourced divergence (everything, both locales):
    * the rule needs no game data of its own and cannot drift from what the
    * pages actually say.
    */
+  const authoring = pages.flatMap(({ where, lines }) => checkAuthoringNotes(lines, where));
+  console.log(
+    `  ${authoring.length === 0 ? "ok" : " x"} ${"authoring-note-published".padEnd(38)} ${authoring.length}`,
+  );
+  for (const h of authoring) problems.push(h.message);
+
   const shippedFor = new Map<string, string>();
   for (const [identifier, slug] of Object.entries(SLUG_OVERRIDES)) {
     const skill = getSkills(DEFAULT_LOCALE).find((s) => s.slug === slug);

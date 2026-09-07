@@ -498,3 +498,58 @@ export function checkShippedSkillNames(
   }
   return found;
 }
+
+/* -------------------------------------------------------------------------
+ * Rule E — a note the author wrote to themselves is not published.
+ *
+ * Six gear picks on the Double Throw page carried "— a label, not a link" in
+ * the label, and the pt-BR overlay carried the same note translated. Twelve
+ * strings, on a live page, telling the reader about the shape of the data
+ * rather than about the game. The author meant it as a marker to come back to
+ * once the three uniques were catalogued; they were catalogued, and the marker
+ * stayed.
+ *
+ * The tempting rule is broader — "a label that names a catalogued item should
+ * be a ref" — and it was measured before being rejected: 77 of 869 label-only
+ * picks name one, and the hits include `"None — Infinity is two-handed"`, where
+ * a ref would invert the sentence, and `"Any staff or orb with +Ice Bolt"`,
+ * which matches the Ice runeword on a word boundary. That rule needs a
+ * seventy-row exemption table, which is the dead-row shape this repository
+ * already knows to avoid.
+ *
+ * So this one only refuses markers, and the word list is narrow because the
+ * obvious one is unusable here. Portuguese `todo` ("every") collides with TODO
+ * on three hundred strings, and `placeholder` is legitimate English on these
+ * pages — "while the belt slot is a placeholder" is a real recommendation.
+ * What remains is markers with their punctuation, and the note that shipped.
+ * Zero hits across 60,915 published strings in both locales.
+ * ------------------------------------------------------------------------- */
+
+export type ScaffoldRule = "authoring-note-published";
+
+export interface ScaffoldProblem {
+  rule: ScaffoldRule;
+  message: string;
+}
+
+const SCAFFOLD =
+  /\bTODO\s*[:(]|\bFIXME\b|\bXXX\s*[:(]|lorem ipsum|a label, not a link|labels, not links|um label, n[aã]o um link|labels, n[aã]o links/i;
+
+export function checkAuthoringNotes(
+  lines: readonly string[],
+  where: string,
+): ScaffoldProblem[] {
+  const found: ScaffoldProblem[] = [];
+  for (const line of lines) {
+    const m = SCAFFOLD.exec(line);
+    if (!m) continue;
+    const at = Math.max(0, m.index - 50);
+    found.push({
+      rule: "authoring-note-published",
+      message:
+        `${where}: "${m[0]}" is an authoring marker and this string is published. ` +
+        `Context: "…${line.slice(at, m.index + m[0].length + 40).trim()}…"`,
+    });
+  }
+  return found;
+}

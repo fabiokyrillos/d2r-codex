@@ -593,6 +593,42 @@ Three English sentences state it as achieved, and one of them sits two files fro
 an Assassin journey step that gets it right. A careful reader checked and was
 wrong about the reach of their own finding; the data was not.
 
+### Measure a rule before writing it, including the obvious one
+
+Twelve published strings told readers about the shape of the data instead of
+about the game. Six gear picks on the Double Throw page carried
+`— a label, not a link` inside the label, and the pt-BR overlay carried the same
+note translated. The author meant it as a marker to return to once the three
+thrower uniques were catalogued. They were catalogued. The marker stayed, and
+shipped.
+
+Two rules could cover it, and both were measured before either was written.
+
+**The broad one was rejected on its numbers.** *A label that names a catalogued
+item should be a ref* sounds obviously right: 77 of the site's 869 label-only
+picks name one. But the hits include `"None — Infinity is two-handed"`, where
+turning the label into a reference would invert what the sentence says, and
+`"Any staff or orb with +Ice Bolt"`, which matches the **Ice** runeword on a
+word boundary. Shipping it would have meant a seventy-row exemption table —
+the dead-row shape this document already warns about, rebuilt deliberately.
+
+**The narrow one was rejected in its first form, too.** Refusing authoring
+markers is obviously safe until you count: `TODO|FIXME|XXX|TBD|PLACEHOLDER`
+matched **359 of 60,915 published strings**, because Portuguese `todo` means
+"every" and `placeholder` is legitimate English on these pages — *"while the
+belt slot is a placeholder"* is a real recommendation. A gate that fires 359
+times on correct content is switched off within a day.
+
+What shipped keeps only forms that cannot occur in ordinary prose: a marker
+with its punctuation (`TODO:`, `TODO(`, `XXX:`), `FIXME`, `lorem ipsum`, and
+the note that actually shipped in both languages. **Zero hits across 60,915
+strings**, and it trips on all twelve of the originals.
+
+The general point is not about markers. It is that *both* candidate rules
+looked correct while being written and were wrong when counted, and the count
+took minutes. A rule is a claim about the corpus, so it deserves the same
+evidence as any other claim about the corpus.
+
 ### Name the artefact you searched, not the world
 
 Four claims went wrong the same way on the eight-class pass, and the rule that

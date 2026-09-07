@@ -50,6 +50,7 @@ import {
 import {
   MIN_PROSE_LENGTH,
   SITE_SCOPED_CLAIMS,
+  checkAuthoringNotes,
   checkShippedSkillNames,
   checkSiteScopedClaims,
   exitCodeFor,
@@ -1404,6 +1405,40 @@ console.log("\nRule D — an item grants a skill by the name the game ships");
   /* The correct line, which is what the repair actually produced. */
   check("silent on the repaired Beast line", fires("+3 to Lycanthropy (Oskill)") === 0);
   check("silent on the repaired Warlock line", fires("4-19% chance to cast Miasma Chain on striking") === 0);
+}
+
+// ===========================================================================
+console.log("\nRule E — an authoring note is not published");
+// ===========================================================================
+{
+  const fires = (line: string) => checkAuthoringNotes([line], "planted").length;
+
+  /* The twelve strings that shipped, in both languages. */
+  check("catches the note that shipped", fires("Lacerator (Winged Axe) — a label, not a link") === 1);
+  check("and its Portuguese form", fires("Uma Gimmershred (Flying Axe) perfeita — um label, não um link") === 1);
+  check("and the plural the same page used", fires("Gimmershred (Flying Axe) or Lacerator (Winged Axe) — labels, not links") === 1);
+  check("catches a marker with its punctuation", fires("TODO: quote the rolled lines here") === 1);
+  check("and the parenthesised form", fires("TODO(coordinator) check this against the table") === 1);
+  check("catches FIXME on its own", fires("FIXME this number is from memory") === 1);
+
+  /*
+   * The two false positives that forced the word list to narrow, both measured
+   * on real content rather than imagined. Without these the rule reported 359
+   * hits on 60,915 strings and would have been switched off within a day.
+   */
+  check(
+    'silent on "placeholder", which is legitimate English here',
+    fires("Resistances and damage-to-mana while the belt slot is a placeholder.") === 0,
+  );
+  check(
+    'silent on Portuguese "Todo", which means "every" and is not TODO',
+    fires("Todo item central é barato e encontrável sozinho.") === 0,
+  );
+  check(
+    "silent on a bare marker word inside ordinary prose",
+    fires("The XXX rune does not exist; there is no such rune.") === 0,
+  );
+  check("silent on the repaired page", fires("The classic thrower unique: it casts Amplify Damage on striking.") === 0);
 }
 
 // ===========================================================================

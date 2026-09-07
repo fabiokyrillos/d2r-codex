@@ -407,9 +407,8 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         goal: "A chance de não consumir da mastery alta o bastante para munição deixar de importar, e resistência o bastante para entrar no Hell.",
         nextUpgrade: "Bases de arremesso elite, e o total de perfuração que faz de uma fileira de monstros um arremesso.",
         picks: {
-          "weapon-0": { label: "Lacerator (Winged Axe) — um label, não um link", why: "A unique clássica de arremessador: ela conjura Amplify Damage ao golpear, que é uma redução de resistência física no tipo de dano que esta build causa. **As linhas de status dela não são citadas aqui porque o item não está catalogado neste site.**" },
-          "weapon-1": { label: "Um Winged Axe ou Winged Knife raro com Increased Attack Speed e Replenish Quantity", why: "Frequentemente melhor que as uniques, e um raro com velocidade de ataque e reposição própria acumula com a da mastery." },
-          "offhand-0": { label: "Warshrike (Winged Knife) — um label, não um link", why: "A outra unique clássica de arremessador, e a construída em torno da perfuração. Não catalogada aqui, então as linhas dela são descritas em vez de citadas." },
+          "weapon-0": { label: "Um Winged Axe ou Winged Knife raro com Increased Attack Speed e Replenish Quantity", why: "Frequentemente melhor que as uniques, e um raro com velocidade de ataque e reposição própria acumula com a da mastery." },
+          "offhand-0": { label: "Uma segunda arma de arremesso rara ou mágica, pareada com a primeira em velocidade", why: "As duas mãos não precisam combinar, mas as velocidades de ataque sim, ou a mais lenta dita a cadência. A Warshrike, a unique de perfuração que este slot quer no fim, exige nível 75 e pertence a três tiers depois." },
           "helm-0": { why: "+2 Barbarian skills e +2 Combat Skills — e diferente da página do War Cry, **as duas metades entram aqui**: Double Throw e Double Swing são as duas Combat Skills, então isso é +4 na skill principal e +4 na sinergia dela." },
           "body-0": { why: "+45% de Increased Attack Speed no nível 43, e velocidade de ataque é a melhor stat de dano desta build." },
           "body-1": { why: "As resistências e o Strength no lugar, se o requisito da segunda arma for o que está te travando." },
@@ -428,7 +427,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         goal: "Perfuração o bastante para um arremesso acertar três coisas, resistência o bastante para sobreviver ao que chega perto, e a mastery terminada.",
         nextUpgrade: "Enigma, que nesta build é reposicionamento em vez de deslocamento.",
         picks: {
-          "weapon-0": { label: "Gimmershred (Flying Axe) — um label, não um link", why: "A unique elemental de arremessador. O dano de fogo, raio e frio dela é a única rota que esta build tem para dano que não é físico *sem* trocar para corpo a corpo — o que a torna digna de consideração até contra o pacote de Berserk. Não catalogada aqui, então nenhuma linha é citada." },
+          "weapon-0": { why: "A unique elemental de arremessador. O dano de fogo, raio e frio dela é a única rota que esta build tem para dano que não é físico *sem* trocar para corpo a corpo — o que a torna digna de consideração até contra o pacote de Berserk. Ela é catalogada, então siga o link para as linhas roladas." },
           "weapon-1": { label: "Lacerator (Winged Axe)", why: "Amplify Damage ao golpear, numa build que causa dano físico. Continua excelente." },
           "offhand-0": { label: "Warshrike (Winged Knife), ou uma arma de arremesso elite rara", why: "As duas mãos não precisam combinar, então a mão secundária certa é simplesmente a melhor arma de arremesso que você tiver e que não esteja na mão principal." },
           "helm-0": { why: "+4 na skill principal e na sinergia dela, mais 30% de recuperação e +30 em todas as resistências." },
@@ -452,7 +451,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         goal: "Um arremessador de Hell pronto: perfuração, velocidade de ataque, e a capacidade de sair de qualquer distância que seja fechada.",
         nextUpgrade: "Bases de arremesso perfeitas, e o resto da velocidade de ataque.",
         picks: {
-          "weapon-0": { label: "Gimmershred (Flying Axe) ou Lacerator (Winged Axe) — labels, não links", why: "As duas uniques elite de arremessador, e a escolha entre elas é dano elemental ou Amplify Damage. Nenhuma está catalogada neste site, então nenhuma é linkada e nenhuma tem as linhas citadas." },
+          "weapon-0": { why: "As duas uniques elite de arremessador, e a escolha entre elas é dano elemental ou Amplify Damage. Nenhuma está catalogada neste site, então nenhuma é linkada e nenhuma tem as linhas citadas." },
           "offhand-0": { label: "A melhor arma de arremesso que você tiver e que não esteja na mão principal", why: "Duas armas diferentes é o que a skill arremessa, então não há par a completar." },
           "helm-0": { why: "+4 na skill principal e na sinergia dela." },
           "body-0": { why: "**Teleport, usado defensivamente.** Todo outro Barbarian pega Enigma para chegar; este pega para sair. Um arremessador cuja distância foi fechada consegue restaurá-la instantaneamente, que é a maior melhoria de sobrevivência que a build tem.", sockets: "Jah + Ith + Ber." },
@@ -476,7 +475,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         goal: "Perfuração e taxa de arremesso máximas, com Teleport para manter a distância de que a build depende.",
         nextUpgrade: "Bases de arremesso etéreas, que não perdem durabilidade porque são arremessadas em vez de golpeadas.",
         picks: {
-          "weapon-0": { label: "Gimmershred (Flying Axe) — um label, não um link", why: "As linhas elementais são o mais perto que esta build chega de um segundo tipo de dano sem abrir mão do alcance." },
+          "weapon-0": { why: "As linhas elementais são o mais perto que esta build chega de um segundo tipo de dano sem abrir mão do alcance." },
           "offhand-0": { label: "Lacerator (Winged Axe) ou uma arma de arremesso elite rara perfeita", why: "Amplify Damage ao golpear na segunda mão, ou o raro que rolar melhor velocidade de ataque e dano." },
           "helm-0": { why: "+4 nas duas skills que importam." },
           "helm-1": { why: "30% de redução de dano e dois sockets, para uma build sem escudo para fornecer nenhuma." },
@@ -499,7 +498,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         goal: "Nada mais para comprar. Perfuração máxima, taxa de arremesso máxima, e uma distância que não pode ser fechada.",
         notes: "**Cada pick de arma e de mão secundária desta página é um label em vez de um link, em todo tier.** Este site não cataloga nenhuma arma de arremesso que um Barbarian consiga equipar: as duas lanças de arremesso que ele cataloga, Titan's Revenge e Thunderstroke, estão as duas no tipo de item Amazon Javelin, que é restrito a classe. As linhas de status delas são descritas pelo papel em vez de citadas, porque os números de um item não catalogado não são deste site para publicar.",
         picks: {
-          "weapon-0": { label: "Uma Gimmershred (Flying Axe) perfeita — um label, não um link", why: "O dano elemental, no topo das rolagens dele." },
+          "weapon-0": { why: "O dano elemental, no topo das rolagens dele." },
           "offhand-0": { label: "Uma Lacerator (Winged Axe) perfeita, ou a melhor arma de arremesso elite rara do jogo", why: "Duas armas diferentes é o requisito da própria skill, então o melhor par é simplesmente as duas melhores." },
           "helm-0": { why: "Upgradeado, com rolagem perfeita de roubo de vida." },
           "body-0": { why: "Teleport, na base mais leve que o seu Strength permitir." },
