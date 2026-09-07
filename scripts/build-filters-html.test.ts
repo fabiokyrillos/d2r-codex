@@ -80,6 +80,22 @@ const CONTROL_MARKERS: readonly [string, (locale: Locale) => RegExp][] = [
     (locale) =>
       new RegExp(`aria-expanded="[^"]*"[^>]*>\\s*${dictionaryFor(locale).builds.filters.showFilters}`, "i"),
   ],
+  /*
+   * The mobile sheet.
+   *
+   * It is mounted only while it is open, so a listing that shipped one in its
+   * prerendered HTML would be handing a reader without JavaScript a dialog
+   * with no way to close it, over a scrim nothing can dismiss. `role="dialog"`
+   * is safe to look for on these two pages specifically: neither the catalogue
+   * nor a class page renders any other one closed, which `sheet.test.ts`
+   * asserts from the same files.
+   */
+  ["a modal dialog", () => /role="dialog"/i],
+  [
+    "the sheet's close control",
+    (locale) =>
+      new RegExp(`aria-label="${dictionaryFor(locale).builds.filters.sheetClose}"`, "i"),
+  ],
 ];
 
 // ===========================================================================
@@ -170,7 +186,9 @@ console.log("\nControl: the markers are real");
   const f = dictionaryFor("en-us").builds.filters;
   const sample =
     `<section aria-label="${f.regionLabel}"><input type="checkbox" /><input type="search" />` +
-    `<button aria-expanded="false">${f.showFilters}</button></section>`;
+    `<button aria-expanded="false">${f.showFilters}</button>` +
+    `<div role="dialog" aria-modal="true"><button aria-label="${f.sheetClose}">✕</button></div>` +
+    `</section>`;
   check(
     "every control marker matches a page that does render one",
     CONTROL_MARKERS.every(([, re]) => re("en-us").test(sample)),
@@ -190,6 +208,20 @@ console.log("\nControl: the markers are real");
     "…and not in the rendered markup",
     catalogue !== null && !markup(catalogue).includes(dictionaryFor("en-us").builds.filters.clearAll),
   );
+
+  /*
+   * The same, for the copy the sheet is the only thing that renders. Without
+   * this, "no sheet in the static HTML" would also pass on a build where the
+   * sheet had been dropped from the bundle entirely.
+   */
+  for (const key of ["sheetTitle", "sheetClose", "sheetClear", "showResultsMany"] as const) {
+    const value = dictionaryFor("en-us").builds.filters[key];
+    check(
+      `the sheet's ${key} is shipped to the client but not rendered`,
+      catalogue !== null && catalogue.includes(value) && !markup(catalogue).includes(value),
+      value,
+    );
+  }
 }
 
 // ===========================================================================

@@ -249,6 +249,106 @@ check(
   dictionaryFor("en-us").skills.closePanel !== dictionaryFor("pt-br").skills.closePanel,
 );
 
+// ===========================================================================
+console.log("\nThe second sheet, and what the two of them share");
+// ===========================================================================
+/*
+ * The build filters grew a sheet of their own — same contract, same two
+ * helpers. Its live behaviour is driven in a browser by
+ * `scripts/mobile-filter-sheet.test.ts`; what belongs *here* is the part that
+ * only becomes true because there are now two of them.
+ */
+{
+  const filterSheet = readFileSync(
+    join(process.cwd(), "components", "builds", "mobile-filter-sheet.tsx"),
+    "utf8",
+  )
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/(^|[^:])\/\/[^\n]*/g, "$1 ");
+
+  // -- the shared contract has exactly the consumers it claims --------------
+  const consumers = ["components/game/skill-tree-interactive.tsx", "components/builds/mobile-filter-sheet.tsx"];
+  const importers = (helper: string) =>
+    consumers.filter((c) => readFileSync(join(process.cwd(), ...c.split("/")), "utf8").includes(helper));
+  check("both sheets route Tab through the one trapTarget", importers("trapTarget").length === 2);
+  check("both sheets hold the page still with the one lockScroll", importers("lockScroll").length === 2);
+  check("neither reimplements a trap of its own", !/tabbable|firstFocusable\s*=/.test(filterSheet));
+
+  // -- a class page can now mount both, so the depth counter is load-bearing -
+  /*
+   * `lib/scroll-lock.ts` explains that its counter exists because only-one-open
+   * is a property of two *other* decisions rather than of that file. Until now
+   * nothing on the site could take a second lock. A class page renders three
+   * skill trees and a filtered listing, so the two can be open in sequence and
+   * their effects can overlap across a React remount — and the naive version
+   * saves `hidden` as the second lock's "previous" and never gives the page
+   * back.
+   */
+  {
+    const body = { style: { overflow: "" } };
+    const tree = lockScroll(body);
+    const filters = lockScroll(body);
+    check("two different modals can hold one body", body.style.overflow === "hidden");
+    tree();
+    check("the first one letting go does not unlock the page", body.style.overflow === "hidden");
+    filters();
+    check("the last one does, and restores the original value", body.style.overflow === "");
+    check("and nothing is still held", !isScrollLocked(body));
+  }
+
+  // -- the sheet is a sheet, and only while it is open ----------------------
+  const filterBlock = filterSheet.slice(
+    filterSheet.indexOf('role="dialog"'),
+    filterSheet.indexOf('role="dialog"') + 700,
+  );
+  check("the filter sheet declares itself modal", /aria-modal="true"/.test(filterBlock));
+  check("…carries an accessible name", /aria-label=\{strings\.title\}/.test(filterBlock));
+  check("…and is hidden from sm up, where the inline panel is what shows", /sm:hidden/.test(filterBlock));
+  check(
+    "the filter sheet takes focus when it opens",
+    /focusables\(\)\[0\]\?\.focus\(\)/.test(filterSheet),
+  );
+  check("its trap listens in the capture phase", /addEventListener\("keydown", onKey, true\)/.test(filterSheet));
+  check(
+    "…and is removed in the same cleanup that releases the lock",
+    /removeEventListener\("keydown", onKey, true\);[\s\S]{0,80}unlock\(\);/.test(filterSheet),
+  );
+  check("Escape cancels rather than commits", /e\.key === "Escape"[\s\S]{0,120}cancelRef\.current\(\)/.test(filterSheet));
+  check("the scrim cancels too", /onClick=\{onCancel\}/.test(filterSheet));
+  check(
+    "only Apply reaches the parent's history write",
+    (filterSheet.match(/onApply\(/g) ?? []).length === 1,
+  );
+}
+
+// ===========================================================================
+console.log("\nNo listing ships a closed dialog");
+// ===========================================================================
+/*
+ * The mobile sheet is mounted only while it is open. A listing that
+ * prerendered one would hand a reader without JavaScript a dialog with no way
+ * to close it, over a scrim nothing can dismiss — and it is also what makes
+ * `role="dialog"` a safe thing for `build-filters-html.test.ts` to look for on
+ * these files.
+ */
+for (const locale of LOCALES) {
+  const targets: [string, string][] = [
+    ["the catalogue", join(root, locale, "builds.html")],
+    ...CLASSES_WITH_SKILL_PAGES.map(
+      (cls) => [`the ${cls} class page`, join(root, locale, "classes", `${cls}.html`)] as [string, string],
+    ),
+  ];
+  for (const [label, file] of targets) {
+    if (!existsSync(file)) {
+      check(`${locale} ${label} exists`, false, file);
+      continue;
+    }
+    const html = readFileSync(file, "utf8");
+    check(`${locale} ${label}: no dialog before JavaScript runs`, !html.includes('role="dialog"'));
+    check(`${locale} ${label}: no scrim either`, !html.includes("aria-modal"));
+  }
+}
+
 console.log(`\n${passed} checks passed.`);
 if (failures.length) {
   console.error(`\n${failures.length} FAILED:`);
