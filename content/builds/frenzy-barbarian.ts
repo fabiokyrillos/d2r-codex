@@ -6,7 +6,13 @@ import type { Build } from "@/lib/types";
  * THE COLUMN THIS PAGE RESTS ON
  * -----------------------------
  * `itypea1 = mele` **and** `itypeb1 = mele`, with `weapsel = 3`. Frenzy is one
- * of seven skills in the game that declare an off-hand item requirement, and the
+ * of five skills in the game that declare an off-hand item requirement — the
+ * other four are Double Swing, Double Throw and the Assassin's Dragon Claw and
+ * Weapon Block. **Not the same set as `weapsel = 3`**, which has seven rows: the
+ * Assassin's Fists of Fire, Claws of Thunder and Blades of Ice swing both
+ * weapons without requiring a second one. Counted rather than inferred, because
+ * an earlier draft of this comment said seven by conflating the two columns. And
+ * the
  * game's own description closes it: "requires you to equip two weapons". There
  * is no one-handed Frenzy and no shield variant — which is why this page has no
  * Faster Block Rate row where the Whirlwind page has one.

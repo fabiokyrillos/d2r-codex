@@ -203,7 +203,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
           "helm-0": { why: "+2 em todas as skills, magic find, e redução de dano — as três coisas que esta build quer." },
           "body-0": { why: "**Teleport**, +1 em todas as skills e o Strength para uma Spirit Monarch num item só. Numa build que precisa estar no meio do grupo, chegar lá instantaneamente vale tanto quanto o dano.", sockets: "Jah + Ith + Ber." },
           "body-1": { why: "+2 em todas as skills e +65 em todas as resistências no lugar, se você preferir as skills ao Teleport." },
-          "belt-0": { why: "**+1 em todas as skills e +20% de Faster Cast Rate** no nível 80 — o único cinto do jogo que dá qualquer um dos dois, e esta build quer os dois." },
+          "belt-0": { why: "**+1 em todas as skills e +20% de Faster Cast Rate** no nível 80 — nenhum outro cinto catalogado neste site oferece qualquer uma das duas linhas, e esta build quer as duas." },
           "belt-1": { why: "Redução de dano e Vitality no lugar, quando sobrevivência é o problema." },
           "boots-0": { why: "Magic find." },
           "gloves-0": { why: "+20% de cast rate." },
@@ -786,7 +786,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
   },
   "whirlwind-barbarian": {
     summary:
-      "O giro que define a classe: dano físico mantido através de um grupo, no único ataque do jogo que não alimenta sinergia nenhuma nem recebe nenhuma.",
+      "O giro que define a classe: dano físico mantido através de um grupo, no único ataque de Barbarian que não alimenta sinergia nenhuma nem recebe nenhuma.",
     playstyle:
       "Você segura o botão e atravessa as coisas em vez de clicar nelas. O Whirlwind percorre um caminho que você fixa no momento do aperto — não dá para mudar de direção no meio e não dá para ser interrompido, o que junto faz dele a skill corpo a corpo menos reativa do jogo e a mais segura de se comprometer. O ritmo é Battle Cry no grupo para cortar a defesa pela metade, um giro atravessando o meio, e um segundo de volta pelo que ainda estiver de pé. O Berserk fica no outro botão do mouse para qualquer coisa imune a físico, e ele é um personagem diferente enquanto está ativo: todo o dano mágico, e defesa zero. Contra um boss você para de girar e fica parado com o Berserk, porque um giro que atravessa um alvo só desperdiça a maior parte dos acertos.",
     strengths: [

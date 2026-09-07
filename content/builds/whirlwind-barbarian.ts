@@ -47,7 +47,7 @@ export const whirlwindBarbarian: Build = {
   name: "Whirlwind Barbarian",
   classSlug: "barbarian",
   summary:
-    "The spin that defines the class: physical damage held through a pack, on the only attack in the game that neither feeds a synergy nor receives one.",
+    "The spin that defines the class: physical damage held through a pack, on the only Barbarian attack that neither feeds a synergy nor receives one.",
   damageTypes: ["physical", "magic"],
   primarySkill: "whirlwind",
   playstyle:

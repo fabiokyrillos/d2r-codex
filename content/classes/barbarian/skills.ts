@@ -459,7 +459,7 @@ export const barbarianSkills: Skill[] = [
       "All four resistances, permanently, without a buff to keep up. The best defensive passive on the class.",
     mechanics: [
       "Fire, cold, lightning and poison resistance together, from 0% climbing toward 80% on a diminishing curve.",
-      "**It is added before the cap, not after**, so it is exactly the answer to Hell's −100 penalty, and it is free of the upkeep every other class pays for the same thing.",
+      "**It is added before the cap, not after**, so it is exactly the answer to Hell's −100 penalty — and it is the only *passive* source of player resistances any class has. The Paladin's resist auras occupy his one aura slot and the Assassin's Fade is a buff to keep re-casting; the Amazon, Sorceress, Necromancer and Druid have no resistance skill for themselves at all.",
       "The curve means the early points are the valuable ones: a handful gets a Barbarian most of the way and the last few are worth a fraction each.",
       "It is the reason a Barbarian can wear damage gear where another melee character wears resistances.",
     ],

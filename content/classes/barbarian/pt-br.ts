@@ -239,7 +239,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
       "As quatro resistências, permanentemente, sem buff para manter. A melhor passiva defensiva da classe.",
     mechanics: [
       "Resistência a fogo, frio, raio e veneno juntas, de 0% subindo em direção a 80% numa curva decrescente.",
-      "**Ela é somada antes do teto, não depois**, então é exatamente a resposta para a penalidade de −100 do Hell, e é livre da manutenção que toda outra classe paga pela mesma coisa.",
+      "**Ela é somada antes do teto, não depois**, então é exatamente a resposta para a penalidade de −100 do Hell — e é a única fonte *passiva* de resistência para o próprio personagem que alguma classe tem. As auras de resistência do Paladin ocupam o único slot de aura dele e o Fade da Assassin é um buff para ficar reconjurando; a Amazon, a Sorceress, o Necromancer e o Druid não têm skill de resistência para si mesmos nenhuma.",
       "A curva faz dos primeiros pontos os valiosos: um punhado leva o Barbarian quase até o fim e os últimos valem uma fração cada.",
       "É o motivo de um Barbarian conseguir vestir equipamento de dano onde outro personagem corpo a corpo veste resistência.",
     ],
