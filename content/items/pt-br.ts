@@ -479,4 +479,25 @@ export const uniquesPtBr: Overlay<UniqueItemCopy> = {
     notes:
       "O nível 52 é o requisito mais baixo de qualquer unique de Warlock, e os três seguintes são 73, 78 e 80. Ou seja: a off-hand de um Warlock em evolução é uma runeword de dois sockets — Rhyme, Splendor ou Vigilance — até este cair, e isso é um fato sobre jogar a classe que o jogo lançou por último, não uma lacuna deste catálogo.",
   },
+  lacerator: {
+    summary:
+      "Um machado de arremesso que amplifica o que acerta. 33% de chance de conjurar Amplify Damage ao golpear, Open Wounds e Prevent Monster Heal.",
+    dropSummary: "Nível de área 76+. Só no Hell.",
+    notes:
+      "Amplify Damage ao golpear corta pela metade a resistência física do alvo, o que vale mais para uma build de arremesso do que qualquer linha de dano bruto — e se aplica também aos golpes do mercenário. A chance de fuga é o motivo de ele normalmente ser a mão secundária e não o arremesso principal: 64% é alto o bastante para espalhar um grupo que você ia limpar.",
+  },
+  warshrike: {
+    summary:
+      "O maior roll de dano entre as armas de arremesso, com 50% de Piercing Attack e 50% de Deadly Strike.",
+    dropSummary: "Nível de área 83+. Só no Hell, e um dos uniques de nível mais alto do jogo.",
+    notes:
+      "45 de Strength contra os 96 do Lacerator, e 142 de Dexterity contra 122. A divisão de atributos é a escolha: uma Winged Knife é a base barata de *vestir* e a cara de *acertar*.",
+  },
+  gimmershred: {
+    summary:
+      "Três elementos num machado de arremesso — até 483 de fogo, 397 de frio e 501 de raio — em cima do dano físico.",
+    dropSummary: "Nível de área 78+. Só no Hell.",
+    notes:
+      "O dano elemental é somado, não convertido, então ele cai junto do físico em vez de no lugar dele — que é por que um imune a físico ainda custa a esta arma a maior parte do que ela produz. Ela não carrega Replenishes Quantity, e `Increased Stack Size` não substitui: uma pilha maior acaba mais tarde, não se reabastece.",
+  },
 };
