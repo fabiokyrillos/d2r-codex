@@ -330,7 +330,7 @@ export const classes: CharacterClass[] = [
     slug: "warlock",
     name: "Warlock",
     summary:
-      "The first new Diablo II class in 25 years. Binds demons, hexes weapons, and the only class that can pair *any* two-handed weapon with an off-hand.",
+      "The first new Diablo II class in 25 years. Binds demons, hexes weapons, and the only class that can pair any two-handed weapon at all with an off-hand.",
     overview:
       "Added by the Reign of the Warlock expansion in February 2026, the Warlock is a dark scholar of forbidden Vizjerei magic. He levitates his weapon rather than holding it, which lets him equip a two-handed weapon in one hand and still use an off-hand Grimoire. The Barbarian gets a narrower version of this — eighteen two-handed swords carry the `1or2handed` flag and he alone may hold one in a single hand — but the Warlock's rule is not limited to a list of swords, and it invalidates the usual one-hand-versus-two-hand reasoning for every weapon he can hold. His three trees bind demons as minions, hex weapons with mind magic, or rain hellfire and void damage from range.",
     release: "reign-of-the-warlock",
