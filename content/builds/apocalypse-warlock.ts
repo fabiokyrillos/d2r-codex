@@ -298,7 +298,7 @@ export const apocalypseWarlock: Build = {
           picks: [
             {
               label: "Any staff, wand or sceptre with +to Warlock skills",
-              why: "The Warlock levitates the weapon, so a two-handed staff costs you nothing in the off-hand. This is the one class that can take the biggest +skills stick it finds and still hold a Grimoire.",
+              why: "The Warlock levitates the weapon, so a two-handed staff costs you nothing in the off-hand. This is the one class that can take the biggest +skills stick it finds and still hold a Grimoire — the Barbarian's one-handed exception covers eighteen two-handed **swords** and no staff at all, so it does not reach this slot.",
               lookFor: ["+1-3 to Warlock Skills", "+to Ring of Fire", "Faster Cast Rate"],
             },
           ],
@@ -533,7 +533,7 @@ export const apocalypseWarlock: Build = {
           picks: [
             {
               ref: { kind: "runeword", slug: "heart-of-the-oak" },
-              why: "+3 to All Skills and 40% Faster Cast Rate in a four-socket staff. **A staff is two-handed and the Warlock levitates it**, so this is the one class in the game that wears the best caster weapon and keeps its off-hand. No other character can do this and no generic gear guide will tell you to.",
+              why: "+3 to All Skills and 40% Faster Cast Rate in a four-socket staff. **A staff is two-handed and the Warlock levitates it**, so this is the one class in the game that wears the best caster weapon and keeps its off-hand. The Barbarian's eighteen one-handable two-handers are all swords, so Heart of the Oak in a staff is out of his reach as well as everyone else's. No generic gear guide will tell you to do this.",
               sockets: "Ko Vex Pul Thul in a four-socket staff. A Warlock has no reason to use the mace version.",
             },
           ],
