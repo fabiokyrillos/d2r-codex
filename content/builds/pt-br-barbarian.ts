@@ -10,6 +10,260 @@ import type { BuildCopy, Overlay } from "@/lib/types/copy";
  * nunca por posição.
  */
 export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
+  "double-throw-barbarian": {
+    summary:
+      "O único Barbarian que luta à distância, e a única build da classe cujo mecanismo central não é dano e sim munição.",
+    playstyle:
+      "Você arremessa as duas armas de uma vez e quase nunca fica sem, que é a parte a que custa se acostumar. Todo instinto da era 1.1x manda economizar, catar o que você jogou e trocar para o corpo a corpo quando a pilha baixa; nada disso se aplica. A Throwing Mastery devolve dois terços do que você arremessa e repõe num acerto crítico, então a jogada certa é arremessar sem parar e continuar se movendo. Com perfuração da mastery e uma Razortail, um único arremesso atravessa uma fileira de monstros, então você luta por corredores em vez de entrar em salas. O mercenário segura a frente, você fica atrás dele, e a única coisa que mata esta build com confiabilidade é algo te alcançar — que é para isso que Battle Cry, Grim Ward e Leap estão na barra.",
+    strengths: [
+      "**Seguro à distância** — o único Barbarian que não está parado dentro do que está matando",
+      "Munição é resolvida dentro da mastery: dois terços dos arremessos não consomem nada, e críticos repõem",
+      "Perfuração da mastery e da Razortail transforma um arremesso numa fileira de acertos",
+      "A inclinação de dano por nível mais íngreme da árvore de Combat: +8% por nível contra os +5% do Whirlwind",
+      "Um ótimo caçador de elites — dano de alvo único à distância sem exposição",
+    ],
+    weaknesses: [
+      "**Duas armas de arremesso, então sem escudo e sem bloqueio**, em nenhum tier",
+      "Dano só físico, e o plano tem espaço para uma resposta pequena a isso",
+      "Dano em área é ruim: perfuração é uma linha, não um raio",
+      "**Nenhuma arma de arremesso desta build está catalogada neste site**, então a lista de equipamento dela é de labels e não de links",
+      "Muito dependente de arma, e bases de arremesso são mais raras e pior servidas que as corpo a corpo",
+    ],
+    flexPoints: [
+      "**Não há nenhum.** O núcleo é 96 e qualquer um dos pacotes é exatamente 14, então uma tela de nível 99 mostra 110 gastos e nada sem destino.",
+      "Abaixo do 99 a ordem é Double Throw, Throwing Mastery, Double Swing, depois Battle Orders, depois o pacote. A mastery vem em segundo em vez de terceiro porque a chance de não consumir dela é o que torna a build jogável.",
+      "O ponto único em Berserk deve vir cedo mesmo que você pretenda o pacote de Battle Cry. É a diferença entre abandonar um grupo imune e matá-lo devagar.",
+    ],
+    skillPackages: {
+      "the-last-fourteen": {
+        name: "Os últimos catorze pontos",
+        intro:
+          "O núcleo é 96 e fecha todos os pré-requisitos. Os catorze restantes respondem a um dos dois problemas reais da build: ela causa só dano físico, ou ela não tem o que fazer quando algo fecha a distância. Os dois custam o mesmo e só um cabe.",
+        packages: {
+          berserk: {
+            name: "Berserk — a troca para corpo a corpo",
+            when: "Você joga sozinho sem uma Bone Break e quer uma resposta a imune a físico que não dependa de um item.",
+            tradeoff: "O Battle Cry fica em um ponto, então a defesa inimiga continua alta e o seu attack rating tem que carregar a chance de acerto inteira.",
+            skillNotes: {
+              berserk: "Todo o dano dele é entregue como mágico, então um imune a físico recebe tudo. **O custo é a troca de arma**: o Berserk é um ataque corpo a corpo e as suas mãos estão cheias de armas de arremesso, então isso significa um segundo conjunto de armas e uma pausa real no meio de uma luta. Vale a pena porque a alternativa é ir embora.",
+            },
+            rotationNote: "Double Throw para tudo. Num imune a físico, troque para o conjunto corpo a corpo, dê Battle Cry nele, e derrube com Berserk. Troque de volta antes do próximo grupo.",
+            contentNote: "Hell solo, o Pit, o Chaos Sanctuary — qualquer lugar onde imunes aparecem e nenhum charm os cobre.",
+            remainderNote: "Não sobra nada. 96 + 14 = 110.",
+          },
+          "battle-cry": {
+            name: "Battle Cry — defesa à distância",
+            when: "Você carrega uma Bone Break, ou joga em grupo onde outra pessoa quebra imunidades.",
+            tradeoff: "O Berserk fica em um ponto, o que não basta para matar um imune a físico em tempo razoável.",
+            skillNotes: {
+              "battle-cry": "−50% de defesa inimiga e mais 2% por nível — −78% com quinze — mais a mesma redução no dano deles. Numa build cujo attack rating está dividido entre duas armas arremessadas, cortar pela metade o número contra o qual ele é conferido vale mais que qualquer item de attack rating, e isso cai num grupo inteiro de uma distância segura.",
+            },
+            rotationNote: "Battle Cry no grupo, depois arremesse. A redução de dano é a metade que te mantém vivo quando algo de fato te alcança.",
+            contentNote: "Jogo em grupo, Terror Zones, e áreas densas onde o debuff cai em muitas coisas de uma vez.",
+            remainderNote: "Não sobra nada. 96 + 14 = 110.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "O suficiente para as duas armas de arremesso e para a armadura de corpo. Bases de arremesso são leves, então este costuma ser o menor requisito de Strength das seis builds.",
+      dexterity: "O suficiente para as duas armas, e **nada além disso** — não existe escudo nesta build em nenhum tier, então Dexterity nunca compra bloqueio. Algumas bases de arremesso têm requisitos de Dexterity reais, então confira as duas mãos.",
+      vitality: "Todo o resto. Um personagem à distância ainda precisa da vida, porque o que mata um arremessador é o que chegou nele.",
+      energy: "Nenhum. O Double Throw custa 1 de mana.",
+      notes: [
+        "**Sem escudo em nenhum tier**, então não há número de bloqueio a alcançar e nenhum Dexterity além dos requisitos de arma. Os planos do Whirlwind e do Berserk seguram um e bloqueiam integralmente — um Barbarian girando não perde bloqueio nenhum — e é exatamente essa a opção de que esta build abre mão.",
+        "Duas armas significam dois conjuntos de requisitos, e em bases de arremesso eles são frequentemente diferentes entre si.",
+        "Faster Run/Walk vale mais aqui que em qualquer outra página de Barbarian, porque manter distância é o plano defensivo.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48": "Cinco frames na tabela dividida com o Paladin e a Assassin. Um arremessador sem escudo que leva dano é um arremessador que já perdeu o espaçamento; recuperar rápido é como você o retoma.",
+      "fhr-86": "Quatro frames. Vale numa build sem bloqueio a que recorrer.",
+      "fcr-63": "Só com uma Enigma. O Teleport aqui é reposicionamento em vez de deslocamento — um arremessador que consegue sair de uma distância fechada instantaneamente é outro personagem.",
+    },
+    breakpointNotes:
+      "**Sem linha de velocidade de ataque e sem linha de bloqueio.** Sem velocidade de ataque porque os frames dependem da velocidade base da arma e da skill, então nenhuma porcentagem única está correta para uma classe — e esta build arremessa duas armas diferentes, o que torna um número por classe pior que inútil. Sem linha de bloqueio porque o Double Throw exige uma arma de arremesso em cada mão: não existe escudo em nenhum tier, então Faster Block Rate não é uma stat que esta build possa ter. Persiga Increased Attack Speed continuamente — é o maior multiplicador isolado de dano disponível a um arremessador — e prefira a mais rápida entre duas bases equivalentes.",
+    skillNotes: {
+      "double-throw":
+        "+16% de dano com um ponto e **mais 8% por nível** — a inclinação por nível mais íngreme de qualquer ataque de Barbarian, contra os 5% do Whirlwind e os 5% do Bash. Ele arremessa as duas armas de uma vez e elas não precisam ser a mesma arma. Custa 1 de mana. O bônus de attack rating dele é +20% e 10% por nível, o segundo maior da classe.",
+      "double-swing":
+        "+8% de dano do Double Throw por ponto duro, e o pré-requisito também. Você nunca vai apertá-la — é uma skill corpo a corpo numa build à distância — mas são vinte pontos do dano da skill principal, e é por isso que ela é maximizada em segundo.",
+      "throwing-mastery":
+        "**O motivo de esta build funcionar.** +28% de dano e 5% por nível e +44% de attack rating e 8% por nível como qualquer mastery — e então três linhas que nenhuma outra mastery tem: perfuração subindo de 0% em direção a 55%, uma chance de não consumir subindo de 0% em direção a 66%, e quantidade reposta num acerto crítico. Munição deixa de ser uma restrição. O tipo de item dela cobre machados de arremesso, facas de arremesso, dardos e poções arremessáveis.",
+      "battle-orders":
+        "+92% de vida máxima com vinte. Não é sinergia do Double Throw — está aqui porque depois da skill principal, da sinergia dela e da mastery não há mais nada que valha vinte pontos, e um personagem à distância ainda morre para o que o alcança.",
+      bash: "Pré-requisito da Double Swing, e o topo da corrente por onde esta build evolui.",
+      stun: "Pré-requisito do Concentrate, que é do Berserk.",
+      concentrate: "Pré-requisito do Berserk. Também é o golpe corpo a corpo para usar se algo chegar perto e você tiver que lutar.",
+      berserk: "Um ponto no núcleo e quinze no pacote dele. É a única rota que esta build tem para dano mágico, e significa trocar para uma arma corpo a corpo para usá-lo — o que é um custo real num personagem construído em torno de duas armas de arremesso.",
+      howl: "Pré-requisito do Shout e do Taunt, e um botão de pânico de verdade para um personagem sem escudo.",
+      shout: "Defesa para o grupo, e 5 segundos por ponto duro na duração do Battle Orders.",
+      "battle-command": "+1 em todas as skills, fixo em todo nível. Conjure primeiro: Battle Command, Battle Orders, Shout, depois a cura.",
+      taunt: "Pré-requisito do Battle Cry, e melhor nesta build que na maioria: puxar um monstro para fora de um grupo, à distância, é como um arremessador escolhe as lutas dele.",
+      "battle-cry": "Defesa inimiga −50% e mais 2% por nível, e o dano inimigo junto. Quinze pontos no pacote dele.",
+      "find-potion": "Pré-requisito do Find Item, e 5% por ponto duro no debuff do Grim Ward.",
+      "find-item": "Uma segunda rolagem de drop num cadáver, e pré-requisito do Grim Ward.",
+      "grim-ward": "A lentidão é o que importa aqui. O problema inteiro de um arremessador é coisas chegando nele, e um campo que corta o movimento em até 75% é a resposta mais barata da barra.",
+      "increased-stamina": "Pré-requisito do Increased Speed.",
+      "increased-speed": "Velocidade de corrida sempre ativa. Um arremessador faz kite, e kite é correr.",
+      "iron-skin": "Pré-requisito do Natural Resistance.",
+      "natural-resistance": "As quatro resistências, somadas antes do teto, sem escudo para ajudar.",
+    },
+    immunityPlan:
+      "**Dano só físico, e a resposta custa catorze pontos ou um slot de charm.** O pacote de Berserk compra um ataque mágico, mas usá-lo significa trocar para um conjunto de arma corpo a corpo — uma interrupção real numa build cujo método inteiro é distância. Uma **Bone Break** evita isso por completo: o Sunder Charm físico torna um imune em algo meramente resistente, e é por isso que o pacote de Battle Cry existe como alternativa séria em vez de luxo. Um mercenário com Infinity faz o mesmo para um grupo, e o Decrepify da The Reaper's Toll é −50% de resistência física em qualquer coisa que não seja totalmente imune. Um item da lista de equipamento é uma terceira resposta parcial: a **Gimmershred**, cujo dano de fogo, raio e frio é a única rota que esta build tem para um segundo tipo de dano *sem* abrir mão do alcance — que é por que ela aparece acima do tier aparente dela.",
+    mercenaryNotes:
+      "**Ato 2, Nightmare, Might** — a aura dele aumenta dano físico, e diferente da página do War Cry o dano desta build *é* dano de arma, então ela se aplica por inteiro. Ele também faz por esta build algo que não faz por nenhum outro Barbarian: ele é a linha de frente. O plano de um arremessador é que o mercenário fique entre ele e todo o resto, então equipe-o para sobreviver em vez de matar — uma Fortitude, um Vampire Gaze, e a Insight pela aura mais que pela mana, já que o Double Throw custa um. **A The Reaper's Toll é o destaque aqui**: Decrepify ao golpear é −50% de resistência física inimiga *e* uma lentidão, e um monstro lento é um monstro que não te alcança. Numa build cujo plano defensivo é distância, uma aura ou um proc que preserva distância vale mais que um que soma dano.",
+    farmingWhy: {
+      "pit-hell": "Área de nível 85, e uma área em formato de corredor é exatamente o que um ataque em linha que perfura quer. Os imunes a físico dela são o único muro da build — leve a Bone Break ou o pacote de Berserk.",
+      "chaos-sanctuary-hell": "Os bosses dos selos morrem para dano de alvo único à distância, e os Oblivion Knights não conseguem amaldiçoar o que não alcançam. Um dos lugares mais seguros do jogo para esta build.",
+      "worldstone-keep-hell": "Área de nível 85 e densa, e os corredores longos servem à perfuração. Densidade não é a força desta build, mas o traçado é.",
+      "ancient-tunnels-hell": "Área de nível 85 sem imunes a físico na população dela, o que remove o único obstáculo real desta build. Curta e repetível.",
+      "travincal-hell": "Três alvos de alto valor que você consegue matar sem entrar na sala em que eles estão. Um arremessador roda Travincal com mais segurança que qualquer Barbarian corpo a corpo.",
+      "pindleskin-hell": "Área de nível 83, um alvo, e dano de alvo único à distância é o melhor caso desta build. A corrida mais curta do jogo.",
+    },
+    levelingPath: {
+      summary:
+        "**Esta build não precisa de respec**, e é uma das duas da classe que não precisa. O Bash alimenta a Double Swing a 10% por ponto duro, e a Double Swing é pré-requisito do Double Throw *e* sinergia dele a 8% — então a corrente por onde você evolui é a corrente em que você termina. A única coisa a acertar é que o respec de nível 40 da jornada da classe é para uma mastery *corpo a corpo*, e você quer a Throwing Mastery: se está vindo para cá, pule aquele respec por completo e coloque os pontos na mastery que você de fato quer desde o nível 6.",
+      respecAt: "Nenhum necessário. Pule o respec de nível 40 da jornada da classe em vez de gastá-lo — ele existe para consertar uma mastery corpo a corpo que esta build nunca pega.",
+    },
+    selfFoundNotes:
+      "**A mais difícil das seis de montar self-found**, e o motivo é o slot de arma e não as runas. Bases de arremesso dropam raramente, bases de arremesso elite ainda mais raramente, e você precisa de duas em vez de uma — e diferente de toda outra build de Barbarian não há runeword a que recorrer, porque nenhuma runeword do jogo entra numa arma de arremesso. Razortail, Arreat's Face, Gore Rider e Raven Frost dropam com facilidade e o resto da lista é comum. Mas um arremessador self-found fica à mercê de uma tabela de drop estreita para o único slot que importa, que é por que esta página tem a menor nota de solo self-found das seis.",
+    hardcoreNotes:
+      "O Barbarian mais seguro de jogar mal e um dos mais difíceis de jogar bem, porque o plano defensivo inteiro é uma distância que você mantém na mão. Não há escudo, não há bloqueio, e não há defesa digna do nome — o que te mantém vivo é que nada te alcançou. Então: mantenha o mercenário vivo antes de você, leve Increased Speed e Faster Run/Walk a sério em vez de como detalhe, alcance o breakpoint de 86% de recuperação em vez do de 48%, e trate Cannot Be Frozen como obrigatório — um arremessador resfriado perde o espaçamento e não o recupera. A lentidão do Grim Ward é o botão de pânico e vale apertar cedo em vez de tarde. Pegue o pacote de Battle Cry: a redução de dano inimigo dele é uma stat defensiva, enquanto a resposta do pacote de Berserk exige ficar parado no alcance corpo a corpo, que é a última coisa que esta build deveria fazer.",
+    gearSets: {
+      starter: {
+        goal: "Duas armas de arremesso e a Throwing Mastery em andamento. Antes disso a build não funciona, porque você vai ficar sem munição.",
+        nextUpgrade: "Throwing Mastery num nível em que a chance de não consumir seja real, e um par de bases de arremesso elite.",
+        picks: {
+          "weapon-0": { label: "Qualquer machado ou faca de arremesso mágico ou raro com Increased Attack Speed", why: "**Um label em vez de um link: este site não cataloga nenhuma arma de arremesso que um Barbarian consiga equipar.** Neste tier a base importa menos do que ter duas delas e alguns pontos na mastery." },
+          "offhand-0": { label: "Uma segunda arma de arremesso — ela não precisa combinar com a primeira", why: "O Double Throw arremessa explicitamente duas armas *diferentes*, então diferente do Frenzy não existe regra de par igual aqui." },
+          "helm-0": { why: "+1 em todas as skills em qualquer elmo de 2 sockets.", sockets: "Ort + Sol." },
+          "body-0": { why: "+25% de velocidade de corrida e +25% de recuperação. Kite é o plano defensivo e esta é a forma mais barata de fazê-lo." },
+          "belt-0": { why: "**+33% de Piercing Attack no nível 32**, e perfuração é a stat que transforma um arremesso numa fileira de acertos. Ela acumula com a perfuração da própria mastery e é o item mais definidor da build disponível tão cedo." },
+          "boots-0": { label: "Qualquer bota rara ou mágica com Faster Run/Walk e resistências", why: "Espaçamento é sobrevivência." },
+          "gloves-0": { label: "Luvas raras ou mágicas com 20% de Increased Attack Speed", why: "Velocidade de ataque é o maior multiplicador de dano que um arremessador tem." },
+          "ring1-0": { why: "Attack rating, que falha antes do dano." },
+          "ring2-0": { label: "Um anel raro com attack rating e resistências", why: "Duas armas arremessadas significam duas chances de errar." },
+          "amulet-0": { label: "Um amuleto raro ou mágico com +2 Barbarian skills", why: "+2 skills são +2 Double Throw e +2 mastery ao mesmo tempo." },
+        },
+        charms: [{ label: "Small charms com vida e resistências", why: "Nada exótico existe ainda." }],
+      },
+      nightmare: {
+        goal: "A chance de não consumir da mastery alta o bastante para munição deixar de importar, e resistência o bastante para entrar no Hell.",
+        nextUpgrade: "Bases de arremesso elite, e o total de perfuração que faz de uma fileira de monstros um arremesso.",
+        picks: {
+          "weapon-0": { label: "Lacerator (Winged Axe) — um label, não um link", why: "A unique clássica de arremessador: ela conjura Amplify Damage ao golpear, que é uma redução de resistência física no tipo de dano que esta build causa. **As linhas de status dela não são citadas aqui porque o item não está catalogado neste site.**" },
+          "weapon-1": { label: "Um Winged Axe ou Winged Knife raro com Increased Attack Speed e Replenish Quantity", why: "Frequentemente melhor que as uniques, e um raro com velocidade de ataque e reposição própria acumula com a da mastery." },
+          "offhand-0": { label: "Warshrike (Winged Knife) — um label, não um link", why: "A outra unique clássica de arremessador, e a construída em torno da perfuração. Não catalogada aqui, então as linhas dela são descritas em vez de citadas." },
+          "helm-0": { why: "+2 Barbarian skills e +2 Combat Skills — e diferente da página do War Cry, **as duas metades entram aqui**: Double Throw e Double Swing são as duas Combat Skills, então isso é +4 na skill principal e +4 na sinergia dela." },
+          "body-0": { why: "+45% de Increased Attack Speed no nível 43, e velocidade de ataque é a melhor stat de dano desta build." },
+          "body-1": { why: "As resistências e o Strength no lugar, se o requisito da segunda arma for o que está te travando." },
+          "belt-0": { why: "Continua sendo o cinto. Perfuração não deixa de ser a stat definidora da build." },
+          "boots-0": { why: "Magic find e dano seco no nível 42 — e o dano seco se aplica a uma arma arremessada como a qualquer outra." },
+          "boots-1": { why: "Crushing Blow no lugar, que funciona à distância e é a escolha melhor contra elites isolados." },
+          "gloves-0": { label: "Luvas craftadas Blood com 20% de Increased Attack Speed", why: "Velocidade de ataque, e o roubo de vida funciona à distância como qualquer outro efeito ao acertar." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating. Ser resfriado arruína o espaçamento de que um arremessador depende." },
+          "ring2-0": { label: "Um anel raro com attack rating, vida e resistências", why: "Continua sendo a restrição." },
+          "amulet-0": { why: "Amplify Damage ao golpear é −100% de resistência física, e o dano desta build é inteiramente físico. Ele dispara num acerto arremessado como em qualquer outro." },
+        },
+        charms: [{ label: "Grand charms de Combat Skills, e small charms de vida/resistência", why: "Um skiller de Combat Skills aumenta Double Throw e Double Swing juntos." }],
+        weaponSwap: [{ why: "Battle Orders acima do seu próprio nível. A troca também é onde mora uma arma corpo a corpo se você pegar o pacote de Berserk." }],
+      },
+      "early-hell": {
+        goal: "Perfuração o bastante para um arremesso acertar três coisas, resistência o bastante para sobreviver ao que chega perto, e a mastery terminada.",
+        nextUpgrade: "Enigma, que nesta build é reposicionamento em vez de deslocamento.",
+        picks: {
+          "weapon-0": { label: "Gimmershred (Flying Axe) — um label, não um link", why: "A unique elemental de arremessador. O dano de fogo, raio e frio dela é a única rota que esta build tem para dano que não é físico *sem* trocar para corpo a corpo — o que a torna digna de consideração até contra o pacote de Berserk. Não catalogada aqui, então nenhuma linha é citada." },
+          "weapon-1": { label: "Lacerator (Winged Axe)", why: "Amplify Damage ao golpear, numa build que causa dano físico. Continua excelente." },
+          "offhand-0": { label: "Warshrike (Winged Knife), ou uma arma de arremesso elite rara", why: "As duas mãos não precisam combinar, então a mão secundária certa é simplesmente a melhor arma de arremesso que você tiver e que não esteja na mão principal." },
+          "helm-0": { why: "+4 na skill principal e na sinergia dela, mais 30% de recuperação e +30 em todas as resistências." },
+          "body-0": { why: "+300% de dano aprimorado, que se aplica a uma arma arremessada exatamente como a uma golpeada." },
+          "body-1": { why: "A velocidade de ataque no lugar, quando o dano já basta e a taxa de arremesso não." },
+          "belt-0": { why: "+33% de perfuração. Não existe substituto e não existe tier em que ela deixe de estar certa." },
+          "boots-0": { why: "Crushing Blow, Deadly Strike e Open Wounds, e os três funcionam à distância." },
+          "gloves-0": { why: "Life Tap ao golpear funciona a partir de uma arma arremessada, que é o tipo de coisa que esta build ganha de graça e um personagem corpo a corpo paga com proximidade." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "Um segundo, pelo attack rating que duas armas arremessadas precisam." },
+          "ring2-1": { why: "O +1 skill no lugar, quando o attack rating estiver resolvido." },
+          "amulet-0": { why: "+1 em todas as skills, 20% de Increased Attack Speed e Deadly Strike — três stats que esta build quer, num slot." },
+        },
+        charms: [
+          { why: "Magic find e ouro num grand charm." },
+          { label: "Skillers de Combat Skills e small charms de vida/resistência", why: "Cada skiller aumenta Double Throw e Double Swing juntos." },
+        ],
+        weaponSwap: [{ why: "Os gritos, e o conjunto corpo a corpo se você pegou o Berserk." }],
+      },
+      budget: {
+        goal: "Um arremessador de Hell pronto: perfuração, velocidade de ataque, e a capacidade de sair de qualquer distância que seja fechada.",
+        nextUpgrade: "Bases de arremesso perfeitas, e o resto da velocidade de ataque.",
+        picks: {
+          "weapon-0": { label: "Gimmershred (Flying Axe) ou Lacerator (Winged Axe) — labels, não links", why: "As duas uniques elite de arremessador, e a escolha entre elas é dano elemental ou Amplify Damage. Nenhuma está catalogada neste site, então nenhuma é linkada e nenhuma tem as linhas citadas." },
+          "offhand-0": { label: "A melhor arma de arremesso que você tiver e que não esteja na mão principal", why: "Duas armas diferentes é o que a skill arremessa, então não há par a completar." },
+          "helm-0": { why: "+4 na skill principal e na sinergia dela." },
+          "body-0": { why: "**Teleport, usado defensivamente.** Todo outro Barbarian pega Enigma para chegar; este pega para sair. Um arremessador cuja distância foi fechada consegue restaurá-la instantaneamente, que é a maior melhoria de sobrevivência que a build tem.", sockets: "Jah + Ith + Ber." },
+          "body-1": { why: "O dano no lugar, se as runas não estiverem lá." },
+          "belt-0": { why: "Perfuração." },
+          "boots-0": { why: "Crushing Blow à distância." },
+          "gloves-0": { why: "Life Tap a partir de uma arma arremessada." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "O segundo." },
+          "amulet-0": { why: "Skills, velocidade de ataque e Deadly Strike." },
+          "amulet-1": { why: "+400-450 de attack rating e +25-35 em todas as resistências, quando a chance de acerto é o que está falhando." },
+        },
+        charms: [
+          { why: "Magic find e ouro." },
+          { why: "**O Sunder Charm físico, e nesta build é o que torna o pacote de Battle Cry viável** — ele responde à imunidade sem a troca para corpo a corpo." },
+          { label: "Skillers de Combat Skills, Annihilus, Hellfire Torch", why: "A Torch é +3 Barbarian skills, o que aumenta a skill principal, a sinergia dela e a mastery juntas." },
+        ],
+        weaponSwap: [{ why: "Os gritos, e a arma corpo a corpo para o pacote de Berserk." }],
+      },
+      optimized: {
+        goal: "Perfuração e taxa de arremesso máximas, com Teleport para manter a distância de que a build depende.",
+        nextUpgrade: "Bases de arremesso etéreas, que não perdem durabilidade porque são arremessadas em vez de golpeadas.",
+        picks: {
+          "weapon-0": { label: "Gimmershred (Flying Axe) — um label, não um link", why: "As linhas elementais são o mais perto que esta build chega de um segundo tipo de dano sem abrir mão do alcance." },
+          "offhand-0": { label: "Lacerator (Winged Axe) ou uma arma de arremesso elite rara perfeita", why: "Amplify Damage ao golpear na segunda mão, ou o raro que rolar melhor velocidade de ataque e dano." },
+          "helm-0": { why: "+4 nas duas skills que importam." },
+          "helm-1": { why: "30% de redução de dano e dois sockets, para uma build sem escudo para fornecer nenhuma." },
+          "body-0": { why: "Teleport, defensivamente." },
+          "belt-0": { why: "Perfuração, ainda, em todo tier." },
+          "boots-0": { why: "Crushing Blow." },
+          "gloves-0": { why: "Life Tap." },
+          "ring1-0": { why: "Imunidade a congelamento e attack rating." },
+          "ring2-0": { why: "O segundo." },
+          "amulet-0": { why: "A velocidade de ataque é o que faz este bater o Metalgrid num personagem terminado." },
+        },
+        charms: [
+          { why: "Find e ouro." },
+          { why: "O Sunder físico, que libera o pacote para o Battle Cry." },
+          { label: "Skillers de Combat Skills, Annihilus, Hellfire Torch", why: "Três skills aumentadas por ponto de +skills." },
+        ],
+        weaponSwap: [{ why: "Os gritos." }],
+      },
+      bis: {
+        goal: "Nada mais para comprar. Perfuração máxima, taxa de arremesso máxima, e uma distância que não pode ser fechada.",
+        notes: "**Cada pick de arma e de mão secundária desta página é um label em vez de um link, em todo tier.** Este site não cataloga nenhuma arma de arremesso que um Barbarian consiga equipar: as duas lanças de arremesso que ele cataloga, Titan's Revenge e Thunderstroke, estão as duas no tipo de item Amazon Javelin, que é restrito a classe. As linhas de status delas são descritas pelo papel em vez de citadas, porque os números de um item não catalogado não são deste site para publicar.",
+        picks: {
+          "weapon-0": { label: "Uma Gimmershred (Flying Axe) perfeita — um label, não um link", why: "O dano elemental, no topo das rolagens dele." },
+          "offhand-0": { label: "Uma Lacerator (Winged Axe) perfeita, ou a melhor arma de arremesso elite rara do jogo", why: "Duas armas diferentes é o requisito da própria skill, então o melhor par é simplesmente as duas melhores." },
+          "helm-0": { why: "Upgradeado, com rolagem perfeita de roubo de vida." },
+          "body-0": { why: "Teleport, na base mais leve que o seu Strength permitir." },
+          "belt-0": { why: "+33% de perfuração, e continua sem substituto." },
+          "boots-0": { why: "Upgradeadas." },
+          "gloves-0": { why: "Life Tap à distância." },
+          "ring1-0": { why: "Uma rolagem de 250 de attack rating." },
+          "ring2-0": { why: "Os segundos 250." },
+          "amulet-0": { why: "Skills, velocidade de ataque e Deadly Strike nas rolagens máximas." },
+        },
+        charms: [
+          { why: "40% de magic find na rolagem máxima." },
+          { why: "O Sunder Charm físico." },
+          { label: "Skillers de Combat Skills, um Annihilus máximo, uma Hellfire Torch máxima", why: "Cada +1 aumenta Double Throw, Double Swing e Throwing Mastery ao mesmo tempo." },
+        ],
+        weaponSwap: [{ why: "Um Battle Orders de nível 6 vindo de um slot de onde você não arremessa." }],
+      },
+    },
+  },
   "war-cry-barbarian": {
     summary:
       "O Barbarian que mata gritando. Sem dano de arma, sem mastery, e o único da classe cujo breakpoint é velocidade de conjuração.",
