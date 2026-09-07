@@ -243,7 +243,7 @@ export const dragonTail: Build = {
           tradeoff: "You give up both of the above: no undiminished attack speed and no Fade. The character stays slow and squishy and stops being the only target.",
           skills: [
             { skill: "shadow-master", points: 20, role: "utility", note: "It replaces Shadow Warrior rather than joining it — they share a `pettype` with `petmax = 1`. What it buys is the thing a slow melee build most needs: something else for the pack to walk towards while the charges build." },
-            { skill: "mind-blast", points: 20, role: "utility", note: "Stun, and a conversion chance that rises to 40%. Converted monsters are bodies in front of you and damage you did not have to make." },
+            { skill: "mind-blast", points: 20, role: "utility", note: "Stun, and a conversion chance climbing toward 40%. Converted monsters are bodies in front of you and damage you did not have to make." },
           ],
           gearNote: "Faster Cast Rate finally does something — for Mind Blast, and for nothing you attack with.",
           contentNote: "Players-8 games, dense Terror Zones, and the whole of Hell before the gear plan is finished.",
