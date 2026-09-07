@@ -233,7 +233,7 @@ export const leapAttackBarbarian: Build = {
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "fortitude" }, why: "+300% enhanced damage, applied to the hit that is already being multiplied by 770%." }] },
         { slot: "belt", picks: [{ ref: { kind: "unique", slug: "verdungos-hearty-cord" }, why: "Damage reduction, Vitality and the 10% hit recovery that often reaches five frames — which this build needs more than the other committed attacks do." }] },
         { slot: "boots", picks: [{ ref: { kind: "unique", slug: "gore-rider" }, why: "Crushing Blow and Deadly Strike, both at their best on one very large hit." }] },
-        { slot: "gloves", picks: [{ ref: { kind: "unique", slug: "draculs-grasp" }, why: "Life Tap on striking, and one landing on a pack applies it to everything in radius 7." }] },
+        { slot: "gloves", picks: [{ label: "Crafted Blood gloves with life stolen per hit and attack rating", why: "A 770% hit returns a great deal of life at once. **Dracul's Grasp requires level 76**, past this tier's band, and its Life Tap takes over in the next one." }] },
         { slot: "ring1", picks: [{ ref: { kind: "unique", slug: "raven-frost" }, why: "Cannot Be Frozen." }] },
         { slot: "ring2", picks: [{ ref: { kind: "unique", slug: "stone-of-jordan" }, why: "+1 all skills, and the mana for a 10-cost attack." }] },
         { slot: "amulet", picks: [{ ref: { kind: "unique", slug: "highlords-wrath" }, why: "+1 all skills and Deadly Strike that grows with your level — doubling a 770% hit is the largest single damage line available to this build." }] },

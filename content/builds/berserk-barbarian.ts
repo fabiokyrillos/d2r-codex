@@ -108,7 +108,7 @@ export const berserkBarbarian: Build = {
       points: 20,
       role: "synergy",
       order: 3,
-      note: "**+10% Berserk damage per hard point, and +92% maximum life at twenty.** The only place on this class where the largest survivability buff in the game is also a damage synergy — which is why this plan never has to choose between them.",
+      note: "**+10% Berserk damage per hard point, and +92% maximum life at twenty.** These are the only twenty points in this plan that buy damage and survivability at the same time, which is why it never has to choose between them.",
     },
     {
       skill: "blade-mastery",

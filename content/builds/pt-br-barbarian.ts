@@ -181,7 +181,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
           "body-0": { why: "+300% de dano aprimorado, aplicado ao golpe que já está sendo multiplicado por 770%." },
           "belt-0": { why: "Redução de dano, Vitality e os 10% de recuperação que costumam alcançar cinco frames — de que esta build precisa mais que os outros ataques comprometidos." },
           "boots-0": { why: "Crushing Blow e Deadly Strike, os dois no melhor deles num golpe muito grande." },
-          "gloves-0": { why: "Life Tap ao golpear, e uma aterrissagem num grupo aplica isso em tudo no raio 7." },
+          "gloves-0": { label: "Luvas craftadas Blood com vida roubada por golpe e attack rating", why: "Um golpe de 770% devolve muita vida de uma vez. **A Dracul's Grasp pede nível 76**, além da faixa deste tier, e o Life Tap dela assume no próximo." },
           "ring1-0": { why: "Cannot Be Frozen." },
           "ring2-0": { why: "+1 em todas as skills, e a mana para um ataque de custo 10." },
           "amulet-0": { why: "+1 em todas as skills e Deadly Strike que cresce com o seu nível — dobrar um golpe de 770% é a maior linha de dano isolada disponível a esta build." },
@@ -436,7 +436,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
           "body-1": { why: "A velocidade de ataque no lugar, quando o dano já basta e a taxa de arremesso não." },
           "belt-0": { why: "+33% de perfuração. Não existe substituto e não existe tier em que ela deixe de estar certa." },
           "boots-0": { why: "Crushing Blow, Deadly Strike e Open Wounds, e os três funcionam à distância." },
-          "gloves-0": { why: "Life Tap ao golpear funciona a partir de uma arma arremessada, que é o tipo de coisa que esta build ganha de graça e um personagem corpo a corpo paga com proximidade." },
+          "gloves-0": { label: "Luvas craftadas Blood com 20% de Increased Attack Speed e vida roubada por golpe", why: "Roubo de vida funciona a partir de uma arma arremessada como qualquer outro efeito ao acertar. **A Dracul's Grasp pede nível 76**, além da faixa deste tier, e assume no próximo." },
           "ring1-0": { why: "Cannot Be Frozen." },
           "ring2-0": { why: "Um segundo, pelo attack rating que duas armas arremessadas precisam." },
           "ring2-1": { why: "O +1 skill no lugar, quando o attack rating estiver resolvido." },
@@ -621,7 +621,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
     mercenaryNotes:
       "**Este é o único Barbarian do site cuja aura de mercenário não é escolhida pelo dano dele próprio.** Might multiplica dano de arma, e o War Cry não carrega dano de arma nenhum — a faixa dele é própria. Então pegue **Holy Freeze**, a aura defensiva do Ato 2 no Nightmare: ela desacelera tudo em volta dele, o que acumula com o atordoamento e com a lentidão do Grim Ward para produzir um grupo que mal se move. A Insight numa polearm responde ao custo de mana de uma taxa de aperto muito alta, e é a melhor arma que ele pode segurar até uma Infinity, cuja Conviction reduz resistências inimigas — inclusive física, que é a que esta build se importa. A The Reaper's Toll é a alternativa forte: Decrepify ao golpear é −50% de resistência física inimiga e uma lentidão, e as duas metades caem sobre o tipo de dano que o War Cry de fato causa. Mantenha-o vivo com uma Fortitude e um Vampire Gaze.",
     farmingWhy: {
-      "secret-cow-level-hell": "Densidade de parede a parede sem nada dentro imune a físico, que é exatamente o que um grito de raio 7 quer. A melhor área isolada do jogo para esta build.",
+      "secret-cow-level-hell": "Densidade de parede a parede, que é exatamente o formato que um grito de raio 7 quer — **e a lista de imunidades dela carrega físico**, que é a única coisa a que esta build não tem resposta no plano. Com uma Bone Break é a melhor área que um Singer tem; sem uma, os grupos que você não consegue ferir são justamente os que você mais encontra.",
       "worldstone-keep-hell": "Área de nível 85 e densa o bastante para cada grito pegar uma dúzia de coisas. O loop padrão de endgame, e o Singer o roda mais rápido que qualquer outro Barbarian.",
       "lower-kurast-hell": "Baús em vez de monstros, e uma build com tanto magic find e Teleport limpa os supers mais rápido do que limpa qualquer outra coisa.",
       "chaos-sanctuary-hell": "Denso e lucrativo, e o atordoamento resolve os Oblivion Knights antes de as maldições deles caírem. O próprio Diablo é o problema — um alvo é o pior caso desta build.",
@@ -858,7 +858,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
         "+150% de dano com um ponto e mais 15% por nível, **entregue inteiramente como mágico**. O dano físico da arma é carregado e convertido a 100%, e é por isso que um imune a físico recebe tudo. Sua defesa é zerada enquanto o estado dura — cerca de 2,7 segundos com um ponto, encolhendo para perto de 1,3 com vinte, então mais pontos significam *menos* tempo exposto. Ele não concede redução de dano: a linha tem a stat e o parâmetro que a alimenta é zero em todo nível.",
       howl: "+10% de dano do Berserk por ponto duro. Uma skill de nível 1 que esta build maximiza e nunca aperta — embora o medo seja um botão de fuga de verdade num personagem parado em campo aberto sem defesa.",
       "battle-orders":
-        "**+10% de dano do Berserk por ponto duro, e +92% de vida máxima com vinte.** O único lugar desta classe onde o maior buff de sobrevivência do jogo é também uma sinergia de dano — e é por isso que este plano nunca precisa escolher entre os dois.",
+        "**+10% de dano do Berserk por ponto duro, e +92% de vida máxima com vinte.** São os únicos vinte pontos deste plano que compram dano e sobrevivência ao mesmo tempo, e é por isso que ele nunca precisa escolher entre os dois.",
       "blade-mastery":
         "+28% de dano e 5% por nível, +40% de attack rating e 8% por nível, crítico em direção a 35%. **A mastery continua valendo**: o Berserk converte o dano da arma depois de a mastery tê-lo aumentado, então uma mastery não é desperdiçada num ataque mágico. Troque pela família que a sua arma for.",
       bash: "Pré-requisito do Stun.",
@@ -1208,7 +1208,7 @@ export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
           "body-1": { why: "A velocidade de ataque no lugar, se você estiver com pouca. Num ataque que empilha isso é uma escolha defensável e não uma de orçamento." },
           "belt-0": { why: "Redução de dano, Vitality, e os 10% de recuperação que costumam alcançar o breakpoint de cinco frames." },
           "boots-0": { why: "Crushing Blow, Deadly Strike e Open Wounds, e os três escalam com a frequência com que você acerta." },
-          "gloves-0": { why: "Life Tap ao golpear. Nesta taxa de ataque é efetivamente permanente, e é a maior linha de sobrevivência que um personagem corpo a corpo tem." },
+          "gloves-0": { label: "Luvas craftadas Blood com 20% de Increased Attack Speed e vida roubada por golpe", why: "As duas stats se acumulam com a pilha. **A Dracul's Grasp é o objetivo e pede nível 76**, que passa da faixa deste tier — ela chega no próximo." },
           "ring1-0": { why: "Cannot Be Frozen — e congelar é pior aqui que em outros lugares, porque um ataque desacelerado perde a pilha." },
           "ring2-0": { why: "Um segundo. Duas armas precisam do dobro de attack rating." },
           "ring2-1": { why: "O +1 skill no lugar, quando o attack rating estiver resolvido." },
