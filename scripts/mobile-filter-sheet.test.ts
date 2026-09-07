@@ -501,6 +501,25 @@ async function main(): Promise<void> {
           `${locale}: removing an applied chip updates the URL and the list at once`,
           await page.waitFor(`location.search === "" && ${SHOWN(locale)} === ${total}`, 4000),
         );
+
+        // Clear-all lives in the same row as the chips, and is immediate too.
+        await hydrated(page, `${catalogue}?damage=cold&budget=low`);
+        const preClearAll = await snapshot(page, locale);
+        check(`${locale}: two applied filters render together`, preClearAll.shown === coldLow, `${preClearAll.shown} of ${coldLow}`);
+        await clickThat(
+          page,
+          `[...document.querySelectorAll('button')].find((b) => b.textContent.trim() === ${json(dict.clearAll)})`,
+        );
+        check(
+          `${locale}: Clear all outside the sheet empties the URL and the list at once`,
+          await page.waitFor(`location.search === "" && ${SHOWN(locale)} === ${total}`, 4000),
+        );
+        const postClearAll = await snapshot(page, locale);
+        check(
+          `${locale}: …in one history entry, with no sheet involved`,
+          postClearAll.history === preClearAll.history + 1 && !postClearAll.sheet,
+          `${preClearAll.history} → ${postClearAll.history}`,
+        );
       }
 
       // Search stays immediate, on the same trailing edge it always had.
