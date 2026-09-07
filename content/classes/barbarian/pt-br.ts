@@ -157,7 +157,7 @@ export const barbarianSkillsPtBr: Overlay<SkillCopy> = {
     mechanics: [
       "**Não é só espada.** A linha é presa ao tipo de item que o jogo chama de \"Swords and Knives\", então adagas contam e, pela mesma corrente, facas de arremesso também.",
       "+28% de dano e mais 5% por nível; +40% de attack rating e mais 8% por nível; crítico subindo de 0% em direção a 35%.",
-      "Crítico dobra o dano físico, e 35% é dez pontos acima do que a Claw Mastery da Assassin alcança.",
+      "Crítico dobra o dano físico, e esse teto de 35% é dez pontos acima do teto do Claw Mastery da Assassin.",
       "Vale para o que estiver na sua mão na hora, então um Barbarian que troca de família de arma não comprou nada.",
     ],
   },

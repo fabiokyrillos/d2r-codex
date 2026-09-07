@@ -311,7 +311,7 @@ export const barbarianSkills: Skill[] = [
     mechanics: [
       "**It is not only swords.** The row is gated on the item type the game calls \"Swords and Knives\", so daggers count and so, by the same chain, do throwing knives.",
       "+28% damage and 5% more per level; +40% attack rating and 8% more per level; critical strike climbing from 0% toward 35%.",
-      "Critical strike doubles physical damage, and 35% is ten points above what the Assassin's Claw Mastery reaches.",
+      "Critical strike doubles physical damage, and that 35% ceiling is ten points above the one on the Assassin's Claw Mastery.",
       "It applies to whatever is in your hands at the time, so a Barbarian who swaps weapon families has bought nothing.",
     ],
     confidence: "verified",
