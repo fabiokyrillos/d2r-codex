@@ -6,9 +6,13 @@ import type { ProgressionJourney } from "@/lib/types";
  *
  * WHY THE RESPEC EXISTS, AND WHY IT IS THE MASTERY RATHER THAN THE ATTACK
  * ----------------------------------------------------------------------
- * Every other class on this site respecs because its levelling *damage skill*
- * is not its endgame damage skill. The Barbarian's reason is different and it is
- * the one thing that makes this class's route unlike the other six.
+ * Where a journey on this site respecs at all, the reason is that its levelling
+ * *damage skill* is not its endgame damage skill — the Sorceress leaves fire,
+ * the Assassin leaves fire, the Druid leaves fire. Several never respec: the
+ * Necromancer's route says "Never, for this route", the Paladin's "Usually
+ * never", and two of the Amazon's three say "Never". So the Barbarian is not
+ * unlike every other class; he is unlike the ones that respec, and for a reason
+ * none of them share.
  *
  * A mastery is gated on an item type, and there are six of them. From
  * `itemtypes.json` at the pinned commit:
@@ -83,9 +87,9 @@ export const barbarianJourney: ProgressionJourney = {
   summary:
     "Level on Bash with a scepter and Mace Mastery, pick up the shouts as they unlock, and respec once at level 40 into whatever weapon actually dropped. The respec is about the mastery, not the attack.",
   overview: [
-    "**The Barbarian's levelling problem is not damage, it is committing twenty points to a guess.** A mastery only works on one family of weapon, there are six of them, and the weapon you can buy at level 3 is not the weapon you will be holding in Nightmare. Every other class on this site respecs because its levelling skill is not its endgame skill; this one respecs because its levelling *weapon* is not its endgame weapon.",
+    "**The Barbarian's levelling problem is not damage, it is committing twenty points to a guess.** A mastery only works on one family of weapon, there are six of them, and the weapon you can buy at level 3 is not the weapon you will be holding in Nightmare. Where another class on this site respecs, it is because its levelling skill is not its endgame skill — and several never respec at all. This one respecs for a reason no other route has: its levelling *weapon* is not its endgame weapon.",
     "So the early points go where they cannot be wasted. **Bash is the levelling skill you spend on and Double Swing is the one you press** — Double Swing has no damage of its own at all, its entire damage bonus is 10% per hard point of Bash, so points in Double Swing itself buy nothing.",
-    "The mastery you take at level 3 is **Mace Mastery**, and that is not a preference. Akara sells scepters from the first town visit, and the item type Mace Mastery is gated on is the one the game calls Blunt — whose equivalence chain reaches clubs, hammers, maces *and* scepters. Blade Mastery on a scepter does nothing.",
+    "The mastery you take at level 3 is **Mace Mastery**, and that is not a preference. Akara sells scepters from the first town visit, and the item type Mace Mastery is gated on is the one the game calls Blunt — whose equivalence chain reaches clubs, hammers and maces, and through `rod` reaches **scepters, staves and wands** as well. Blade Mastery on a scepter does nothing.",
     "**Battle Orders at 24 is the biggest single purchase in the game.** +35% maximum life at one point and 3% more per level, on you, your mercenary and your party. Cast it before you heal, never after: it raises your maximum and does not scale the life you are already carrying up with it.",
     "The other thing to internalise: **resistances, not damage, are what stop you.** Nightmare applies −40% to all of yours and Hell −100%. Natural Resistance is the Barbarian's answer and it is added before the cap, which is why he can wear damage gear where another melee character wears resistance — but it unlocks at 30 and needs Iron Skin first.",
     "Everything below is reachable solo and self-found. Not one item here is something you need to trade for.",
@@ -181,9 +185,8 @@ export const barbarianJourney: ProgressionJourney = {
         },
         {
           kind: "runeword",
-          text: "**Make two Steel weapons at level 13**, one for each hand. Tir + El in any 2-socket sword, axe or mace: +25% attack speed, +20% enhanced damage, +50 attack rating and 50% Open Wounds. Two of them is the whole of this stage's damage.",
+          text: "**Make two Steel weapons**, one for each hand. Tir + El in any 2-socket sword, axe or mace: +25% attack speed, +20% enhanced damage, +50 attack rating and 50% Open Wounds. It is available from level 13, so if you reached this act with the runes you can make both immediately — and two of them is the whole of this stage's damage.",
           refs: [{ kind: "runeword", slug: "steel" }],
-          atLevel: 13,
         },
         {
           kind: "warning",
@@ -439,19 +442,19 @@ export const barbarianJourney: ProgressionJourney = {
         },
         {
           kind: "transition",
-          text: "**Whirlwind** needs nothing further from this route. Max the mastery, max Berserk, and the build page takes it from 86 to 110.",
+          text: "**Whirlwind needs no respec, because this route *is* its plan.** At level 75 you are holding that build page's 77-point core exactly — the same twenty skills at the same values — plus nine points in Berserk. 110 − 86 = 24, and either of the page's two packages costs precisely 24 from here. The nine Berserk points are not stranded either: both packages carry Berserk, at twenty and at fourteen.",
         },
         {
           kind: "transition",
-          text: "**Frenzy and Double Throw** are the two builds this route reaches without a respec at all, because their prerequisite chain is the one you levelled through: Bash feeds Double Swing at 10% a point, and Double Swing feeds both Frenzy and Double Throw at 8%. Both need two weapons.",
+          text: "**Frenzy and Double Throw need the Hell Den of Evil token**, and it is worth being clear why, because their prerequisite chain really is the one you levelled through. The respec at level 40 bought that chain back: the plan you have run since holds no Double Swing and no Double Throw at all, so at 75 both sit at zero. If you already know you are heading for one of those two, **skip the level-40 respec entirely** — their pages level into themselves without one, and this route's mastery detour is the only thing you would be giving up.",
         },
         {
           kind: "transition",
-          text: "**Berserk** and **Leap Attack** each need the Hell Den of Evil token. Berserk wants Howl and Battle Orders maxed and Find Item on top; Leap Attack wants Leap maxed, which is its only synergy and something this route only ever gave one point.",
+          text: "**Berserk and Leap Attack need the token too.** Berserk wants Howl and Find Potion maxed and has no use at all for the twenty points sitting in Whirlwind — though the nine already in Berserk are the one part that carries straight over. Leap Attack wants Leap maxed, its only synergy, and this route only ever gave it one point.",
         },
         {
           kind: "transition",
-          text: "**War Cry** is the one destination this route does not serve. Its synergies are Howl, Taunt and Battle Cry at 6% a point each, and it needs no weapon and therefore no mastery — so a player heading there should respec at Nightmare rather than follow the mastery plan above.",
+          text: "**War Cry is the one destination this route does not serve at all.** Its synergies are Howl, Taunt and Battle Cry at 6% a point each, and it needs no weapon and therefore no mastery — so the entire design of this route, which exists to get the mastery right, is wasted on it. A player heading there should respec in Nightmare rather than follow the mastery plan above.",
         },
       ],
       gearTargets: [

@@ -10,6 +10,269 @@ import type { BuildCopy, Overlay } from "@/lib/types/copy";
  * nunca por posição.
  */
 export const barbarianBuildsPtBr: Overlay<BuildCopy> = {
+  "berserk-barbarian": {
+    summary:
+      "Dano mágico vindo de uma arma física, e uma segunda rolagem em cada cadáver. O Barbarian a que nada é imune, e o que farma ouro.",
+    playstyle:
+      "Você caça coisas perigosas isoladas em vez de limpar salas. O Berserk é um único golpe enorme que converte o dano da sua arma em mágico, então o grupo de elite com imunidade física que trava todo outro personagem corpo a corpo é justamente o grupo que você procurava — mas é um alvo por vez, e sua defesa é zero enquanto você golpeia. O ritmo é Battle Cry para arrancar defesa, Berserk no campeão, e então Find Item em cada cadáver que sobrar. Entre grupos você aperta o botão de Find Item mais vezes que o de ataque, que é para isso que a build serve de verdade. O Concentrate é o golpe que você usa quando algo bate forte o bastante para defesa zero não ser sobrevivível.",
+    strengths: [
+      "**Todo o dano dele é mágico**, então imunidade física — o muro que toda outra build da classe encontra — não existe para ele",
+      "O Find Item gera loot que não dropou, coisa que nenhuma outra classe do jogo consegue fazer",
+      "Duas sinergias de vinte pontos a 10% por ponto duro cada, as duas de uma árvore que ele já queria",
+      "O melhor Barbarian de magic find e de gold find, e os dois são o mesmo personagem",
+      "Attack rating +100% e 15% por nível, o maior da classe depois do Leap Attack",
+    ],
+    weaknesses: [
+      "**Sua defesa é zero enquanto ele golpeia** — e a skill não concede redução de dano nenhuma, digam o que disserem os guias antigos",
+      "Um alvo por vez. Este é o pior farmador de densidade da classe e não é nem perto",
+      "Monstros resistentes a mágico são o mau confronto dele, e o Concentrate é a única resposta no plano",
+      "Muito dependente de arma: a conversão é do dano da arma, então arma ruim é dano mágico ruim",
+      "Ele quer magic find e dano dos mesmos slots, e os dois competem",
+    ],
+    flexPoints: [
+      "**Não há nenhum.** O núcleo é 94 e qualquer um dos pacotes é exatamente 16, então uma tela de nível 99 mostra 110 gastos e nada sem destino.",
+      "Abaixo do 99 a ordem é Berserk, Battle Orders, a mastery, depois Howl, depois o pacote. Battle Orders antes da mastery é proposital: são dano e vida nos mesmos vinte pontos.",
+      "A divisão do pacote de hork entre Find Item e Find Potion é a única alocação desta página que parece um erro e não é — treze e cinco batem dezesseis e nenhum, e a nota do pacote mostra a conta.",
+    ],
+    skillPackages: {
+      "the-last-sixteen": {
+        name: "Os últimos dezesseis pontos",
+        intro:
+          "O núcleo é 94 e fecha todos os pré-requisitos. Os dezesseis restantes decidem que tipo de Barbarian este é: o que maximiza o que cai de um cadáver, ou o que carrega um golpe físico para as coisas que o mágico não fere. É aqui que vivem as builds de Gold Find e de Horker — elas são esta página com o primeiro pacote e um eixo de equipamento diferente, não um personagem separado.",
+        packages: {
+          hork: {
+            name: "O hork — Gold Find, Horker, Travincal",
+            when: "Loot é o objetivo. Você roda Travincal ou o Pit repetidamente, e prefere rolar o cadáver duas vezes a matar a próxima coisa mais rápido.",
+            tradeoff: "O Concentrate fica em um ponto, então um monstro resistente a mágico vira uma luta longa com uma arma causando o tipo errado de dano.",
+            skillNotes: {
+              "find-item": "Treze em vez de dezessete, e isso não é concessão — é o número maior. A contribuição do próprio Find Item é uma curva decrescente em direção a 60%, então os últimos pontos dele valem uma fração dos primeiros; o Find Potion soma um ponto seco por ponto duro em cima. **Find Item 13 com Find Potion 5 dá 51,4% contra 50,7% com os dezesseis todos no Find Item**, e vem com mais vinte pontos do debuff do Grim Ward de graça.",
+              "find-potion": "Quatro pontos além do núcleo, comprando quatro pontos percentuais da chance do Find Item — secos, não decrescentes — e +20% no debuff de dano recebido do Grim Ward, levando-o de +25% a +45%.",
+            },
+            gearNote:
+              "**É aqui que o eixo de equipamento se divide.** Para ouro: Goldwrap, Chance Guards, um escudo Rhyme pelos 50% de Extra Gold, Gheed's Fortune, e uma armadura Wealth quando as runas permitirem — o Council de Travincal dropa ouro em quantidade e o Gold Find do mercenário soma com o seu quando ele dá o golpe final. Para loot: War Traveler, Chance Guards, Gheed's, e todo o Magic Find que o dano tolerar. As duas listas coincidem em três slots e divergem em três.",
+            contentNote: "Travincal para ouro, o Pit e o Pindleskin para itens. Os dois são curtos, os dois são densos em alvos de alto valor, e nenhum precisa da velocidade de limpeza que esta build não tem.",
+            remainderNote: "Não sobra nada. 94 + 16 = 110.",
+          },
+          concentrate: {
+            name: "Concentrate — o golpe físico",
+            when: "Você roda Terror Zones ou o Chaos Sanctuary, onde monstros resistentes a mágico são comuns o bastante para um personagem todo mágico empacar.",
+            tradeoff: "O Find Item fica em um ponto, o que te custa a maior parte do loot pelo qual a build é conhecida.",
+            skillNotes: {
+              concentrate: "+70% de dano e 5% por nível, físico, mais 5% por ponto duro de Bash e **10% por ponto duro de Battle Orders** — que este plano já maximiza, então a sinergia está paga. Ele dobra sua defesa enquanto golpeia e não pode ser interrompido, o que faz dele o botão seguro além do botão físico.",
+            },
+            rotationNote:
+              "Berserk em tudo, Concentrate em qualquer coisa que resista a mágico e em qualquer coisa que bata forte o bastante para defesa zero ser um problema. Battle Cry primeiro, dos dois jeitos.",
+            contentNote: "Chaos Sanctuary, Terror Zones, e qualquer conteúdo em que você não escolhe os alvos.",
+            remainderNote: "Não sobra nada. 94 + 16 = 110.",
+          },
+        },
+      },
+    },
+    statPlan: {
+      strength: "O suficiente para a sua arma e para a armadura de corpo. Esta build consegue segurar escudo, então o requisito costuma ser a armadura e não a arma.",
+      dexterity: "O suficiente para a arma, mais bloqueio máximo se você segurar escudo — e você provavelmente deveria, porque bloqueio é a única mitigação que continua funcionando quando a sua defesa é zero.",
+      vitality: "Todo o resto. Quatro de vida por ponto e o Battle Orders em cima.",
+      energy: "Nenhum. O Berserk custa 4 de mana.",
+      notes: [
+        "**O bloqueio continua funcionando enquanto o Berserk golpeia.** O Berserk zera a *defesa*, e o bloqueio é uma rolagem separada — então o escudo é o único item defensivo que a skill não cancela, e é por isso que este é o Barbarian com mais chance de segurar um.",
+        "Não compre Dexterity por dano. A mastery e as sinergias são de onde vem o dano; Dexterity aqui é requisito de arma e número de bloqueio, mais nada.",
+        "Vida importa mais que o normal porque a defesa é zero por design e não há redução de dano na skill para compensar.",
+      ],
+    },
+    breakpointWhy: {
+      "fhr-48": "Cinco frames na tabela dividida com o Paladin e a Assassin. O Berserk não pode ser interrompido no meio do golpe, mas um personagem com defesa zero é acertado com frequência, e a recuperação entre golpes é onde uma luta ruim vira uma morte.",
+      "fhr-86": "Quatro frames. Vale alcançar numa build cujo plano defensivo é 'não ficar apanhando por muito tempo'.",
+      "fbr-42": "Só com escudo, e um escudo é excepcionalmente bom aqui: o Berserk zera a defesa e o bloqueio é uma rolagem separada, então bloquear é mitigação que a skill não consegue cancelar.",
+      "fcr-63": "Só com uma Enigma. O Teleport transforma isto de uma build que anda entre cadáveres numa que chega neles, e é a maior melhoria de conforto que a build tem.",
+    },
+    breakpointNotes:
+      "**Sem linha de velocidade de ataque.** Os frames de Increased Attack Speed dependem da velocidade base da arma e da skill, então nenhuma porcentagem única está correta para uma classe, e este site não publica nenhuma. Isso importa menos aqui que em qualquer outra página de Barbarian: o Berserk é um golpe grande em vez de uma sequência de pequenos, então dano bruto por acerto vale mais que o acerto extra. Prefira dano e attack rating a velocidade quando os dois competirem.",
+    skillNotes: {
+      berserk:
+        "+150% de dano com um ponto e mais 15% por nível, **entregue inteiramente como mágico**. O dano físico da arma é carregado e convertido a 100%, e é por isso que um imune a físico recebe tudo. Sua defesa é zerada enquanto o estado dura — cerca de 2,7 segundos com um ponto, encolhendo para perto de 1,3 com vinte, então mais pontos significam *menos* tempo exposto. Ele não concede redução de dano: a linha tem a stat e o parâmetro que a alimenta é zero em todo nível.",
+      howl: "+10% de dano do Berserk por ponto duro. Uma skill de nível 1 que esta build maximiza e nunca aperta — embora o medo seja um botão de fuga de verdade num personagem parado em campo aberto sem defesa.",
+      "battle-orders":
+        "**+10% de dano do Berserk por ponto duro, e +92% de vida máxima com vinte.** O único lugar desta classe onde o maior buff de sobrevivência do jogo é também uma sinergia de dano — e é por isso que este plano nunca precisa escolher entre os dois.",
+      "blade-mastery":
+        "+28% de dano e 5% por nível, +40% de attack rating e 8% por nível, crítico em direção a 35%. **A mastery continua valendo**: o Berserk converte o dano da arma depois de a mastery tê-lo aumentado, então uma mastery não é desperdiçada num ataque mágico. Troque pela família que a sua arma for.",
+      bash: "Pré-requisito do Stun.",
+      stun: "Pré-requisito do Concentrate.",
+      concentrate:
+        "Pré-requisito do Berserk, e a resposta da build para dois problemas diferentes: um monstro resistente a mágico, e qualquer coisa que bata forte o bastante para defesa zero não caber. Ele dobra sua defesa enquanto golpeia e não pode ser interrompido. Dezessete pontos no pacote dele se você encontrar resistência a mágico com frequência.",
+      "find-potion":
+        "Um ponto aqui e cinco no pacote de hork, e nenhum dos dois é por poção. Ela soma **1% à chance do Find Item por ponto duro** e **5% ao debuff de dano recebido do Grim Ward por ponto duro**. Os dois são secos em vez de decrescentes, e é por isso que o pacote abaixo coloca pontos aqui em vez de todos no Find Item — veja a nota dele para a conta. O jogo não rotula nenhum dos dois parâmetros como sinergia, então a página da skill não desenha aresta para nenhum.",
+      "find-item":
+        "Um ponto no núcleo e treze no pacote de hork. Ele rola um **segundo drop de um cadáver que já dropou**, coisa que nenhuma outra classe consegue, e o seu Magic Find se aplica a essa rolagem. A chance base vai de 5% a 60% numa curva decrescente, mais um ponto seco por ponto duro de Find Potion; 30% do que ela acha é de alta qualidade e 5% mágico ou melhor.",
+      "grim-ward": "Um totem que apavora, desacelera até 75%, e aumenta em 20% o dano que tudo lá dentro recebe, mais 5% por ponto duro de Find Potion — +45% com os cinco do pacote de hork. Um ponto já é o campo inteiro; o raio é o que os pontos seguintes compram.",
+      shout: "Pré-requisito do Battle Orders, defesa para o grupo, e 5 segundos por ponto duro na duração do Battle Orders.",
+      "battle-command": "+1 em todas as skills, fixo em todo nível. Conjure primeiro — Battle Command, Battle Orders, Shout, depois a cura.",
+      taunt: "Pré-requisito do Battle Cry, e uma forma de puxar um campeão para fora de um grupo — que é exatamente como esta build quer lutar.",
+      "battle-cry": "Defesa inimiga −50% e mais 2% por nível. Numa build cujo trabalho inteiro é encaixar um golpe enorme numa coisa perigosa, cortar a defesa dela pela metade vale mais que qualquer item de attack rating.",
+      "increased-stamina": "Pré-requisito do Increased Speed.",
+      "increased-speed": "Velocidade de corrida sempre ativa. Esta build anda entre cadáveres mais do que luta.",
+      "iron-skin": "Pré-requisito do Natural Resistance. O bônus de defesa dele não vale nada enquanto o Berserk golpeia, já que a defesa é zero de qualquer forma.",
+      "natural-resistance": "As quatro resistências, somadas antes do teto. Num personagem sem defesa e sem bloqueio na linha principal, resistência é quase toda a mitigação que existe.",
+    },
+    immunityPlan:
+      "**Este é o Barbarian sem problema de imunidade, e o motivo é uma coluna.** O `calc4` do Berserk é 100 sob `EType = mag`: o dano físico da arma é carregado e entregue inteiramente como mágico, então um imune a físico — o muro que trava todas as outras builds da classe — recebe o golpe inteiro. Nada precisa ser gasto para responder a isso. O inverso é a fraqueza real da build: **monstros resistentes e imunes a mágico**, que são raros mas existem, e contra os quais um personagem todo mágico não tem nada. O Concentrate é a resposta e está no núcleo com um ponto, ou com dezessete no pacote dele. Um Sunder Charm físico é inútil aqui pelo mesmo motivo que a imunidade é: ele opera num tipo de dano que esta build não causa.",
+    mercenaryNotes:
+      "**Ato 2, Nightmare, Might** — a aura dele aumenta o dano *físico* que o Berserk depois converte, então funciona apesar da conversão. A Insight encerra a questão da mana; a The Reaper's Toll é a escolha melhor mais adiante, porque Decrepify ao golpear desacelera um campeão que de outra forma estaria batendo num personagem sem defesa. **O detalhe de ouro que vale saber: se o mercenário der o golpe final, o Extra Gold From Monsters dele e o seu são somados.** Na rota de Travincal isso faz do cinto e das luvas dele parte real do plano de ouro em vez de um detalhe, e é o único caso de equipar mercenário neste site que é sobre loot em vez de sobrevivência. Mantenha-o vivo com uma Fortitude e um Vampire Gaze; **não pegue Defiance**, cuja aura de defesa não ajuda em nada um personagem cuja própria defesa é zero por design.",
+    farmingWhy: {
+      "pit-hell": "Área de nível 85, e todo imune a físico dentro dela é um alvo em vez de um obstáculo. Esta é a casa da build e o motivo de ela existir.",
+      "travincal-hell": "**A rota do ouro.** Três membros do Council parados juntos, drops enormes de ouro, e um cadáver de cada para horkar. Curto o bastante para a run ser medida em segundos.",
+      "pindleskin-hell": "Área de nível 83 e a corrida mais curta do jogo. Um alvo só, que é o melhor caso desta build em vez do pior — e um cadáver para rolar depois.",
+      "mausoleum-hell": "Área de nível 85, e a densidade é baixa o bastante para uma build de um alvo por vez não ser punida por isso.",
+      "andariel-hell": "Um boss isolado com tabela de drop fixa e generosa e uma corrida muito curta. O dano de alvo único do Berserk tem exatamente o formato certo.",
+      "worldstone-keep-hell": "Área de nível 85 e lucrativa, mas densa — e densidade é a fraqueza desta build. Vale rodar pelos campeões e não pelo lixo.",
+    },
+    levelingPath: {
+      summary:
+        "Evolua com Bash e Double Swing usando uma mastery que combine com a arma que dá para comprar, pegue a espinha de Warcries conforme ela abre, e faça um respec no nível 40 para este plano. O próprio Berserk carrega o personagem a partir do nível 30, então a transição para esta build é a mais suave das seis — você já está apertando o botão antes do respec que o financia.",
+      respecAt: "Nightmare Ato 4, nível 40, depois do The Fallen Angel. Os pontos de Bash e Double Swing da rota de evolução voltam e vão para Howl, Find Potion e a mastery.",
+    },
+    selfFoundNotes:
+      "**A build mais amigável a self-found da classe**, e não é nem perto. Os melhores itens dela são as Chance Guards no nível 15, o Goldwrap no 27, o Nagelring no 7 e as War Traveler no 42 — todos comuns, todos drops de Normal ou Nightmare. Arreat's Face, Raven Frost e Atma's Scarab vêm em seguida. A Passion no nível 43 dá +1 Berserk com quatro runas comuns, e a Rhyme são duas. A build farma os próprios upgrades melhor que qualquer outro Barbarian porque o Find Item rola cada cadáver duas vezes, então um personagem self-found acumula em vez de estagnar. A Grief e a Enigma são os únicos muros de verdade e nenhuma das duas é necessária para farmar o Hell com proveito.",
+    hardcoreNotes:
+      "Defesa zero é uma propriedade ruim no Hardcore e vale levar a sério em vez de contornar. Duas coisas a tornam sobrevivível: **o bloqueio continua funcionando** — o Berserk cancela defesa, não a rolagem de bloqueio — então segure um escudo e alcance o breakpoint de bloqueio, e a janela sem defesa *encolhe* conforme o Berserk sobe de nível, de cerca de 2,7 segundos com um ponto para cerca de 1,3 com vinte, então maximizá-lo cedo é uma compra defensiva além de ofensiva. Use Concentrate em vez de Berserk em qualquer coisa que você ainda não tenha amolecido com Battle Cry: ele dobra a defesa em vez de removê-la e não pode ser interrompido. Pegue o pacote de Concentrate em vez do hork; loot vale menos que um personagem. E trate a Dracul's Grasp como item obrigatório em vez de alternativa de orçamento, porque Life Tap é mitigação que não liga para qual é a sua defesa.",
+    gearSets: {
+      starter: {
+        goal: "Berserk na barra com uma arma que valha converter, e magic find o bastante para os cadáveres valerem o hork.",
+        nextUpgrade: "Arreat's Face no 42, e Battle Orders em vinte.",
+        picks: {
+          "weapon-0": { why: "+25% de velocidade de ataque e 50% de Open Wounds por duas runas da Countess. O Berserk converte o que a arma causar, então cedo qualquer base decente serve.", sockets: "Tir + El numa base de 2 sockets." },
+          "offhand-0": { why: "+43-48% em cada resistência no nível 21. Esta build segura escudo com mais gosto que qualquer outro Barbarian, porque o Berserk cancela defesa e não bloqueio." },
+          "helm-0": { why: "+1 em todas as skills em qualquer elmo de 2 sockets.", sockets: "Ort + Sol." },
+          "body-0": { why: "Velocidade de corrida e recuperação, as duas importantes para um personagem que anda entre cadáveres." },
+          "belt-0": { why: "50-80% de Extra Gold e 30% de Magic Find no nível 27. Nesta build, deste tier em diante, isso é uma stat de dano com outro nome." },
+          "boots-0": { label: "Qualquer bota rara ou mágica com Faster Run/Walk e resistências", why: "Você está sempre andando até o próximo cadáver." },
+          "gloves-0": { why: "**Nível 15, 200% de Extra Gold e 25-40% de Magic Find.** Este é o item de melhor custo-benefício da build inteira e ele dropa no Normal." },
+          "ring1-0": { why: "Attack rating e 15-30% de Magic Find, e dois deles são uma quantidade real dos dois." },
+          "ring2-0": { why: "O segundo. Magic Find se aplica à rolagem do Find Item além da morte." },
+          "amulet-0": { label: "Um amuleto raro ou mágico com +2 Barbarian skills", why: "+2 skills são +2 Berserk e +2 mastery ao mesmo tempo." },
+        },
+        charms: [{ label: "Small charms com vida, resistências e magic find", why: "Charms de magic find rendem em dobro aqui, porque valem também para o hork." }],
+      },
+      nightmare: {
+        goal: "Uma arma com dano de verdade para converter, o Arreat's Face, e o núcleo de magic find no lugar.",
+        nextUpgrade: "A Grief, e a decisão entre o escudo de ouro e uma mão secundária de dano.",
+        picks: {
+          "weapon-0": { why: "**+1 em Berserk** além de +25% de velocidade de ataque no nível 43 — uma runeword que nomeia a própria skill da build, em qualquer arma de 4 sockets." },
+          "weapon-0-alt0": { label: "Oath (`oath`) numa espada de 4 sockets — Balrog Blade ou Cryptic Sword", why: "Nível 49: +210-340% de dano aprimorado, e dano aprimorado é convertido junto com o resto, então não é desperdiçado num ataque mágico." },
+          "weapon-0-alt1": { why: "Nível 53, −25% de defesa do alvo a partir do slot da arma." },
+          "offhand-0": { why: "**50% de Extra Gold e 25% de Magic Find num escudo**, mais Cannot Be Frozen e +25 em todas as resistências, no nível 29. Na rota de ouro este é um dos melhores slots do personagem." },
+          "helm-0": { why: "+2 Barbarian skills e +2 Combat Skills — +4 Berserk vindos de um slot — com 30% de recuperação, +30 em todas as resistências e roubo de vida." },
+          "body-0": { why: "+30 em todas as resistências, +50 de vida e +25 de Strength. Resistência é a mitigação que esta build tem no lugar de defesa." },
+          "belt-0": { why: "Continua sendo o cinto de ouro, e 10% de velocidade de ataque junto." },
+          "belt-1": { why: "Redução de dano e roubo de vida no lugar, se você estiver morrendo em vez de farmando." },
+          "boots-0": { why: "**25-50% de Magic Find e dano seco** no nível 42. O magic find vale para o hork, que é por que estas batem as Gore Rider na rota de loot." },
+          "gloves-0": { why: "200% de Extra Gold e até 40% de Magic Find. Nada as desloca em nenhuma das duas rotas." },
+          "ring1-0": { why: "Cannot Be Frozen e attack rating." },
+          "ring2-0": { why: "Magic find e attack rating." },
+          "amulet-0": { why: "Nível 60. O Amplify Damage dele é uma redução de resistência física, então não faz nada pelo dano mágico do Berserk — mas é excelente nos golpes do pacote de Concentrate, e os +5 em todos os atributos e as resistências valem sempre." },
+        },
+        charms: [{ label: "Grand charms de Combat Skills, small charms de magic find", why: "Um skiller de Combat Skills é +1 Berserk. Charms de magic find contam duas vezes nesta build." }],
+        weaponSwap: [{ why: "Battle Orders acima do seu próprio nível — e nesta build o Battle Orders é sinergia de dano além de vida, então um mais alto é um Berserk maior." }],
+      },
+      "early-hell": {
+        goal: "Um farmador de Hell: dano o bastante para matar campeões de um golpe, resistência o bastante para ficar em campo aberto, e magic find o bastante para valer a pena.",
+        nextUpgrade: "Enigma. Esta build anda mais que qualquer outra e se beneficia mais de não precisar.",
+        picks: {
+          "weapon-0": { why: "**Os +340-400 de dano seco dela são somados depois de cada multiplicador e então convertidos com o resto**, que é por que a melhor arma física do jogo é também a melhor arma de dano mágico para esta build.", sockets: "Eth + Tir + Lo + Mal + Ral numa Phase Blade." },
+          "offhand-0": { why: "35% de redução de dano e o maior bloqueio do jogo, no nível 73. Bloqueio é a mitigação que o Berserk não cancela." },
+          "offhand-1": { why: "O ouro e o magic find no lugar, na rota de hork." },
+          "helm-0": { why: "+4 Berserk vindos de um slot, e as resistências que deixam o resto do equipamento perseguir find." },
+          "body-0": { why: "+300% de dano aprimorado — convertido junto com todo o resto — e +200% de defesa aprimorada, que não vale nada enquanto o Berserk golpeia e muito enquanto ele não golpeia." },
+          "body-1": { why: "**300% de Extra Gold** no nível 43, na rota de ouro. É a maior linha isolada de ouro disponível e custa três runas comuns." },
+          "belt-0": { why: "10-15% de redução de dano, +30-40 de Vitality e os 10% de recuperação que costumam alcançar cinco frames." },
+          "boots-0": { why: "Magic find que vale para o hork, e dano seco que é convertido." },
+          "gloves-0": { why: "Continuam imbatíveis nas duas rotas." },
+          "ring1-0": { why: "Cannot Be Frozen e 150-250 de attack rating." },
+          "ring2-0": { why: "+1 em todas as skills." },
+          "ring2-1": { why: "Magic find no lugar, na rota de hork." },
+          "amulet-0": { why: "+1 em todas as skills, velocidade de ataque, e Deadly Strike — que dobra o dano físico antes da conversão, então funciona aqui." },
+        },
+        charms: [
+          { why: "**20-40% de Magic Find e 80-160% de Extra Gold num grand charm**, e ele reduz preços de vendedor — o que importa na build que joga no gamble o que farma." },
+          { label: "Skillers de Combat Skills e small charms de magic find", why: "Skills para o golpe, find para o cadáver." },
+        ],
+        weaponSwap: [{ why: "Um Battle Orders mais alto é um Berserk maior nesta página especificamente." }],
+      },
+      budget: {
+        goal: "Teleport, e um farmador de Hell pronto que escolhe os próprios alvos por um mapa inteiro.",
+        nextUpgrade: "O teto de magic find, e rolagens perfeitas nos itens de find.",
+        picks: {
+          "weapon-0": { why: "Inalterada. Dano seco depois dos multiplicadores, convertido inteiro." },
+          "offhand-0": { why: "Redução de dano e bloqueio, as duas mitigações que o Berserk deixa intactas." },
+          "offhand-1": { why: "Ouro e find, na rota de hork." },
+          "helm-0": { why: "+4 Berserk e as resistências." },
+          "body-0": { why: "**Teleport.** Numa build que passa mais tempo andando até cadáveres do que lutando, isso vale mais que qualquer armadura de dano — e o +1 em todas as skills é +1 Berserk em cima.", sockets: "Jah + Ith + Ber." },
+          "belt-0": { why: "Redução de dano e o frame de recuperação." },
+          "boots-0": { why: "Magic find na rolagem do cadáver." },
+          "gloves-0": { why: "Ouro e find." },
+          "gloves-1": { why: "Life Tap no lugar, se você estiver morrendo na janela de defesa zero em vez de farmando confortavelmente." },
+          "ring1-0": { why: "Cannot Be Frozen." },
+          "ring2-0": { why: "+1 skills e a mana que o Teleport gasta." },
+          "amulet-0": { why: "Skills e Deadly Strike." },
+          "amulet-1": { why: "+400-450 de attack rating e +25-35 em todas as resistências no nível 81, se attack rating for o que está falhando." },
+        },
+        charms: [
+          { why: "Find, ouro e gamble mais barato." },
+          { why: "Só se você pegar o pacote de Concentrate — o Sunder físico não significa nada para um ataque mágico e é útil para um físico." },
+          { label: "Skillers de Combat Skills, Annihilus, Hellfire Torch", why: "A Torch é +3 Barbarian skills, o que é +3 Berserk e +3 nas duas sinergias." },
+        ],
+        weaponSwap: [{ why: "Battle Orders, que aqui é dano." }],
+      },
+      optimized: {
+        goal: "Um farmador que apaga os alvos instantaneamente e rola cada cadáver, com Teleport entre eles.",
+        nextUpgrade: "Bases etéreas e o resto das resistências.",
+        picks: {
+          "weapon-0": { why: "O dano seco, convertido." },
+          "weapon-1": { why: "+209% de dano aprimorado, Ignore Target's Defense e −25% de defesa do alvo. O +5 em Frenzy dela é uma **linha morta nesta build** — ela está aqui pelo dano e pela redução de defesa." },
+          "offhand-0": { why: "A linha de bloqueio e redução de dano." },
+          "offhand-1": { why: "A linha de ouro e find." },
+          "helm-0": { why: "+4 Berserk, imbatível por cinco tiers." },
+          "helm-1": { why: "Dois sockets, 30% de redução de dano e +1 em todas as skills, no nível 82." },
+          "body-0": { why: "Teleport, e ele não se torna opcional." },
+          "belt-0": { why: "15% de redução de dano na rolagem máxima." },
+          "boots-0": { why: "50% de magic find na rolagem máxima." },
+          "gloves-0": { why: "40% de magic find e 200% de ouro." },
+          "ring1-0": { why: "Imunidade a congelamento e attack rating." },
+          "ring2-0": { why: "+1 skills." },
+          "ring2-1": { why: "Um 30% de magic find perfeito no lugar." },
+          "amulet-0": { why: "Attack rating e resistências, das quais esta build tem pouco." },
+          "amulet-1": { why: "+2 em todas as skills e +20-30 em todas as resistências no nível 67 — normalmente o amuleto melhor quando o attack rating já está resolvido." },
+        },
+        charms: [
+          { why: "O find, o ouro e os preços de vendedor." },
+          { label: "Skillers de Combat Skills, Annihilus, Hellfire Torch, small charms de magic find", why: "Skills aumentam o Berserk e as duas sinergias dele; find aumenta a rolagem do cadáver." },
+        ],
+        weaponSwap: [{ why: "Os gritos." }],
+      },
+      bis: {
+        goal: "Nada mais para comprar. O melhor magic find da classe, Teleport, e um golpe a que nada é imune.",
+        notes: "O Immortal King e o Guillaume's Face são picks por label em outras páginas desta classe e nenhum dos dois cabe aqui: esta build quer find e resistências em vez de Crushing Blow, e o golpe dela já ignora a imunidade com que o Crushing Blow teria ajudado.",
+        picks: {
+          "weapon-0": { why: "Numa Phase Blade etérea — indestrutível, então etéreo é de graça." },
+          "offhand-0": { why: "Upgradeado, com rolagem perfeita de redução de dano." },
+          "offhand-1": { why: "O escudo de ouro, na rota de Travincal." },
+          "helm-0": { why: "Upgradeado, com rolagem perfeita de roubo de vida." },
+          "body-0": { why: "Teleport, na base mais leve que o seu Strength permitir." },
+          "belt-0": { why: "15% de redução de dano, 40 de Vitality." },
+          "boots-0": { why: "Um 50% de magic find perfeito." },
+          "gloves-0": { why: "Um 40% de magic find perfeito com 200% de ouro." },
+          "ring1-0": { why: "250 de attack rating e imunidade a congelamento." },
+          "ring2-0": { why: "+1 skills, e a reserva de mana para Teleport constante." },
+          "amulet-0": { why: "+2 em todas as skills e +30 em todas as resistências. Numa build sem defesa, a resistência é a mitigação." },
+        },
+        charms: [
+          { why: "40% de magic find, 160% de ouro, 15% de desconto em cada gamble." },
+          { label: "Skillers de Combat Skills, um Annihilus máximo, uma Hellfire Torch máxima", why: "Cada +1 aumenta o Berserk e as duas sinergias dele ao mesmo tempo, coisa que nenhuma outra build de Barbarian pode dizer." },
+          { label: "Small charms de magic find", why: "Eles valem para a morte e para o hork, que é por que esta build os coloca acima dos charms de vida no topo." },
+        ],
+        weaponSwap: [{ why: "Um Battle Orders de nível 6 é a vida e uma sinergia de dano aqui." }],
+      },
+    },
+  },
   "frenzy-barbarian": {
     summary:
       "Duas armas, e cada acerto deixa o próximo mais rápido. O personagem corpo a corpo mais veloz do jogo, e o Barbarian que mata os Ubers.",
