@@ -1489,9 +1489,9 @@ export const skillsPtBr: Overlay<SkillCopy> = {
   },
   "phoenix-strike": {
     summary:
-      "Uma carga cujas três cargas são três elementos diferentes. O motivo de uma Assassin de Martial Arts não ter problema com imunidades.",
+      "Uma carga cujas três cargas são três elementos diferentes. O motivo de uma Assassin de Martial Arts quase nunca esbarrar num muro de imunidade.",
     mechanics: [
-      "**Três cargas, três elementos.** A primeira libera um meteoro, a segunda raio encadeado e a terceira uma explosão de gelo — fogo, raio e frio de uma skill só, que é por que nada no jogo é imune a tudo isso.",
+      "**Três cargas, três elementos.** A primeira libera um meteoro, a segunda raio encadeado e a terceira uma explosão de gelo — fogo, raio e frio de uma skill só, então parar tudo isso exige três imunidades ao mesmo tempo. **Exatamente uma linha da extração tem as três**: um `megademon` de nível 84 no Hell carregando 145 de fogo, frio e raio. Ele aparece como *Pit Lord*, e outras duas linhas aparecem com esse mesmo nome e são imunes só a fogo — então o muro existe, é um monstro, e o nome dele não diz qual dos três você está olhando.",
       "**É uma carga, não um finalizador.** Os elementos são liberados quando um *finalizador* gasta as cargas. Apertar Phoenix Strike sozinho acumula cargas e balança a arma.",
       "Ela alimenta Fists of Fire, Claws of Thunder e Blades of Ice em vez do contrário, então pontos aqui aumentam três outras skills também.",
       "As cargas ficam de pé por 15 segundos e cada uma carrega +25% de attack rating — metade do que as outras skills de carga dão.",

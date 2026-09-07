@@ -83,6 +83,13 @@ export const BLADE_WEAPON_SHARE = BLADE_WEAPON_NUMERATOR / BLADE_WEAPON_DENOMINA
  * transcriptions of the same column disagree loudly if either is edited alone,
  * and the pair is what `assassin.test.ts` cross-checks — a single list would
  * agree with itself no matter what it said.
+ *
+ * **This is a scoped transcription and not a census of the column.** In the
+ * full extraction `weapsel = 4` also carries `Smite` and the generic `Kick`
+ * row, and `weapsel = 2` also carries `Talic's Whirlwind` (`*Id 410`, no
+ * `charclass`). So Whirlwind is the only *player* skill that uses either hand
+ * or both, and any sentence dropping that word is wrong — the omission has
+ * already shipped once on another class's page.
  */
 export const WEAPON_SELECTION: Record<string, number> = {
   "dragon-talon": 4,
