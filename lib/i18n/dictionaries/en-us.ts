@@ -304,6 +304,14 @@ export const enUS = {
       showFilters: "Filters",
       hideFilters: "Hide filters",
       searchChipPrefix: "Search:",
+      // The mobile sheet. Its selections are a draft, so the primary action
+      // has to say what applying them would produce, not what the page shows.
+      sheetTitle: "Filter builds",
+      sheetClose: "Close filters",
+      sheetCancel: "Cancel",
+      sheetClear: "Clear filters",
+      showResultsOne: "Show {count} build",
+      showResultsMany: "Show {count} builds",
       groupClass: "Class",
       groupDamage: "Damage type",
       groupDifficulty: "Difficulty",

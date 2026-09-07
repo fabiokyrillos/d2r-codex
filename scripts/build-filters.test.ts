@@ -61,6 +61,13 @@ import {
   type BuildRow,
   type FilterGroup,
 } from "../lib/builds/filter";
+import {
+  applyFilterDraft,
+  clearFilterDraft,
+  cloneFilterState,
+  sheetFilterCount,
+  toggleDraftValue,
+} from "../lib/builds/filter-sheet";
 import { buildRows, classOrderOf } from "../lib/builds/rows";
 
 let passed = 0;
@@ -856,11 +863,218 @@ console.log("\nBoth locales filter identically");
   );
   check(
     "every placeholder survives translation",
-    (["resultsOne", "resultsMany", "removeOne", "goodAtNote"] as const).every((k) => {
+    ([
+      "resultsOne",
+      "resultsMany",
+      "removeOne",
+      "goodAtNote",
+      "showResultsOne",
+      "showResultsMany",
+    ] as const).every((k) => {
       const inEn = [...en[k].matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
       const inPt = [...pt[k].matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
       return JSON.stringify(inEn) === JSON.stringify(inPt);
     }),
+  );
+}
+
+// ===========================================================================
+// The mobile sheet's draft
+// ===========================================================================
+
+/*
+ * Below `sm` the five groups move into a modal sheet, and the selections made
+ * inside it are a *draft*: the count in the primary action follows every tick,
+ * but the listing and the URL do not move until Apply, which writes one history
+ * entry. That is a state machine with four transitions — open, toggle, clear,
+ * apply — and one property that decides whether any of it works: the draft must
+ * not share a single array with the applied state, or "cancel" silently keeps
+ * the changes it claims to discard.
+ *
+ * All four live in `lib/builds/filter-sheet.ts` as pure functions over the same
+ * `BuildFilterState` the URL carries, so the rules are exercised here rather
+ * than only through a browser. `scripts/mobile-filter-sheet.test.ts` drives the
+ * modal itself.
+ */
+console.log("\nThe mobile sheet drafts, and only Apply commits");
+{
+  const applied = state({ damage: ["cold"], budget: ["low"] });
+
+  // -- opening clones ------------------------------------------------------
+  const draft = cloneFilterState(applied);
+  check(
+    "opening the sheet starts from the applied state",
+    JSON.stringify(draft) === JSON.stringify(applied),
+  );
+  check(
+    "…as a copy, not the same object",
+    draft !== applied && FILTER_GROUPS.every((g) => draft[g] !== applied[g]),
+  );
+  check(
+    "…including the groups that are empty, which is where aliasing hides",
+    draft.class !== applied.class && draft.goodAt !== applied.goodAt,
+  );
+
+  // -- toggling touches the draft only -------------------------------------
+  const ticked = toggleDraftValue(draft, "damage", "fire", options.damage);
+  check(
+    "ticking a box adds it to the draft",
+    ticked.damage.includes("fire") && ticked.damage.includes("cold"),
+    ticked.damage.join(","),
+  );
+  check("…and the applied state is untouched", applied.damage.join(",") === "cold");
+  check("…and the draft it came from is untouched", draft.damage.join(",") === "cold");
+  check(
+    "…and no array is shared with what it was derived from",
+    FILTER_GROUPS.every((g) => ticked[g] !== draft[g] && ticked[g] !== applied[g]),
+  );
+  check(
+    "ticking the same box again removes it",
+    toggleDraftValue(ticked, "damage", "fire", options.damage).damage.join(",") === "cold",
+  );
+  check(
+    "the draft keeps the canonical option order however it is built",
+    toggleDraftValue(state({ damage: ["fire"] }), "damage", "cold", options.damage).damage.join(
+      ",",
+    ) === options.damage.filter((v) => v === "cold" || v === "fire").join(","),
+  );
+
+  // -- cancel, and reopening -----------------------------------------------
+  /*
+   * Cancel is the absence of a write, so what it has to be proved against is
+   * the applied state itself: after any amount of drafting, the thing the page
+   * renders from must be the state it was rendering from before. Reopening then
+   * starts from *that*, not from the abandoned draft.
+   */
+  const abandoned = toggleDraftValue(
+    toggleDraftValue(draft, "damage", "fire", options.damage),
+    "budget",
+    "high",
+    options.budget,
+  );
+  check(
+    "an abandoned draft never reached the applied state",
+    JSON.stringify(applied) === JSON.stringify(state({ damage: ["cold"], budget: ["low"] })),
+  );
+  check(
+    "…and the results the page shows are still the applied ones",
+    slugs(filterBuilds(rows, applied)).join() !==
+      slugs(filterBuilds(rows, abandoned)).join() &&
+      slugs(filterBuilds(rows, applied)).join() ===
+        slugs(filterBuilds(rows, state({ damage: ["cold"], budget: ["low"] }))).join(),
+  );
+  check(
+    "reopening starts from the applied state again, not from the abandoned draft",
+    JSON.stringify(cloneFilterState(applied)) === JSON.stringify(applied),
+  );
+
+  // -- clear ---------------------------------------------------------------
+  const cleared = clearFilterDraft(abandoned);
+  check(
+    "Clear empties every group in the draft",
+    FILTER_GROUPS.every((g) => cleared[g].length === 0),
+  );
+  check(
+    "…and leaves the search box alone, because it is outside the sheet",
+    clearFilterDraft(state({ q: "cold", damage: ["fire"] })).q === "cold",
+  );
+  check("…and does not touch the applied state", applied.damage.join(",") === "cold");
+  check(
+    "…so the page is only unfiltered once Clear is applied",
+    filterBuilds(rows, applied).length < rows.length &&
+      filterBuilds(rows, applyFilterDraft(cleared, options)).length === rows.length,
+  );
+
+  // -- apply ---------------------------------------------------------------
+  const committed = applyFilterDraft(abandoned, options);
+  check(
+    "Apply produces exactly the state the draft described",
+    committed.damage.join(",") === options.damage.filter((v) => ["cold", "fire"].includes(v)).join(",") &&
+      committed.budget.join(",") ===
+        options.budget.filter((v) => ["low", "high"].includes(v)).join(","),
+    `${committed.damage.join(",")} | ${committed.budget.join(",")}`,
+  );
+  check(
+    "…and it is what the URL would carry, so Apply and a pasted link agree",
+    JSON.stringify(committed) ===
+      JSON.stringify(
+        parseFilterState(new URLSearchParams(filterQueryString(committed).slice(1)), options),
+      ),
+  );
+  check(
+    "Apply sanitises: a value this page does not offer is dropped",
+    applyFilterDraft(state({ damage: ["cold", "not-an-element"] }), options).damage.join(",") ===
+      "cold",
+  );
+  check(
+    "Apply sanitises: a group the page does not offer is dropped",
+    applyFilterDraft(state({ class: ["sorceress"], damage: ["cold"] }), {
+      damage: options.damage,
+    }).class.length === 0,
+  );
+  check(
+    "Apply sanitises: the query is trimmed and capped",
+    applyFilterDraft(state({ q: `  ${"x".repeat(MAX_QUERY_LENGTH + 40)}  ` }), options).q.length ===
+      MAX_QUERY_LENGTH,
+  );
+  check(
+    "Apply is idempotent — applying its own output changes nothing",
+    JSON.stringify(applyFilterDraft(committed, options)) === JSON.stringify(committed),
+  );
+  check(
+    "Apply reuses the filtering rules rather than a second copy of them",
+    slugs(filterBuilds(rows, committed)).join() ===
+      slugs(filterBuilds(rows, state({ damage: ["cold", "fire"], budget: ["low", "high"] }))).join(),
+  );
+
+  // -- the trigger's badge --------------------------------------------------
+  /*
+   * The badge counts what the sheet can change. `activeCount` counts the query
+   * too, which was right while the query and the boxes lived in one panel and
+   * is wrong now that the box is outside: a reader who has only typed would see
+   * "Filters 1", open the sheet, and find nothing ticked and a Clear that does
+   * nothing.
+   */
+  check(
+    "the trigger's badge counts the groups the sheet holds",
+    sheetFilterCount(state({ damage: ["cold", "fire"], budget: ["low"] })) === 3,
+  );
+  check(
+    "…and not the search box, which is outside it",
+    sheetFilterCount(state({ q: "cold" })) === 0 && activeCount(state({ q: "cold" })) === 1,
+  );
+
+  // -- controls -------------------------------------------------------------
+  /*
+   * Anti-vacuity. A `cloneFilterState` that returned its argument would pass
+   * every equality above, and a `toggleDraftValue` that mutated in place would
+   * pass the ones that only read the result.
+   */
+  const identityClone = (s: BuildFilterState) => s;
+  check(
+    "control: an identity clone fails the aliasing assertion, so it means something",
+    !FILTER_GROUPS.every((g) => identityClone(applied)[g] !== applied[g]),
+  );
+  const mutatingToggle = (s: BuildFilterState, g: FilterGroup, v: string) => {
+    s[g].push(v);
+    return s;
+  };
+  {
+    const victim = cloneFilterState(applied);
+    mutatingToggle(victim, "damage", "fire");
+    check(
+      "control: an in-place toggle changes the state it was handed",
+      victim.damage.join(",") === "cold,fire",
+    );
+    check(
+      "…while the real one does not, which is the whole difference",
+      toggleDraftValue(cloneFilterState(applied), "damage", "fire", options.damage) !== applied &&
+        applied.damage.join(",") === "cold",
+    );
+  }
+  check(
+    "control: an Apply that skipped sanitising would keep the unknown value",
+    state({ damage: ["cold", "not-an-element"] }).damage.length === 2,
   );
 }
 
