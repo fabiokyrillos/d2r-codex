@@ -135,10 +135,12 @@ console.log("\n2. The sitemap and the page set agree");
   );
 
   /*
-   * The reverse. `_not-found` and `_global-error` are framework pages rather
-   * than content, and are the only two the sitemap should omit — which is why
-   * they are named here instead of filtered by a pattern that would also hide
-   * a real page dropped by accident.
+   * The reverse. `_not-found` and `_global-error` answer a request that went
+   * wrong rather than carrying content, and are the only two the sitemap should
+   * omit — which is why they are named here instead of filtered by a pattern
+   * that would also hide a real page dropped by accident. `_not-found` is this
+   * project's own page now (`app/not-found.tsx`), but it still has no business
+   * in a sitemap: it is served with a 404 and marked `noindex`.
    */
   const FRAMEWORK = new Set(["/_not-found", "/_global-error"]);
   const unlisted = [...pages.keys()].filter(
@@ -162,6 +164,13 @@ console.log("\n3. Every page declares a canonical and both hreflang alternates")
   const problems: string[] = [];
   let checked = 0;
 
+  /*
+   * `_not-found` is exempt from *this* section and no longer from the social
+   * one below. It carries a title and a description like any other page, but it
+   * deliberately declares no canonical and no hreflang: both would assert that
+   * the URL is a real page with a twin in the other language, and a 404 that
+   * claims to be canonical is how a dead URL gets indexed.
+   */
   for (const [page, file] of pages) {
     if (page === "/_not-found" || page === "/_global-error") continue;
     checked++;
@@ -225,8 +234,16 @@ console.log("\n3b. A page's social preview is its own, not the site's default");
   const problems: string[] = [];
   let checked = 0;
 
+  /*
+   * `_not-found` used to be exempt here too, back when it was Next's own
+   * fallback and declared no social tags at all. `app/not-found.tsx` builds both
+   * blocks from one pair of strings, so it is now held to the same rule as every
+   * other page — which is the point of dropping the exception rather than
+   * keeping it: a dead link pasted into a chat is exactly the case this section
+   * is about.
+   */
   for (const [page, file] of pages) {
-    if (page === "/_not-found" || page === "/_global-error") continue;
+    if (page === "/_global-error") continue;
     checked++;
     const head = readFileSync(file, "utf8").split("</head>")[0];
     const og = (p: string) =>
