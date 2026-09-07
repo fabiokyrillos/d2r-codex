@@ -42,7 +42,7 @@ export const cleaveWarlock: Build = {
     "You hold one button. Cleave sweeps eleven of thirty slices of a circle at one point and twenty at twenty — roughly 132 degrees opening to 240 — carries the weapon's full damage, costs a flat 3 mana that never grows, and swings even when you have no mana at all. Mirrored Blades is the boss button: two ethereal duplicates at one point and five at fifteen, each one a full weapon hit. The hexes are applied by hitting things rather than cast, so they land while you are already doing the thing you were going to do — Hex: Bane strips defence and writes magic damage onto the weapon, Hex: Purge detonates on about seven hits in ten. It is the least fussy melee build on this site and the only one that never runs out of mana.",
   strengths: [
     "+600% weapon damage from three synergies — three times what the tree's other weapon skill collects",
-    "A two-handed weapon and an off-hand at the same time — no other class in the game can do this",
+    "**Any** two-handed weapon alongside an off-hand — the Barbarian gets that for eighteen specific swords and no other class gets it at all",
     "Cleave costs a flat 3 mana at every level and swings without mana at all",
     "Physical and magic at once: physical immunity is recorded in eight catalogued areas and magic in one",
     "Levitation Mastery cuts item requirements by up to half, which pays for the weapon it wants",
@@ -148,7 +148,7 @@ export const cleaveWarlock: Build = {
       goal: "Cleave at level 6, and a weapon big enough that its full damage is worth carrying.",
       levelRange: [1, 30],
       slots: [
-        { slot: "weapon", picks: [{ label: "The largest two-handed weapon you can wear", why: "Cleave carries the weapon's **full** damage, so the base matters more than on any caster. A two-hander costs you nothing here — the Warlock levitates it and the off-hand stays free, which is true of no other class in the game.", lookFor: ["High two-handed damage", "+to Warlock Skills", "Increased Attack Speed"] }] },
+        { slot: "weapon", picks: [{ label: "The largest two-handed weapon you can wear", why: "Cleave carries the weapon's **full** damage, so the base matters more than on any caster. A two-hander costs you nothing here — the Warlock levitates it and the off-hand stays free, and that holds for **every** two-handed weapon in the game. The Barbarian has a narrower version of the same trick: eighteen two-handed swords carry a `1or2handed` flag and he alone may hold one of those in a single hand.", lookFor: ["High two-handed damage", "+to Warlock Skills", "Increased Attack Speed"] }] },
         { slot: "offhand", picks: [{ label: "Any Grimoire with +to Warlock skills", why: "Normal-tier Grimoires ask 12 to 25 Strength. Free, and the slot exists only because of the class passive.", lookFor: ["+2 to Warlock Skills", "+to Cleave"] }] },
         { slot: "body", picks: [{ ref: { kind: "runeword", slug: "stealth" }, why: "Hit recovery and run speed for two Countess runes." }] },
         { slot: "helm", picks: [{ ref: { kind: "runeword", slug: "lore" }, why: "+1 to All Skills, which on a build with five maxed skills is worth five levels of nothing in particular and one of everything." }] },
@@ -256,7 +256,7 @@ export const cleaveWarlock: Build = {
         { ref: { kind: "runeword", slug: "spirit" }, why: "Unchanged." },
       ],
       notes:
-        "The finished character wears a two-handed weapon and an off-hand at the same time, which is the one thing about this class that no amount of gear on any other character can imitate. Every generic melee guide you will read assumes you gave up a shield for that weapon. You did not.",
+        "The finished character wears a two-handed weapon and an off-hand at the same time — and **Dreadfang is a Legend Sword, and it is one of the eighteen two-handed swords a Barbarian may also hold in a single hand** — the rows flagged `1or2handed` — so on this exact weapon the trick is shared. What is not shared is the rule behind it: the Warlock does this with any two-hander and the Barbarian only with those eighteen, which is why a Ritual dagger or a Colossus Blade changes nothing here and would change everything for him. Every generic melee guide you will read assumes you gave up a shield for that weapon. You did not.",
     },
   ],
 

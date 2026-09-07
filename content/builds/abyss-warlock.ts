@@ -284,7 +284,7 @@ export const abyssWarlock: Build = {
     { stat: "fhr", value: 56, frames: 7, why: "The usual target. Miasma Chain is interrupted like anything else.", priority: "recommended" },
   ],
   breakpointNotes:
-    "One caution the fire page does not need. **Miasma Chain sets `UseAttackRate`, and no other Chaos skill does** — its animation follows the attack rate rather than the cast rate. What that means for a Faster Cast Rate breakpoint on that one skill is not established, and no attack-speed table is published for any class on this site, so nothing is claimed in either direction. The cast-rate targets above are for Abyss, which is an ordinary cast.",
+    "One caution the fire page does not need. **Miasma Chain is the one Chaos skill that runs on the attack animation rather than the cast animation** — its row sets `UseAttackRate` and no other skill in the tree does. What that means for a Faster Cast Rate breakpoint on that one skill is not established, and no attack-speed table is published for any class on this site, so nothing is claimed in either direction. The cast-rate targets above are for Abyss, which is an ordinary cast.",
 
   gearSets: [
     {

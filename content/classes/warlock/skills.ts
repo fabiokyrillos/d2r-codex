@@ -137,7 +137,7 @@ export const warlockSkills: Skill[] = [
       "The mark cuts the target's damage reduction by **5, and 2 more per level**, and its defence by **50, and 35 more per level**. Both are large early and the defence line stays large.",
       "Your demons **teleport to the marked target** — the row carries a warp distance of 38 — which is what turns three slow melee minions into something that arrives. This is the skill that makes the Demon tree playable at range.",
       "It **requires a demon to be out**. With no pet the skill has nothing to command.",
-      "It also clears some crowd control from the pet it sends, and it feeds two other skills: Summon Goatman's Crushing Blow, and Bind Demon's chance to capture.",
+      "It also clears some crowd control from the pet it sends. Two other skills read its hard-point level directly — Summon Goatman's Crushing Blow and Bind Demon's chance to capture — which the game does not label as synergies and the graph therefore does not draw.",
       "Duration is **125 frames with 13 more per level** — about five seconds at one point, and it is meant to be recast on the next target rather than maintained.",
     ],
     confidence: "verified",

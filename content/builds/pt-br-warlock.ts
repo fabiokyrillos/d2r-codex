@@ -162,7 +162,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         picks: {
           "weapon-0": {
             label: "Qualquer staff, wand ou sceptre com +Warlock skills",
-            why: "O Warlock levita a arma, então um staff de duas mãos não custa nada na mão secundária. Esta é a única classe que pega o maior pedaço de pau com +skills que encontrar e ainda segura um Grimoire.",
+            why: "O Warlock levita a arma, então um staff de duas mãos não custa nada na mão secundária. Esta é a única classe que pega o maior pedaço de pau com +skills que encontrar e ainda segura um Grimoire — a exceção de uma mão do Barbarian cobre dezoito **espadas** de duas mãos e nenhum staff, então ela não alcança este slot.",
             lookFor: ["+1-3 to Warlock Skills", "+to Ring of Fire", "Faster Cast Rate"],
           },
           "offhand-0": {
@@ -271,7 +271,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         nextUpgrade: "Nada estrutural. Facets no elmo e no corpo, e rolagens melhores nos mesmos itens.",
         picks: {
           "weapon-0": {
-            why: "+3 em Todas as Skills e 40% de Faster Cast Rate num staff de quatro sockets. **Um staff é de duas mãos e o Warlock o levita**, então esta é a única classe do jogo que veste a melhor arma de caster e mantém a mão secundária. Nenhum outro personagem consegue isso e nenhum guia genérico de equipamento vai te dizer para fazer.",
+            why: "+3 em Todas as Skills e 40% de Faster Cast Rate num staff de quatro sockets. **Um staff é de duas mãos e o Warlock o levita**, então esta é a única classe do jogo que veste a melhor arma de caster e mantém a mão secundária. As dezoito armas de duas mãos que o Barbarian pode segurar com uma são todas espadas, então o Heart of the Oak num staff está fora do alcance dele tanto quanto do de todo mundo. Nenhum guia genérico de equipamento vai te dizer para fazer isso.",
             sockets: "Ko Vex Pul Thul num staff de quatro sockets. Um Warlock não tem motivo para usar a versão em maça.",
           },
           "offhand-0": {
@@ -430,7 +430,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       "fhr-56": "O alvo de sempre. Miasma Chain é interrompido como qualquer outra coisa.",
     },
     breakpointNotes:
-      "Uma ressalva que a página de fogo não precisa. **Miasma Chain marca `UseAttackRate`, e nenhuma outra skill de Chaos faz isso** — a animação dela segue a velocidade de ataque e não a de conjuração. O que isso significa para um breakpoint de Faster Cast Rate naquela skill específica não está estabelecido, e nenhuma tabela de velocidade de ataque é publicada para nenhuma classe deste site, então nada é afirmado em nenhuma direção. Os alvos de cast rate acima valem para o Abyss, que é uma conjuração comum.",
+      "Uma ressalva que a página de fogo não precisa. **Miasma Chain é a única skill de Chaos que roda na animação de ataque em vez da de conjuração** — a linha dela marca `UseAttackRate` e nenhuma outra skill da árvore faz isso. O que isso significa para um breakpoint de Faster Cast Rate naquela skill específica não está estabelecido, e nenhuma tabela de velocidade de ataque é publicada para nenhuma classe deste site, então nada é afirmado em nenhuma direção. Os alvos de cast rate acima valem para o Abyss, que é uma conjuração comum.",
     skillNotes: {
       abyss: "20-40 mágico num raio de 6, e a mana é cobrada quando ele resolve, não quando começa.",
       "miasma-chain": "+10% de dano do Abyss por nível, e a skill que você de fato segura apertada: três projéteis subindo rumo a um teto de doze.",
@@ -615,7 +615,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       "Você segura um botão. Cleave varre onze de trinta fatias de um círculo com um ponto e vinte com vinte — algo como 132 graus abrindo para 240 — carrega o dano cheio da arma, custa 3 de mana fixos que nunca crescem, e golpeia mesmo sem mana nenhuma. Mirrored Blades é o botão de chefe: duas duplicatas etéreas com um ponto e cinco com quinze, cada uma um golpe cheio de arma. Os hexes são aplicados batendo em coisas, não conjurando, então eles caem enquanto você já está fazendo o que ia fazer — Hex: Bane arranca defesa e escreve dano mágico na arma, Hex: Purge detona em cerca de sete acertos em dez. É a build de corpo a corpo menos chata deste site e a única que nunca fica sem mana.",
     strengths: [
       "+600% de dano de arma vindo de três sinergias — três vezes o que a outra skill de arma da árvore recolhe",
-      "Uma arma de duas mãos e uma mão secundária ao mesmo tempo — nenhuma outra classe do jogo faz isso",
+      "**Qualquer** arma de duas mãos junto de uma mão secundária — o Barbarian ganha isso para dezoito espadas específicas e nenhuma outra classe ganha de jeito nenhum",
       "Cleave custa 3 de mana fixos em todo nível e golpeia sem mana nenhuma",
       "Físico e mágico ao mesmo tempo: imunidade a físico é registrada em oito áreas catalogadas e a mágico em uma",
       "Levitation Mastery corta requisitos de item em até metade, o que paga a arma que ela mesma quer",
@@ -699,7 +699,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         picks: {
           "weapon-0": {
             label: "A maior arma de duas mãos que você conseguir vestir",
-            why: "Cleave carrega o dano **cheio** da arma, então a base importa mais que em qualquer caster. Uma de duas mãos não custa nada aqui — o Warlock a levita e a mão secundária continua livre, o que não vale para nenhuma outra classe do jogo.",
+            why: "Cleave carrega o dano **cheio** da arma, então a base importa mais que em qualquer caster. Uma de duas mãos não custa nada aqui — o Warlock a levita e a mão secundária continua livre, e isso vale para **toda** arma de duas mãos do jogo. O Barbarian tem uma versão mais estreita do mesmo truque: dezoito espadas de duas mãos carregam a flag `1or2handed` e só ele pode segurar uma delas com uma mão.",
             lookFor: ["High two-handed damage", "+to Warlock Skills", "Increased Attack Speed"],
           },
           "offhand-0": {
@@ -819,7 +819,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       bis: {
         goal: "Nada mais sobre o que discutir.",
         notes:
-          "O personagem pronto veste uma arma de duas mãos e uma mão secundária ao mesmo tempo, que é a única coisa desta classe que nenhuma quantidade de equipamento em nenhum outro personagem imita. Todo guia genérico de corpo a corpo que você vai ler assume que você abriu mão de um escudo por aquela arma. Você não abriu.",
+          "O personagem pronto veste uma arma de duas mãos e uma mão secundária ao mesmo tempo — e o **Dreadfang é uma Legend Sword, e é uma das dezoito espadas de duas mãos que um Barbarian também pode segurar com uma mão** — as linhas marcadas `1or2handed` — então nesta arma específica o truque é compartilhado. O que não é compartilhado é a regra por trás dele: o Warlock faz isso com qualquer arma de duas mãos e o Barbarian só com aquelas dezoito, e é por isso que uma adaga com Ritual ou uma Colossus Blade não muda nada aqui e mudaria tudo para ele. Todo guia genérico de corpo a corpo que você vai ler assume que você abriu mão de um escudo por aquela arma. Você não abriu.",
         picks: {
           "weapon-0": { label: "Dreadfang", why: "Com +3 Mirrored Blades e 166% de dano aumentado." },
           "offhand-0": { why: "Com 115% de dano aumentado e 70% de attack rating. O Blasphemous Grimoire é o item melhor no papel e o pior aqui." },
