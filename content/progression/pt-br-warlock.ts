@@ -13,8 +13,8 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
     summary:
       "Uma rota única de dano mágico do nível 1 ao 99 que vira a build Abyss sem respec, a build Apocalypse sem respec, e qualquer uma das outras duas com um dos três tokens gratuitos que o jogo entrega.",
     overview: [
-      "**Miasma Bolt a partir do nível 1, Miasma Chain a partir do 12, e é esse o personagem até o 30.** Dano mágico é registrado como imunidade em uma das dezoito áreas catalogadas deste site; fogo é registrado em doze. Um Warlock subindo de nível não tem sunder charm nenhum e não tem quebra de resistência, então o elemento que quase nada resiste é o que nunca o deixa preso numa porta.",
-      "**Um ponto em Summon Goatman no nível 2 e nunca mais.** Ele é um corpo entre você e a sala, e é o único ponto desta rota inteira que nenhuma build pronta mantém. Quantos demônios você tem é decidido pelo quinto e pelo décimo hard point de Demonic Mastery e por mais nada — o que é uma decisão de Blood Boil, não de subida de nível.",
+      "**Miasma Bolt a partir do nível 1, Miasma Chain a partir do 12, e é esse o personagem até o 30.** Dano mágico é registrado como imunidade em uma das vinte áreas catalogadas deste site; fogo é registrado em doze. Um Warlock subindo de nível não tem sunder charm nenhum e não tem quebra de resistência, então o elemento que quase nada resiste é o que nunca o deixa preso numa porta.",
+      "**Um ponto em Summon Goatman no nível 2 e nunca mais.** Ele é um corpo entre você e a sala, e é o único ponto que esta rota gasta e que o núcleo do Abyss não lista — embora nem assim seja desperdiçado: o plano do Blood Boil carrega o mesmo ponto no núcleo dele, e o pacote do muro de demônios do Apocalypse também. Quantos demônios você tem é decidido pelo quinto e pelo décimo hard point de Demonic Mastery e por mais nada — o que é uma decisão de Blood Boil, não de subida de nível.",
       "**A passiva da classe muda o planejamento de equipamento em todos os estágios.** A arma levita, então um staff de duas mãos deixa a mão secundária livre. Você nunca está escolhendo entre um pedaço de pau grande e um Grimoire, que é uma escolha que todo outro caster do jogo precisa fazer.",
       "**Nada aqui depende de um item que ainda não existe.** Os uniques do próprio Warlock começam no nível 52 e os três melhores no 73 ou acima, então esta rota é staff de vendedor, Grimoire genérico e runewords feitas com runas da Countess. Diga isso em voz alta, porque um guia que assume os itens de assinatura da classe é inútil para quem está jogando a classe agora.",
       "**Três respecs gratuitos, e no máximo um é necessário.** A recompensa da Akara por limpar a Den of Evil é um respec completo em cada dificuldade. Duas das quatro builds não querem nenhum deles.",
@@ -34,7 +34,7 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
       },
       {
         at: "Uma vez, no nível 30, para o Blood Boil Warlock",
-        why: "A árvore Demon compartilha só o Goatman com esta rota, e o limiar de verdade da árvore é o décimo hard point de Demonic Mastery — que é o que leva o teto de demônios de um para três e que nada mais no jogo move. Faça o respec quando puder pagar por ele, em vez de pingar pontos aos poucos.",
+        why: "A árvore Demon compartilha só o Goatman com esta rota, e os limiares de verdade da árvore são o quinto e o décimo hard points de Demonic Mastery — cinco levam o teto de demônios de um para dois e dez levam de dois para três, e nada mais no jogo move nenhum dos dois. Faça o respec quando puder pagar por ele, em vez de pingar pontos aos poucos.",
       },
       {
         at: "Existem três tokens e no máximo um é necessário",
@@ -49,13 +49,13 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
         goal: "Limpar a Den of Evil, pôr um demônio na sua frente, e matar a Andariel.",
         killingWith: "Miasma Bolt, com um Goatman entre você e o que estiver vindo.",
         skillPoints: [
-          "Nível 1: **Miasma Bolt**. Cinco skills abrem no nível 1 e esta é a que ainda vale pontos no 99 — 4 de mana, o maior alcance da classe, e dano mágico que quase nada no jogo resiste.",
+          "Nível 2, com o seu primeiro ponto: **Miasma Bolt**. Cinco skills abrem no nível 1 e esta é a que ainda vale pontos no 99 — 4 de mana, o maior alcance da árvore, e dano mágico que quase nada no jogo resiste. (Um personagem não tem ponto de skill no nível 1; o primeiro chega com o nível 2.)",
           "Nível 2: **Summon Goatman**, um ponto. Ele é um corpo, não uma fonte de dano, e um ponto é tudo o que ele vai receber nesta rota.",
           "Níveis 3-5: de volta para **Miasma Bolt**.",
           "**O ponto da Den of Evil também vai para Miasma Bolt.** Ele é sinergia de tudo o que este personagem vai lançar, então não existe hora errada de gastá-lo aqui.",
           "Nível 6: **Ring of Fire**, um ponto. Um segundo elemento para o punhado de coisas que ignoram mágico, e o primeiro degrau da escada se você virar para fogo no 30.",
-          "Níveis 7-11: **Miasma Bolt** até dez.",
-          "São 12 pontos no nível 11, e onze deles estão em skills que o personagem pronto ainda tem.",
+          "Níveis 7-11: **Miasma Bolt** até nove.",
+          "São 11 pontos no nível 11 — dez dos níveis 2 a 11, mais o da Den of Evil — e dez deles estão em skills que o personagem pronto ainda tem.",
         ],
         statPoints: [
           "**Vitality, e quase nada mais.** Um Warlock ganha 3 de vida por ponto onde a Sorceress ganha 2, então o mesmo investimento compra metade a mais.",
@@ -87,9 +87,9 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
         skillPoints: [
           "Nível 12: **Miasma Chain**. É a skill que limpa o Normal. Ela gera três projéteis com um ponto e sobe rumo a doze, todos mágicos, no alcance de um arco.",
           "**O ponto de skill do Radament vai para Miasma Chain.** É a única quest do Act 2 que dá um.",
-          "Níveis 13-20: **Miasma Chain** até nove. Cada ponto é mais uma fração de projétil e não há nada competindo por eles ainda.",
+          "Níveis 13-20: **Miasma Chain** até dez. Cada ponto é mais uma fração de projétil e não há nada competindo por eles ainda.",
           "**Não encoste no Flame Wave quando ele abrir no 18.** É uma skill de fogo numa rota mágica, e se você virar para fogo no 30 vai querer o Ring of Fire maximizado antes dele de qualquer jeito.",
-          "São 21 pontos no nível 20 — Miasma Bolt dez, Miasma Chain nove, e um em cada um de Summon Goatman e Ring of Fire.",
+          "São 21 pontos no nível 20 — dezenove dos níveis, mais o da Den of Evil e o do Radament. Miasma Bolt nove, Miasma Chain dez, e um em cada um de Summon Goatman e Ring of Fire.",
         ],
         statPoints: [
           "**Ainda Vitality.** O Act 2 é onde um Warlock que economizou descobre.",
@@ -120,15 +120,15 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
         killingWith: "Miasma Chain, com um sigil embaixo do grupo terminando o que sobrou de pé.",
         skillPoints: [
           "**O Izual dá +2 pontos de skill** — a maior concessão isolada do jogo. Os dois vão para Miasma Chain.",
-          "Níveis 21-23: **Miasma Chain** até vinte. Está pronto e vai continuar pronto.",
+          "Níveis 21-23 mais os dois do Izual: **Miasma Chain** de dez para quinze. Ele não fica pronto aqui e não tem como — cinco pontos é o que esses três níveis e aquela quest de fato fornecem.",
           "Nível 24: a cadeia de sigils, um ponto em cada. Sigil Lethargy e Sigil Rancor são pré-requisitos e Sigil Death é o motivo — a execução dele são 13% fixos da vida de um monstro normal e 10% da de um champion, e **nenhum dos dois números sobe com o nível**. Um ponto é a skill inteira fora o raio, o que faz dele o melhor ponto único disponível a esta classe.",
           "O nível 24 também abre o **Enhanced Entropy**. Um ponto agora porque o Abyss não pode ser pego sem ele; os outros dezenove vêm muito depois.",
-          "Níveis 25-30: **Miasma Bolt** de volta rumo a vinte.",
-          "São 32 pontos no nível 30, e trinta e um deles estão na build Abyss pronta.",
+          "Níveis 25-30: **Miasma Chain** o resto do caminho até dezoito. Os dois últimos chegam no começo do Nightmare.",
+          "São 33 pontos no nível 30 — vinte e nove dos níveis e os quatro pontos de quest do Normal — e trinta e dois deles estão na build Abyss pronta.",
         ],
         statPoints: [
           "**Vitality.** O Hell está a dois atos de distância e a penalidade de resistência dele está prestes a fazer tudo bater mais forte.",
-          "**Strength** o suficiente para uma espada de quatro sockets se você for fazer o Spirit no 25, que são 25 para uma Crystal Sword.",
+          "**Strength** o suficiente para uma espada de quatro sockets se você for fazer o Spirit no 25. Uma Crystal Sword pede **43**, e não os 25 que o requisito da runeword sugere — os dois números não têm relação, e orçar o errado deixa a espada investível.",
           "**Lam Esen's Tome de novo no Nightmare e no Hell.** Quinze pontos de atributo nas três dificuldades.",
         ],
         actions: [
@@ -156,9 +156,9 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
         killingWith: "Miasma Chain seguido de Abyss, com Sigil: Death embaixo do que sobreviver à primeira passada.",
         skillPoints: [
           "Nível 30: **Abyss**. Vinte a quarenta de mágico num raio de 6, e a mana é cobrada quando ele resolve em vez de quando começa — uma conjuração interrompida não custa nada.",
-          "Níveis 31-48: **Abyss** até vinte, e **Miasma Bolt** com o que sobrar.",
+          "Níveis 31-48: **Abyss** até vinte, e os dois últimos no **Miasma Chain** para fechá-lo.",
           "**Os pontos de quest do Nightmare — Den of Evil, Radament e Izual — são mais quatro**, e os quatro vão pelo mesmo caminho.",
-          "São 54 pontos no nível 48.",
+          "São 55 pontos no nível 48 — quarenta e sete dos níveis e oito pontos de quest, todos os do Normal e do Nightmare.",
           "Se você virou para fogo no 30: Ring of Fire até vinte primeiro, depois Flame Wave, depois Apocalypse. A ordem importa porque o Ring of Fire alimenta os outros dois e é o mais barato dos três de terminar.",
         ],
         statPoints: [
@@ -183,14 +183,14 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
       },
       "war-hell": {
         name: "Onde a escolha de elemento se paga",
-        summary: "Níveis 48-70. Doze de dezoito áreas resistem a fogo. Uma resiste a você.",
+        summary: "Níveis 48-70. Treze de vinte áreas resistem a fogo. Uma resiste a você.",
         location: "Hell — Act 1 até Act 4",
         goal: "Terminar o Enhanced Entropy, conseguir o primeiro unique de Warlock, e limpar até o Chaos Sanctuary.",
         killingWith: "Miasma Chain e Abyss, e o sigil embaixo de todo grupo que valer os quatro segundos.",
         skillPoints: [
-          "Níveis 49-70: **Enhanced Entropy** de um até vinte, depois **Miasma Bolt** com o resto. O Enhanced Entropy dá ao Abyss +2% de dano com mais 3% por nível, que é a linha isolada mais íngreme da skill e a razão de ele valer vinte pontos em vez de um.",
+          "Níveis 49-70: **Enhanced Entropy** de um até vinte, depois **Miasma Bolt** de nove a dezesseis com o resto. O Enhanced Entropy dá ao Abyss +2% de dano com mais 3% por nível, que é a linha isolada mais íngreme da skill e a razão de ele valer vinte pontos em vez de um.",
           "**Os pontos de quest do Hell são mais quatro** e vão pelo mesmo caminho.",
-          "São 80 pontos no nível 70, e o núcleo pronto do Abyss são 83.",
+          "São 81 pontos no nível 70 — sessenta e nove dos níveis e todos os doze pontos de quest — contra um núcleo pronto do Abyss de 83.",
           "A rota de fogo alcança o núcleo do Apocalypse quase exatamente no mesmo nível, porque os dois planos são sessenta pontos de cadeia de capstone mais um punhado de uns.",
         ],
         statPoints: [
@@ -203,7 +203,7 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
           "No nível 51, **Coven** num elmo de três sockets: +1 em Todas as Skills, 20% de Faster Cast Rate e 26-40% de magic find quando se conta o modificador de elmo da própria Ist.",
           "No nível 53, **Vigilance** é Dol e Gul num Grimoire — todas as resistências, vida, mana e um bônus grande de defesa. É a única runeword do jogo cujo primeiro tipo de item listado é o Grimoire, e são duas runas porque é só isso que cabe num Grimoire.",
           "No nível 49, um Cleave Warlock quer **Oath** numa espada ou machado de quatro sockets — ela publica 50% de Increased Attack Speed depois de contar a Shael, e é aqui que aquela build para de tomar emprestado e começa a bater.",
-          "**É aqui que a escolha de elemento aparece.** Imunidade a fogo é registrada em doze das dezoito áreas catalogadas deste site e imunidade a mágico em uma — o Arcane Sanctuary. Um Warlock de fogo precisa de um Flame Rift, que é drop de nível 75; um de mágico não precisa de nada.",
+          "**É aqui que a escolha de elemento aparece.** Imunidade a fogo é registrada em treze das vinte áreas catalogadas deste site e imunidade a mágico em uma — o Arcane Sanctuary. Um Warlock de fogo precisa de um Flame Rift, que é drop de nível 75; um de mágico não precisa de nada.",
           "**O Mausoleum é a área a aprender.** Nível de área 85, a duas telas do waypoint das Cold Plains, e as imunidades registradas dele são veneno e frio — nenhuma das quais esta rota causa.",
           "**Den of Evil, Radament e The Fallen Angel uma última vez.** Os últimos quatro pontos de skill, levando o total de quest a doze.",
         ],
@@ -222,9 +222,9 @@ export const warlockJourneyPtBr: Overlay<JourneyCopy> = {
         killingWith: "A build pronta, seja qual das quatro você virou.",
         skillPoints: [
           "Níveis 71-99: vinte e nove pontos, e os últimos deles são os que decidem o personagem em vez de construí-lo.",
-          "**Miasma Bolt até vinte** fecha o núcleo do Abyss em 83 de 110.",
+          "**Miasma Bolt de dezesseis a vinte** fecha o núcleo do Abyss em 83 de 110.",
           "**Depois o pacote.** Ring of Fire até vinte é a resposta de fogo para a única área que resiste a você; Psychic Ward com os dois pré-requisitos dele é o ward. Pegue um, não os dois — 110 não comporta os dois.",
-          "**Um ponto em Summon Goatman é o único ponto que esta rota gasta e que nenhuma build pronta mantém.** Ele é um dos sete que o pacote de fogo deixa sobrando, e comprou o Act 1 inteiro para você.",
+          "**Um ponto em Summon Goatman é o único ponto que esta rota gasta e que o núcleo do Abyss não lista.** Ele é um dos sete que o pacote de fogo deixa sobrando, comprou o Act 1 inteiro para você, e duas das outras três builds o mantêm assim mesmo — o Blood Boil no núcleo e o Apocalypse no pacote do muro de demônios.",
           "83 + 20 = 103, com o Goatman fazendo 104 e seis genuinamente livres.",
         ],
         statPoints: [

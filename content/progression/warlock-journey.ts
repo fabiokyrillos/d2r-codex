@@ -12,16 +12,18 @@ import type { ProgressionJourney } from "@/lib/types";
  *
  * The route is Miasma Bolt into Miasma Chain, and the reason is the same one
  * the Abyss page is built on — magic is recorded as an immunity in one of the
- * eighteen catalogued areas, against twelve for fire. A levelling character has
+ * twenty catalogued areas, against thirteen for fire. A levelling character has
  * no sunder charm, no pierce and no second element, so the element that is
  * almost never resisted is the one that never strands them.
  *
  * WHAT THE ARITHMETIC ACTUALLY SAYS
  * ---------------------------------
  * Spend the route to level 99 and the skill screen reads the Abyss build's core
- * exactly, plus its fire package, plus one point in Summon Goatman that no
- * finished build keeps. One of 110, spent in Act 1 on the thing that stopped
- * you dying in the Blood Moor.
+ * exactly, plus its fire package, plus one point in Summon Goatman that the
+ * Abyss core does not list. One of 110, spent in Act 1 on the thing that
+ * stopped you dying in the Blood Moor — and kept by two of the other three
+ * builds anyway: Blood Boil's core carries it and so does Apocalypse's
+ * demon-wall package.
  *
  * Keep spending into fire from level 30 instead, and the same route lands on
  * the Apocalypse core plus its void package — 60 in the fire chain, 40 already
@@ -51,8 +53,8 @@ export const warlockJourney: ProgressionJourney = {
   summary:
     "One magic-damage route from level 1 to 99 that becomes the Abyss build with no respec, the Apocalypse build with no respec, and either of the other two with one of the three free tokens the game hands out.",
   overview: [
-    "**Miasma Bolt from level 1, Miasma Chain from 12, and that is the character until 30.** Magic damage is recorded as an immunity in one of the eighteen catalogued areas on this site; fire is recorded in twelve. A levelling Warlock owns no sunder charm and has no pierce, so the element almost nothing resists is the one that never leaves them stuck in a doorway.",
-    "**One point in Summon Goatman at level 2 and never again.** It is a body between you and the room, and it is the only point in this whole route that no finished build keeps. How many demons you get is decided by Demonic Mastery's fifth and tenth hard points and by nothing else — which is a Blood Boil decision, not a levelling one.",
+    "**Miasma Bolt from level 1, Miasma Chain from 12, and that is the character until 30.** Magic damage is recorded as an immunity in one of the twenty catalogued areas on this site; fire is recorded in twelve. A levelling Warlock owns no sunder charm and has no pierce, so the element almost nothing resists is the one that never leaves them stuck in a doorway.",
+    "**One point in Summon Goatman at level 2 and never again.** It is a body between you and the room, and it is the one point this route spends that the Abyss core does not list — though it is not wasted even then: the Blood Boil plan carries the same point in its core, and so does the Apocalypse demon-wall package. How many demons you get is decided by Demonic Mastery's fifth and tenth hard points and by nothing else — which is a Blood Boil decision, not a levelling one.",
     "**The class passive changes gear planning at every single stage.** The weapon levitates, so a two-handed staff leaves the off-hand free. You are never choosing between a big stick and a Grimoire, which is a choice every other caster in the game has to make.",
     "**Nothing here needs an item that does not exist yet.** The Warlock's own uniques start at level 52 and its best three at 73 and above, so this route is vendor staves, generic Grimoires and runewords built from Countess runes. Say it out loud, because a guide that assumes the class's signature items is useless to anyone playing the class now.",
     "**Three free respecs, and at most one is needed.** Akara's reward for clearing the Den of Evil is a full respec in every difficulty. Two of the four builds want none of them.",
@@ -71,13 +73,13 @@ export const warlockJourney: ProgressionJourney = {
       killingWith: "Miasma Bolt, with a Goatman standing between you and whatever is coming.",
       order: 1,
       skillPoints: [
-        "Level 1: **Miasma Bolt**. Five skills are open at level 1 and this is the one that is still worth points at 99 — 4 mana, the longest reach in the class, and magic damage that almost nothing in the game resists.",
+        "Level 2, with your first point: **Miasma Bolt**. Five skills are open at level 1 and this is the one still worth points at 99 — 4 mana, the longest reach in the tree, and magic damage that almost nothing in the game resists. (A character has no skill point at level 1; the first arrives with level 2.)",
         "Level 2: **Summon Goatman**, one point. It is a body, not a damage source, and one point is all it will ever get on this route.",
         "Levels 3-5: back into **Miasma Bolt**.",
         "**The Den of Evil point goes into Miasma Bolt too.** It is a synergy of everything this character will ever cast, so there is no wrong time to spend it here.",
         "Level 6: **Ring of Fire**, one point. A second element for the handful of things that shrug off magic, and the first rung of the ladder if you later turn fire at 30.",
-        "Levels 7-11: **Miasma Bolt** to ten.",
-        "That is 12 points at level 11, and eleven of them are in skills the finished character still has.",
+        "Levels 7-11: **Miasma Bolt** to nine.",
+        "That is 11 points at level 11 — ten from levels 2 to 11, plus the Den of Evil's — and ten of them are in skills the finished character still has.",
       ],
       statPoints: [
         "**Vitality, and almost nothing else.** A Warlock gets 3 life per point where a Sorceress gets 2, so the same investment buys half as much again.",
@@ -137,9 +139,9 @@ export const warlockJourney: ProgressionJourney = {
       skillPoints: [
         "Level 12: **Miasma Chain**. This is the skill that clears Normal. It spawns three bolts at one point and climbs toward twelve, each of them magic, at the range of a bow.",
         "**Radament's skill point goes into Miasma Chain.** It is the only quest in Act 2 that gives one.",
-        "Levels 13-20: **Miasma Chain** to nine. Every point is another fraction of a bolt and there is nothing competing for them yet.",
+        "Levels 13-20: **Miasma Chain** to ten. Every point is another fraction of a bolt and there is nothing competing for them yet.",
         "**Do not touch Flame Wave when it opens at 18.** It is a fire skill on a magic route, and if you turn fire at 30 you will want Ring of Fire maxed before it anyway.",
-        "That is 21 points at level 20 — Miasma Bolt ten, Miasma Chain nine, and one each in Summon Goatman and Ring of Fire.",
+        "That is 21 points at level 20 — nineteen from levels, plus the Den of Evil's and Radament's. Miasma Bolt nine, Miasma Chain ten, and one each in Summon Goatman and Ring of Fire.",
       ],
       statPoints: [
         "**Still Vitality.** Act 2 is where a Warlock who skimped finds out.",
@@ -204,15 +206,15 @@ export const warlockJourney: ProgressionJourney = {
       order: 3,
       skillPoints: [
         "**Izual gives +2 skill points** — the largest single grant in the game. Both go into Miasma Chain.",
-        "Levels 21-23: **Miasma Chain** to twenty. It is finished and it will stay finished.",
+        "Levels 21-23 plus Izual's two: **Miasma Chain** from ten to fifteen. It is not finished here and cannot be — five points is what these three levels and that quest actually supply.",
         "Level 24: the sigil chain, one point each. Sigil Lethargy and Sigil Rancor are prerequisites and Sigil Death is the reason — its execute is a flat 13% of a normal monster's life and 10% of a champion's, and **neither number rises with level**. One point is the whole skill except its radius, which makes it the best single point available to this class.",
         "Level 24 also opens **Enhanced Entropy**. One point now because Abyss cannot be taken without it; the other nineteen come much later.",
-        "Levels 25-30: **Miasma Bolt** back up toward twenty.",
-        "That is 32 points at level 30, and thirty-one of them are in the finished Abyss build.",
+        "Levels 25-30: **Miasma Chain** the rest of the way to eighteen. The last two come early in Nightmare.",
+        "That is 33 points at level 30 — twenty-nine from levels and all four Normal quest points — and thirty-two of them are in the finished Abyss build.",
       ],
       statPoints: [
         "**Vitality.** Hell is two acts away and its resistance penalty is about to make everything hit harder.",
-        "Enough **Strength** for a four-socket sword if you are making Spirit at 25, which is 25 for a Crystal Sword.",
+        "Enough **Strength** for a four-socket sword if you are making Spirit at 25. A Crystal Sword asks **43**, not the 25 its runeword requirement suggests — the two numbers are unrelated and budgeting the wrong one leaves the sword unequippable.",
         "**Lam Esen's Tome again in Nightmare and Hell.** Fifteen stat points across the three difficulties.",
       ],
       actions: [
@@ -268,7 +270,7 @@ export const warlockJourney: ProgressionJourney = {
       name: "Abyss, and the first real resistances",
       classSlug: "warlock",
       summary: "Levels 30-48. The capstone arrives and the character stops being a levelling project.",
-      levels: [30, 48],
+      levels: [31, 48],
       difficulty: "nightmare",
       location: "Nightmare — Act 1 through Act 5",
       goal: "Max Abyss, get resistances back to maximum, and reach the Hell gate.",
@@ -276,9 +278,9 @@ export const warlockJourney: ProgressionJourney = {
       order: 4,
       skillPoints: [
         "Level 30: **Abyss**. Twenty to forty magic in a radius of 6, and the mana is charged when it resolves rather than when it starts — an interrupted cast costs nothing.",
-        "Levels 31-48: **Abyss** to twenty, and **Miasma Bolt** with whatever is left over.",
+        "Levels 31-48: **Abyss** to twenty, and the last two into **Miasma Chain** to finish it.",
         "**The Nightmare quest points — Den of Evil, Radament and Izual — are four more**, and all four go the same way.",
-        "That is 54 points at level 48.",
+        "That is 55 points at level 48 — forty-seven from levels and eight quest points, all of the Normal and Nightmare ones.",
         "If you turned fire at 30 instead: Ring of Fire to twenty first, then Flame Wave, then Apocalypse. The ordering matters because Ring of Fire feeds both of the others and is the cheapest of the three to finish.",
       ],
       statPoints: [
@@ -329,17 +331,17 @@ export const warlockJourney: ProgressionJourney = {
       slug: "war-hell",
       name: "Where the element choice pays for itself",
       classSlug: "warlock",
-      summary: "Levels 48-70. Twelve of eighteen areas resist fire. One resists you.",
-      levels: [48, 70],
+      summary: "Levels 48-70. Thirteen of twenty areas resist fire. One resists you.",
+      levels: [49, 70],
       difficulty: "hell",
       location: "Hell — Act 1 through Act 4",
       goal: "Finish Enhanced Entropy, get the first Warlock unique, and clear to the Chaos Sanctuary.",
       killingWith: "Miasma Chain and Abyss, and the sigil under every pack worth the four seconds.",
       order: 5,
       skillPoints: [
-        "Levels 49-70: **Enhanced Entropy** from one to twenty, then **Miasma Bolt** with the remainder. Enhanced Entropy gives Abyss +2% damage with 3% more per level, which is the steepest single line in the skill and the reason it is worth twenty points rather than one.",
+        "Levels 49-70: **Enhanced Entropy** from one to twenty, then **Miasma Bolt** from nine to sixteen with the remainder. Enhanced Entropy gives Abyss +2% damage with 3% more per level, which is the steepest single line in the skill and the reason it is worth twenty points rather than one.",
         "**The Hell quest points are four more** and they go the same way.",
-        "That is 80 points at level 70, and the finished Abyss core is 83.",
+        "That is 81 points at level 70 — sixty-nine from levels and all twelve quest points — against a finished Abyss core of 83.",
         "The fire route reaches Apocalypse's core at almost exactly the same level, because both plans are sixty points of capstone chain plus a handful of ones.",
       ],
       statPoints: [
@@ -374,7 +376,7 @@ export const warlockJourney: ProgressionJourney = {
         },
         {
           kind: "warning",
-          text: "**This is where the element choice shows.** Fire immunity is recorded in twelve of the eighteen catalogued areas on this site and magic immunity in one — the Arcane Sanctuary. A fire Warlock needs a Flame Rift, which is a level 75 drop; a magic one needs nothing at all.",
+          text: "**This is where the element choice shows.** Fire immunity is recorded in thirteen of the twenty catalogued areas on this site and magic immunity in one — the Arcane Sanctuary. A fire Warlock needs a Flame Rift, which is a level 75 drop; a magic one needs nothing at all.",
         },
         {
           kind: "farm",
@@ -398,7 +400,7 @@ export const warlockJourney: ProgressionJourney = {
       name: "The last thirty points, and which build you already are",
       classSlug: "warlock",
       summary: "Levels 70-99. The plan closes, and the route turns out to have been a build the whole time.",
-      levels: [70, 99],
+      levels: [71, 99],
       difficulty: "hell",
       location: "Hell — the Worldstone Keep, Terror Zones, and whatever you farm",
       goal: "Finish the core, choose a package, and stop levelling as a project.",
@@ -406,9 +408,9 @@ export const warlockJourney: ProgressionJourney = {
       order: 6,
       skillPoints: [
         "Levels 71-99: twenty-nine points, and the last of them are the ones that decide the character rather than build it.",
-        "**Miasma Bolt to twenty** closes the Abyss core at 83 of 110.",
+        "**Miasma Bolt from sixteen to twenty** closes the Abyss core at 83 of 110.",
         "**Then the package.** Ring of Fire to twenty is the fire answer for the one area that resists you; Psychic Ward with its two prerequisites is the ward. Take one, not both — 110 does not hold them.",
-        "**One point in Summon Goatman is the only point this route spends that no finished build keeps.** It is one of the seven the fire package leaves spare, and it bought you the whole of Act 1.",
+        "**One point in Summon Goatman is the only point this route spends that the Abyss core does not list.** It is one of the seven the fire package leaves spare, it bought you the whole of Act 1, and two of the other three builds keep it anyway — Blood Boil in its core and Apocalypse in the demon-wall package.",
         "83 + 20 = 103, with the Goatman making 104 and six genuinely free.",
       ],
       statPoints: [
@@ -467,7 +469,7 @@ export const warlockJourney: ProgressionJourney = {
     },
     {
       at: "Once, at level 30, for the Blood Boil Warlock",
-      why: "The Demon tree shares only the Goatman with this route, and the tree's real threshold is Demonic Mastery's tenth hard point — which is what takes the demon cap from one to three and which nothing else in the game moves. Respec once you can pay for it rather than trickling into it.",
+      why: "The Demon tree shares only the Goatman with this route, and the tree's real thresholds are Demonic Mastery's fifth and tenth hard points — five take the demon cap from one to two and ten take it from two to three, and nothing else in the game moves either. Respec once you can pay for it rather than trickling into it.",
     },
     {
       at: "Three tokens exist and at most one is needed",

@@ -38,7 +38,7 @@ export const bloodBoilWarlock: Build = {
     "Summon three demons, mark something, and boil. Death Mark is what makes the tree work at range — your demons teleport to whatever you marked, which turns three slow melee minions into three that arrive — and it strips the target's defence and damage reduction while they do. Blood Boil then detonates a demon in a radius that steps from 6 to 12, for fire and physical at the same time. Engorge feeds a corpse back to the survivors, which is the reload. It is a loop rather than a rotation, and the pace is set by how many corpses the last pack left.",
   strengths: [
     "Two damage types on a single cast — fire and physical, separately synergised at 20% per level each",
-    "Only six of the eighteen catalogued areas record immunity to both halves at once",
+    "Only six of the twenty catalogued areas record immunity to both halves at once",
     "Blood Oath sends up to 30% of the damage you take to a demon instead, on a class that already has 3 life per Vitality",
     "The demon cost per cast falls by two thirds when three demons are out rather than one",
     "Ars Tor'Baalos raises four of the build's six skills from a single item",
@@ -116,10 +116,34 @@ export const bloodBoilWarlock: Build = {
           tradeoff:
             "No Bind Demon, so no fourth demon and no captured Aura Enchanted monster fighting for you. This is the simpler build and the one that works without a specific pack in front of you.",
           skills: [
-            { skill: "blood-boil", points: 20, role: "main", order: 1 },
-            { skill: "blood-oath", points: 20, role: "synergy", order: 2 },
-            { skill: "engorge", points: 20, role: "synergy", order: 3 },
-            { skill: "demonic-mastery", points: 20, role: "utility", order: 4 },
+            {
+              skill: "blood-boil",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "Unchanged from the core, and you will cast it less than on the other branch. Three well-fed Goatmen kill things themselves; the detonation is for what they cannot.",
+            },
+            {
+              skill: "blood-oath",
+              points: 20,
+              role: "synergy",
+              order: 2,
+              note: "Unchanged, and it does double duty here — Blood Boil's fire synergy, and the reason twenty-point Goatmen live long enough to be worth twenty points.",
+            },
+            {
+              skill: "engorge",
+              points: 20,
+              role: "synergy",
+              order: 3,
+              note: "Unchanged, and the heal matters more on this branch than the other. Three real fighters are worth reloading; three grenades are not.",
+            },
+            {
+              skill: "demonic-mastery",
+              points: 20,
+              role: "utility",
+              order: 4,
+              note: "Twenty rather than the core's ten. The first ten buy the third demon; the second ten buy +200% damage and +475% attack rating on each of them, which only pays if they are fighting rather than waiting to be spent.",
+            },
             {
               skill: "summon-goatman",
               points: 20,
@@ -127,11 +151,16 @@ export const bloodBoilWarlock: Build = {
               order: 5,
               note: "It learns Stun at 2, Berserk at 3, Frenzy at 4 and Cleave at 5 — the four points from the second to the fifth buy behaviour rather than numbers, and the fifteen after them buy damage and defence.",
             },
-            { skill: "death-mark", points: 1, role: "utility" },
+            {
+              skill: "death-mark",
+              points: 1,
+              role: "utility",
+              note: "One point, and on this branch it is a Crushing Blow item rather than a targeting tool: 5% plus 1% per level, applied to all three Goatmen at once.",
+            },
           ],
           rotationNote:
             "Mark, let the three arrive, and boil the one standing furthest from you so the other two keep fighting. The demons are a damage source in this package and should not all be spent at once.",
-          remainderNote: "Nine points spare at 101 of 110. Death Mark takes them — every point there is 1% more Crushing Blow on all three Goatmen and a longer mark.",
+          remainderNote: "The core is 72 of 110 and this package adds twenty-nine, so the finished plan spends 101 and leaves nine. Death Mark takes them — every point there is 1% more Crushing Blow on all three Goatmen and a longer mark.",
         },
         {
           id: "bound-demon",
@@ -140,14 +169,54 @@ export const bloodBoilWarlock: Build = {
           tradeoff:
             "The three Goatmen stay at one hard point and are ammunition rather than fighters. You are trading a reliable front line for one much better monster that has to be found and captured first.",
           skills: [
-            { skill: "blood-boil", points: 20, role: "main", order: 1 },
-            { skill: "blood-oath", points: 20, role: "synergy", order: 2 },
-            { skill: "engorge", points: 20, role: "synergy", order: 3 },
-            { skill: "demonic-mastery", points: 20, role: "utility", order: 4 },
-            { skill: "summon-goatman", points: 1, role: "utility" },
+            {
+              skill: "blood-boil",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "Unchanged from the core, and here it is the main event. The Goatmen stay at one point and exist to be spent.",
+            },
+            {
+              skill: "blood-oath",
+              points: 20,
+              role: "synergy",
+              order: 2,
+              note: "Unchanged, and it matters more here than on the other branch: a one-point Goatman has very little life of its own, and this is most of what it has.",
+            },
+            {
+              skill: "engorge",
+              points: 20,
+              role: "synergy",
+              order: 3,
+              note: "Unchanged, and the reload is tighter. Three cheap demons die faster than three expensive ones, so corpses are the constraint on how often you can boil.",
+            },
+            {
+              skill: "demonic-mastery",
+              points: 20,
+              role: "utility",
+              order: 4,
+              note: "Twenty, and the second ten are spent on the bound demon rather than on the Goatmen — it reads the same state they do, and it is the one that is actually fighting.",
+            },
+            {
+              skill: "summon-goatman",
+              points: 1,
+              role: "utility",
+              note: "One point, and it stays there. On this branch the Goatmen are ammunition; everything else goes to the demon you took from the world.",
+            },
+
             { skill: "death-mark", points: 1, role: "utility", note: "It raises the chance to bind as well as marking the target." },
-            { skill: "summon-tainted", points: 1, role: "prerequisite" },
-            { skill: "summon-defiler", points: 1, role: "prerequisite" },
+            {
+              skill: "summon-tainted",
+              points: 1,
+              role: "prerequisite",
+              note: "A prerequisite for Summon Defiler and nothing else. It shares the demon cap with the Goatmen, so you will never actually summon one.",
+            },
+            {
+              skill: "summon-defiler",
+              points: 1,
+              role: "prerequisite",
+              note: "A prerequisite for Bind Demon, and the cheapest chain in the class — two points buy the only skill that gives you a fourth demon outside the cap.",
+            },
             {
               skill: "bind-demon",
               points: 20,
@@ -162,7 +231,7 @@ export const bloodBoilWarlock: Build = {
           rotationNote:
             "Bind something dangerous before the fight rather than during it. A bound Aura Enchanted monster at twenty hard points is the strongest single minion the class can field, and it is worth walking back for.",
           contentNote: "Best in areas with large, slow demons worth capturing — Act 4 and Act 5 rather than the Kurast jungles.",
-          remainderNote: "Five points spare at 105 of 110. They go into Death Mark, which lengthens the mark and raises the bind chance at the same time.",
+          remainderNote: "The core is 72 of 110 and this package adds thirty-three, so the finished plan spends 105 and leaves five. They go into Death Mark, which lengthens the mark and raises the bind chance at the same time.",
         },
       ],
     },
@@ -316,7 +385,7 @@ export const bloodBoilWarlock: Build = {
   ],
 
   immunityPlan:
-    "**Blood Boil deals fire and physical on the same cast, and the two are separately synergised.** That is not a flavour detail — it is the reason this build has the second-best immunity coverage of the four, behind only the magic one.\n\nOf the eighteen catalogued areas, twelve record fire immunity and eight record physical. **Six record both**: the Chaos Sanctuary, the Worldstone Keep, the Kurast Temples, River of Flame, Nihlathak's temple and the Stony Tomb. Everywhere else, at least one half of the cast lands at full strength. The Ancient Tunnels stop the fire and not the physical; the Pit stops the physical and not the fire; the Mausoleum and Pindleskin stop neither.\n\n**Against the six, there are two answers and both are charms.** A Flame Rift sunders fire immunity at the cost of 70 to 90 points of your own fire resistance, and a Bone Break does the same for physical. Either one converts a doubly-immune area into a singly-immune one, which is enough — you do not need both, because you are not trying to make both halves land.\n\nWhat this build does **not** have is a pierce of its own. No Warlock skill outside the Chaos tree lowers any resistance, Death Mark lowers damage reduction and defence rather than elemental resistance, and there is nothing on the Demon tree that behaves like Amplify Damage. The two sunder charms are the whole answer and the page is not going to invent a third.",
+    "**Blood Boil deals fire and physical on the same cast, and the two are separately synergised.** That is not a flavour detail — it is the reason this build has the second-best immunity coverage of the four, behind only the magic one.\n\nOf the twenty catalogued areas, thirteen record fire immunity and eight record physical. **Six record both**: the Chaos Sanctuary, the Worldstone Keep, the Kurast Temples, River of Flame, Nihlathak's temple and the Stony Tomb. Everywhere else, at least one half of the cast lands at full strength. The Ancient Tunnels stop the fire and not the physical; the Pit stops the physical and not the fire; the Mausoleum and Pindleskin stop neither.\n\n**Against the six, there are two answers and both are charms.** A Flame Rift sunders fire immunity at the cost of 70 to 90 points of your own fire resistance, and a Bone Break does the same for physical. Either one converts a doubly-immune area into a singly-immune one, which is enough — you do not need both, because you are not trying to make both halves land.\n\nWhat this build does **not** have is a pierce of its own. No Warlock skill outside the Chaos tree lowers any resistance, Death Mark lowers damage reduction and defence rather than elemental resistance, and there is nothing on the Demon tree that behaves like Amplify Damage. The two sunder charms are the whole answer and the page is not going to invent a third.",
 
   hardcoreNotes:
     "The sturdiest of the four, and Blood Oath is why. Up to 30% of what hits you is sent to a demon instead, on a class that already gets 3 life per point of Vitality — and the same passive raises the demons' life by 50% plus 35% per level and their resistances toward a 79% ceiling, so the thing absorbing the damage survives absorbing it. Take the Three Goatmen package rather than the bound demon: a captured monster has to be found, and a Hardcore character should not be walking into a pack to acquire its defence. Keep Engorge's 5% damage reduction up, and remember the loop needs corpses — a fight with nothing dead in it yet is the dangerous one.",

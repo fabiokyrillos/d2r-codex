@@ -4,8 +4,8 @@ import type { Build } from "@/lib/types";
  * The Abyss Warlock — the Chaos tree's void half.
  *
  * The argument for this build is one number from this site's own area data:
- * **magic immunity is recorded in one of the eighteen catalogued areas**, the
- * Arcane Sanctuary, against twelve for fire. The Bone Spear Necromancer page
+ * **magic immunity is recorded in one of the twenty catalogued areas**, the
+ * Arcane Sanctuary, against thirteen for fire. The Bone Spear Necromancer page
  * makes the same case and it is the strongest case in the game.
  *
  * What is new is the half of that page which the expansion has since falsified.
@@ -31,7 +31,7 @@ export const abyssWarlock: Build = {
   name: "Abyss Warlock",
   classSlug: "warlock",
   summary:
-    "Magic damage, which one of the eighteen catalogued areas resists — and the first build in the game with gear that raises magic damage and lowers magic resistance.",
+    "Magic damage, which one of the twenty catalogued areas resists — and the first build in the game with gear that raises magic damage and lowers magic resistance.",
   damageTypes: ["magic"],
   primarySkill: "abyss",
   playstyle:
@@ -122,13 +122,52 @@ export const abyssWarlock: Build = {
           tradeoff:
             "Twenty points into a skill with no synergies behind it. Ring of Fire at 20 with nothing feeding it is a modest spell, and this package buys coverage rather than damage.",
           skills: [
-            { skill: "abyss", points: 20, role: "main", order: 1 },
-            { skill: "miasma-chain", points: 20, role: "synergy", order: 2 },
-            { skill: "miasma-bolt", points: 20, role: "synergy", order: 3 },
-            { skill: "enhanced-entropy", points: 20, role: "utility", order: 4 },
-            { skill: "sigil-death", points: 1, role: "utility" },
-            { skill: "sigil-rancor", points: 1, role: "prerequisite" },
-            { skill: "sigil-lethargy", points: 1, role: "utility" },
+            {
+              skill: "abyss",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "Unchanged from the core. This branch does not change what you cast — it changes what you are allowed to cast it at.",
+            },
+            {
+              skill: "miasma-chain",
+              points: 20,
+              role: "synergy",
+              order: 2,
+              note: "Unchanged, and still the skill you hold down. The Arcane Sanctuary is the one place it stops working, which is exactly what the twenty points below are for.",
+            },
+            {
+              skill: "miasma-bolt",
+              points: 20,
+              role: "synergy",
+              order: 3,
+              note: "Unchanged. It is a synergy rather than a spell and both branches spend the same twenty here.",
+            },
+            {
+              skill: "enhanced-entropy",
+              points: 20,
+              role: "utility",
+              order: 4,
+              note: "Unchanged — and worth reading twice on this branch, because it does nothing at all for Ring of Fire. The coverage you are buying is coverage no passive of yours raises.",
+            },
+            {
+              skill: "sigil-death",
+              points: 1,
+              role: "utility",
+              note: "One point, and it is the other half of this branch's answer: chip a magic-immune monster to a tenth with fire and the sigil finishes it for free.",
+            },
+            {
+              skill: "sigil-rancor",
+              points: 1,
+              role: "prerequisite",
+              note: "A prerequisite. Its 75% confuse costs nothing extra because the chain below it was already paid for.",
+            },
+            {
+              skill: "sigil-lethargy",
+              points: 1,
+              role: "utility",
+              note: "One point and no more. On a branch that spent its spare twenty on offence, halving a pack's movement and attack rate is the whole of the defence.",
+            },
             {
               skill: "ring-of-fire",
               points: 20,
@@ -142,24 +181,73 @@ export const abyssWarlock: Build = {
           contentNote:
             "The Arcane Sanctuary is the only catalogued area that records magic immunity. This package is what makes it farmable.",
           remainderNote:
-            "Seven points spare at 103 of 110. Every synergy is already maxed and both remaining sigils step at ten and twenty hard points, which seven does not reach from one — so they go into Sigil: Death and the ring widens three levels later.",
+            "The core is 83 of 110 and this package adds twenty, so the finished plan spends 103 and leaves seven. Every synergy is already maxed and both remaining sigils step at ten and twenty hard points, which seven does not reach from one — so they go into Sigil: Death and the ring widens three levels later.",
         },
         {
           id: "the-ward",
           name: "The ward",
           when: "You are playing Hardcore, or in eight-player games where things reach you. Psychic Ward absorbs 15 damage plus 10 per level and stuns whatever hits you in melee while it holds.",
           tradeoff:
-            "The Arcane Sanctuary stays closed and nothing else does. That is a smaller cost than it sounds — one area of eighteen — but it is the only area where this build has no answer at all.",
+            "The Arcane Sanctuary stays closed and nothing else does. That is a smaller cost than it sounds — one area of twenty — but it is the only area where this build has no answer at all.",
           skills: [
-            { skill: "abyss", points: 20, role: "main", order: 1 },
-            { skill: "miasma-chain", points: 20, role: "synergy", order: 2 },
-            { skill: "miasma-bolt", points: 20, role: "synergy", order: 3 },
-            { skill: "enhanced-entropy", points: 20, role: "utility", order: 4 },
-            { skill: "sigil-death", points: 1, role: "utility" },
-            { skill: "sigil-rancor", points: 1, role: "prerequisite" },
-            { skill: "sigil-lethargy", points: 1, role: "utility" },
-            { skill: "levitation-mastery", points: 1, role: "prerequisite" },
-            { skill: "cleave", points: 1, role: "prerequisite" },
+            {
+              skill: "abyss",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "Unchanged from the core. The ward adds no damage — it buys the seconds in which this gets cast.",
+            },
+            {
+              skill: "miasma-chain",
+              points: 20,
+              role: "synergy",
+              order: 2,
+              note: "Unchanged, and it is the reason the ward is worth twenty-two points: this is a held rhythm, and a stun on whatever reached you is what protects the rhythm.",
+            },
+            {
+              skill: "miasma-bolt",
+              points: 20,
+              role: "synergy",
+              order: 3,
+              note: "Unchanged. It is a synergy rather than a spell and both branches spend the same twenty here.",
+            },
+            {
+              skill: "enhanced-entropy",
+              points: 20,
+              role: "utility",
+              order: 4,
+              note: "Unchanged. Its Abyss line is the steepest in the passive, which is what lets this branch spend twenty-two points on defence without touching the damage.",
+            },
+            {
+              skill: "sigil-death",
+              points: 1,
+              role: "utility",
+              note: "One point, and on this branch it stays there. The Arcane Sanctuary is the zone you have decided not to solve.",
+            },
+            {
+              skill: "sigil-rancor",
+              points: 1,
+              role: "prerequisite",
+              note: "A prerequisite, and it pairs with the ward rather than duplicating it: a confused monster is one that is not spending your absorb pool.",
+            },
+            {
+              skill: "sigil-lethargy",
+              points: 1,
+              role: "utility",
+              note: "One point. Halving a pack's attack rate and absorbing what still lands are the same plan approached from two directions.",
+            },
+            {
+              skill: "levitation-mastery",
+              points: 1,
+              role: "prerequisite",
+              note: "Bought for the ward rather than for the mastery. Its damage and attack rating are dead on a caster; the 15 absorb per hard point is not.",
+            },
+            {
+              skill: "cleave",
+              points: 1,
+              role: "prerequisite",
+              note: "The same trade, and it is Psychic Ward's prerequisite as well — one point that unlocks the skill and raises it in the same breath.",
+            },
             {
               skill: "psychic-ward",
               points: 20,
@@ -171,7 +259,7 @@ export const abyssWarlock: Build = {
           gearNote:
             "Levitation Mastery pays only while exactly one weapon is equipped, which a Warlock always has. Its damage and attack rating are dead here; the one point is bought for the ward and the prerequisite.",
           rotationNote: "Re-cast the ward before a pack rather than during one. It stuns melee attackers while it holds, which buys the recast.",
-          remainderNote: "Five points spare at 105 of 110. Sigil: Lethargy takes them toward its ten-point radius step.",
+          remainderNote: "The core is 83 of 110 and this package adds twenty-two, so the finished plan spends 105 and leaves five. Sigil: Lethargy takes them toward its ten-point radius step.",
         },
       ],
     },
@@ -331,7 +419,7 @@ export const abyssWarlock: Build = {
   ],
 
   immunityPlan:
-    "**One area in eighteen resists this build, and that is the whole plan.** The Arcane Sanctuary records lightning and magic immunity; the other seventeen catalogued areas record neither. Twelve of them record fire, ten poison, eight lightning and eight physical. Building on magic is the single largest immunity decision available in this game and it is why this page exists next to the fire one.\n\n**The gear now helps, which it did not before this expansion.** Ars Dul'Mephistos removes 10-20% of enemy magic resistance, Gheed's Wager another 3-7% and Sling another 3-5% — up to 32 points between them — and Void and the Entropy Locket add up to 25% Magic Skill Damage on top. No other character in the game can assemble either stack.\n\n**None of that breaks an immunity.** A −% to Enemy Magic Resistance line is skipped entirely while an immunity stands rather than being reduced to a fraction of itself; it is what makes a resistant monster soft, not what makes an immune one killable. And there is **no magic sunder charm** — the five that exist cover fire, cold, lightning, poison and physical, and magic is the one element with no equivalent.\n\nSo against a genuinely magic-immune monster the options are the fire package, the mercenary, or walking past. In the Arcane Sanctuary specifically, walking past is usually right: the zone is not area level 85 and there is nothing in it worth the argument.",
+    "**One area in twenty resists this build, and that is the whole plan.** The Arcane Sanctuary records lightning and magic immunity; the other nineteen catalogued areas record neither. Thirteen of them record fire, ten poison, eight lightning and eight physical. Building on magic is the single largest immunity decision available in this game and it is why this page exists next to the fire one.\n\n**The gear now helps, which it did not before this expansion.** Ars Dul'Mephistos removes 10-20% of enemy magic resistance, Gheed's Wager another 3-7% and Sling another 3-5% — up to 32 points between them — and Void and the Entropy Locket add up to 25% Magic Skill Damage on top. No other character in the game can assemble either stack.\n\n**None of that breaks an immunity.** A −% to Enemy Magic Resistance line is skipped entirely while an immunity stands rather than being reduced to a fraction of itself; it is what makes a resistant monster soft, not what makes an immune one killable. And there is **no magic sunder charm** — the five that exist cover fire, cold, lightning, poison and physical, and magic is the one element with no equivalent.\n\nSo against a genuinely magic-immune monster the options are the fire package, the mercenary, or walking past. In the Arcane Sanctuary specifically, walking past is usually right: the zone is not area level 85 and there is nothing in it worth the argument.",
 
   hardcoreNotes:
     "The best of the four Warlock builds for Hardcore and it is not close. The damage type is the one nothing resists, the range is the longest in the class, and Sigil: Lethargy halves the movement and attack speed of everything standing in it from a single hard point. Take the ward package: 15 absorb plus 10 per level, and melee attackers are stunned while it holds. The one thing to respect is that Abyss charges its mana when it resolves, so a cast interrupted at the wrong moment leaves you with neither the spell nor the escape.",

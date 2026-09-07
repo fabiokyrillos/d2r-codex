@@ -44,7 +44,7 @@ export const apocalypseWarlock: Build = {
     "Cheap to start: Ring of Fire is online at level 6 and carries most of Normal",
   ],
   weaknesses: [
-    "Fire is the most commonly resisted element in Hell — this site's own area data records fire immunity in twelve of eighteen catalogued areas",
+    "Fire is the most commonly resisted element in Hell — this site's own area data records fire immunity in thirteen of twenty catalogued areas",
     "The skill's own pierce does nothing at all against a monster that is still immune",
     "Apocalypse does not unlock until level 30 and is not finished until the high eighties",
     "No movement skill without an Enigma; every point of the plan is in one tree",
@@ -106,16 +106,49 @@ export const apocalypseWarlock: Build = {
         {
           id: "void-answer",
           name: "The void answer",
-          when: "You intend to play Hell on this character and you do not want twelve of the site's eighteen catalogued areas closed to you. Miasma Chain is magic damage, which one area in the whole catalogue records an immunity to.",
+          when: "You intend to play Hell on this character and you do not want thirteen of the site's twenty catalogued areas closed to you. Miasma Chain is magic damage, which one area in the whole catalogue records an immunity to.",
           tradeoff:
             "Forty points that could have been demons. You get a second damage type and no additional survivability whatsoever — this route is a glass cannon with two barrels.",
           skills: [
-            { skill: "apocalypse", points: 20, role: "main", order: 1 },
-            { skill: "flame-wave", points: 20, role: "synergy", order: 2 },
-            { skill: "ring-of-fire", points: 20, role: "synergy", order: 3 },
-            { skill: "sigil-death", points: 1, role: "utility" },
-            { skill: "sigil-rancor", points: 1, role: "prerequisite" },
-            { skill: "sigil-lethargy", points: 1, role: "prerequisite" },
+            {
+              skill: "apocalypse",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "Unchanged from the core, and on this route it is half your damage rather than all of it. Against a fire immune it is the button that does nothing, which is the whole reason this branch exists.",
+            },
+            {
+              skill: "flame-wave",
+              points: 20,
+              role: "synergy",
+              order: 2,
+              note: "Unchanged. It feeds Apocalypse and clears corridors, and neither job changes because you bought a second element to stand behind it.",
+            },
+            {
+              skill: "ring-of-fire",
+              points: 20,
+              role: "synergy",
+              order: 3,
+              note: "Unchanged, and it is the skill you notice missing in a fire-immune zone — thirty-two missiles that all bounce. The demon wall has no answer to that; this branch does.",
+            },
+            {
+              skill: "sigil-death",
+              points: 1,
+              role: "utility",
+              note: "One point, and it is worth more here than on the other branch: the execute is a life threshold rather than damage, so it finishes a monster that resists both of your elements.",
+            },
+            {
+              skill: "sigil-rancor",
+              points: 1,
+              role: "prerequisite",
+              note: "A prerequisite you rarely cast. Its 75% confuse is free crowd control and this branch has no spare point to make the ring larger.",
+            },
+            {
+              skill: "sigil-lethargy",
+              points: 1,
+              role: "prerequisite",
+              note: "The prerequisite that earns its point back. A flat −50% to movement and attack rate is the only thing keeping a pack off you on a route that bought damage instead of demons.",
+            },
             {
               skill: "miasma-chain",
               points: 20,
@@ -136,7 +169,7 @@ export const apocalypseWarlock: Build = {
           contentNote:
             "Chaos Sanctuary, Travincal, the Kurast Temples and River of Flame all record fire immunity. This is the package that lets you run them.",
           remainderNote:
-            "Seven points spare at 103 of 110. Both remaining sinks step at ten and twenty hard points and seven reaches neither from one, so put them in Sigil: Death and take the radius at the next three level-ups.",
+            "The core is 63 of 110 and this package adds forty, so the finished plan spends 103 and leaves seven. Both remaining sinks step at ten and twenty hard points and seven reaches neither from one, so put them in Sigil: Death and take the radius at the next three level-ups.",
         },
         {
           id: "demon-wall",
@@ -145,12 +178,45 @@ export const apocalypseWarlock: Build = {
           tradeoff:
             "You keep no answer to a fire immune except a Flame Rift, and until one drops you skip those packs. That is a real cost and this page will not pretend otherwise.",
           skills: [
-            { skill: "apocalypse", points: 20, role: "main", order: 1 },
-            { skill: "flame-wave", points: 20, role: "synergy", order: 2 },
-            { skill: "ring-of-fire", points: 20, role: "synergy", order: 3 },
-            { skill: "sigil-death", points: 1, role: "utility" },
-            { skill: "sigil-rancor", points: 1, role: "prerequisite" },
-            { skill: "sigil-lethargy", points: 1, role: "prerequisite" },
+            {
+              skill: "apocalypse",
+              points: 20,
+              role: "main",
+              order: 1,
+              note: "Unchanged from the core, and here it is all of your damage rather than half. Everything this character kills, Apocalypse kills.",
+            },
+            {
+              skill: "flame-wave",
+              points: 20,
+              role: "synergy",
+              order: 2,
+              note: "Unchanged, and it matters more on this branch than on the other: with no second element behind it, the fire chain is the entire offence.",
+            },
+            {
+              skill: "ring-of-fire",
+              points: 20,
+              role: "synergy",
+              order: 3,
+              note: "Unchanged. The demons buy you distance and this is what you put in it — thirty-two missiles at ten hard points, fired at whatever got past them.",
+            },
+            {
+              skill: "sigil-death",
+              points: 1,
+              role: "utility",
+              note: "One point, and until a Flame Rift drops it is your only answer to a fire immune. A life threshold does not care what resists you.",
+            },
+            {
+              skill: "sigil-rancor",
+              points: 1,
+              role: "prerequisite",
+              note: "A prerequisite, and its 75% confuse is a second front line for a build that has decided to have front lines.",
+            },
+            {
+              skill: "sigil-lethargy",
+              points: 1,
+              role: "prerequisite",
+              note: "A prerequisite you will actually cast. Halving a pack's movement is what keeps it inside the demons' reach instead of arriving at yours.",
+            },
             {
               skill: "summon-goatman",
               points: 1,
@@ -176,7 +242,7 @@ export const apocalypseWarlock: Build = {
             "Vitality matters slightly less here, because a share of the damage never reaches you. It still gets everything spare.",
           rotationNote:
             "Summon three before the pack, then cast exactly as before. The demons are not a damage source and should not be waited for.",
-          remainderNote: "Six points spare at 104 of 110. Sigil: Lethargy takes them toward its ten-point radius step.",
+          remainderNote: "The core is 63 of 110 and this package adds forty-one, so the finished plan spends 104 and leaves six. Sigil: Lethargy takes them toward its ten-point radius step.",
         },
       ],
     },
@@ -401,7 +467,7 @@ export const apocalypseWarlock: Build = {
         },
       ],
       charms: [
-        { label: "Small charms with life and resistance", why: "**The charm that matters here cannot be picked up yet.** A Flame Rift is the item that opens twelve of the eighteen catalogued areas to this build, and it requires level 75 — so this tier is spent getting there. Fill the grid with life and the resistances the Hell penalty just took." },
+        { label: "Small charms with life and resistance", why: "**The charm that matters here cannot be picked up yet.** A Flame Rift is the item that opens thirteen of the twenty catalogued areas to this build, and it requires level 75 — so this tier is spent getting there. Fill the grid with life and the resistances the Hell penalty just took." },
       ],
       nextUpgrade: "**Level 75 for a Flame Rift**, which is the real gate on this build rather than any drop. Then Harlequin Crest, an Arachnid Mesh at 80, and the decision about whether to pay 106 Strength.",
     },
@@ -449,7 +515,7 @@ export const apocalypseWarlock: Build = {
         { slot: "ring2", picks: [{ label: "Any rare ring with 10% Faster Cast Rate, resistance and life", why: "Still where the breakpoint is closed." }] },
       ],
       charms: [
-        { ref: { kind: "unique", slug: "flame-rift" }, why: "Now mandatory rather than a luxury. Twelve of eighteen areas record fire immunity and this build has no other answer to one." },
+        { ref: { kind: "unique", slug: "flame-rift" }, why: "Now mandatory rather than a luxury. Thirteen of twenty areas record fire immunity and this build has no other answer to one." },
       ],
       weaponSwap: [
         { ref: { kind: "runeword", slug: "call-to-arms" }, why: "Battle Orders on a character with 3 life per point of Vitality is a larger percentage gain than it is for anyone else." },
@@ -595,7 +661,7 @@ export const apocalypseWarlock: Build = {
   ],
 
   immunityPlan:
-    "**Fire is the worst element to build on in Hell, and this site's own area data is the argument.** Twelve of the eighteen catalogued areas record fire immunity — Chaos Sanctuary, Travincal, the Kurast Temples, River of Flame, the Ancient Tunnels, Nihlathak's temple, Stony Tomb, the Maggot Lair, Lower Kurast, Mephisto, the Countess and the Worldstone Keep. That is the cost of the largest damage table in the class and it should be understood before the character is made.\n\n**Apocalypse's own pierce does not solve it.** The skill lowers enemy fire resistance by 5 points plus 1 per level to a 40-point ceiling. That is a −% to Enemy Fire Resistance line, and against a monster whose immunity still stands it is skipped entirely rather than reduced — it is worth nothing there, not a fraction. The pierce is what makes a resistant monster soft; it is not what makes an immune one killable.\n\nSo there are exactly two answers and the build has to take one.\n\n**A Flame Rift.** The fire sunder charm sets fire-immune monsters to a resistance you can actually reduce, at the cost of 70 to 90 points of your own fire resistance. It is the reason Mara's Kaleidoscope and Chains of Honor appear in the gear tiers where they do, and it is a level 75 drop, so it is a Hell-tier plan rather than a Nightmare one.\n\n**The void package.** Forty points into Miasma Chain and Miasma Bolt buys a second damage type on the same bar. Magic immunity is recorded in exactly one of the eighteen catalogued areas — the Arcane Sanctuary — so the second element closes almost everything the first one leaves open, and it does it without a drop.\n\nA character that takes neither is a Normal and Nightmare character. That is a real way to play and this page is not going to pretend it is a Hell plan.",
+    "**Fire is the worst element to build on in Hell, and this site's own area data is the argument.** Thirteen of the twenty catalogued areas record fire immunity — Chaos Sanctuary, Travincal, the Kurast Temples, River of Flame, the Ancient Tunnels, Nihlathak's temple, Stony Tomb, the Maggot Lair, Lower Kurast, Mephisto, the Countess, the Worldstone Keep and Uber Tristram. That is the cost of the largest damage table in the class and it should be understood before the character is made.\n\n**Apocalypse's own pierce does not solve it.** The skill lowers enemy fire resistance by 5 points plus 1 per level to a 40-point ceiling. That is a −% to Enemy Fire Resistance line, and against a monster whose immunity still stands it is skipped entirely rather than reduced — it is worth nothing there, not a fraction. The pierce is what makes a resistant monster soft; it is not what makes an immune one killable.\n\nSo there are exactly two answers and the build has to take one.\n\n**A Flame Rift.** The fire sunder charm sets fire-immune monsters to a resistance you can actually reduce, at the cost of 70 to 90 points of your own fire resistance. It is the reason Mara's Kaleidoscope and Chains of Honor appear in the gear tiers where they do, and it is a level 75 drop, so it is a Hell-tier plan rather than a Nightmare one.\n\n**The void package.** Forty points into Miasma Chain and Miasma Bolt buys a second damage type on the same bar. Magic immunity is recorded in exactly one of the twenty catalogued areas — the Arcane Sanctuary — so the second element closes almost everything the first one leaves open, and it does it without a drop.\n\nA character that takes neither is a Normal and Nightmare character. That is a real way to play and this page is not going to pretend it is a Hell plan.",
 
   hardcoreNotes:
     "Take the demon wall. Three demons with Blood Oath behind them send up to 30% of incoming damage somewhere that is not you, and a Warlock has 3 life per point of Vitality rather than the Sorceress's 2 — the class is sturdier than its role suggests and the package leans into that. The cost is that you have no answer to a fire immune until a Flame Rift drops, which in Hardcore is an argument for running the Mausoleum and Pindleskin rather than the Chaos Sanctuary anyway.",

@@ -26,7 +26,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       "Barato de começar: Ring of Fire está disponível no nível 6 e carrega quase todo o Normal",
     ],
     weaknesses: [
-      "Fogo é o elemento mais resistido no Hell — os dados de área deste próprio site registram imunidade a fogo em doze de dezoito áreas catalogadas",
+      "Fogo é o elemento mais resistido no Hell — os dados de área deste próprio site registram imunidade a fogo em treze de vinte áreas catalogadas",
       "A quebra da própria skill não vale absolutamente nada contra um monstro que continua imune",
       "O Apocalypse só abre no nível 30 e só fica pronto lá pelos oitenta e tantos",
       "Sem skill de movimento fora um Enigma; cada ponto do plano está numa árvore só",
@@ -40,19 +40,33 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         packages: {
           "void-answer": {
             name: "A resposta do vazio",
-            when: "Você pretende jogar Hell com este personagem e não quer doze das dezoito áreas catalogadas do site fechadas. Miasma Chain é dano mágico, e uma área do catálogo inteiro registra imunidade a isso.",
+            when: "Você pretende jogar Hell com este personagem e não quer treze das vinte áreas catalogadas do site fechadas. Miasma Chain é dano mágico, e uma área do catálogo inteiro registra imunidade a isso.",
             tradeoff:
               "Quarenta pontos que poderiam ter sido demônios. Você ganha um segundo tipo de dano e absolutamente nenhuma sobrevivência a mais — esta rota é um canhão de vidro com dois canos.",
             skillNotes: {
-              "miasma-chain": "A segunda barra. 6-9 mágico e de três a doze projéteis por lançamento.",
-              "miasma-bolt": "+10% de dano do Miasma Chain por nível.",
+              "apocalypse":
+                "Sem mudança em relação ao núcleo, e nesta rota ele é metade do seu dano em vez de todo ele. Contra um imune a fogo é o botão que não faz nada, que é a razão inteira de este ramo existir.",
+              "flame-wave":
+                "Sem mudança. Ele alimenta o Apocalypse e limpa corredores, e nenhum dos dois trabalhos muda porque você comprou um segundo elemento para ficar atrás dele.",
+              "ring-of-fire":
+                "Sem mudança, e é a skill cuja falta você sente numa zona imune a fogo — trinta e dois projéteis que quicam todos. O muro de demônios não tem resposta para isso; este ramo tem.",
+              "sigil-death":
+                "Um ponto, e ele vale mais aqui do que no outro ramo: a execução é um limiar de vida e não dano, então termina um monstro que resiste aos seus dois elementos.",
+              "sigil-rancor":
+                "Um pré-requisito que você raramente lança. Os 75% de confusão são controle de graça, e este ramo não tem ponto sobrando para alargar o anel.",
+              "sigil-lethargy":
+                "O pré-requisito que se paga. Um −50% fixo em movimento e attack rate é a única coisa segurando um grupo longe de você numa rota que comprou dano em vez de demônios.",
+              "miasma-chain":
+                "A segunda barra. 6-9 mágico e de três a doze projéteis por lançamento.",
+              "miasma-bolt":
+                "+10% de dano do Miasma Chain por nível.",
             },
             rotationNote:
               "Apocalypse em tudo, e Miasma Chain no que o fogo não moveu. Você não está trocando de build no meio da luta — está trocando de elemento, que é uma tecla.",
             contentNote:
               "Chaos Sanctuary, Travincal, os Kurast Temples e o River of Flame registram imunidade a fogo. É este pacote que permite rodá-los.",
             remainderNote:
-              "Sete pontos sobrando, em 103 de 110. Os dois destinos restantes sobem em degraus nos hard points dez e vinte, e sete não alcança nenhum dos dois a partir de um — então ponha em Sigil: Death e pegue o raio nos três próximos níveis.",
+              "O núcleo são 63 de 110 e este pacote soma quarenta, então o plano pronto gasta 103 e deixa sete. Os dois destinos restantes sobem em degraus nos hard points dez e vinte, e sete não alcança nenhum dos dois a partir de um — então ponha em Sigil: Death e pegue o raio nos três próximos níveis.",
           },
           "demon-wall": {
             name: "O muro de demônios",
@@ -60,7 +74,20 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             tradeoff:
               "Você não fica com nenhuma resposta a um imune a fogo além de um Flame Rift, e até um cair você pula esses grupos. Isso é um custo real e esta página não vai fingir o contrário.",
             skillNotes: {
-              "summon-goatman": "Um ponto invoca; quantos você tem quem decide é Demonic Mastery, não esta skill.",
+              "apocalypse":
+                "Sem mudança em relação ao núcleo, e aqui ele é todo o seu dano em vez de metade. Tudo o que este personagem mata, o Apocalypse mata.",
+              "flame-wave":
+                "Sem mudança, e importa mais neste ramo do que no outro: sem um segundo elemento atrás dela, a cadeia de fogo é a ofensiva inteira.",
+              "ring-of-fire":
+                "Sem mudança. Os demônios compram distância e é isto que você põe nela — trinta e dois projéteis com dez hard points, disparados no que passou por eles.",
+              "sigil-death":
+                "Um ponto, e até um Flame Rift cair ele é a sua única resposta a um imune a fogo. Um limiar de vida não liga para o que resiste a você.",
+              "sigil-rancor":
+                "Um pré-requisito, e os 75% de confusão são uma segunda linha de frente para uma build que decidiu ter linhas de frente.",
+              "sigil-lethargy":
+                "Um pré-requisito que você de fato vai lançar. Cortar o movimento de um grupo pela metade é o que o mantém ao alcance dos demônios em vez de chegar ao seu.",
+              "summon-goatman":
+                "Um ponto invoca; quantos você tem quem decide é Demonic Mastery, não esta skill.",
               "demonic-mastery":
                 "Cinco hard points levam o teto de um demônio para dois e dez levam para três. Nada mais no jogo mexe nesse número, e +skills de equipamento não mexem — os dois limiares leem hard points.",
               "blood-oath":
@@ -70,7 +97,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
               "Vitality importa um pouco menos aqui, porque uma parte do dano nunca chega em você. Ainda leva tudo que sobra.",
             rotationNote:
               "Invoque três antes do grupo e depois lance exatamente como antes. Os demônios não são fonte de dano e não devem ser esperados.",
-            remainderNote: "Seis pontos sobrando, em 104 de 110. Sigil: Lethargy os leva rumo ao degrau de raio dos dez pontos.",
+            remainderNote: "O núcleo são 63 de 110 e este pacote soma quarenta e um, então o plano pronto gasta 104 e deixa seis. Sigil: Lethargy os leva rumo ao degrau de raio dos dez pontos.",
           },
         },
       },
@@ -103,7 +130,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         "Um ponto é a skill inteira. Os limiares de execução são 13% de vida fixos para um monstro normal e 10% para champion, unique ou superunique, e nenhum dos dois sobe com o nível — pontos compram raio e mais nada.",
     },
     immunityPlan:
-      "**Fogo é o pior elemento em que se construir no Hell, e os dados de área deste próprio site são o argumento.** Doze das dezoito áreas catalogadas registram imunidade a fogo — Chaos Sanctuary, Travincal, os Kurast Temples, River of Flame, os Ancient Tunnels, o templo do Nihlathak, Stony Tomb, o Maggot Lair, Lower Kurast, Mephisto, a Countess e o Worldstone Keep. Esse é o custo da maior tabela de dano da classe e precisa ser entendido antes de o personagem ser criado.\n\n**A quebra do próprio Apocalypse não resolve isso.** A skill reduz a resistência a fogo do inimigo em 5 pontos mais 1 por nível, até um teto de 40. Isso é uma linha de −% de Resistência a Fogo do Inimigo, e contra um monstro cuja imunidade continua de pé ela é ignorada por completo em vez de reduzida — não vale nada ali, nem uma fração. A quebra é o que amolece um monstro resistente; não é o que torna matável um imune.\n\nEntão existem exatamente duas respostas e a build tem que pegar uma.\n\n**Um Flame Rift.** O sunder charm de fogo põe monstros imunes a fogo numa resistência que dá para reduzir de verdade, ao custo de 70 a 90 pontos da sua própria resistência a fogo. É por isso que Mara's Kaleidoscope e Chains of Honor aparecem nos tiers em que aparecem, e é um drop de nível 75 — ou seja, um plano de Hell, não de Nightmare.\n\n**O pacote do vazio.** Quarenta pontos em Miasma Chain e Miasma Bolt compram um segundo tipo de dano na mesma barra. Imunidade a mágico é registrada em exatamente uma das dezoito áreas catalogadas — o Arcane Sanctuary — então o segundo elemento fecha quase tudo que o primeiro deixa aberto, e faz isso sem depender de um drop.\n\nUm personagem que não pegar nenhuma das duas é um personagem de Normal e Nightmare. Essa é uma forma legítima de jogar e esta página não vai fingir que é um plano de Hell.",
+      "**Fogo é o pior elemento em que se construir no Hell, e os dados de área deste próprio site são o argumento.** Doze das vinte áreas catalogadas registram imunidade a fogo — Chaos Sanctuary, Travincal, os Kurast Temples, River of Flame, os Ancient Tunnels, o templo do Nihlathak, Stony Tomb, o Maggot Lair, Lower Kurast, Mephisto, a Countess, o Worldstone Keep e a Uber Tristram. Esse é o custo da maior tabela de dano da classe e precisa ser entendido antes de o personagem ser criado.\n\n**A quebra do próprio Apocalypse não resolve isso.** A skill reduz a resistência a fogo do inimigo em 5 pontos mais 1 por nível, até um teto de 40. Isso é uma linha de −% de Resistência a Fogo do Inimigo, e contra um monstro cuja imunidade continua de pé ela é ignorada por completo em vez de reduzida — não vale nada ali, nem uma fração. A quebra é o que amolece um monstro resistente; não é o que torna matável um imune.\n\nEntão existem exatamente duas respostas e a build tem que pegar uma.\n\n**Um Flame Rift.** O sunder charm de fogo põe monstros imunes a fogo numa resistência que dá para reduzir de verdade, ao custo de 70 a 90 pontos da sua própria resistência a fogo. É por isso que Mara's Kaleidoscope e Chains of Honor aparecem nos tiers em que aparecem, e é um drop de nível 75 — ou seja, um plano de Hell, não de Nightmare.\n\n**O pacote do vazio.** Quarenta pontos em Miasma Chain e Miasma Bolt compram um segundo tipo de dano na mesma barra. Imunidade a mágico é registrada em exatamente uma das vinte áreas catalogadas — o Arcane Sanctuary — então o segundo elemento fecha quase tudo que o primeiro deixa aberto, e faz isso sem depender de um drop.\n\nUm personagem que não pegar nenhuma das duas é um personagem de Normal e Nightmare. Essa é uma forma legítima de jogar e esta página não vai fingir que é um plano de Hell.",
     mercenaryNotes:
       "Act 2, Nightmare, Might para dano ou Holy Freeze para controle — Holy Freeze é a melhor resposta para um caster sem skill de movimento, porque tudo chega mais devagar. Insight na polearm é o plano de mana da build inteira: o Apocalypse custa 32 de mana na base mais 1 por nível, e nada neste plano gasta um ponto em Energy.",
     farmingWhy: {
@@ -204,7 +231,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         charms: [
           {
             label: "Charms pequenos com vida e resistência",
-            why: "**O charm que importa aqui ainda não pode ser pego.** Um Flame Rift é o item que abre doze das dezoito áreas catalogadas para esta build, e ele exige nível 75 — então este tier é gasto chegando lá. Preencha a grade com vida e com as resistências que a penalidade do Hell acabou de tirar.",
+            why: "**O charm que importa aqui ainda não pode ser pego.** Um Flame Rift é o item que abre treze das vinte áreas catalogadas para esta build, e ele exige nível 75 — então este tier é gasto chegando lá. Preencha a grade com vida e com as resistências que a penalidade do Hell acabou de tirar.",
           },
         ],
       },
@@ -233,7 +260,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
           "ring1-0": { why: "Sem mudança." },
           "ring2-0": { label: "Qualquer anel raro com 10% de Faster Cast Rate, resistência e vida", why: "Continua sendo onde o breakpoint fecha." },
         },
-        charms: [{ why: "Agora obrigatório e não mais um luxo. Doze de dezoito áreas registram imunidade a fogo e esta build não tem outra resposta." }],
+        charms: [{ why: "Agora obrigatório e não mais um luxo. Treze de vinte áreas registram imunidade a fogo e esta build não tem outra resposta." }],
         weaponSwap: [
           { why: "Battle Orders num personagem com 3 de vida por ponto de Vitality é um ganho percentual maior do que é para qualquer outro." },
           { why: "A outra metade da troca." },
@@ -299,7 +326,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
   // =========================================================================
   "abyss-warlock": {
     summary:
-      "Dano mágico, que uma das dezoito áreas catalogadas resiste — e a primeira build do jogo com equipamento que sobe dano mágico e baixa resistência mágica.",
+      "Dano mágico, que uma das vinte áreas catalogadas resiste — e a primeira build do jogo com equipamento que sobe dano mágico e baixa resistência mágica.",
     playstyle:
       "Miasma Chain é o que você segura apertado: gera três projéteis na base e até doze, todos mágicos, no alcance de um arco. Abyss é a resposta ao que a corrente não matou — um colapso num raio de 6 que deixa fogo queimando no chão. Sigil: Death desce sob um grupo uma vez e executa qualquer coisa que caia abaixo de um décimo da vida, o que numa build cujo dano chega em muitos pedaços pequenos é a maior parte do grupo. O ritmo é mais lento que o da página de fogo e há muito menos em que pensar: quase nada resiste a você, então quase nada exige decisão.",
     strengths: [
@@ -328,26 +355,59 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             tradeoff:
               "Vinte pontos numa skill sem nenhuma sinergia atrás dela. Ring of Fire no 20 sem nada alimentando é uma magia modesta, e este pacote compra cobertura, não dano.",
             skillNotes: {
-              "ring-of-fire": "Dezesseis projéteis abaixo de dez hard points e trinta e dois com dez ou mais. Esse único limiar é a maior parte da skill.",
+              "abyss":
+                "Sem mudança em relação ao núcleo. Este ramo não muda o que você lança — muda no que você tem permissão de lançar.",
+              "miasma-chain":
+                "Sem mudança, e continua a skill que você segura apertada. O Arcane Sanctuary é o único lugar em que ela para de funcionar, que é exatamente para o que servem os vinte pontos abaixo.",
+              "miasma-bolt":
+                "Sem mudança. É sinergia e não magia, e os dois ramos gastam os mesmos vinte aqui.",
+              "enhanced-entropy":
+                "Sem mudança — e vale ler duas vezes neste ramo, porque ela não faz absolutamente nada pelo Ring of Fire. A cobertura que você está comprando é uma que nenhuma passiva sua aumenta.",
+              "sigil-death":
+                "Um ponto, e é a outra metade da resposta deste ramo: leve um imune a mágico a um décimo com fogo e o sigil termina de graça.",
+              "sigil-rancor":
+                "Um pré-requisito. Os 75% de confusão não custam nada a mais porque a cadeia abaixo dele já estava paga.",
+              "sigil-lethargy":
+                "Um ponto e nada além. Num ramo que gastou os vinte sobrando em ofensiva, cortar movimento e attack rate pela metade é a defesa inteira.",
+              "ring-of-fire":
+                "Dezesseis projéteis abaixo de dez hard points e trinta e dois com dez ou mais. Esse único limiar é a maior parte da skill.",
             },
             rotationNote: "Nada muda até algo resistir a você. Ring of Fire é uma segunda tecla, não uma segunda rotação.",
             contentNote: "O Arcane Sanctuary é a única área catalogada que registra imunidade a mágico. Este pacote é o que a torna farmável.",
             remainderNote:
-              "Sete pontos sobrando, em 103 de 110. Toda sinergia já está maximizada e os dois sigils restantes sobem em degraus nos hard points dez e vinte, que sete não alcança a partir de um — então vão para Sigil: Death e o anel alarga três níveis depois.",
+              "O núcleo são 83 de 110 e este pacote soma vinte, então o plano pronto gasta 103 e deixa sete. Toda sinergia já está maximizada e os dois sigils restantes sobem em degraus nos hard points dez e vinte, que sete não alcança a partir de um — então vão para Sigil: Death e o anel alarga três níveis depois.",
           },
           "the-ward": {
             name: "O ward",
             when: "Você está jogando Hardcore, ou em partidas de oito jogadores em que as coisas te alcançam. Psychic Ward absorve 15 de dano mais 10 por nível e atordoa o que te acerta em corpo a corpo enquanto aguenta.",
             tradeoff:
-              "O Arcane Sanctuary continua fechado e nada mais fica. É um custo menor do que parece — uma área de dezoito — mas é a única área em que esta build não tem resposta nenhuma.",
+              "O Arcane Sanctuary continua fechado e nada mais fica. É um custo menor do que parece — uma área de vinte — mas é a única área em que esta build não tem resposta nenhuma.",
             skillNotes: {
+              "abyss":
+                "Sem mudança em relação ao núcleo. O ward não soma dano — ele compra os segundos em que isto é lançado.",
+              "miasma-chain":
+                "Sem mudança, e é a razão de o ward valer vinte e dois pontos: este é um ritmo sustentado, e um atordoamento no que te alcançou é o que protege o ritmo.",
+              "miasma-bolt":
+                "Sem mudança. É sinergia e não magia, e os dois ramos gastam os mesmos vinte aqui.",
+              "enhanced-entropy":
+                "Sem mudança. A linha de Abyss dela é a mais íngreme da passiva, que é o que permite a este ramo gastar vinte e dois pontos em defesa sem encostar no dano.",
+              "sigil-death":
+                "Um ponto, e neste ramo ele fica em um. O Arcane Sanctuary é a zona que você decidiu não resolver.",
+              "sigil-rancor":
+                "Um pré-requisito, e ele combina com o ward em vez de duplicá-lo: um monstro confuso é um que não está gastando a sua reserva de absorção.",
+              "sigil-lethargy":
+                "Um ponto. Cortar o attack rate de um grupo pela metade e absorver o que ainda acerta são o mesmo plano por dois caminhos.",
+              "levitation-mastery":
+                "Comprada pelo ward e não pela mastery. O dano e a attack rating dela são mortos num caster; os 15 de absorção por hard point não são.",
+              "cleave":
+                "A mesma troca, e ele ainda é o pré-requisito do Psychic Ward — um ponto que destrava a skill e a aumenta no mesmo gesto.",
               "psychic-ward":
                 "A reserva é 15 mais 10 por nível, e mais 15 por hard point de Levitation Mastery e de Cleave — então os dois pontos de pré-requisito valem 30 de absorção além de destravar a skill.",
             },
             gearNote:
               "Levitation Mastery só paga enquanto exatamente uma arma estiver equipada, o que um Warlock sempre tem. O dano e a attack rating dela são inúteis aqui; o ponto é comprado pelo ward e pelo pré-requisito.",
             rotationNote: "Relance o ward antes de um grupo, não durante. Ele atordoa atacantes de corpo a corpo enquanto aguenta, o que compra o relançamento.",
-            remainderNote: "Cinco pontos sobrando, em 105 de 110. Sigil: Lethargy os leva rumo ao degrau de raio dos dez pontos.",
+            remainderNote: "O núcleo são 83 de 110 e este pacote soma vinte e dois, então o plano pronto gasta 105 e deixa cinco. Sigil: Lethargy os leva rumo ao degrau de raio dos dez pontos.",
           },
         },
       },
@@ -383,7 +443,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         "Também um efeito fixo: −50% de movimento e −50% de attack rate dentro dele, com um ponto. Pontos compram raio e mais nada.",
     },
     immunityPlan:
-      "**Uma área em dezoito resiste a esta build, e esse é o plano inteiro.** O Arcane Sanctuary registra imunidade a raio e a mágico; as outras dezessete áreas catalogadas não registram nenhuma das duas. Doze delas registram fogo, dez veneno, oito raio e oito físico. Construir em cima de mágico é a maior decisão de imunidade disponível neste jogo e é por isso que esta página existe ao lado da de fogo.\n\n**O equipamento agora ajuda, o que não acontecia antes desta expansão.** Ars Dul'Mephistos tira 10-20% da resistência mágica do inimigo, Gheed's Wager mais 3-7% e Sling mais 3-5% — até 32 pontos entre os três — e Void e o Entropy Locket somam até 25% de Dano de Skills Mágicas por cima. Nenhum outro personagem do jogo monta qualquer um desses dois conjuntos.\n\n**Nada disso quebra uma imunidade.** Uma linha de −% de Resistência Mágica do Inimigo é ignorada por completo enquanto a imunidade estiver de pé, em vez de ser reduzida a uma fração de si mesma; é o que amolece um monstro resistente, não o que torna matável um imune. E **não existe sunder charm de mágico** — os cinco que existem cobrem fogo, frio, raio, veneno e físico, e mágico é o único elemento sem equivalente.\n\nEntão, contra um monstro genuinamente imune a mágico as opções são o pacote de fogo, o mercenário, ou passar direto. No Arcane Sanctuary especificamente, passar direto costuma ser o certo: a zona não é área de nível 85 e não há nada nela que valha a discussão.",
+      "**Uma área em vinte resiste a esta build, e esse é o plano inteiro.** O Arcane Sanctuary registra imunidade a raio e a mágico; as outras dezenove áreas catalogadas não registram nenhuma das duas. Treze delas registram fogo, dez veneno, oito raio e oito físico. Construir em cima de mágico é a maior decisão de imunidade disponível neste jogo e é por isso que esta página existe ao lado da de fogo.\n\n**O equipamento agora ajuda, o que não acontecia antes desta expansão.** Ars Dul'Mephistos tira 10-20% da resistência mágica do inimigo, Gheed's Wager mais 3-7% e Sling mais 3-5% — até 32 pontos entre os três — e Void e o Entropy Locket somam até 25% de Dano de Skills Mágicas por cima. Nenhum outro personagem do jogo monta qualquer um desses dois conjuntos.\n\n**Nada disso quebra uma imunidade.** Uma linha de −% de Resistência Mágica do Inimigo é ignorada por completo enquanto a imunidade estiver de pé, em vez de ser reduzida a uma fração de si mesma; é o que amolece um monstro resistente, não o que torna matável um imune. E **não existe sunder charm de mágico** — os cinco que existem cobrem fogo, frio, raio, veneno e físico, e mágico é o único elemento sem equivalente.\n\nEntão, contra um monstro genuinamente imune a mágico as opções são o pacote de fogo, o mercenário, ou passar direto. No Arcane Sanctuary especificamente, passar direto costuma ser o certo: a zona não é área de nível 85 e não há nada nela que valha a discussão.",
     mercenaryNotes:
       "Act 2, Nightmare, Holy Freeze. Insight na polearm é o plano de mana — o Abyss custa 23 de mana na base mais 1 por nível e cobra quando resolve em vez de quando começa, então uma conjuração interrompida não custa nada. Might é a alternativa se a expectativa for que o mercenário mate a única coisa que você não consegue.",
     farmingWhy: {
@@ -608,7 +668,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         "A única skill de movimento da classe sem um Enigma — você arremessa a arma e teleporta até ela. Um ponto é tudo o que o plano pode bancar e tudo de que ele precisa.",
     },
     immunityPlan:
-      "**Esta build causa dois tipos de dano no mesmo golpe e esse é o plano.** Cleave carrega o dano físico cheio da arma, e um hard point em Hex: Bane escreve a faixa mágica rolada daquela skill no seu personagem como dano mágico fixo de arma — então ele cai em cada acerto, incluindo o arco do Cleave e cada duplicata do Mirrored Blades.\n\nOs números por trás disso: **imunidade a físico é registrada em oito das dezoito áreas catalogadas e imunidade a mágico em uma.** Um monstro que para a metade física quase nunca para a metade mágica, e o contrário é ainda mais raro.\n\n**Contra as oito, a resposta é Amplify Damage.** Dreadfang o lança em 33% dos acertos, o que numa build que varre um arco de 240 graus significa que ele fica praticamente sempre ativo. A maldição baixa a resistência física em 100 pontos, e contra um monstro que continua imune a físico ela cai com um quinto da força — 20 pontos — que é exatamente suficiente para quebrar um que esteja em 100% e insuficiente acima de 120%. Esse é o limite honesto e é onde um sunder charm Bone Break assume, se você tiver um.\n\n**Contra a uma, nada.** Não existe sunder charm de mágico e nenhuma maldição baixa resistência mágica. O Arcane Sanctuary é a área, e a metade física do seu dano é a resposta ali — o que é a imagem espelhada de todo o resto, e a razão de carregar as duas valer um hard point.",
+      "**Esta build causa dois tipos de dano no mesmo golpe e esse é o plano.** Cleave carrega o dano físico cheio da arma, e um hard point em Hex: Bane escreve a faixa mágica rolada daquela skill no seu personagem como dano mágico fixo de arma — então ele cai em cada acerto, incluindo o arco do Cleave e cada duplicata do Mirrored Blades.\n\nOs números por trás disso: **imunidade a físico é registrada em oito das vinte áreas catalogadas e imunidade a mágico em uma.** Um monstro que para a metade física quase nunca para a metade mágica, e o contrário é ainda mais raro.\n\n**Contra as oito, a resposta é Amplify Damage.** Dreadfang o lança em 33% dos acertos, o que numa build que varre um arco de 240 graus significa que ele fica praticamente sempre ativo. A maldição baixa a resistência física em 100 pontos, e contra um monstro que continua imune a físico ela cai com um quinto da força — 20 pontos — que é exatamente suficiente para quebrar um que esteja em 100% e insuficiente acima de 120%. Esse é o limite honesto e é onde um sunder charm Bone Break assume, se você tiver um.\n\n**Contra a uma, nada.** Não existe sunder charm de mágico e nenhuma maldição baixa resistência mágica. O Arcane Sanctuary é a área, e a metade física do seu dano é a resposta ali — o que é a imagem espelhada de todo o resto, e a razão de carregar as duas valer um hard point.",
     mercenaryNotes:
       "Act 2, Nightmare, Might. O dano desta build é majoritariamente o da arma, e Might multiplica exatamente isso. Insight não é necessário aqui — Cleave custa 3 de mana fixos e Eldritch Blast rouba 5% mais 1% por nível de vida e de mana — então a polearm do mercenário fica livre para Pride ou Infinity. A Concentration do Pride é a aura de dano maior; Infinity só compensa se o grupo tiver um personagem elemental nele.",
     farmingWhy: {
@@ -786,7 +846,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
       "Invoque três demônios, marque algo, e ferva. Death Mark é o que faz a árvore funcionar à distância — os seus demônios teleportam até o que você marcou, o que transforma três lacaios lentos de corpo a corpo em três que chegam — e ele arranca defesa e redução de dano do alvo enquanto isso. Blood Boil então detona um demônio num raio que sobe de 6 para 12, causando fogo e físico ao mesmo tempo. Engorge devolve um cadáver aos sobreviventes, que é a recarga. É um ciclo e não uma rotação, e o ritmo é ditado por quantos cadáveres o último grupo deixou.",
     strengths: [
       "Dois tipos de dano num único lançamento — fogo e físico, com sinergias separadas de 20% por nível cada",
-      "Só seis das dezoito áreas catalogadas registram imunidade às duas metades ao mesmo tempo",
+      "Só seis das vinte áreas catalogadas registram imunidade às duas metades ao mesmo tempo",
       "Blood Oath manda até 30% do dano que você toma para um demônio, numa classe que já tem 3 de vida por Vitality",
       "O custo em demônio por lançamento cai dois terços quando há três em campo em vez de um",
       "Ars Tor'Baalos sobe quatro das seis skills da build a partir de um item só",
@@ -810,12 +870,22 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             tradeoff:
               "Sem Bind Demon, ou seja, sem quarto demônio e sem um monstro Aura Enchanted capturado lutando por você. Esta é a build mais simples e a que funciona sem depender de um grupo específico à sua frente.",
             skillNotes: {
+              "blood-boil":
+                "Sem mudança em relação ao núcleo, e você vai lançar menos que no outro ramo. Três Goatmen bem alimentados matam sozinhos; a detonação é para o que eles não conseguem.",
+              "blood-oath":
+                "Sem mudança, e aqui ele faz papel duplo — é a sinergia de fogo do Blood Boil e é a razão de Goatmen de vinte pontos viverem o bastante para valerem vinte pontos.",
+              "engorge":
+                "Sem mudança, e a cura importa mais neste ramo que no outro. Três lutadores de verdade valem recarregar; três granadas não.",
+              "demonic-mastery":
+                "Vinte em vez dos dez do núcleo. Os dez primeiros compram o terceiro demônio; os dez seguintes compram +200% de dano e +475% de attack rating em cada um, o que só se paga se eles estiverem lutando em vez de esperando para serem gastos.",
               "summon-goatman":
                 "Ele aprende Stun no 2, Berserk no 3, Frenzy no 4 e Cleave no 5 — os quatro pontos do segundo ao quinto compram comportamento em vez de números, e os quinze seguintes compram dano e defesa.",
+              "death-mark":
+                "Um ponto, e neste ramo ele é um item de Crushing Blow em vez de uma ferramenta de mira: 5% mais 1% por nível, aplicados nos três Goatmen de uma vez.",
             },
             rotationNote:
               "Marque, deixe os três chegarem, e ferva o que estiver mais longe de você para que os outros dois continuem lutando. Os demônios são fonte de dano neste pacote e não devem ser gastos todos de uma vez.",
-            remainderNote: "Nove pontos sobrando, em 101 de 110. Death Mark os leva — cada ponto lá é 1% a mais de Crushing Blow nos três Goatmen e uma marca mais longa.",
+            remainderNote: "O núcleo são 72 de 110 e este pacote soma vinte e nove, então o plano pronto gasta 101 e deixa nove. Death Mark os leva — cada ponto lá é 1% a mais de Crushing Blow nos três Goatmen e uma marca mais longa.",
           },
           "bound-demon": {
             name: "O demônio vinculado",
@@ -823,6 +893,20 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             tradeoff:
               "Os três Goatmen ficam com um hard point e são munição em vez de lutadores. Você está trocando uma linha de frente confiável por um monstro muito melhor que precisa ser encontrado e capturado antes.",
             skillNotes: {
+              "blood-boil":
+                "Sem mudança em relação ao núcleo, e aqui ele é o evento principal. Os Goatmen ficam em um ponto e existem para serem gastos.",
+              "blood-oath":
+                "Sem mudança, e importa mais aqui do que no outro ramo: um Goatman de um ponto tem pouquíssima vida própria, e isto é a maior parte do que ele tem.",
+              "engorge":
+                "Sem mudança, e a recarga é mais apertada. Três demônios baratos morrem mais rápido que três caros, então os cadáveres são o limite de quantas vezes você consegue ferver.",
+              "demonic-mastery":
+                "Vinte, e os dez segundos são gastos no demônio vinculado e não nos Goatmen — ele lê o mesmo estado que eles, e é o que está de fato lutando.",
+              "summon-goatman":
+                "Um ponto, e fica em um. Neste ramo os Goatmen são munição; todo o resto vai para o demônio que você tomou do mundo.",
+              "summon-tainted":
+                "Um pré-requisito do Summon Defiler e nada mais. Ele divide o teto de demônios com os Goatmen, então você nunca vai invocar um de verdade.",
+              "summon-defiler":
+                "Um pré-requisito do Bind Demon, e a cadeia mais barata da classe — dois pontos compram a única skill que te dá um quarto demônio fora do teto.",
               "death-mark": "Ele aumenta a chance de vincular além de marcar o alvo.",
               "bind-demon":
                 "Os afixos são a progressão, não os números: Extra Strong com 5 hard points, Extra Fast com 10, Spectral Hit com 15 e Aura Enchanted com 20. Por cima disso o demônio vinculado ganha +75% de dano com mais 5% por nível e +100% de vida com mais 5% por nível.",
@@ -833,7 +917,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
             rotationNote:
               "Vincule algo perigoso antes da luta, não durante. Um monstro Aura Enchanted vinculado com vinte hard points é o lacaio isolado mais forte que a classe consegue pôr em campo, e vale voltar para pegar.",
             contentNote: "Melhor em áreas com demônios grandes e lentos que valem a captura — Act 4 e Act 5 em vez das selvas de Kurast.",
-            remainderNote: "Cinco pontos sobrando, em 105 de 110. Vão para Death Mark, que alonga a marca e sobe a chance de vínculo ao mesmo tempo.",
+            remainderNote: "O núcleo são 72 de 110 e este pacote soma trinta e três, então o plano pronto gasta 105 e deixa cinco. Vão para Death Mark, que alonga a marca e sobe a chance de vínculo ao mesmo tempo.",
           },
         },
       },
@@ -869,7 +953,7 @@ export const warlockBuildsPtBr: Overlay<BuildCopy> = {
         "A skill que torna a árvore jogável à distância: alvos marcados puxam os seus demônios até eles através de 38 unidades. Ela também corta 5 da redução de dano do alvo e 50 da defesa dele, e dá aos seus Goatmen 5% de Crushing Blow mais 1% por nível desta skill.",
     },
     immunityPlan:
-      "**Blood Boil causa fogo e físico no mesmo lançamento, e os dois têm sinergias separadas.** Isso não é detalhe de sabor — é a razão de esta build ter a segunda melhor cobertura de imunidade das quatro, atrás apenas da mágica.\n\nDas dezoito áreas catalogadas, doze registram imunidade a fogo e oito registram físico. **Seis registram as duas**: o Chaos Sanctuary, o Worldstone Keep, os Kurast Temples, o River of Flame, o templo do Nihlathak e a Stony Tomb. Em todo o resto, pelo menos uma metade do lançamento cai com força total. Os Ancient Tunnels param o fogo e não o físico; o Pit para o físico e não o fogo; o Mausoleum e o Pindleskin não param nenhum dos dois.\n\n**Contra as seis, há duas respostas e as duas são charms.** Um Flame Rift quebra imunidade a fogo ao custo de 70 a 90 pontos da sua própria resistência a fogo, e um Bone Break faz o mesmo pelo físico. Qualquer um dos dois converte uma área duplamente imune numa área simplesmente imune, o que basta — você não precisa dos dois, porque não está tentando fazer as duas metades caírem.\n\nO que esta build **não** tem é uma quebra de resistência própria. Nenhuma skill de Warlock fora da árvore Chaos baixa resistência nenhuma, Death Mark baixa redução de dano e defesa em vez de resistência elemental, e não há nada na árvore Demon que se comporte como Amplify Damage. Os dois sunder charms são a resposta inteira e a página não vai inventar uma terceira.",
+      "**Blood Boil causa fogo e físico no mesmo lançamento, e os dois têm sinergias separadas.** Isso não é detalhe de sabor — é a razão de esta build ter a segunda melhor cobertura de imunidade das quatro, atrás apenas da mágica.\n\nDas vinte áreas catalogadas, treze registram imunidade a fogo e oito registram físico. **Seis registram as duas**: o Chaos Sanctuary, o Worldstone Keep, os Kurast Temples, o River of Flame, o templo do Nihlathak e a Stony Tomb. Em todo o resto, pelo menos uma metade do lançamento cai com força total. Os Ancient Tunnels param o fogo e não o físico; o Pit para o físico e não o fogo; o Mausoleum e o Pindleskin não param nenhum dos dois.\n\n**Contra as seis, há duas respostas e as duas são charms.** Um Flame Rift quebra imunidade a fogo ao custo de 70 a 90 pontos da sua própria resistência a fogo, e um Bone Break faz o mesmo pelo físico. Qualquer um dos dois converte uma área duplamente imune numa área simplesmente imune, o que basta — você não precisa dos dois, porque não está tentando fazer as duas metades caírem.\n\nO que esta build **não** tem é uma quebra de resistência própria. Nenhuma skill de Warlock fora da árvore Chaos baixa resistência nenhuma, Death Mark baixa redução de dano e defesa em vez de resistência elemental, e não há nada na árvore Demon que se comporte como Amplify Damage. Os dois sunder charms são a resposta inteira e a página não vai inventar uma terceira.",
     mercenaryNotes:
       "Act 2, Nightmare, Might — ele sobe o dano físico dos demônios além do do mercenário, e o Blood Oath já fez dos demônios parte da sua defesa. Insight na polearm é o plano de mana: três invocações custam 30, 50 e 70, e o ciclo por cima disso são mais 27 por grupo. O mercenário também é um segundo corpo para o Blood Oath usar, o que importa mais aqui do que nas builds de caster.",
     farmingWhy: {
