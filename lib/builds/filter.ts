@@ -83,18 +83,30 @@ export type RatingAxis = (typeof RATING_AXES)[number];
  * where the site's own vocabulary starts saying the word the filter is labelled
  * with.
  *
- * **The distribution agrees.** Across the 29 published builds and eight axes —
- * 232 ratings — 47.4% sit at 4 or above, so each axis divides the catalogue
- * roughly in half, which is what a filter is for. A build carries 3.8 of the
- * eight tags on average and exactly one build carries none.
+ * **The distribution agrees.** Across the 53 published builds and eight axes —
+ * 424 ratings — 45.8% sit at 4 or above, and a build carries 3.66 of the eight
+ * tags on average with exactly one build carrying none.
  *
- * The alternatives were measured rather than dismissed. At 3 or above, 80.6% of
- * ratings qualify and the average build carries 6.4 of 8 tags: selecting almost
- * everything is not filtering. At 5 only, twelve of the 29 builds carry no tag
- * at all and can never be reached through this group.
+ * The alternatives were measured rather than dismissed. At 3 or above, 81.1% of
+ * ratings qualify and the average build carries 6.49 of 8 tags: selecting almost
+ * everything is not filtering. At 5 only, 21 of the 53 builds carry no tag at
+ * all and can never be reached through this group.
+ *
+ * Per axis the split is wider than the aggregate suggests — 35 of 53 builds are
+ * good at survivability and 7 are good at Ubers — which is a fact about the
+ * catalogue rather than about the threshold.
  *
  * One threshold, one rule, every build — no per-axis curve and no editorial
  * override.
+ *
+ * **None of those numbers is typed here from memory.** They are read off
+ * `docs/measurements/rating-distribution.json`, which
+ * `scripts/rating-distribution.ts` generates from `content/builds/` and
+ * `npm run test:rating-distribution` recomputes and compares — including
+ * against this comment. The previous version of this paragraph was measured
+ * over a catalogue of 29 and was still here at 53, because a comment cannot
+ * fail. `docs/adr/0004-good-at-threshold.md` argues the decision the numbers
+ * support, and is where the threshold moves if it ever does.
  */
 export const GOOD_AT_THRESHOLD: Rating = 4;
 
