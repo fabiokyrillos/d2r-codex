@@ -18,11 +18,36 @@ import { OVERLAYS } from "./overlays";
  * summary (used as the link tooltip) and the href vary by locale.
  */
 
+/**
+ * Which ref kinds this site has a page for.
+ *
+ * Typed as a total record, so adding a kind to `ItemRef` is a compile error
+ * here rather than a link to nowhere later. `set`, `base` and `charm` describe
+ * groupings the catalogue has no route for: a set is documented through its
+ * items, a base type through the items that use it, and charms have no page at
+ * all. `scripts/ref-routes.test.ts` reads this map and checks it against the
+ * sitemap, which is the site's own list of pages.
+ */
+export const REF_KIND_HAS_ROUTE: Record<ItemRef["kind"], boolean> = {
+  rune: true,
+  runeword: true,
+  unique: true,
+  "set-item": true,
+  set: false,
+  base: false,
+  charm: false,
+};
+
 export interface ResolvedRef {
   kind: ItemRef["kind"];
   slug: Slug;
   name: string;
-  href: string;
+  /**
+   * Absent when there is no page to link to — a kind with no route, or a slug
+   * the catalogue does not hold. Optional rather than empty-string so `tsc`
+   * makes every caller decide what to render instead of a link.
+   */
+  href?: string;
   summary?: string;
   /** Drives the item-rarity colour, matching D2's conventions. */
   quality: ItemQuality | "rune";
@@ -72,7 +97,7 @@ export function resolveRef(locale: Locale, ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: rune ? rune.name : titleCaseFromSlug(ref.slug),
-        href: r.rune(ref.slug),
+        href: rune ? r.rune(ref.slug) : undefined,
         summary: summaryFor(locale, ref.kind, ref.slug, rune?.summary),
         quality: "rune",
         found: Boolean(rune),
@@ -84,7 +109,7 @@ export function resolveRef(locale: Locale, ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: rw?.name ?? titleCaseFromSlug(ref.slug),
-        href: r.runeword(ref.slug),
+        href: rw ? r.runeword(ref.slug) : undefined,
         summary: summaryFor(locale, ref.kind, ref.slug, rw?.summary),
         quality: "runeword",
         found: Boolean(rw),
@@ -97,18 +122,25 @@ export function resolveRef(locale: Locale, ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: item?.name ?? titleCaseFromSlug(ref.slug),
-        href: r.item(ref.slug),
+        href: item ? r.item(ref.slug) : undefined,
         summary: summaryFor(locale, ref.kind, ref.slug, item?.summary),
         quality: item?.quality ?? (ref.kind === "set-item" ? "set" : "unique"),
         found: Boolean(item),
       };
     }
+    /*
+     * No href at all. These three used to receive `/items/sets/…`,
+     * `/items/bases/…` and `/items/charms/…`, none of which is a route this
+     * site has ever served. Nothing referenced them, so the fabrication was
+     * invisible — and the first build to write `{ kind: "set" }` would have
+     * shipped a link to a 404 that `check:content` explicitly permits, because
+     * these kinds are the ones it treats as label-only.
+     */
     case "set":
       return {
         kind: ref.kind,
         slug: ref.slug,
         name: titleCaseFromSlug(ref.slug),
-        href: `${r.items()}/sets/${ref.slug}`,
         quality: "set",
         found: false,
       };
@@ -117,7 +149,6 @@ export function resolveRef(locale: Locale, ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: titleCaseFromSlug(ref.slug),
-        href: `${r.items()}/bases/${ref.slug}`,
         quality: "normal",
         found: false,
       };
@@ -126,7 +157,6 @@ export function resolveRef(locale: Locale, ref: ItemRef): ResolvedRef {
         kind: ref.kind,
         slug: ref.slug,
         name: titleCaseFromSlug(ref.slug),
-        href: `${r.items()}/charms/${ref.slug}`,
         quality: "unique",
         found: false,
       };

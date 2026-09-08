@@ -69,9 +69,10 @@ export async function ItemRefLink({
   const { locale, t } = await getI18n();
   const resolved = resolveRef(locale, refItem);
 
-  // Refs to entities we have not catalogued yet render as plain coloured text
-  // rather than a link to a 404.
-  if (!resolved.found) {
+  // Refs to entities we have not catalogued yet — and kinds the site has no
+  // route for at all — render as plain coloured text rather than a link to a
+  // 404. `href` is optional precisely so this branch cannot be skipped.
+  if (!resolved.found || !resolved.href) {
     return (
       <span className={cn("font-medium", qualityColors[resolved.quality])}>
         {resolved.name}
@@ -213,7 +214,11 @@ export async function RuneChip({
 }) {
   if (!rune) return null;
   const { locale, t } = await getI18n();
+  // The caller already holds the rune, so the resolver finds it and hands back
+  // an href — but the type no longer promises one, and a chip with no
+  // destination is not a link.
   const href = resolveRef(locale, { kind: "rune", slug: rune.slug }).href;
+  if (!href) return <span className="text-sm font-semibold text-rarity-rune">{rune.name}</span>;
 
   return (
     <Link

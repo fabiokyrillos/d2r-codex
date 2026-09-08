@@ -222,6 +222,42 @@ console.log("\nNo dictionary string is declared and never rendered");
 }
 
 // ---------------------------------------------------------------------------
+console.log("\nEverything in public/ is actually served to someone");
+// ---------------------------------------------------------------------------
+/*
+ * `public/` shipped `file.svg`, `globe.svg`, `next.svg`, `vercel.svg` and
+ * `window.svg` — the `create-next-app` starter's icons, referenced by nothing,
+ * deployed on every build. A file in `public/` is a public URL, so an orphan
+ * there is not dead code: it is a page of someone else's branding on this
+ * domain.
+ *
+ * Files Next.js or a crawler asks for by name (`favicon.ico`, `robots.txt`,
+ * `sitemap.xml`, `manifest.*`) are referenced by convention rather than by an
+ * import, so they are exempt.
+ */
+{
+  const CONVENTIONAL = /^public\/(favicon\.ico|robots\.txt|sitemap\.xml|manifest\.\w+|apple-icon\.\w+|icon\.\w+|opengraph-image\.\w+)$/;
+  const assets = git(["ls-files", "public"])
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .filter((f) => !CONVENTIONAL.test(f));
+  // This file names the orphans it removed, in the comment above; counting
+  // itself as a reference would make the check permanently vacuous.
+  const sources = tracked.filter((f) => !f.startsWith("public/") && f !== "scripts/hygiene.test.ts");
+  const bodies = sources.map((f) => readFileSync(f, "utf8"));
+  const orphans = assets.filter((asset) => {
+    const name = asset.slice("public/".length);
+    return !bodies.some((body) => body.includes(name));
+  });
+  check("no file in public/ is referenced by nothing", orphans.length === 0, orphans.join(", "));
+  check(
+    "control: the reference scan can find a name that is used",
+    bodies.some((body) => body.includes("build-freshness")),
+  );
+}
+
+// ---------------------------------------------------------------------------
 console.log("\nNo build output or scratch files are tracked");
 // ---------------------------------------------------------------------------
 const all = git(["ls-files"]).split("\n").map((s) => s.trim()).filter(Boolean);
