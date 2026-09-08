@@ -1,3 +1,26 @@
+> **Errata (2026-09-08, após a execução da Fase 0B).** Este parecer é preservado como foi entregue;
+> o corpo abaixo **não** foi reescrito. A medição do protótipo (Fase 0B.1) encontrou duas afirmações
+> factualmente erradas nele, ambas sobre a árvore de skills. Ficam registradas aqui para que ninguém
+> as leia como verdade:
+>
+> 1. **§10, protótipo — "Corpse Explosion" não é da Summoning.** O texto a lista entre os nomes mais
+>    longos da Summoning do Necromancer. Ela pertence à tree **Poison and Bone**
+>    (`content/classes/skill-graph.ts`, `tree: "poison-and-bone"`). Os três nomes mais longos que de
+>    fato estão na Summoning são **"Raise Skeletal Mage" (19), "Skeleton Mastery" (16) e
+>    "Raise Skeleton" (14)**. O argumento do parecer — usar a Summoning porque ela estressa a largura
+>    do nó — continua válido; só o exemplo estava errado.
+> 2. **§7, `role=grid` — alargar a grade não corrige "de graça".** O parecer diz que trazer a grade
+>    3×6 para 320 px corrige o `role=grid` inválido, na premissa de que as células vazias só saem da
+>    árvore de acessibilidade abaixo de `sm`. Elas **nunca entram**: a célula vazia é renderizada com
+>    `role="gridcell"` **e** `aria-hidden="true"` **e** `hidden sm:block`, então as fileiras já
+>    divergem no desktop. A correção exige **também** remover o `aria-hidden` e dar um nome acessível
+>    à célula — a chave `skills.emptyCell` ("No skill" / "Sem skill") já existe nos dois dicionários,
+>    sem uso, e é o nome previsto para isso. O diagnóstico do parecer ("há um defeito latente que
+>    ninguém sabe que está quebrado") estava certo; a causa e o custo da correção, não.
+>
+> Nenhuma conclusão, severidade ou recomendação do parecer muda por causa disto. As correções
+> correspondentes foram aplicadas ao PRD (§2.2 D7, §8.2 R-TREE-0, §8.3 R-TREE-1).
+
 # Revisão adversarial do PRD vNext — D2R Codex
 
 | | |
