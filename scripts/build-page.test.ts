@@ -35,6 +35,7 @@ import {
 } from "../lib/registry";
 import type { ItemRef } from "../lib/types";
 import { MAX_HARD_POINTS } from "../lib/skills";
+import { routes } from "../lib/routes";
 import { packageMath } from "../lib/builds/packages";
 
 let passed = 0;
@@ -84,14 +85,14 @@ const longestPlainRun = (authored: string, cap = 45) =>
     .slice(0, cap);
 
 /**
- * The `<section id="mercenary">` block of a build page, or nothing.
+ * One `<section id="…">` block of a build page, or nothing.
  *
  * Sliced out with a depth counter rather than a lazy regex: `</section>` from a
  * nested section would close the match early and the assertions below would
  * then be reading whatever followed.
  */
-function mercenarySection(html: string): string | undefined {
-  const opener = /<section[^>]*\bid="mercenary"[^>]*>/.exec(html);
+function idSection(html: string, id: string): string | undefined {
+  const opener = new RegExp(`<section[^>]*\\bid="${id}"[^>]*>`).exec(html);
   if (!opener) return undefined;
   const from = opener.index + opener[0].length;
   const tag = /<section\b[^>]*>|<\/section>/g;
@@ -702,7 +703,7 @@ console.log(
         problems.push(`${locale}/${build.slug}: mercenary ${build.mercenary} does not resolve`);
         continue;
       }
-      const section = mercenarySection(readFileSync(pageFor(locale, build.classSlug, build.slug), "utf8"));
+      const section = idSection(readFileSync(pageFor(locale, build.classSlug, build.slug), "utf8"), "mercenary");
       if (section === undefined) {
         problems.push(`${locale}/${build.slug}: no mercenary section in the HTML`);
         continue;
@@ -763,8 +764,55 @@ console.log(
     `<section id="mercenary"><h4>Gear</h4><ul><li><span class="w-16">Weapon</span>${badge}` +
     '<a class="font-medium text-rarity-unique underline" href="/en-us/items/reapers-toll">The Reaper&#x27;s Toll</a></li></ul></section>';
   check("control: the slug scanner ignores a resolved name and a tier badge", slugLookingLabels(fixed).length === 0);
-  check("control: the section extractor finds the mercenary section", mercenarySection(old) !== undefined);
-  check("control: the section extractor returns nothing when there is none", mercenarySection("<p>x</p>") === undefined);
+  check("control: the section extractor finds the mercenary section", idSection(old, "mercenary") !== undefined);
+  check("control: the section extractor returns nothing when there is none", idSection("<p>x</p>", "mercenary") === undefined);
+}
+
+// ---------------------------------------------------------------------------
+console.log(
+  `\nEvery skill named in a build's tables is a link (all ${getBuilds("en-us").length} builds, both locales)`,
+);
+// ---------------------------------------------------------------------------
+/*
+ * The build page carried no `/skills/` link outside the tree panel. The two
+ * tables that tell a reader which skills to max and which to leave at a point
+ * printed the names as plain text, so the one page that names a skill in the
+ * context of a plan was the one page you could not click through from — and on
+ * a phone, where the tree collapses, those tables are the plan.
+ */
+{
+  let cells = 0;
+  const unlinked: string[] = [];
+  for (const locale of LOCALES) {
+    for (const build of getBuilds(locale)) {
+      const html = readFileSync(pageFor(locale, build.classSlug, build.slug), "utf8");
+      const section = idSection(html, "skills");
+      if (section === undefined) {
+        unlinked.push(`${locale}/${build.slug}: no skills section`);
+        continue;
+      }
+      const names = new Map(
+        build.skills.map((a) => [getSkill(locale, a.skill)?.name ?? a.skill, a.skill]),
+      );
+      for (const cell of section.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)) {
+        const text = visible(cell[1]).trim();
+        const slug = names.get(text);
+        if (slug === undefined) continue;
+        cells++;
+        const href = routes(locale).skill(build.classSlug, slug);
+        if (!cell[1].includes(`href="${href}"`)) {
+          unlinked.push(`${locale}/${build.slug}: ${text} → no ${href}`);
+        }
+      }
+    }
+  }
+  check("no skill name in a build table is left unlinked", unlinked.length === 0, `${unlinked.length}: ${unlinked.slice(0, 6).join("; ")}`);
+  /*
+   * Both tables, on every page. 53 builds x 2 locales x (maxed + one-point)
+   * rows is a four-figure number; anything much smaller means the cell matcher
+   * stopped seeing the tables and the assertion above went vacuous.
+   */
+  check("the skill cells were actually found", cells > 1200, `${cells}`);
 }
 
 // ---------------------------------------------------------------------------

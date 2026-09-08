@@ -23,6 +23,7 @@ import {
   ElementBadge,
   ItemRefLink,
   RichText,
+  SkillLink,
 } from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
 import {
@@ -305,9 +306,12 @@ export default async function BuildPage(
                     <span key="i" className="font-mono text-xs text-ember">
                       {alloc.order ?? i + 1}
                     </span>,
-                    <span key="s" className="font-medium text-ink">
-                      {skill?.name ?? alloc.skill}
-                    </span>,
+                    <SkillLink
+                      key="s"
+                      classSlug={build.classSlug}
+                      skill={alloc.skill}
+                      name={skill?.name ?? alloc.skill}
+                    />,
                     <span key="p" className="font-mono">
                       {alloc.points}
                     </span>,
@@ -326,9 +330,12 @@ export default async function BuildPage(
                 rows={onePoints.map((alloc) => {
                   const skill = getSkill(locale, alloc.skill);
                   return [
-                    <span key="s" className="font-medium text-ink">
-                      {skill?.name ?? alloc.skill}
-                    </span>,
+                    <SkillLink
+                      key="s"
+                      classSlug={build.classSlug}
+                      skill={alloc.skill}
+                      name={skill?.name ?? alloc.skill}
+                    />,
                     <Badge key="r" tone="outline">
                       {roles[alloc.role]}
                     </Badge>,

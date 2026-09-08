@@ -10,9 +10,12 @@ import type {
   ItemRef,
   Rune,
   Runeword,
+  Slug,
   StatLine,
 } from "@/lib/types";
 import { resolveRef } from "@/lib/registry/resolve";
+import { hasSkillPages } from "@/lib/skills";
+import { routes } from "@/lib/routes";
 import { type Dictionary } from "@/lib/i18n";
 import { getI18n } from "@/lib/i18n/server";
 import {
@@ -91,6 +94,41 @@ export async function ItemRefLink({
           ({refKindLabel(t, resolved.kind)})
         </span>
       )}
+    </Link>
+  );
+}
+
+/**
+ * A skill's name, linked to the skill's own page.
+ *
+ * The build page named skills in three places and linked them in none: the
+ * tree panel was the only route from a plan to a skill, and the tree is exactly
+ * what collapses on a phone. The tables are the plan at that width, so the name
+ * in a table has to be the link.
+ *
+ * Guarded on `hasSkillPages` for the same reason the tree is: a class whose
+ * skills are not in the extracted graph has no pages to link to, and a link to
+ * a 404 is worse than plain text.
+ */
+export async function SkillLink({
+  classSlug,
+  skill,
+  name,
+}: {
+  classSlug: Slug;
+  skill: Slug;
+  name: string;
+}) {
+  const { locale } = await getI18n();
+  if (!hasSkillPages(classSlug)) {
+    return <span className="font-medium text-ink">{name}</span>;
+  }
+  return (
+    <Link
+      href={routes(locale).skill(classSlug, skill)}
+      className="font-medium text-ink underline decoration-current/30 underline-offset-2 transition-colors hover:text-ember-bright hover:decoration-current"
+    >
+      {name}
     </Link>
   );
 }
