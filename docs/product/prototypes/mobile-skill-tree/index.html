@@ -1,0 +1,1125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Protótipo — árvore de skills no celular · D2R Codex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* =====================================================================
+   Protótipo descartável — Fase 0B.1 do PRD vNext.
+   Nada aqui é código de produção. Tudo é HTML/CSS/JS inline, de propósito:
+   um .ts/.tsx/.css solto nesta pasta entraria no tsconfig e no eslint do
+   repositório.
+
+   Tokens copiados de app/globals.css para que o protótipo pareça o site.
+   Sigilos: geometria própria, no mesmo idioma visual de
+   components/game/skill-sigil.tsx. Nenhum asset do jogo.
+   ===================================================================== */
+
+:root{
+  --abyss:#0b0a09; --surface:#131110; --surface-raised:#1a1817;
+  --surface-overlay:#232020; --border:#2e2a28; --border-strong:#3d3835;
+  --ink:#ede9e4; --ink-muted:#a8a09a; --ink-subtle:#7a726c;
+  --ember:#d4713d; --ember-bright:#f08c52; --ember-dim:#8a4526;
+  --el-fire:#e8703a; --el-cold:#6bb6e8; --el-lightning:#e8d04a;
+  --el-poison:#7bc043; --el-magic:#a88fe8; --el-physical:#c9bfb5;
+  --font-sans:Inter,ui-sans-serif,system-ui,"Segoe UI",sans-serif;
+  --font-display:Cinzel,Georgia,serif;
+  --font-mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+
+  /* Geometria — sobrescrita por [data-variant] e pelos parâmetros de URL. */
+  --gap:8px;          /* vão entre nós, nos dois eixos */
+  --rail:0px;         /* largura do trilho de nível */
+  --rail-gap:0px;     /* espaço entre trilho e grade */
+  --row-h:76px;       /* altura da fileira */
+  --name-fs:0.6875rem;/* 11px em raiz de 16px */
+  --pad-x:20px;       /* Container px-5 do site */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--abyss);color:var(--ink);
+  font-family:var(--font-sans);font-size:1rem;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%,rgba(212,113,61,.07),transparent),
+    radial-gradient(ellipse 60% 40% at 90% 10%,rgba(107,182,232,.035),transparent);
+  background-repeat:no-repeat;
+}
+:focus-visible{outline:2px solid var(--ember);outline-offset:2px;border-radius:2px}
+button{font:inherit;color:inherit}
+
+.container{width:100%;max-width:64rem;margin:0 auto;padding-left:var(--pad-x);padding-right:var(--pad-x)}
+@media (min-width:640px){:root{--pad-x:32px}}
+
+/* ---------------------------------------------------------------- chrome */
+.lab{
+  position:sticky;top:0;z-index:60;background:var(--surface-overlay);
+  border-bottom:1px solid var(--border);font-size:.6875rem;
+}
+.lab summary{
+  cursor:pointer;padding:6px var(--pad-x);color:var(--ink-muted);
+  letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+}
+.lab-body{padding:0 var(--pad-x) 10px;display:flex;flex-wrap:wrap;gap:8px}
+.lab fieldset{border:1px solid var(--border);border-radius:4px;margin:0;padding:4px 6px;min-width:0}
+.lab legend{padding:0 4px;color:var(--ink-subtle);font-size:.625rem;text-transform:uppercase;letter-spacing:.08em}
+.lab button{
+  background:var(--surface);border:1px solid var(--border);border-radius:3px;
+  color:var(--ink-muted);padding:4px 7px;font-size:.6875rem;cursor:pointer;min-height:26px;
+}
+.lab button[aria-pressed="true"]{border-color:var(--ember);color:var(--ink);background:var(--surface-raised)}
+
+/* --------------------------------------------------------------- section */
+.section-head{padding-top:16px}
+.section-head h1{
+  font-family:var(--font-display);font-size:1.25rem;line-height:1.2;margin:0 0 4px;
+  font-weight:600;letter-spacing:.01em;
+}
+.section-sub{margin:0;color:var(--ink-muted);font-size:.75rem}
+.total{
+  display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+  border:1px solid var(--border);border-radius:3px;padding:3px 8px;
+  font-size:.6875rem;color:var(--ink-muted);
+}
+.total b{color:var(--ink);font-weight:600;font-family:var(--font-mono)}
+
+/* ------------------------------------------------------------------ tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:4px;margin:12px 0 4px}
+.tabs [role=tab]{
+  flex:1 1 auto;min-width:0;background:var(--surface);border:1px solid var(--border);
+  border-radius:3px;padding:7px 6px;font-size:.6875rem;line-height:1.15;
+  color:var(--ink-muted);cursor:pointer;text-align:center;min-height:44px;
+}
+.tabs [role=tab][aria-selected=true]{
+  border-color:var(--ember);color:var(--ink);background:var(--surface-raised);font-weight:600;
+}
+.tabs .tab-count{display:block;font-family:var(--font-mono);font-size:.625rem;color:var(--ink-subtle);margin-top:2px}
+.tabs [role=tab][aria-selected=true] .tab-count{color:var(--ember)}
+
+/* ------------------------------------------------------------------ tree */
+.tree{margin-top:14px}
+.tree-head h2{
+  font-family:var(--font-display);font-size:1rem;margin:0;font-weight:600;line-height:1.25;
+}
+.tree-head p{margin:2px 0 0;color:var(--ink-muted);font-size:.6875rem;line-height:1.35}
+.tree-points{
+  margin:6px 0 8px;font-size:.625rem;color:var(--ink-subtle);
+  font-family:var(--font-mono);letter-spacing:.02em;
+}
+.tree-hint{margin:0 0 8px;font-size:.625rem;color:var(--ink-subtle)}
+
+/* As variantes diferem só nestes números. `--row-h` é a menor altura em que
+   nenhum nome corta nas seis árvores, nos dois idiomas — medida, não estimada
+   (ver README, tabela "altura natural do nó"). */
+html[data-variant="a"]{--rail:0px;--rail-gap:0px;--row-h:60px}   /* trilho suprimido, nível no cabeçalho de fileira */
+html[data-variant="b"]{--rail:36px;--rail-gap:8px;--row-h:72px}  /* trilho de produção (w-9) mantido */
+html[data-variant="c"]{--rail:20px;--rail-gap:4px;--row-h:72px}  /* trilho fino, sem cabeçalho de fileira */
+html[data-variant="d"]{--rail:0px;--rail-gap:0px;--row-h:60px}   /* piso: nível só no aria-label e no painel */
+/* E: o trilho sai do fluxo e ocupa a calha do Container (px-5 = 20 px), que
+   está vazia. A grade fica com os 280 px inteiros — nó de 88 px — e o nível
+   continua visível. As alturas das fileiras são copiadas por syncRail. */
+html[data-variant="e"]{--rail:0px;--rail-gap:0px;--row-h:60px}
+[data-variant="e"] .tree-body{position:relative}
+[data-variant="e"] .rail{
+  position:absolute;top:0;left:calc(-1 * var(--pad-x));width:20px;flex:none;
+  display:grid;gap:var(--gap);grid-template-rows:repeat(6,var(--row-h));
+}
+[data-variant="e"] .rail span{justify-content:center;border-right:none;padding-right:0}
+html[data-variant="a"][data-node="inline"]{--row-h:56px}
+html[data-variant="b"][data-node="inline"]{--row-h:68px}
+html[data-variant="c"][data-node="inline"]{--row-h:56px}
+html[data-variant="d"][data-node="inline"]{--row-h:56px}
+[data-variant="d"] .rail{display:none}
+
+.tree-body{display:flex;align-items:stretch;gap:var(--rail-gap)}
+.rail{
+  flex:0 0 var(--rail);width:var(--rail);display:grid;gap:var(--gap);
+  grid-template-rows:repeat(6,var(--row-h));
+}
+[data-variant="a"] .rail{display:none}
+.rail span{
+  display:flex;align-items:center;justify-content:flex-end;
+  border-right:1px solid var(--border);padding-right:4px;
+  font-family:var(--font-mono);font-size:.625rem;color:var(--ink-muted);
+}
+[data-variant="c"] .rail span{padding-right:3px;justify-content:center;border-right:none}
+
+.grid-wrap{position:relative;flex:1 1 auto;min-width:0}
+.conn{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:visible}
+.conn line,.conn path{fill:none;stroke:var(--ink-subtle);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.conn .rel{stroke:var(--ember);stroke-width:3}
+
+.grid{
+  position:relative;z-index:1;display:grid;gap:var(--gap);
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-rows:repeat(6,var(--row-h));
+}
+/* Variante A: cada fileira ganha uma faixa de cabeçalho de altura automática. */
+[data-variant="a"] .grid{grid-template-rows:repeat(6,auto var(--row-h))}
+[data-variant="a"] .grid[data-rowh="auto"]{grid-template-rows:repeat(6,auto auto)}
+.grid[data-rowh="auto"]{grid-template-rows:repeat(6,auto)}
+/* `rows=auto`: a fileira cresce com o texto em vez de cortar. `--row-h` vira
+   piso. O trilho é realinhado por JS (syncRail), porque ele é uma grade
+   irmã e não enxerga as alturas da grade principal. */
+.grid[data-rows="auto"]{grid-template-rows:repeat(6,minmax(var(--row-h),auto))}
+[data-variant="a"] .grid[data-rows="auto"]{grid-template-rows:repeat(6,auto minmax(var(--row-h),auto))}
+.rail[data-rows="auto"]{grid-template-rows:none;grid-auto-rows:auto}
+
+.row{display:contents}
+.rowhdr{
+  display:none;grid-column:1/-1;margin:0;padding:5px 0 2px;
+  border-bottom:1px solid var(--border);
+  font-size:.625rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+[data-variant="a"] .rowhdr{display:block}
+
+.cell{min-width:0}
+.cell.empty{display:block}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+/* ------------------------------------------------------------------ node */
+.node{
+  display:block;width:100%;height:100%;min-height:44px;overflow:hidden;
+  padding:4px 4px 5px;text-align:left;cursor:pointer;
+  background:var(--surface);border-radius:3px;
+  /* `--border` (#2e2a28) mede 1,33:1 contra `--surface`; R-TREE-5 pede 3:1
+     para a moldura, que é o que identifica o nó no estado "disponível".
+     `--ink-subtle` é o token mais escuro do sistema que passa (3,99:1) — o
+     mesmo que produção já escolheu para os conectores, pelo mesmo motivo. */
+  border:1px solid var(--ink-subtle);
+}
+.node:hover{border-color:var(--ink)}
+.node:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
+.node-top{display:flex;align-items:flex-start;justify-content:space-between;gap:2px;min-height:20px}
+.node-name{
+  display:block;font-size:var(--name-fs);line-height:1.2;
+  color:var(--ink);
+  /* `hyphens` precisa de `lang="en"` no próprio elemento (os nomes de skill
+     ficam em inglês nos dois idiomas — ADR 0003) e `anywhere` é a rede de
+     segurança: a 200% de texto "Skeleton" é mais largo que o nó, e sem isto
+     o nome era cortado na horizontal. */
+  /* `break-word`, não `anywhere`: `anywhere` quebrava "Blizzard" em
+     "Blizzar/d" só porque a primeira linha era estreita ao lado do sigilo
+     flutuado; `break-word` empurra a palavra inteira para a linha seguinte e
+     só parte quando ela não cabe nem sozinha (é o que acontece a 200%). */
+  hyphens:auto;overflow-wrap:break-word;
+}
+.sigil{flex:0 0 auto;display:block}
+
+/* Disposição do nó: "stack" empilha sigilo e nome; "inline" flutua o sigilo e
+   o contador, e o nome escorre em volta — vale ~20 px por fileira. */
+html[data-node="inline"] .node-top{display:contents}
+html[data-node="inline"] .sigil{float:left;margin:1px 3px 1px 0}
+html[data-node="inline"] .badge,
+html[data-node="inline"] .lock{float:right;margin:0 0 1px 3px}
+.el-fire{color:var(--el-fire)} .el-cold{color:var(--el-cold)}
+.el-lightning{color:var(--el-lightning)} .el-poison{color:var(--el-poison)}
+.el-magic{color:var(--el-magic)} .el-physical{color:var(--el-physical)}
+.el-none{color:var(--ink-muted)}
+
+/* Contador de pontos — pílula redonda para investida, hexágono para maximizada. */
+.badge{
+  flex:0 0 auto;font-family:var(--font-mono);font-size:.625rem;line-height:1;
+  padding:2px 4px;border-radius:8px;background:var(--ember-dim);color:var(--ink);
+  border:1px solid var(--ember);
+}
+.badge.max{
+  border-radius:2px;background:var(--ember);color:var(--abyss);font-weight:700;
+  clip-path:polygon(22% 0,100% 0,100% 78%,78% 100%,0 100%,0 22%);
+  box-shadow:0 0 0 1px var(--ember-bright);
+}
+.badge.max::after{content:"\2605";margin-left:2px;font-size:.5rem;vertical-align:2px}
+.lock{flex:0 0 auto;color:var(--ink-subtle)}
+
+/* Estados: forma + texto, nunca só cor. */
+.node[data-state=available]{border-style:solid;border-width:1px;border-color:var(--ink-subtle)}
+.node[data-state=invested]{border:2px solid var(--ember);padding:3px 3px 4px}
+.node[data-state=maxed]{
+  border:2px solid var(--ember);padding:3px 3px 4px;
+  box-shadow:inset 0 0 0 1px var(--ember-dim);background:var(--surface-raised);
+}
+/* Fundo opaco também no estado bloqueado: com fundo transparente os
+   conectores passavam por dentro do nome (visto em 320 px, fileira 5). */
+.node[data-state=locked]{border-style:dashed;border-color:var(--border-strong);background:var(--surface)}
+/* `--ink-subtle` sobre `--surface` dá 3,99:1 — abaixo dos 4,5:1 que
+   R-A11Y-5 pede para texto. O estado bloqueado usa `--ink-muted` (7,32:1);
+   quem carrega o estado é a moldura tracejada, o cadeado e o sigilo apagado. */
+.node[data-state=locked] .node-name{color:var(--ink-muted)}
+.node[data-state=locked] .sigil{opacity:.45}
+.node[aria-expanded=true]{outline:2px solid var(--ember-bright);outline-offset:1px}
+
+/* ---------------------------------------------------------------- legend */
+.legend{margin-top:10px;border:1px solid var(--border);border-radius:3px;padding:8px}
+.legend h3{margin:0 0 6px;font-size:.625rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-subtle);font-weight:600}
+/* auto-fit em vez de duas colunas fixas: a 200% de texto as duas colunas
+   estouravam 28 px além da viewport de 320 px. */
+.legend ul{list-style:none;margin:0;padding:0;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:5px 8px}
+.legend li{overflow-wrap:anywhere}
+.legend li{display:flex;align-items:center;gap:5px;font-size:.625rem;color:var(--ink-muted);min-width:0}
+.legend .chip{flex:0 0 18px;height:18px;border-radius:3px;background:var(--surface);border:1px solid var(--border)}
+.legend .chip.invested{border:2px solid var(--ember)}
+.legend .chip.maxed{border:2px solid var(--ember);box-shadow:inset 0 0 0 1px var(--ember-dim);background:var(--surface-raised)}
+.legend .chip.locked{border:1px dashed var(--border-strong);background:transparent}
+.legend p{margin:6px 0 0;font-size:.625rem;color:var(--ink-subtle)}
+
+/* ----------------------------------------------------------- panel/sheet */
+.layout{display:block}
+@media (min-width:1024px){
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 20rem;gap:24px;align-items:start}
+  .panel{position:sticky;top:16px}
+}
+.panel{display:none;border:1px solid var(--border);border-radius:4px;background:var(--surface-raised);padding:14px;margin-top:16px}
+@media (min-width:1024px){.panel{display:block;margin-top:0}}
+
+.scrim{position:fixed;inset:0;background:rgba(11,10,9,.6);z-index:80}
+.sheet{
+  position:fixed;left:0;right:0;bottom:0;z-index:90;display:flex;flex-direction:column;
+  max-height:70vh;background:var(--surface-raised);border-top:1px solid var(--border);
+  border-radius:12px 12px 0 0;
+}
+@media (min-width:1024px){.scrim,.sheet{display:none}}
+.sheet-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto;
+  border-bottom:1px solid var(--border);padding:10px 14px;
+}
+.sheet-head span{font-size:.625rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-muted);font-weight:600}
+.sheet-head button{background:none;border:1px solid var(--border);border-radius:3px;color:var(--ink-muted);padding:6px 10px;font-size:.6875rem;cursor:pointer;min-height:32px}
+.sheet-body{overflow-y:auto;padding:12px 14px 24px}
+
+.detail h3{font-family:var(--font-display);font-size:1rem;margin:0 0 2px;font-weight:600}
+.detail .meta{margin:0 0 8px;font-size:.6875rem;color:var(--ink-muted)}
+.detail dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0 0 10px;font-size:.75rem}
+.detail dt{color:var(--ink-subtle)}
+.detail dd{margin:0;color:var(--ink)}
+.detail .rel-list{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:4px}
+.detail .rel-list a{
+  color:var(--ember-bright);text-decoration:none;border:1px solid var(--border);
+  border-radius:3px;padding:4px 6px;font-size:.6875rem;display:inline-block;min-height:24px;
+}
+.detail .rel-list a:hover{border-color:var(--ember)}
+.detail .state-line{font-size:.6875rem;color:var(--ink-muted);margin:0 0 8px}
+
+/* ------------------------------------------------------------ transições */
+@media (prefers-reduced-motion:no-preference){
+  html:not([data-motion=reduce]) .node,
+  html:not([data-motion=reduce]) .conn line,
+  html:not([data-motion=reduce]) .conn path{transition:border-color .15s,stroke .15s,stroke-width .15s}
+  html:not([data-motion=reduce]) .sheet{animation:rise .18s ease-out}
+}
+@keyframes rise{from{transform:translateY(12px);opacity:.4}to{transform:none;opacity:1}}
+
+/* --------------------------------------------------------------- rodapé */
+.foot{margin:28px 0 40px;font-size:.625rem;color:var(--ink-subtle);line-height:1.5}
+.foot code{font-family:var(--font-mono)}
+</style>
+</head>
+<body>
+
+<details class="lab" id="lab" open>
+  <summary>Protótipo — controles</summary>
+  <div class="lab-body">
+    <fieldset><legend>Variante</legend><div id="c-variant"></div></fieldset>
+    <fieldset><legend>Idioma</legend><div id="c-lang"></div></fieldset>
+    <fieldset><legend>Classe</legend><div id="c-class"></div></fieldset>
+    <fieldset><legend>Layout</legend><div id="c-mode"></div></fieldset>
+    <fieldset><legend>Conectores</legend><div id="c-conn"></div></fieldset>
+    <fieldset><legend>Pontos da build</legend><div id="c-points"></div></fieldset>
+    <fieldset><legend>Meu nível</legend><div id="c-level"></div></fieldset>
+    <fieldset><legend>Nó</legend><div id="c-node"></div></fieldset>
+    <fieldset><legend>Fileira</legend><div id="c-rows"></div></fieldset>
+    <fieldset><legend>Setas</legend><div id="c-nav"></div></fieldset>
+    <fieldset><legend>Movimento</legend><div id="c-motion"></div></fieldset>
+  </div>
+</details>
+
+<div class="container">
+  <div class="layout">
+    <div>
+      <header class="section-head">
+        <h1 id="h-title">Skills</h1>
+        <p class="section-sub" id="h-sub"></p>
+        <p class="total" id="h-total"></p>
+      </header>
+      <div id="tabs-slot"></div>
+      <div id="trees"></div>
+      <noscript>
+        <p style="color:#a8a09a;font-size:.75rem">
+          Este protótipo monta a grade por JavaScript. O requisito de produção
+          (R-TREE-16) exige a grade em HTML estático; a geometria medida aqui
+          não depende disso.
+        </p>
+      </noscript>
+      <p class="foot" id="foot"></p>
+    </div>
+    <aside class="panel" id="panel" role="region" aria-label="Skill details">
+      <p style="color:#a8a09a;font-size:.8125rem;margin:0" id="panel-empty"></p>
+      <div id="panel-body"></div>
+    </aside>
+  </div>
+</div>
+
+<div id="live" aria-live="polite" class="sr-only"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   Dados — extraídos de content/classes/skill-graph.ts e dos arquivos de
+   skills de cada classe (posições reais do jogo: row/column/requiredLevel/
+   prerequisites). Nada foi inventado.
+   ===================================================================== */
+const TREES = {
+ "cold-spells":{name:"Cold Spells",cls:"sorceress",nodes:[
+  {slug:"ice-bolt",name:"Ice Bolt",row:1,col:2,lvl:1,kind:"spell",el:"cold",pre:[]},
+  {slug:"frozen-armor",name:"Frozen Armor",row:1,col:3,lvl:1,kind:"buff",el:"cold",pre:[]},
+  {slug:"frost-nova",name:"Frost Nova",row:2,col:1,lvl:6,kind:"spell",el:"cold",pre:[]},
+  {slug:"ice-blast",name:"Ice Blast",row:2,col:2,lvl:6,kind:"spell",el:"cold",pre:["ice-bolt"]},
+  {slug:"shiver-armor",name:"Shiver Armor",row:3,col:3,lvl:12,kind:"buff",el:"cold",pre:["frozen-armor","ice-blast"]},
+  {slug:"glacial-spike",name:"Glacial Spike",row:4,col:2,lvl:18,kind:"spell",el:"cold",pre:["ice-blast"]},
+  {slug:"blizzard",name:"Blizzard",row:5,col:1,lvl:24,kind:"spell",el:"cold",pre:["frost-nova","glacial-spike"]},
+  {slug:"chilling-armor",name:"Chilling Armor",row:5,col:3,lvl:24,kind:"buff",el:"cold",pre:["shiver-armor"]},
+  {slug:"frozen-orb",name:"Frozen Orb",row:6,col:1,lvl:30,kind:"spell",el:"cold",pre:["blizzard"]},
+  {slug:"cold-mastery",name:"Cold Mastery",row:6,col:2,lvl:30,kind:"passive",el:"cold",pre:[]}]},
+ "lightning-spells":{name:"Lightning Spells",cls:"sorceress",nodes:[
+  {slug:"charged-bolt",name:"Charged Bolt",row:1,col:2,lvl:1,kind:"spell",el:"lightning",pre:[]},
+  {slug:"static-field",name:"Static Field",row:2,col:1,lvl:6,kind:"spell",el:"lightning",pre:[]},
+  {slug:"telekinesis",name:"Telekinesis",row:2,col:3,lvl:6,kind:"spell",el:"magic",pre:[]},
+  {slug:"nova",name:"Nova",row:3,col:1,lvl:12,kind:"spell",el:"lightning",pre:["static-field"]},
+  {slug:"lightning",name:"Lightning",row:3,col:2,lvl:12,kind:"spell",el:"lightning",pre:["charged-bolt"]},
+  {slug:"chain-lightning",name:"Chain Lightning",row:4,col:2,lvl:18,kind:"spell",el:"lightning",pre:["lightning"]},
+  {slug:"teleport",name:"Teleport",row:4,col:3,lvl:18,kind:"spell",el:"magic",pre:["telekinesis"]},
+  {slug:"thunder-storm",name:"Thunder Storm",row:5,col:1,lvl:24,kind:"buff",el:"lightning",pre:["chain-lightning","nova"]},
+  {slug:"energy-shield",name:"Energy Shield",row:5,col:3,lvl:24,kind:"buff",el:"magic",pre:["chain-lightning","teleport"]},
+  {slug:"lightning-mastery",name:"Lightning Mastery",row:6,col:2,lvl:30,kind:"passive",el:"lightning",pre:[]}]},
+ "fire-spells":{name:"Fire Spells",cls:"sorceress",nodes:[
+  {slug:"fire-bolt",name:"Fire Bolt",row:1,col:2,lvl:1,kind:"spell",el:"fire",pre:[]},
+  {slug:"warmth",name:"Warmth",row:1,col:3,lvl:1,kind:"passive",el:"fire",pre:[]},
+  {slug:"inferno",name:"Inferno",row:2,col:1,lvl:6,kind:"spell",el:"fire",pre:[]},
+  {slug:"blaze",name:"Blaze",row:3,col:1,lvl:12,kind:"spell",el:"fire",pre:["inferno"]},
+  {slug:"fire-ball",name:"Fire Ball",row:3,col:2,lvl:12,kind:"spell",el:"fire",pre:["fire-bolt"]},
+  {slug:"fire-wall",name:"Fire Wall",row:4,col:1,lvl:18,kind:"spell",el:"fire",pre:["blaze"]},
+  {slug:"enchant",name:"Enchant",row:4,col:3,lvl:18,kind:"buff",el:"fire",pre:["fire-ball","warmth"]},
+  {slug:"meteor",name:"Meteor",row:5,col:2,lvl:24,kind:"spell",el:"fire",pre:["fire-ball","fire-wall"]},
+  {slug:"fire-mastery",name:"Fire Mastery",row:6,col:2,lvl:30,kind:"passive",el:"fire",pre:[]},
+  {slug:"hydra",name:"Hydra",row:6,col:3,lvl:30,kind:"summon",el:"fire",pre:["enchant"]}]},
+ "summoning":{name:"Summoning Spells",cls:"necromancer",nodes:[
+  {slug:"skeleton-mastery",name:"Skeleton Mastery",row:1,col:1,lvl:1,kind:"passive",el:null,pre:["raise-skeleton"]},
+  {slug:"raise-skeleton",name:"Raise Skeleton",row:1,col:3,lvl:1,kind:"summon",el:null,pre:[]},
+  {slug:"clay-golem",name:"Clay Golem",row:2,col:2,lvl:6,kind:"summon",el:null,pre:[]},
+  {slug:"golem-mastery",name:"Golem Mastery",row:3,col:1,lvl:12,kind:"passive",el:null,pre:["clay-golem"]},
+  {slug:"raise-skeletal-mage",name:"Raise Skeletal Mage",row:3,col:3,lvl:12,kind:"summon",el:null,pre:["raise-skeleton"]},
+  {slug:"blood-golem",name:"Blood Golem",row:4,col:2,lvl:18,kind:"summon",el:null,pre:["clay-golem"]},
+  {slug:"summon-resist",name:"Summon Resist",row:5,col:1,lvl:24,kind:"passive",el:null,pre:["golem-mastery"]},
+  {slug:"iron-golem",name:"Iron Golem",row:5,col:2,lvl:24,kind:"summon",el:null,pre:["blood-golem"]},
+  {slug:"fire-golem",name:"Fire Golem",row:6,col:2,lvl:30,kind:"summon",el:"fire",pre:["iron-golem"]},
+  {slug:"revive",name:"Revive",row:6,col:3,lvl:30,kind:"summon",el:null,pre:["iron-golem","raise-skeletal-mage"]}]},
+ "poison-and-bone":{name:"Poison and Bone Spells",cls:"necromancer",nodes:[
+  {slug:"teeth",name:"Teeth",row:1,col:2,lvl:1,kind:"spell",el:"magic",pre:[]},
+  {slug:"bone-armor",name:"Bone Armor",row:1,col:3,lvl:1,kind:"buff",el:null,pre:[]},
+  {slug:"poison-dagger",name:"Poison Dagger",row:2,col:1,lvl:6,kind:"attack",el:"poison",pre:[]},
+  {slug:"corpse-explosion",name:"Corpse Explosion",row:2,col:2,lvl:6,kind:"spell",el:null,pre:["teeth"]},
+  {slug:"bone-wall",name:"Bone Wall",row:3,col:3,lvl:12,kind:"summon",el:null,pre:["bone-armor"]},
+  {slug:"poison-explosion",name:"Poison Explosion",row:4,col:1,lvl:18,kind:"spell",el:"poison",pre:["corpse-explosion","poison-dagger"]},
+  {slug:"bone-spear",name:"Bone Spear",row:4,col:2,lvl:18,kind:"spell",el:"magic",pre:["corpse-explosion"]},
+  {slug:"bone-prison",name:"Bone Prison",row:5,col:3,lvl:24,kind:"summon",el:null,pre:["bone-spear","bone-wall"]},
+  {slug:"poison-nova",name:"Poison Nova",row:6,col:1,lvl:30,kind:"spell",el:"poison",pre:["poison-explosion"]},
+  {slug:"bone-spirit",name:"Bone Spirit",row:6,col:2,lvl:30,kind:"spell",el:"magic",pre:["bone-spear"]}]},
+ "curses":{name:"Curses",cls:"necromancer",nodes:[
+  {slug:"amplify-damage",name:"Amplify Damage",row:1,col:2,lvl:1,kind:"curse",el:null,pre:[]},
+  {slug:"dim-vision",name:"Dim Vision",row:2,col:1,lvl:6,kind:"curse",el:null,pre:[]},
+  {slug:"weaken",name:"Weaken",row:2,col:3,lvl:6,kind:"curse",el:null,pre:["amplify-damage"]},
+  {slug:"iron-maiden",name:"Iron Maiden",row:3,col:2,lvl:12,kind:"curse",el:null,pre:["amplify-damage"]},
+  {slug:"terror",name:"Terror",row:3,col:3,lvl:12,kind:"curse",el:null,pre:["weaken"]},
+  {slug:"confuse",name:"Confuse",row:4,col:1,lvl:18,kind:"curse",el:null,pre:["dim-vision"]},
+  {slug:"life-tap",name:"Life Tap",row:4,col:2,lvl:18,kind:"curse",el:null,pre:["iron-maiden"]},
+  {slug:"attract",name:"Attract",row:5,col:1,lvl:24,kind:"curse",el:null,pre:["confuse"]},
+  {slug:"decrepify",name:"Decrepify",row:5,col:3,lvl:24,kind:"curse",el:null,pre:["terror"]},
+  {slug:"lower-resist",name:"Lower Resist",row:6,col:2,lvl:30,kind:"curse",el:null,pre:["decrepify","life-tap"]}]}
+};
+const CLASSES = {
+  sorceress:{label:"Sorceress",trees:["cold-spells","lightning-spells","fire-spells"]},
+  necromancer:{label:"Necromancer",trees:["summoning","poison-and-bone","curses"]}
+};
+/* Alocações reais: content/builds/blizzard-sorceress.ts e summoner-necromancer.ts */
+const ALLOC = {
+  sorceress:{blizzard:20,"glacial-spike":20,"ice-blast":20,"ice-bolt":20,"cold-mastery":1,
+    teleport:1,telekinesis:1,"static-field":1,"frozen-armor":1,warmth:1,"frost-nova":1,"frozen-orb":1},
+  necromancer:{"raise-skeleton":20,"skeleton-mastery":20,"corpse-explosion":20,teeth:1,
+    "amplify-damage":1,"clay-golem":1,"golem-mastery":1,"summon-resist":1,weaken:1,terror:1,
+    decrepify:1,"raise-skeletal-mage":1,"bone-armor":1,"bone-wall":1,"blood-golem":1,
+    "iron-golem":1,revive:1}
+};
+const BUILD_NAME = {sorceress:"Blizzard Sorceress",necromancer:"Summoner Necromancer"};
+const MAX_LEVEL = 20, MAX_HARD_POINTS = 110;
+
+/* Cópia de interface. Nomes de skill e de tree ficam em inglês nos dois
+   idiomas (ADR 0003); só os rótulos traduzem. */
+const T = {
+ "en-us":{
+  htmlLang:"en", title:"Skills", sub:"{cls} — {build} (hard points only)",
+  total:"{n} of {m} hard points", inTree:"{n} of {m} points in this tree",
+  hint:"Use arrow keys to move. Enter opens the details.",
+  level:"Level {n}", levelShort:"Lv {n}", treeLabel:"{tree} skill tree",
+  empty:"No skill", details:"Skill details", close:"Close details",
+  panelEmpty:"Select a skill to see what it does, what it needs, and where it sits.",
+  requires:"Requires", unlocks:"Unlocks", unlockLevel:"Unlocks at level {n}",
+  points:"Points in this build", pointsVal:"{n} of {m}", noPoints:"not used",
+  full:"View full skill page", type:"Type", element:"Element", none:"none",
+  states:{locked:"Locked",available:"Available",invested:"Invested",maxed:"Maxed"},
+  legendTitle:"How to read this tree",
+  legendNote:"Hard points only. Gear that grants +skills is not counted.",
+  selected:"{name} selected. {state}.",
+  kinds:{spell:"Spell",buff:"Buff",passive:"Passive",summon:"Summon",curse:"Curse",attack:"Attack",aura:"Aura",shapeshift:"Shapeshift"},
+  els:{fire:"Fire",cold:"Cold",lightning:"Lightning",poison:"Poison",magic:"Magic",physical:"Physical"},
+  myLevel:"My level", off:"off",
+  foot:"Throwaway prototype (Phase 0B.1). Positions, levels and prerequisites come from the repository's skill graph. Marks are the project's own geometry — no game art."
+ },
+ "pt-br":{
+  htmlLang:"pt-BR", title:"Skills", sub:"{cls} — {build} (somente pontos duros)",
+  total:"{n} de {m} pontos duros", inTree:"{n} de {m} pontos nesta árvore",
+  hint:"Use as setas para navegar. Enter abre os detalhes.",
+  level:"Nível {n}", levelShort:"Nv {n}", treeLabel:"Árvore de skills — {tree}",
+  empty:"Sem skill", details:"Detalhes da skill", close:"Fechar detalhes",
+  panelEmpty:"Selecione uma skill para ver o que ela faz, o que exige e onde fica.",
+  requires:"Pré-requisitos", unlocks:"Abre", unlockLevel:"Abre no nível {n}",
+  points:"Pontos nesta build", pointsVal:"{n} de {m}", noPoints:"não usada",
+  full:"Ver a página completa da skill", type:"Tipo", element:"Elemento", none:"nenhum",
+  states:{locked:"Bloqueada",available:"Disponível",invested:"Investida",maxed:"Maximizada"},
+  legendTitle:"Como ler esta árvore",
+  legendNote:"Somente pontos duros. Equipamento que dá +skills não está contado.",
+  selected:"{name} selecionada. {state}.",
+  kinds:{spell:"Magia",buff:"Buff",passive:"Passiva",summon:"Invocação",curse:"Maldição",attack:"Ataque",aura:"Aura",shapeshift:"Transformação"},
+  els:{fire:"Fogo",cold:"Frio",lightning:"Raio",poison:"Veneno",magic:"Mágico",physical:"Físico"},
+  myLevel:"Meu nível", off:"livre",
+  foot:"Protótipo descartável (Fase 0B.1). Posições, níveis e pré-requisitos vêm do grafo de skills do repositório. Os sigilos são geometria própria — nenhuma arte do jogo."
+ }
+};
+const fmt = (s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]!==undefined?o[k]:"{"+k+"}");
+
+/* ---- sigilos: geometria própria, mesmo idioma de skill-sigil.tsx ------ */
+const SHAPE = {
+  attack:'<path d="M4.5 4.5 L19.5 19.5 M19.5 4.5 L4.5 19.5" stroke-width="3.4" stroke-linecap="round" fill="none"/>',
+  spell:'<path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z"/>',
+  aura:'<circle cx="12" cy="12" r="3.6"/><circle cx="12" cy="12" r="8.4" fill="none" stroke-width="2.4"/>',
+  passive:'<path d="M12 2 L20.6 7 L20.6 17 L12 22 L3.4 17 L3.4 7 Z"/>',
+  summon:'<circle cx="12" cy="5.6" r="3.2"/><circle cx="6" cy="16.4" r="3.2"/><circle cx="18" cy="16.4" r="3.2"/>',
+  buff:'<path d="M4 13.5 L12 5.5 L20 13.5 M4 20 L12 12 L20 20" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+  curse:'<path d="M7.5 3.5 L7.5 14 A4.5 4.5 0 0 0 16.5 14 L16.5 9.5" fill="none" stroke-width="3" stroke-linecap="round"/>',
+  shapeshift:'<path d="M12 2.5 A9.5 9.5 0 0 1 12 21.5 Z"/><circle cx="12" cy="12" r="9.5" fill="none" stroke-width="2.4"/>'
+};
+const sigil=(kind,el,size)=>'<svg class="sigil el-'+(el||"none")+'" viewBox="0 0 24 24" width="'+size+'" height="'+size+
+  '" aria-hidden="true" focusable="false" fill="currentColor" stroke="currentColor">'+(SHAPE[kind]||SHAPE.spell)+'</svg>';
+const LOCK='<svg class="lock" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="4.5" y="10.5" width="15" height="11" rx="1.5" fill="currentColor" stroke="none"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>';
+
+/* =====================================================================
+   Navegação por teclado — porte literal de lib/skill-tree-nav.ts, para
+   que a prova de alcançabilidade seja sobre o mesmo algoritmo.
+   ===================================================================== */
+const COLUMNS = 3;
+const at=(g,r,c)=>(g[r]&&g[r][c])||null;
+function firstCell(g){for(let r=0;r<g.length;r++)for(let c=0;c<COLUMNS;c++)if(at(g,r,c))return{row:r,col:c};return{row:0,col:0};}
+function nextHorizontal(g,f,d){
+  for(let c=f.col+d;c>=0&&c<COLUMNS;c+=d) if(at(g,f.row,c)) return{row:f.row,col:c};
+  for(let r=f.row+d;r>=0&&r<g.length;r+=d){const scan=d>0?[0,1,2]:[2,1,0];
+    for(const c of scan) if(at(g,r,c)) return{row:r,col:c};}
+  return null;
+}
+function nextVertical(g,f,d){
+  for(let r=f.row+d;r>=0&&r<g.length;r+=d)
+    for(const c of [f.col,f.col-1,f.col+1,f.col-2,f.col+2]){
+      if(c<0||c>=COLUMNS) continue;
+      if(at(g,r,c)) return{row:r,col:c};
+    }
+  return null;
+}
+/* Política "estrita" de R-TREE-13: esquerda/direita só na fileira,
+   cima/baixo só na coluna, parando na borda. O protótipo provou (nav.ts,
+   24 árvores das 8 classes) que ela preserva a alcançabilidade total. */
+function hzStrict(g,f,d){
+  for(let c=f.col+d;c>=0&&c<COLUMNS;c+=d) if(at(g,f.row,c)) return{row:f.row,col:c};
+  return null;
+}
+function vtStrict(g,f,d){
+  for(let r=f.row+d;r>=0&&r<g.length;r+=d) if(at(g,r,f.col)) return{row:r,col:f.col};
+  return null;
+}
+const navH=(g,f,d)=>S.nav==="strict"?hzStrict(g,f,d):nextHorizontal(g,f,d);
+const navV=(g,f,d)=>S.nav==="strict"?vtStrict(g,f,d):nextVertical(g,f,d);
+function edgeCell(g,last){
+  const rows=[...g.keys()];
+  for(const r of (last?rows.reverse():rows))
+    for(const c of (last?[2,1,0]:[0,1,2])) if(at(g,r,c)) return{row:r,col:c};
+  return null;
+}
+/** Prova de R-TREE-13: BFS a partir do primeiro nó, só com setas/Home/End. */
+function reachability(grid){
+  const key=c=>c.row+","+c.col;
+  const total=grid.flat().filter(Boolean).length;
+  const start=firstCell(grid), seen=new Set([key(start)]), q=[start];
+  while(q.length){
+    const cur=q.shift();
+    const nexts=[navH(grid,cur,1),navH(grid,cur,-1),
+                 navV(grid,cur,1),navV(grid,cur,-1),
+                 edgeCell(grid,false),edgeCell(grid,true)];
+    for(const n of nexts){ if(n&&!seen.has(key(n))){seen.add(key(n));q.push(n);} }
+  }
+  return {total,reached:seen.size,ok:seen.size===total};
+}
+
+/* ===================================================================== */
+const P = new URLSearchParams(location.search);
+const S = {
+  variant:P.get("v")||"e",
+  lang:P.get("lang")||"pt-br",
+  cls:P.get("class")||"sorceress",
+  mode:P.get("mode")||"tabs",
+  conn:P.get("conn")||"straight",
+  points:P.get("points")!=="0",
+  level:P.get("level")?Number(P.get("level")):0,
+  motion:P.get("motion")||"auto",
+  node:P.get("node")||"stack",
+  rows:P.get("rows")||"auto",
+  nav:P.get("nav")||"strict",
+  tree:P.get("tree")||null,
+  rowh:P.get("rowh")||null,
+  namefs:P.get("namefs")||null,
+  gap:P.get("gap")||null
+};
+/* `?nofont=1` simula o protótipo aberto offline: sem Inter/Cinzel, com a
+   pilha do sistema. As medidas de quebra de nome mudam com a fonte, então o
+   relatório reporta os dois casos. */
+if(P.get("nofont")==="1"){
+  document.documentElement.style.setProperty("--font-sans",'ui-sans-serif,system-ui,"Segoe UI",sans-serif');
+  document.documentElement.style.setProperty("--font-display","Georgia,serif");
+}
+if(P.get("chrome")==="0") document.getElementById("lab").hidden=true;
+if(P.get("lab")==="closed") document.getElementById("lab").open=false;
+
+let selected=null, sheetEl=null, lastTrigger=null, focusCell={};
+
+const t=()=>T[S.lang];
+const gridOf=tree=>{
+  const g=[[],[],[],[],[],[]];
+  for(let r=0;r<6;r++) g[r]=[null,null,null];
+  for(const n of TREES[tree].nodes) g[n.row-1][n.col-1]=n;
+  return g;
+};
+const pointsOf=slug=>S.points?(ALLOC[S.cls][slug]||0):0;
+function stateOf(n){
+  if(S.level&&n.lvl>S.level) return "locked";
+  const p=pointsOf(n.slug);
+  if(p>=MAX_LEVEL) return "maxed";
+  if(p>0) return "invested";
+  return "available";
+}
+function ariaLabel(n){
+  const st=t().states[stateOf(n)];
+  const p=pointsOf(n.slug);
+  const pts=S.points?(p>0?fmt(t().pointsVal,{n:p,m:MAX_LEVEL}):t().noPoints)+", ":"";
+  return n.name+", "+fmt(t().level,{n:n.lvl})+", "+TREES[activeTreesFor(n)].name+", "+pts+st+".";
+}
+function activeTreesFor(n){
+  for(const k in TREES) if(TREES[k].nodes.some(x=>x.slug===n.slug)) return k;
+  return null;
+}
+
+/* ------------------------------------------------------------- render */
+function nodeHTML(n){
+  const st=stateOf(n), p=pointsOf(n.slug);
+  let corner="";
+  if(st==="locked") corner=LOCK;
+  else if(st==="maxed") corner='<span class="badge max">'+p+'</span>';
+  else if(st==="invested") corner='<span class="badge">'+p+'</span>';
+  return '<button type="button" class="node" data-state="'+st+'" data-slug="'+n.slug+'"'+
+    ' aria-label="'+ariaLabel(n).replace(/"/g,"&quot;")+'" aria-expanded="false" tabindex="-1"'+
+    ' title="'+n.name+'">'+
+    '<span class="node-top">'+sigil(n.kind,n.el,18)+corner+'</span>'+
+    '<span class="node-name" lang="en">'+n.name+'</span></button>';
+}
+
+function treeHTML(slug){
+  const tree=TREES[slug], grid=gridOf(slug), L=t();
+  const invested=tree.nodes.reduce((a,n)=>a+pointsOf(n.slug),0);
+  const cap=tree.nodes.length*MAX_LEVEL;
+  let rows="";
+  for(let r=0;r<6;r++){
+    const lvl=[1,6,12,18,24,30][r];
+    let cells="";
+    for(let c=0;c<3;c++){
+      const n=grid[r][c];
+      cells += n
+        ? '<div role="gridcell" class="cell">'+nodeHTML(n)+'</div>'
+        /* Célula vazia com nome acessível: as fileiras ficam com três células
+           também na árvore de acessibilidade, que é o que torna role=grid
+           válido. Hoje o site marca a célula vazia como aria-hidden. */
+        : '<div role="gridcell" class="cell empty"><span class="sr-only">'+L.empty+'</span></div>';
+    }
+    rows += '<div role="row" class="row" aria-label="'+fmt(L.level,{n:lvl})+'">'+
+      '<p class="rowhdr" aria-hidden="true">'+fmt(L.level,{n:lvl})+'</p>'+cells+'</div>';
+  }
+  const railHTML='<div class="rail" data-rows="'+S.rows+'" aria-hidden="true">'+
+    [1,6,12,18,24,30].map(l=>"<span>"+l+"</span>").join("")+"</div>";
+  return '<section class="tree" data-tree="'+slug+'" aria-label="'+fmt(L.treeLabel,{tree:tree.name})+'">'+
+    '<div class="tree-head"><h2>'+tree.name+'</h2></div>'+
+    '<p class="tree-points">'+fmt(L.inTree,{n:invested,m:cap})+'</p>'+
+    '<p class="tree-hint">'+L.hint+'</p>'+
+    '<div class="tree-body">'+railHTML+
+      '<div class="grid-wrap"><svg class="conn" aria-hidden="true" focusable="false"></svg>'+
+      '<div class="grid" role="grid" data-rows="'+S.rows+'" data-rowh="'+(S.rowh==="auto"?"auto":"fixed")+
+      '" aria-label="'+fmt(L.treeLabel,{tree:tree.name})+'">'+rows+'</div></div>'+
+    '</div>'+legendHTML()+'</section>';
+}
+
+function legendHTML(){
+  const L=t();
+  return '<div class="legend"><h3>'+L.legendTitle+'</h3><ul>'+
+    '<li><span class="chip"></span>'+L.states.available+'</li>'+
+    '<li><span class="chip locked"></span>'+L.states.locked+' '+LOCK+'</li>'+
+    '<li><span class="chip invested"></span>'+L.states.invested+' <b>N</b></li>'+
+    '<li><span class="chip maxed"></span>'+L.states.maxed+' <b>20★</b></li>'+
+    '</ul><p>'+L.legendNote+'</p></div>';
+}
+
+function detailHTML(slug){
+  const L=t(), tk=activeTreesFor({slug}), n=TREES[tk].nodes.find(x=>x.slug===slug);
+  const st=stateOf(n), p=pointsOf(slug);
+  const byName=s=>{for(const k in TREES){const f=TREES[k].nodes.find(x=>x.slug===s);if(f)return f.name;}return s;};
+  const unlocks=TREES[tk].nodes.filter(x=>x.pre.includes(slug));
+  const link=x=>'<a href="#'+x.slug+'" data-jump="'+x.slug+'">'+x.name+'</a>';
+  return '<div class="detail"><h3>'+n.name+'</h3>'+
+    '<p class="meta">'+TREES[tk].name+' · '+fmt(L.unlockLevel,{n:n.lvl})+'</p>'+
+    '<p class="state-line"><strong>'+L.states[st]+'</strong>'+
+      (S.points?' · '+L.points+': '+(p>0?fmt(L.pointsVal,{n:p,m:MAX_LEVEL}):L.noPoints):'')+'</p>'+
+    '<dl><dt>'+L.type+'</dt><dd>'+L.kinds[n.kind]+'</dd>'+
+    '<dt>'+L.element+'</dt><dd>'+(n.el?L.els[n.el]:L.none)+'</dd></dl>'+
+    (n.pre.length?'<p class="meta">'+L.requires+'</p><ul class="rel-list">'+
+      n.pre.map(s=>'<li>'+link({slug:s,name:byName(s)})+'</li>').join("")+'</ul>':'')+
+    (unlocks.length?'<p class="meta" style="margin-top:8px">'+L.unlocks+'</p><ul class="rel-list">'+
+      unlocks.map(x=>'<li>'+link(x)+'</li>').join("")+'</ul>':'')+
+    '<p style="margin-top:10px"><a href="#" class="rel-list" style="color:var(--ember-bright)">'+L.full+' →</a></p>'+
+    '</div>';
+}
+
+/* ---------------------------------------------------------- conectores */
+function drawConnectors(section){
+  const slug=section.dataset.tree, grid=section.querySelector(".grid");
+  const svg=section.querySelector(".conn"), wrap=section.querySelector(".grid-wrap");
+  const wr=wrap.getBoundingClientRect();
+  svg.setAttribute("viewBox","0 0 "+Math.round(wr.width)+" "+Math.round(wr.height));
+  svg.setAttribute("width",Math.round(wr.width));
+  svg.setAttribute("height",Math.round(wr.height));
+  const centre={};
+  grid.querySelectorAll(".node").forEach(b=>{
+    const r=b.getBoundingClientRect();
+    centre[b.dataset.slug]={x:r.left-wr.left+r.width/2,y:r.top-wr.top+r.height/2,
+                            top:r.top-wr.top,bottom:r.bottom-wr.top};
+  });
+  let out="";
+  for(const n of TREES[slug].nodes){
+    for(const p of n.pre){
+      const a=centre[p], b=centre[n.slug];
+      if(!a||!b) continue;
+      const rel=selected&&(selected===p||selected===n.slug);
+      const cls=rel?"rel":"";
+      if(S.conn==="ortho"){
+        const my=(a.bottom+b.top)/2;
+        out+='<path class="'+cls+'" d="M'+a.x.toFixed(1)+' '+a.bottom.toFixed(1)+
+             ' V'+my.toFixed(1)+' H'+b.x.toFixed(1)+' V'+b.top.toFixed(1)+'"/>';
+      }else{
+        out+='<line class="'+cls+'" x1="'+a.x.toFixed(1)+'" y1="'+a.y.toFixed(1)+
+             '" x2="'+b.x.toFixed(1)+'" y2="'+b.y.toFixed(1)+'"/>';
+      }
+    }
+  }
+  svg.innerHTML=out;
+  syncRail(section,wr);
+}
+/** Com fileiras de altura automática o trilho precisa copiar as alturas. */
+function syncRail(section,wr){
+  const rail=section.querySelector(".rail");
+  if(!rail||S.rows!=="auto") return;
+  const cells=[...rail.children];
+  const rows=[1,6,12,18,24,30].map(l=>l);
+  const nodes=section.querySelectorAll(".grid .row");
+  [...nodes].forEach((row,i)=>{
+    const boxes=[...row.querySelectorAll(".cell")].map(c=>c.getBoundingClientRect());
+    if(!boxes.length||!cells[i]) return;
+    const top=Math.min(...boxes.map(b=>b.top))-wr.top;
+    const bottom=Math.max(...boxes.map(b=>b.bottom))-wr.top;
+    cells[i].style.height=(bottom-top)+"px";
+    cells[i].style.marginTop=i===0?"0":"";
+  });
+  void rows;
+}
+const redrawAll=()=>document.querySelectorAll(".tree").forEach(drawConnectors);
+
+/* -------------------------------------------------------------- selection */
+function select(slug,trigger,confirmed){
+  selected=slug; lastTrigger=trigger||lastTrigger;
+  document.querySelectorAll(".node").forEach(b=>
+    b.setAttribute("aria-expanded",String(b.dataset.slug===slug)));
+  const html=detailHTML(slug);
+  document.getElementById("panel-body").innerHTML=html;
+  document.getElementById("panel-empty").hidden=true;
+  if(sheetEl) sheetEl.querySelector(".sheet-body").innerHTML=html;
+  if(confirmed){
+    const n=TREES[activeTreesFor({slug})].nodes.find(x=>x.slug===slug);
+    document.getElementById("live").textContent=
+      fmt(t().selected,{name:n.name,state:t().states[stateOf(n)]});
+  }
+  redrawAll();
+}
+
+/* Sheet: role=dialog, foco preso, scroll travado, Esc/fundo fecham,
+   foco devolvido ao gatilho. */
+let scrollY=0;
+function openSheet(){
+  if(sheetEl||window.innerWidth>=1024) return;
+  scrollY=window.scrollY;
+  document.body.style.position="fixed";
+  document.body.style.top=(-scrollY)+"px";
+  document.body.style.width="100%";
+  const scrim=document.createElement("div"); scrim.className="scrim";
+  scrim.addEventListener("click",()=>closeSheet(true));
+  const s=document.createElement("div");
+  s.className="sheet"; s.setAttribute("role","dialog");
+  s.setAttribute("aria-modal","true"); s.setAttribute("aria-label",t().details);
+  s.innerHTML='<div class="sheet-head"><span>'+t().details+'</span>'+
+    '<button type="button" data-close>'+t().close+'</button></div>'+
+    '<div class="sheet-body">'+(selected?detailHTML(selected):"")+'</div>';
+  document.body.append(scrim,s);
+  sheetEl=s; s.__scrim=scrim;
+  s.querySelector("[data-close]").addEventListener("click",()=>closeSheet(true));
+  s.addEventListener("keydown",e=>{
+    if(e.key==="Escape"){e.preventDefault();closeSheet(true);return;}
+    if(e.key!=="Tab") return;
+    const f=[...s.querySelectorAll("button,a[href]")].filter(el=>el.offsetParent!==null);
+    if(!f.length) return;
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+    else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+  });
+  s.querySelector("[data-close]").focus();
+}
+function closeSheet(restore){
+  if(!sheetEl) return;
+  sheetEl.__scrim.remove(); sheetEl.remove(); sheetEl=null;
+  document.body.style.position=""; document.body.style.top=""; document.body.style.width="";
+  window.scrollTo(0,scrollY);
+  if(restore&&lastTrigger&&document.contains(lastTrigger)) lastTrigger.focus();
+}
+
+/* --------------------------------------------------------------- teclado */
+function onKey(e,section){
+  const grid=gridOf(section.dataset.tree);
+  const btn=e.currentTarget;
+  const cur={row:Number(btn.dataset.row),col:Number(btn.dataset.col)};
+  let next=null;
+  switch(e.key){
+    case "ArrowRight": next=navH(grid,cur,1); break;
+    case "ArrowLeft":  next=navH(grid,cur,-1); break;
+    case "ArrowDown":  next=navV(grid,cur,1); break;
+    case "ArrowUp":    next=navV(grid,cur,-1); break;
+    case "Home":       next=edgeCell(grid,false); break;
+    case "End":        next=edgeCell(grid,true); break;
+    case "Enter": case " ":
+      e.preventDefault(); select(btn.dataset.slug,btn,true); openSheet(); return;
+    case "Escape":
+      e.preventDefault(); closeSheet(true); return;
+    default: return;
+  }
+  if(!next) {e.preventDefault(); return;}
+  e.preventDefault();
+  const target=section.querySelector('.node[data-row="'+next.row+'"][data-col="'+next.col+'"]');
+  if(target){ setTabStop(section,target); target.focus(); }
+}
+function setTabStop(section,btn){
+  section.querySelectorAll(".node").forEach(b=>b.tabIndex=-1);
+  btn.tabIndex=0;
+  focusCell[section.dataset.tree]=btn.dataset.slug;
+}
+
+/* ----------------------------------------------------------------- tabs */
+function tabsHTML(){
+  const L=t(), trees=CLASSES[S.cls].trees;
+  return '<div class="tabs" role="tablist" aria-label="'+L.title+'">'+
+    trees.map(k=>{
+      const on=k===S.tree;
+      const inv=TREES[k].nodes.reduce((a,n)=>a+pointsOf(n.slug),0);
+      return '<button type="button" role="tab" id="tab-'+k+'" aria-controls="panel-'+k+'"'+
+        ' aria-selected="'+on+'" tabindex="'+(on?0:-1)+'" data-tree="'+k+'">'+TREES[k].name+
+        (S.points?'<span class="tab-count">'+inv+'/'+(TREES[k].nodes.length*MAX_LEVEL)+'</span>':'')+
+        '</button>';
+    }).join("")+'</div>';
+}
+
+/* --------------------------------------------------------------- montagem */
+function render(){
+  const L=t();
+  document.documentElement.lang=L.htmlLang;
+  document.documentElement.dataset.variant=S.variant;
+  document.documentElement.dataset.motion=S.motion==="reduce"?"reduce":"auto";
+  document.documentElement.dataset.node=S.node;
+  const st=document.documentElement.style;
+  if(S.rowh&&S.rowh!=="auto") st.setProperty("--row-h",S.rowh+"px"); else st.removeProperty("--row-h");
+  if(S.namefs) st.setProperty("--name-fs",S.namefs); else st.removeProperty("--name-fs");
+  if(S.gap) st.setProperty("--gap",S.gap+"px"); else st.removeProperty("--gap");
+
+  const trees=CLASSES[S.cls].trees;
+  if(!S.tree||!trees.includes(S.tree)) S.tree=trees[0];
+
+  document.getElementById("h-title").textContent=L.title;
+  document.getElementById("h-sub").textContent=
+    fmt(L.sub,{cls:CLASSES[S.cls].label,build:BUILD_NAME[S.cls]});
+  const total=Object.values(ALLOC[S.cls]).reduce((a,b)=>a+b,0);
+  document.getElementById("h-total").innerHTML=
+    S.points?fmt(L.total,{n:"<b>"+total+"</b>",m:"<b>"+MAX_HARD_POINTS+"</b>"}):L.legendNote;
+  document.getElementById("foot").textContent=L.foot;
+  document.getElementById("panel-empty").textContent=L.panelEmpty;
+  document.getElementById("panel").setAttribute("aria-label",L.details);
+
+  document.getElementById("tabs-slot").innerHTML=S.mode==="tabs"?tabsHTML():"";
+  const shown=S.mode==="tabs"?[S.tree]:trees;
+  /* Em modo abas todas as três existem no DOM; as inativas usam o atributo
+     `hidden` (não aria-hidden), então saem da árvore de acessibilidade E do
+     Tab — que é a distinção que a revisão pede. */
+  document.getElementById("trees").innerHTML=trees.map(k=>{
+    const h=treeHTML(k);
+    return h.replace('<section class="tree"','<section class="tree" id="panel-'+k+'"'+
+      (S.mode==="tabs"?' role="tabpanel" aria-labelledby="tab-'+k+'"':"")+
+      (shown.includes(k)?"":" hidden"));
+  }).join("");
+
+  wire();
+  requestAnimationFrame(()=>{redrawAll();});
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(redrawAll);
+}
+
+function wire(){
+  document.querySelectorAll(".tree").forEach(section=>{
+    const grid=gridOf(section.dataset.tree);
+    const first=firstCell(grid);
+    section.querySelectorAll(".node").forEach(btn=>{
+      const n=TREES[section.dataset.tree].nodes.find(x=>x.slug===btn.dataset.slug);
+      btn.dataset.row=n.row-1; btn.dataset.col=n.col-1;
+      const isStart=focusCell[section.dataset.tree]
+        ? focusCell[section.dataset.tree]===n.slug
+        : (n.row-1===first.row&&n.col-1===first.col);
+      btn.tabIndex=isStart?0:-1;
+      btn.addEventListener("keydown",e=>onKey(e,section));
+      btn.addEventListener("click",()=>{setTabStop(section,btn);select(btn.dataset.slug,btn,true);openSheet();});
+      btn.addEventListener("focus",()=>setTabStop(section,btn));
+      if(window.matchMedia("(hover: hover)").matches){
+        btn.addEventListener("pointerenter",()=>{ if(!sheetEl) select(btn.dataset.slug,btn,false); });
+      }
+    });
+  });
+  document.querySelectorAll('[role=tab]').forEach(tab=>{
+    tab.addEventListener("click",()=>{S.tree=tab.dataset.tree;sync();});
+    tab.addEventListener("keydown",e=>{
+      const tabs=[...document.querySelectorAll('[role=tab]')];
+      const i=tabs.indexOf(tab);
+      let j=null;
+      if(e.key==="ArrowRight") j=(i+1)%tabs.length;
+      if(e.key==="ArrowLeft") j=(i-1+tabs.length)%tabs.length;
+      if(e.key==="Home") j=0;
+      if(e.key==="End") j=tabs.length-1;
+      if(j===null) return;
+      e.preventDefault(); S.tree=tabs[j].dataset.tree; sync();
+      requestAnimationFrame(()=>{const el=document.getElementById("tab-"+S.tree); if(el) el.focus();});
+    });
+  });
+  document.addEventListener("click",e=>{
+    const a=e.target.closest("[data-jump]");
+    if(!a) return;
+    e.preventDefault();
+    const slug=a.dataset.jump;
+    const btn=document.querySelector('.node[data-slug="'+slug+'"]:not([hidden])');
+    select(slug,btn||lastTrigger,true);
+    if(btn&&!sheetEl) btn.focus();
+  },true);
+}
+
+/* ------------------------------------------------------------- controles */
+function ctl(host,opts,get,set){
+  const el=document.getElementById(host); if(!el) return;
+  el.innerHTML=opts.map(o=>
+    '<button type="button" data-val="'+o[0]+'" aria-pressed="'+(String(get())===String(o[0]))+'">'+o[1]+'</button>'
+  ).join(" ");
+  el.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{set(b.dataset.val);sync();}));
+}
+function controls(){
+  ctl("c-variant",[["a","A"],["b","B"],["c","C"],["d","D"],["e","E"]],()=>S.variant,v=>S.variant=v);
+  ctl("c-lang",[["pt-br","PT"],["en-us","EN"]],()=>S.lang,v=>S.lang=v);
+  ctl("c-class",[["sorceress","Sorc"],["necromancer","Necro"]],()=>S.cls,v=>{S.cls=v;S.tree=null;});
+  ctl("c-mode",[["tabs","Abas"],["stacked","Empilhadas"]],()=>S.mode,v=>S.mode=v);
+  ctl("c-conn",[["straight","Reto"],["ortho","Ortogonal"]],()=>S.conn,v=>S.conn=v);
+  ctl("c-points",[["1","Sim"],["0","Não"]],()=>S.points?"1":"0",v=>S.points=v==="1");
+  ctl("c-level",[["0",t().off],["12","12"],["24","24"],["30","30"]],()=>String(S.level),v=>S.level=Number(v));
+  ctl("c-node",[["stack","Empilhado"],["inline","Em linha"]],()=>S.node,v=>S.node=v);
+  ctl("c-rows",[["fixed","Fixa"],["auto","Cresce"]],()=>S.rows,v=>S.rows=v);
+  ctl("c-nav",[["strict","Estritas"],["current","Como hoje"]],()=>S.nav,v=>S.nav=v);
+  ctl("c-motion",[["auto","Auto"],["reduce","Reduzido"]],()=>S.motion,v=>S.motion=v);
+}
+function sync(){
+  const q=new URLSearchParams();
+  q.set("v",S.variant); q.set("lang",S.lang); q.set("class",S.cls);
+  q.set("mode",S.mode); q.set("conn",S.conn); q.set("points",S.points?"1":"0");
+  q.set("level",String(S.level)); q.set("motion",S.motion); q.set("node",S.node);
+  q.set("rows",S.rows); q.set("nav",S.nav); q.set("tree",S.tree||"");
+  if(S.rowh) q.set("rowh",S.rowh);
+  if(S.namefs) q.set("namefs",S.namefs);
+  if(S.gap) q.set("gap",S.gap);
+  if(document.getElementById("lab").hidden) q.set("chrome","0");
+  history.replaceState(null,"","?"+q.toString());
+  selected=null;
+  document.getElementById("panel-body").innerHTML="";
+  document.getElementById("panel-empty").hidden=false;
+  closeSheet(false);
+  render(); controls();
+}
+
+/* =====================================================================
+   Instrumentação de medição. window.__measure() devolve tudo que o
+   relatório precisa; roda igual no Browser pane e no CDP.
+   ===================================================================== */
+window.__measure=function(){
+  const root=document.documentElement;
+  const cs=getComputedStyle(root);
+  const container=document.querySelector(".container");
+  const visible=[...document.querySelectorAll(".tree")].filter(s=>!s.hasAttribute("hidden"));
+  const nodes=visible.flatMap(s=>[...s.querySelectorAll(".node")]);
+  const rects=nodes.map(n=>n.getBoundingClientRect());
+  /* Um nó "corta" quando o conteúdo não cabe na caixa: scrollHeight do
+     próprio botão (que tem overflow:hidden) contra o clientHeight. `need` é a
+     altura de caixa que o conteúdo exigiria — é daí que sai a altura de
+     fileira recomendada. */
+  const names=nodes.map(n=>{
+    const el=n.querySelector(".node-name");
+    const bw=parseFloat(getComputedStyle(n).borderTopWidth)*2;
+    return {name:el.textContent,need:n.scrollHeight+bw,have:n.clientHeight+bw,
+            over:n.scrollHeight>n.clientHeight+0.5,
+            overX:el.scrollWidth>el.clientWidth+0.5||n.scrollWidth>n.clientWidth+0.5};
+  });
+  /* Palavra partida ao meio: mede cada palavra com um Range e vê se ela
+     ocupa mais de uma linha. "Blizzar / d" é falha de leitura mesmo sem
+     corte de caixa. */
+  const split=[];
+  for(const n of nodes){
+    const el=n.querySelector(".node-name"), txt=el.textContent;
+    let i=0;
+    for(const w of txt.split(" ")){
+      const start=txt.indexOf(w,i); i=start+w.length;
+      const r=document.createRange();
+      r.setStart(el.firstChild,start); r.setEnd(el.firstChild,i);
+      const tops=new Set([...r.getClientRects()].map(x=>Math.round(x.top)));
+      if(tops.size>1) split.push(txt+" / "+w);
+      r.detach&&r.detach();
+    }
+  }
+  const sec=document.querySelector(".section-head").getBoundingClientRect();
+  const treesBox=document.getElementById("trees").getBoundingClientRect();
+  const tabsBox=document.getElementById("tabs-slot").getBoundingClientRect();
+  const sectionH=(treesBox.bottom-sec.top);
+  const per=visible.map(s=>{
+    const r=s.getBoundingClientRect();
+    const g=s.querySelector(".grid").getBoundingClientRect();
+    const lg=s.querySelector(".legend").getBoundingClientRect();
+    return {tree:s.dataset.tree,h:+r.height.toFixed(1),gridH:+g.height.toFixed(1),
+            legendH:+lg.height.toFixed(1),gridW:+g.width.toFixed(1)};
+  });
+  const railEl=visible[0]?visible[0].querySelector(".rail"):null;
+  const railW=railEl?+railEl.getBoundingClientRect().width.toFixed(1):0;
+  const reach={};
+  for(const k of CLASSES[S.cls].trees) reach[k]=reachability(gridOf(k));
+  const tabs=[...document.querySelectorAll("[role=tab]")];
+  const tabRows=new Set(tabs.map(b=>Math.round(b.getBoundingClientRect().top)));
+  const conn=visible[0]?visible[0].querySelectorAll(".conn line,.conn path").length:0;
+  const svg=visible[0]?visible[0].querySelector(".conn").getBoundingClientRect():{width:0,height:0};
+  return {
+    cfg:{variant:S.variant,lang:S.lang,cls:S.cls,mode:S.mode,conn:S.conn,
+         node:S.node,rows:S.rows,nav:S.nav,points:S.points,level:S.level,tree:S.tree},
+    viewport:{w:window.innerWidth,h:window.innerHeight,
+              rootFont:parseFloat(getComputedStyle(document.documentElement).fontSize),
+              fontsLoaded:document.fonts?document.fonts.check('12px Inter'):null},
+    doc:{scrollW:document.documentElement.scrollWidth,
+         clientW:document.documentElement.clientWidth,
+         overflowX:document.documentElement.scrollWidth-document.documentElement.clientWidth},
+    container:{w:+container.getBoundingClientRect().width.toFixed(1),
+               inner:+(container.getBoundingClientRect().width-
+                       parseFloat(getComputedStyle(container).paddingLeft)-
+                       parseFloat(getComputedStyle(container).paddingRight)).toFixed(1)},
+    geom:{railW:railW,gap:cs.getPropertyValue("--gap").trim(),
+          rowH:cs.getPropertyValue("--row-h").trim(),
+          nameFS:cs.getPropertyValue("--name-fs").trim(),
+          gridW:per[0]?per[0].gridW:0},
+    node:{n:rects.length,
+          w:rects.length?+Math.min(...rects.map(r=>r.width)).toFixed(1):0,
+          wMax:rects.length?+Math.max(...rects.map(r=>r.width)).toFixed(1):0,
+          h:rects.length?+Math.min(...rects.map(r=>r.height)).toFixed(1):0,
+          hMax:rects.length?+Math.max(...rects.map(r=>r.height)).toFixed(1):0},
+    names:{total:names.length,over:names.filter(n=>n.over).length,
+           overX:names.filter(n=>n.overX).length,
+           split:split.length,splitNames:[...new Set(split)].slice(0,6),
+           overXnames:names.filter(n=>n.overX).map(n=>n.name),
+           needMax:Math.max(...names.map(n=>n.need)),
+           needMaxName:names.reduce((a,b)=>b.need>a.need?b:a,names[0]).name,
+           worst:names.filter(n=>n.over).map(n=>n.name+" ("+n.need+">"+n.have+")")},
+    section:{h:+sectionH.toFixed(1),tabsH:+tabsBox.height.toFixed(1),
+             perTree:per,treesH:+treesBox.height.toFixed(1)},
+    tabs:{count:tabs.length,rows:tabRows.size,
+          labels:tabs.map(b=>b.textContent.replace(/\s+/g," ").trim()),
+          minH:tabs.length?+Math.min(...tabs.map(b=>b.getBoundingClientRect().height)).toFixed(1):0,
+          minW:tabs.length?+Math.min(...tabs.map(b=>b.getBoundingClientRect().width)).toFixed(1):0},
+    connectors:{drawn:conn,svgW:+svg.width.toFixed(1),svgH:+svg.height.toFixed(1)},
+    keyboard:reach,
+    tabStops:document.querySelectorAll('.tree:not([hidden]) .node[tabindex="0"]').length,
+    /* Elementos dentro de uma tree inativa que ainda são focáveis de fato.
+       `hidden` (display:none) tira do Tab e da árvore de acessibilidade;
+       `aria-hidden` sozinho não tiraria — é essa a distinção medida. */
+    focusableInHidden:[...document.querySelectorAll('.tree[hidden] button,.tree[hidden] a')]
+      .filter(el=>typeof el.checkVisibility==="function"?el.checkVisibility():el.offsetParent!==null).length,
+    hiddenTrees:document.querySelectorAll('.tree[hidden]').length,
+    /* Quem estoura a largura, quando estoura. */
+    culprits:(function(){
+      const w=document.documentElement.clientWidth, out=[];
+      document.querySelectorAll("body *").forEach(el=>{
+        const r=el.getBoundingClientRect();
+        if(r.width<2) return;  /* .sr-only usa margin:-1px; não é overflow */
+        if(r.right>w+0.5||r.left<-0.5)
+          out.push((el.className||el.tagName)+" @"+r.left.toFixed(0)+".."+r.right.toFixed(0));
+      });
+      return out.slice(0,8);
+    })(),
+    chrome:(function(){
+      const s=document.querySelector(".tree:not([hidden])");
+      if(!s) return null;
+      const b=x=>{const e=s.querySelector(x);return e?+e.getBoundingClientRect().height.toFixed(1):0;};
+      return {head:b(".tree-head"),points:b(".tree-points"),hint:b(".tree-hint"),
+              sectionHead:+document.querySelector(".section-head").getBoundingClientRect().height.toFixed(1)};
+    })()
+  };
+};
+window.__state=S;
+
+/* ------------------------------------------------------------------ boot */
+render(); controls();
+addEventListener("resize",()=>redrawAll());
+if(window.ResizeObserver){
+  const ro=new ResizeObserver(()=>redrawAll());
+  ro.observe(document.body);
+}
+addEventListener("keydown",e=>{ if(e.key==="Escape") closeSheet(true); });
+</script>
+</body>
+</html>
