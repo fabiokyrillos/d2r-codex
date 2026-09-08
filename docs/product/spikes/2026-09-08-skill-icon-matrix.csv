@@ -1,0 +1,131 @@
+classe,tree,fila,coluna,nivel,skill,kind,element,candidato_B_icone,candidato_B_autor,plausibilidade,nota
+sorceress,cold-spells,1,2,1,Ice Bolt,spell,cold,lorc/ice-bolt,Lorc,direto,
+sorceress,cold-spells,1,3,1,Frozen Armor,buff,cold,lorc/ice-shield,Lorc,aceitavel,"escudo e nao armadura; primeira de tres armaduras de gelo que precisam ser distinguiveis entre si"
+sorceress,cold-spells,2,1,6,Frost Nova,spell,cold,delapouite/frozen-ring,Delapouite,aceitavel,"segundo autor na mesma arvore; Delapouite e Lorc tem tracos diferentes"
+sorceress,cold-spells,2,2,6,Ice Blast,spell,cold,lorc/ice-bomb,Lorc,aceitavel,"bomba e nao projetil congelante"
+sorceress,cold-spells,3,3,12,Shiver Armor,buff,cold,lorc/icicles-aura,Lorc,aceitavel,"segunda armadura de gelo"
+sorceress,cold-spells,4,2,18,Glacial Spike,spell,cold,lorc/ice-spear,Lorc,direto,
+sorceress,cold-spells,5,1,24,Blizzard,spell,cold,lorc/snowing,Lorc,aceitavel,"neve caindo; distingue-se de Ice Blast - a pergunta explicita de R-TREE-19"
+sorceress,cold-spells,5,3,24,Chilling Armor,buff,cold,delapouite/frozen-body,Delapouite,forcado,"terceira armadura de gelo; o conjunto nao tem tres variantes coerentes e esta vem de outro autor"
+sorceress,cold-spells,6,1,30,Frozen Orb,spell,cold,lorc/frozen-orb,Lorc,direto,
+sorceress,cold-spells,6,2,30,Cold Mastery,passive,cold,lorc/cold-heart,Lorc,forcado,"o conceito mastery nao existe no conjunto; qualquer escolha e um decimo icone de gelo que colide com os outros nove"
+sorceress,lightning-spells,1,2,1,Charged Bolt,spell,lightning,lorc/lightning-branches,Lorc,aceitavel,"ramos e nao multiplos projeteis"
+sorceress,lightning-spells,2,1,6,Static Field,spell,lightning,lorc/static,Lorc,direto,
+sorceress,lightning-spells,2,3,6,Telekinesis,spell,magic,lorc/psychic-waves,Lorc,aceitavel,"psiquico generico"
+sorceress,lightning-spells,3,1,12,Nova,spell,lightning,lorc/circle-sparks,Lorc,aceitavel,
+sorceress,lightning-spells,3,2,12,Lightning,spell,lightning,lorc/heavy-lightning,Lorc,direto,
+sorceress,lightning-spells,4,2,18,Chain Lightning,spell,lightning,willdabeast/chain-lightning,Willdabeast,direto,"unico acerto exato de nome; Willdabeast tem 7 icones no conjunto inteiro e um traco distinto de Lorc"
+sorceress,lightning-spells,4,3,18,Teleport,spell,magic,lorc/teleport,Lorc,direto,
+sorceress,lightning-spells,5,1,24,Thunder Storm,buff,lightning,lorc/lightning-storm,Lorc,direto,
+sorceress,lightning-spells,5,3,24,Energy Shield,buff,magic,lorc/energy-shield,Lorc,direto,
+sorceress,lightning-spells,6,2,30,Lightning Mastery,passive,lightning,lorc/lightning-helix,Lorc,forcado,"mastery ausente"
+sorceress,fire-spells,1,2,1,Fire Bolt,spell,fire,lorc/fire-ray,Lorc,aceitavel,"raio continuo e nao projetil unico"
+sorceress,fire-spells,1,3,1,Warmth,passive,fire,lorc/campfire,Lorc,forcado,"regeneracao de mana nao tem representacao; fogueira ilustra o nome e nao a mecanica"
+sorceress,fire-spells,2,1,6,Inferno,spell,fire,lorc/fire-breath,Lorc,direto,
+sorceress,fire-spells,3,1,12,Blaze,spell,fire,lorc/fire-dash,Lorc,direto,
+sorceress,fire-spells,3,2,12,Fire Ball,spell,fire,lorc/fireball,Lorc,direto,
+sorceress,fire-spells,4,1,18,Fire Wall,spell,fire,lorc/fire-zone,Lorc,aceitavel,"area e nao parede; delapouite/firewall e o simbolo de rede - registro errado"
+sorceress,fire-spells,4,3,18,Enchant,buff,fire,lorc/sparkling-sabre,Lorc,aceitavel,
+sorceress,fire-spells,5,2,24,Meteor,spell,fire,lorc/burning-meteor,Lorc,direto,
+sorceress,fire-spells,6,2,30,Fire Mastery,passive,fire,lorc/fire-silhouette,Lorc,forcado,"mastery ausente"
+sorceress,fire-spells,6,3,30,Hydra,summon,fire,lorc/hydra,Lorc,direto,
+necromancer,curses,1,2,1,Amplify Damage,curse,none,delapouite/armor-downgrade,Delapouite,aceitavel,"armadura com seta para baixo le como defesa reduzida"
+necromancer,curses,2,1,6,Dim Vision,curse,none,skoll/sight-disabled,Skoll,direto,"terceiro autor na mesma arvore"
+necromancer,curses,2,3,6,Weaken,curse,none,lorc/despair,Lorc,forcado,"nao se distingue de Amplify Damage nem de Decrepify"
+necromancer,curses,3,2,12,Iron Maiden,curse,none,lorc/spiked-armor,Lorc,forcado,"armadura com espinhos; o efeito e dano refletido e nao defesa"
+necromancer,curses,3,3,12,Terror,curse,none,lorc/terror,Lorc,direto,
+necromancer,curses,4,1,18,Confuse,curse,none,delapouite/knocked-out-stars,Delapouite,forcado,
+necromancer,curses,4,2,18,Life Tap,curse,none,lorc/life-tap,Lorc,direto,
+necromancer,curses,5,1,24,Attract,curse,none,lorc/magnet,Lorc,aceitavel,"ima em uma arvore medieval; registro moderno"
+necromancer,curses,5,3,24,Decrepify,curse,none,,,ausente,"nada nos 4.239 arquivos expressa decrepitude ou lentidao amaldicoada"
+necromancer,curses,6,2,30,Lower Resist,curse,none,delapouite/electrical-resistance,Delapouite,forcado,"simbolo de resistor eletronico; registro errado"
+necromancer,poison-and-bone,1,2,1,Teeth,spell,magic,lorc/front-teeth,Lorc,aceitavel,
+necromancer,poison-and-bone,1,3,1,Bone Armor,buff,none,lorc/ribcage,Lorc,aceitavel,
+necromancer,poison-and-bone,2,1,6,Poison Dagger,attack,poison,lorc/plain-dagger,Lorc,forcado,"nao comunica veneno; combinar dois icones cria uma obra derivada nova - permitida pela licenca mas fora do conjunto"
+necromancer,poison-and-bone,2,2,6,Corpse Explosion,spell,none,lorc/goo-explosion,Lorc,aceitavel,
+necromancer,poison-and-bone,3,3,12,Bone Wall,summon,none,delapouite/spiked-wall,Delapouite,forcado,"parede de espinhos e nao de ossos"
+necromancer,poison-and-bone,4,1,18,Poison Explosion,spell,poison,sbed/poison-cloud,Sbed,aceitavel,"quarto autor; sbed tem 95 icones com media de 694 B - silhueta bem mais simples que a de Lorc"
+necromancer,poison-and-bone,4,2,18,Bone Spear,spell,magic,lorc/barbed-spear,Lorc,forcado,"lanca farpada e nao de osso"
+necromancer,poison-and-bone,5,3,24,Bone Prison,summon,none,lorc/imprisoned,Lorc,forcado,"prisioneiro e nao prisao de ossos"
+necromancer,poison-and-bone,6,1,30,Poison Nova,spell,poison,sbed/poison,Sbed,aceitavel,
+necromancer,poison-and-bone,6,2,30,Bone Spirit,spell,magic,lorc/ghost,Lorc,aceitavel,
+necromancer,summoning,1,1,1,Skeleton Mastery,passive,none,skoll/skeleton,Skoll,forcado,"mastery ausente; colide com Raise Skeleton na mesma arvore"
+necromancer,summoning,1,3,1,Raise Skeleton,summon,none,skoll/raise-skeleton,Skoll,direto,
+necromancer,summoning,2,2,6,Clay Golem,summon,none,delapouite/rock-golem,Delapouite,aceitavel,"rocha e nao argila"
+necromancer,summoning,3,1,12,Golem Mastery,passive,none,delapouite/golem-head,Delapouite,forcado,"mastery ausente"
+necromancer,summoning,3,3,12,Raise Skeletal Mage,summon,none,,,ausente,
+necromancer,summoning,4,2,18,Blood Golem,summon,none,,,ausente,"existem cinco golems (ice rock metal head robot) e skoll/blood; nenhum e de sangue"
+necromancer,summoning,5,1,24,Summon Resist,passive,none,,,ausente,
+necromancer,summoning,5,2,24,Iron Golem,summon,none,delapouite/metal-golem-head,Delapouite,direto,
+necromancer,summoning,6,2,30,Fire Golem,summon,fire,,,ausente,"delapouite/ice-golem existe; o de fogo nao"
+necromancer,summoning,6,3,30,Revive,summon,none,skoll/raise-zombie,Skoll,aceitavel,
+paladin,offensive-auras,1,1,1,Might,aura,physical,delapouite/mighty-force,Delapouite,forcado,"amostra escolhida porque auras sao estados continuos e abstratos - o pior caso de mapeamento"
+paladin,offensive-auras,2,2,6,Holy Fire,aura,fire,lorc/fire-ring,Lorc,forcado,"o mesmo arquivo e o candidato direto de Ring of Fire do Warlock"
+paladin,offensive-auras,2,3,6,Thorns,aura,physical,lorc/crown-of-thorns,Lorc,aceitavel,
+paladin,offensive-auras,3,1,12,Blessed Aim,aura,physical,delapouite/eye-target,Delapouite,forcado,
+paladin,offensive-auras,4,1,18,Concentration,aura,physical,lorc/concentration-orb,Lorc,aceitavel,
+paladin,offensive-auras,4,2,18,Holy Freeze,aura,cold,,,ausente,
+paladin,offensive-auras,5,2,24,Holy Shock,aura,lightning,,,ausente,
+paladin,offensive-auras,5,3,24,Sanctuary,aura,magic,delapouite/slumbering-sanctuary,Delapouite,forcado,
+paladin,offensive-auras,6,1,30,Fanaticism,aura,physical,,,ausente,
+paladin,offensive-auras,6,3,30,Conviction,aura,magic,,,ausente,
+paladin,defensive-auras,1,1,1,Prayer,aura,none,lorc/prayer,Lorc,direto,
+paladin,defensive-auras,1,3,1,Resist Fire,aura,fire,lorc/fire-shield,Lorc,aceitavel,
+paladin,defensive-auras,2,2,6,Defiance,aura,none,,,ausente,
+paladin,defensive-auras,2,3,6,Resist Cold,aura,cold,lorc/ice-shield,Lorc,aceitavel,"o mesmo arquivo ja e o candidato de Frozen Armor da Sorceress"
+paladin,defensive-auras,3,1,12,Cleansing,aura,none,,,ausente,
+paladin,defensive-auras,3,3,12,Resist Lightning,aura,lightning,lorc/bolt-shield,Lorc,aceitavel,
+paladin,defensive-auras,4,2,18,Vigor,aura,none,,,ausente,
+paladin,defensive-auras,5,1,24,Meditation,aura,none,lorc/meditation,Lorc,direto,
+paladin,defensive-auras,6,2,30,Redemption,aura,none,,,ausente,
+paladin,defensive-auras,6,3,30,Salvation,aura,none,,,ausente,
+barbarian,combat-masteries,1,1,1,Blade Mastery,passive,none,delapouite/rusty-sword,Delapouite,forcado,"amostra escolhida porque seis masteries de arma sao o mesmo conceito repetido; a arma se desenha e a maestria nao"
+barbarian,combat-masteries,1,2,1,Axe Mastery,passive,none,delapouite/sharp-axe,Delapouite,forcado,
+barbarian,combat-masteries,1,3,1,Mace Mastery,passive,none,delapouite/flanged-mace,Delapouite,forcado,
+barbarian,combat-masteries,2,1,6,Polearm Mastery,passive,none,,,ausente,"o termo polearm nao existe no conjunto"
+barbarian,combat-masteries,2,2,6,Throwing Mastery,passive,none,delapouite/throwing-ball,Delapouite,forcado,"bola de arremesso; registro esportivo"
+barbarian,combat-masteries,2,3,6,Spear Mastery,passive,none,lorc/spears,Lorc,forcado,
+barbarian,combat-masteries,3,1,12,Increased Stamina,passive,none,,,ausente,
+barbarian,combat-masteries,4,3,18,Iron Skin,passive,none,,,ausente,
+barbarian,combat-masteries,5,1,24,Increased Speed,passive,none,,,ausente,"speed-boat e speedometer sao registro moderno"
+barbarian,combat-masteries,6,3,30,Natural Resistance,passive,none,,,ausente,
+amazon,passive-and-magic,1,1,1,Inner Sight,curse,magic,delapouite/all-seeing-eye,Delapouite,aceitavel,"amostra escolhida porque Dodge Avoid e Evade sao sinonimos mecanicos que precisam de tres icones distintos"
+amazon,passive-and-magic,1,3,1,Critical Strike,passive,none,,,ausente,
+amazon,passive-and-magic,2,2,6,Dodge,passive,none,felbrigg/dodge,Felbrigg,direto,"quinto autor; Felbrigg tem 5 icones com media de 296 B - silhueta radicalmente mais simples que a de Lorc"
+amazon,passive-and-magic,3,1,12,Slow Missiles,curse,magic,sbed/slow-blob,Sbed,forcado,
+amazon,passive-and-magic,3,2,12,Avoid,passive,none,delapouite/avoidance,Delapouite,aceitavel,"sinonimo visual de Dodge e de outro autor"
+amazon,passive-and-magic,4,3,18,Penetrate,passive,none,,,ausente,
+amazon,passive-and-magic,5,1,24,Decoy,summon,none,,,ausente,
+amazon,passive-and-magic,5,2,24,Evade,passive,none,,,ausente,"terceiro sinonimo; o conjunto tem dois e nenhum os distingue"
+amazon,passive-and-magic,6,1,30,Valkyrie,summon,none,lorc/angel-wings,Lorc,forcado,
+amazon,passive-and-magic,6,3,30,Pierce,passive,none,lorc/pierced-body,Lorc,aceitavel,
+assassin,martial-arts,1,2,1,Tiger Strike,attack,none,delapouite/tiger,Delapouite,aceitavel,"amostra escolhida pelos quatro Dragon* e pelos finalizadores de carga"
+assassin,martial-arts,1,3,1,Dragon Talon,attack,none,,,ausente,
+assassin,martial-arts,2,1,6,Fists of Fire,attack,fire,lorc/fire-punch,Lorc,direto,
+assassin,martial-arts,2,3,6,Dragon Claw,attack,none,lorc/dragon-spiral,Lorc,forcado,
+assassin,martial-arts,3,2,12,Cobra Strike,attack,none,skoll/cobra,Skoll,aceitavel,
+assassin,martial-arts,4,1,18,Claws of Thunder,attack,lightning,,,ausente,
+assassin,martial-arts,4,3,18,Dragon Tail,attack,fire,lorc/fire-tail,Lorc,forcado,
+assassin,martial-arts,5,1,24,Blades of Ice,attack,cold,lorc/ice-spear,Lorc,forcado,"o mesmo arquivo ja e o candidato de Glacial Spike"
+assassin,martial-arts,5,3,24,Dragon Flight,attack,none,,,ausente,
+assassin,martial-arts,6,2,30,Phoenix Strike,attack,none,,,ausente,"o termo phoenix nao existe no conjunto"
+druid,druid-summoning,1,2,1,Raven,summon,none,lorc/raven,Lorc,direto,"amostra escolhida porque tres lobos e um urso disputam o mesmo assunto visual"
+druid,druid-summoning,1,3,1,Poison Creeper,summon,poison,lorc/thorny-vine,Lorc,aceitavel,
+druid,druid-summoning,2,1,6,Oak Sage,summon,none,cathelineau/holy-oak,Cathelineau,aceitavel,"sexto autor"
+druid,druid-summoning,2,2,6,Summon Spirit Wolf,summon,cold,lorc/wolf-head,Lorc,aceitavel,
+druid,druid-summoning,3,3,12,Carrion Vine,summon,none,lorc/curling-vines,Lorc,forcado,"segunda vinha na mesma arvore"
+druid,druid-summoning,4,1,18,Heart of Wolverine,summon,none,,,ausente,
+druid,druid-summoning,4,2,18,Summon Dire Wolf,summon,none,lorc/direwolf,Lorc,direto,"fica ao lado de Spirit Wolf com o mesmo assunto"
+druid,druid-summoning,5,3,24,Solar Creeper,summon,none,,,ausente,"terceira vinha"
+druid,druid-summoning,6,1,30,Spirit of Barbs,summon,none,,,ausente,
+druid,druid-summoning,6,2,30,Summon Grizzly,summon,none,delapouite/bear-head,Delapouite,aceitavel,
+warlock,chaos,1,3,1,Miasma Bolt,spell,magic,,,ausente,"amostra escolhida porque as 30 skills do Warlock sao nomes criados para Reign of the Warlock (2026); nenhum conjunto anterior podia te-los"
+warlock,chaos,2,1,6,Ring of Fire,spell,fire,lorc/fire-ring,Lorc,direto,
+warlock,chaos,2,2,6,Sigil: Lethargy,spell,none,,,ausente,"o termo sigil nao existe no conjunto"
+warlock,chaos,3,2,12,Sigil: Rancor,spell,none,,,ausente,
+warlock,chaos,3,3,12,Miasma Chain,spell,magic,,,ausente,
+warlock,chaos,4,1,18,Flame Wave,spell,fire,lorc/fire-wave,Lorc,direto,
+warlock,chaos,5,2,24,Sigil: Death,spell,fire,,,ausente,
+warlock,chaos,5,3,24,Enhanced Entropy,passive,none,,,ausente,
+warlock,chaos,6,1,30,Apocalypse,spell,fire,,,ausente,
+warlock,chaos,6,3,30,Abyss,spell,magic,,,ausente,

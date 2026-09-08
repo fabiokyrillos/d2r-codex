@@ -1,0 +1,49 @@
+escopo,classe,tree,skills,celulas_da_grade,ocupacao
+total,,,240,432,240 de 432
+classe,amazon,,30,54,30 de 54
+classe,assassin,,30,54,30 de 54
+classe,barbarian,,30,54,30 de 54
+classe,druid,,30,54,30 de 54
+classe,necromancer,,30,54,30 de 54
+classe,paladin,,30,54,30 de 54
+classe,sorceress,,30,54,30 de 54
+classe,warlock,,30,54,30 de 54
+tree,amazon,bow-and-crossbow,10,18,10 de 18
+tree,amazon,javelin-and-spear,10,18,10 de 18
+tree,amazon,passive-and-magic,10,18,10 de 18
+tree,assassin,martial-arts,10,18,10 de 18
+tree,assassin,shadow-disciplines,10,18,10 de 18
+tree,assassin,traps,10,18,10 de 18
+tree,barbarian,barbarian-combat-skills,10,18,10 de 18
+tree,barbarian,combat-masteries,10,18,10 de 18
+tree,barbarian,warcries,10,18,10 de 18
+tree,druid,druid-summoning,10,18,10 de 18
+tree,druid,elemental,10,18,10 de 18
+tree,druid,shape-shifting,10,18,10 de 18
+tree,necromancer,curses,10,18,10 de 18
+tree,necromancer,poison-and-bone,10,18,10 de 18
+tree,necromancer,summoning,10,18,10 de 18
+tree,paladin,combat-skills,10,18,10 de 18
+tree,paladin,defensive-auras,10,18,10 de 18
+tree,paladin,offensive-auras,10,18,10 de 18
+tree,sorceress,cold-spells,10,18,10 de 18
+tree,sorceress,fire-spells,10,18,10 de 18
+tree,sorceress,lightning-spells,10,18,10 de 18
+tree,warlock,chaos,10,18,10 de 18
+tree,warlock,demon,10,18,10 de 18
+tree,warlock,eldritch,10,18,10 de 18
+kind,,attack,60,,
+kind,,spell,60,,
+kind,,summon,34,,
+kind,,passive,30,,
+kind,,aura,20,,
+kind,,buff,19,,
+kind,,curse,15,,
+kind,,shapeshift,2,,
+element,,none,111,,
+element,,fire,33,,
+element,,physical,25,,
+element,,magic,24,,
+element,,lightning,20,,
+element,,cold,19,,
+element,,poison,8,,
