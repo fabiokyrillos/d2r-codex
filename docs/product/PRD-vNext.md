@@ -183,7 +183,7 @@ Cada jornada: ponto de entrada, objetivo, etapas desejadas, atritos atuais (com 
 - **Entrada:** home (cartões de tier), página de build.
 - **Objetivo:** saber em qual dos seis tiers o personagem está, sem que o site presuma.
 - **Etapas:** ler as seis perguntas ("Cheguei no Hell e estou morrendo") → escolher → a escolha fica salva e a interface a reflete.
-- **Atritos:** cartões da home não clicáveis; na build, nada indica que existem tiers até o px 6.066 (390 px: seção Gear começa por volta de 8.350 px).
+- **Atritos:** cartões da home não clicáveis; na build, nada indica que existem tiers até o px 6.066 (390 px: seção Gear começa por volta de 11.416 px, pois termina em 27.731 px e mede 16.315 px; a seção Skills termina em 8.351 px).
 - **Resultado:** a escolha é feita uma vez (home, listagem ou build) e reaplicada em todo lugar; os seis resumos de tier são visíveis logo no início da seção Gear.
 - **Sucesso:** preferência `d2rc.tier` gravada em 1 ação; o seletor é encontrado no topo da build sem rolar mais de uma tela em 320×640 (aceite numérico em R-BUILD-1).
 
@@ -291,7 +291,7 @@ Ao abrir qualquer build, o jogador vê em uma tela o que a build é e, logo abai
 
 - **R-BUILD-1 · Seletor de tier (navegação + preferência).** A página deve exibir, imediatamente após o bloco de título (breadcrumb, H1, subtítulo, chips) e antes de "Como se joga", um controle com os seis tiers, cada um com número, nome e faixa de nível. No HTML estático o controle é um grupo de seis links `#gear-<tier>` (navegação). Com JavaScript, o mesmo grupo passa a gravar a preferência (`R-PREF-1`) e a expandir o tier escolhido (`R-BUILD-2`). *Aceite:* o topo do controle fica a ≤ 560 px do topo do documento em 320×640 (teste de viewport, mesmo mecanismo que mede a primeira dobra em `/builds`); em 390, 768 e 1280 px o controle é alcançado em no máximo uma tela de rolagem; na jornada J3, o proprietário encontra o controle sem instrução em telefone e desktop.
 - **R-BUILD-2 · Efeito da seleção.** Selecionar um tier deve: gravar `d2rc.tier`; expandir o tier escolhido e compactar os demais; atualizar o rótulo do controle ("Meu tier: Econômico · Níveis 75–85"); e exibir a ação explícita "Ir para o equipamento", que é um link para `#gear-<tier>`. A seleção **não** altera a posição de rolagem. Ao carregar com preferência e sem hash, o tier salvo é o expandido; com hash `#gear-<tier>`, o hash vence (o tier do hash expande) e o único deslocamento é o nativo do navegador para a âncora. *Aceite:* teste headless verifica que `scrollY` não muda ao selecionar; testes de HTML construído para os três casos (sem preferência, com preferência, com hash); "Ir para o equipamento" presente e apontando para o tier ativo.
-- **R-BUILD-3 · Estado padrão.** Sem preferência, os seis tiers renderizam compactos (R-BUILD-5), nenhum selecionado, e o controle mostra "Onde você está?". Nenhum estágio é inferido de nada (nível, URL de origem, idioma). *Aceite:* as seis seções `#gear-*` estão presentes, cada uma como `<details>` fechado com `<summary>` e resumo; a lista ordenada dos textos de `h2`/`h3` da página é igual à atual (snapshot); nenhum `aria-pressed="true"` no controle.
+- **R-BUILD-3 · Estado padrão (com JavaScript ativo).** O HTML base traz os seis tiers como `<details open>` (é o que o leitor sem JavaScript recebe; R-BUILD-12). Com JavaScript ativo e sem preferência, o enhancement remove `open` dos seis e apresenta os tiers compactos (R-BUILD-5), nenhum selecionado, com o controle mostrando "Onde você está?"; com preferência, um tier fica expandido (R-BUILD-2). Nenhum estágio é inferido de nada (nível, URL de origem, idioma) e nenhuma informação fica inacessível: todo tier pode ser expandido pelo `<summary>`. *Aceite (estado com JavaScript ativo, sem preferência, em teste headless):* as seis seções `#gear-*` estão presentes, cada uma como `<details>` sem `open`, com `<summary>` e resumo; a lista ordenada dos textos de `h2`/`h3` da página é igual à atual (snapshot); nenhum `aria-pressed="true"` no controle. O estado do HTML sem scripts é testado por R-BUILD-12, não por este requisito.
 - **R-BUILD-4 · Navegação dentro da seção Gear.** A partir de 640 px, o controle é repetido de forma sticky abaixo do header dentro da seção Gear e reflete o tier em foco durante a rolagem; abaixo de 640 px não há barra sticky (os chips roláveis de R-BUILD-9 e o resumo compacto dos tiers cumprem o papel). *Aceite:* rolagem entre tiers adjacentes ≤ 1 tela em 390 px com os demais compactos; nenhum elemento sticky além do header abaixo de 640 px; estado ativo segue a rolagem a partir de 640 px.
 - **R-BUILD-5 · Tiers compactos.** Um tier compacto é um `<details>` cujo `<summary>` traz número, nome, faixa de nível e objetivo em uma frase, seguido (ainda visível quando fechado) de uma linha por slot com a escolha principal e de "Expandir". Altura alvo ≤ 320 px em 390 px (**hipótese** a medir; baseline por tier expandido: 2.191 a 3.421 px). O conteúdo completo continua no DOM dentro do `<details>`. *Aceite:* medição por teste de viewport de cada um dos seis tiers compactos; sem JS, todos os `<details>` renderizam com `open`; nenhum conteúdo de tier fica fora do DOM.
 - **R-BUILD-6 · Comparação adjacente.** No tier expandido, cada slot recebe um marcador derivado por comparação com o tier anterior: **novo** (escolha principal diferente), **mantido** (mesma referência), **alternativa** (a principal anterior aparece como alternativa aqui), **removido** (slot presente antes e ausente agora, listado ao fim). A comparação usa `ref.slug` e, na ausência de `ref`, `label`. O tier Início não tem marcador. *Aceite:* função pura com testes unitários sobre as 53 builds; marcador com texto, não só cor; nenhum marcador em texto livre.
@@ -300,7 +300,7 @@ Ao abrir qualquer build, o jogador vê em uma tela o que a build é e, logo abai
 - **R-BUILD-9 · Mobile.** Em <640 px o controle vira chips roláveis com fade e o tier ativo centralizado; o sumário vira sheet reutilizando o foco preso e o travamento de rolagem já existentes. *Aceite:* sem overflow; alvos ≥ 24 px (gate existente); Esc e fundo fecham a sheet; foco devolvido ao gatilho.
 - **R-BUILD-10 · URLs, HTML estático e estabilidade visual.** As âncoras `#gear-<tier>` continuam válidas e idênticas nos dois idiomas; nenhum parâmetro de query é introduzido para tier; a página continua totalmente estática (`dynamicParams = false`). Ao carregar com preferência, o deslocamento cumulativo de layout (CLS) medido em teste headless é < 0,1, e nenhuma exceção nova é aberta no teste de fronteira cliente/servidor (se um script inline for necessário, ele entra na lista vigiada). O mecanismo (script antes da pintura, classe no `<html>`, ou outro) é hipótese de implementação do plano da fase, não requisito. *Aceite:* CLS < 0,1; teste de fronteira verde sem exceções novas; seis âncoras presentes em EN e PT.
 - **R-BUILD-11 · Acessibilidade do controle e dos tiers.** O controle é um grupo de botões (com JS) ou links (sem JS) com `aria-pressed` no tier ativo, navegável por setas; não é `tablist` (os tiers não são painéis mutuamente exclusivos). Os tiers usam `<details>`/`<summary>`, cujo estado expandido é nativo. O marcador de comparação tem texto. Foco visível de 2 px como no resto do site. *Aceite:* teste de a11y construído verifica papéis, `aria-pressed`, nomes e ordem de foco; nenhum `role=tab` na página.
-- **R-BUILD-12 · Sem JavaScript.** Sem JS: os seis tiers renderizam expandidos (`<details open>`); o controle funciona como seis âncoras; não existe rótulo "Meu tier" nem promessa de persistência; nada fica inacessível. *Aceite:* teste de HTML construído com scripts removidos: seis `<details open>`, seis âncoras, ausência de texto de preferência.
+- **R-BUILD-12 · Sem JavaScript (HTML base).** O HTML servido traz os seis tiers como `<details open>` e, sem JS, eles permanecem abertos; o controle funciona como seis âncoras; não existe rótulo "Meu tier" nem promessa de persistência; nada fica inacessível. O estado compacto de R-BUILD-3 é resultado do enhancement, nunca do HTML servido. *Aceite (HTML construído, scripts removidos):* seis `<details open>`, seis âncoras, ausência de texto de preferência.
 - **R-BUILD-13 · Links de skill.** Todo nome de skill em "Maximize nestas", "Um ponto cada" e "Pontos restantes" é link para a página da skill; os nós da árvore têm link direto no painel (já existe) e na versão sem JS. *Aceite:* 0 nomes de skill sem link nas 53 builds (teste de HTML construído).
 - **R-BUILD-14 · Mercenário.** A seção usa o mesmo componente de referência do resto do site, com nome, qualidade e link, e exibe `why`, como `/mercenaries`. *Aceite:* teste de HTML construído procura por slugs com hífen removido; teste de dados garante que toda referência de mercenário resolve.
 - **R-BUILD-15 · Modo de consulta compacto (P2).** Um interruptor "Compacto" (persistido, `d2rc.compact`) oculta a prosa ("Como se joga", parágrafos de "Como chegar lá"), mantém tabelas (skills, atributos, breakpoints, tier ativo, farm) e reduz espaçamentos. Serve à consulta com o jogo aberto. Não está acoplado a impressão: uma folha `@media print`, se um dia existir, é superfície separada e deve expandir os seis tiers (seção 2.4). *Aceite:* altura da build em 390 px com modo compacto e um tier expandido ≤ 60% da altura sem o modo (medida na mesma fase); sem JS o interruptor não existe e nada muda.
@@ -395,7 +395,7 @@ Posições (fileira/coluna) e pré-requisitos gerados dos dados do jogo (`conten
 - **R-TREE-14 · Leitor de tela.** `role=grid` mantido; cada célula anuncia nome, nível, tree, estado e pontos; conectores são decorativos (`aria-hidden`); o painel é `role=region` com nome; `aria-live=polite` só na seleção confirmada (Enter/Espaço/clique), nunca na mudança de foco; o sheet é `role=dialog`. *Aceite:* teste de composição de `aria-label` estendido aos estados; teste de que mover o foco não altera a região `aria-live`.
 - **R-TREE-15 · Zoom e reflow.** Em 320 px CSS efetivos (equivalente a 400% de zoom em 1280 px, critério WCAG 1.4.10) a grade continua 3×6 sem rolagem horizontal; o comportamento visual do texto escalado a 400% é pergunta do protótipo, não afirmação deste requisito. *Aceite:* teste de viewport em 320 px; resultado do protótipo registrado.
 - **R-TREE-16 · Sem JavaScript.** A grade 3×6, os conectores e os nós são HTML/SVG estático com links; apenas seleção, painel, estados dependentes de preferência e abas dependem de JS. *Aceite:* teste de HTML sem scripts encontra a grade e 30 links por classe.
-- **R-TREE-17 · Desempenho (resultado, não mecanismo).** A página de classe não pode ficar perceptivelmente mais lenta: o HTML por página de classe permanece dentro do orçamento definido no spike da Fase 0B (baseline 312 KB decodificados; o spike propõe o teto), sem imagens raster que impeçam recolorir por CSS e sem aumento do JS de cliente além do necessário para estados. Sprite SVG, `<symbol>/<use>`, teto por classe e formato de arquivo são hipóteses do spike. *Aceite:* medição do HTML por página de classe ≤ teto aprovado; ícones tematizáveis por CSS (cor do elemento e estados) em teste de contraste.
+- **R-TREE-17 · Desempenho (resultado, não mecanismo).** A página de classe não pode ficar perceptivelmente mais lenta: o HTML por página de classe permanece dentro do teto proposto pelo spike da Fase 0B (saída declarada de R-TREE-19: número, baseline de 312 KB decodificados, método de medição e justificativa), sem imagens raster que impeçam recolorir por CSS e sem aumento do JS de cliente além do necessário para estados. Sprite SVG, `<symbol>/<use>`, teto por classe e formato de arquivo são hipóteses do spike. *Aceite:* medição do HTML por página de classe, pelo método declarado no spike, ≤ teto aprovado; ícones tematizáveis por CSS (cor do elemento e estados) em teste de contraste.
 
 ### 8.5 Ícones: proveniência, licença e cobertura
 
@@ -411,7 +411,13 @@ Posições (fileira/coluna) e pré-requisitos gerados dos dados do jogo (`conten
 | Assets do jogo ou derivados | Ícones, molduras, fundos, fontes, sprites extraídos do D2/D2R, recolorizações, traçados vetoriais por cima da arte | **Nunca** | Direito autoral e trade dress da Blizzard; a licença de uso pessoal do Legal FAQ é revogável e não cobre este site |
 | Placeholders temporários | Sigilo por tipo+elemento (atual) | Sim | Só até a troca completa; listado pelo teste |
 
-Critérios para **não** usar um asset: origem desconhecida; licença não localizada ou incompatível com uso público; semelhança que possa ser confundida com a arte oficial; dependência de um serviço externo em tempo de execução; quebra da mão visual única. *Aceite de R-TREE-19:* relatório do spike em `docs/` com as oito respostas e o artefato lado a lado; Q1 respondida antes do início da Fase 5.
+Critérios para **não** usar um asset: origem desconhecida; licença não localizada ou incompatível com uso público; semelhança que possa ser confundida com a arte oficial; dependência de um serviço externo em tempo de execução; quebra da mão visual única.
+
+*Saídas declaradas do spike (consumidas por R-TREE-17, R-TREE-18 e pelo aceite da Fase 4):*
+- cobertura por candidato, licença, atribuição, lacunas, consistência e custo de conjunto próprio (as oito respostas acima), com o artefato lado a lado;
+- **proposta de teto de HTML por página de classe**, acompanhada de: baseline utilizado (312 KB decodificados em `/en-us/classes/sorceress`, medido em 2026-09-07; remedido no spike com a mesma unidade), método de medição (tamanho do documento HTML construído por página de classe, decodificado, medido pelo mesmo script que alimentará o gate), justificativa do teto (custo estimado dos 30 ícones por classe no formato proposto mais margem, comparado ao baseline), e o número e a unidade em forma diretamente consumível pelo gate de R-TREE-17. O spike propõe o orçamento; não implementa otimização nem código de produção.
+
+*Aceite de R-TREE-19:* relatório do spike em `docs/` com as oito respostas, o artefato lado a lado e a proposta de teto com baseline, método e justificativa; Q1 respondida antes do início da Fase 5; R-TREE-17 e a Fase 4 citam esse teto pelo número.
 
 ### 8.6 Alternativas para mobile (comparadas)
 
@@ -491,9 +497,9 @@ Métricas de qualidade, medidas pelos gates ou por sessão de teste do propriet�
 
 ### 12.1 Página de build (390×844)
 
-| Bloco | Baseline | Fase 1 (tiers compactos, sem preferência) | Fase 1 (um tier expandido, pior caso Budget) | Transversal (após Fases 1, 4 e 6d, modo compacto) |
+| Bloco | Baseline | Fase 1 (tiers compactos, sem preferência) | Fase 1 (um tier expandido, pior caso Budget) | Transversal (**sem preferência**, seis tiers compactos, após as reduções das Fases 1, 4 e 6d, com modo compacto ativo) |
 |---|---|---|---|---|
-| Página inteira | 31.939 px | ≈ 17.500 px (31.939 − 16.315 + 6 × 320 = 17.544) | ≤ 21.000 px (31.939 − 16.315 + 5 × 320 + 3.355 = 20.579) | ≤ 12.000 px, condicionado: Fase 4 reduz Skills (5.912 → orçamento do protótipo, hipótese ≈ 2.100) e o modo compacto remove a prosa (≈ 2.440); sem modo compacto a expectativa é ≈ 13.700 px |
+| Página inteira | 31.939 px | ≈ 17.500 px (31.939 − 16.315 + 6 × 320 = 17.544) | ≤ 21.000 px (31.939 − 16.315 + 5 × 320 + 3.355 = 20.579) | ≤ 12.000 px, condicionado: Fase 4 reduz Skills (5.912 → orçamento do protótipo, hipótese ≈ 2.100) e o modo compacto (6d) remove a prosa (≈ 2.440); sem modo compacto a expectativa é ≈ 13.700 px. **Não se aplica ao estado com um tier expandido**, que soma o tier ativo (2.191–3.421 px) a esses valores |
 | Seção Gear | 16.315 px | ≤ 1.920 px (6 × 320) | ≤ 4.955 px | idem |
 | Tier expandido | 2.191 / 2.434 / 2.226 / 3.355 / 3.421 / 2.688 px | — | inalterado | inalterado |
 | Tier compacto | — | ≤ 320 px cada (hipótese; medir os seis) | idem | idem |
@@ -506,7 +512,7 @@ Os 320 px por tier compacto são hipótese; se a medição da Fase 1 der outro n
 
 | Métrica | Baseline | Meta | Como medir |
 |---|---|---|---|
-| Ações para chegar ao equipamento do tier desejado | Sem controle: só rolagem (Gear começa em ≈ 8.350 px em 390 px) | ≤ 2 ações (selecionar tier → "Ir para o equipamento"), ou 1 com preferência gravada | Teste headless conta cliques |
+| Ações para chegar ao equipamento do tier desejado | Sem controle: só rolagem (Gear começa em ≈ 11.416 px em 390 px: 27.731 − 16.315) | ≤ 2 ações (selecionar tier → "Ir para o equipamento"), ou 1 com preferência gravada | Teste headless conta cliques |
 | Deslocamento automático ao selecionar tier | n/a | 0 px | Teste headless compara `scrollY` |
 | Distância de rolagem entre tiers adjacentes | ≈ 2.191–3.421 px por tier em 390 px | ≤ 1 tela com os demais compactos | Viewport test |
 | Tempo para localizar o equipamento do próprio tier (sessão do proprietário) | Não medido | ≤ 10 s em telefone, sem instrução | Sessão J3/J4 |
@@ -570,7 +576,7 @@ Reavaliada após a revisão independente. Regras: remover o resolvido; não prom
 - Problema: a origem e a cobertura dos 240 ícones não são conhecidas; consistência completa é a exigência.
 - Requisitos: R-TREE-18, R-TREE-19.
 - Impacto: define a Fase 5. Esforço: pequeno/médio (mapeamento de duas classes contra candidatos). Risco: nenhum candidato cobrir 240 com uma mão só, o que leva a conjunto próprio. Dependências: nenhuma.
-- Aceite: relatório do spike com as oito respostas e o artefato; Q1 respondível.
+- Aceite: relatório do spike com as oito respostas, o artefato e a proposta de teto de HTML por página de classe (baseline, método, justificativa); Q1 respondível.
 
 ### P1 — maior impacto
 
@@ -640,7 +646,7 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 - **Fora:** código de produção.
 - **Dependências:** nenhuma (pode correr em paralelo com 0A).
 - **Riscos:** protótipo reprovar (renegociação de 1.5 #7 antes da Fase 1); nenhum conjunto cobrir 240 skills (leva a conjunto próprio).
-- **Aceite:** critérios de R-TREE-0 marcados pelo proprietário; relatório do spike com as oito respostas; números de nó/vão/fileira/abas/orçamento fixados; Q1 e Q2 respondíveis.
+- **Aceite:** critérios de R-TREE-0 marcados pelo proprietário; relatório do spike com as oito respostas e a proposta de teto de HTML por página de classe (baseline, método, justificativa); números de nó/vão/fileira/abas/orçamento fixados; Q1 e Q2 respondíveis.
 - **Testes novos:** nenhum de produção; medições registradas.
 - **Entregável visível:** protótipo navegável em telefone; artefato lado a lado dos ícones.
 - **Condição para avançar:** Q2 aprovada (Fase 4 destravada); Q1 decidida (Fase 5 destravada).
@@ -786,6 +792,7 @@ Resolvidas neste PRD (não estão abertas): tiers na primeira visita (todos comp
 | Sem favoritos | P3.2 | P3 | 7 | `localStorage` |
 | Sem "o que mudou no patch" | P3.3 | P3 | contínuo | Página |
 | Farm sem filtro por build/imunidade | P3.5 | P3 | 7 | Filtro |
+| Árvore por etapa no leveling | R-TREE-10 | P3.6 | 7 | Pelo menos a jornada da Sorceress renderiza a árvore da tree relevante por etapa, com os pontos daquela etapa, sem custo editorial novo |
 | 404 sem busca (D13) | — | Limitação conhecida (17.5) | — | Sem iniciativa |
 | 404 com um documento para os dois idiomas / `<html lang>` | — | Limitação conhecida (17.5) | — | Decisão medida; sem iniciativa |
 | Índice de skills por classe (`/classes/x/skills` 404) | — | Recusado (17.6) | — | Árvore e busca cobrem o acesso |
