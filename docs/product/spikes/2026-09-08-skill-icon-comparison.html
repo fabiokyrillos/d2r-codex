@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spike 0B.2 — Ícones de skill lado a lado</title>
+<style>
+  :root {
+    --abyss: #0d0c0f;
+    --panel: #17151b;
+    --line: #2e2a35;
+    --ink: #e6e1ea;
+    --muted: #9a93a4;
+    --ember: #d4763a;
+    --el-physical: #cfc7bb;
+    --el-magic: #b48ce0;
+    --el-fire: #e2703a;
+    --el-cold: #6fb6dd;
+    --el-lightning: #e0c95a;
+    --el-poison: #7fbf5a;
+    --ok: #6fbf7f;
+    --warn: #d9b24c;
+    --bad: #d4645a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px 20px 72px;
+    background: var(--abyss); color: var(--ink);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  main { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 4px; letter-spacing: .01em; }
+  h2 { font-size: 18px; margin: 40px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 15px; margin: 24px 0 8px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  p { margin: 8px 0; }
+  .lead { color: var(--muted); max-width: 74ch; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; background: #201d26; padding: 1px 5px; border-radius: 3px; }
+  a { color: var(--ember); }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
+  th { background: var(--panel); color: var(--muted); font-weight: 600; }
+  .wrap { overflow-x: auto; }
+  .note { background: var(--panel); border-left: 3px solid var(--ember); padding: 10px 14px; margin: 14px 0; }
+  .note.hard { border-left-color: var(--bad); }
+
+  /* Tiles */
+  .grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+  .tile {
+    width: 104px; min-height: 92px; padding: 8px 6px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 5px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+  }
+  .tile .name { font-size: 11px; line-height: 1.25; color: var(--ink); }
+  .tile .sub { font-size: 10px; color: var(--muted); }
+  .tile svg { display: block; }
+  .box36 { width: 36px; height: 36px; }
+  .box44 { width: 44px; height: 44px; }
+
+  /* States, distinguishable without colour */
+  .st { position: relative; border: 1px solid var(--line); border-radius: 4px; padding: 4px; }
+  .st.locked { opacity: .38; border-style: dashed; }
+  .st.available { border-color: var(--line); }
+  .st.invested { border-color: var(--ember); }
+  .st.maxed { border-color: var(--ember); border-width: 3px; }
+  .badge {
+    position: absolute; right: -6px; bottom: -7px;
+    background: var(--abyss); border: 1px solid var(--line); border-radius: 3px;
+    font-size: 10px; line-height: 1; padding: 2px 3px; color: var(--ink);
+  }
+  .st.maxed .badge { border-color: var(--ember); }
+
+  .v-direto { color: var(--ok); }
+  .v-aceitavel { color: var(--el-lightning); }
+  .v-forcado { color: var(--warn); }
+  .v-ausente { color: var(--bad); }
+  .miss {
+    width: 36px; height: 36px; border: 1px dashed var(--bad); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center; color: var(--bad); font-size: 18px;
+  }
+  ul { margin: 8px 0 8px 20px; padding: 0; }
+  li { margin: 4px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Ícones de skill — artefato lado a lado</h1>
+<p class="lead">
+  Spike da Fase 0B.2 (R-TREE-19), 2026-09-08. Este arquivo é um artefato de pesquisa em
+  <code>docs/</code>. Não é código de produção e nada aqui está ligado ao site.
+  Todos os desenhos desta página foram feitos para este spike, em geometria própria; nenhum asset de
+  terceiro está embutido neste arquivo.
+</p>
+
+<div class="note hard">
+  <strong>Por que o candidato (B) aparece só por link e descrição.</strong>
+  Os arquivos do game-icons.net são de terceiros, sob CC BY 3.0. A licença permite redistribuir, mas
+  este spike não baixa nem versiona asset nenhum — a decisão de adotar o conjunto ainda não foi
+  tomada (Q1). Onde o artefato mostraria o ícone candidato, ele traz o <em>nome do arquivo</em>, o
+  <em>autor</em> e o <em>link</em> para a página oficial do ícone. O proprietário abre o link ao lado
+  desta página para fazer a comparação visual.
+</div>
+
+<h2>1. Os quatro candidatos</h2>
+<div class="wrap">
+<table>
+  <tr>
+    <th>Critério</th>
+    <th>(A) conjunto próprio<br>240 desenhos</th>
+    <th>(B) conjunto CC BY completo<br>game-icons.net</th>
+    <th>(C) licenciado + próprios<br>por cima</th>
+    <th>(D) glifos por categoria<br><em>= o estado atual</em></th>
+  </tr>
+  <tr>
+    <td><strong>Reconhecimento</strong><br><span class="small">distingue Blizzard de Ice Blast?</span></td>
+    <td>Sim, por construção: cada glifo é desenhado para uma skill.</td>
+    <td>Sim nas duas: <code>lorc/snowing</code> × <code>lorc/ice-bomb</code>. Mas <strong>38 de 130</strong> skills avaliadas não têm ícone nenhum.</td>
+    <td>Sim onde há desenho próprio; herda os buracos de (B) no resto.</td>
+    <td><strong>Não.</strong> Blizzard e Ice Blast são a mesma estrela de quatro pontas azul. É a queixa da auditoria §2.6.</td>
+  </tr>
+  <tr>
+    <td><strong>Consistência</strong><br><span class="small">uma mão visual só?</span></td>
+    <td>Sim (uma pessoa, uma grade, uma espessura).</td>
+    <td><strong>Não.</strong> Mapear as 130 skills avaliadas exige <strong>7 autores</strong> diferentes. Restringir a um autor (Lorc) perde 31 dos 92 ícones citados.</td>
+    <td><strong>Não</strong>, por definição: duas mãos convivendo na mesma grade.</td>
+    <td>Sim — perfeita e inútil: 8 formas para 240 skills.</td>
+  </tr>
+  <tr>
+    <td><strong>Legibilidade 36–44 px</strong></td>
+    <td>Controlável: o traço é escolhido para o tamanho (ver §2).</td>
+    <td>Risco real: mediana de 1.415 B por arquivo indica silhueta detalhada, desenhada para 512 px.</td>
+    <td>Mista.</td>
+    <td>Boa (já é o caso), porque a forma é grossa e simples.</td>
+  </tr>
+  <tr>
+    <td><strong>Tematização por CSS</strong></td>
+    <td>Total: <code>fill="currentColor"</code>, uma cor por elemento.</td>
+    <td>Total <em>se</em> reescrito para <code>currentColor</code> — os arquivos vêm brancos sobre preto. Reescrever é modificação, permitida pela licença, mas obriga a declarar a alteração.</td>
+    <td>Total.</td>
+    <td>Total (já funciona).</td>
+  </tr>
+  <tr>
+    <td><strong>Licença</strong></td>
+    <td>Nenhuma obrigação; autoria do projeto.</td>
+    <td>CC BY 3.0 (alguns CC0). Atribuição obrigatória por ícone.</td>
+    <td>Mista, dupla contabilidade.</td>
+    <td>Nenhuma obrigação.</td>
+  </tr>
+  <tr>
+    <td><strong>Custo</strong></td>
+    <td>240 desenhos.</td>
+    <td>240 mapeamentos + 38&nbsp;% de buracos que viram desenho próprio de qualquer forma.</td>
+    <td>Espalhado e sem fim definido.</td>
+    <td>Zero — é ficar parado.</td>
+  </tr>
+  <tr>
+    <td><strong>Risco de mistura de estilos</strong></td>
+    <td>Nenhum.</td>
+    <td><strong>Alto</strong>, e não é evitável: os buracos forçam desenho próprio dentro do conjunto licenciado, que é exatamente (C).</td>
+    <td>Máximo; eliminado pela preferência declarada do proprietário.</td>
+    <td>Nenhum.</td>
+  </tr>
+</table>
+</div>
+
+<h2>2. (A) Desenhos próprios — dez skills no tamanho real do nó</h2>
+<p class="lead">
+  Feitos para este spike, em <code>viewBox="0 0 24 24"</code>, um caminho por glifo, tudo em
+  <code>currentColor</code>. À esquerda 36 px, à direita 44 px — os dois tamanhos que R-TREE-19 pede.
+  O nome fica sempre em texto ao lado, como já acontece hoje; o ícone acelera o reconhecimento, não o
+  substitui.
+</p>
+
+<h3>36 px</h3>
+<div class="grid" id="own36"></div>
+
+<h3>44 px</h3>
+<div class="grid" id="own44"></div>
+
+<div class="note">
+  <strong>O teste que R-TREE-19 nomeia.</strong> Blizzard (nuvem com estilhaços caindo) e Ice Blast
+  (um estilhaço único em trajetória) são distinguíveis a 36 px sem ler o nome. Com o sigilo de hoje
+  as duas são a mesma estrela azul. Compare as duas linhas da §4.
+</div>
+
+<h2>3. Estados sem depender de cor (R-TREE-5)</h2>
+<p class="lead">
+  Quatro estados com forma e texto: <em>bloqueada</em> (esmaecida, moldura tracejada, cadeado),
+  <em>disponível</em> (moldura padrão), <em>investida</em> (moldura ember, contador N),
+  <em>maximizada</em> (moldura ember grossa, contador 20). Nenhum estado depende só de cor.
+</p>
+<div class="grid" id="states"></div>
+
+<h2>4. (D) O estado atual, para comparação honesta</h2>
+<p class="lead">
+  O mesmo grupo de dez skills desenhado pelo sigilo de hoje
+  (<code>components/game/skill-sigil.tsx</code>: forma por tipo, cor por elemento). Seis das dez
+  ficam idênticas.
+</p>
+<div class="grid" id="sigils"></div>
+
+<h2>5. (B) game-icons.net — por link, com o veredito do mapeamento</h2>
+<p class="lead">
+  Abra os links ao lado desta página. Endereço de cada ícone:
+  <code>https://game-icons.net/1x1/&lt;autor&gt;/&lt;nome&gt;.html</code>.
+  Licença e autoria: <a href="https://game-icons.net/about.html">game-icons.net/about.html</a> ·
+  <a href="https://raw.githubusercontent.com/game-icons/icons/master/license.txt">license.txt do repositório</a>.
+</p>
+<div class="wrap">
+<table id="candB">
+  <tr><th>Skill</th><th>Ícone candidato</th><th>Autor</th><th>Veredito</th><th>Observação</th></tr>
+</table>
+</div>
+
+<h2>6. Tematização por elemento (a mesma forma, seis cores)</h2>
+<p class="lead">
+  Um glifo único herdando <code>currentColor</code> nas seis cores de elemento do site. É o que
+  R-TREE-17 exige e o que uma imagem raster impediria.
+</p>
+<div class="grid" id="theme"></div>
+
+<h2>7. O que este artefato não decide</h2>
+<ul>
+  <li>Não decide Q1. As opções, riscos e a recomendação estão no relatório
+      <code>2026-09-08-skill-icon-assets.md</code>.</li>
+  <li>Não fixa formato de arquivo, sprite <code>&lt;symbol&gt;/&lt;use&gt;</code> nem mecanismo de
+      entrega: o PRD reclassificou tudo isso como hipótese (§17.7) e o spike o trata como hipótese.</li>
+  <li>Não propõe cobertura parcial. R-TREE-18 exige 240 de 240, de uma vez.</li>
+</ul>
+
+<script>
+/* Glifos próprios, desenhados para este spike. Cada entrada: [nome, elemento, conteúdo SVG]. */
+const own = [
+  ["Blizzard", "cold",
+   '<path d="M2.5 9.5 A4.6 4.6 0 0 1 10 6.2 A5.6 5.6 0 0 1 21.5 9.5 Z"/>' +
+   '<path d="M5.5 12.5 L4 19 M12 12.5 L10.5 21 M18.5 12.5 L17 19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'],
+  ["Ice Blast", "cold",
+   '<path d="M10 3 L19 12 L10 21 L13 12 Z"/>' +
+   '<path d="M1.5 7 H6 M1.5 12 H5 M1.5 17 H6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'],
+  ["Frozen Orb", "cold",
+   '<circle cx="12" cy="12" r="4.6"/>' +
+   '<path d="M12 1.5 V5 M12 19 V22.5 M1.5 12 H5 M19 12 H22.5 M4.6 4.6 L7 7 M17 17 L19.4 19.4 M19.4 4.6 L17 7 M7 17 L4.6 19.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'],
+  ["Glacial Spike", "cold",
+   '<path d="M12 1.5 L16.6 18 L7.4 18 Z"/>' +
+   '<path d="M4 21 H20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>'],
+  ["Frost Nova", "cold",
+   '<circle cx="12" cy="12" r="3"/>' +
+   '<path d="M12 7.4 L12 2 M12 16.6 L12 22 M7.4 12 L2 12 M16.6 12 L22 12 M8.8 8.8 L5 5 M15.2 15.2 L19 19 M15.2 8.8 L19 5 M8.8 15.2 L5 19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'],
+  ["Frozen Armor", "cold",
+   '<path d="M12 2 L20 5.5 V13 C20 17.6 16.4 20.6 12 22 C7.6 20.6 4 17.6 4 13 V5.5 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>' +
+   '<path d="M12 7 L15.5 12 L12 17 L8.5 12 Z"/>'],
+  ["Raise Skeleton", "none",
+   '<path d="M12 8.5 A5.5 5.5 0 0 1 17.5 14 V17 H6.5 V14 A5.5 5.5 0 0 1 12 8.5 Z"/>' +
+   '<circle cx="9.6" cy="14" r="1.5" fill="#17151b"/><circle cx="14.4" cy="14" r="1.5" fill="#17151b"/>' +
+   '<path d="M12 6.5 V1.5 M9 4 L12 1.2 L15 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>' +
+   '<path d="M7 19.5 H17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>'],
+  ["Iron Golem", "none",
+   '<path d="M6 3 H18 V10 H6 Z"/>' +
+   '<path d="M8.5 12.5 H15.5 V21 H8.5 Z" fill="none" stroke="currentColor" stroke-width="2.2"/>' +
+   '<path d="M3 13 H6.5 M17.5 13 H21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>' +
+   '<circle cx="9.5" cy="6.5" r="1.2" fill="#17151b"/><circle cx="14.5" cy="6.5" r="1.2" fill="#17151b"/>'],
+  ["Corpse Explosion", "none",
+   '<path d="M12 1.5 L14 7 L19.5 4.5 L17 10 L22.5 12 L17 14 L19.5 19.5 L14 17 L12 22.5 L10 17 L4.5 19.5 L7 14 L1.5 12 L7 10 L4.5 4.5 L10 7 Z"/>' +
+   '<circle cx="12" cy="12" r="3" fill="#17151b"/>'],
+  ["Teleport", "magic",
+   '<path d="M4 18 A9 9 0 0 1 20 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="3.4 3"/>' +
+   '<circle cx="4" cy="19" r="2.6"/><circle cx="20" cy="19" r="2.6"/>' +
+   '<path d="M12 3 L14 8 L12 6.8 L10 8 Z"/>']
+];
+
+const el = (e) => e === "none" ? "var(--muted)" : "var(--el-" + e + ")";
+
+function svgFor(entry, cls) {
+  return '<svg class="' + cls + '" viewBox="0 0 24 24" aria-hidden="true" focusable="false" ' +
+         'fill="currentColor" style="color:' + el(entry[1]) + '">' + entry[2] + '</svg>';
+}
+
+document.getElementById("own36").innerHTML = own.map((e) =>
+  '<div class="tile">' + svgFor(e, "box36") + '<span class="name">' + e[0] + '</span></div>').join("");
+document.getElementById("own44").innerHTML = own.map((e) =>
+  '<div class="tile">' + svgFor(e, "box44") + '<span class="name">' + e[0] + '</span></div>').join("");
+
+/* Estados */
+const bliz = own[0];
+const states = [
+  ["bloqueada", "locked", "&#128274;"],
+  ["disponível", "available", ""],
+  ["investida", "invested", "5"],
+  ["maximizada", "maxed", "20"]
+];
+document.getElementById("states").innerHTML = states.map(([label, cls, badge]) =>
+  '<div class="tile"><span class="st ' + cls + '">' + svgFor(bliz, "box36") +
+  (badge ? '<span class="badge">' + badge + '</span>' : '') + '</span>' +
+  '<span class="name">Blizzard</span><span class="sub">' + label + '</span></div>').join("");
+
+/* Sigilo atual: forma por tipo, cor por elemento (components/game/skill-sigil.tsx) */
+const shapes = {
+  spell: '<path d="M12 2 L14.4 9.6 L22 12 L14.4 14.4 L12 22 L9.6 14.4 L2 12 L9.6 9.6 Z"/>',
+  buff: '<path d="M4 13.5 L12 5.5 L20 13.5 M4 20 L12 12 L20 20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+  summon: '<circle cx="12" cy="5.6" r="3.2"/><circle cx="6" cy="16.4" r="3.2"/><circle cx="18" cy="16.4" r="3.2"/>',
+  passive: '<path d="M12 2 L20.6 7 L20.6 17 L12 22 L3.4 17 L3.4 7 Z"/>'
+};
+const sigilRows = [
+  ["Blizzard", "cold", "spell"], ["Ice Blast", "cold", "spell"], ["Frozen Orb", "cold", "spell"],
+  ["Glacial Spike", "cold", "spell"], ["Frost Nova", "cold", "spell"], ["Frozen Armor", "cold", "buff"],
+  ["Raise Skeleton", "none", "summon"], ["Iron Golem", "none", "summon"],
+  ["Corpse Explosion", "none", "spell"], ["Teleport", "magic", "spell"]
+];
+document.getElementById("sigils").innerHTML = sigilRows.map(([n, e, k]) =>
+  '<div class="tile"><svg class="box36" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" ' +
+  'style="color:' + el(e) + '">' + shapes[k] + '</svg><span class="name">' + n +
+  '</span><span class="sub">' + k + '</span></div>').join("");
+
+/* Candidato B — nome, autor, veredito, link. Nenhum arquivo de terceiro é embutido. */
+const candB = [
+  ["Blizzard", "lorc", "snowing", "Lorc", "aceitavel", "neve caindo; distingue-se de Ice Blast"],
+  ["Ice Blast", "lorc", "ice-bomb", "Lorc", "aceitavel", "bomba, não projétil congelante"],
+  ["Frozen Orb", "lorc", "frozen-orb", "Lorc", "direto", "acerto exato de nome"],
+  ["Glacial Spike", "lorc", "ice-spear", "Lorc", "direto", "o mesmo arquivo também é o único candidato de Blades of Ice (Assassin)"],
+  ["Frost Nova", "delapouite", "frozen-ring", "Delapouite", "aceitavel", "segundo autor na mesma árvore"],
+  ["Frozen Armor", "lorc", "ice-shield", "Lorc", "aceitavel", "também é o único candidato de Resist Cold (Paladin)"],
+  ["Raise Skeleton", "skoll", "raise-skeleton", "Skoll", "direto", "terceiro autor"],
+  ["Iron Golem", "delapouite", "metal-golem-head", "Delapouite", "direto", ""],
+  ["Corpse Explosion", "lorc", "goo-explosion", "Lorc", "aceitavel", ""],
+  ["Teleport", "lorc", "teleport", "Lorc", "direto", ""],
+  ["Fire Golem", "", "", "", "ausente", "existem cinco golems; nenhum é de fogo"],
+  ["Blood Golem", "", "", "", "ausente", ""],
+  ["Raise Skeletal Mage", "", "", "", "ausente", ""],
+  ["Decrepify", "", "", "", "ausente", "nada nos 4.239 arquivos expressa decrepitude"],
+  ["Fanaticism (Paladin)", "", "", "", "ausente", "9 das 20 auras do Paladin não têm candidato"],
+  ["Phoenix Strike (Assassin)", "", "", "", "ausente", "o termo phoenix não existe no conjunto"],
+  ["Sigil: Rancor (Warlock)", "", "", "", "ausente", "8 das 10 skills da árvore Chaos não têm candidato"]
+];
+document.getElementById("candB").innerHTML +=
+  candB.map(([skill, author, name, disp, verdict, note]) => {
+    const cell = name
+      ? '<a href="https://game-icons.net/1x1/' + author + '/' + name + '.html">' + author + '/' + name + '</a>'
+      : '<span class="v-ausente">nenhum ícone no conjunto</span>';
+    return '<tr><td>' + skill + '</td><td>' + cell + '</td><td>' + (disp || "&#8212;") +
+      '</td><td class="v-' + verdict + '">' + verdict + '</td><td class="small">' + note + '</td></tr>';
+  }).join("");
+
+/* Tematização */
+const elements = ["physical", "magic", "fire", "cold", "lightning", "poison"];
+document.getElementById("theme").innerHTML = elements.map((e) =>
+  '<div class="tile"><svg class="box36" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" ' +
+  'style="color:var(--el-' + e + ')">' + own[4][2] + '</svg><span class="name">' + e + '</span>' +
+  '<span class="sub">currentColor</span></div>').join("");
+</script>
+
+</main>
+</body>
+</html>
