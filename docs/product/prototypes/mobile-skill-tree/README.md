@@ -3,6 +3,15 @@
 **Status:** evidência para **Q2**. Não é aprovação, não é implementação.
 **Data:** 2026-09-08 · **Escopo:** R-TREE-0 (PRD vNext §8.2) e §10 da revisão de 2026-09-08.
 
+> **Iteração de 2026-09-08 (tarde): variante F.** O proprietário aprovou a
+> direção de E e apontou seis ajustes, um deles bloqueante — a captura `10`
+> mostrava nomes partidos em colunas de uma ou duas letras com o texto a 200%.
+> A variante **F** responde a todos. As seções **§1 a §10 abaixo continuam
+> valendo para A–E e não foram reescritas**; a variante F, os números novos e
+> a comparação E × F estão em **[§11](#11-variante-f--a-resposta-ao-feedback-sobre-e)**.
+> A recomendação corrente é **F**; E continua selecionável (`?v=e`) para a
+> comparação lado a lado.
+
 Este protótipo existe para responder, com medição, as dez perguntas de R-TREE-0
 antes de a Fase 4 escrever qualquer linha de código de árvore. Ele é
 **descartável**: HTML/CSS/JS inline num arquivo só, sem nenhuma importação da
@@ -25,7 +34,8 @@ protegida.**
 docs/product/prototypes/mobile-skill-tree/
 ├── index.html      o protótipo inteiro (abrir com duplo clique)
 ├── README.md       este relatório
-└── screenshots/    12 capturas, geradas pelo mesmo driver que mediu
+└── screenshots/    21 capturas, geradas pelo mesmo driver que mediu
+                    (01–12: variantes A–E · 13–21: E × F)
 ```
 
 Abra `index.html` no navegador — funciona por `file://`, sem servidor e sem
@@ -38,11 +48,12 @@ Parâmetros úteis (todos opcionais):
 
 | Parâmetro | Valores | O que faz |
 |---|---|---|
-| `v` | `a` `b` `c` `d` `e` | variante de trilho de nível (§3) |
+| `v` | `a` `b` `c` `d` `e` `f` | variante (§3 para A–E, §11 para F) |
 | `lang` | `pt-br` `en-us` | idioma da interface |
 | `class` | `sorceress` `necromancer` | classe |
 | `tree` | slug da tree | tree ativa em modo abas |
-| `mode` | `tabs` `stacked` | uma tree por vez, ou as três empilhadas |
+| `mode` | `auto` `tabs` `stacked` | `auto` = abas < 640 px, empilhadas ≥ 640 px (padrão de F) |
+| `big` | `glyph` `grow` `cap` | estratégia de texto ampliado da variante F (§11.4) |
 | `conn` | `straight` `ortho` | conectores retos ou ortogonais |
 | `points` | `1` `0` | com ou sem os pontos da build |
 | `level` | `0`…`99` | "meu nível" — acima dele o nó fica bloqueado |
@@ -54,7 +65,11 @@ Parâmetros úteis (todos opcionais):
 | `chrome` | `0` | esconde a barra de controles (para captura) |
 
 Exemplo — o estado recomendado, em português, na Summoning:
-`index.html?v=e&lang=pt-br&class=necromancer&tree=summoning&mode=tabs&points=1`
+`index.html?v=f&lang=pt-br&class=necromancer&tree=summoning&mode=auto&conn=ortho&points=1`
+
+`window.__setTextScale(200)` no console simula **texto ampliado** (corpo da
+raiz a 32 px). Redimensionar a janela simula **zoom de página**. São coisas
+diferentes e o protótipo mede as duas separadamente (§11.4).
 
 `window.__measure()` no console devolve, em JSON, tudo que este relatório
 mede. Foi assim que os números abaixo foram colhidos.
@@ -90,6 +105,20 @@ de fileira, **16** de zoom, **60** de fonte, **40** toques reais.
 | `10-320-ptbr-summoning-E-texto200.png` | Texto a 200% (raiz de 32 px) em 320 px |
 | `11-768-enus-cold-E-empilhadas.png` | Tablet, três trees empilhadas |
 | `12-1280-ptbr-cold-E-painel.png` | Desktop, painel lateral ancorado |
+
+Da variante F (§11), sempre com a legenda no estado estável (fechada):
+
+| Arquivo | O que mostra |
+|---|---|
+| `13-320-ptbr-summoning-E-normal.png` | **E**, 320 px, texto normal — par de comparação |
+| `14-320-ptbr-summoning-F-normal.png` | **F**, mesmo enquadramento: nome a 12 px, conectores ortogonais, trilho recuado, legenda única |
+| `15-320-ptbr-summoning-E-texto200.png` | **E** a 200% de texto — o defeito: `Skeleto/n/Master/y`, `Raise Skeleto/n`, `Summ/on Resist` |
+| `16-320-ptbr-summoning-F-texto200.png` | **F** a 200%, mesmo enquadramento: nó por sigilo, zero palavras partidas, a árvore inteira numa tela |
+| `17-320-enus-summoning-F-normal.png` | F em inglês (par de `14`) |
+| `18-390-ptbr-summoning-F.png` | F a 390 px |
+| `19-320-ptbr-summoning-F-selecionada-texto200.png` | F a 200% com "Raise Skeletal Mage" selecionada — o sheet carrega o nome completo |
+| `20-320-enus-cold-F-ortogonal.png` | F com Blizzard selecionada: caminho de pré-requisito em ember, conectores ortogonais |
+| `21-640-ptbr-cold-F-empilhadas.png` | F a 640 px: três trees empilhadas e **uma** legenda |
 
 ---
 
@@ -501,6 +530,12 @@ componente. O protótipo usa exatamente essa solução.
 
 ## 9. Recomendação
 
+> **Superada em parte por §11.** Esta seção registra a recomendação de E, feita
+> antes do feedback do proprietário. Os números marcados abaixo mudaram em F:
+> corpo do nome (11 → **12 px**), altura da fileira (60 → **74 px**), grade
+> (400 → **484 px**), inset do trilho, legenda e conectores. O resto continua
+> valendo. Os números correntes estão em **§11.2**.
+
 **Aprovar a variante E, com disposição empilhada do nó, fileira `auto` de piso
 60 px e setas estritas.** Abaixo de 640 px, uma tree por aba.
 
@@ -580,3 +615,324 @@ Estas são de percepção ou de gosto; nenhuma medição as decide.
 
 Enquanto essas nove não forem respondidas em aparelho real, **Q2 continua
 aberta**. Este documento é evidência e recomendação, não decisão.
+
+*As respostas 4, 5, 7 e a parte de corpo de texto da 1 foram dadas pelo
+proprietário e viraram a variante F (§11). As demais — inclusive a 3, toque
+com polegar real — continuam abertas.*
+
+---
+
+## 11. Variante F — a resposta ao feedback sobre E
+
+A direção de E foi aprovada. O proprietário apontou seis ajustes e um
+bloqueante. **A variante F é E mais esses sete pontos, e nada além disso.**
+E continua no protótipo, intacta e selecionável (`?v=e`), porque a decisão é
+uma comparação lado a lado.
+
+### 11.1 O que mudou, item a item do feedback
+
+| Feedback | O que F faz | Medido |
+|---|---|---|
+| **Conectores ortogonais** | padrão de F (`conn=ortho`). O roteador ganhou dois casos que não existiam: **mesma fileira** liga borda a borda (antes descia até o meio e voltava, atravessando o corpo dos dois nós) e **mesma coluna** liga fundo a topo em linha reta | 8 arestas na Cold, 9 na Summoning, em todas as larguras |
+| **Contraste da moldura fica** | `--ink-subtle` (3,99:1) preservado, sem alteração | inalterado |
+| **Abas < 640 px, empilhadas ≥ 640 px** | `mode=auto` é o padrão de F: a decisão passa a ser por medição de largura, não por parâmetro, e a passagem por 640 px remonta a seção | abas a 320 e 390; empilhadas a 640 |
+| **Fonte normal 12 px** | `--name-fs: .75rem` | nó cresce de 60 para **74 px** de piso; grade de 400 para **484 px** |
+| **Trilho com um pequeno inset** | continua na calha, fora do fluxo, mas recuado: `left: calc(-1*--pad-x + 4px)`, largura `--pad-x − 6px` | E: x = **0 … 20**. F: x = **4 … 18**, com 2 px de respiro antes da grade (x = 20). **Não** migrou para C |
+| **Uma legenda compartilhada** | uma só por seção, num `<details>` cujo resumo já mostra os quatro quadradinhos; abre no primeiro carregamento e **fecha sozinha na primeira seleção confirmada** | 320 px: **116 → 34 px**. 640 px empilhadas: **3 × 78 = 234 → 34 px** |
+| **Nomes partidos a 200% (bloqueante)** | degrau de glifo acima de um limiar de escala de texto; nome completo vai para a faixa de nome, o `aria-label`, o `title` e o painel | **2 e 6 palavras partidas → 0**; §11.4 |
+
+Duas peças novas que o feedback pediu de forma indireta:
+
+- **Faixa de nome** (`.namebar`), acima da grade, altura mínima fixa: mostra o
+  nome completo, o nível, o estado e os pontos do nó **em foco ou selecionado**.
+  É `aria-hidden` de propósito — o leitor de tela já recebe tudo isso no
+  `aria-label` do nó, e escrever aqui a cada movimento de seta violaria
+  "`aria-live` só na seleção confirmada" (R-TREE-14, medido: a região live não
+  muda com quatro setas; muda no Enter).
+  Custo: **28 px** a 100%, 42 px a 150%, 56–72 px a 200%.
+- O movimento por setas atualiza a faixa **explicitamente**, sem depender do
+  evento `focus` — num navegador sem foco de janela `.focus()` move o
+  `activeElement` mas não dispara `focus`, e a medição ficaria cega.
+
+### 11.2 Tabela E × F — 320 px, uma tree por aba, pt-BR
+
+Legenda no estado estável (fechada) em F; em E a legenda é a mesma de sempre.
+Onde há dois números, são **Sorceress Cold / Necromancer Summoning**.
+
+| | E · 100% | **F · 100%** | E · 150% | **F · 150%** | E · 200% | **F · 200%** |
+|---|---|---|---|---|---|---|
+| Nó (menor) | 88 × 60 | **88 × 74** | 88 × 70,6 | **88 × 74,2** | 88 × 83,8 | **74,7 × 72** |
+| Nó (maior altura) | 60 / 60 | 74 / 74,2 | 71,6 / 91,4 | 75,2 / 96,8 | 116,2 / **142,6** | **72 / 72** |
+| Grade 3×6 | 400 / 400 | 484 / 484,2 | 467,6 / 488,4 | 489,1 / 511,7 | 599,1 / 678,3 | **472 / 472** |
+| Seção inteira | 791,5 / 839,5 | 829,5 / 877,7 | 1.072,8 / 1.120,5 | **1.029,8 / 1.079,4** | 1.576 / 1.731,1 | **1.416,3 / 1.517,6** |
+| **Palavras partidas** | 0 | 0 | 0 | 0 | **2 / 6** | **0 / 0** |
+| **Fragmentos de 1–2 letras** | 0 | 0 | 0 | 0 | **2 / 6** | **0 / 0** |
+| Corpo do nome | 11 px | **12 px** | 16,5 px | 18 px | 22 px | 24 px (fora da caixa) |
+| Nome desenhado no nó | sim | sim | sim | sim | sim, **partido** | **não** — faixa + painel |
+| Legenda (nº × altura) | 1 × 116 | **1 × 34** | 1 × 170 | **1 × 55,5** | 1 × 305 | **1 × 93** |
+| Faixa de nome | — | 28 | — | 42 | — | 72,4 |
+| Trilho (x mín … máx) | 20 px, **0 … 20** | 14 px, **4 … 18** | 0 … 20 | 4 … 18 | 0 … 20 | 34 px, 4 … 38 |
+| Overflow horizontal | 0 | 0 | 0 | 0 | 0 | 0 |
+| Alvo de toque (mín) | 88 × 60 | 88 × 74 | 88 × 70,6 | 88 × 74,2 | 88 × 83,8 | 74,7 × 72 |
+| Tab stops por tree | 1 | 1 | 1 | 1 | 1 | 1 |
+| Focáveis em tree inativa | 0 | 0 | 0 | 0 | 0 | 0 |
+
+**O que F custa e o que F compra.** A 100% F é **38 px mais alta** que E
+(829,5 vs 791,5). Os três termos grandes: **+84 px** de grade pelo corpo de
+12 px, **+28 px** de faixa de nome, **−82 px** de legenda; os 8 px restantes
+são margem do bloco de legenda, que mudou de lugar. A partir de 150% F já é
+**mais curta** que E (−43 px na Cold, −41 na Summoning), e a 200% é
+**−160 px** (Cold) e **−214 px** (Summoning) — além de ser a única das duas
+sem palavra partida.
+
+**Números atualizados** — o que muda na tabela "Números que viram requisito"
+de §9 se F for aprovada. Tudo o mais de §9 permanece.
+
+| Saída | §9 (E) | **§11 (F)** | Consome |
+|---|---|---|---|
+| Corpo do nome | 11 px | **12 px** (`0.75rem`) | R-TREE-3 |
+| Altura da fileira (piso) | 60 px | **74 px**, `minmax(74px, auto)` | R-TREE-3, R-TREE-8 |
+| Largura do nó a 320 px | 88 px | **88 px** (inalterada) | R-TREE-3 |
+| Alvo de toque resultante | 88 × 60 | **88 × 74** | R-A11Y-4 |
+| Grade por tree | 400 px | **484 px** | R-TREE-8, §12.2 |
+| Seção, uma tree, 320 px | ≤ 840 px | **≤ 878 px** (era 3.511: **−75%**) | R-TREE-8, §12.2 |
+| Seção, três empilhadas, 320 px | ≤ 1.960 px | não medida em F (F usa abas < 640 px) | R-TREE-8 |
+| Trilho | 20 px na calha, x = 0 … 20 | **14 px na calha, recuado 4 px, x = 4 … 18** | R-TREE-1 |
+| Conectores | ortogonais | **ortogonais**, com casos de mesma fileira e mesma coluna | R-TREE-2 |
+| Legenda | 116 px por tree | **uma por seção**, 34 px fechada | R-TREE-8 |
+| Abas | < 640 px | **< 640 px, decidido por medição de largura** | R-TREE-8, Q3 |
+| Texto ampliado | fileira `auto` | fileira `auto` **mais** degrau de glifo acima do limiar (hipótese, §11.4) | R-TREE-15, R-A11Y-7 |
+
+### 11.3 E × F nas outras larguras
+
+**390 px, uma tree por aba, pt-BR:**
+
+| | E · 100% | F · 100% | E · 200% | F · 200% |
+|---|---|---|---|---|
+| Nó | 111,3 × 60 | 111,3 × 74 | 111,3 × 83,8 (máx 116,2) | 98 × 72 |
+| Grade | 400 | 484 | 566,7 / 599,1 | 472 |
+| Seção | 758,5 / 776,5 | 811,5 / 829,5 | 1.413,3 / 1.445,7 | **1.217 / 1.327,3** |
+| Palavras partidas | 0 | 0 | **0** | 0 |
+
+**640 px, três trees empilhadas, pt-BR** (a direção que o proprietário
+confirmou; `mode=auto` entra em empilhadas sozinho a partir daqui):
+
+| | E · 100% | F · 100% | E · 200% | F · 200% |
+|---|---|---|---|---|
+| Nó | 186,7 × 60 | 186,7 × 74 | 186,7 × 60 (máx 83,8 / 89,8) | 186,7 × 74 (máx 88,6 / 94,6) |
+| Grade por tree | 400 | 484 | 417 / 473,1 | 484 / 525,2 |
+| **Legendas** | **3 × 78 = 234** | **1 × 34** | **3 × 180 = 540** | **1 × 44** |
+| Seção (três trees) | 1.827,5 | 1.963,5 | 2.439,9 / 2.536 | **2.342,2 / 2.410** |
+| Tab stops | 3 (um por tree) | 3 | 3 | 3 |
+
+A 640 px o degrau de glifo **não** dispara a 200% (a largura por corpo de texto
+é 20em, bem acima do limiar), e nada parte: o nó tem 177 px internos e a
+palavra mais larga do corpo mede 125,7 px.
+
+Honestidade sobre o balanço a 640 px: **F é mais alta que E a 100% e a 150%**
+(+136 px e +54 px), porque o corpo de 12 px paga três grades em vez de uma e a
+legenda única só devolve 200 px. F só passa à frente a 200% (−98 px na Cold,
+−126 px na Summoning). Nas larguras de celular, que são as que motivaram a
+fase, F ganha a partir de 150%.
+
+### 11.4 Texto ampliado a 200% — três estratégias medidas
+
+Primeiro, a distinção que o requisito confunde e que esta medição separa:
+
+| | O que é | O que muda | Como foi simulado | Critério |
+|---|---|---|---|---|
+| **Zoom de página** | 400% de zoom em 1.280 px | a **largura CSS** do viewport cai para 320 px; o corpo do texto continua 16 px | `Emulation.setDeviceMetricsOverride` / redimensionamento | WCAG 1.4.10 (Reflow) |
+| **Texto ampliado** | corpo padrão do navegador/SO a 200% | o **corpo da raiz** vai a 32 px; a largura não muda | `window.__setTextScale(200)` | WCAG 1.4.4 |
+
+São coisas diferentes. **Zoom de página passa em tudo**: 320 px CSS efetivos
+(= 400% em 1.280) e 640 px CSS efetivos (= 200% em 1.280) foram medidos nas
+duas variantes, nos dois idiomas, nas duas árvores, e o overflow horizontal é
+**0 px** em todas as 72 combinações. É o texto ampliado que quebra o nome — e
+era ele que a captura `10` mostrava.
+
+**Por que o nome quebra.** O nó é dimensionado em px (a grade é px), mas o nome
+escala com a raiz. A 320 px a largura interna do nó é **78 px**, fixa. A
+palavra mais larga do corpo cresce:
+
+| Escala do texto | Palavra mais larga (Cold / Summoning) | Cabe em 78 px? | Palavras partidas |
+|---|---|---|---|
+| 100% | 46,2 / 50,1 px | sim | 0 |
+| 125% | 57,7 / 62,6 px | sim | 0 |
+| 150% | 69,3 / 75,2 px | sim (folga 2,8 px) | 0 |
+| **175%** | **80,5 / 87,7 px** | **não** | 2 / 5 |
+| **200%** | **92,3 / 100,2 px** | **não** | 3 / 6 |
+
+O ponto de ruptura a 320 px está entre **150% e 175%**. Não é opinião: a
+coluna "cabe" e a coluna "palavras partidas" concordam em todas as linhas.
+
+**As três estratégias, a 200% de texto, 320 px, pt-BR** (Cold / Summoning):
+
+| | **A** — nome a 12 px, fileira elástica | **B** — nó por sigilo, nome no painel | **Controle** — corpo travado em 15 px |
+|---|---|---|---|
+| Parâmetro | `big=grow` | `big=glyph` (padrão de F) | `big=cap` |
+| Nó | 88 × 88,6 (máx **117,4 / 152,2**) | **74,7 × 72** (uniforme) | 88 × 74 (máx 74 / 91) |
+| Grade | 647,2 / 739,5 | **472 / 472** | 484 / 501 |
+| Seção | 1.492,4 / 1.660,8 | **1.416,3 / 1.517,6** | 1.312,9 / 1.405,9 |
+| Overflow horizontal | 0 | 0 | 0 |
+| Nome cortado na caixa | 0 | 0 | 0 |
+| **Palavras partidas** | **3 / 6** | **0** | 0 |
+| **Fragmentos de 1–2 letras** | **3 / 6** | **0** | 0 |
+| Exemplos | `Blizzard [7/1]`, `Chilling [7/1]`, `Mastery [5/2]`, `Skeleton [6/2]` | — | — |
+| Nome visível no nó | sim, **partido** | não (faixa + `aria-label` + `title` + painel) | sim |
+| Texto chega a 200%? | sim | sim | **não — para em 125%** |
+
+**A é reprovada.** Ela é exatamente o que a captura `10` mostra, um degrau
+pior: com o corpo a 12 px em vez de 11 px, a Cold passa de 2 para **3**
+palavras partidas e a Summoning fica nas mesmas **6**, com fragmentos de uma e
+duas letras (`Blizzar/d`, `Skeleto/n`, `Master/y`). Nenhum corte de caixa,
+nenhum overflow — e ainda assim ilegível. E custa a fileira mais alta das
+três: até **152,2 px** num nó de 88 px de largura.
+
+**O controle é reprovado por princípio, não por número.** Travar o corpo em
+15 px produz a seção mais curta e zero quebras, mas impede o texto de chegar
+aos 200% que a WCAG 1.4.4 exige. Está no protótipo (`big=cap`) só para dizer,
+com número, o que se ganharia — e que não vale.
+
+**Recomendação: B.** É a única que resolve o bloqueante sem regressão de
+acessibilidade, e ainda é 76 px (Cold) e 143 px (Summoning) mais curta que A.
+O que ela custa, dito sem enfeite: **acima do limiar o nome não está desenhado
+no nó.** Quem usa texto a 200% precisa focar ou tocar cada nó para lê-lo. Em
+troca, a árvore inteira da Summoning cabe numa tela de 320 px (captura `16`,
+contra três telas em `15`), a posição espacial e os conectores continuam
+inteiros, e o nome nunca sai do `aria-label`, do `title`, da faixa de nome nem
+do painel (captura `19`).
+
+**O limiar e o que ele custa.** O degrau consulta "quantos corpos de texto
+cabem na largura da tela" (largura ÷ corpo da raiz), com limiar em **13em**:
+
+| | 100% | 150% | 175% | 200% | Degrau a 200% |
+|---|---|---|---|---|---|
+| 320 px | 20,0em | 13,33em | 11,43em | 10,0em | glifo (nome não caberia: 100,2 px em 78) |
+| 375 px | 23,44em | 15,63em | 13,39em | 11,72em | glifo (nome não caberia: 100,2 px em 96) |
+| 390 px | 24,38em | 16,25em | 13,93em | 12,19em | glifo — **e aqui é conservador** |
+| 640 px | 40,0em | 26,67em | 22,86em | 20,0em | nomes |
+
+A 390 px e 200% o nome ainda **caberia**: 100,2 px numa caixa de 101 px. É
+uma folga de **0,8 px** — uma fonte diferente, um renderizador diferente ou
+uma letra a mais e ela some. A 375 px, largura de aparelho corrente, a mesma
+conta **falha** (100,2 px em 96). O limiar de 13em cobre 375 px ao preço de
+esconder o nome a 390 px onde ele passaria raspando. **Isso é uma escolha, e
+é ajustável**: 11,5em manteria o nome a 390 px e continuaria protegendo 375 px,
+com 1 px de margem. Não recomendo, mas o número está aqui.
+
+**Sobre o mecanismo — e este é o ponto que não deve virar contrato.** O
+protótipo decide o degrau em **JavaScript** (`applyTier`), e isso é uma
+limitação da bancada, não uma proposta. Dentro de uma `@media`, `em` vale o
+corpo **padrão do navegador** — que é justamente o que muda quando o usuário
+aumenta o texto no Android, no iOS ou no Chrome, e por isso
+`@media (max-width:13em)` seria o mecanismo certo num aparelho real. Só que a
+simulação de texto ampliado usada aqui (`html{font-size:32px}`) **por
+definição não move a media query**, e sem JS a medição ficaria cega. O
+protótipo consulta as duas coisas: a media query de verdade **e** a razão
+largura ÷ corpo da raiz. Numa implementação, `@media` ou uma container query
+em `em` fazem o mesmo sem JS. **O limiar, a unidade e a forma de consultar são
+hipóteses do protótipo; a Fase 4 escolhe.**
+
+### 11.5 Matriz de validação
+
+Malha completa: **320×640 · 390×844 · 640×900** × **texto 100 / 150 / 200%** ×
+**E e F** × **en-US e pt-BR** × **Sorceress Cold e Necromancer Summoning** =
+**72 combinações**, mais 6 de estratégia de texto ampliado (§11.4) e 40 de
+ajuste de limiar (4 larguras × 5 escalas × 2 árvores).
+
+| Verificação | Como foi medida | E | **F** |
+|---|---|---|---|
+| Overflow horizontal | `scrollWidth − clientWidth`, mais varredura de todo elemento que ultrapassa a viewport | 0 px, 0 culpados | **0 px, 0 culpados** |
+| Nome cortado na caixa | `scrollHeight` do botão contra `clientHeight` | 0 | **0** |
+| **Palavra partida** | `Range.getClientRects()` por palavra | 0 a 100/150%; **2 e 6 a 200%** | **0 em todas as 36** |
+| **Fragmento de 1–2 letras** | contagem de caracteres por linha, `Range` por caractere | 0; **2 e 6 a 200%** | **0 em todas as 36** |
+| Alcançabilidade (algoritmo) | BFS sobre o grafo, setas + Home/End, nas três trees da classe | 100% nas 36 linhas | **100% nas 36 linhas** |
+| Alcançabilidade (DOM real) | BFS disparando eventos de teclado de verdade nos botões | ver §6 (medido na passagem de E) | **10/10 nos dois trees, a 100% e a 200% de texto** |
+| Tab stops por tree visível | `[tabindex="0"]` dentro de `.tree:not([hidden])` | 1 (3 em empilhadas, um por tree) | **1 (3 em empilhadas)** |
+| Focáveis em tree inativa | `checkVisibility()` em `button`/`a` dentro de `.tree[hidden]` | 0 | **0** |
+| Foco visível | `:focus-visible` → anel de 2 px `--ember` com offset | presente | **presente, inalterado** |
+| Conectores legíveis | arestas desenhadas e `viewBox` do SVG | 8 (Cold) / 9 (Summoning) | **8 / 9 em todas as larguras e escalas** |
+| Alvo de toque ≥ 44 px nos dois eixos | menor retângulo de nó e de aba | nó ≥ 88 × 60; abas ≥ 44 de altura | **nó ≥ 74,7 × 72; abas ≥ 44 (66,3 a 200%)** |
+| `aria-label` com o nome completo | prefixo do rótulo == texto do nome, **e** `title` == nome | sim, 100% | **sim, 100% — inclusive em modo glifo** |
+| `role=grid` válido | `gridcell` por fileira, célula vazia nomeada, sem `aria-hidden` | 6 fileiras × **3** células; 8 vazias nomeadas; 0 `aria-hidden` | **idem** |
+| `aria-live` só na seleção | texto da região antes/depois de quatro setas, e depois de Enter | não muda com setas; muda no Enter | **idem** |
+| Sheet | `role`, `aria-modal`, trava de scroll, retorno de foco | dialog / true / `position:fixed` / volta ao gatilho | **idem** |
+| Redução de movimento | `transitionDuration` computado | 0,15 s → **0 s** | **idem** |
+| Hover só com `(hover: hover)` | `matchMedia` sob emulação de toque | `false`, handler não registrado | **idem** |
+| Zoom de página 200% (= 640 px CSS) | viewport de 640 px | grade 3×6, 0 overflow | **grade 3×6, 0 overflow, três trees empilhadas** |
+| Zoom de página 400% (= 320 px CSS) | viewport de 320 px | grade 3×6, 0 overflow | **grade 3×6, 0 overflow** |
+| Trilho longe da borda | retângulo do trilho | x = **0 … 20** | **x = 4 … 18** |
+| Legenda | número de instâncias × altura | 1 × 116 (abas) · **3 × 78** (empilhadas) | **1 × 34 nas duas** |
+
+**O que falhou:** nada em F, nas 72 combinações. **O que falhou em E:** o
+único item, e é o bloqueante — palavras partidas a 200% de texto (2 na Cold, 6
+na Summoning, com fragmentos de uma e duas letras). Tudo o mais que E passava,
+F passa.
+
+Dois falsos positivos foram corrigidos na própria instrumentação, e é justo
+registrá-los porque teriam virado número errado no relatório:
+
+1. **Conectores contados como 0.** As arestas são desenhadas dentro de um
+   `requestAnimationFrame`; medir logo depois de remontar a seção contava zero.
+   `__measure()` agora força o redesenho antes de contar.
+2. **Nome "cortado na horizontal" em modo glifo.** O nome fora da caixa é
+   `position:absolute` com 1 px, então `scrollWidth > clientWidth` sempre.
+   Os dez nós apareciam como cortados. A métrica passou a ignorar o nome fora
+   da caixa e a contá-lo à parte (`names.off`).
+
+### 11.6 O que continua sendo hipótese — e não deve virar contrato
+
+Nada em §11 é mecanismo obrigatório. Em particular:
+
+- **O limiar de 13em, a unidade `em` e a consulta em JS.** São do protótipo.
+  A grandeza medida ("quantos corpos de texto cabem na largura") é o que
+  importa; media query, container query ou medição em JS são caminhos, e a
+  Fase 4 escolhe com R-TREE-16 (sem JS) na mão. **O protótipo não é evidência
+  sobre o caminho sem JS** — ele monta a grade em JavaScript, e isso não mudou.
+- **Esconder o nome acima do limiar.** É a estratégia recomendada, medida
+  contra duas alternativas. Não é a única possível: um nó mais largo com duas
+  colunas em vez de três, um nome abreviado com `title`, ou um zoom próprio da
+  árvore não foram construídos.
+- **A faixa de nome.** É uma peça nova, não pedida por nenhum requisito. Ela
+  resolve "foco ou seleção mostra o nome completo" a um custo de 28 px, mas o
+  desenho (posição acima da grade, `aria-hidden`, conteúdo) é proposta.
+- **O fechamento automático da legenda na primeira seleção.** É uma heurística
+  de "primeiro contato", não um padrão conhecido. Pode irritar.
+- **`--pad-x` crescendo com o texto em modo glifo** (20 → 40 px a 200%) para o
+  trilho continuar cabendo. Afasta a calha do `Container` de produção, que é
+  fixa em `px-5`. É solução de protótipo.
+- **O roteador ortogonal.** F acrescentou os casos de mesma fileira e mesma
+  coluna. Isso vale também para E quando `conn=ortho` é escolhido — a captura
+  `07` foi feita com o roteador antigo e mostra o traçado anterior.
+
+### 11.7 Pendências para o proprietário — Q2
+
+Estas continuam abertas depois de F.
+
+1. **Toque com polegar real — PENDENTE, e a medição headless não substitui.**
+   O protótipo mediu geometria: nó de 88 × 74 px a 100% e 74,7 × 72 px a 200%,
+   ambos acima de 44 px nos dois eixos. **Isso não é um teste de toque.**
+   Ninguém tocou nesta árvore com um polegar. Os 40/40 acertos do relatório de
+   E foram cliques sintéticos no centro e nos cantos de cada nó — provam que o
+   alvo existe onde se pensa que existe, não que o polegar o acerta. **Q2
+   continua bloqueada por isto.** O critério da revisão — "toca 10 nós
+   consecutivos sem erro de alvo" — segue **não verificado**.
+2. **A 200% de texto, você aceita perder o nome no nó?** É o coração da
+   estratégia B. Compare `15` (E: nomes presentes e partidos) com `16` (F:
+   sigilo, sem nome) e `19` (o nome completo no sheet). Se a resposta for não,
+   a alternativa medida é A — e A tem 3 e 6 palavras partidas.
+3. **O nó de 12 px vale 84 px de grade por tree?** F é 38 px mais alta que E a
+   100%. A 150% e acima F já é mais curta. Compare `13` com `14`.
+4. **O trilho recuado (x = 4 … 18) resolveu?** Em tela curva, 4 px pode ainda
+   ser pouco. O inset é um número num só lugar.
+5. **Legenda fechada depois do primeiro contato — bom ou irritante?** Fechada
+   ela custa 34 px; aberta, 128 px.
+6. **A 390 px e 200%, você prefere o nome raspando por 0,8 px ou o sigilo?**
+   É a única largura onde o limiar de 13em é conservador (§11.4).
+7. **Encontra Blizzard e o caminho até ela em ≤ 5 s?** Captura `20`, agora com
+   o roteador ortogonal corrigido e o caminho em ember.
+8. **Prefere isto à lista de hoje?** A pergunta literal da revisão, ainda sem
+   resposta em aparelho real.
+
+**Q2 continua aberta.** F fecha o bloqueante que E tinha e responde os seis
+ajustes; não substitui o telefone.
