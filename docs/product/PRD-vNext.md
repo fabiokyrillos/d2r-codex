@@ -399,8 +399,20 @@ Posições (fileira/coluna) e pré-requisitos gerados dos dados do jogo (`conten
 
 ### 8.5 Ícones: proveniência, licença e cobertura
 
+> **Q1 decidida (proprietário, 2026-09-08): opção (A), conjunto próprio completo.** Os 240 ícones
+> serão desenhados para o D2R Codex, com identidade própria. Nenhum conjunto externo é adotado.
+> Base da decisão: o spike ([`spikes/2026-09-08-skill-icon-assets.md`](spikes/2026-09-08-skill-icon-assets.md))
+> mediu que o melhor candidato externo cobre **47,7 %** das skills sem mapeamento forçado, com
+> lacunas concentradas nas auras do Paladin; completar as lacunas com desenho próprio produziria
+> duas mãos visuais na mesma grade, que é exatamente a opção (C) já recusada. Consequências
+> registradas: **cobertura final obrigatória de 240/240**; **nenhuma mistura progressiva no
+> resultado final** (a troca é completa, de uma vez); os **placeholders atuais podem continuar até
+> a substituição completa**; **nenhum asset do jogo em nenhuma hipótese**. A **Fase 5 continua não
+> iniciada** e a produção dos ícones exige **plano próprio posterior** — decidir a origem não
+> autoriza começar a desenhar.
+
 - **R-TREE-18 · Um ícone por skill, cobertura completa e consistente.** 240 ícones, um por skill, com uma única mão visual. Nenhum subconjunto ("30 skills", "53 principais") é aprovado como cobertura final; até a troca completa, o sigilo atual por tipo+elemento continua como placeholder declarado. A troca para o conjunto final é completa, de uma vez, nunca progressiva. *Aceite:* manifesto `skill → ícone` com `origin` (`own` | `licensed` | `placeholder`), `license` e `author` quando `licensed`; teste que lista skills em `placeholder` (permitido até a Fase 5; bloqueante ao fim dela); atribuições geradas do manifesto na página de fontes.
-- **R-TREE-19 · Spike de assets (Fase 0B) e matriz.** Antes de decidir a origem dos ícones, um spike deve determinar: número total de skills exibidas (240, mais eventuais variantes); cobertura por classe; cobertura do(s) conjunto(s) candidato(s) skill a skill; licença e atribuição; lacunas; consistência visual (uma mão só?); formatos e custo de tematização por CSS; custo de produzir um conjunto próprio completo. A decisão (Q1) é do proprietário, informada por um artefato lado a lado (por exemplo, as 30 skills da Sorceress e as 30 do Necromancer mapeadas contra o candidato).
+- **R-TREE-19 · Spike de assets (Fase 0B) e matriz.** *Cumprido em 2026-09-08; relatório, matriz e artefato lado a lado em [`spikes/`](spikes/2026-09-08-skill-icon-assets.md). O teto de HTML por página de classe que ele entrega é **368.640 bytes (360 KiB)** por documento, valendo para os 16 documentos de página de classe, e é o número que R-TREE-17 cita.* Antes de decidir a origem dos ícones, um spike deve determinar: número total de skills exibidas (240, mais eventuais variantes); cobertura por classe; cobertura do(s) conjunto(s) candidato(s) skill a skill; licença e atribuição; lacunas; consistência visual (uma mão só?); formatos e custo de tematização por CSS; custo de produzir um conjunto próprio completo. A decisão (Q1) é do proprietário, informada por um artefato lado a lado (por exemplo, as 30 skills da Sorceress e as 30 do Necromancer mapeadas contra o candidato).
 
 | Categoria | Exemplos | Pode usar? | Condição |
 |---|---|---|---|
@@ -735,19 +747,19 @@ Dependências: 0A → 1 → 2 → 3; 0B → 4 → 5; 6a–6d dependem de 1–3; 
 
 Somente decisões que dependem do proprietário e que o documento não pode resolver sozinho.
 
-**Q1 · Estratégia e origem final dos ícones (após o spike da Fase 0B).**
-- Contexto: 240 ícones com uma única mão visual. O spike (R-TREE-19) entrega cobertura por candidato, licença, lacunas, consistência e custo de um conjunto próprio completo, com artefato lado a lado.
-- Opções: (A) conjunto próprio completo; (B) conjunto licenciado único e completo com atribuição; (A depois de B) com troca completa, nunca progressiva. Nenhum subconjunto é aprovado como cobertura final.
-- Recomendação: decidir olhando o artefato; "conjunto CC BY" não é decisão prévia.
-- Impacto: tamanho da Fase 5 e página de fontes.
-- Quando: ao fim da Fase 0B, antes da Fase 5.
+**~~Q1 · Estratégia e origem final dos ícones~~ — DECIDIDA em 2026-09-08. Não está mais aberta.**
+- Decisão do proprietário: **(A) conjunto próprio completo e consistente para as 240 skills.**
+- Motivos registrados: o melhor conjunto externo cobre só 47,7 %; as lacunas são importantes, sobretudo nas auras do Paladin; completá-las produziria mistura de estilos; consistência importa mais que reaproveitar parcialmente um conjunto externo; identidade própria do D2R Codex; nenhum asset do jogo copiado; o resultado final tem de cobrir 240/240.
+- Consequências registradas no bloco no início de §8.5. **Decidir a origem não autoriza produzir os ícones:** a Fase 5 continua não iniciada e o desenho dos 240 exige plano próprio posterior.
+- Evidência: [`spikes/2026-09-08-skill-icon-assets.md`](spikes/2026-09-08-skill-icon-assets.md).
 
-**Q2 · Aprovação visual e comportamental do protótipo mobile da árvore (Fase 0B).**
+**Q2 · Aprovação visual e comportamental do protótipo mobile da árvore (Fase 0B). — CONTINUA ABERTA.**
 - Contexto: R-TREE-0 lista as oito perguntas e os critérios mínimos; abas só abaixo de 640 px é o ponto de partida, não contrato.
 - Opções: aprovar (fixa nó, vão, fileira, trilho, abas e orçamento); aprovar com ajustes; reprovar (renegociar 1.5 #7 e O3 antes da Fase 1).
-- Recomendação: avaliar em telefone real nos dois idiomas com a checklist de R-TREE-0.
+- **Estado em 2026-09-08:** o proprietário avaliou a primeira rodada e **não aprovou**. A direção da variante E foi considerada promissora e claramente melhor que a lista atual. Confirmados como direção inicial: conectores **ortogonais**; o contraste de moldura já aprovado; **abas abaixo de 640 px com três árvores empilhadas a partir de 640 px**; e fonte normal de **12 px** (11 px era legível, mas pequeno). Pendências que motivaram a segunda rodada: nomes quebrando em colunas de uma ou duas letras com texto a 200 %; trilho colado à borda (pede um pequeno inset, sem migrar para a variante C); legenda de 116 px repetida por tree (pede uma legenda única compartilhada). Uma **variante F** foi construída para responder a isso.
+- **Pendência que nenhuma medição headless resolve:** alvo de toque com **polegar real**. Continua explicitamente em aberto.
 - Impacto: destrava a Fase 4 e define os números de R-TREE-1, 3, 8, 15, 17.
-- Quando: ao fim da Fase 0B.
+- Quando: após a avaliação da variante F em telefone real, nos dois idiomas.
 
 Resolvidas neste PRD (não estão abertas): tiers na primeira visita (todos compactos, nenhum pré-selecionado); rolagem (nunca automática na seleção); abas em tablet (não; saída do protótipo confirma); PWA (removido do roadmap); aprofundamento editorial (fluxo contínuo); compartilhamento (fora de escopo).
 
@@ -862,6 +874,11 @@ Capturas e textos coletados na auditoria (pasta temporária, não versionados): 
 | 2026-09-08 | Revisão adversarial independente do PRD: 25 findings (3 BLOCKER, 7 HIGH, 10 MEDIUM, 5 LOW), 12 contradições, 6 requisitos prematuros, 10 ausentes, 10 a remover, 11 unidades de fase propostas | [`reviews/2026-09-08-prd-vnext-review.md`](reviews/2026-09-08-prd-vnext-review.md), commit `6b3c38d` |
 | 2026-09-08 | Decisões do proprietário: seis tiers compactos por padrão sem pré-seleção nem inferência; seleção nunca rola a página (ação explícita "Ir para o equipamento"); árvore por aba abaixo de 640 px como ponto de partida sujeito ao protótipo; nenhum subconjunto de ícones aprovado (spike antes de Q1); PWA removido; aprofundamento editorial como fluxo contínuo; compartilhamento continua fora | esta revisão (seção 19) |
 | 2026-09-08 | PRD revisão 2 (este documento) | commit posterior a `6b3c38d` |
+| 2026-09-08 | **Fase 0A executada, publicada e validada em produção.** Nove defeitos corrigidos com teste vermelho antes, verde depois e mutation por item; `GOOD_AT_THRESHOLD` remedido sobre 53 builds (424 notas) e **mantido em 4**; cinco gates novos. Aprovada pelo proprietário | commit `71aa6dd`, deployment `6335127988`; [`../adr/0004-good-at-threshold.md`](../adr/0004-good-at-threshold.md) |
+| 2026-09-08 | **Fase 0B executada.** Protótipo da árvore mobile e spike de ícones entregues como artefatos em `docs/` | [`prototypes/mobile-skill-tree/`](prototypes/mobile-skill-tree/README.md), [`spikes/2026-09-08-skill-icon-assets.md`](spikes/2026-09-08-skill-icon-assets.md) |
+| 2026-09-08 | **Q1 decidida pelo proprietário: (A) conjunto próprio completo**, 240/240, sem mistura progressiva no resultado final; placeholders seguem até a troca completa; Fase 5 **não** iniciada e produção dos ícones exige plano próprio | §8.5 e §15 |
+| 2026-09-08 | **Q2 não aprovada; segunda rodada do protótipo (variante F).** Confirmados: conectores ortogonais, contraste de moldura, abas <640 px, 12 px. A corrigir: quebra de nomes a 200 %, inset do trilho, legenda única | §15 Q2; [`prototypes/mobile-skill-tree/`](prototypes/mobile-skill-tree/README.md) |
+| 2026-09-08 | **Correção factual de duas afirmações sobre a árvore**, descobertas pela medição da Fase 0B.1: "Corpse Explosion" é da tree Poison and Bone, não Summoning (`skill-graph.ts`); e alargar a grade **não** corrige sozinho o `role=grid` inválido, porque a célula vazia é `aria-hidden="true"` em qualquer largura | §2.2 D7, §8.2 R-TREE-0, §8.3 R-TREE-1; errata em [`reviews/`](reviews/2026-09-08-prd-vnext-review.md) |
 
 ---
 
