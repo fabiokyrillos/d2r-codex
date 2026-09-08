@@ -1,6 +1,9 @@
 # Protótipo da árvore de skills no celular — Fase 0B.1
 
-**Status:** evidência para **Q2**. Não é aprovação, não é implementação.
+**Status:** **Q2 aprovada em 2026-09-08** como direção estrutural, com condição de UAT físico.
+A **variante F é a baseline da Fase 4**; a variante E fica preservada como termo de comparação.
+Continua sendo um protótipo descartável: não é implementação, e a geometria só vai a público depois
+do UAT em telefone real descrito no PRD §14 (Fase 4). Ver PRD §8.2, §8.3 R-TREE-3/8/15 e §15.
 **Data:** 2026-09-08 · **Escopo:** R-TREE-0 (PRD vNext §8.2) e §10 da revisão de 2026-09-08.
 
 > **Iteração de 2026-09-08 (tarde): variante F.** O proprietário aprovou a
