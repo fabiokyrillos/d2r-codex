@@ -100,6 +100,113 @@ Where a preserved term is genuinely opaque, pt-BR **explains it on first use in
 context** rather than replacing it. The stat line stays `Faster Cast Rate`; the
 sentence around it explains what it does.
 
+### 5. The UI strings that legitimately read the same in both languages
+
+The rule above is a policy, and a policy nobody can check is a policy that
+erodes. A pt-BR dictionary string byte-identical to its en-US twin is either a
+term this decision keeps in English or a translation nobody did, and from the
+file alone the two are indistinguishable — `mercenaries.tierEndgame` said
+"endgame" beside `tierBudget` "econômico" and `tierMid` "intermediário" for as
+long as the mercenary page existed.
+
+So the sanctioned coincidences are enumerated here, once, and
+`scripts/dictionary.test.ts` reads this list rather than carrying its own copy.
+Every identical pair must appear below; every entry below must still be an
+identical pair. A new coincidence fails the gate until someone writes it in,
+which is the point at which the decision actually gets made. Strings with no
+letters once placeholders are removed — `#`, `30+`, an act number — carry no
+language to translate and are outside the rule.
+
+Four reasons, and every entry has exactly one.
+
+<!-- BEGIN:invariant-strings -->
+
+**Game proper nouns and strings quoted from the game.** Section 4's own
+categories: quest, release, difficulty and mode names, stat lines, attribute
+names, base item types, and the game's own word for a monster class.
+
+- `Attack rating`
+- `bases`
+- `charms`
+- `Charms`
+- `Den of Evil`
+- `Dexterity`
+- `Diablo II`
+- `Energy`
+- `Faster Block Rate`
+- `Faster Cast Rate`
+- `Faster Hit Recovery`
+- `Hardcore`
+- `Hell`
+- `Hellforge`
+- `Increased Attack Speed`
+- `Ladder`
+- `Lam Esen's Tome`
+- `Lord of Destruction`
+- `Mana`
+- `Nightmare`
+- `NM`
+- `Non-Ladder, online`
+- `Normal`
+- `Offline`
+- `Prison of Ice (Anya)`
+- `Radament's Lair`
+- `Reign of the Warlock`
+- `Resurrected`
+- `Sockets`
+- `Sockets:`
+- `Strength`
+- `super unique`
+- `Terror Zones`
+- `The Fallen Angel (Izual)`
+- `The Golden Bird`
+- `Tools of the Trade`
+- `Ubers`
+- `Vitality`
+
+**Community protocol.** The vocabulary a Brazilian player uses in their own
+trade channel and their own Discord. Translating these would leave the reader
+holding a word nobody they play with says — the same argument section 4 makes
+for item names, applied to the words around them.
+
+- `Best in Slot`
+- `BiS`
+- `Breakpoints`
+- `Build`
+- `Builds`
+- `{count} build`
+- `{count} builds`
+- `Buff`
+- `DLC`
+- `Farm`
+- `Frames`
+- `Magic find`
+- `Quest`
+- `Respec`
+- `Runeword`
+- `Runewords`
+- `Skill`
+- `Skills`
+- `{count} skills`
+- `Solo self-found`
+
+**Spelled the same in Portuguese.** Nothing to translate; the word is already
+the Portuguese one.
+
+- `Aura`
+- `Chance`
+- `Classes`
+- `Item`
+- `Menu`
+
+**This site's own name, and format strings.**
+
+- `D2 Codex`
+- `%s · D2 Codex`
+- `{seconds}s`
+
+<!-- END:invariant-strings -->
+
 ## Why
 
 **Numbers translated twice are numbers wrong once.** The overlay split means a

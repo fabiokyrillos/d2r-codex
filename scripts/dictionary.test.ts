@@ -17,6 +17,9 @@
  *
  * Run with `npm run test:dictionary`.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { dictionaryFor } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
 
@@ -149,6 +152,64 @@ for (const locale of LOCALES) {
   }
 }
 check("control: the removal check can see a key that is present", "classes.coverageTitle" in FLAT["en-us"]);
+
+// ---------------------------------------------------------------------------
+console.log("\nEvery string identical in both languages is sanctioned by ADR 0003");
+// ---------------------------------------------------------------------------
+/*
+ * R-I18N-6. A pt-BR string that is byte-identical to the en-US one is either a
+ * term the site keeps in English on purpose — "Blessed Hammer", "Faster Cast
+ * Rate", "Nightmare" — or a translation nobody did. Only the first kind is
+ * allowed, and which terms those are is a *policy* question, so the list lives
+ * once in `docs/adr/0003` and this reads it. Adding a key whose two values
+ * coincide fails here until someone writes the term into the ADR, which is the
+ * moment the decision gets made.
+ *
+ * Values with no letters left once placeholders are removed — "#", "30+",
+ * "+{points}", an act number — carry no language to translate, so they are not
+ * coincidences and are not listed.
+ */
+const ADR = join(process.cwd(), "docs", "adr", "0003-locale-overlays-and-untranslated-proper-nouns.md");
+const adrText = readFileSync(ADR, "utf8");
+const block = /<!-- BEGIN:invariant-strings -->([\s\S]*?)<!-- END:invariant-strings -->/.exec(adrText);
+check("ADR 0003 carries the machine-readable list", block !== null);
+
+const sanctioned = new Set(
+  [...(block?.[1] ?? "").matchAll(/^- `(.+)`$/gm)].map((m) => m[1]),
+);
+check("the list parsed into entries", sanctioned.size > 50, `${sanctioned.size}`);
+
+/** Nothing but placeholders, digits and punctuation: no language to translate. */
+const hasLanguage = (value: string) => /\p{L}/u.test(value.replace(/\{\w+\}/g, ""));
+
+const coincidences = new Map<string, string[]>();
+for (const key of Object.keys(FLAT["en-us"])) {
+  const value = FLAT["en-us"][key];
+  if (value !== FLAT["pt-br"][key] || !hasLanguage(value)) continue;
+  coincidences.set(value, [...(coincidences.get(value) ?? []), key]);
+}
+check("there are coincidences to judge", coincidences.size > 40, `${coincidences.size}`);
+
+const unsanctioned = [...coincidences].filter(([value]) => !sanctioned.has(value));
+check(
+  "no untranslated string escapes the ADR's list",
+  unsanctioned.length === 0,
+  unsanctioned.map(([v, keys]) => `${keys[0]} = "${v}"`).slice(0, 8).join("; "),
+);
+
+const stale = [...sanctioned].filter((value) => !coincidences.has(value));
+check(
+  "the ADR lists nothing that has stopped being a coincidence",
+  stale.length === 0,
+  stale.slice(0, 8).map((v) => `"${v}"`).join(", "),
+);
+
+{
+  check("control: the list rejects a value nobody sanctioned", !sanctioned.has("Ocultar filtros"));
+  check("control: the list holds a value that is really there", sanctioned.has("Nightmare"));
+  check("control: a placeholder-only value carries no language", !hasLanguage("+{points}") && !hasLanguage("30+"));
+  check("control: a worded value does carry language", hasLanguage("{count} build"));
+}
 
 // ---------------------------------------------------------------------------
 console.log(`\n${passed} checks passed.`);
