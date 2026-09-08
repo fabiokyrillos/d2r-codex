@@ -9,6 +9,7 @@ import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { releaseLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
+import { hasSkillPages } from "@/lib/skills";
 import { notFound } from "next/navigation";
 
 export async function generateMetadata(
@@ -125,7 +126,16 @@ export default async function ClassesPage() {
         </Section>
 
         <Callout variant="info" title={t.classes.coverageTitle}>
-          {t.classes.coverageBody}{" "}
+          {fmt(t.classes.coverageBody, {
+            skills: classes.filter((c) => hasSkillPages(c.slug)).length,
+            total: classes.length,
+            leveling: new Set(journeys.map((j) => j.classSlug)).size,
+            builds: new Set(builds.map((b) => b.classSlug)).size,
+            buildCount: fmt(
+              builds.length === 1 ? t.classes.buildsCount : t.classes.buildsCountPlural,
+              { count: builds.length },
+            ),
+          })}{" "}
           <Link href={r.class("sorceress")} className="text-ember hover:text-ember-bright">
             {t.classes.coverageLink}
           </Link>

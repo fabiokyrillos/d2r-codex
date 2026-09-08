@@ -144,8 +144,19 @@ export const enUS = {
     buildsCountPlural: "{count} builds",
     levelingGuide: "Leveling guide",
     coverageTitle: "Coverage",
+    /*
+     * Filled in by `app/[lang]/classes/page.tsx` from the registry.
+     *
+     * It used to be a paragraph that named classes and counted them by hand,
+     * and the page it sits on contradicted it: it said the Assassin had no
+     * builds while seven of them were listed directly above, and that the
+     * Warlock had "verified starting attributes and nothing else" under four
+     * Warlock build cards. A sentence about the catalogue is a claim about
+     * data, so the data writes it. The wording deliberately carries no verb
+     * that would have to agree with a count.
+     */
     coverageBody:
-      "Five classes are fully documented — the Sorceress, Paladin, Amazon, Necromancer and Druid have skills, a page for every skill, a complete leveling journey and endgame builds with six-tier gear progression. The Assassin has her thirty skills and a page for each of them; her builds and her leveling journey are the next thing written, and no page here promises them yet. The Barbarian has an overview page, and the Warlock has verified starting attributes and nothing else. Depth is added one class at a time rather than publishing shallow guides for all of them at once.",
+      "Counted from the catalogue: skill pages for {skills} of {total} classes, a complete leveling journey for {leveling}, and full gear progression for {builds} — {buildCount} in all. Depth is added class by class rather than publishing shallow guides for all of them at once.",
     coverageLink: "See the reference implementation →",
 
     dlcCalloutTitle: "Paid expansion required",
