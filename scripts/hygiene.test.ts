@@ -148,6 +148,80 @@ check(
 );
 
 // ---------------------------------------------------------------------------
+console.log("\nNothing counts the site by hand");
+// ---------------------------------------------------------------------------
+/*
+ * Two numbers about the site were written into prose and then went stale.
+ *
+ * "all 1004 pages" in `app/[lang]/layout.tsx` and `mobile-navigation.tsx`, and
+ * "one of only two client components" in `search-dialog.tsx` and the README —
+ * six client components by the time anyone looked. Both are statements about
+ * the repository, and a statement about the repository that a human types is a
+ * statement that stops being true without anything failing.
+ *
+ * The rule is therefore not "write the right number". It is: do not write one.
+ *
+ * **The two exemptions are deliberate and must stay.** `app/not-found.tsx` and
+ * `scripts/not-found.test.ts` say "1009 prerendered pages" as the *record of a
+ * measurement* — what a build produced on the day the 404 behaviour was
+ * measured — not as a claim about today. Rewriting those to 1002 would falsify
+ * the record, so they are listed here by name rather than fixed.
+ */
+const HISTORICAL_RECORD = ["app/not-found.tsx", "scripts/not-found.test.ts"];
+/** This file quotes the sentences it forbids, as the controls below. */
+const COUNT_EXEMPT = [...HISTORICAL_RECORD, "scripts/hygiene.test.ts"];
+const HAND_COUNTS: [name: string, pattern: RegExp][] = [
+  ["a page count", /\b\d{3,5}\s+(?:\w+\s+){0,2}(?:pages|páginas)\b|\ball\s+\d{3,5}\b/i],
+  [
+    "a client-component count",
+    /\b(?:only|apenas|just)\s+(?:\w+\s+){0,3}client\s+components?\b|\bthe\s+only\s+client\s+components?\b/i,
+  ],
+];
+for (const [name, pattern] of HAND_COUNTS) {
+  const offenders = tracked
+    .filter((f) => !COUNT_EXEMPT.includes(f))
+    .filter((f) => /^(app|components|lib|scripts)\/|^README\.md$/.test(f))
+    .filter((f) => pattern.test(readFileSync(f, "utf8")));
+  check(`nothing states ${name}`, offenders.length === 0, offenders.join(", "));
+}
+check(
+  "control: the page-count pattern matches both sentences that went stale",
+  HAND_COUNTS[0][1].test("here — all 1004 pages are built from authored content — but a future route") &&
+    HAND_COUNTS[0][1].test("is served, and the header is on all 1004 of them. So the native disclosure"),
+);
+check(
+  "control: the client-count pattern matches both sentences that went stale",
+  HAND_COUNTS[1][1].test("One of only two client components on the site, so this is where") &&
+    HAND_COUNTS[1][1].test("The search dialog and the language switcher are the only client components"),
+);
+check(
+  "control: the page-count pattern leaves an ordinary number alone",
+  !HAND_COUNTS[0][1].test("Levels 75-85. A complete, self-found setup."),
+);
+check(
+  "the historical record is still there to be exempted",
+  HISTORICAL_RECORD.every((f) => tracked.includes(f) && /\b1009\b/.test(readFileSync(f, "utf8"))),
+  HISTORICAL_RECORD.join(", "),
+);
+
+// ---------------------------------------------------------------------------
+console.log("\nNo dictionary string is declared and never rendered");
+// ---------------------------------------------------------------------------
+/*
+ * `hideFilters` was declared in both dictionaries, typed in the filter
+ * component's props and passed across the client boundary on every page of
+ * /builds — and never rendered. It cost a string in two languages and a line in
+ * three files to say nothing.
+ */
+{
+  const mentions = tracked.filter((f) => /\bhideFilters\b/.test(readFileSync(f, "utf8")));
+  // `docs/` records the defect on purpose; code is what has to be clean.
+  const inCode = mentions.filter((f) => /^(app|components|lib)\//.test(f));
+  check("hideFilters is gone from the dictionaries, the props and the call site", inCode.length === 0, inCode.join(", "));
+  check("control: the scanner can see a mention when there is one", mentions.length > 0, `${mentions.length} outside code`);
+}
+
+// ---------------------------------------------------------------------------
 console.log("\nNo build output or scratch files are tracked");
 // ---------------------------------------------------------------------------
 const all = git(["ls-files"]).split("\n").map((s) => s.trim()).filter(Boolean);

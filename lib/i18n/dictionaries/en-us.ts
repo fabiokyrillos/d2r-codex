@@ -310,7 +310,6 @@ export const enUS = {
       emptyBody:
         "Try removing a filter, or clearing them all. Every build on the site is documented at six gear tiers, so the narrower the question the fewer answers there are.",
       showFilters: "Filters",
-      hideFilters: "Hide filters",
       searchChipPrefix: "Search:",
       // The mobile sheet. Its selections are a draft, so the primary action
       // has to say what applying them would produce, not what the page shows.

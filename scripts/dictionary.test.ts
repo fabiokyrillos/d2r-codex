@@ -140,6 +140,7 @@ console.log("\nStrings that were deleted stay deleted");
 const REMOVED: [key: string, why: string][] = [
   ["builds.whyFewTitle", 'the "Why so few builds?" callout was written for a catalogue of two'],
   ["builds.whyFewBody", "same callout; it named the only two builds that then existed"],
+  ["builds.filters.hideFilters", "declared, typed and passed to the client, never rendered"],
 ];
 
 for (const locale of LOCALES) {

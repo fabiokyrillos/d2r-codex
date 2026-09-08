@@ -85,7 +85,6 @@ export interface BuildFilterStrings {
   emptyTitle: string;
   emptyBody: string;
   showFilters: string;
-  hideFilters: string;
   searchChipPrefix: string;
   /** The mobile sheet's heading, and its accessible name. */
   sheetTitle: string;

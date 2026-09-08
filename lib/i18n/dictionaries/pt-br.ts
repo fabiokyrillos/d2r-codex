@@ -306,7 +306,6 @@ export const ptBR: Dictionary = {
       emptyBody:
         "Tente remover um filtro, ou limpar todos. Toda build do site é documentada em seis níveis de equipamento, então quanto mais estreita a pergunta, menos respostas existem.",
       showFilters: "Filtros",
-      hideFilters: "Ocultar filtros",
       searchChipPrefix: "Busca:",
       sheetTitle: "Filtrar builds",
       sheetClose: "Fechar filtros",

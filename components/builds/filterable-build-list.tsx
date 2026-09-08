@@ -158,7 +158,6 @@ export async function FilterableBuildList({
           emptyTitle: t.builds.filters.emptyTitle,
           emptyBody: t.builds.filters.emptyBody,
           showFilters: t.builds.filters.showFilters,
-          hideFilters: t.builds.filters.hideFilters,
           searchChipPrefix: t.builds.filters.searchChipPrefix,
           // The mobile sheet's own copy. Named here, like everything else the
           // client component renders, so the dictionary stays out of the bundle.

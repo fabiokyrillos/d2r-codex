@@ -76,8 +76,8 @@ export function generateStaticParams() {
  *
  * The contract this creates: a dynamic segment is reachable only if its
  * `generateStaticParams` enumerates it. That is already true of every route
- * here — all 1004 pages are built from authored content — but a future route
- * that wants request-time params has to set `dynamicParams = true` on its own
+ * here — every page is built from authored content — but a future route that
+ * wants request-time params has to set `dynamicParams = true` on its own
  * segment and say why.
  */
 export const dynamicParams = false;

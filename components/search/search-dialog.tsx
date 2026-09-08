@@ -15,8 +15,10 @@ import { searchEntries, type SearchEntry, type SearchKind } from "@/lib/search/s
 /**
  * Global search.
  *
- * One of only two client components on the site, so this is where most of the
- * interactive budget goes.
+ * A client component, and the one most of the interactive budget goes to.
+ * `scripts/client-boundary.test.ts` walks the module graph and reports which
+ * files cross the boundary, so the set is never written down here — this
+ * comment said "one of only two" while there were six.
  *
  * It cannot call `next/root-params`, which is server-only, so the locale
  * reaches it as props: the index URL for the active locale, and the already

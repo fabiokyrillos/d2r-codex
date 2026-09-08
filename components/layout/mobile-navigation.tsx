@@ -22,7 +22,7 @@ import { cn } from "@/components/ui";
  * **Why it is still a `<details>`.** A button and a panel would have been the
  * obvious shape, and it would have taken the menu away from every reader
  * without JavaScript — the site prerenders every page precisely so that reader
- * is served, and the header is on all 1004 of them. So the native disclosure
+ * is served, and the header is on every one of them. So the native disclosure
  * stays, and without scripting it is exactly what it always was.
  *
  * **Where the open state lives, and why it is not in React.** The design called

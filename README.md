@@ -313,9 +313,11 @@ for any D2 material you consult.
 Next.js 16 (App Router, Turbopack) · React 19 · TypeScript · Tailwind CSS v4
 
 Every content page is a server component and prerenders to static HTML, in both
-languages. The search dialog and the language switcher are the only client
-components in the codebase — and the switcher renders real `<Link>` elements, so
-it is crawlable and works with JavaScript disabled. The mobile menu is a native
+languages. Interaction is concentrated in a small set of client components —
+`npm run test:client` walks the module graph and reports which files cross the
+boundary, so the list is not written down here to go stale. The language
+switcher renders real `<Link>` elements, so it is crawlable and works with
+JavaScript disabled. The mobile menu is a native
 `<details>` element, and the gear-tier navigation is anchor links.
 
 ### Search
