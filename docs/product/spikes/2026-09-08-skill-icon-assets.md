@@ -74,6 +74,24 @@ Esse é o mesmo diretório que `scripts/raw-markup.test.ts`, `scripts/skill-tree
 `scripts/crawl.test.ts` já leem, através de `scripts/build-freshness.ts` (`buildRoot()` /
 `assertFreshBuild()`). Um gate futuro de R-TREE-17 reusa esse helper e não inventa método novo.
 
+**O método é estável; o número não é byte-exato.** Duas execuções do mesmo commit `8fb88c2`, em
+worktrees diferentes, deram tamanhos com **um byte de diferença**:
+
+| Documento | Execução A | Execução B |
+|---|---|---|
+| `/en-us/classes/sorceress` | 319.281 | 319.282 |
+| `/pt-br/classes/sorceress` | 322.575 | 322.576 |
+
+A causa foi localizada comparando os dois arquivos: eles divergem a partir do byte 1242, nos nomes de
+chunk que o Turbopack embute no documento (`/_next/static/chunks/<hash>.js`). Esses nomes têm
+comprimento variável entre builds, então o tamanho do documento oscila em alguns bytes sem que
+nenhuma linha de conteúdo mude.
+
+Consequência prática, e é a razão de isto estar registrado: **o gate compara contra um teto com
+folga, e nunca afirma igualdade de bytes nem grava um valor esperado exato.** Um gate que assertar
+bytes exatos vai piscar em builds consecutivos do mesmo código. A folga de 46 KB proposta em §11.5
+absorve essa oscilação com várias ordens de grandeza de sobra.
+
 ### 1.3 Pesquisa de licença
 
 Cada conjunto foi verificado na **fonte oficial** (site ou repositório do próprio conjunto), nunca
@@ -448,9 +466,11 @@ Esta é a saída declarada de R-TREE-19 que R-TREE-17 consome pelo número.
 
 ### 11.1 Baseline remedido
 
-O baseline de 312 KB decodificados citado na auditoria de 2026-09-07 **foi reproduzido**:
+O baseline de 312 KB decodificados citado na auditoria de 2026-09-07 **foi reproduzido**. Os bytes
+abaixo são de **uma execução**, não uma constante: variam em alguns bytes entre builds pelo motivo
+registrado em §1.2, e é por isso que o teto tem folga em vez de exigir igualdade.
 
-| Documento | Bytes | KiB |
+| Documento | Bytes (uma execução) | KiB |
 |---|---|---|
 | **`/en-us/classes/sorceress`** (rota de referência) | **319.282** | **311,8** |
 | `/pt-br/classes/sorceress` (**pior página hoje**) | 322.576 | 315,0 |
@@ -552,7 +572,8 @@ declarada como tal: nenhum arquivo foi baixado.
 = 368.640  (360,0 KiB)
 ```
 
-**Como o gate mede** (mesmo método desta medição, sem variação):
+**Como o gate mede** (mesmo método desta medição; sobre a oscilação de poucos bytes entre builds e
+por que o gate compara contra teto em vez de igualdade, ver §1.2):
 
 1. `npm run build`;
 2. `assertFreshBuild()` de `scripts/build-freshness.ts` — o helper que já protege três gates de ler
