@@ -42,6 +42,7 @@ export default async function BuildsPage() {
   const builds = getBuilds(locale);
   const classes = getClasses(locale);
   const documented = new Set(builds.map((b) => b.classSlug));
+  const undocumented = classes.filter((c) => !documented.has(c.slug));
 
   return (
     <Container size="wide" className="py-10">
@@ -118,11 +119,16 @@ export default async function BuildsPage() {
           {t.builds.whyFewBody}
         </Callout>
 
-        <Section title={t.builds.awaitingTitle}>
-          <ul className="flex flex-wrap gap-2">
-            {classes
-              .filter((c) => !documented.has(c.slug))
-              .map((cls) => (
+        {/*
+          Guarded, as `leveling/page.tsx` guards its twin. Without it the
+          heading rendered over an empty list on every visit in both
+          languages — every class has a build now, so the filter has been
+          returning nothing for as long as that has been true.
+        */}
+        {undocumented.length > 0 && (
+          <Section title={t.builds.awaitingTitle}>
+            <ul className="flex flex-wrap gap-2">
+              {undocumented.map((cls) => (
                 <li key={cls.slug}>
                   <Link
                     href={r.class(cls.slug)}
@@ -133,8 +139,9 @@ export default async function BuildsPage() {
                   </Link>
                 </li>
               ))}
-          </ul>
-        </Section>
+            </ul>
+          </Section>
+        )}
       </div>
     </Container>
   );
