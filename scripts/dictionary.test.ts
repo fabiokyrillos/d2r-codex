@@ -129,6 +129,27 @@ for (const locale of LOCALES) {
 }
 
 // ---------------------------------------------------------------------------
+console.log("\nStrings that were deleted stay deleted");
+// ---------------------------------------------------------------------------
+/*
+ * A dictionary key outlives the markup that rendered it: nothing fails when a
+ * callout is deleted and its two strings are left behind, and the next reader
+ * of the file assumes they are live copy. Each entry here names the key and the
+ * reason it went, so restoring one is a decision rather than an accident.
+ */
+const REMOVED: [key: string, why: string][] = [
+  ["builds.whyFewTitle", 'the "Why so few builds?" callout was written for a catalogue of two'],
+  ["builds.whyFewBody", "same callout; it named the only two builds that then existed"],
+];
+
+for (const locale of LOCALES) {
+  for (const [key, why] of REMOVED) {
+    check(`${locale}: ${key} is gone (${why})`, !(key in FLAT[locale]), FLAT[locale][key]);
+  }
+}
+check("control: the removal check can see a key that is present", "classes.coverageTitle" in FLAT["en-us"]);
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passed} checks passed.`);
 // ---------------------------------------------------------------------------
 if (failures.length) {

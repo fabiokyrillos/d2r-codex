@@ -200,9 +200,6 @@ export const ptBR: Dictionary = {
     indexTitle: "Guias de build",
     indexDescription:
       "Toda build aqui é documentada em seis níveis de equipamento, do personagem recém-criado ao best in slot — para que a página seja útil independentemente do que você tem agora.",
-    whyFewTitle: "Por que tão poucas builds?",
-    whyFewBody:
-      "Uma build profundamente pesquisada e totalmente verificada vale mais que doze rasas. A Blizzard Sorceress e o Hammerdin exercitam o esquema inteiro — seis níveis de equipamento com alternativas por slot, metas de breakpoint com justificativa, plano contra imunidades, notas de solo self-found e Hardcore — e cada número neles foi checado contra várias fontes. Builds adicionais seguem esse padrão em vez de baixar a régua.",
     awaitingTitle: "Classes aguardando guias de build",
 
     howItPlays: "Como se joga",

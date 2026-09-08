@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 
 import {
   Badge,
-  Callout,
   Container,
   LinkCard,
   PageHeader,
@@ -114,10 +113,6 @@ export default async function BuildsPage() {
             }}
           />
         </Section>
-
-        <Callout variant="info" title={t.builds.whyFewTitle}>
-          {t.builds.whyFewBody}
-        </Callout>
 
         {/*
           Guarded, as `leveling/page.tsx` guards its twin. Without it the

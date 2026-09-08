@@ -204,9 +204,6 @@ export const enUS = {
     indexTitle: "Build guides",
     indexDescription:
       "Every build here is documented at six gear tiers, from a fresh character to best in slot — so the page is useful whatever you currently own.",
-    whyFewTitle: "Why so few builds?",
-    whyFewBody:
-      "One deeply researched, fully verified build is worth more than twelve shallow ones. The Blizzard Sorceress and the Hammerdin exercise the entire schema — six gear tiers with alternatives per slot, breakpoint targets with reasoning, immunity planning, self-found and Hardcore notes — and every number on them has been checked against multiple sources. Additional builds follow that template rather than lowering the bar.",
     awaitingTitle: "Classes awaiting build guides",
 
     howItPlays: "How it plays",
