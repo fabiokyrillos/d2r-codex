@@ -16,7 +16,14 @@ import {
 } from "@/components/ui";
 import { SkillTree } from "@/components/game";
 import { SkillPackages } from "@/components/game/skill-packages";
-import { AvailabilityTable, ConfidenceNote, DifficultyBadge, ElementBadge, RichText } from "@/components/game";
+import {
+  AvailabilityTable,
+  ConfidenceNote,
+  DifficultyBadge,
+  ElementBadge,
+  ItemRefLink,
+  RichText,
+} from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
 import {
   getBuild,
@@ -471,26 +478,38 @@ export default async function BuildPage(
                 <h4 className="text-xs font-semibold tracking-wide text-ink-subtle uppercase">
                   {t.builds.mercGear}
                 </h4>
-                <ul className="mt-2 space-y-2">
+                {/*
+                  The same `<ItemRefLink>` the mercenaries page uses, for the
+                  same data. This rendered `g.ref.slug.replace(/-/g, " ")` —
+                  "vampire gaze", lower case and unlinked — and threw `g.why`
+                  away, which made it the only cross-reference on the site that
+                  did not resolve to the page describing the item.
+                */}
+                <ul className="mt-2 space-y-3">
                   {merc.gear.map((g, i) => (
-                    <li key={i} className="flex flex-wrap items-baseline gap-x-2 text-sm">
-                      <span className="w-16 shrink-0 text-xs text-ink-subtle">
-                        {g.slot === "helm"
-                          ? t.gearSlots.helm
-                          : g.slot === "weapon"
-                            ? t.gearSlots.weapon
-                            : t.gearSlots.body}
-                      </span>
-                      <Badge tone="outline">
-                        {g.tier === "budget"
-                          ? t.mercenaries.tierBudget
-                          : g.tier === "mid"
-                            ? t.mercenaries.tierMid
-                            : t.mercenaries.tierEndgame}
-                      </Badge>
-                      <span className="font-medium text-ink">
-                        {g.ref ? g.ref.slug.replace(/-/g, " ") : g.label}
-                      </span>
+                    <li key={i} className="text-sm">
+                      <div className="flex flex-wrap items-baseline gap-x-2">
+                        <span className="w-16 shrink-0 text-xs text-ink-subtle">
+                          {g.slot === "helm"
+                            ? t.gearSlots.helm
+                            : g.slot === "weapon"
+                              ? t.gearSlots.weapon
+                              : t.gearSlots.body}
+                        </span>
+                        <Badge tone="outline">
+                          {g.tier === "budget"
+                            ? t.mercenaries.tierBudget
+                            : g.tier === "mid"
+                              ? t.mercenaries.tierMid
+                              : t.mercenaries.tierEndgame}
+                        </Badge>
+                        {g.ref ? (
+                          <ItemRefLink refItem={g.ref} />
+                        ) : (
+                          <span className="font-medium text-ink">{g.label}</span>
+                        )}
+                      </div>
+                      <p className="mt-1 leading-relaxed text-pretty text-ink-muted">{g.why}</p>
                     </li>
                   ))}
                 </ul>

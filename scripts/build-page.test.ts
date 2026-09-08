@@ -25,7 +25,14 @@ import { assertFreshBuild } from "./build-freshness";
 
 import { dictionaryFor, fmt } from "../lib/i18n";
 import { LOCALES, type Locale } from "../lib/i18n/config";
-import { getBuilds, getFarmingArea, getJourneys, getSkill, resolveRef } from "../lib/registry";
+import {
+  getBuilds,
+  getFarmingArea,
+  getJourneys,
+  getMercenary,
+  getSkill,
+  resolveRef,
+} from "../lib/registry";
 import type { ItemRef } from "../lib/types";
 import { MAX_HARD_POINTS } from "../lib/skills";
 import { packageMath } from "../lib/builds/packages";
@@ -75,6 +82,51 @@ const longestPlainRun = (authored: string, cap = 45) =>
     .map((run) => run.trim())
     .sort((a, b) => b.length - a.length)[0]
     .slice(0, cap);
+
+/**
+ * The `<section id="mercenary">` block of a build page, or nothing.
+ *
+ * Sliced out with a depth counter rather than a lazy regex: `</section>` from a
+ * nested section would close the match early and the assertions below would
+ * then be reading whatever followed.
+ */
+function mercenarySection(html: string): string | undefined {
+  const opener = /<section[^>]*\bid="mercenary"[^>]*>/.exec(html);
+  if (!opener) return undefined;
+  const from = opener.index + opener[0].length;
+  const tag = /<section\b[^>]*>|<\/section>/g;
+  tag.lastIndex = from;
+  let depth = 0;
+  let match: RegExpExecArray | null;
+  while ((match = tag.exec(html)) !== null) {
+    if (match[0].startsWith("</")) {
+      if (depth === 0) return html.slice(from, match.index);
+      depth--;
+    } else depth++;
+  }
+  return undefined;
+}
+
+/**
+ * Name elements whose entire text is lower case — a slug wearing spaces.
+ *
+ * Scoped to elements whose class *begins* with `font-medium`, which is how both
+ * `ItemRefLink` and the plain-label fallback render a reference name. A badge
+ * also carries `font-medium`, in the middle of a long utility list, and its
+ * text ("budget", "endgame") is legitimately lower case — matching on the class
+ * position is what keeps those out without an exception list.
+ *
+ * An item name is title case and a label is a sentence, so a match here is a
+ * slug and nothing else.
+ */
+function slugLookingLabels(section: string): string[] {
+  const found: string[] = [];
+  for (const m of section.matchAll(/<\w+[^>]*class="font-medium[^"]*"[^>]*>([^<]*)</g)) {
+    const text = m[1].trim();
+    if (/^[a-z]+(?: [a-z]+)*$/.test(text)) found.push(text);
+  }
+  return found;
+}
 
 /** The classes whose pages this file holds to the full contract. */
 const CONTRACTED_CLASSES = ["amazon", "necromancer", "druid"] as const;
@@ -621,6 +673,98 @@ console.log("\nThe Necromancer's corrected claims survived rendering, in both lo
       "Feed the Iron Golem a spare Pride for its Concentration aura.",
     ),
   );
+}
+
+// ---------------------------------------------------------------------------
+console.log(
+  `\nThe mercenary's gear is a reference, not a slug (all ${getBuilds("en-us").length} builds, both locales)`,
+);
+// ---------------------------------------------------------------------------
+/*
+ * The build page printed `g.ref.slug.replace(/-/g, " ")` — "the reapers toll",
+ * lower case, unlinked — and dropped `g.why` entirely, while `/mercenaries`
+ * rendered the same data through `<ItemRefLink>` with the reasoning under it.
+ * It was the only cross-reference on the site that did not resolve.
+ *
+ * Checked on every build page rather than on the contracted three: the defect
+ * is structural, so scoping it would leave fifty pages unguarded.
+ */
+{
+  let rows = 0;
+  const problems: string[] = [];
+  const slugs: string[] = [];
+  for (const locale of LOCALES) {
+    const t = dictionaryFor(locale);
+    for (const build of getBuilds(locale)) {
+      if (!build.mercenary) continue;
+      const merc = getMercenary(locale, build.mercenary);
+      if (!merc) {
+        problems.push(`${locale}/${build.slug}: mercenary ${build.mercenary} does not resolve`);
+        continue;
+      }
+      const section = mercenarySection(readFileSync(pageFor(locale, build.classSlug, build.slug), "utf8"));
+      if (section === undefined) {
+        problems.push(`${locale}/${build.slug}: no mercenary section in the HTML`);
+        continue;
+      }
+      const text = visible(section);
+      const where = `${locale}/${build.slug}`;
+
+      for (const g of merc.gear) {
+        rows++;
+        if (g.ref) {
+          const resolved = resolveRef(locale, g.ref);
+          if (!text.includes(resolved.name)) problems.push(`${where}: ${resolved.name} not rendered`);
+          if (resolved.href && !section.includes(`href="${resolved.href}"`)) {
+            problems.push(`${where}: no link to ${resolved.href}`);
+          }
+        } else if (g.label && !text.includes(g.label)) {
+          problems.push(`${where}: label "${g.label}" not rendered`);
+        }
+        if (!text.includes(longestPlainRun(g.why))) {
+          problems.push(`${where}: why for ${g.slot} missing — "${longestPlainRun(g.why)}"`);
+        }
+      }
+
+      /*
+       * The shape of the defect, taken straight from the acceptance criterion:
+       * a `.font-medium` element whose whole text is lower-case words is a slug
+       * that had its hyphens swapped for spaces.
+       */
+      for (const raw of slugLookingLabels(section)) {
+        slugs.push(`${where}: “${raw}”`);
+      }
+      // And the section really is the mercenary one.
+      if (!text.includes(t.builds.mercGear)) problems.push(`${where}: no gear heading in the section`);
+    }
+  }
+  check(`all ${rows} mercenary gear rows resolve, link and explain`, problems.length === 0, problems.slice(0, 6).join("; "));
+  check("no name in a mercenary section reads as a slug", slugs.length === 0, `${slugs.length}: ${slugs.slice(0, 6).join("; ")}`);
+  check("there were gear rows to check", rows > 300, `${rows}`);
+}
+
+/*
+ * Anti-vacuity for both scanners, against the markup the page used to emit and
+ * the markup it emits now.
+ */
+{
+  const badge =
+    '<span class="inline-flex items-center rounded border px-2 py-0.5 text-xs font-medium">budget</span>';
+  const old =
+    `<section id="mercenary"><h4>Gear</h4><ul><li><span class="w-16">Weapon</span>${badge}` +
+    '<span class="font-medium text-ink">the reapers toll</span></li>' +
+    `<li><span class="w-16">Body Armor</span>${badge}<span class="font-medium text-ink">treachery</span></li></ul></section>`;
+  check(
+    "control: the slug scanner fires on the retired markup, one and many words",
+    slugLookingLabels(old).join("|") === "the reapers toll|treachery",
+    slugLookingLabels(old).join("|"),
+  );
+  const fixed =
+    `<section id="mercenary"><h4>Gear</h4><ul><li><span class="w-16">Weapon</span>${badge}` +
+    '<a class="font-medium text-rarity-unique underline" href="/en-us/items/reapers-toll">The Reaper&#x27;s Toll</a></li></ul></section>';
+  check("control: the slug scanner ignores a resolved name and a tier badge", slugLookingLabels(fixed).length === 0);
+  check("control: the section extractor finds the mercenary section", mercenarySection(old) !== undefined);
+  check("control: the section extractor returns nothing when there is none", mercenarySection("<p>x</p>") === undefined);
 }
 
 // ---------------------------------------------------------------------------

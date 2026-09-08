@@ -105,6 +105,49 @@ try {
 check("git diff --cached --check is clean (staged)", !stagedFailed, staged.split("\n")[0] ?? "");
 
 // ---------------------------------------------------------------------------
+console.log("\nNo surface renders a slug as if it were a name");
+// ---------------------------------------------------------------------------
+/*
+ * R-I18N-3. The build page printed `g.ref.slug.replace(/-/g, " ")` for the
+ * mercenary's gear — lower case, unlinked, and the same string in both
+ * languages — where `/mercenaries` passed the identical data through
+ * `resolveRef` and got the item's real name and href. A slug is an identifier;
+ * turning one into display text is always a missing lookup.
+ *
+ * `resolve.ts` is exempt: `titleCaseFromSlug` is the deliberate last resort
+ * *inside* the resolver, for a ref whose entity is not catalogued yet.
+ */
+const SLUG_AS_TEXT = /\.slug\s*\.replace\s*\(/;
+/**
+ * Comments are prose about code, not code. A block comment that quotes the
+ * expression this rule forbids — the one directly above the fix, explaining
+ * what was wrong — must not be read as a violation of it. Only whole-line `//`
+ * comments are stripped, so a `https://` inside an expression stays intact.
+ */
+const stripComments = (src: string) =>
+  src.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/^[ \t]*\/\/.*$/gm, " ");
+const slugRendered = tracked
+  .filter((f) => /^(app|components)\//.test(f))
+  .filter((f) => SLUG_AS_TEXT.test(stripComments(readFileSync(f, "utf8"))));
+check(
+  "no page or component turns a slug into display text",
+  slugRendered.length === 0,
+  slugRendered.join(", "),
+);
+check(
+  "control: the pattern matches the expression that shipped",
+  SLUG_AS_TEXT.test('{g.ref ? g.ref.slug.replace(/-/g, " ") : g.label}'),
+);
+check(
+  "control: the pattern leaves an ordinary replace alone",
+  !SLUG_AS_TEXT.test('name.replace(/-/g, " ")'),
+);
+check(
+  "control: the comment stripper does not blind the pattern to real code",
+  SLUG_AS_TEXT.test(stripComments('/* was ref.slug.replace(x) */\nconst a = ref.slug.replace(/-/g, " ");')),
+);
+
+// ---------------------------------------------------------------------------
 console.log("\nNo build output or scratch files are tracked");
 // ---------------------------------------------------------------------------
 const all = git(["ls-files"]).split("\n").map((s) => s.trim()).filter(Boolean);
