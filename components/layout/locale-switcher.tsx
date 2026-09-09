@@ -48,6 +48,17 @@ import {
  *    HTML its header. The `href` therefore stays the bare path — which is what
  *    a crawler should follow and what a reader without JavaScript gets — and
  *    the query is added only when there is one to add.
+ *
+ * 4. **It must preserve the fragment too.** The URL was reassembled from
+ *    `usePathname()`, which returns the path and nothing else, plus
+ *    `location.search`. The fragment was never read, so switching language on
+ *    `…/blizzard-sorceress#gear-budget` dropped the reader at the top of the
+ *    other language's page with a different tier open. The fragment cannot go
+ *    in the `href` either: this header is prerendered into every document the
+ *    site builds, and there is no `window` during a prerender — so putting it
+ *    there is a crash or a hydration mismatch. It is read in the handler beside
+ *    the query instead and, unlike the query, it forces a full navigation, for
+ *    the three reasons written where that branch is.
  */
 /**
  * Writes the locale cookie.
@@ -119,10 +130,51 @@ export function LocaleSwitcher({
               ) {
                 return;
               }
+              /*
+               * Two reads, two lines, deliberately.
+               *
+               * `const { search, hash } = globalThis.location` looks tidier and
+               * deletes the substring `location.search` from this file, which
+               * is the exact thing `scripts/build-filters.test.ts:593` matches
+               * to prove the query is not read through `useSearchParams`. The
+               * destructured form ships a green source gate over a component
+               * that no longer satisfies the rule it is guarding.
+               */
               const search = globalThis.location.search;
-              if (!search) return; // Nothing to carry; let the link do its job.
+              const hash = globalThis.location.hash;
+              if (!search && !hash) return; // Nothing to carry; let the link do its job.
               event.preventDefault();
-              router.push(`${href}${search}`);
+              /*
+               * A fragment forces a full navigation; a bare query does not.
+               *
+               * Three reasons, none of them taste:
+               *
+               * 1. Next 16 does not document what `router.push` with a fragment
+               *    does about scrolling. There is no `useHash` either, and the
+               *    anchor contract is not something to build on undocumented
+               *    behaviour.
+               * 2. `history.pushState` does not fire `hashchange`, so nothing
+               *    that listens for the fragment is told the fragment changed.
+               * 3. `components/game/tier-selector.tsx:38-45` documents that on a
+               *    soft navigation the inline tier boot script does not run —
+               *    Next inserts it through a DOM update, and inserted scripts do
+               *    not execute. So `#gear-budget` could survive in the URL while
+               *    the tier state it names did not follow it.
+               *
+               * A full navigation hands the jump back to the platform and lets
+               * the boot script run. The query-only path is left exactly as it
+               * was: it has none of these problems, and a reload would cost the
+               * reader a document they already have.
+               *
+               * `@next/next/no-location-assign-relative-destination` says to use
+               * `router.push` for an internal destination, which is the right
+               * default and is what the line below it does. The full navigation
+               * is the deliberate exception, for the three reasons above, and is
+               * disabled by name rather than left as a standing warning.
+               */
+              // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- see above
+              if (hash) globalThis.location.assign(`${href}${search}${hash}`);
+              else router.push(`${href}${search}`);
             }}
             className={
               isCurrent
