@@ -162,8 +162,15 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
   useEffect(() => {
     const onHash = () => {
       const target = tierFromHash(window.location.hash);
-      sync();
+      /*
+       * Nothing at all for a fragment that is not a tier, and Back is the
+       * common case: `sync()` re-resolves with an empty hash, falls back to
+       * the stored preference, and collapses whatever the reader was reading
+       * in order to open something else — measured at up to 3,825px of
+       * displacement on an ordinary Back press.
+       */
       if (!target) return;
+      sync();
       const el = document.getElementById(tierAnchorId(target));
       if (!el) return;
       const y = el.getBoundingClientRect().top + window.pageYOffset - anchorOffsetPx(window.innerWidth);
@@ -202,6 +209,18 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
   );
 
   const clear = useCallback(() => {
+    /*
+     * Move focus before the button unmounts.
+     *
+     * "Clear" only renders while a preference exists, so pressing it removes
+     * the focused element and the browser drops focus to `body` — a keyboard
+     * reader is dumped to the top of the document and Tabs again from the
+     * header. The chip they came from is the right place to land.
+     */
+    const chip = preferred
+      ? rowRef.current?.querySelector<HTMLElement>(`[data-tier="${preferred}"]`)
+      : null;
+    (chip ?? rowRef.current?.querySelector<HTMLElement>("[data-tier]"))?.focus({ preventScroll: true });
     clearTier();
     setView({ enhanced: true, preferred: null, active: null });
     setAnnouncement("");
@@ -209,7 +228,7 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
       const el = document.getElementById(tierAnchorId(t.slug));
       if (el) (el as HTMLDetailsElement).open = false;
     }
-  }, [tiers]);
+  }, [tiers, preferred]);
 
   /** Roving tabindex: one stop into the group, arrows inside it. */
   const onKeyDown = useCallback(
@@ -306,7 +325,7 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
           role="group"
           aria-labelledby="tier-picker-legend"
           onKeyDown={onKeyDown}
-          className={`mt-3 -mx-5 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0 ${
+          className={`tier-chips mt-3 -mx-5 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0 ${
             overflows ? "tier-chips-fade" : ""
           }`}
         >
@@ -316,14 +335,26 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
         <nav
           ref={rowRef as React.RefObject<HTMLDivElement>}
           aria-labelledby="tier-picker-legend"
-          className="mt-3 -mx-5 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0"
+          className="tier-chips mt-3 -mx-5 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0"
         >
           {body}
         </nav>
       )}
 
-      {enhanced && active && (
-        <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+      {/*
+        Always in the layout, even when empty.
+
+        The boot script aligns to a hash before React renders anything. A row
+        that mounts afterwards pushes the target down by its own height —
+        measured at 32px, so a hash load settled at 104px instead of the 72px
+        the offset computes. §6 row 2 calls this "espaço reservado".
+      */}
+      <p
+        className="mt-3 flex min-h-9 flex-wrap items-center gap-x-4 gap-y-2"
+        aria-hidden={!(enhanced && active)}
+      >
+        {enhanced && active && (
+          <>
           <a
             data-go-to-gear=""
             href={goToHref}
@@ -340,20 +371,21 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
             className="text-sm font-medium text-ember hover:text-ember-bright"
           >
             {strings.goToGear}
-          </a>
-          {preferred && (
-            <button
-              data-clear-tier=""
-              type="button"
-              aria-label={strings.clearLabel}
-              onClick={clear}
-              className="text-sm text-ink-subtle hover:text-ink-muted"
-            >
-              {strings.clear}
-            </button>
-          )}
-        </p>
-      )}
+            </a>
+            {preferred && (
+              <button
+                data-clear-tier=""
+                type="button"
+                aria-label={strings.clearLabel}
+                onClick={clear}
+                className="text-sm text-ink-subtle hover:text-ink-muted"
+              >
+                {strings.clear}
+              </button>
+            )}
+          </>
+        )}
+      </p>
 
       {/*
         Announced only on a confirmed selection — never on load, never when
