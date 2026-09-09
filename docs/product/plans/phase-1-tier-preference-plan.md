@@ -161,11 +161,9 @@ Medido o fim do bloco de título nas 53 builds × 2 idiomas, na posição mais a
 
 Alavancas sem tocar em conteúdo, na ordem: `mt-8` → `mt-4` acima do controle (16 px); `py-10` → `py-6` no `PageHeader` abaixo de `sm` (16 px); `h1` `text-3xl` → `text-2xl` abaixo de `sm` (20 px). Somam 52 px — perto dos 55, e é honesto dizer que pode não fechar.
 
-**C14 é escrito em duas partes, para ser verde e honesto ao mesmo tempo:**
-1. `≤ 560 px` como afirmação dura para todas as builds fora da lista de exceção;
-2. uma **lista de exceção nomeada e datada**, com no máximo os dois slugs pt-BR, cada um afirmado contra o seu **valor medido** — de modo que uma regressão neles ainda quebra o gate.
+**C14 é escrito em dois níveis (decisão do proprietário, §16.3):** alvo de **560 px** e teto duro de **640 px**. Entre os dois, o gate fica verde e as páginas entram no relatório como excedentes do alvo; acima de 640 px o gate fica vermelho e a execução para antes do push, com a medição e a causa apresentadas. Não há lista permanente de exceções.
 
-A lista de exceção é item de pauta da sessão J3 do proprietário, não uma permissão silenciosa. R-BUILD-1 tem dois aceites — o número **e** a jornada; um miss em 2 de 53 builds é diagnóstico, não licença.
+O objetivo de produto é encontrar o controle na primeira viewport de 320×640, não obedecer a um número derivado só do en-US. R-BUILD-1 tem dois aceites — o número **e** a jornada J3.
 
 ### 3.6 Três achados herdados e um entregue adiante
 
@@ -557,7 +555,7 @@ Toda linha de §6 tem célula ou transição; toda célula tem linha.
 | C12 | R-BUILD-10 | **novo** `build-cls.test.ts` | `PerformanceObserver({type:'layout-shift', buffered:true})`; `< 0,1` com preferência; **controle**: >0,1 numa página sintética que desloca | idem |
 | C12b | R-BUILD-10 | idem | **navegação soft** `/builds` → build com preferência: CLS < 0,1 e nenhum quadro pintado com mais de um `<details open>` | idem |
 | C13 | R-BUILD-5 / §12.1 | bloco de altura | as nove linhas de §3.4, marcadas afirma/publica; altura por tier contra `f(N, G)` nas 318 instâncias, **a 390 px e a 320 px, com a largura declarada em cada asserção** | idem |
-| C14 | R-BUILD-1 | idem | topo do **controle renderizado** ≤ 560 px a 320×640 nas 53 × 2, **mais** a lista de exceção nomeada e datada afirmada contra valores medidos | idem |
+| C14 | R-BUILD-1 | idem | **dois níveis (decisão do proprietário, §16.3).** Alvo: topo do controle renderizado ≤ **560** px a 320×640. Teto duro: ≤ **640** px nas 53 × 2 — acima disso o gate fica **vermelho** e a execução para antes do push. Entre 561 e 640 o gate fica **verde** e as páginas são **publicadas como excedentes do alvo**. Sem lista permanente de exceções | idem |
 | C15 | R-A11Y-4 | estende `viewport.test.ts` | alvo efetivo ≥ 24 px geral; **≥ 44 px** para `[data-tier]` (o espelho não carrega `data-tier`, §8.1) | idem |
 | C16 | R-A11Y-1 / R-BUILD-11 | novo bloco de a11y | Tab alcança o grupo em ordem visual; setas movem; Enter/Espaço selecionam; `aria-current="location"` no tier expandido em S3/S7/S9; **zero `role="tab"` na página** | idem |
 | C17 | R-BUILD-4 / R-A11Y-8 | bloco de altura | a 320/390 o único `position: sticky` é o header; a ≥640 header + espelho ≤ 112 px | idem |
@@ -760,3 +758,41 @@ A terceira rodada confirmou que os três consertos HIGH da segunda se sustentam 
 | P11 | LOW | A regra do stub listava só `null`/`false`/`""`, inválida para três dos onze exports | **Corrigido** com os zeros válidos por tipo |
 
 **Verificado e sem achado:** a linha "+9% para pt-BR". Medidos os `goal` reais de pt-BR, o Gear compacto fica +1,0% a 390 px e +3,0% a 320 px — folgadamente dentro dos 9%.
+
+---
+
+## 16. Decisões do proprietário (2026-09-09), sobre o plano aprovado
+
+O plano foi aprovado em `d8bb709`. Cinco decisões o refinam; nenhuma reabre planejamento.
+
+### 16.1 O espelho dentro de Gear — desvio de R-BUILD-4 **aprovado**
+O controle principal, perto do topo, define e grava "Meu tier". O espelho sticky dentro de Gear
+**só navega**: reflete o tier visível, navega por âncoras, **não grava a preferência**, **não
+altera `aria-pressed`**, **não expande nem compacta conteúdo acima da viewport**, e não pode
+provocar reflow compensado nem salto inesperado. O espelho continua acessível e tem alvo mínimo
+de **24 px**; o controle principal segue os **44 px** de R-A11Y-4.
+**Ao fim da fase, o PRD é atualizado para registrar este refinamento contratual, sem reescrever
+histórico** — uma entrada nova em §18 e uma nota em R-BUILD-4, não uma edição do texto vigente.
+
+### 16.2 Altura dos tiers — a hipótese de 320 px está oficialmente substituída
+A fórmula e as medições reais deste plano passam a prevalecer. **Não comprimir conteúdo além da
+legibilidade para perseguir 320 px.** O relatório final publica: altura por quantidade de slots;
+altura total dos seis compactos; Blizzard en-US; Blizzard pt-BR; pior caso entre as 53 builds;
+estado sem preferência; estado com um tier expandido; diferença contra as projeções do PRD; e
+**que parte da redução pertence de fato à Fase 1**.
+
+### 16.3 Posição do controle principal — alvo e teto
+Alvo **≤ 560 px** em 320×640; teto absoluto **≤ 640 px** nas 53 builds × 2 idiomas.
+Processo: recuperar espaço só com os levers seguros já identificados; **não** cortar título,
+badges ou informação relevante; **não** reduzir alvos de toque; **não** usar posicionamento
+sobreposto; **não** provocar CLS. Páginas entre 561 e 640 px são registradas como excedentes do
+alvo com o gate **verde**. Qualquer página acima de 640 px **para a execução antes do push**,
+com medição e causa apresentadas.
+
+### 16.4 Hash na troca de idioma — fora da Fase 1
+A perda do fragmento em `locale-switcher.tsx:94` fica registrada para a Fase 2. **O header não é
+alterado nesta execução.** A Fase 1 prova apenas que `d2rc.tier` sobrevive à troca de locale (T6).
+
+### 16.5 `nextUpgrade` — fora da Fase 1
+As lacunas em `bis` (45 de 53 builds) continuam na Fase 2. **Não inventar conteúdo nem alterar
+dados** para satisfazer um requisito futuro.
