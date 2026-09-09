@@ -320,6 +320,46 @@ export class Page {
     });
   }
 
+  /**
+   * Runs `source` in every document this page loads from now on, before any
+   * of the page's own script.
+   *
+   * `evaluate` cannot do this. It runs after `goto` has already parsed the
+   * document, and the thing worth testing about a preference is what the
+   * page does when storage is *already* broken as its own boot script reads
+   * it. Making `localStorage` throw after the fact tests nothing that
+   * happens on a real visit.
+   *
+   * Applies to every subsequent navigation on this page until it is closed.
+   */
+  async addInitScript(source: string): Promise<void> {
+    await this.send("Page.addScriptToEvaluateOnNewDocument", { source });
+  }
+
+  /**
+   * The accessibility tree, as the browser computes it.
+   *
+   * The DOM is not the contract for a heading. `<h3>` inside `<summary>` is
+   * valid HTML — `summary` takes phrasing content optionally intermixed with
+   * heading content — but a disclosure's children are flattened by some
+   * mappings, and a heading that no longer reaches the rotor is a heading
+   * the reader has lost. That is invisible to any assertion over markup, so
+   * it needs the tree.
+   */
+  async axNodes(): Promise<{ role: string; name: string }[]> {
+    await this.send("Accessibility.enable");
+    const res = (await this.send("Accessibility.getFullAXTree")) as {
+      nodes?: {
+        ignored?: boolean;
+        role?: { value?: string };
+        name?: { value?: string };
+      }[];
+    };
+    return (res.nodes ?? [])
+      .filter((n) => !n.ignored)
+      .map((n) => ({ role: String(n.role?.value ?? ""), name: String(n.name?.value ?? "") }));
+  }
+
   async goto(url: string): Promise<void> {
     const load = new Promise<void>((resolve) => {
       this.loaded = resolve;
