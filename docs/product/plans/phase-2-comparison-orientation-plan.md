@@ -84,12 +84,20 @@ de R-BUILD-7.
 | **novo** | 999 | 329 | 279 | 220 | 109 | 62 |
 | **mantido** | 1.245 | 32 | 145 | 252 | 373 | 443 |
 | **alternativa** | 125 | 15 | 18 | 41 | 37 | 14 |
-| **removido** (regra §4.5) | **48** | 8 | 36 | **2** | 2 | 0 |
+| **removido** (regra §4.5) | **48** | 8 | 36 | **3** | **1** | 0 |
 
 `999 + 1.245 + 125 = 2.369` = todas as ocorrências de slot fora de `starter` (2.659 − 290). Nenhum
 slot escapa. Das 125 "alternativa", 33 vêm de pick secundário e 92 de `alternatives[]` aninhada.
 
 *Toda a tabela reproduzida pela revisão 1, dígito a dígito.*
+
+> **Correção medida durante a implementação (commit 3).** A linha de removidos desta tabela dizia
+> `budget 2 / optimized 2`. O real é **`budget 3 / optimized 1`**. A regra ingênua dá `budget 3 /
+> optimized 2`, e a única supressão de §4.5 é `blade-fury budget→optimized`, **cujo tier de destino é
+> `optimized`** — a subtração tinha sido feita na coluna errada. Os totais (48 adotado, 49 ingênuo),
+> os 30 pares e as 235 de 265 renderizações **não mudam**, e as outras dezanove células da tabela
+> reproduzem. As três de `budget` são `smiter` a perder `belt` e `amulet` e `zealot` a perder
+> `gloves`; a de `optimized` é `nova-sorceress` a perder `offhand`.
 
 ### 3.3 Um único slot duplicado — e a remoção falsa que ele produz
 
@@ -236,10 +244,30 @@ Desvio declarado da letra de R-BUILD-7 em §22(g).
 
 #### 3.8.2 Como `TIER_CEILING` é tratado
 
-O tier que carrega a linha pode passar de 460 px (420 + ~46). **Não se eleva `TIER_CEILING`**, que
-guarda os outros cinco. Cria-se uma constante **nova e nomeada**, `TIER_CEILING_WITH_NEXT`, aplicada
-**apenas** ao tier que carrega a linha, calibrada no medido arredondado para cima à dezena. O gate
-fica mais específico, não mais frouxo, e a atribuição a R-BUILD-7 vive no comentário da constante.
+O tier que carrega a linha pode passar de 460 px. **Não se eleva `TIER_CEILING`**, que guarda os
+outros cinco. Cria-se uma constante **nova e nomeada**, `TIER_CEILING_WITH_NEXT`, aplicada **apenas**
+ao tier que carrega a linha. O gate fica mais específico, não mais frouxo, e a atribuição a R-BUILD-7
+vive no comentário da constante.
+
+**Medido (protótipo do commit 2: 7 builds × 2 idiomas × {390, 320}, texto real de cada tier,
+`line-clamp-2` ao `text-sm` do preview):**
+
+| | |
+|---|---|
+| custo por tier | **+46 a +47 px**, uniforme em todas as 140 células |
+| pior tier absoluto **com** a linha | **467 px** — pt-BR `blade-fury/budget` a 320 px (o tier de 11 slots) |
+| tiers **sem** a linha | **inalterados** — nenhuma das outras seis constantes se move |
+
+`TIER_CEILING_WITH_NEXT = **510**`.
+
+> **Correção à regra que este plano trazia.** §3.8 dizia "medido, arredondado para cima à dezena", o
+> que daria **470** — **3 px** de folga sobre 467. Um gate com 3 px de margem é intermitente: qualquer
+> métrica de fonte ou um `goal` que um editor alongue torna-o vermelho sem regressão nenhuma. A
+> política que o próprio arquivo já documenta para `TIER_CEILING` é outra — *"os tetos ficam cerca de
+> 10% acima [do pior medido], apertado o bastante para apanhar uma regressão e folgado o bastante para
+> sobreviver a um `goal` mais longo"* — e é 460 sobre 420, **9,5%**. Aplicada ao novo pior medido,
+> 467 × 1,1 ≈ 514 → **510** (9,2%). Usa-se **a mesma política do arquivo**, não uma nova. A regra
+> anterior foi escrita antes da medição; a medição prevalece, como manda §16.2 do plano da Fase 1.
 
 #### 3.8.3 A regra de parada, na primeira constante que quebra
 
