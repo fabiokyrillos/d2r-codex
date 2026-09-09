@@ -162,7 +162,7 @@ export default function NotFound() {
         </Container>
       </header>
 
-      <main id="content" className="flex-1">
+      <main id="content" className="flex-1 scroll-mt-16">
         <Container className="py-16 sm:py-24">
           {LOCALES.map((locale, i) => (
             <Miss key={locale} locale={locale} lead={i === 0} />

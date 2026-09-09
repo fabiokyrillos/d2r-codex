@@ -157,6 +157,20 @@
    * ring at the row's edges. The active chip is scrolled to the centre for
    * the same reason, so a focused chip is never under the faded band.
    */
+  /*
+   * The horizontally scrolling tier chips.
+   *
+   * `overflow-x: auto` clips the row visually, but the six chips still
+   * contributed to `documentElement.scrollWidth` — 568px against a 320px
+   * viewport, on the build page only, which `test:viewport` caught and O6
+   * forbids. `contain: paint` says what is actually meant: nothing inside
+   * this box affects anything outside it. There is nothing absolutely
+   * positioned in the row, so making it a containing block costs nothing.
+   */
+  .tier-chips {
+    contain: paint;
+  }
+
   .tier-chips-fade {
     mask-image: linear-gradient(
       to right,

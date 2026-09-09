@@ -63,12 +63,14 @@ assertFreshBuild();
  * The widths that matter, and why each one is here.
  *
  * 320 is the floor the site claims to support and the width a 640px window
- * reports at 200% zoom. 360, 375 and 390 are the phones people actually hold.
+ * reports at 200% zoom. 640 itself is the `sm:` boundary, and the one width
+ * where three things change together: the tier chips stop scrolling and
+ * wrap, the gear nav becomes sticky, and the anchor offset flips. 360, 375 and 390 are the phones people actually hold.
  * 768 is where the tablet layout starts, 1280 is a laptop, and 1440 is the
  * width at which the third nav tier appears — the last time this row overflowed
  * it did so at the top of the range, not the bottom.
  */
-const WIDTHS = [320, 360, 375, 390, 768, 1280, 1440] as const;
+const WIDTHS = [320, 360, 375, 390, 640, 768, 1280, 1440] as const;
 
 /** The minimum effective target, in CSS pixels. WCAG 2.2 SC 2.5.8. */
 const MIN_TARGET = 24;

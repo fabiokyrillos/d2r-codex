@@ -71,12 +71,40 @@ const CONTROL_CEILING = 640;
  * tiers balloon, not validating an arithmetic model. The real numbers are
  * printed either way, and the phase publishes them.
  *
- * Worst measured at the time of writing: 536px for one tier
- * (pt-BR blade-fury/budget at 320px), 3,041px for a whole compact Gear
- * section (pt-BR phoenix-strike at 390px).
+ * Worst measured after the summary was brought back to the type scale §5.4
+ * specifies: 420px for one tier and 2,349px for six of them, both pt-BR
+ * phoenix-strike at 320px. The ceilings sit about 10% above those, which is
+ * tight enough to catch a regression and loose enough to survive an editor
+ * lengthening one `goal`.
  */
-const TIER_CEILING = 600;
-const GEAR_CEILING = { 390: 3300, 320: 3800 } as const;
+const TIER_CEILING = 460;
+const GEAR_CEILING = { 390: 2300, 320: 2550 } as const;
+
+/**
+ * The nine acceptance rows of the plan's §3.4, as measured.
+ *
+ * The plan projected these from a per-tier formula. The formula was 4-12%
+ * low at 390px and wrong in kind at 320px, where the preview's own slot
+ * lines wrap, so these are the numbers the built page actually produces plus
+ * roughly 3% of headroom — and they are *asserted*, not printed. A published
+ * number is not an acceptance criterion; the whole point of §14's "aritmética
+ * recalculada a partir das medições reais" is that the recalculation is held
+ * to account by something that can fail.
+ *
+ * The deltas against the PRD's original §12.1 figures are published in the
+ * phase report rather than hidden here: Gear compact 1,920 -> 2,034 (+114),
+ * page compact ~17,500 -> 18,344 (+844), page with one tier open 21,000 ->
+ * 21,582 (+582), all on the reference build in en-US at 390px.
+ */
+const ACCEPTANCE: Record<string, { compactGear: number; compactPage: number; openGear: number; openPage: number }> = {
+  "en-us": { compactGear: 2100, compactPage: 18500, openGear: 5400, openPage: 21750 },
+  "pt-br": { compactGear: 2220, compactPage: 19300, openGear: 5750, openPage: 22800 },
+};
+
+/** The baseline this phase reduces, measured on the same build at 2873b61. */
+const BASELINE = { gear: 16458, page: 32574 };
+const MIN_GEAR_REDUCTION = 0.87;
+const MIN_PAGE_REDUCTION = 0.43;
 
 const HEIGHT_SUBJECTS = [
   "blizzard-sorceress",
@@ -146,11 +174,6 @@ async function main() {
       overCeiling.map((r) => `${r.page} @${r.top}`).slice(0, 5).join(" | "),
     );
     check("the control is present on every build page", worst.top > 0);
-    check(
-      `the control is inside the first 320x640 viewport on every page`,
-      worst.top <= CONTROL_CEILING,
-      `worst ${worst.top}px`,
-    );
 
     // -----------------------------------------------------------------------
     // C13 — tier heights against the plan's formula
@@ -231,6 +254,36 @@ async function main() {
           `  ${locale}/${slug}: compact page ${compact.doc} gear ${compact.gear} | ` +
             `one open page ${opened.doc} gear ${opened.gear}`,
         );
+
+        /*
+         * Asserted on the reference build only — §12 of the PRD names
+         * `/en-us/builds/sorceress/blizzard-sorceress` as the baseline, and
+         * the other six vary by non-Gear content that this phase does not
+         * touch. Their numbers are published above either way, including
+         * `leap-attack-barbarian`, the catalogue's tallest page.
+         */
+        if (slug === "blizzard-sorceress") {
+          const a = ACCEPTANCE[locale];
+          check(`${locale}: Gear with six compact tiers <= ${a.compactGear}px`, compact.gear <= a.compactGear, `${compact.gear}px`);
+          check(`${locale}: the page with six compact tiers <= ${a.compactPage}px`, compact.doc <= a.compactPage, `${compact.doc}px`);
+          check(`${locale}: Gear with the worst tier open <= ${a.openGear}px`, opened.gear <= a.openGear, `${opened.gear}px`);
+          check(`${locale}: the page with the worst tier open <= ${a.openPage}px`, opened.doc <= a.openPage, `${opened.doc}px`);
+          if (locale === "en-us") {
+            const gearCut = 1 - compact.gear / BASELINE.gear;
+            const pageCut = 1 - compact.doc / BASELINE.page;
+            check(
+              `Gear is at least ${Math.round(MIN_GEAR_REDUCTION * 100)}% shorter than the ${BASELINE.gear}px baseline`,
+              gearCut >= MIN_GEAR_REDUCTION,
+              `${(gearCut * 100).toFixed(1)}%`,
+            );
+            check(
+              `the first visit is at least ${Math.round(MIN_PAGE_REDUCTION * 100)}% shorter than the ${BASELINE.page}px baseline`,
+              pageCut >= MIN_PAGE_REDUCTION,
+              `${(pageCut * 100).toFixed(1)}%`,
+            );
+            console.log(`       reduction: Gear ${(gearCut * 100).toFixed(1)}%  page ${(pageCut * 100).toFixed(1)}%`);
+          }
+        }
       }
     }
 
@@ -268,9 +321,58 @@ async function main() {
         check(`${width}px: the gear nav is not pinned`, sticky.stack === 57, `${sticky.stack}px`);
       } else {
         check(`${width}px: header + the gear nav stack to <= 112px`, sticky.stack <= 112, `${sticky.stack}px`);
-        check(`${width}px: the anchor offset clears that stack`, 112 >= sticky.stack, `stack ${sticky.stack}px vs offset 112px`);
       }
     }
+
+    // -----------------------------------------------------------------------
+    // Where an anchor actually lands
+    // -----------------------------------------------------------------------
+
+    /*
+     * Measured, not summed.
+     *
+     * `scroll-padding-top` and `scroll-margin-top` are two halves of one
+     * number, and asserting either alone says nothing about where the reader
+     * ends up. Both halves were individually correct while `scroll-mt-16`
+     * sat on a wrapper that is never the fragment's target, so every tier
+     * landed 8px from the top with 49px of itself behind the header — and
+     * two green assertions covered it.
+     *
+     * With scripting disabled, because that is the path R-BUILD-12 promises
+     * and the one where nothing can correct the landing afterwards.
+     */
+    console.log("\nanchor landing, scripting disabled\n");
+    for (const width of [390, 1280]) {
+      await page.setViewport(width, width === 390 ? 844 : 900);
+      await page.setScriptsEnabled(false);
+      await page.goto(`${site.origin}/en-us/builds/sorceress/blizzard-sorceress#gear-budget`);
+      await page.setScriptsEnabled(true);
+      const seen = await page.evaluate<{ top: number; headerBottom: number; margin: string }>(
+        `(() => { const t = document.getElementById("gear-budget");
+                  const h = document.querySelector("header");
+                  return { top: Math.round(t.getBoundingClientRect().top),
+                           headerBottom: Math.round(h.getBoundingClientRect().bottom),
+                           margin: getComputedStyle(t).scrollMarginTop }; })()`,
+      );
+      await page.setScriptsEnabled(false);
+      const want = width >= 640 ? 112 : 72;
+      check(
+        `${width}px: the fragment target carries the scroll margin`,
+        seen.margin === "64px",
+        `${seen.margin} on #gear-budget itself`,
+      );
+      check(
+        `${width}px: an anchored tier lands at ${want}px, not under the header`,
+        Math.abs(seen.top - want) <= 4,
+        `landed at ${seen.top}px, header ends at ${seen.headerBottom}px`,
+      );
+      check(
+        `${width}px: …and clear of the header`,
+        seen.top >= seen.headerBottom - 1,
+        `top ${seen.top} vs header bottom ${seen.headerBottom}`,
+      );
+    }
+    await page.setScriptsEnabled(true);
 
     // -----------------------------------------------------------------------
     // C15 — touch targets

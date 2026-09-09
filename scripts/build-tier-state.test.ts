@@ -649,6 +649,95 @@ async function main() {
     }
 
     // -----------------------------------------------------------------------
+    // T9 / row 15 — a fragment that is not a tier changes nothing
+    // -----------------------------------------------------------------------
+
+    /*
+     * The Back press, and the reason this test exists.
+     *
+     * The handler used to re-resolve *before* checking whether the fragment
+     * named a tier, so an empty hash fell back to the stored preference and
+     * collapsed whatever the reader was reading in order to open something
+     * else — measured at up to 3,825px of displacement on an ordinary Back.
+     * Nothing in the suite covered rows 15 or 16, which is why it survived to
+     * review.
+     */
+    console.log("\nT9 · a fragment that is not a tier leaves the page alone");
+    for (const fragment of ["#not-a-tier", ""]) {
+      await seed(page, site.origin, "bis");
+      await page.setViewport(390, 844);
+      await open(page, `${url(site.origin, "en-us", subject.classSlug, subject.slug)}#gear-starter`);
+      for (let i = 0; i < 20 && (await settledScrollY(page)) < 0; i++) {
+        await page.evaluate("new Promise(r => setTimeout(() => r(1), 150))");
+      }
+      const before = await page.evaluate<State>(PROBE);
+      const beforeY = await settledScrollY(page);
+      await page.evaluate(
+        `(() => { location.hash = ${JSON.stringify(fragment)}; return 1; })()`,
+      );
+      await page.evaluate("new Promise(r => setTimeout(() => r(1), 400))");
+      // Settle before reading: clearing the fragment can start a scroll of the
+      // browser's own, and a single sample of a moving page is not a position.
+      let afterY = await settledScrollY(page);
+      for (let i = 0; i < 20 && afterY < 0; i++) {
+        await page.evaluate("new Promise(r => setTimeout(() => r(1), 150))");
+        afterY = await settledScrollY(page);
+      }
+      const after = await page.evaluate<State>(PROBE);
+      const label = fragment || "(empty)";
+      check(`${label}: the expanded tier is unchanged`, after.open.join() === before.open.join(),
+        `[${before.open}] -> [${after.open}]`);
+      check(`${label}: aria-current still follows what is on screen`, after.current.join() === before.current.join(),
+        `[${before.current}] -> [${after.current}]`);
+      check(`${label}: the preference is untouched`, after.tierValue === "bis", String(after.tierValue));
+      /*
+       * Only the unknown fragment gets a scroll assertion.
+       *
+       * An *empty* fragment is defined by the HTML spec as "top of the
+       * document", so the browser scrolls there on its own and no code of
+       * ours is involved — measured, 11,551 to 0. What row 15 is actually
+       * about is that *we* change nothing: the disclosures, `aria-current`
+       * and the preference, all asserted above for both cases. An unknown
+       * fragment matches no element, so nothing should move, and that is the
+       * case that would catch the handler collapsing tiers underneath the
+       * reader.
+       */
+      if (fragment) {
+        check(`${label}: the page did not move`, beforeY >= 0 && afterY === beforeY, `${beforeY} -> ${afterY}`);
+      } else {
+        check(`${label}: the browser's own jump to the top is the only movement`, afterY === 0, `${afterY}`);
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // T7 / row 16 — Back after a mirror jump
+    // -----------------------------------------------------------------------
+    console.log("\nT7 · Back after following a tier anchor");
+    {
+      await seed(page, site.origin, "bis");
+      await page.setViewport(1280, 900);
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
+      const start = await page.evaluate<State>(PROBE);
+      await page.evaluate(
+        `(() => { const m = document.querySelector("[data-tier-mirror='early-hell']");
+                  if (!m) throw new Error("no mirror"); m.click(); return 1; })()`,
+      );
+      for (let i = 0; i < 20 && (await settledScrollY(page)) < 0; i++) {
+        await page.evaluate("new Promise(r => setTimeout(() => r(1), 150))");
+      }
+      const jumped = await page.evaluate<State>(PROBE);
+      check("the anchor moved the page", jumped.href.endsWith("#gear-early-hell"), jumped.href);
+      await page.evaluate(`(() => { history.back(); return 1; })()`);
+      await page.evaluate("new Promise(r => setTimeout(() => r(1), 600))");
+      const back = await page.evaluate<State>(PROBE);
+      check("Back leaves the expanded tier where it was", back.open.join() === jumped.open.join(),
+        `[${jumped.open}] -> [${back.open}]`);
+      check("Back does not touch the preference", back.tierValue === "bis", String(back.tierValue));
+      check("…and nothing was written along the way", back.storage.length === 1, back.storage.join(","));
+      void start;
+    }
+
+    // -----------------------------------------------------------------------
     // Regression: the mobile menu is still a working <details>
     // -----------------------------------------------------------------------
     console.log("\nregression · the header menu still works");

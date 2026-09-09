@@ -269,6 +269,6 @@ try{s=(window.localStorage||{}).getItem(K)}catch(e){}
 var f=null;if(h.charAt(0)==="#"){var i=h.slice(1);if(i.indexOf(P)===0){var g=i.slice(P.length);if(T.indexOf(g)>=0)f=g}}
 var p=(T.indexOf(s)>=0)?s:null,a=f||p;
 for(var n=0;n<T.length;n++){var el=document.getElementById(P+T[n]);if(el){if(T[n]===a){el.setAttribute("open","")}else{el.removeAttribute("open")}}}
-if(f){var t=document.getElementById(P+f);if(t){var o=(window.innerWidth>=640)?112:72;var y=t.getBoundingClientRect().top+window.pageYOffset-o;window.scrollTo(0,y<0?0:y)}}
+if(f){var t=document.getElementById(P+f);if(t){var o=(window.innerWidth>=${MIRROR_BREAKPOINT})?${anchorOffsetPx(MIRROR_BREAKPOINT)}:${anchorOffsetPx(0)};var y=t.getBoundingClientRect().top+window.pageYOffset-o;window.scrollTo(0,y<0?0:y)}}
 }catch(e){}`;
 }

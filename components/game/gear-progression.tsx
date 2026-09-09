@@ -79,7 +79,7 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
           return (
             <section
               key={set.tier}
-              className="scroll-mt-16 rounded border border-border p-3"
+              className="rounded border border-border p-3"
               aria-labelledby={headingId}
             >
               <details
@@ -87,14 +87,14 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                 data-tier-section={set.tier}
                 open
                 suppressHydrationWarning
-                className="group peer"
+                className="group peer scroll-mt-16"
               >
                 <summary className="cursor-pointer list-none marker:hidden [&::-webkit-details-marker]:hidden">
                   <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span className="font-mono text-xs text-ember">
                       {String(index + 1).padStart(2, "0")}
                     </span>
-                    <h3 id={headingId} className="font-display text-2xl text-ink">
+                    <h3 id={headingId} className="font-display text-lg text-ink">
                       {tiers[set.tier].label}
                     </h3>
                     {set.levelRange && (
@@ -114,7 +114,7 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                       </span>
                     </span>
                   </span>
-                  <span className="mt-2 block max-w-3xl text-base leading-relaxed text-pretty text-ink-muted">
+                  <span className="mt-1.5 block max-w-3xl text-sm leading-snug text-pretty text-ink-muted">
                     <RichText>{set.goal}</RichText>
                   </span>
                 </summary>
@@ -189,7 +189,7 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                   const pick = entry.picks[0];
                   const ref = pick?.ref ? resolveRef(locale, pick.ref) : null;
                   return (
-                    <li key={`${entry.slot}-${i}`} data-preview-slot={entry.slot} className="flex gap-2 py-0.5 text-sm">
+                    <li key={`${entry.slot}-${i}`} data-preview-slot={entry.slot} className="flex gap-2 text-sm">
                       <span className="w-24 shrink-0 text-xs tracking-wide text-ink-subtle uppercase">
                         {slots[entry.slot]}
                       </span>

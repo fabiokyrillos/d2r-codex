@@ -126,7 +126,7 @@ export default async function RootLayout(props: LayoutProps<"/[lang]">) {
     >
       <body className="bg-abyss-glow flex min-h-full flex-col">
         <SiteHeader />
-        <main id="content" className="flex-1">
+        <main id="content" className="flex-1 scroll-mt-16">
           {props.children}
         </main>
         <SiteFooter />
