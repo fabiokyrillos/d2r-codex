@@ -272,6 +272,16 @@ export const enUS = {
     gearProgressionDescription:
       "Six tiers. Find the one that matches what you actually own, then read the “what to fix next” box at the bottom of it.",
     gearTiersNav: "Gear tiers",
+    tierPicker: {
+      legend: "Where are you?",
+      myTier: "My tier: {tier} · Levels {from}–{to}",
+      announce: "My tier: {tier}, levels {from}–{to}.",
+      goToGear: "Go to the gear",
+      clear: "Clear",
+      clearLabel: "Clear my tier",
+      expand: "Expand",
+      collapse: "Collapse",
+    },
     levelsRange: "Levels {from}–{to}",
     whatToFixNext: "What to fix next",
     charmsInventory: "Charms & inventory",

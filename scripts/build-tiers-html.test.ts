@@ -220,14 +220,28 @@ for (const locale of LOCALES) {
     const p = pageFor(locale, classSlug, slug);
     if (!existsSync(p)) continue;
     const raw = readFileSync(p, "utf8");
-    const text = decode(markup(raw));
+    const rendered = markup(raw);
+    const text = decode(rendered);
     const picker = pickerFor(locale);
 
-    // "Meu tier: …" is the promise of persistence. Its stem must not be in the
-    // markup, nor may the actions that only exist once a preference does.
+    /*
+     * Two ways of asking, because neither alone is sound.
+     *
+     * The *text* check uses only the "My tier:" stem. It is the one string
+     * here that cannot occur by accident. Searching for `clear` matched
+     * "Clear speed" — a rating axis — and "Clear Nightmare comfortably" — a
+     * tier goal — on every page: ordinary English, not a preference promise.
+     * A rule with that much noise reports a defect that is not there, and
+     * teaches whoever reads it next to ignore the gate.
+     *
+     * The *attribute* check carries the rest. The controls that may only
+     * exist once a preference does are identified by their data attributes,
+     * which are unambiguous and cannot appear in prose.
+     */
     const stem = (picker.myTier ?? "").split("{")[0].trim();
-    for (const forbidden of [stem, picker.goToGear, picker.clear]) {
-      if (forbidden && text.includes(forbidden)) promised.push(`${locale}/${slug}: "${forbidden}"`);
+    if (stem && text.includes(stem)) promised.push(`${locale}/${slug}: "${stem}"`);
+    for (const attr of ["data-go-to-gear", "data-clear-tier"]) {
+      if (new RegExp(`\b${attr}\b`).test(rendered)) promised.push(`${locale}/${slug}: [${attr}]`);
     }
     // …but the navigation half must always be there.
     if (!picker.legend || !text.includes(picker.legend)) controlMissing.push(`${locale}/${slug}`);

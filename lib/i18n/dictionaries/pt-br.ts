@@ -268,6 +268,16 @@ export const ptBR: Dictionary = {
     gearProgressionDescription:
       "Seis níveis. Ache o que corresponde ao que você realmente tem e leia a caixa “o que melhorar em seguida” no fim dele.",
     gearTiersNav: "Níveis de equipamento",
+    tierPicker: {
+      legend: "Onde você está?",
+      myTier: "Meu tier: {tier} · Níveis {from}–{to}",
+      announce: "Meu tier: {tier}, níveis {from}–{to}.",
+      goToGear: "Ir para o equipamento",
+      clear: "Limpar",
+      clearLabel: "Limpar meu tier",
+      expand: "Expandir",
+      collapse: "Recolher",
+    },
     levelsRange: "Níveis {from}–{to}",
     whatToFixNext: "O que melhorar em seguida",
     charmsInventory: "Charms e inventário",
