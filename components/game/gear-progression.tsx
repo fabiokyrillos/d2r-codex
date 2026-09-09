@@ -123,6 +123,7 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                   {set.slots.map((entry, i) => (
                     <div
                       key={`${entry.slot}-${i}`}
+                      data-gear-slot={entry.slot}
                       className="grid gap-3 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-6"
                     >
                       <div className="pt-0.5">
@@ -188,7 +189,7 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                   const pick = entry.picks[0];
                   const ref = pick?.ref ? resolveRef(locale, pick.ref) : null;
                   return (
-                    <li key={`${entry.slot}-${i}`} className="flex gap-2 py-0.5 text-sm">
+                    <li key={`${entry.slot}-${i}`} data-preview-slot={entry.slot} className="flex gap-2 py-0.5 text-sm">
                       <span className="w-24 shrink-0 text-xs tracking-wide text-ink-subtle uppercase">
                         {slots[entry.slot]}
                       </span>
