@@ -333,15 +333,44 @@ for (const bad of ["", "budget ", "BUDGET", "gear-budget", '{"tier":"bis"}', "nu
   check("clearing reports success and empties the key", c.ok && c.value === true && f.store.size === 0, `${f.store.size} keys left`);
 }
 
-for (const mode of ["get", "set", "remove", "access"] as Throw[]) {
+/*
+ * One invariant holds for every kind of hostile storage — nothing throws —
+ * and the *reported* result is per operation, not per store.
+ *
+ * The first version of this asserted that any throwing store made all three
+ * report failure, and it failed against a correct implementation: when only
+ * `getItem` throws, `setItem` still works, so a write that reports success
+ * has told the truth. R-PREF-1 asks for protected reads and writes and no
+ * exception when storage is blocked; it does not ask a working write to
+ * claim it failed.
+ */
+const HOSTILE: { mode: Throw; read: null; write: boolean; clear: boolean; why: string }[] = [
+  { mode: "get", read: null, write: true, clear: true, why: "reads are broken; writing and clearing are not" },
+  { mode: "set", read: null, write: false, clear: true, why: "quota or a read-only store" },
+  { mode: "remove", read: null, write: true, clear: false, why: "removal refused" },
+  { mode: "access", read: null, write: false, clear: false, why: "site data blocked — the getter itself throws" },
+];
+
+for (const { mode, write, clear, why } of HOSTILE) {
   installStorage(mode);
   const r = settle(() => readTier());
   const w = settle(() => writeTier("bis"));
   const c = settle(() => clearTier());
-  check(`localStorage throwing on ${mode}: readTier does not throw`, r.ok, "it threw");
-  check(`  …and returns null`, r.ok && r.value === null, String(r.value));
-  check(`  …writeTier does not throw and reports failure`, w.ok && w.value === false, String(w.value));
-  check(`  …clearTier does not throw and reports failure`, c.ok && c.value === false, String(c.value));
+  check(`throwing on ${mode} (${why}): nothing throws`, r.ok && w.ok && c.ok, "something threw");
+  check(`  …readTier returns null`, r.ok && r.value === null, String(r.value));
+  check(`  …writeTier reports ${write}`, w.ok && w.value === write, String(w.value));
+  check(`  …clearTier reports ${clear}`, c.ok && c.value === clear, String(c.value));
+}
+
+/*
+ * And the case that matters most, stated on its own: with the store's own
+ * getter throwing, a read is indistinguishable from "no preference". That is
+ * the state a reader with site data blocked is actually in.
+ */
+{
+  installStorage("access");
+  const r = settle(() => readTier());
+  check("a reader with site data blocked looks exactly like a reader with no preference", r.ok && r.value === null);
 }
 
 {
