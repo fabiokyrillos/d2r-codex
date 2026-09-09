@@ -89,6 +89,16 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
   const [view, setView] = useState<View>({ enhanced: false, preferred: null, active: null });
   const { enhanced, preferred, active } = view;
   const [announcement, setAnnouncement] = useState("");
+  /*
+   * Whether the chip row actually overflows.
+   *
+   * The fade is a mask, and a mask clips the 2px focus ring at the row's
+   * edges — so it is only worth wearing when there is something off screen to
+   * hint at. Measured rather than assumed from a breakpoint, because whether
+   * six chips overflow depends on the language: "Início do Hell" is fourteen
+   * characters and "Hell" is four.
+   */
+  const [overflows, setOverflows] = useState(false);
   const rowRef = useRef<HTMLDivElement | null>(null);
 
   /** Re-reads storage and the hash, and puts the six disclosures in step. */
@@ -116,6 +126,17 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
     // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     sync();
   }, [sync]);
+
+  /* Re-measured on resize, because the row wraps from 640px and stops scrolling. */
+  useEffect(() => {
+    const row = rowRef.current;
+    if (!row) return;
+    const measure = () => setOverflows(row.scrollWidth > row.clientWidth + 1);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(row);
+    return () => observer.disconnect();
+  }, [enhanced]);
 
   /*
    * Back and forward between anchors, and the in-Gear mirror.
@@ -285,7 +306,9 @@ export function TierSelector({ tiers, strings }: { tiers: TierOption[]; strings:
           role="group"
           aria-labelledby="tier-picker-legend"
           onKeyDown={onKeyDown}
-          className="mt-3 -mx-5 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0"
+          className={`mt-3 -mx-5 flex gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0 ${
+            overflows ? "tier-chips-fade" : ""
+          }`}
         >
           {body}
         </div>

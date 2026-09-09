@@ -70,8 +70,41 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* Anchor links land below the sticky header rather than under it. */
-    scroll-padding-top: 5rem;
+    /*
+     * Anchor links land below whatever is pinned above them.
+     *
+     * Two values, because what is pinned depends on the width. From 640px the
+     * gear section repeats its tier nav as a sticky bar, so an anchor has to
+     * clear header + bar; below that the header is the only sticky thing on
+     * the site, and reserving room for a bar that is not there leaves a strip
+     * of dead space above every anchor.
+     *
+     * 3rem here plus the `scroll-mt-16` on each tier is 112px; 0.5rem plus the
+     * same is 72px. `lib/prefs.ts` returns the same two numbers to the script
+     * that re-aligns after a collapse, so the CSS and the JS cannot disagree.
+     */
+    scroll-padding-top: 0.5rem;
+  }
+
+  @media (width >= 40rem) {
+    html {
+      scroll-padding-top: 3rem;
+    }
+  }
+
+  /*
+   * Honour a reader who has asked for less movement.
+   *
+   * `scroll-behavior: smooth` was unguarded, and this phase adds the control
+   * that exercises it most: choosing a tier and following "go to the gear"
+   * animates the page across several thousand pixels. R-A11Y-6 asks for the
+   * transition to become a state change, which for scrolling means arriving
+   * without the journey.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -112,5 +145,31 @@
 
   .text-pretty {
     text-wrap: pretty;
+  }
+}
+
+@layer components {
+  /*
+   * The edge fade on the horizontally scrolling tier chips.
+   *
+   * Applied only when the row genuinely overflows — the class is added from
+   * a measurement, not a breakpoint — because the mask clips the 2px focus
+   * ring at the row's edges. The active chip is scrolled to the centre for
+   * the same reason, so a focused chip is never under the faded band.
+   */
+  .tier-chips-fade {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 12px,
+      #000 calc(100% - 12px),
+      transparent 100%
+    );
+  }
+
+  @media (width >= 40rem) {
+    .tier-chips-fade {
+      mask-image: none;
+    }
   }
 }
