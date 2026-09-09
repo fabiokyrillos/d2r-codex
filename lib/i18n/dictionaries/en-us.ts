@@ -284,6 +284,46 @@ export const enUS = {
     },
     levelsRange: "Levels {from}–{to}",
     whatToFixNext: "What to fix next",
+    /*
+     * Phase 2's comparison vocabulary. Four states, closed: every marker on the
+     * page is one of these words, so a marker can never say something the data
+     * does not. "Kept" is written for a screen reader only, and any of the
+     * three is dropped entirely on the rows a tier's majority line already
+     * covers — see `components/game/tier-markers.tsx`.
+     *
+     * The majority sentences take their two numbers from the comparison, never
+     * from an editor: a count written by hand is a claim the rows underneath
+     * can contradict.
+     */
+    markerNew: "New",
+    markerKept: "Kept",
+    markerAlternative: "Alternative",
+    markerRemoved: "Removed",
+    removedTitle: "No longer worn",
+    majorityNew: "Almost all new here: {count} of {total} slots",
+    majorityKept: "Almost all kept here: {count} of {total} slots",
+    majorityAlternative: "Almost all alternatives here: {count} of {total} slots",
+    /*
+     * `bis` is terminal: it has no tier after it, so it never gets a derived
+     * "next" and never the ember "what to fix next" affordance. This replaces
+     * that heading — it does not replace the eight authored `nextUpgrade`
+     * strings that `bis` tiers do carry.
+     */
+    finalSetup: "Final setup",
+    /* R-BUILD-7's bridge, on the compact tier after the expanded one. */
+    nextShort: "Next:",
+    /*
+     * R-BUILD-8's summary. `trigger` is the `<summary>`'s own text, which is
+     * the "Sections" button below 640px; `label` names the landmark and the
+     * sheet; `close` names the sheet's dismiss control. The entry labels are
+     * not here on purpose — they are the section headings themselves, so a
+     * summary entry and the heading it points at cannot drift apart.
+     */
+    sections: {
+      label: "Sections on this page",
+      trigger: "Sections",
+      close: "Close",
+    },
     charmsInventory: "Charms & inventory",
     weaponSwap: "Weapon swap",
     lookFor: "Look for:",

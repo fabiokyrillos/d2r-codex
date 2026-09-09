@@ -186,7 +186,7 @@ check(
     }
   }
   check(
-    "T3 slots[i].entry is the same object as set.slots[i], in all 318 tiers",
+    "T3 slots[i].entry is the same object as set.slots[i], across the 318 tiers",
     rows.length === 318 && mismatched.length === 0,
     mismatched.slice(0, 3).join(" | "),
   );
@@ -904,7 +904,7 @@ const hasText = (s: GearSet) => typeof s.nextUpgrade === "string" && s.nextUpgra
 {
   const source = enBuilds.flatMap((b) => b.gearSets.filter((s) => s.tier !== "bis"));
   check(
-    "T23 all 265 source tiers (starter…optimized) carry a nextUpgrade",
+    "T23 the 265 source tiers (starter…optimized) carry a nextUpgrade",
     source.length === 265 && source.every(hasText),
     `${source.filter(hasText).length}/${source.length}`,
   );
@@ -933,14 +933,14 @@ check(
 {
   // M12: the compact tier's line comes from the tier *before* it, never from
   // itself. `previousTier` is the whole of that contract in the pure module, and
-  // the two texts differ in all 265 pairs — so a mutation that read its own
+  // the two texts differ across the 265 pairs — so a mutation that read its own
   // tier would change every rendering, not a subtle few.
   let differs = 0;
   for (const build of enBuilds)
     for (let i = 1; i < build.gearSets.length; i++)
       if (build.gearSets[i - 1].nextUpgrade !== build.gearSets[i].nextUpgrade) differs++;
   check(
-    "T26 the line a compact tier shows belongs to its previous tier, and that text differs in all 265",
+    "T26 the line a compact tier shows belongs to its previous tier, and that text differs across the 265",
     differs === 265,
     String(differs),
   );

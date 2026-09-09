@@ -26,6 +26,7 @@ import {
   SkillLink,
 } from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
+import { PageSections, type PageSectionEntry } from "@/components/game/page-sections";
 import { TierSelector } from "@/components/game/tier-selector";
 import {
   getBuild,
@@ -49,6 +50,35 @@ import {
 } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 import { MAX_HARD_POINTS, hasSkillPages } from "@/lib/skills";
+
+/**
+ * The eleven section ids, in document order, written once.
+ *
+ * Read twice on this page — by the `<Section>` that carries the id and by the
+ * summary entry that points at it — so the two cannot drift into disagreeing.
+ * The seven that already existed are published URLs and do not change; the four
+ * added with the summary are the sections that had a heading and no anchor.
+ *
+ * Here rather than beside the summary component, and the reason is measured: a
+ * Server Component that imports a plain value from a `"use client"` module gets
+ * a client reference rather than the value. With the constant exported from
+ * `page-sections.tsx` this page compiled, typechecked and rendered eleven
+ * entries — every one of them `href="#undefined"`, with all eleven `id`
+ * attributes gone and the seven published anchors along with them.
+ */
+const S = {
+  howItPlays: "how-it-plays",
+  atAGlance: "at-a-glance",
+  strengths: "strengths",
+  gettingThere: "getting-there",
+  skills: "skills",
+  stats: "stats",
+  breakpoints: "breakpoints",
+  immunities: "immunities",
+  gear: "gear",
+  mercenary: "mercenary",
+  farming: "farming",
+} as const;
 
 export function generateStaticParams() {
   return getBuilds("en-us").map((b) => ({ classSlug: b.classSlug, slug: b.slug }));
@@ -132,6 +162,35 @@ export default async function BuildPage(
 
   const rate = (value: number) => fmt(t.common.outOfFive, { value });
 
+  /*
+   * The table of contents, built from the same three guards the sections
+   * themselves are behind — `levelingPath`, `immunityPlan` and a mercenary.
+   *
+   * Nothing here counts to eleven. All three conditionals happen to be
+   * populated in all 53 builds today, so a fixed list would agree with the site
+   * right up to the day a build arrives without an immunity plan, and then it
+   * would publish an anchor that lands nowhere. That is defect D2's exact
+   * shape, and it is why `scripts/build-toc-html.test.ts` compares entries
+   * against the sections a document actually rendered rather than against a
+   * number.
+   *
+   * The labels are the headings' own strings, not a second set written for the
+   * summary, so an entry and the heading it points at cannot come to disagree.
+   */
+  const sections: PageSectionEntry[] = [
+    { id: S.howItPlays, label: t.builds.howItPlays },
+    { id: S.atAGlance, label: t.builds.atAGlance },
+    { id: S.strengths, label: t.classes.strengthsWeaknesses },
+    ...(build.levelingPath ? [{ id: S.gettingThere, label: t.builds.gettingThere }] : []),
+    { id: S.skills, label: t.builds.skills },
+    { id: S.stats, label: t.builds.stats },
+    { id: S.breakpoints, label: t.classes.breakpointsTitle },
+    ...(build.immunityPlan ? [{ id: S.immunities, label: t.builds.immunities }] : []),
+    { id: S.gear, label: t.builds.gearProgression, showsActiveTier: true },
+    ...(merc ? [{ id: S.mercenary, label: t.builds.mercenary }] : []),
+    { id: S.farming, label: t.builds.whereToFarm },
+  ];
+
   return (
     <Container className="py-10">
       <PageHeader
@@ -198,6 +257,31 @@ export default async function BuildPage(
         />
 
         {/*
+          "What is on this page?", and never above the control.
+
+          Measured at 320px: the top of the tier control is 575px on the two
+          worst pt-BR builds, and the stack is `space-y-12`, so a 44px block
+          inserted above it would push the control to 667px — past the 640px
+          ceiling C14 holds. Below it the cost to that metric is exactly zero.
+
+          What that placement does not buy is the first screen. The control
+          measures 154px, so this trigger starts at 777px on those same two
+          pages — 137px below the fold at 320×640. §3.7 of the plan expected
+          ~100px of control and a ~675px trigger; the fallback it names, a row
+          inside the control block, would still land around 693px, because the
+          control's own top is already 575px. Reported rather than papered over.
+        */}
+        <PageSections
+          entries={sections}
+          tiers={tierOrder.map((slug) => ({ slug, label: tiers[slug].label }))}
+          strings={{
+            label: t.builds.sections.label,
+            trigger: t.builds.sections.trigger,
+            close: t.builds.sections.close,
+          }}
+        />
+
+        {/*
           Above "how it plays", because a reader who cannot make the item this
           build is named after needs to know before they read a word about how
           it feels. The prose is the runeword's, not the build's, so the two
@@ -215,7 +299,7 @@ export default async function BuildPage(
           </div>
         )}
 
-        <Section title={t.builds.howItPlays}>
+        <Section id={S.howItPlays} title={t.builds.howItPlays}>
           {/*
             Through RichText like every other content string. It was not, and
             nothing noticed until an Amazon page emphasised one word in a
@@ -227,7 +311,7 @@ export default async function BuildPage(
           </p>
         </Section>
 
-        <Section title={t.builds.atAGlance}>
+        <Section id={S.atAGlance} title={t.builds.atAGlance}>
           <div className="grid gap-4 sm:grid-cols-2">
             <Card>
               <h3 className="mb-2 text-xs font-semibold tracking-wide text-ink-subtle uppercase">
@@ -257,7 +341,7 @@ export default async function BuildPage(
           </p>
         </Section>
 
-        <Section title={t.classes.strengthsWeaknesses}>
+        <Section id={S.strengths} title={t.classes.strengthsWeaknesses}>
           <ProsCons
             pros={build.strengths}
             cons={build.weaknesses}
@@ -267,7 +351,7 @@ export default async function BuildPage(
         </Section>
 
         {build.levelingPath && (
-          <Section title={t.builds.gettingThere}>
+          <Section id={S.gettingThere} title={t.builds.gettingThere}>
             <Callout variant="warning" title={t.builds.doNotLevelAs}>
               <RichText>{build.levelingPath.summary}</RichText>
               {/*
@@ -296,7 +380,7 @@ export default async function BuildPage(
           </Section>
         )}
 
-        <Section id="skills" title={t.builds.skills} description={t.builds.skillsDescription}>
+        <Section id={S.skills} title={t.builds.skills} description={t.builds.skillsDescription}>
           <div className="space-y-8">
             {hasSkillTree && (
               /*
@@ -418,7 +502,7 @@ export default async function BuildPage(
           </div>
         </Section>
 
-        <Section id="stats" title={t.builds.stats}>
+        <Section id={S.stats} title={t.builds.stats}>
           <DataTable
             headers={[t.builds.colAttribute, t.builds.colAllocation]}
             rows={[
@@ -438,7 +522,7 @@ export default async function BuildPage(
         </Section>
 
         <Section
-          id="breakpoints"
+          id={S.breakpoints}
           title={t.classes.breakpointsTitle}
           description={t.builds.breakpointsDescription}
         >
@@ -488,7 +572,7 @@ export default async function BuildPage(
         </Section>
 
         {build.immunityPlan && (
-          <Section id="immunities" title={t.builds.immunities}>
+          <Section id={S.immunities} title={t.builds.immunities}>
             <Callout variant="warning" title={t.builds.immunitiesCalloutTitle}>
               <RichText>{build.immunityPlan}</RichText>
             </Callout>
@@ -496,7 +580,7 @@ export default async function BuildPage(
         )}
 
         <Section
-          id="gear"
+          id={S.gear}
           title={t.builds.gearProgression}
           description={t.builds.gearProgressionDescription}
         >
@@ -504,7 +588,7 @@ export default async function BuildPage(
         </Section>
 
         {merc && (
-          <Section id="mercenary" title={t.builds.mercenary}>
+          <Section id={S.mercenary} title={t.builds.mercenary}>
             <Card>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 className="font-display text-lg text-ink">
@@ -569,7 +653,7 @@ export default async function BuildPage(
         )}
 
         <Section
-          id="farming"
+          id={S.farming}
           title={t.builds.whereToFarm}
           description={t.builds.whereToFarmDescription}
         >

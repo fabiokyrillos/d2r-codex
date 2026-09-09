@@ -280,6 +280,40 @@ export const ptBR: Dictionary = {
     },
     levelsRange: "Níveis {from}–{to}",
     whatToFixNext: "O que melhorar em seguida",
+    /*
+     * Vocabulário da comparação da Fase 2. Quatro estados, fechado: todo
+     * marcador da página é uma destas palavras. "Mantido" existe só para o
+     * leitor de tela, e qualquer um dos três desaparece nas linhas cobertas
+     * pela linha de maioria do tier — ver `components/game/tier-markers.tsx`.
+     *
+     * "slots" fica em inglês por ser o termo do jogo, como manda o ADR 0003; a
+     * frase inteira difere do inglês, portanto nenhuma destas chaves é
+     * coincidência EN/PT.
+     */
+    markerNew: "Novo",
+    markerKept: "Mantido",
+    markerAlternative: "Alternativa",
+    markerRemoved: "Removido",
+    removedTitle: "Não se usa mais",
+    majorityNew: "Quase tudo novo aqui: {count} de {total} slots",
+    majorityKept: "Quase tudo mantido aqui: {count} de {total} slots",
+    majorityAlternative: "Quase tudo alternativa aqui: {count} de {total} slots",
+    /* `bis` é terminal: não tem tier seguinte, logo nunca ganha um "próximo". */
+    finalSetup: "Configuração final",
+    /* A ponte de R-BUILD-7, no tier compacto seguinte ao expandido. */
+    nextShort: "Próximo:",
+    /*
+     * O sumário de R-BUILD-8. `trigger` é o texto do próprio `<summary>`, que
+     * abaixo de 640 px é o botão "Seções"; `label` nomeia o landmark e a sheet;
+     * `close` nomeia o controle de fechar. Os rótulos das entradas não estão
+     * aqui de propósito — são os próprios cabeçalhos de seção, para que entrada
+     * e cabeçalho não possam divergir.
+     */
+    sections: {
+      label: "Seções desta página",
+      trigger: "Seções",
+      close: "Fechar",
+    },
     charmsInventory: "Charms e inventário",
     weaponSwap: "Troca de arma",
     lookFor: "Procure por:",

@@ -187,3 +187,78 @@
     }
   }
 }
+
+/*
+ * The build page's table of contents, revealed without JavaScript.
+ *
+ * Deliberately unlayered. Tailwind emits `@layer theme, base, components,
+ * utilities`, and a later layer beats an earlier one whatever the specificity,
+ * so a `display: none` for the trigger written in `@layer components` would
+ * lose to the `flex` utility the trigger carries at every width. Unlayered
+ * normal declarations outrank every layer, which is the only place these two
+ * rules can sit and win.
+ *
+ * **Why this exists at all.** `components/game/page-sections.tsx` used to ship
+ * the disclosure `open` and let a client layout effect close it below 640px.
+ * That is a height change *after* hydration, and hydration lands in the middle
+ * of the browser's ~1.6s smooth scroll to a URL fragment. Measured at 390px on
+ * `/en-us/builds/sorceress/blizzard-sorceress#gear-budget`: the summary went
+ * 162px → 38px, the document went 21,776px → 21,652px, and because the summary
+ * sits *above* the gear section the target moved out from under an in-flight
+ * scroll — `#gear-budget` landed at −52px, behind the sticky header, instead of
+ * at the 72px `anchorOffsetPx(390)` promises. So the served height must be the
+ * final height, at every width, before a line of JavaScript runs.
+ *
+ * **Why `content-visibility` and not `display`.** A closed `<details>` hides
+ * its panel with `content-visibility: hidden` on the `::details-content`
+ * pseudo-element. `display` on a *child* cannot override a
+ * `content-visibility` on an *ancestor* — measured in Chrome 151,
+ * `checkVisibility()` returns false while the links are still in the markup and
+ * their boxes still lay out, so an HTML gate reads the links and a height gate
+ * reads a panel that nobody can see. `display: flex|grid|contents|block` on the
+ * `<details>` itself fails the same way. Reaching the pseudo-element is the
+ * only thing that works, and Tailwind 4.3.3 has a utility for neither half of
+ * it.
+ *
+ * **The support floor, and what happens below it.** `::details-content` is
+ * Chrome 131+, Safari 18.4+, Firefox 139+. The guard is not decoration: without
+ * it, a browser that drops the reveal rule as invalid would still honour a
+ * `display: none` on the trigger, and the whole control would vanish at
+ * desktop. Two things about it were measured rather than assumed, because the
+ * bug above came from asserting an untested mechanism:
+ *
+ *   - It discriminates. In Chrome 151,
+ *     `CSS.supports("selector(::details-content)")` is true and
+ *     `selector(::not-a-real-pseudo)` is false, so an engine that does not know
+ *     the pseudo-element drops this whole block rather than half-applying it.
+ *   - What it drops to is usable. Deleting this `@media` block through CSSOM at
+ *     1280px — what a parser below the floor does with it — brings the trigger
+ *     back at `display: flex` over a closed 38px box, and one click opens all
+ *     eleven links in normal flow.
+ *
+ * The guard can only ever fail towards that fallback, never away from it: any
+ * engine that does not understand `@supports selector()` also drops the block,
+ * which is the same safe outcome.
+ */
+@media (width >= 40rem) {
+  @supports selector(::details-content) {
+    /*
+     * The panel, in normal flow, from a disclosure that is still closed. The
+     * `<details>` never opens at this width and no script ever writes `open`,
+     * which is precisely why nothing here can move after load.
+     */
+    [data-sections]::details-content {
+      content-visibility: visible;
+    }
+
+    /*
+     * …and the trigger withdrawn, because from 640px this box is a plain row
+     * of links and a disclosure button over already-visible content is a
+     * control that does nothing. Same `@supports`, same `@media`: the panel is
+     * revealed and the trigger withdrawn together, or neither happens.
+     */
+    [data-sections] > summary {
+      display: none;
+    }
+  }
+}

@@ -551,6 +551,20 @@ ruidosa que útil") — a primeira versão trocava ruído visual por ruído sono
 A contagem vem da função pura (`TierComparison.majority`), derivada dos dados como todas as contagens
 do site — não é texto editorial novo.
 
+**O que isto dá, medido sobre as 53 builds depois de implementado:**
+
+| | |
+|---|---|
+| ocorrências classificadas | **2.369** |
+| marcadores **desenhados** | **775** |
+| marcadores só no leitor de tela | **622** |
+| linhas de maioria | **126** (73 "mantido", 53 "novo"), cobrindo **349** ocorrências |
+| menor maioria | **3 de 4** — nenhuma frase do tipo "1 de 1 slots" |
+
+> A primeira versão deste plano projetava "1.124 desenhados". Esse é `999 novo + 125 alternativa`, o
+> número **antes** da regra de maioria. Com ela, 349 dessas ocorrências passam a ser cobertas por uma
+> frase, e o desenhado real é **775**. O número corrigido é o que vai ao proprietário.
+
 **Como o texto do marcador existe, e a armadilha evitada.** Sempre `<span class="sr-only">`, **nunca
 `aria-label`**. A linha do slot é `<div data-gear-slot=…>` e a célula do rótulo um `<span>` puro: ambos
 computam `role=generic`, sobre o qual a ARIA **proíbe** nome de autor, e um `aria-label` num contentor
@@ -1195,7 +1209,7 @@ refinamento de R-BUILD-4.
 |---|---|---|
 | a | R-BUILD-6: *"A comparação usa `ref.slug`"* | `ref.kind + ref.slug` |
 | b | R-BUILD-7 *Aceite:* *"presente nos seis tiers"* | insatisfazível em `bis` para 45 de 53; reescrito para o contrato terminal de §6 |
-| c | §14 Fase 2: *"marcadores em todos os slots das 53 builds"* | o primeiro tier é isento. **Classificados: 2.369 de 2.659. Desenhados: 1.124 mais as linhas de maioria** (§7.2). **Os dois números vão ao proprietário antes do commit 4**, não no relatório depois |
+| c | §14 Fase 2: *"marcadores em todos os slots das 53 builds"* | o primeiro tier é isento. **Classificados: 2.369 de 2.659. Desenhados: 775. Só para leitor de tela: 622. Linhas de maioria: 126** (73 "mantido", 53 "novo"), cobrindo 349 ocorrências. **Os números vão ao proprietário antes do commit 4**, não no relatório depois |
 | d | R-BUILD-6: removidos *"listado ao fim"* | **48 remoções em 30 pares**; o bloco está ausente de **235 de 265** renderizações: é **condicional**, e não se orça altura para ele |
 | e | R-BUILD-7: *"repetido … no `<summary>` do tier compacto seguinte"* | vai no bloco de preview, **fora** do `<summary>` (nome acessível), e **só no tier seguinte ao expandido** (§3.8.1) |
 | f | **J5** (`PRD:206`) e R-BUILD-6: *"cada slot … carrega um marcador"* | refinado: *cada slot recebe um marcador; o estado majoritário do tier pode ser declarado uma vez em vez de repetido por slot*. **É a condição de avanço da fase** — a primeira versão não a listou |

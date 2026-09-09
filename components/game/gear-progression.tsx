@@ -5,7 +5,9 @@ import { gearSlotLabels, progressionTiers, tierOrder } from "@/lib/labels";
 import { tierAnchorId, tierAnchorHref } from "@/lib/prefs";
 import { Badge, Card, cn } from "@/components/ui";
 import { GearPickView, RichText } from "@/components/game";
+import { RemovedSlots, SlotMarkerLabel, TierMajorityLine } from "@/components/game/tier-markers";
 import { TierPreferenceScript } from "@/components/game/tier-preference-script";
+import { compareProgression } from "@/lib/builds/compare-tiers";
 import { resolveRef } from "@/lib/registry/resolve";
 
 /**
@@ -37,6 +39,38 @@ import { resolveRef } from "@/lib/registry/resolve";
  *      `blade-fury`'s budget tier legitimately lists `weapon` twice, so
  *      anything keyed by slot name loses a row without saying so.
  *
+ * Phase 2 adds three things to each tier, and each one is a decision about how
+ * *little* to draw:
+ *
+ *   4. **Markers** come from `lib/builds/compare-tiers`, computed on the server
+ *      and rendered as micro-labels in the slot column. `components/game/
+ *      tier-markers.tsx` carries the reasoning; what matters here is that the
+ *      comparison array is **parallel to `set.slots`**, so the marker is looked
+ *      up by index and never by slot name — the same duplicate-`weapon` trap as
+ *      (3), one layer up.
+ *   5. **`bis` is terminal.** Its heading becomes "Final setup" and it never
+ *      gets the ember "what to fix next" affordance. Where an author wrote a
+ *      `nextUpgrade` on `bis` anyway — eight builds, six of which say something
+ *      real after the word "Nothing" — the text still renders under that
+ *      heading. Replacing it with a fixed string would delete authored content.
+ *   6. **The "Next:" line** carries tier N's `nextUpgrade` into tier N+1's
+ *      compact preview area, and it is drawn on **exactly one** tier: the
+ *      compact one immediately after the expanded one. That is what makes the
+ *      arithmetic work — with no preference nothing is expanded, so no line
+ *      renders anywhere and the first visit is the height Phase 1 published.
+ *      Five lines at `line-clamp-2` would cost ~230px and break six of the
+ *      seven height constants.
+ *
+ *      Which tier is "next after the expanded one" is only known at runtime, so
+ *      the line is served on every eligible tier and revealed by CSS alone —
+ *      `:where(section:has(>details[open])) + section &`. Three rules decide it
+ *      and they are ordered by specificity on purpose: `hidden` (0,1,0) is the
+ *      default, that reveal (0,1,1) beats it, and the line's own
+ *      `peer-open:hidden` (0,2,0) beats *both*, so a tier that is itself open
+ *      never shows a line. Without JavaScript all six ship open, so nothing is
+ *      drawn — the reader gets the full `nextUpgrade` at the foot of each open
+ *      tier, which is where it already was.
+ *
  * The sticky tier nav is a navigation mirror only: it moves you to a tier and
  * reflects which one you are in, and it deliberately does not write the
  * preference or expand anything. Selecting from a control that is halfway
@@ -54,6 +88,13 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
   const ordered = [...gearSets].sort(
     (a, b) => tierOrder.indexOf(a.tier) - tierOrder.indexOf(b.tier),
   );
+  /*
+   * Parallel to `ordered`, entry by entry — `compareProgression` compares the
+   * sets in the order it receives them and returns one comparison per set, with
+   * `slots` parallel to `set.slots`. Both facts are asserted in
+   * `scripts/compare-tiers.test.ts`; nothing here re-derives or re-sorts them.
+   */
+  const comparisons = compareProgression(ordered);
 
   return (
     <div>
@@ -76,6 +117,12 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
       <div className="space-y-6">
         {ordered.map((set, index) => {
           const headingId = `${tierAnchorId(set.tier)}-heading`;
+          const comparison = comparisons[index];
+          // `bis` is terminal by name, not by position: R-BUILD-6's contract is
+          // about that tier, and all 45 of the missing `nextUpgrade` values are
+          // in it.
+          const terminal = set.tier === "bis";
+          const carried = index > 0 ? ordered[index - 1] : undefined;
           return (
             <section
               key={set.tier}
@@ -120,6 +167,7 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                 </summary>
 
                 <div className="mt-5 space-y-5 border-t border-border pt-5">
+                  <TierMajorityLine majority={comparison.majority} t={t} />
                   {set.slots.map((entry, i) => (
                     <div
                       key={`${entry.slot}-${i}`}
@@ -130,6 +178,16 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                         <span className="text-xs font-semibold tracking-wide text-ink-subtle uppercase">
                           {slots[entry.slot]}
                         </span>
+                        {/*
+                          By index, never by slot name: `comparison.slots` is
+                          parallel to `set.slots`, and `blade-fury`'s budget
+                          tier lists `weapon` twice.
+                        */}
+                        <SlotMarkerLabel
+                          slot={comparison.slots[i]}
+                          majority={comparison.majority}
+                          t={t}
+                        />
                       </div>
                       {/*
                         min-w-0 stops a wide child from stretching the grid track.
@@ -154,15 +212,49 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                   <SupplementaryBlock title={t.builds.weaponSwap} picks={set.weaponSwap} />
                 )}
 
-                {set.nextUpgrade && (
-                  <div className="mt-6 rounded-lg border border-ember-dim/40 bg-ember-dim/10 px-4 py-3">
-                    <p className="text-xs font-semibold tracking-wide text-ember uppercase">
-                      {t.builds.whatToFixNext}
+                {/*
+                  Terminal, or forward — never both, and `bis` is never
+                  forward.
+
+                  The ember frame is the "what to fix next" affordance, so it
+                  goes with the forward branch and `bis` gets a plain block.
+                  The heading is the only thing that changes: eight builds carry
+                  a `nextUpgrade` on `bis`, all opening with "Nothing.", and six
+                  of them — `blizzard-sorceress` and `hammerdin` among them —
+                  say something real afterwards. Swapping that text for a fixed
+                  string would be an editorial change, so the text stays and
+                  only the label above it becomes terminal. In `dragon-tail`
+                  that reads "Final setup" followed by "Nothing." — redundant,
+                  true, and it deletes nothing.
+                */}
+                {terminal ? (
+                  <div
+                    data-tier-terminal={set.tier}
+                    className="mt-6 rounded-lg border border-border bg-surface px-4 py-3"
+                  >
+                    <p className="text-xs font-semibold tracking-wide text-ink-muted uppercase">
+                      {t.builds.finalSetup}
                     </p>
-                    <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
-                      <RichText>{set.nextUpgrade}</RichText>
-                    </p>
+                    {set.nextUpgrade && (
+                      <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
+                        <RichText>{set.nextUpgrade}</RichText>
+                      </p>
+                    )}
                   </div>
+                ) : (
+                  set.nextUpgrade && (
+                    <div
+                      data-tier-upgrade={set.tier}
+                      className="mt-6 rounded-lg border border-ember-dim/40 bg-ember-dim/10 px-4 py-3"
+                    >
+                      <p className="text-xs font-semibold tracking-wide text-ember uppercase">
+                        {t.builds.whatToFixNext}
+                      </p>
+                      <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
+                        <RichText>{set.nextUpgrade}</RichText>
+                      </p>
+                    </div>
+                  )
                 )}
 
                 {set.notes && (
@@ -170,6 +262,13 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                     <RichText>{set.notes}</RichText>
                   </p>
                 )}
+
+                <RemovedSlots
+                  tier={set.tier}
+                  removed={comparison.removed}
+                  locale={locale}
+                  t={t}
+                />
               </details>
 
               {/*
@@ -198,6 +297,44 @@ export async function GearProgression({ gearSets }: { gearSets: GearSet[] }) {
                   );
                 })}
               </ul>
+
+              {/*
+                R-BUILD-7's bridge: the previous tier's "what to fix next",
+                carried into this tier's compact preview.
+
+                A sibling *after* the `<ul>`, never inside it. A `<p>` in a
+                `<ul>` is invalid, and `build-tier-state.test.ts` asserts
+                `ul[data-tier-preview].children.length === slots.length` — one
+                extra `<li>` turns five of six tiers red. Not inside
+                `<summary>` either, for the reason written above the preview.
+
+                Three classes, three specificities, in this order:
+                  `hidden`                       (0,1,0)  default: nothing
+                  the adjacent-tier reveal       (0,1,1)  the tier before me is open
+                  `peer-open:hidden`             (0,2,0)  …but I am open too
+                The `:where()` is load-bearing — it zeroes the ancestor's
+                specificity so the reveal lands *between* the other two instead
+                of on top of them. `line-clamp-2` doubles as the reveal because
+                it sets `display: -webkit-box`, so the clamp and the condition
+                are one utility and cannot drift apart.
+
+                The clamp is over the whole string: the text stays in the DOM,
+                in Ctrl+F and in the screen reader. Every mechanical shortening
+                was measured and rejected — the first clause alone inverts the
+                advice in cases like "Mosaic — but only if you can make one".
+              */}
+              {carried?.nextUpgrade && (
+                <p
+                  data-tier-next={set.tier}
+                  data-next-from={carried.tier}
+                  className="mt-1.5 hidden text-sm leading-snug text-pretty text-ink-muted peer-open:hidden [:where(section:has(>details[open]))+section_&]:line-clamp-2"
+                >
+                  <span className="font-semibold tracking-wide text-ember uppercase">
+                    {t.builds.nextShort}
+                  </span>{" "}
+                  <RichText>{carried.nextUpgrade}</RichText>
+                </p>
+              )}
             </section>
           );
         })}

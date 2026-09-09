@@ -81,6 +81,42 @@ const TIER_CEILING = 460;
 const GEAR_CEILING = { 390: 2300, 320: 2550 } as const;
 
 /**
+ * The ceiling for the one compact tier that carries R-BUILD-7's "Next:" line.
+ *
+ * `TIER_CEILING` above is deliberately **not** raised. It still guards the
+ * other five tiers, and a gate that gets looser to admit a feature has stopped
+ * being a gate. This constant applies to exactly one tier per page — the
+ * compact tier immediately after the expanded one, which is the only place the
+ * line is ever drawn — so the suite gets *more* specific, not slacker. The
+ * attribution is R-BUILD-7, via §3.8.2 of the Phase 2 plan.
+ *
+ * Measured by the commit-2 prototype over the seven subjects below x 2 locales
+ * x {390, 320}, with each tier's real `nextUpgrade` at `line-clamp-2` in the
+ * preview's `text-sm`: the line costs **+46 to +47px**, uniformly across all
+ * 140 cells, and the worst tier carrying it is **467px** — pt-BR
+ * `blade-fury/budget` at 320px, the eleven-slot tier. Tiers without the line do
+ * not move at all, which is why none of the other six constants above changes.
+ *
+ * 510, not 470. The plan's first rule was "measured, rounded up to the next
+ * ten", which leaves **3px** over 467 — a gate that goes red on a font metric
+ * or on an editor lengthening one `goal`, with no regression behind it. The
+ * policy this file already documents two paragraphs up is a different one, and
+ * it is the one applied here: *the ceilings sit about 10% above the worst
+ * measured value*, which is what 460 over 420 is (9.5%). 467 x 1.1 is ~514, so
+ * 510 — 9.2%. Same policy, new measurement, no new rule.
+ */
+const TIER_CEILING_WITH_NEXT = 510;
+
+/**
+ * The tier C13b expands, chosen so the tier *after* it is the worst cell.
+ *
+ * `early-hell` open puts the line on `budget`, and pt-BR `blade-fury/budget` at
+ * 320px is the 467px measurement `TIER_CEILING_WITH_NEXT` is calibrated on.
+ * Expanding anything else would exercise the constant somewhere with more room.
+ */
+const WITH_NEXT_EXPANDED = "early-hell";
+
+/**
  * The nine acceptance rows of the plan's §3.4, as measured.
  *
  * The plan projected these from a per-tier formula. The formula was 4-12%
@@ -97,9 +133,40 @@ const GEAR_CEILING = { 390: 2300, 320: 2550 } as const;
  * 21,582 (+582), all on the reference build in en-US at 390px.
  */
 const ACCEPTANCE: Record<string, { compactGear: number; compactPage: number; openGear: number; openPage: number }> = {
-  "en-us": { compactGear: 2100, compactPage: 18500, openGear: 5400, openPage: 21750 },
-  "pt-br": { compactGear: 2220, compactPage: 19300, openGear: 5750, openPage: 22800 },
+  "en-us": { compactGear: 2100, compactPage: 18500, openGear: 5530, openPage: 21970 },
+  "pt-br": { compactGear: 2220, compactPage: 19300, openGear: 5880, openPage: 23020 },
 };
+
+/*
+ * Phase 2 moved two of these eight numbers, and left six alone. Which six is
+ * the point.
+ *
+ * R-BUILD-6's markers and R-BUILD-7's "Next:" line both land inside a tier that
+ * is *open*, so they cost nothing at all on a first visit. Measured on the
+ * reference build after Phase 2:
+ *
+ *              Phase 1    Phase 2    cap      what moved
+ *   compactGear  2034       2034     2100     nothing
+ *   compactPage 18344      18430    18500     the summary's 38px trigger
+ *   openGear     5272       5397     5530  <- markers + majority + the line
+ *   openPage    21582      21793    21970  <- the same, on the whole page
+ *
+ * `compactGear` is *identical* to the pixel, which is the design of section
+ * 3.8.1 doing its job: the "Next:" line is drawn only on the compact tier after
+ * the expanded one, so with no preference stored there is no expanded tier and
+ * no line anywhere. That is what keeps `MIN_GEAR_REDUCTION` — Phase 1's
+ * published 87.6% claim, which is a product statement and not a calibration —
+ * untouched and unnegotiated.
+ *
+ * The two that moved are raised by exactly the measured growth, preserving the
+ * headroom each already carried (en: +128 on openGear, +168 on openPage; pt:
+ * +144 and +199), rounded up to the next ten. `openGear` is raised even though
+ * it was still passing: 5397 against 5400 is three pixels, and a three-pixel
+ * gate is not a gate — one font metric or one longer `goal` turns it red with
+ * no regression behind it. That is the same reasoning that set
+ * TIER_CEILING_WITH_NEXT, and it is the reasoning the constants above already
+ * document for themselves.
+ */
 
 /** The baseline this phase reduces, measured on the same build at 2873b61. */
 const BASELINE = { gear: 16458, page: 32574 };
@@ -224,6 +291,97 @@ async function main() {
         }
       }
     }
+
+    // -----------------------------------------------------------------------
+    // C13b — the one compact tier that carries the "Next:" line (R-BUILD-7)
+    // -----------------------------------------------------------------------
+    /*
+     * C13 above runs with no preference, so all six tiers are compact and no
+     * line is drawn anywhere — which is the whole reason the first visit stays
+     * at the height Phase 1 published. That also means C13 can never exercise
+     * `TIER_CEILING_WITH_NEXT`, and a constant no assertion reaches is
+     * decoration. This block seeds a preference and measures the state a reader
+     * with one actually gets.
+     *
+     * Three things are asserted here and nowhere else:
+     *
+     *   - **exactly one** line is displayed on the page. "Show it on every
+     *     compact tier" is the M12b mutation, it costs ~230px, and it breaks
+     *     six of the seven constants — but only if something counts.
+     *   - it is on the tier **immediately after** the expanded one, which is
+     *     the difference between a bridge and a repetition.
+     *   - the tier carrying it clears `TIER_CEILING_WITH_NEXT`, and every other
+     *     compact tier still clears the unchanged `TIER_CEILING`.
+     *
+     * Displayed, not present: the line is served on all five eligible tiers and
+     * revealed by CSS, so `getComputedStyle` is the only thing that can tell
+     * the two apart. Reading the markup would count five every time.
+     */
+    console.log(`\nC13b · with ${WITH_NEXT_EXPANDED} expanded, one compact tier carries the "Next:" line\n`);
+    let worstWithLine = { page: "", tier: "", h: 0 };
+    for (const width of [390, 320]) {
+      await page.setViewport(width, width === 320 ? 640 : 844);
+      for (const locale of LOCALES) {
+        const builds = getBuilds(locale).filter((b) => HEIGHT_SUBJECTS.includes(String(b.slug)));
+        for (const build of builds) {
+          await page.goto(`${site.origin}/en-us`);
+          await page.evaluate(
+            `(() => { try { localStorage.setItem("d2rc.tier", ${JSON.stringify(WITH_NEXT_EXPANDED)}); } catch {} return 1; })()`,
+          );
+          await page.goto(`${site.origin}/${locale}/builds/${build.classSlug}/${build.slug}`);
+          await hydrated(page);
+          const measured = await page.evaluate<{ tier: string; h: number; open: boolean; line: boolean }[]>(
+            `(() => ${JSON.stringify(tierOrder)}.map((t) => {
+               const d = document.getElementById("gear-" + t);
+               const sec = d ? d.parentElement : null;
+               const p = sec ? sec.querySelector("[data-tier-next]") : null;
+               return {
+                 tier: t,
+                 h: sec ? Math.round(sec.getBoundingClientRect().height) : -1,
+                 open: !!(d && d.open),
+                 line: !!(p && getComputedStyle(p).display !== "none"),
+               };
+             }))()`,
+          );
+          const where = `${locale}/${build.slug} @${width}`;
+          const open = measured.filter((m) => m.open).map((m) => m.tier);
+          const shown = measured.filter((m) => m.line);
+          const expected = tierOrder[tierOrder.indexOf(WITH_NEXT_EXPANDED) + 1];
+          const carrier = measured.find((m) => m.tier === expected);
+          const others = measured.filter((m) => !m.open && m.tier !== expected);
+          const over = others.filter((m) => m.h > TIER_CEILING).map((m) => `${m.tier} ${m.h}px`);
+          if (carrier && carrier.h > worstWithLine.h) {
+            worstWithLine = { page: `${locale}/${build.slug} @${width}`, tier: carrier.tier, h: carrier.h };
+          }
+          console.log(
+            `       ${where}  open=[${open}]  line on ${shown.map((m) => m.tier).join(",") || "nothing"}  ` +
+              `${expected}=${carrier ? carrier.h : "?"}px`,
+          );
+          check(`${where}: exactly one tier displays the line`, shown.length === 1, `[${shown.map((m) => m.tier)}]`);
+          check(
+            `${where}: it is the tier right after the expanded one`,
+            shown.length === 1 && shown[0].tier === expected,
+            `${shown[0]?.tier ?? "none"} instead of ${expected}`,
+          );
+          check(
+            `${where}: the tier carrying the line is under ${TIER_CEILING_WITH_NEXT}px`,
+            !!carrier && carrier.h <= TIER_CEILING_WITH_NEXT,
+            `${carrier ? carrier.h : "?"}px`,
+          );
+          check(
+            `${where}: every tier without the line is still under ${TIER_CEILING}px`,
+            over.length === 0,
+            over.join(" | "),
+          );
+        }
+      }
+    }
+    console.log(
+      `\n  worst tier carrying the line: ${worstWithLine.h}px (${worstWithLine.tier}, ${worstWithLine.page}) ` +
+        `against a ceiling of ${TIER_CEILING_WITH_NEXT}\n`,
+    );
+    await page.goto(`${site.origin}/en-us`);
+    await page.evaluate(`(() => { try { localStorage.clear(); } catch {} return 1; })()`);
 
     // -----------------------------------------------------------------------
     // The page and section numbers the phase publishes
