@@ -23,7 +23,7 @@
  *     replaced by a measurement.
  *
  * Heights are sampled on a handful of builds rather than all 53: a browser
- * pass over 106 pages at five widths is minutes of wall clock for a number
+ * pass over every build page at five widths is minutes of wall clock for a number
  * that varies with slot count, and the slot counts are already swept by the
  * file-reading gate. The control position is not sampled, because that
  * varies with the title, which is per build.

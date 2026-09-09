@@ -325,6 +325,53 @@ for (const locale of LOCALES) {
 }
 
 // ---------------------------------------------------------------------------
+// 4b. The tier bodies still hold their content
+// ---------------------------------------------------------------------------
+
+/*
+ * R-BUILD-5's other half: compacting is a change of presentation, never of
+ * what is in the document. This is the D7 defect shape — a cell that left the
+ * DOM entirely and stayed missing for the life of the page — and nothing else
+ * here would see it: the anchors, the classes and the wrapper all survive a
+ * tier whose body has been emptied.
+ *
+ * Counted from the registry rather than from the page, so a build that loses
+ * a slot fails rather than agreeing with itself.
+ */
+{
+  const shortBody: string[] = [];
+  const shortPreview: string[] = [];
+
+  for (const { locale, classSlug, slug } of allBuilds) {
+    const p = pageFor(locale, classSlug, slug);
+    if (!existsSync(p)) continue;
+    const gear = idSlice(markup(readFileSync(p, "utf8")), "gear") ?? "";
+    const build = getBuilds(locale).find((b) => String(b.slug) === slug);
+    if (!build) continue;
+
+    for (const tier of tierOrder) {
+      const set = build.gearSets.find((g) => g.tier === tier);
+      if (!set) continue;
+      const section = idSlice(gear, `${TIER_ANCHOR_PREFIX}${tier}`) ?? "";
+      const inBody = [...section.matchAll(/data-gear-slot="/g)].length;
+      if (inBody !== set.slots.length) {
+        shortBody.push(`${locale}/${slug}/${tier}: ${inBody} of ${set.slots.length}`);
+      }
+      // The preview is a sibling of the <details>, so it is outside that slice.
+      const from = gear.indexOf(`data-tier-preview="${tier}"`);
+      const to = from < 0 ? -1 : gear.indexOf("</ul>", from);
+      const inPreview = from < 0 ? -1 : [...gear.slice(from, to).matchAll(/data-preview-slot="/g)].length;
+      if (inPreview !== set.slots.length) {
+        shortPreview.push(`${locale}/${slug}/${tier}: ${inPreview} of ${set.slots.length}`);
+      }
+    }
+  }
+
+  check("every tier body still carries one row per slot", shortBody.length === 0, shortBody.slice(0, 3).join(" | "));
+  check("every compact preview carries one line per slot", shortPreview.length === 0, shortPreview.slice(0, 3).join(" | "));
+}
+
+// ---------------------------------------------------------------------------
 // 5. No query parameter was introduced for tier (R-BUILD-10)
 // ---------------------------------------------------------------------------
 

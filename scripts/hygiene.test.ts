@@ -12,7 +12,8 @@
  * Run with `npm run test:hygiene`.
  */
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 
 let passed = 0;
 const failures: string[] = [];
@@ -265,6 +266,63 @@ const junk = all.filter((f) =>
   /(^|\/)(\.next|node_modules)\//.test(f) || /\.(log|tmp|bak|orig|rej|swp)$/.test(f),
 );
 check("no generated or scratch files are tracked", junk.length === 0, junk.slice(0, 6).join(", "));
+
+// ---------------------------------------------------------------------------
+// Phase 1: nothing infers the reader's stage, and nothing hands scroll to the router
+// ---------------------------------------------------------------------------
+
+/*
+ * Two rules that are cheaper and stronger as a source scan than as a browser
+ * assertion.
+ *
+ * **Nothing is inferred.** R-BUILD-3 says no stage may be guessed from the
+ * level, the referring URL or the language. A browser test can only show that
+ * a particular load did not guess; a scan shows the code has no way to. That
+ * is the stronger claim, and it costs milliseconds.
+ *
+ * **No `<Link>` with a fragment in the tier components.** Next intercepts
+ * `<Link>` and runs its own `scrollIntoView`, which would hand the one thing
+ * Phase 1 must control — when the page moves — to the router. Plain `<a>` is
+ * not intercepted, and every tier anchor is one.
+ */
+{
+  const TIER_FILES = [
+    "components/game/tier-selector.tsx",
+    "components/game/gear-progression.tsx",
+    "components/game/tier-preference-script.tsx",
+    "lib/prefs.ts",
+  ];
+  const repoRoot = process.cwd();
+  const present = TIER_FILES.filter((f) => existsSync(join(repoRoot, f)));
+  check("the Phase 1 components are where this expects them", present.length === TIER_FILES.length,
+    TIER_FILES.filter((f) => !present.includes(f)).join(", "));
+
+  const INFERENCE = [
+    ["document.referrer", /\bdocument\s*\.\s*referrer\b/],
+    ["navigator.language", /\bnavigator\s*\.\s*languages?\b/],
+    ["Accept-Language", /accept-language/i],
+  ] as const;
+
+  const inferred: string[] = [];
+  const routed: string[] = [];
+  for (const rel of present) {
+    const src = readFileSync(join(repoRoot, rel), "utf8");
+    for (const [label, re] of INFERENCE) if (re.test(src)) inferred.push(`${rel} -> ${label}`);
+    if (/<Link\b[^>]*href=\{?["'`]#/.test(src)) routed.push(rel);
+  }
+  check("no tier component can infer a stage from the reader", inferred.length === 0, inferred.join(" | "));
+  check("no tier anchor is a <Link>, which would hand scroll to the router", routed.length === 0, routed.join(", "));
+
+  /*
+   * Controls. Both rules above are absence claims, and an absence claim over a
+   * file set that is empty, or a pattern that matches nothing anywhere, is
+   * worth nothing.
+   */
+  check("control: the inference patterns do match when the thing is present",
+    INFERENCE.every(([, re]) => re.test("x = document.referrer; navigator.language; Accept-Language")));
+  check("control: the <Link> pattern matches a fragment link",
+    /<Link\b[^>]*href=\{?["'`]#/.test('<Link href="#gear-budget">x</Link>'));
+}
 
 console.log(`\n${passed} checks passed.`);
 if (failures.length) {

@@ -626,9 +626,25 @@ async function main() {
         const s = await page.evaluate<State>(PROBE);
         check(`carried into ${sub.slug}`, s.open.join() === "early-hell" && s.tierValue === "early-hell", `[${s.open}]`);
       }
-      await open(page, url(site.origin, "pt-br", subject.classSlug, subject.slug));
+      /*
+       * Through the switcher, not by URL.
+       *
+       * Navigating straight to the pt-BR address proves the preference
+       * survives a *page load*, which was never in doubt — localStorage is
+       * per origin. What has to be proved is that the control in the header
+       * does not clear it on the way past. Planting `localStorage.clear()` in
+       * `locale-switcher.tsx` left the URL-navigation version of this test
+       * green, which is the whole reason it now clicks.
+       */
+      const switched = await page.evaluate<boolean>(
+        `(() => { const a = document.querySelector('a[hreflang="pt-BR"]');
+                  if (!a) return false; a.click(); return true; })()`,
+      );
+      check("the header carries a switch to Portuguese", switched);
+      await page.waitFor(`location.pathname.startsWith("/pt-br/")`, 15_000);
+      await hydrated(page);
       const pt = await page.evaluate<State>(PROBE);
-      check("carried across the language switch", pt.open.join() === "early-hell" && pt.tierValue === "early-hell", `[${pt.open}]`);
+      check("carried across the language switch", pt.open.join() === "early-hell" && pt.tierValue === "early-hell", `[${pt.open}] value=${pt.tierValue}`);
       check("…and the label is the Portuguese one", hasText(pt.legend, (picker("pt-br").myTier ?? "").split("{")[0].trim()), pt.legend);
     }
 
