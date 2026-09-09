@@ -26,6 +26,7 @@ import {
   SkillLink,
 } from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
+import { TierSelector } from "@/components/game/tier-selector";
 import {
   getBuild,
   getBuilds,
@@ -43,6 +44,7 @@ import {
   budgetLabels,
   playDifficultyLabels,
   progressionTiers,
+  tierOrder,
   ratingLabels,
 } from "@/lib/labels";
 import { routes } from "@/lib/routes";
@@ -158,7 +160,43 @@ export default async function BuildPage(
         }
       />
 
-      <div className="mt-8 space-y-12">
+      <div className="mt-6 space-y-12">
+        {/*
+          "Where are you?", first thing after the title block.
+
+          R-BUILD-1 puts it immediately after the title and before "how it
+          plays", and measurement settled the ambiguity: placed here the top of
+          the control is at most 554px in en-US across all 53 builds, while
+          placing it after the availability gate puts phoenix-strike's at
+          2,325px. The gate below still reads before a word of prose, which is
+          what its own note asks for.
+
+          `mt-6` rather than `mt-8`: two pt-BR builds end their title block at
+          583px and every pixel above the control counts against R-BUILD-1's
+          budget.
+        */}
+        <TierSelector
+          tiers={tierOrder.map((slug) => {
+            const set = build.gearSets.find((g) => g.tier === slug);
+            return {
+              slug,
+              label: tiers[slug].label,
+              short: tiers[slug].short,
+              from: set?.levelRange?.[0] ?? 1,
+              to: set?.levelRange?.[1] ?? 99,
+            };
+          })}
+          strings={{
+            legend: t.builds.tierPicker.legend,
+            myTier: t.builds.tierPicker.myTier,
+            announce: t.builds.tierPicker.announce,
+            goToGear: t.builds.tierPicker.goToGear,
+            clear: t.builds.tierPicker.clear,
+            clearLabel: t.builds.tierPicker.clearLabel,
+            levelsRange: t.builds.levelsRange,
+          }}
+        />
+
         {/*
           Above "how it plays", because a reader who cannot make the item this
           build is named after needs to know before they read a word about how

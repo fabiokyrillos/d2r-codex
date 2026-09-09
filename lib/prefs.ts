@@ -27,6 +27,14 @@
  */
 import { PROGRESSION_TIERS, type ProgressionTier } from "@/lib/types";
 
+/**
+ * The tier slug, re-exported so a Client Component can name the type without
+ * importing the content type barrel. `lib/types` is type-only all the way
+ * down, so the client-boundary walk erases it — but naming it here keeps the
+ * island's imports to this one module.
+ */
+export type ProgressionTierLike = ProgressionTier;
+
 // ---------------------------------------------------------------------------
 // The closed list (R-PREF-3)
 // ---------------------------------------------------------------------------

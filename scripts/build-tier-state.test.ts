@@ -73,6 +73,16 @@ interface Picker {
   expand: string;
   collapse: string;
 }
+/**
+ * True only when `needle` is a real string and `haystack` contains it.
+ *
+ * `"anything".includes("")` is true, so a missing dictionary key would make
+ * every label assertion pass rather than fail — the opposite of what a
+ * missing key should do.
+ */
+const hasText = (haystack: string, needle: string | undefined): boolean =>
+  typeof needle === "string" && needle.length > 0 && haystack.includes(needle);
+
 const picker = (locale: Locale): Partial<Picker> =>
   ((dictionaryFor(locale).builds as unknown as { tierPicker?: Partial<Picker> }).tierPicker ?? {});
 
@@ -85,10 +95,8 @@ const PROBE = `(() => {
     const s = getComputedStyle(n);
     return s.display !== "none" && s.visibility !== "hidden";
   };
-  const chips = [...document.querySelectorAll("[data-tier]")];
-  const inGear = (n) => !!n.closest("#gear");
-  const top = chips.filter((c) => !inGear(c));
-  const mirror = chips.filter(inGear);
+  const top = [...document.querySelectorAll("[data-tier]")];
+  const mirror = [...document.querySelectorAll("[data-tier-mirror]")];
   return {
     open: tiers.filter((t) => el(t) && el(t).open),
     present: tiers.filter((t) => !!el(t)),
@@ -130,6 +138,26 @@ const PROBE = `(() => {
 
 const url = (origin: string, locale: Locale, c: string, s: string) =>
   `${origin}/${locale}/builds/${c}/${s}`;
+
+/**
+ * Waits for the island to hydrate.
+ *
+ * Without this the probe reads the page between parse and hydration, where
+ * the boot script has already collapsed the tiers but the control is still
+ * six links — and a click lands on an anchor and *navigates* instead of
+ * selecting. That is a real state a reader can be in for a few milliseconds,
+ * but it is not the state these assertions are about, and `viewport.test.ts`
+ * already models the same wait with its `ready` expression.
+ */
+async function hydrated(page: Page): Promise<boolean> {
+  return page.waitFor(`document.querySelectorAll("button[data-tier]").length === 6`, 15_000);
+}
+
+/** goto + wait for the island, for every assertion about the enhanced page. */
+async function open(page: Page, target: string): Promise<void> {
+  await page.goto(target);
+  await hydrated(page);
+}
 
 async function clearStorage(page: Page, origin: string): Promise<void> {
   await page.goto(`${origin}/en-us`);
@@ -210,13 +238,13 @@ async function main() {
     for (const locale of LOCALES) {
       await clearStorage(page, site.origin);
       await page.setViewport(390, 844);
-      await page.goto(url(site.origin, locale, subject.classSlug, subject.slug));
+      await open(page, url(site.origin, locale, subject.classSlug, subject.slug));
       const s = await page.evaluate<State>(PROBE);
       if (locale === "en-us") s2 = s;
       check(`${locale}: all six compact`, s.open.length === 0, `open=[${s.open}]`);
       check(`${locale}: all six still in the DOM`, s.present.length === 6, `[${s.present}]`);
       check(`${locale}: nothing is pressed`, s.anyPressedTrue === 0, `${s.anyPressedTrue}`);
-      check(`${locale}: the legend asks rather than asserts`, s.legend.includes(picker(locale).legend ?? " "), s.legend);
+      check(`${locale}: the legend asks rather than asserts`, hasText(s.legend, picker(locale).legend), s.legend);
       check(`${locale}: no "go to gear" action yet`, !s.goToVisible);
       check(`${locale}: page did not move`, s.scrollY === 0, `${s.scrollY}`);
       check(`${locale}: URL untouched`, !s.href.includes("#") && !s.href.includes("?"), s.href);
@@ -251,7 +279,7 @@ async function main() {
       for (const locale of LOCALES) {
         for (const sub of SUBJECTS) {
           await clearStorage(page, site.origin);
-          await page.goto(url(site.origin, locale, sub.classSlug, sub.slug));
+          await open(page, url(site.origin, locale, sub.classSlug, sub.slug));
           const s = await page.evaluate<State>(PROBE);
           const want = fixture.pages[`${locale}/${sub.classSlug}/${sub.slug}`];
           if (!want) { drift.push(`${locale}/${sub.slug}: not in fixture`); continue; }
@@ -272,7 +300,7 @@ async function main() {
     console.log("\nC6b · the six tier headings are still headings in the accessibility tree");
     for (const locale of LOCALES) {
       await clearStorage(page, site.origin);
-      await page.goto(url(site.origin, locale, subject.classSlug, subject.slug));
+      await open(page, url(site.origin, locale, subject.classSlug, subject.slug));
       const nodes = await page.axNodes();
       const headingNames = nodes.filter((n) => n.role === "heading").map((n) => n.name);
       const t = dictionaryFor(locale).tiers as Record<string, string>;
@@ -287,11 +315,11 @@ async function main() {
     console.log("\nS3 · a valid preference expands exactly one tier");
     for (const locale of LOCALES) {
       await seed(page, site.origin, "budget");
-      await page.goto(url(site.origin, locale, subject.classSlug, subject.slug));
+      await open(page, url(site.origin, locale, subject.classSlug, subject.slug));
       const s = await page.evaluate<State>(PROBE);
       check(`${locale}: only the preferred tier is open`, s.open.join() === "budget", `[${s.open}]`);
       check(`${locale}: it is the pressed one`, s.pressed.join() === "budget", `[${s.pressed}]`);
-      check(`${locale}: the label names it`, s.legend.includes((picker(locale).myTier ?? " ").split("{")[0].trim()), s.legend);
+      check(`${locale}: the label names it`, hasText(s.legend, (picker(locale).myTier ?? "").split("{")[0].trim()), s.legend);
       check(`${locale}: the explicit action points at it`, s.goTo === "#gear-budget" && s.goToVisible, String(s.goTo));
       check(`${locale}: clearing is offered (R-PREF-3)`, s.clearVisible);
       check(`${locale}: loading with a preference did not scroll`, s.scrollY === 0, `${s.scrollY}`);
@@ -306,7 +334,7 @@ async function main() {
     console.log("\nS4 · an invalid stored value is ignored and kept");
     {
       await seed(page, site.origin, "Budget ");
-      await page.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
       const s = await page.evaluate<State>(PROBE);
       check("it behaves exactly like no preference", s.open.length === 0 && s.anyPressedTrue === 0, `[${s.open}]`);
       check("the corrupt value is not deleted", s.tierValue === "Budget ", String(s.tierValue));
@@ -325,6 +353,7 @@ async function main() {
         `);
         await hostile.setViewport(390, 844);
         await hostile.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
+        await hostile.waitFor(`document.querySelectorAll("button[data-tier]").length === 6`, 15_000);
         const s = await hostile.evaluate<State>(PROBE);
         const noise = hostile.drainConsole();
         check("the page still enhances to six compact tiers", s.open.length === 0, `[${s.open}]`);
@@ -342,7 +371,7 @@ async function main() {
     console.log("\nS7-S10 · the hash");
     {
       await clearStorage(page, site.origin);
-      await page.goto(`${url(site.origin, "en-us", subject.classSlug, subject.slug)}#gear-optimized`);
+      await open(page, `${url(site.origin, "en-us", subject.classSlug, subject.slug)}#gear-optimized`);
       const s = await page.evaluate<State>(PROBE);
       check("S7 valid hash, no preference: it expands", s.open.join() === "optimized", `[${s.open}]`);
       check("S7 …and still nothing is pressed (R-BUILD-3)", s.anyPressedTrue === 0, `${s.anyPressedTrue}`);
@@ -351,14 +380,14 @@ async function main() {
     }
     {
       await clearStorage(page, site.origin);
-      await page.goto(`${url(site.origin, "en-us", subject.classSlug, subject.slug)}#gear-bogus`);
+      await open(page, `${url(site.origin, "en-us", subject.classSlug, subject.slug)}#gear-bogus`);
       const s = await page.evaluate<State>(PROBE);
       check("S8 invalid hash: degrades to the no-preference state", s.open.length === 0, `[${s.open}]`);
       check("S8 …and the page is intact", s.present.length === 6 && s.headings.length > 10);
     }
     for (const locale of LOCALES) {
       await seed(page, site.origin, "bis");
-      await page.goto(`${url(site.origin, locale, subject.classSlug, subject.slug)}#gear-starter`);
+      await open(page, `${url(site.origin, locale, subject.classSlug, subject.slug)}#gear-starter`);
       const s = await page.evaluate<State>(PROBE);
       check(`S9 ${locale}: the hash wins the expansion`, s.open.join() === "starter", `[${s.open}]`);
       check(`S9 ${locale}: the preference is not overwritten`, s.tierValue === "bis", String(s.tierValue));
@@ -367,7 +396,7 @@ async function main() {
     }
     {
       await seed(page, site.origin, "budget");
-      await page.goto(`${url(site.origin, "en-us", subject.classSlug, subject.slug)}#gear-nope`);
+      await open(page, `${url(site.origin, "en-us", subject.classSlug, subject.slug)}#gear-nope`);
       const s = await page.evaluate<State>(PROBE);
       check("S10 invalid hash falls back to the preference", s.open.join() === "budget", `[${s.open}]`);
     }
@@ -376,19 +405,43 @@ async function main() {
     // T1 / C8 — selecting never moves the page
     // -----------------------------------------------------------------------
     console.log("\nT1 · selecting writes once and never moves the page");
-    for (const at of [0, 600]) {
+    /*
+     * 0 and 200, not 0 and 600.
+     *
+     * The top control is deliberately not sticky at any width, so by 600px it
+     * has left the viewport and there is nothing to click — the mirror inside
+     * Gear is the control down there, and by design it does not write (C8b).
+     * 200px still proves what this is for: the page is scrolled, and
+     * selecting does not move it.
+     */
+    for (const at of [0, 200]) {
       await clearStorage(page, site.origin);
       await page.setViewport(390, 844);
-      await page.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
       if (at) await page.evaluate(`window.scrollTo(0, ${at})`);
       const before = await settledScrollY(page);
-      const box = await page.evaluate<{ x: number; y: number } | null>(
-        `(() => { const c = document.querySelector('[data-tier="optimized"]:not(#gear [data-tier])');
-                  if (!c) return null; const r = c.getBoundingClientRect();
-                  return { x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2) }; })()`,
+      /*
+       * Bring the chip into the row's own view first, the way a reader does.
+       *
+       * Below 640px the six chips scroll horizontally (R-BUILD-9), so the
+       * fifth one sits at x≈497 in a 390px viewport — off screen. Clicking
+       * its rect without scrolling the row lands on nothing at all, which is
+       * how this first read as "selection does not write" when selection was
+       * fine and the click had simply missed.
+       */
+      const box = await page.evaluate<{ x: number; y: number; inView: boolean } | null>(
+        `(() => { const c = document.querySelector('[data-tier="optimized"]');
+                  if (!c) return null;
+                  const row = c.parentElement;
+                  row.scrollLeft = c.offsetLeft - (row.clientWidth - c.offsetWidth) / 2;
+                  const r = c.getBoundingClientRect();
+                  const x = Math.round(r.x + r.width / 2), y = Math.round(r.y + r.height / 2);
+                  const hit = document.elementFromPoint(x, y);
+                  return { x, y, inView: !!hit && !!hit.closest('[data-tier="optimized"]') }; })()`,
       );
-      check(`at scrollY=${at}: the control is on screen to click`, box !== null);
-      if (!box) continue;
+      check(`at scrollY=${at}: the control is on screen to click`, box !== null && box.inView,
+        box ? `hit test failed at ${box.x},${box.y}` : "no chip");
+      if (!box || !box.inView) continue;
       await page.click(box.x, box.y);
       await page.waitFor(`document.querySelector('[data-tier="optimized"]').getAttribute("aria-pressed") === "true"`);
       const after = await settledScrollY(page);
@@ -407,7 +460,7 @@ async function main() {
     console.log("\nC26 · re-activating is idempotent; only Limpar clears");
     {
       await seed(page, site.origin, "budget");
-      await page.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
       const box = await page.evaluate<{ x: number; y: number } | null>(
         `(() => { const c = document.querySelector('[data-tier="budget"]:not(#gear [data-tier])');
                   const r = c.getBoundingClientRect();
@@ -434,7 +487,7 @@ async function main() {
         const c = await page.evaluate<State>(PROBE);
         check("Limpar removes the key", c.storage.length === 0, c.storage.join(","));
         check("…and nothing is pressed", c.anyPressedTrue === 0);
-        check("…and the label goes back to the question", c.legend.includes(picker("en-us").legend ?? " "), c.legend);
+        check("…and the label goes back to the question", hasText(c.legend, picker("en-us").legend), c.legend);
         check("…and no action is promised", !c.goToVisible && !c.clearVisible);
         check("…and the page did not move", after === before, `${before} → ${after}`);
       }
@@ -446,9 +499,24 @@ async function main() {
     console.log("\nC27 · opening a summary preserves visual position, and writes nothing");
     {
       await clearStorage(page, site.origin);
-      await page.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
-      await page.evaluate(`document.getElementById("gear-bis").scrollIntoView()`);
-      await page.evaluate("new Promise(r => setTimeout(() => r(1), 250))");
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
+      /*
+       * The reader is reading `bis`: they opened it, and scrolled to it.
+       * `scrollIntoView` is banned in product code, not in a test that has to
+       * put the page where a reader would have put it.
+       */
+      await page.evaluate(
+        `(() => { const b = document.getElementById("gear-bis"); b.open = true;
+                  const y = b.getBoundingClientRect().top + window.pageYOffset - 200;
+                  window.scrollTo({ top: y, behavior: "instant" });
+                  return 1; })()`,
+      );
+      // `scroll-behavior: smooth` is global, so a plain scrollIntoView is still
+      // animating hundreds of milliseconds later and every measurement after it
+      // reads a moving page. Settle on two equal samples instead of a timeout.
+      await page.evaluate("new Promise(r => setTimeout(() => r(1), 300))");
+      const settled = await settledScrollY(page);
+      check("the page is parked before the measurement", settled >= 0, "still moving");
       const rectBefore = await page.evaluate<number>(
         `Math.round(document.getElementById("gear-bis").getBoundingClientRect().top)`,
       );
@@ -477,17 +545,45 @@ async function main() {
     {
       await clearStorage(page, site.origin);
       await page.setViewport(1280, 900);
-      await page.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
       const s0 = await page.evaluate<State>(PROBE);
       check("the mirror exists inside Gear", s0.mirrorCount === 6, `${s0.mirrorCount}`);
       check("the mirror carries no aria-pressed", s0.mirrorPressed === 0, `${s0.mirrorPressed}`);
-      await page.evaluate(`document.querySelector("#gear [data-tier='optimized']").click()`);
+      await page.evaluate(
+        `(() => { const m = document.querySelector("[data-tier-mirror='optimized']");
+                  if (!m) throw new Error("no mirror control"); m.click(); return 1; })()`,
+      );
       await page.evaluate("new Promise(r => setTimeout(() => r(1), 250))");
       const s1 = await page.evaluate<State>(PROBE);
       check("activating the mirror writes nothing", s1.storage.length === 0, s1.storage.join(","));
       check("…and presses nothing", s1.anyPressedTrue === 0, `${s1.anyPressedTrue}`);
-      check("…and expands nothing", s1.open.length === 0, `[${s1.open}]`);
       check("…but it did navigate", s1.href.endsWith("#gear-optimized"), s1.href);
+      /*
+       * It does expand the tier it navigates to, and that is the contract:
+       * §6 row 14 — a hashchange to a valid tier opens that tier — and
+       * arriving at a tier to find it still collapsed would be strange.
+       *
+       * What the owner's decision forbids is reflow *above* the viewport and
+       * an unexpected jump, so that is what is asserted: exactly one tier
+       * open, it is the target, and the reader is left looking at it.
+       */
+      check("…it opens the tier it navigated to, and only that one", s1.open.join() === "optimized", `[${s1.open}]`);
+      /*
+       * Wait for the scroll to stop before measuring where it stopped.
+       *
+       * `scroll-behavior: smooth` is global, and this jump crosses about
+       * 7,500px, so it is still animating more than a second later. Reading
+       * the position at 250ms measured a moving page and reported the reader
+       * as being 6,933px away from a tier they were on their way to.
+       */
+      for (let i = 0; i < 20 && (await settledScrollY(page)) < 0; i++) {
+        await page.evaluate("new Promise(r => setTimeout(() => r(1), 150))");
+      }
+      const landing = await page.evaluate<number>(
+        `Math.round(document.getElementById("gear-optimized").getBoundingClientRect().top)`,
+      );
+      check("…and the reader is left looking at it, not somewhere else",
+        landing >= -8 && landing <= 200, `summary is ${landing}px from the top of the viewport`);
     }
 
     // -----------------------------------------------------------------------
@@ -497,7 +593,7 @@ async function main() {
     for (const w of [320, 390]) {
       await page.setViewport(w, 640);
       await clearStorage(page, site.origin);
-      await page.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
       const s = await page.evaluate<State>(PROBE);
       const stray = s.stickyBelowHeader.filter((x) => x !== "header");
       check(`${w}px: only the header is sticky`, stray.length === 0, stray.join(" | "));
@@ -511,7 +607,7 @@ async function main() {
       for (const w of [320, 390, 768, 1280]) {
         await page.setViewport(w, w === 320 ? 640 : 844);
         await clearStorage(page, site.origin);
-        await page.goto(url(site.origin, locale, subject.classSlug, subject.slug));
+        await open(page, url(site.origin, locale, subject.classSlug, subject.slug));
         const s = await page.evaluate<State>(PROBE);
         check(`${locale} @${w}: six closed, none pressed`, s.open.length === 0 && s.anyPressedTrue === 0,
           `open=[${s.open}] pressed=${s.anyPressedTrue}`);
@@ -526,14 +622,14 @@ async function main() {
       await seed(page, site.origin, "early-hell");
       await page.setViewport(390, 844);
       for (const sub of SUBJECTS) {
-        await page.goto(url(site.origin, "en-us", sub.classSlug, sub.slug));
+        await open(page, url(site.origin, "en-us", sub.classSlug, sub.slug));
         const s = await page.evaluate<State>(PROBE);
         check(`carried into ${sub.slug}`, s.open.join() === "early-hell" && s.tierValue === "early-hell", `[${s.open}]`);
       }
-      await page.goto(url(site.origin, "pt-br", subject.classSlug, subject.slug));
+      await open(page, url(site.origin, "pt-br", subject.classSlug, subject.slug));
       const pt = await page.evaluate<State>(PROBE);
       check("carried across the language switch", pt.open.join() === "early-hell" && pt.tierValue === "early-hell", `[${pt.open}]`);
-      check("…and the label is the Portuguese one", pt.legend.includes((picker("pt-br").myTier ?? " ").split("{")[0].trim()), pt.legend);
+      check("…and the label is the Portuguese one", hasText(pt.legend, (picker("pt-br").myTier ?? "").split("{")[0].trim()), pt.legend);
     }
 
     // -----------------------------------------------------------------------
@@ -543,7 +639,7 @@ async function main() {
     {
       await page.setViewport(390, 844);
       await clearStorage(page, site.origin);
-      await page.goto(url(site.origin, "en-us", subject.classSlug, subject.slug));
+      await open(page, url(site.origin, "en-us", subject.classSlug, subject.slug));
       const header = await page.evaluate<{ details: number; open: boolean }>(
         `(() => { const d = document.querySelector("header details");
                   return { details: document.querySelectorAll("header details").length, open: !!(d && d.open) }; })()`,
