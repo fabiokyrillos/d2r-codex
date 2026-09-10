@@ -302,6 +302,35 @@ export class Page {
   }
 
   /**
+   * The reader's own font-size setting, as a percentage of the browser default.
+   *
+   * This is Chrome's *text* size — Settings → Appearance → Font size — not page
+   * zoom, and the difference is the whole reason it is here. Page zoom scales
+   * the CSS pixel, so a `min-width: 900px` query fires at a different window
+   * size and the layout simply reflows; text zoom leaves the pixel alone and
+   * changes the document's *initial* font size, so `rem` lengths grow while
+   * `px` ones do not, and `rem` media queries move with the reader.
+   *
+   * Setting `document.documentElement.style.fontSize` looks equivalent and is
+   * not: it scales `rem` lengths but leaves the initial font size alone, so a
+   * `rem` media query does not notice, and a header that withdraws a word when
+   * the text is enlarged would test as though it never withdrew it. That
+   * measurement mistake is what this method exists to prevent — WCAG 1.4.4 is
+   * about the setting, not about a script that resizes the root.
+   *
+   * Chrome's defaults are 16 and 13; both are scaled so a monospace run keeps
+   * its ratio to the prose around it.
+   */
+  async setTextScale(percent: number): Promise<void> {
+    await this.send("Page.setFontSizes", {
+      fontSizes: {
+        standard: Math.round((16 * percent) / 100),
+        fixed: Math.round((13 * percent) / 100),
+      },
+    });
+  }
+
+  /**
    * Turns JavaScript off for the next navigation.
    *
    * The site's fallbacks are checked by reading `<noscript>` out of the

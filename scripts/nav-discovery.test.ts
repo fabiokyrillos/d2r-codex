@@ -615,6 +615,116 @@ const REFERENCE_WIDTHS = [900, 1280] as const;
 const TRIGGER_NAMES = (nodes: { role: string; name: string }[]) =>
   nodes.filter((n) => n.role === "DisclosureTriangle").map((n) => n.name);
 
+// ---------------------------------------------------------------------------
+// 5. Where a summary entry actually lands
+// ---------------------------------------------------------------------------
+
+/*
+ * R-NAV-3 promises "Skill trees reachable in one interaction from the top", and
+ * §4 above only proves the entry *resolves* — that `#skills` names an element
+ * which exists. It does, and the reader still arrived in the wrong place.
+ *
+ * `#builds` is a `FilterableBuildList`, whose static HTML is the Suspense
+ * fallback: the plain list, with no filter panel. Hydration replaces it with
+ * the panel and the list, and that section grows — above every other anchor on
+ * the page. On a load that already carries the fragment the browser has jumped
+ * before any of it happens, so `#skills` slides down by exactly the amount
+ * `#builds` gained. Measured on the published build, in both languages:
+ *
+ *     width   contract   landed   error
+ *      320       104      208     +104
+ *      390       104      190      +86
+ *      768       144    482–528   +338…+384
+ *     1280       144    482–572   +338…+428
+ *
+ * A press on the summary *after* hydration landed at the contract to the pixel
+ * in 23 of 24 cases, so the two paths do not fail alike and comparing them
+ * would have proved nothing. What is asserted here is the absolute position,
+ * against the number the stylesheet itself computes.
+ */
+const ANCHOR_CLASSES = ["sorceress", "necromancer", "warlock"] as const;
+const ANCHOR_WIDTHS = [320, 390, 768, 1280] as const;
+
+/**
+ * Landing, contract and header, in one round trip.
+ *
+ * The contract is `scroll-margin-top` on the section plus `scroll-padding-top`
+ * on the root — read from the page, never restated here, so `<Section>`'s
+ * `scroll-mt-24` and `globals.css`'s width-conditional padding stay the single
+ * source of truth. Restating them would turn this into a gate that agrees with
+ * a copy of the CSS rather than with the CSS.
+ */
+const LANDING = (id: string) => `(() => {
+  const el = document.getElementById(${JSON.stringify(id)});
+  if (!el) return JSON.stringify({ found: false });
+  const heading = el.querySelector('h2');
+  const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+  const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const header = document.querySelector('header');
+  return JSON.stringify({
+    found: true,
+    top: Math.round(el.getBoundingClientRect().top),
+    headingTop: heading ? Math.round(heading.getBoundingClientRect().top) : null,
+    contract: Math.round(margin + padding),
+    header: header ? Math.round(header.getBoundingClientRect().height) : 0,
+    viewport: window.innerHeight,
+  });
+})()`;
+
+interface Landing {
+  found: boolean;
+  top: number;
+  headingTop: number | null;
+  contract: number;
+  header: number;
+  viewport: number;
+}
+
+/**
+ * Wait until the scroll offset *and* the document height have both stopped.
+ *
+ * Both, because on this page they stop at different times: the jump finishes
+ * long before hydration has finished growing the document above it, and a
+ * probe that settles on `scrollY` alone reads the position the section is
+ * about to leave. `scroll-behavior: smooth` is site-wide, so this also covers
+ * the animation a press starts.
+ */
+async function settled(page: Page, budgetMs = 5000): Promise<number> {
+  const started = Date.now();
+  let last = "";
+  let quiet = 0;
+  while (Date.now() - started < budgetMs) {
+    const now = await page.evaluate<string>(
+      `Math.round(window.scrollY) + ':' + document.documentElement.scrollHeight`,
+    );
+    quiet = now === last ? quiet + 1 : 0;
+    last = now;
+    if (quiet >= 4) return Date.now() - started;
+    await new Promise((r) => setTimeout(r, 80));
+  }
+  return -1;
+}
+
+/** Press a same-page summary entry, verifying the coordinate really is it. */
+async function pressEntry(page: Page, href: string): Promise<boolean> {
+  const spot = await page.evaluate<{ x: number; y: number } | null>(
+    `(() => {
+      const a = document.querySelector('[data-section-nav] a[href="${href}"]');
+      if (!a) return null;
+      const r = a.getBoundingClientRect();
+      if (r.width === 0 || r.height === 0) return null;
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      const hit = document.elementFromPoint(x, y);
+      if (!hit || hit.closest('a[href]') !== a) return null;
+      return { x, y };
+    })()`,
+  );
+  if (!spot) return false;
+  await page.click(spot.x, spot.y);
+  return true;
+}
+
 async function main(): Promise<void> {
   const site = await startSite();
   const page = await Page.launch();
@@ -775,6 +885,147 @@ async function main(): Promise<void> {
         JSON.stringify(resolved),
       );
       check(`${locale}: ${cls.slug} — #skills is among them`, resolved.skills);
+    }
+
+    // -----------------------------------------------------------------------
+    console.log(`\nwhere a summary entry lands`);
+    // -----------------------------------------------------------------------
+    for (const l of LOCALES) {
+      const locale = l as Locale;
+      const r = routes(locale);
+      for (const slug of ANCHOR_CLASSES) {
+        const url = site.origin + r.class(slug as Slug);
+        for (const width of ANCHOR_WIDTHS) {
+          await page.setViewport(width);
+
+          for (const how of ["a load carrying #skills", "a press on the entry"] as const) {
+            if (how === "a load carrying #skills") {
+              /*
+               * A blank document first, and it is load-bearing. The previous
+               * case left the browser on this same URL, and navigating from
+               * `…/sorceress` to `…/sorceress#skills` is a *same-document*
+               * navigation: nothing reloads, nothing re-hydrates, and the
+               * section lands correctly because the page had finished growing
+               * minutes ago. Written without this, the gate failed only at the
+               * first width of the sweep and passed at the other three — on a
+               * build measured, at those widths, to be 86 to 428px out.
+               */
+              await page.goto("about:blank");
+              await page.goto(`${url}#skills`);
+            } else {
+              await page.goto(url);
+              await page.waitFor(
+                `(() => { const d = document.querySelector('header details');
+                   return !!d && Object.keys(d).some(k => k.startsWith('__react')); })()`,
+                10_000,
+              );
+              const pressed = await pressEntry(page, "#skills");
+              check(`${locale} ${slug} @${width}: the entry is hittable`, pressed);
+              if (!pressed) continue;
+            }
+
+            const took = await settled(page);
+            const where = `${locale} ${slug} @${width}, ${how}`;
+            check(`${where}: the page settles`, took >= 0, `${took}ms`);
+            const landing = JSON.parse(await page.evaluate<string>(LANDING("skills"))) as Landing;
+            check(`${where}: #skills is on the page`, landing.found);
+            if (!landing.found) continue;
+
+            /*
+             * Two assertions, and the first is the reader's sentence: the
+             * heading is below the sticky header rather than behind it. The
+             * second is the one that catches this defect — a section 338px
+             * low is still "visible", so "somewhere on screen" would have
+             * passed on every broken width.
+             */
+            check(
+              `${where}: the heading clears the header (${landing.headingTop} ≥ ${landing.header})`,
+              landing.headingTop !== null &&
+                landing.headingTop >= landing.header &&
+                landing.headingTop < landing.viewport,
+              JSON.stringify(landing),
+            );
+            check(
+              `${where}: it lands at the ${landing.contract}px the stylesheet promises`,
+              Math.abs(landing.top - landing.contract) <= 2,
+              `landed at ${landing.top}, off by ${landing.top - landing.contract} (${took}ms)`,
+            );
+          }
+        }
+      }
+    }
+
+    /*
+     * And one entry that is not `#skills`, because the defect is not either:
+     * everything below `#builds` moves when `#builds` grows, and a correction
+     * that only knew about one id would be a coincidence rather than a fix.
+     */
+    for (const l of LOCALES) {
+      const locale = l as Locale;
+      await page.setViewport(390);
+      await page.goto("about:blank");
+      await page.goto(`${site.origin}${routes(locale).class("sorceress" as Slug)}#breakpoints`);
+      await settled(page);
+      const landing = JSON.parse(
+        await page.evaluate<string>(LANDING("breakpoints")),
+      ) as Landing;
+      check(`${locale}: sorceress #breakpoints is on the page`, landing.found);
+      if (!landing.found) continue;
+      check(
+        `${locale} @390: #breakpoints lands at the ${landing.contract}px the stylesheet promises`,
+        Math.abs(landing.top - landing.contract) <= 2,
+        `landed at ${landing.top}, off by ${landing.top - landing.contract}`,
+      );
+    }
+
+    /*
+     * Controls for the block above, so a green there is not green-on-nothing.
+     *
+     * The contract has to be a real width-conditional number — it is 104px
+     * below `sm` and 144px from it up — or `Math.abs(top - contract) <= 2`
+     * could be two −1s agreeing. And the measurement has to be able to move:
+     * a 400px block planted above the section must show up as the section
+     * being 400px lower, which is this defect's exact shape.
+     */
+    {
+      const r = routes(LOCALES[0] as Locale);
+      const url = site.origin + r.class("sorceress" as Slug);
+      await page.setViewport(390);
+      await page.goto(`${url}#skills`);
+      await settled(page);
+      const narrow = JSON.parse(await page.evaluate<string>(LANDING("skills"))) as Landing;
+      await page.setViewport(1280);
+      await page.goto(`${url}#skills`);
+      await settled(page);
+      const wide = JSON.parse(await page.evaluate<string>(LANDING("skills"))) as Landing;
+      check(
+        "control: the contract is width-conditional, not a constant or a −1",
+        narrow.contract === 104 && wide.contract === 144,
+        `${narrow.contract} / ${wide.contract}`,
+      );
+
+      const shift = JSON.parse(
+        await page.evaluate<string>(
+          `(() => {
+            const el = document.getElementById('skills');
+            const top = () => Math.round(el.getBoundingClientRect().top);
+            const height = () => document.body.scrollHeight;
+            const before = top();
+            const grewFrom = height();
+            const spacer = document.createElement('div');
+            spacer.style.height = '400px';
+            el.parentElement.insertBefore(spacer, el);
+            const out = { moved: top() - before, grew: height() - grewFrom };
+            spacer.remove();
+            return JSON.stringify(out);
+          })()`,
+        ),
+      ) as { moved: number; grew: number };
+      check(
+        "control: content planted above the section moves the reading by exactly what it added",
+        shift.moved >= 400 && shift.moved === shift.grew,
+        JSON.stringify(shift),
+      );
     }
   } finally {
     page.close();

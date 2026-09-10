@@ -1106,6 +1106,120 @@ async function main(): Promise<void> {
         );
       }
     }
+
+    // -------------------------------------------------------------------------
+    // 8. The R-NAV-4 word, measured against the header it replaced
+    // -------------------------------------------------------------------------
+    /*
+     * Phase 2 gave the menu trigger a second name: `nav.menu` below 900px and
+     * `nav.reference` from 900 up. Every width in `WIDTHS` above is measured at
+     * the browser's default text size, and at that size the word fits — 12px of
+     * slack in en-US at 900px, 25 in pt-BR. This section is about the reader who
+     * has enlarged the text, which is a setting and not a zoom: `rem` lengths
+     * grow, `px` ones do not, and `rem` media queries move.
+     *
+     * Measured across both SHAs, on the home and on a class page, at 320, 390,
+     * 900, 960, 1280 at 100/150/200% text, the word costs nothing at 320 and 390
+     * — the wrapper is `sr-only` below `sm`, and `sm` is `40rem`, so it is 640px
+     * at default text, 960px at 150% and 1280px at 200%. The page's sideways
+     * overflow there (415px against 320 at 150%, 552 at 200%) is the same to the
+     * pixel before and after Phase 2.
+     *
+     * It cost width in exactly two of the thirty combinations, both of them
+     * pages that already overflowed: +45px (en) / +50 (pt) at 960px and 150%,
+     * and +61 / +66 at 1280px and 200%. Both are the same fact — `min-[900px]`
+     * is a *pixel* query, so it kept promoting the longer word at widths where
+     * the enlarged row no longer had room for it.
+     *
+     * So the rule is not "the page never scrolls sideways at 200% text" — it
+     * does, and that is the header row, older than this phase and not this
+     * phase's to fix. The rule is that R-NAV-4 costs *nothing*: the document is
+     * exactly as wide as it would be with the header this replaced.
+     */
+    const TEXT_SCALES = [100, 150, 200] as const;
+    const LABEL_WIDTHS = [320, 390, 900, 960, 1280, 1440] as const;
+
+    /**
+     * The document's width as it is, and as `0b5a2bc` would have drawn it.
+     *
+     * The counterfactual is the old header exactly: one visible word, `nav.menu`,
+     * at every width. Forcing the *long* word instead would re-create the defect
+     * on a fixed build and fail forever, which is the trap in writing this the
+     * obvious way round.
+     */
+    const WORD_COST = `(() => {
+      const de = document.documentElement;
+      const summary = document.querySelector('header details summary');
+      const wrapper = summary ? summary.querySelector('span.sr-only, span.not-sr-only') : null;
+      const words = wrapper ? Array.prototype.slice.call(wrapper.querySelectorAll('span')) : [];
+      if (words.length !== 2) return JSON.stringify({ words: words.length });
+      const trigger = () => Math.round(summary.getBoundingClientRect().width);
+      const natural = { sw: de.scrollWidth, trigger: trigger() };
+      words[0].style.setProperty('display', 'inline', 'important');
+      words[1].style.setProperty('display', 'none', 'important');
+      const asBefore = { sw: de.scrollWidth, trigger: trigger() };
+      words[0].style.removeProperty('display');
+      words[1].style.removeProperty('display');
+      return JSON.stringify({
+        words: words.length,
+        vw: de.clientWidth,
+        root: getComputedStyle(de).fontSize,
+        drawn: (words.map((w) => getComputedStyle(w).display === 'none' ? null : w.textContent.trim())
+          .filter(Boolean)[0]) || null,
+        natural: natural,
+        asBefore: asBefore,
+        restored: de.scrollWidth,
+      });
+    })()`;
+
+    interface WordCost {
+      words: number;
+      vw: number;
+      root: string;
+      drawn: string | null;
+      natural: { sw: number; trigger: number };
+      asBefore: { sw: number; trigger: number };
+      restored: number;
+    }
+
+    let triggerDiffered = 0;
+    for (const locale of LOCALES) {
+      console.log(`\nwhat the R-NAV-4 word costs, by text size — ${locale}`);
+      const url = site.origin + routes(locale as Locale).home();
+      for (const scale of TEXT_SCALES) {
+        await page.setTextScale(scale);
+        for (const width of LABEL_WIDTHS) {
+          await page.setViewport(width);
+          await page.goto(url);
+          await page.waitFor("document.fonts.status === 'loaded'", 8000);
+          const m = JSON.parse(await page.evaluate<string>(WORD_COST)) as WordCost;
+          const where = `${locale} @${width} ${scale}% text`;
+          check(`${where}: the trigger still carries both words`, m.words === 2, JSON.stringify(m));
+          if (m.words !== 2) continue;
+          check(
+            `${where}: the word costs no document width (${m.natural.sw} vs ${m.asBefore.sw})`,
+            m.natural.sw === m.asBefore.sw,
+            `drawn “${m.drawn}”, root ${m.root}, ${m.natural.sw - m.asBefore.sw}px more than before it`,
+          );
+          check(`${where}: the probe put the header back`, m.restored === m.natural.sw, JSON.stringify(m));
+          if (m.natural.trigger !== m.asBefore.trigger) triggerDiffered += 1;
+        }
+      }
+    }
+    await page.setTextScale(100);
+
+    /*
+     * The control the rule above needs. It is an equality over a counterfactual,
+     * and an equality is worth nothing if the counterfactual is the same page:
+     * somewhere in the sweep, swapping the long word for the short one has to
+     * change the trigger's own width. It does, wherever the word is drawn at
+     * all — which is also the proof that the word has not quietly been dropped.
+     */
+    check(
+      "control: swapping the word does change the trigger somewhere in the sweep",
+      triggerDiffered > 0,
+      `${triggerDiffered} of ${LOCALES.length * TEXT_SCALES.length * LABEL_WIDTHS.length}`,
+    );
   } finally {
     page.close();
     site.stop();
