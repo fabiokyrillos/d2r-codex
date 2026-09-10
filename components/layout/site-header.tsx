@@ -178,16 +178,35 @@ export async function SiteHeader() {
               25px in pt-BR. It fits, `scrollWidth <= clientWidth` at every
               width in both languages, and 900 and 960 are now in
               `viewport.test.ts`'s `WIDTHS` so the row is measured on every run
-              rather than argued about. 12px is the thinnest margin in this
-              header: if anything ever takes it, the label's step moves up to
-              `min-[960px]`, which keeps 72/85px. That is the fallback, written
-              here because this is where this arithmetic lives.
+              rather than argued about.
+
+              **The step is `56.25rem`, not `900px`, and that is a correction.**
+              56.25rem is 900px at the browser's default text size, so nothing
+              in the table above moves; it is a different number only for a
+              reader who has enlarged the text, and that is the point. Shipped
+              as `min-[900px]` — a *pixel* query — the word kept being promoted
+              at widths where the enlarged row no longer had room for it.
+              Measured against `0b5a2bc` under Chrome's own text-size setting,
+              it added 45px (en) / 50px (pt) at 960px and 150% text, and 61px /
+              66px at 1280px and 200%, in both cases to a page that was already
+              scrolling sideways. In rem the step moves with the reader — 900px
+              at 100%, 1350 at 150%, 1800 at 200% — so the word appears only
+              where the row it lives in still fits, and what a reader with large
+              text sees is the shorter `nav.menu`, which is never untrue: this
+              disclosure holds all ten links at every width. The 12px of slack
+              at 900px is unchanged, and the fallback if anything ever takes it
+              is `min-[60rem]`, 960px at the default size, which keeps 72/85px.
 
               Below `sm` both words are `sr-only` (see `mobile-navigation.tsx`),
               so a longer word costs *zero* width at 320 and 390, and the ~22px
-              of headroom the 320px row has is not touched. Do not "simplify"
-              that `sr-only sm:not-sr-only` pair: it is what prevents the 320px
-              overflow this header documents having had.
+              of headroom the 320px row has is not touched. Measured on both
+              SHAs at 100%, 150% and 200% text, the document there is 320, 415
+              and 552px wide either way — that sideways overflow at enlarged
+              text is the header row, and it is older than this phase. Do not
+              "simplify" that `sr-only sm:not-sr-only` pair: `sm` is `40rem`, so
+              it is itself why the word withdraws at 960px and 1280px as the
+              text grows, and it is what prevents the 320px overflow this header
+              documents having had.
 
               `navigationLabel` stays `nav.menu` at every width. It is an
               `aria-label` on the `<nav>` inside, which no media query can
@@ -197,8 +216,8 @@ export async function SiteHeader() {
             */
             menuLabel={
               <>
-                <span className="min-[900px]:hidden">{t.nav.menu}</span>
-                <span className="hidden min-[900px]:inline">{t.nav.reference}</span>
+                <span className="min-[56.25rem]:hidden">{t.nav.menu}</span>
+                <span className="hidden min-[56.25rem]:inline">{t.nav.reference}</span>
               </>
             }
             navigationLabel={t.nav.menu}
