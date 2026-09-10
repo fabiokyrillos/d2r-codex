@@ -570,7 +570,28 @@ Uma quarta corrida **não conta como mutation apanhada**: a primeira tentativa d
 `assertFreshBuild()` porque editei um comentário de componente entre o build e o gate. Build velho,
 não defeito detectado. Foi repetida limpa, e é a repetição que está na tabela.
 
-### 10.9 O que continua registado e não corrigido
+### 10.9 Um gate intermitente, encontrado pelo próprio predeploy
+
+O primeiro `predeploy` completo falhou numa asserção de `test:locale-switch` e passou na repetição:
+`#skills` numa página de build a aterrar a 1733 px onde o contrato diz 1741 — oito pixels. Dez
+carregamentos diretos do mesmo URL deram 1741 ao pixel, dez vezes; não era a página.
+
+`settledScrollY` aceitava **duas** amostras iguais a 180 ms de distância. Uma rolagem suave é
+suavizada: nos últimos quadros anda menos de um pixel, e duas leituras podem arredondar para o mesmo
+inteiro enquanto a animação ainda não acabou. Os oito pixels são a cauda da curva.
+
+Exigir três amostras **sozinho piorou** — e essa é a metade mais útil. Sossego não é chegada: antes
+de o browser começar o salto, `scrollY` não se mexeu e a altura já estabilizou, portanto qualquer
+número de amostras iguais é satisfeito por uma página que ainda não andou — e alargar a janela de
+sossego torna isso *mais* provável, não menos. Pedir três transformou uma falha intermitente noutra,
+com `scrollY 0` e o alvo 13.215 px abaixo.
+
+Ficaram as duas: três amostras, e quem acabou de mandar a página para um fragmento diz que o fez,
+para a espera não chamar aterragem a zero. **Três corridas seguidas, 242 asserções, zero falhas.** É a
+mesma classe de erro de medição do §10.4, desta vez num gate da Fase 2, e era o que estava entre este
+passe e uma publicação verde.
+
+### 10.10 O que continua registado e não corrigido
 
 - A barra `sticky top-14` do leveling, 10 px acima do teto de R-A11Y-8 a 320 px, **permanece por
   corrigir por instrução explícita** do proprietário nesta continuação.

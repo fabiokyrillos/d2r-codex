@@ -210,22 +210,58 @@ async function settle(page: Page, expression: string, timeoutMs = 20_000): Promi
  * the skill tree, which Phase 4 owns. It is recorded in the plan, not fixed
  * here, and this file must not pretend the switcher caused it.)
  */
-async function settledScrollY(page: Page): Promise<number> {
+async function settledScrollY(page: Page, mustMove = false): Promise<number> {
   const sample = () =>
     page.evaluate<[number, number]>(
       "[Math.round(window.scrollY), Math.round(document.documentElement.scrollHeight)]",
     );
-  for (let i = 0; i < 25; i++) {
-    let a: [number, number] | null = null;
-    let b: [number, number] | null = null;
+  /*
+   * Two things, and the gate was missing both. It failed once in a full
+   * `predeploy` and passed on the re-run, which is the signature of a wait that
+   * ends at the wrong moment rather than of a page that lands in the wrong
+   * place — ten direct loads of the same URL land on the contract to the pixel.
+   *
+   * **Three identical samples, not two.** A smooth scroll is eased: its last
+   * frames move a pixel or less, and two readings 180ms apart can round to the
+   * same integer while the animation is still finishing. That is what produced
+   * the failure — the build page's `#skills` read at 1733 where the contract is
+   * 1741, eight pixels short, on the switcher's own hard navigation.
+   *
+   * **And the jump has to have happened.** Quiet is not arrival. Before the
+   * browser begins a fragment scroll, `scrollY` is 0 and the height has already
+   * settled, so *any* number of identical samples is satisfied by a page that
+   * has not moved yet — and lengthening the quiet window makes that *more*
+   * likely, not less. Asking for three samples without this guard turned one
+   * flaky failure into a different one, at `scrollY 0` with the target 13,215px
+   * down. So a caller that has just sent the page to a fragment says so, and
+   * the wait declines to call zero a landing.
+   *
+   * Two intervals of quiet is 360ms; the scroll on these pages finishes
+   * 800-976ms after navigation, measured, so the extra interval costs nothing.
+   */
+  let last: [number, number] | null = null;
+  let quiet = 0;
+  let moved = !mustMove;
+  for (let i = 0; i < 40; i++) {
+    let now: [number, number] | null = null;
     try {
-      a = await sample();
-      await page.evaluate("new Promise(r => setTimeout(() => r(1), 180))");
-      b = await sample();
+      now = await sample();
     } catch {
-      // Mid-navigation; try again.
+      // Mid-navigation; start the run again.
+      last = null;
+      quiet = 0;
     }
-    if (a && b && a[0] >= 0 && a[0] === b[0] && a[1] === b[1]) return b[0];
+    if (now && now[0] > 0) moved = true;
+    if (now && last && now[0] === last[0] && now[1] === last[1]) quiet += 1;
+    else quiet = 0;
+    last = now;
+    if (now && now[0] >= 0 && moved && quiet >= 2) return now[0];
+    try {
+      await page.evaluate("new Promise(r => setTimeout(() => r(1), 180))");
+    } catch {
+      last = null;
+      quiet = 0;
+    }
   }
   return -1;
 }
@@ -374,7 +410,7 @@ async function runCase(
    * did with the query.
    */
   if (kase.search) await settle(page, `${CARDS} !== ${unfiltered}`, 15_000);
-  await settledScrollY(page);
+  await settledScrollY(page, kase.hash !== "");
 
   const before = await page.evaluate<Probe>(probeFor(kase.targetId));
   check(
@@ -425,7 +461,7 @@ async function runCase(
    */
   await settle(page, `document.readyState === "complete"`, 20_000);
   if (kase.build) await settle(page, `document.querySelectorAll("button[data-tier]").length === 6`, 20_000);
-  const restedY = await settledScrollY(page);
+  const restedY = await settledScrollY(page, kase.hash !== "");
   const after = await page.evaluate<Probe>(probeFor(kase.targetId));
 
   note(`${label}: navigation was ${after.soft ? "soft (router.push)" : "full (location.assign)"}`);
@@ -535,7 +571,7 @@ async function runCase(
       await page.goto(destination);
       await settle(page, `document.readyState === "complete"`, 20_000);
       if (kase.build) await settle(page, `document.querySelectorAll("button[data-tier]").length === 6`, 20_000);
-      await settledScrollY(page);
+      await settledScrollY(page, kase.hash !== "");
       const direct = await page.evaluate<Probe>(probeFor(kase.targetId));
       const drift = direct.targetTop === null ? null : after.targetTop - direct.targetTop;
       note(
@@ -781,7 +817,7 @@ async function main(): Promise<void> {
         } else {
           await page.click(spot.x, spot.y);
           const got = await settle(page, `location.hash === "#skills"`, 15_000);
-          await settledScrollY(page);
+          await settledScrollY(page, true);
           const p = await page.evaluate<Probe>(probeFor("skills"));
           check("the fragment probe really was a soft navigation", p.soft, p.soft ? "soft" : "reloaded");
           const band = px(p.scrollMarginTop) + px(p.scrollPaddingTop);
