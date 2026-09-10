@@ -290,6 +290,15 @@ check("no generated or scratch files are tracked", junk.length === 0, junk.slice
     "components/game/tier-selector.tsx",
     "components/game/gear-progression.tsx",
     "components/game/tier-preference-script.tsx",
+    /*
+     * The build page's summary joined this list in Phase 2. It renders a
+     * fragment link per section directly above the tier control, so both rules
+     * below are about it: a routed `<Link href="#gear-budget">` there would hand
+     * the scroll to the router on the one page whose anchor landings are
+     * measured, and a stage inferred from the referrer is the same defect
+     * wherever it is written.
+     */
+    "components/game/page-sections.tsx",
     "lib/prefs.ts",
   ];
   const repoRoot = process.cwd();
@@ -322,6 +331,76 @@ check("no generated or scratch files are tracked", junk.length === 0, junk.slice
     INFERENCE.every(([, re]) => re.test("x = document.referrer; navigator.language; Accept-Language")));
   check("control: the <Link> pattern matches a fragment link",
     /<Link\b[^>]*href=\{?["'`]#/.test('<Link href="#gear-budget">x</Link>'));
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nOnly two components may write the tier preference");
+// ---------------------------------------------------------------------------
+/*
+ * One writer, by name, because §8.2 rests on it.
+ *
+ * `d2rc.tier` has exactly one resolution rule, and the reason it can have one is
+ * that exactly two surfaces ever set it: the tier control on a build page, and
+ * the six tier cards on the home. Everything else — the summary included —
+ * *reads* the open tier off the DOM. A third writer would not be a bug that
+ * fails; it would be a second rule about what the preference means, arriving
+ * silently.
+ *
+ * Nothing saw that. Measured: `components/game/page-sections.tsx` importing
+ * `writeTier` from `@/lib/prefs` and calling it in the summary nav's `onClick`
+ * left `npm run test:hygiene` and `npm run test:prefs` both at exit 0.
+ * `prefs.test.ts` cannot see it either — its sweep is for undeclared `d2rc.*`
+ * key *literals*, and `writeTier` writes the declared one.
+ *
+ * So the rule is a named allowlist rather than a pattern. The scan is scoped to
+ * `app/`, `components/` and `lib/`, which is where the site is; `scripts/` is
+ * out of it because `scripts/prefs.test.ts` imports both functions as the units
+ * it tests, and a gate that forbade that would forbid testing them at all.
+ */
+{
+  const WRITERS = /\b(?:writeTier|clearTier)\b/;
+  /** The two surfaces §8.2 names, and nothing else. */
+  const ALLOWED_WRITERS = ["components/game/tier-selector.tsx", "components/home/tier-cards.tsx"];
+  /** Where the two functions are *declared*. Declaring is not importing. */
+  const WRITER_HOME = "lib/prefs.ts";
+
+  const scanned = tracked.filter((f) => /^(app|components|lib)\//.test(f));
+  const writers = scanned
+    .filter((f) => f !== WRITER_HOME && !ALLOWED_WRITERS.includes(f))
+    .filter((f) => WRITERS.test(stripComments(readFileSync(f, "utf8"))));
+  check(
+    "only the tier control and the home tier cards touch writeTier/clearTier",
+    writers.length === 0,
+    writers.join(", "),
+  );
+
+  /*
+   * Controls. This is an absence claim over a name, so it is worth nothing
+   * unless the name exists, the two allowed files really do carry it, and the
+   * pattern matches the shape the mutation used.
+   */
+  check(
+    "control: the declaring module is still where the exemption says",
+    tracked.includes(WRITER_HOME) && WRITERS.test(readFileSync(WRITER_HOME, "utf8")),
+    WRITER_HOME,
+  );
+  check(
+    "control: both allowed writers really do import one, so the allowlist is not decoration",
+    ALLOWED_WRITERS.every((f) => tracked.includes(f) && WRITERS.test(stripComments(readFileSync(f, "utf8")))),
+    ALLOWED_WRITERS.join(", "),
+  );
+  check(
+    "control: the pattern matches the import and the call the mutation added",
+    WRITERS.test('import { writeTier } from "@/lib/prefs";') && WRITERS.test("onClick={() => writeTier(slug)}"),
+  );
+  check(
+    "control: …and does not match a longer name that merely contains one",
+    !WRITERS.test("const rewriteTiers = 1; const clearTiers = 2;"),
+  );
+  check(
+    "control: the scan covers the file the mutation put it in",
+    scanned.includes("components/game/page-sections.tsx"),
+  );
 }
 
 console.log(`\n${passed} checks passed.`);

@@ -484,6 +484,149 @@ async function main(): Promise<void> {
       check("and takes the site's accent colour", seen[0].startsWith("rgb(212, 113, 61)"), seen[0]);
       await page.setColorScheme("light");
     }
+
+    /*
+     * 6. The build page's summary is on screen from 640px — computed, not implied
+     *
+     * This is B2's assertion, and B2 is the reason it has to be this one.
+     *
+     * The desktop summary rendered *invisible on every build page* while every
+     * gate stayed green, because each gate was asking a question the defect
+     * answers correctly: the eleven links are in the served HTML, so an HTML
+     * gate reads eleven links; a closed `<details>` still lays a panel out, so a
+     * height gate reads a box. Neither of those is "a reader can see it". A
+     * `display` on a child cannot override a `content-visibility` on an
+     * ancestor, and nothing here measured the ancestor.
+     *
+     * `checkVisibility()` is the browser's own answer to the question the reader
+     * is asking, and it is the only one of the three that changes when the panel
+     * goes dark. Measured against the defect expressed two different ways: the
+     * stylesheet reverted to `display: block` over a closed disclosure, and
+     * `hidden` put on `[data-sections-panel]` with the stylesheet untouched. The
+     * second is invisible to `build-toc-html.test.ts` — which reads
+     * `app/globals.css` as text — and to `page-structure.test.ts`, and both
+     * shipped green over it.
+     *
+     * Here rather than in `build-toc-html.test.ts` because that file reads files
+     * and says so: "no browser gate drives `[data-sections]`". This one already
+     * drives a browser at these widths, and the claim is about laid-out boxes in
+     * a layout engine, which is what `headless.ts` exists for.
+     *
+     * The three widths are 640 — the breakpoint itself, where the reveal starts
+     * — 768 and 1280. Below 640 the panel is *supposed* to be shut, and that is
+     * the control: the same probe, on the same element, one width down.
+     */
+    console.log("\nthe build page's summary is visible from 640px");
+    {
+      interface PanelVisibility {
+        found: boolean;
+        supported: boolean;
+        open: boolean;
+        panelVisible: boolean;
+        links: number;
+        invisible: string[];
+        zero: string[];
+        contentVisibility: string;
+        plantedVisible: boolean;
+      }
+
+      /*
+       * One probe, run at every width and at the control width, so the failure
+       * and the control cannot drift apart. The planted node is the anti-vacuity
+       * half and it travels with the measurement: a `display: none` div, created
+       * inside the panel, asked the same question, and removed — if the probe
+       * ever starts answering "visible" to everything, that fails here.
+       */
+      const PROBE = `(() => {
+        const details = document.querySelector("[data-sections]");
+        const panel = document.querySelector("[data-sections-panel]");
+        const blank = { found: false, supported: false, open: false, panelVisible: false, links: 0, invisible: [], zero: [], contentVisibility: "", plantedVisible: false };
+        if (!details || !panel) return blank;
+        if (typeof panel.checkVisibility !== "function") return { ...blank, found: true };
+        const opts = { contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true };
+        const links = [...panel.querySelectorAll('a[href^="#"]')];
+        let contentVisibility = "";
+        try { contentVisibility = getComputedStyle(details, "::details-content").contentVisibility || ""; } catch (e) { contentVisibility = "?"; }
+        const planted = document.createElement("div");
+        planted.textContent = "control";
+        planted.style.display = "none";
+        panel.appendChild(planted);
+        const plantedVisible = planted.checkVisibility(opts);
+        planted.remove();
+        return {
+          found: true,
+          supported: true,
+          open: details.open === true,
+          panelVisible: panel.checkVisibility(opts),
+          links: links.length,
+          invisible: links.filter((a) => !a.checkVisibility(opts)).map((a) => a.getAttribute("href")).slice(0, 4),
+          zero: links.filter((a) => { const r = a.getBoundingClientRect(); return r.width < 1 || r.height < 1; }).map((a) => a.getAttribute("href")).slice(0, 4),
+          contentVisibility,
+          plantedVisible,
+        };
+      })()`;
+
+      for (const locale of LOCALES) {
+        const build = firstBuild(locale as Locale);
+        const url =
+          site.origin + routes(locale as Locale).build(build.classSlug as Slug, build.slug as Slug);
+
+        for (const width of [640, 768, 1280] as const) {
+          await page.setViewport(width);
+          await page.goto(url);
+          const v = await page.evaluate<PanelVisibility>(PROBE);
+          const where = `${locale} @${width}`;
+          const detail =
+            `details.open ${v.open} · ::details-content content-visibility "${v.contentVisibility}" · ` +
+            `${v.links} links · invisible [${v.invisible.join(", ")}]`;
+
+          check(`${where}: the build page renders a summary panel`, v.found, "[data-sections-panel] is not in the document");
+          if (!v.found) continue;
+          check(`${where}: checkVisibility() exists, so the answer below means something`, v.supported);
+          if (!v.supported) continue;
+
+          check(`${where}: the summary panel is actually visible`, v.panelVisible, detail);
+          check(
+            `${where}: every summary link is actually visible, not merely in the markup`,
+            v.links > 0 && v.invisible.length === 0,
+            detail,
+          );
+          check(`${where}: …and each of them has a box to hit`, v.zero.length === 0, v.zero.join(", "));
+          check(
+            `${where}: …and ::details-content is not withdrawing them`,
+            v.contentVisibility !== "hidden",
+            v.contentVisibility,
+          );
+          check(
+            `${where}: control — the same probe reports false for a deliberately hidden node`,
+            v.plantedVisible === false,
+            "checkVisibility() answered `true` for a display:none div, so nothing above is a claim",
+          );
+        }
+
+        /*
+         * The control, on the real element rather than a synthetic one: one
+         * width below the breakpoint the panel is behind a closed disclosure, so
+         * the probe must say so — *while its links are still in the markup*.
+         * That last clause is the whole of B2 in one assertion: presence is not
+         * visibility, and a gate that reads the links reads eleven of them here
+         * too.
+         */
+        await page.setViewport(390);
+        await page.goto(url);
+        const shut = await page.evaluate<PanelVisibility>(PROBE);
+        check(
+          `${locale} @390: control — the same panel reports invisible while shut, with its links still in the markup`,
+          shut.found && shut.supported && !shut.panelVisible && shut.links > 0,
+          `panelVisible ${shut.panelVisible} · ${shut.links} links · content-visibility "${shut.contentVisibility}"`,
+        );
+        check(
+          `${locale} @390: control — and ::details-content reads back as hidden there`,
+          shut.contentVisibility === "hidden",
+          `"${shut.contentVisibility}" — the pseudo-element read is not discriminating, so the rule above is vacuous`,
+        );
+      }
+    }
   } finally {
     page.close();
     site.stop();

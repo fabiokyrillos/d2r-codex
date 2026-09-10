@@ -578,7 +578,28 @@ console.log("\nQuery parameters: round trip, and everything invalid dropped");
  */
 console.log("\nThe language switch carries the filters, without de-statifying the site");
 {
-  const src = readFileSync(join(process.cwd(), "components", "layout", "locale-switcher.tsx"), "utf8");
+  const raw = readFileSync(join(process.cwd(), "components", "layout", "locale-switcher.tsx"), "utf8");
+  /*
+   * Comments out before any of the three scans below, and this one is not
+   * hygiene — it is the difference between a rule and a tautology.
+   *
+   * The presence rule under it matched `location.search` against the raw file.
+   * `components/layout/locale-switcher.tsx` carries a comment warning that
+   * destructuring `globalThis.location` deletes that substring from the
+   * executable code, and it names this assertion while doing so. So after the
+   * destructuring — the exact defect this guards — the only two matches left in
+   * the file were both prose, one of them the warning itself, and the gate went
+   * green over the broken component. A gate its own explanation can satisfy is
+   * measuring the explanation.
+   *
+   * The same stripper `scripts/build-toc-html.test.ts` uses on its source scans,
+   * mirrored rather than invented: block comments out, and line comments out
+   * only where `//` is not preceded by a colon, so a `https://` inside an
+   * expression survives.
+   */
+  const withoutComments = (source: string) =>
+    source.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/(^|[^:])\/\/[^\n]*/g, "$1");
+  const src = withoutComments(raw);
   // The import, not the prose — the comment above the component names the hook
   // it must not use, and a bare `includes` cannot tell the two apart.
   const imports = [...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*["']next\/navigation["']/g)]
@@ -595,6 +616,38 @@ console.log("\nThe language switch carries the filters, without de-statifying th
   check(
     "the href stays the bare locale path, so crawlers and no-JS readers get one URL per page",
     /href=\{href\}/.test(src) && /const href = localePath\(/.test(src),
+  );
+
+  /*
+   * Controls. The stripper has to remove enough to matter and little enough to
+   * leave the code, and the middle two are M35b itself: a component that reads
+   * the query only through a destructured `location`, whose prose still says
+   * `location.search`, must fail the rule above rather than pass on the prose.
+   */
+  const DESTRUCTURED =
+    "/* deletes the substring `location.search` from this file */\n" +
+    "const { search, hash } = globalThis.location;\n";
+  check(
+    "control: the comment stripper removes both comment forms",
+    withoutComments("/* a */ const a = 1; // b\nconst b = 2;").replace(/\s+/g, " ").trim() ===
+      "const a = 1; const b = 2;",
+    JSON.stringify(withoutComments("/* a */ const a = 1; // b\nconst b = 2;")),
+  );
+  check(
+    "control: M35b — a destructured `location` no longer satisfies the presence rule",
+    !/location\.search/.test(withoutComments(DESTRUCTURED)),
+  );
+  check(
+    "control: …and the raw file it was written against would have passed on the comment alone",
+    /location\.search/.test(DESTRUCTURED),
+  );
+  check(
+    "control: the shipped form still satisfies it after stripping",
+    /location\.search/.test(withoutComments("const search = globalThis.location.search; // read here\n")),
+  );
+  check(
+    "control: a URL in code survives the line-comment strip",
+    withoutComments('const u = "https://example.test/x";').includes("https://example.test/x"),
   );
 }
 

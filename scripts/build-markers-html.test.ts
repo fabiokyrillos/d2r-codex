@@ -200,6 +200,20 @@ function revealsOnAdjacentOpen(classList: string): boolean {
 }
 
 /**
+ * Is `hidden` in this class list as a class of its own?
+ *
+ * Membership, not a substring, and the difference is the whole of M12b. This
+ * was `/\bhidden\b/` over the joined class string, and the line also carries
+ * `peer-open:hidden` — a word boundary sits after the colon, so the regex was
+ * satisfied by the variant whatever happened to the default. Deleting the
+ * unconditional `hidden`, which is exactly "show the Next: line on every
+ * compact tier", left this file reporting 45 checks passed while
+ * `build-tier-heights.test.ts` went red on nine rows. A class list is a list;
+ * splitting it is the only way to ask whether something is in it.
+ */
+const hasClass = (classList: string, name: string) => classList.split(/\s+/).includes(name);
+
+/**
  * The slice between an element bearing `id` and its close.
  *
  * Depth-counted rather than lazily regexed: the gear section nests sections,
@@ -510,8 +524,8 @@ async function main() {
         if (set.nextUpgrade && shown.includes(plain(set.nextUpgrade))) {
           nextWrong.push(`${where}: the line repeats this tier's own upgrade`);
         }
-        if (!/\bhidden\b/.test(cls)) nextWrong.push(`${where}: the line is not hidden by default`);
-        if (!/\bpeer-open:hidden\b/.test(cls)) nextWrong.push(`${where}: the line has no peer-open:hidden`);
+        if (!hasClass(cls, "hidden")) nextWrong.push(`${where}: the line is not hidden by default — "${cls}"`);
+        if (!hasClass(cls, "peer-open:hidden")) nextWrong.push(`${where}: the line has no peer-open:hidden`);
         if (!revealsOnAdjacentOpen(cls)) {
           nextWrong.push(`${where}: the line has no adjacent-tier reveal — "${cls}"`);
         }
@@ -603,6 +617,21 @@ async function main() {
     check(
       "control: a line that is never revealed is rejected",
       !revealsOnAdjacentOpen("mt-1.5 hidden text-sm peer-open:hidden"),
+    );
+    /*
+     * M12b, in the shape that got past this file once: the default `hidden` is
+     * deleted and every other class stays, so the line is drawn on all six
+     * compact tiers. The old `/\bhidden\b/` said yes to this list, because
+     * `peer-open:hidden` contains the word. These three assert the membership
+     * test discriminates in both directions, so a return to the substring form
+     * fails here rather than on nine height rows in another file.
+     */
+    const M12B = "mt-1.5 text-sm peer-open:hidden [:where(section:has(>details[open]))+section_&]:line-clamp-2";
+    check("control: the M12b class list is rejected — peer-open:hidden is not `hidden`", !hasClass(M12B, "hidden"), M12B);
+    check("control: …and the substring form it defeated would have accepted it", /\bhidden\b/.test(M12B));
+    check(
+      "control: the shipped class list is still accepted",
+      hasClass(`mt-1.5 hidden ${M12B.slice("mt-1.5 ".length)}`, "hidden"),
     );
     check(
       "control: `plain` folds RichText's markers so a source string can be found in rendered text",
