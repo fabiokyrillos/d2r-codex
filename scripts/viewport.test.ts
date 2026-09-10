@@ -23,8 +23,10 @@
  *
  * The pages are derived from the registry rather than listed, so a new class or
  * build is covered without editing this file. The states are the ones a reader
- * puts the page into: menu shut, menu open, a filtered listing, and a query
- * that matches nothing.
+ * puts the page into: menu shut, menu open, a filtered listing, a query that
+ * matches nothing, and a build page with its table of contents in front of them
+ * — which below 640px is a modal sheet and above it a row of links, two layouts
+ * behind one name and neither of them measured while the disclosure is shut.
  *
  * Requires `npm run build`. Run with `npm run test:viewport`.
  */
@@ -107,6 +109,108 @@ const openMenu = async (page: Page) => {
   await page.waitFor(`document.querySelector('header details')?.open === true`);
 };
 
+/**
+ * The build page's summary is hydrated *and* has settled into a regime.
+ *
+ * Six hydrated tier buttons say the client bundle ran; the `data-sheet`
+ * attribute says this particular island's layout effect ran, because
+ * `page-sections.tsx` writes it on every mount below 640px and removes it at or
+ * above. So the second half is asserted only where it is written — checking for
+ * it at 1280px would wait ten seconds for something that is correctly absent,
+ * and checking only the first half would let a `<summary>` be pressed before the
+ * island could turn the panel into a sheet, which is a different surface with
+ * the same name.
+ */
+const SECTIONS_READY = `(() => {
+  if (document.querySelectorAll('button[data-tier]').length !== 6) return false;
+  const details = document.querySelector('[data-sections]');
+  if (!details) return false;
+  return window.matchMedia('(min-width: 40rem)').matches || details.hasAttribute('data-sheet');
+})()`;
+
+/** Which of the summary's two regimes a width is in. */
+type SectionsRegime = "sheet" | "row";
+
+/**
+ * Puts the summary in front of the reader, by the route the reader has.
+ *
+ * Below 640px that is a press on the `<summary>` — a real mouse press at the
+ * element's own coordinates, not `details.open = true`, because the sheet's
+ * modal half is driven by the element's `toggle` event and by the island's
+ * pointer handlers, and setting the property from outside would skip neither of
+ * them but would skip the question of whether the control can be *reached*. The
+ * trigger sits some 600-780px down a build page (`build-tier-heights.test.ts`
+ * publishes the sweep), so it is scrolled into view first — instantly, because
+ * the site sets `scroll-behavior: smooth` and a click dispatched mid-animation
+ * lands on whatever is passing.
+ *
+ * From 640px there is nothing to press: `app/globals.css` withdraws the trigger
+ * with `display: none` and reveals `::details-content` on a disclosure that
+ * stays closed forever, so the panel is already open in the only sense a reader
+ * cares about. Returning the regime rather than a boolean is what stops the
+ * caller quietly treating the two as the same thing.
+ */
+const openSections = async (page: Page): Promise<SectionsRegime> => {
+  const found = await page.evaluate<{ regime: SectionsRegime; x: number; y: number } | null>(
+    `(() => {
+       const details = document.querySelector('[data-sections]');
+       if (!details) return null;
+       const summary = details.querySelector('summary');
+       if (!summary) return null;
+       if (window.matchMedia('(min-width: 40rem)').matches) return { regime: 'row', x: -1, y: -1 };
+       summary.scrollIntoView({ block: 'center', behavior: 'instant' });
+       const r = summary.getBoundingClientRect();
+       return { regime: 'sheet', x: r.left + r.width / 2, y: r.top + r.height / 2 };
+     })()`,
+  );
+  if (!found) throw new Error("no [data-sections] disclosure with a <summary> on the page");
+  if (found.regime === "row") return "row";
+  await page.click(found.x, found.y);
+  /*
+   * Waited on the *sheet*, not on `open`. `open` flips inside the press and the
+   * `toggle` that carries the modal half is queued behind it, so a probe that
+   * waits for the property reads a half-open sheet: measured here before this
+   * line existed, five of the eight sheet cells came back `role null` with the
+   * body unlocked, and which five moved between runs. That is the same queued
+   * `toggle` `page-sections.tsx` and `mobile-navigation.tsx` both document, and
+   * the state a reader gets is the one after it has run.
+   */
+  const open = await page.waitFor(
+    `document.querySelector('[data-sections]').open === true &&
+     document.querySelector('[data-sections-panel]').getAttribute('role') === 'dialog'`,
+    4000,
+  );
+  if (!open) {
+    throw new Error(
+      `pressing the summary at (${Math.round(found.x)}, ${Math.round(found.y)}) did not raise the sheet`,
+    );
+  }
+  return "sheet";
+};
+
+/**
+ * The same thing, for the two blocks that drive it directly rather than through
+ * a surface.
+ *
+ * A surface's `after` is allowed to throw — that is how the filter sheet reports
+ * a trigger it cannot find, and `main`'s catch turns it into a red gate. But the
+ * blocks below run twenty widths in a loop, and a throw at the first one would
+ * hide the other nineteen. The mutation that proved the modal assertion below
+ * takes `aria-modal` off the island's `enter`, and the press still lands; one
+ * that took `role` off instead would abort at the first sheet width and carry
+ * off every later assertion with it, including the ones with nothing to do with
+ * the defect. So here a summary that will not open is a datum, not an exit.
+ */
+const openedSections = async (
+  page: Page,
+): Promise<{ regime: SectionsRegime; error?: undefined } | { regime?: undefined; error: string }> => {
+  try {
+    return { regime: await openSections(page) };
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : String(err) };
+  }
+};
+
 const SURFACES: Surface[] = [
   { name: "homepage", path: (l) => routes(l).home() },
   {
@@ -161,6 +265,34 @@ const SURFACES: Surface[] = [
   {
     name: "build page",
     path: (l) => routes(l).build(firstBuild(l).classSlug as Slug, firstBuild(l).slug as Slug),
+  },
+  {
+    /*
+     * The same page with its table of contents actually in front of the reader,
+     * which is two different layouts wearing one name.
+     *
+     * From 640px it is close to the document the surface above already measures:
+     * the CSS reveals `::details-content` on a disclosure that never opens, so
+     * the eleven-entry row is laid out whether or not anyone asks for it, and
+     * what this surface adds there is that the regime is *checked* rather than
+     * assumed — measured, an eleven-item row that stops wrapping and stops
+     * shrinking overflows at 640 and 768 and both surfaces go red together.
+     *
+     * Below 640px it is a document no other surface here ever reaches: a fixed
+     * bottom sheet, a scrim, and `overflow: hidden` on the body. The block
+     * further down says exactly what that state can and cannot catch, because
+     * both halves of the answer were surprising and both were measured.
+     *
+     * `openSections` handles the two regimes explicitly and returns which one it
+     * found, so a press that stops landing cannot come back as a quiet second
+     * copy of "build page".
+     */
+    name: "build page, sections open",
+    path: (l) => routes(l).build(firstBuild(l).classSlug as Slug, firstBuild(l).slug as Slug),
+    ready: () => SECTIONS_READY,
+    after: async (page) => {
+      await openSections(page);
+    },
   },
   {
     name: "skill page",
@@ -624,6 +756,353 @@ async function main(): Promise<void> {
           `${locale} @390: control — and ::details-content reads back as hidden there`,
           shut.contentVisibility === "hidden",
           `"${shut.contentVisibility}" — the pseudo-element read is not discriminating, so the rule above is vacuous`,
+        );
+      }
+    }
+
+    /*
+     * 7. The "sections open" surface is in the state its name claims
+     *
+     * A surface whose `after` quietly does nothing is the same surface twice
+     * under two names, and it reports green with the confidence of a real
+     * measurement — which is exactly the shape of the defect B2 was. So the same
+     * `openSections` the surface uses is driven again here at every one of the
+     * ten widths, and what it produced is read back off the document.
+     *
+     * The two regimes are asserted apart rather than together, because "the
+     * summary is open" means different things on either side of 640px and only
+     * one of them involves a press:
+     *
+     *   - below 640 the press has to have landed: the disclosure is `open`, the
+     *     island's `data-sheet` chrome is on it, the panel passes
+     *     `checkVisibility()`, and the three attributes that make it modal —
+     *     `role`, `aria-modal`, and `overflow: hidden` on the body — are the
+     *     ones `page-sections.tsx` writes on `enter`;
+     *   - at 640 and above there is nothing to press and pressing would be the
+     *     bug: the trigger is `display: none`, the disclosure is *still closed*,
+     *     and the panel is visible anyway because the CSS revealed
+     *     `::details-content`. A `role="dialog"` here would be a dialog nobody
+     *     can leave, so its absence is asserted rather than assumed.
+     */
+    console.log("\nthe sections summary, opened the way a reader opens it");
+    {
+      interface SectionsState {
+        found: boolean;
+        open: boolean;
+        sheet: boolean;
+        triggerDisplay: string;
+        panelVisible: boolean;
+        role: string | null;
+        ariaModal: string | null;
+        bodyOverflow: string;
+        links: number;
+      }
+
+      const STATE = `(() => {
+        const details = document.querySelector('[data-sections]');
+        const panel = document.querySelector('[data-sections-panel]');
+        const summary = details ? details.querySelector('summary') : null;
+        if (!details || !panel || !summary) {
+          return { found: false, open: false, sheet: false, triggerDisplay: '', panelVisible: false, role: null, ariaModal: null, bodyOverflow: '', links: 0 };
+        }
+        return {
+          found: true,
+          open: details.open === true,
+          sheet: details.hasAttribute('data-sheet'),
+          triggerDisplay: getComputedStyle(summary).display,
+          panelVisible: panel.checkVisibility({ contentVisibilityAuto: true, opacityProperty: true, visibilityProperty: true }),
+          role: panel.getAttribute('role'),
+          ariaModal: panel.getAttribute('aria-modal'),
+          bodyOverflow: getComputedStyle(document.body).overflow,
+          links: panel.querySelectorAll('a[href^="#"]').length,
+        };
+      })()`;
+
+      for (const locale of LOCALES) {
+        const build = firstBuild(locale as Locale);
+        const url =
+          site.origin + routes(locale as Locale).build(build.classSlug as Slug, build.slug as Slug);
+
+        for (const width of WIDTHS) {
+          await page.setViewport(width);
+          await page.goto(url);
+          const ready = await page.waitFor(SECTIONS_READY);
+          const where = `${locale} @${width}`;
+          if (!ready) {
+            check(`${where}: the summary reaches its regime`, false, "never hydrated");
+            continue;
+          }
+          const opened = await openedSections(page);
+          if (opened.error) {
+            check(`${where}: the summary opens the way a reader opens it`, false, opened.error);
+            continue;
+          }
+          const regime = opened.regime;
+          const s = await page.evaluate<SectionsState>(STATE);
+          const detail =
+            `regime ${regime} · open ${s.open} · data-sheet ${s.sheet} · trigger ${s.triggerDisplay} · ` +
+            `visible ${s.panelVisible} · role ${s.role} · body overflow "${s.bodyOverflow}" · ${s.links} links`;
+
+          check(`${where}: the summary is on the page at all`, s.found, "[data-sections-panel] is missing");
+          if (!s.found) continue;
+
+          if (width < 640) {
+            check(`${where}: the press opened the sheet`, regime === "sheet" && s.open && s.sheet, detail);
+            check(`${where}: …and the panel is really on screen, not merely in the markup`, s.panelVisible && s.links > 0, detail);
+            check(
+              `${where}: …wearing the modal half the island writes`,
+              s.role === "dialog" && s.ariaModal === "true" && s.bodyOverflow === "hidden",
+              detail,
+            );
+          } else {
+            check(`${where}: there is nothing to press — the trigger is withdrawn`, regime === "row" && s.triggerDisplay === "none", detail);
+            check(`${where}: …the disclosure is still shut, and the panel visible anyway`, s.open === false && s.panelVisible && s.links > 0, detail);
+            check(
+              `${where}: …and a plain row of links is not pretending to be a dialog`,
+              s.role === null && s.ariaModal === null && s.bodyOverflow !== "hidden",
+              detail,
+            );
+          }
+        }
+      }
+
+      /*
+       * Anti-vacuity for the surface itself: with the summary open, can the
+       * overflow rule still go red?
+       *
+       * A fair question and not a rhetorical one. Below 640px the sheet is
+       * `position: fixed` over a body the island has put `overflow: hidden` on,
+       * and both of those are ways a document can stop reporting overflow it
+       * really has — which would leave "build page, sections open" measuring
+       * nothing at four of its ten widths while printing eight green lines. So
+       * the same `MEASURE` the surface uses is run on the open page with a node
+       * twice the viewport's width planted in three different places, and again
+       * after every one of them is removed.
+       *
+       * Measured at 320px, sheet up, `clientWidth` 320: clean **320**; the node
+       * inside the fixed panel **320**; the same node in the page behind the
+       * sheet **640**; the same node inside the panel with `data-sheet` taken
+       * off **660**. At 1280px, panel in flow: **1280 / 2720 / 2560 / 2720**.
+       *
+       * Three things follow, and the assertions below are each of them:
+       *
+       *   - the body lock does *not* blind the rule. `overflow: hidden` on the
+       *     body was the reason to doubt this whole surface, and 640 against 320
+       *     settles it — which is the same answer the filter sheet's comment
+       *     above reports, now measured on this sheet too.
+       *   - a `position: fixed` box cannot enlarge the document's scroll area,
+       *     so the sheet's own contents are not what this surface catches below
+       *     640px, and the sheet is insulated twice over: its `<nav>` carries
+       *     `overflow-y-auto`, which computes `overflow-x` to `auto` as well and
+       *     clips sideways too. Both halves were measured by mutation — an
+       *     unshrinkable non-wrapping list inside the sheet reddened 640 and 768
+       *     and nothing below, and it stayed green below even with both
+       *     `group-data-[sheet]:fixed` and the list's `group-data-[sheet]:block`
+       *     taken off, which is the nav's own clip doing it. So what this surface
+       *     guards under 640 is the page *behind* the sheet, and the day the
+       *     panel lands in flow with a list that can overflow — which is not
+       *     hypothetical: `data-sheet` is the island's own attribute, and
+       *     without it the panel is in normal flow, which is the no-JavaScript
+       *     shape `page-sections.tsx` documents and the shape it has at 1280px.
+       *   - so the panel plant is done twice, and it is the *flow* one that has
+       *     to bite. Removing the attribute for the length of one measurement
+       *     and putting it back is asserted too, because a control that leaves
+       *     the page altered has moved the thing it was measuring.
+       */
+      for (const width of [320, 1280] as const) {
+        const build = firstBuild("en-us");
+        await page.setViewport(width);
+        await page.goto(site.origin + routes("en-us").build(build.classSlug as Slug, build.slug as Slug));
+        const ready = await page.waitFor(SECTIONS_READY);
+        if (!ready) {
+          check(`control @${width}: the summary reaches its regime`, false, "never hydrated");
+          continue;
+        }
+        const raised = await openedSections(page);
+        if (raised.error) {
+          check(`control @${width}: the summary opens the way a reader opens it`, false, raised.error);
+          continue;
+        }
+        const probe = await page.evaluate<{
+          before: Measurement;
+          inFixedPanel: Measurement;
+          behindTheSheet: Measurement;
+          inFlowPanel: Measurement;
+          back: Measurement;
+          restored: boolean;
+          bodyOverflow: string;
+        }>(`(() => {
+          const de = document.documentElement;
+          const details = document.querySelector('[data-sections]');
+          const panel = document.querySelector('[data-sections-panel]');
+          const behind = document.querySelector('main') || document.body;
+          const sheet = details.hasAttribute('data-sheet');
+          const wide = document.createElement('div');
+          wide.style.height = '8px';
+          wide.style.width = (de.clientWidth * 2) + 'px';
+          const at = (host) => { host.appendChild(wide); const m = ${MEASURE}; wide.remove(); return m; };
+          const before = ${MEASURE};
+          const bodyOverflow = getComputedStyle(document.body).overflow;
+          const inFixedPanel = at(panel);
+          const behindTheSheet = at(behind);
+          if (sheet) details.removeAttribute('data-sheet');
+          const inFlowPanel = at(panel);
+          if (sheet) details.setAttribute('data-sheet', '');
+          return { before, inFixedPanel, behindTheSheet, inFlowPanel, back: ${MEASURE},
+                   restored: details.hasAttribute('data-sheet') === sheet, bodyOverflow };
+        })()`);
+        const shape =
+          `clean ${probe.before.scrollWidth} · in the fixed panel ${probe.inFixedPanel.scrollWidth} · ` +
+          `behind the sheet ${probe.behindTheSheet.scrollWidth} · in the panel in flow ${probe.inFlowPanel.scrollWidth} · ` +
+          `back ${probe.back.scrollWidth} · against a clientWidth of ${probe.before.clientWidth}, ` +
+          `body overflow "${probe.bodyOverflow}"`;
+        console.log(`  @${width}: ${shape}`);
+
+        check(
+          `control @${width}: the open page is clean before anything is planted`,
+          probe.before.scrollWidth <= probe.before.clientWidth,
+          shape,
+        );
+        check(
+          `control @${width}: an over-wide node in the page behind the summary is caught`,
+          probe.behindTheSheet.scrollWidth > probe.behindTheSheet.clientWidth,
+          `${shape} — the body lock is swallowing the overflow, so this surface's green lines mean nothing`,
+        );
+        check(
+          `control @${width}: …and one inside the panel is caught wherever the panel is in flow`,
+          probe.inFlowPanel.scrollWidth > probe.inFlowPanel.clientWidth,
+          shape,
+        );
+        check(
+          `control @${width}: …and the page reads back clean, with data-sheet as it was found`,
+          probe.back.scrollWidth === probe.before.scrollWidth && probe.restored,
+          `${shape} · restored ${probe.restored}`,
+        );
+      }
+    }
+
+    /*
+     * 8. Every summary link is a target you can hit — WCAG 2.5.8, not R-A11Y-4
+     *
+     * §7.4 and §11 of the Phase 2 plan put these links under the 24×24 minimum
+     * and deliberately *not* under the 44px one: they are not the page's primary
+     * control, the tier picker is, and `build-tier-heights.test.ts` holds that
+     * one to 44. Asserting 44 here would be inventing a contract nobody wrote;
+     * asserting nothing would leave the sheet's `min-h-11` and the row's
+     * `min-h-6` free to become whatever a later utility makes them.
+     *
+     * Both regimes, because they draw different boxes from the same markup: at
+     * 320 and 390 the entries are stacked rows in a fixed sheet, at 1280 they
+     * are inline items in a wrapping row, and only the first has a class saying
+     * anything about height. The width axis matters as much as the height one —
+     * a one-word section label in a `flex-wrap` row is as narrow as its text,
+     * and it is the axis with the least room: measured over the eleven entries,
+     * the smallest box is **33×44** in the sheet and **33×28** in the row in
+     * en-US, **34×44** and **34×28** in pt-BR. The height comes from a utility
+     * and has 20px and 4px of slack; the width comes from a word, and its 9px
+     * is the number that would go first.
+     */
+    console.log("\nsummary links clear the 24px minimum");
+    for (const locale of LOCALES) {
+      const build = firstBuild(locale as Locale);
+      const url =
+        site.origin + routes(locale as Locale).build(build.classSlug as Slug, build.slug as Slug);
+
+      for (const width of [320, 390, 1280] as const) {
+        await page.setViewport(width);
+        await page.goto(url);
+        const ready = await page.waitFor(SECTIONS_READY);
+        const where = `${locale} @${width}`;
+        if (!ready) {
+          check(`${where}: the summary reaches its regime`, false, "never hydrated");
+          continue;
+        }
+        const opened = await openedSections(page);
+        if (opened.error) {
+          check(`${where}: the summary opens the way a reader opens it`, false, opened.error);
+          continue;
+        }
+        const want: SectionsRegime = width < 640 ? "sheet" : "row";
+        check(`${where}: measured in the ${want} regime`, opened.regime === want, `found ${opened.regime}`);
+
+        /*
+         * The planted link is the anti-vacuity half and it travels with the
+         * measurement, the way the `display: none` div does in section 6: a
+         * 10×10 `<a href="#...">` is appended to the same list, asked the same
+         * question by the same probe, and removed. If the selector ever stops
+         * matching, or the comparison stops discriminating, the eleven real
+         * links go quiet and this does not.
+         */
+        const t = await page.evaluate<{
+          found: boolean;
+          total: number;
+          smallCount: number;
+          small: string[];
+          smallest: string;
+          plantedSeen: number;
+          plantedSmall: number;
+          plantedIsSmall: boolean;
+          restored: number;
+        } | null>(`(() => {
+          const panel = document.querySelector('[data-sections-panel]');
+          const list = panel ? panel.querySelector('ol') : null;
+          if (!panel || !list) return { found: false, total: 0, smallCount: 0, small: [], smallest: '', plantedSeen: 0, plantedSmall: 0, plantedIsSmall: false, restored: 0 };
+          const read = () => [...panel.querySelectorAll('a[href^="#"]')].map((a) => {
+            const r = a.getBoundingClientRect();
+            return { href: a.getAttribute('href'), w: r.width, h: r.height };
+          });
+          const under = (rows) => rows.filter((l) => l.w < ${MIN_TARGET} - 0.5 || l.h < ${MIN_TARGET} - 0.5);
+          const links = read();
+          let minW = Infinity, minH = Infinity;
+          for (const l of links) { minW = Math.min(minW, l.w); minH = Math.min(minH, l.h); }
+          const planted = document.createElement('a');
+          planted.setAttribute('href', '#sections-target-control');
+          planted.textContent = '.';
+          planted.style.cssText = 'display:inline-block;width:10px;height:10px;min-height:0;padding:0;line-height:10px;overflow:hidden';
+          list.appendChild(planted);
+          const withPlanted = read();
+          const flagged = under(withPlanted);
+          planted.remove();
+          return {
+            found: true,
+            total: links.length,
+            smallCount: under(links).length,
+            small: under(links).map((l) => l.href + ' ' + Math.round(l.w) + 'x' + Math.round(l.h)).slice(0, 5),
+            smallest: links.length ? Math.round(minW) + 'x' + Math.round(minH) : 'none',
+            plantedSeen: withPlanted.length,
+            plantedSmall: flagged.length,
+            plantedIsSmall: flagged.some((l) => l.href === '#sections-target-control'),
+            restored: read().length,
+          };
+        })()`);
+
+        check(`${where}: the summary has links to measure`, !!t && t.found && t.total > 0, JSON.stringify(t));
+        if (!t || !t.found || t.total === 0) continue;
+
+        check(
+          `${where}: all ${t.total} summary links are at least ${MIN_TARGET}×${MIN_TARGET} (smallest ${t.smallest})`,
+          t.smallCount === 0,
+          `${t.smallCount} under it: ${t.small.join(", ")}`,
+        );
+        /*
+         * Asserted as a delta and by name, not as "exactly one link is
+         * undersized". Measured: with the entries' `min-h-6`/`min-h-11` and
+         * their padding taken off in the source, every real link came back
+         * 20px tall, the assertion above went red as it should — and the earlier
+         * form of this control went red beside it, because twelve undersized
+         * links is not one. A control that fails whenever the thing it controls
+         * fails has stopped being evidence.
+         */
+        check(
+          `${where}: control — a 10×10 link planted in the same list is caught`,
+          t.plantedSeen === t.total + 1 && t.plantedIsSmall && t.plantedSmall === t.smallCount + 1,
+          `${t.plantedSeen} links seen with it planted, ${t.plantedSmall} reported undersized, ` +
+            `the planted one among them: ${t.plantedIsSmall}`,
+        );
+        check(
+          `${where}: control — …and the list is put back the way it was found`,
+          t.restored === t.total,
+          `${t.restored} links after removal, ${t.total} before`,
         );
       }
     }

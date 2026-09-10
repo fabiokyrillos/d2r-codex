@@ -193,12 +193,36 @@ Topo do controle, 320×640: `blizzard-sorceress` 457 (en) / 517 (pt); **`lightni
 
 **Regra permanente:** abaixo de 640 px nada é inserido acima do controle de tier.
 
-**E uma consequência que a primeira versão não mediu (revisão 1, Mh):** o controle mede ~100 px
-(legenda + chips + linha de ação reservada), então um gatilho colocado logo **abaixo** dele começa por
-volta de **675 px** — fora da primeira tela de 640 px. C14 mede só o topo do controle e não veria isso.
-**O topo do gatilho do sumário entra na tabela de C14 como número medido e asserido** (§14.5); se
-exceder 640 px em qualquer das 106 páginas, o sumário passa a ser uma linha **dentro** do bloco do
-controle em vez de um irmão abaixo dele.
+**E uma consequência que a primeira versão não mediu (revisão 1, Mh):** o controle mede **154 px**
+(legenda + chips + linha de ação reservada), então um gatilho colocado logo **abaixo** dele fica fora
+da primeira tela de 640 px. C14 mede só o topo do controle e não veria isso. **O topo do gatilho entra
+na tabela de C14** (§14.5).
+
+**Medido nas 53 builds × 2 idiomas a 320×640, depois de implementado:**
+
+| | mín | mediana | máx | além da dobra de 640 |
+|---|---|---|---|---|
+| as 106 | 593 | 659 | **777** | **84** |
+| en-US | 593 | 659 | 748 | 40 |
+| pt-BR | 593 | 681 | **777** | 44 |
+
+As duas piores são `pt-br/assassin/lightning-trapsin` e `pt-br/assassin/whirlwind-assassin`, a 777 px —
+as mesmas duas páginas e o mesmo número que a amostra de sete páginas tinha dado, o que diz que a
+amostra não teve sorte. **22 páginas mostram o gatilho sem rolar.**
+
+> **A contingência desta seção foi avaliada e não resolve.** A regra dizia: se exceder 640 px, o
+> sumário vira uma linha **dentro** do bloco do controle em vez de um irmão abaixo. Medido, aí ele
+> aterra a **~693 px** — ainda abaixo da dobra. E a única posição que o poria na primeira tela é
+> **acima** do controle de tier, que a tabela desta mesma seção proíbe: um bloco de 44 px ali leva as
+> duas piores páginas a **667 px**, através do teto duro de 640 de C14.
+>
+> **Não existe posição que ponha o controle de tier e o gatilho do sumário na primeira tela nessas
+> páginas.** Isso é uma impossibilidade medida, não uma escolha por fazer. O que fica: o controle de
+> tier — que é a resposta a "onde estou?" e o que R-BUILD-1 orça — está na primeira tela em **todas**
+> as 106; o sumário fica no máximo **137 px** depois dela, cerca de um quinto de tela. O gate publica
+> a distribuição a cada execução e assere um teto de regressão de **850 px** (o pior medido mais a
+> mesma folga de ~10% que as outras constantes do arquivo documentam), para que a posição não escorregue
+> mais uma tela sem ninguém notar. **Vai à sessão de UAT do proprietário como item explícito.**
 
 ### 3.8 O orçamento de altura — todas as sete constantes
 

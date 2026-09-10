@@ -6,7 +6,7 @@
  * refuted. The plan recomputed them from real slot counts; this is the gate
  * that holds the recomputation to account, and publishes the table either way.
  *
- * Two things are measured, and they fail differently on purpose:
+ * Three things are measured, and they fail differently on purpose:
  *
  *   - **Where the control is.** R-BUILD-1 wants it inside the first 320x640
  *     viewport. The owner set two levels: 560px is the target, 640px is a
@@ -16,6 +16,12 @@
  *     rereads. Above 640px the gate goes red and the phase stops.
  *     All 53 builds in both languages, because the failure this exists to
  *     catch is "it fitted on the build I happened to open".
+ *
+ *   - **Where the summary's trigger is.** The same sweep, one element lower.
+ *     The control sits inside the first screen on every page and the trigger
+ *     below it does not, which is a fact C14's own number cannot express — see
+ *     `SECTIONS_TRIGGER_CEILING` for the distribution and for why the fold is
+ *     published while a regression ceiling is asserted.
  *
  *   - **How tall the tiers are.** An absolute ceiling per compact tier and a
  *     ceiling on the six together, both calibrated against the built page —
@@ -53,6 +59,63 @@ assertFreshBuild();
 /** R-BUILD-1's target, and the owner's hard ceiling. */
 const CONTROL_TARGET = 560;
 const CONTROL_CEILING = 640;
+
+/**
+ * The summary's trigger, which is C14's second row — and the number the owner
+ * asked for.
+ *
+ * C14 above measures the *tier control's* top, and §3.7 of the Phase 2 plan
+ * forbids inserting anything above that control below 640px because the control
+ * has nothing left to give: a 44px block there costs its own height plus the
+ * `space-y-12` gap, which takes the worst page from 575px to 667px and straight
+ * through C14's hard 640 ceiling. The summary therefore ships as a sibling
+ * *below* the control — and that is precisely the position C14 cannot see. The
+ * control can be at 457px on the same page whose trigger is at 777px, and a
+ * reader holding a phone meets the second number, not the first.
+ *
+ * So it is measured here, on the same 53 builds x 2 locales x 320x640 pass, for
+ * the same reason C14 sweeps every build page rather than sampling: the failure
+ * worth catching is "it fitted on the build I happened to open". It is read on
+ * the served, settled element — `page-sections.tsx` ships the disclosure closed and
+ * no script ever writes `open`, so hydration cannot move this number, and it
+ * does not: `hydrated()` has already resolved when it is taken.
+ *
+ * **Measured over all 53 builds in both languages: min 593px, median 659px, max
+ * 777px, and 84 of them start past the 640px fold** — 593/659/748 and 40 past it
+ * in en-US, 593/681/777 and 44 past it in pt-BR. The two worst are pt-BR
+ * `assassin/lightning-trapsin` and `assassin/whirlwind-assassin`, both at 777px:
+ * the same two pages and the same number the seven-page sample in §3.7 reported,
+ * which is the sweep saying the sample was not lucky.
+ *
+ * **What that means on a phone.** On a 320x640 screen the first thing a reader
+ * sees is the build's own opening; the tier control lands inside that first
+ * screen on every build page (C14), and on 84 of them the "where am I" summary
+ * does not — it is one short scroll away, at worst 137px past the fold, about a
+ * fifth of a screen. Twenty-two do show it without scrolling. That is the
+ * deliberate half of §3.7's trade, not an accident: the only way to put the
+ * trigger on the first screen is to put it above the tier control, and the table
+ * in §3.7 shows what that does to the control.
+ *
+ * **Why the fold is published and 850 is asserted.** 640 is a fact about the
+ * reader, not a regression signal — asserting it would turn this gate red on 84
+ * pages today with nothing behind it, and the two-level shape C14 already uses
+ * (`CONTROL_TARGET` published, `CONTROL_CEILING` asserted) exists for exactly
+ * this shape of number. The ceiling is the worst measured value plus the same
+ * headroom every other constant in this file documents: 777 x 1.1 is ~855,
+ * rounded down to the next ten, which is 9.4% — against `TIER_CEILING`'s 9.5%
+ * and `TIER_CEILING_WITH_NEXT`'s 9.2%. Same policy, new measurement, no new
+ * rule. What 850 catches is a change that pushes the trigger a further screen
+ * down the page; what it deliberately does not catch is the fold, which is the
+ * owner's call and is printed for them every run.
+ *
+ * *(§3.7 named a contingency — if the trigger exceeds 640px on any build page
+ * the summary becomes a line inside the control block rather than a
+ * sibling below it. It exceeds it on 84. That is a design decision, so this gate
+ * publishes the number and holds the position against regression rather than
+ * making the decision by going red.)*
+ */
+const SECTIONS_TRIGGER_FOLD = 640;
+const SECTIONS_TRIGGER_CEILING = 850;
 
 /**
  * Compact-tier ceilings, calibrated against the built page.
@@ -193,6 +256,8 @@ async function main() {
   const overTarget: { page: string; top: number }[] = [];
   const overCeiling: { page: string; top: number }[] = [];
   let worst = { page: "", top: 0 };
+  const triggers: { page: string; top: number }[] = [];
+  const triggerMissing: string[] = [];
 
   try {
     // -----------------------------------------------------------------------
@@ -208,11 +273,17 @@ async function main() {
         const path = `/${locale}/builds/${build.classSlug}/${build.slug}`;
         await page.goto(`${site.origin}${path}`);
         await hydrated(page);
-        const top = await page.evaluate<number>(
-          `(() => { const l = document.getElementById("tier-picker-legend");
-                    if (!l) return -1;
-                    return Math.round(l.getBoundingClientRect().top + window.scrollY); })()`,
+        const seen = await page.evaluate<{ control: number; trigger: number }>(
+          `(() => {
+             const top = (n) => (n ? Math.round(n.getBoundingClientRect().top + window.scrollY) : -1);
+             const d = document.querySelector("[data-sections]");
+             return { control: top(document.getElementById("tier-picker-legend")),
+                      trigger: top(d ? d.querySelector("summary") : null) };
+           })()`,
         );
+        if (seen.trigger < 0) triggerMissing.push(path);
+        else triggers.push({ page: path, top: seen.trigger });
+        const top = seen.control;
         if (top < 0) {
           overCeiling.push({ page: path, top: -1 });
           continue;
@@ -241,6 +312,97 @@ async function main() {
       overCeiling.map((r) => `${r.page} @${r.top}`).slice(0, 5).join(" | "),
     );
     check("the control is present on every build page", worst.top > 0);
+
+    // -----------------------------------------------------------------------
+    // C14b — and where the summary's trigger sits, on the same sweep
+    // -----------------------------------------------------------------------
+    const spread = (rows: { top: number }[]) => {
+      const s = rows.map((r) => r.top).sort((a, b) => a - b);
+      if (s.length === 0) return "no rows";
+      return `${s[0]} / ${s[Math.floor((s.length - 1) / 2)]} / ${s[s.length - 1]}`;
+    };
+    const pastFold = triggers.filter((t) => t.top > SECTIONS_TRIGGER_FOLD);
+    const worstTrigger = triggers.reduce((a, b) => (b.top > a.top ? b : a), { page: "", top: -1 });
+    const overTriggerCeiling = triggers.filter((t) => t.top > SECTIONS_TRIGGER_CEILING);
+
+    console.log(`\n  the summary's trigger, the same ${triggers.length} pages at the same 320x640\n`);
+    console.log(`  min / median / max            : ${spread(triggers)}px`);
+    for (const locale of LOCALES) {
+      const rows = triggers.filter((t) => t.page.startsWith(`/${locale}/`));
+      const past = rows.filter((t) => t.top > SECTIONS_TRIGGER_FOLD).length;
+      console.log(`    ${locale} (${rows.length} pages)         : ${spread(rows)}px, ${past} past the fold`);
+    }
+    console.log(`  within the ${SECTIONS_TRIGGER_FOLD}px fold          : ${triggers.length - pastFold.length}`);
+    console.log(`  past it (published, not a failure) : ${pastFold.length}`);
+    console.log(`  headroom to the ${SECTIONS_TRIGGER_CEILING}px ceiling  : ${SECTIONS_TRIGGER_CEILING - worstTrigger.top}px`);
+    console.log(`\n  the five furthest down:`);
+    for (const r of [...triggers].sort((a, b) => b.top - a.top).slice(0, 5)) {
+      console.log(`    ${r.top}px  ${r.page}  (+${r.top - SECTIONS_TRIGGER_FOLD} past the fold)`);
+    }
+
+    check(
+      "the summary trigger is present on every build page",
+      triggerMissing.length === 0,
+      triggerMissing.slice(0, 5).join(" | "),
+    );
+    check(
+      `no page's summary trigger is past the ${SECTIONS_TRIGGER_CEILING}px ceiling`,
+      triggers.length > 0 && overTriggerCeiling.length === 0,
+      overTriggerCeiling.map((r) => `${r.page} @${r.top}`).slice(0, 5).join(" | "),
+    );
+
+    /*
+     * Anti-vacuity, on the worst real page rather than a synthetic one.
+     *
+     * The assertion above is a comparison against a number nothing on the site
+     * currently approaches, which is the shape of assertion that quietly stops
+     * measuring anything — a selector that goes stale reports `-1`, a probe that
+     * loses `scrollY` reports a viewport-relative number, and both are under 850
+     * forever. So the same probe is run three times on the same element: as
+     * served, with a block planted above the disclosure that is tall enough to
+     * push it past the ceiling, and after that block is removed again.
+     *
+     * The planted height is the ceiling itself, so this control cannot go quiet
+     * if the ceiling is ever raised, and the third read proves the DOM was put
+     * back the way it was found.
+     *
+     * It asserts a *delta* rather than "the page starts under the ceiling",
+     * which is deliberate and was learned from running it: with a 128px block
+     * planted between the control and the summary in the page source, the worst
+     * page went 777 -> 953px, the assertion above went red as it should, and the
+     * earlier form of this control went red beside it for the second-order
+     * reason that its premise had stopped holding. A control that fails when the
+     * thing it is controlling fails reports nothing.
+     */
+    await page.goto(`${site.origin}${worstTrigger.page}`);
+    await hydrated(page);
+    const plantedTop = await page.evaluate<{ before: number; planted: number; back: number }>(
+      `(() => {
+         const d = document.querySelector("[data-sections]");
+         const s = d && d.querySelector("summary");
+         if (!s) return { before: -1, planted: -1, back: -1 };
+         const top = () => Math.round(s.getBoundingClientRect().top + window.scrollY);
+         const before = top();
+         const spacer = document.createElement("div");
+         spacer.style.height = "${SECTIONS_TRIGGER_CEILING}px";
+         d.parentElement.insertBefore(spacer, d);
+         const planted = top();
+         spacer.remove();
+         return { before, planted, back: top() };
+       })()`,
+    );
+    check(
+      `control: on ${worstTrigger.page}, a planted block pushes the trigger past ${SECTIONS_TRIGGER_CEILING}px`,
+      plantedTop.before === worstTrigger.top &&
+        plantedTop.planted >= plantedTop.before + SECTIONS_TRIGGER_CEILING &&
+        plantedTop.planted > SECTIONS_TRIGGER_CEILING,
+      `${plantedTop.before}px as served (the sweep read ${worstTrigger.top}px) -> ${plantedTop.planted}px planted`,
+    );
+    check(
+      "control: …and removing it reads the original number back",
+      plantedTop.back === plantedTop.before,
+      `${plantedTop.back}px vs ${plantedTop.before}px`,
+    );
 
     // -----------------------------------------------------------------------
     // C13 — tier heights against the plan's formula
