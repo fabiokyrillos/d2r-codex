@@ -528,7 +528,7 @@ console.log("\nT14 — the majority state");
     const counts: Record<SlotMarker, number> = { new: 0, kept: 0, alternative: 0 };
     for (const s of r.comparison.slots) if (s.marker) counts[s.marker]++;
     const totalMarked = counts.new + counts.kept + counts.alternative;
-    const winner = MARKERS.find((m) => totalMarked > 0 && counts[m] / totalMarked > 0.7);
+    const winner = MARKERS.find((m) => totalMarked > 0 && counts[m] / totalMarked >= 0.7);
     const got = r.comparison.majority;
     if (winner === undefined) {
       if (got !== undefined) wrong.push(`${r.slug}/${r.set.tier}: declared ${got.marker}`);
@@ -543,7 +543,7 @@ console.log("\nT14 — the majority state");
     if (got) declared++;
   }
   check(
-    "T14 `majority` is present exactly when one state passes 70%, with the right count and total",
+    "T14 `majority` is present exactly when one state reaches 70%, with the right count and total",
     wrong.length === 0,
     wrong.slice(0, 3).join(" | "),
   );
@@ -559,8 +559,19 @@ console.log("\nT14 — the majority state");
 }
 
 {
-  // The boundary, where a fixture is the only honest witness: 70% is not "more
-  // than 70%", and the tenth slot is what decides it.
+  /*
+   * The boundary, where a fixture is the only honest witness.
+   *
+   * Inclusive, and the corpus is the reason: ten slots is the modal tier and
+   * 7-of-10 its commonest split, so a strict comparison excluded 35 of the 265
+   * comparable tiers at precisely this point — `blizzard-sorceress/bis` and
+   * `hammerdin/optimized` among them. Since "kept" is never drawn, what those
+   * 35 cost was audible only: 148 screen-reader repetitions of "Kept" that the
+   * majority sentence exists to replace.
+   *
+   * Both sides are asserted. 6-of-10 must stay silent, or the rule would be
+   * "any plurality"; 7-of-10 must fire, or the boundary has drifted back.
+   */
   const slots = (kept: number) =>
     Array.from({ length: 10 }, (_, i) =>
       entry(GEAR_SLOTS[i], i < kept ? byRef("unique", `k${i}`) : byRef("unique", `n${i}`)),
@@ -570,8 +581,14 @@ console.log("\nT14 — the majority state");
     ...Array.from({ length: 10 }, (_, i) => entry(GEAR_SLOTS[i], byRef("unique", `k${i}`))),
   );
   check(
-    "T14 exactly 70% is not a majority",
-    compareTiers(previous, gearSet("optimized", ...slots(7))).majority === undefined,
+    "T14 60% is not a majority — the rule is not a plurality",
+    compareTiers(previous, gearSet("optimized", ...slots(6))).majority === undefined,
+  );
+  const seven = compareTiers(previous, gearSet("optimized", ...slots(7))).majority;
+  check(
+    "T14 exactly 70% IS a majority — the boundary is inclusive",
+    seven?.marker === "kept" && seven.count === 7 && seven.total === 10,
+    JSON.stringify(seven),
   );
   const eight = compareTiers(previous, gearSet("optimized", ...slots(8))).majority;
   check(

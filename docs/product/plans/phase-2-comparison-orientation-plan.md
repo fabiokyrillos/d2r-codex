@@ -556,14 +556,45 @@ do site — não é texto editorial novo.
 | | |
 |---|---|
 | ocorrências classificadas | **2.369** |
-| marcadores **desenhados** | **775** |
-| marcadores só no leitor de tela | **622** |
-| linhas de maioria | **126** (73 "mantido", 53 "novo"), cobrindo **349** ocorrências |
+| marcadores **desenhados** | **698** |
+| só no leitor de tela ("Mantido") | **454** |
+| cobertas por uma linha de maioria | **1.217** |
+| linhas de maioria | **161** (97 "mantido", 64 "novo") |
 | menor maioria | **3 de 4** — nenhuma frase do tipo "1 de 1 slots" |
 
 > A primeira versão deste plano projetava "1.124 desenhados". Esse é `999 novo + 125 alternativa`, o
-> número **antes** da regra de maioria. Com ela, 349 dessas ocorrências passam a ser cobertas por uma
-> frase, e o desenhado real é **775**. O número corrigido é o que vai ao proprietário.
+> número **antes** da regra de maioria. Os números acima são os medidos depois dela.
+
+**O limiar é inclusivo, e isso foi medido, não suposto.** A primeira implementação usava
+*estritamente* maior que 70%, com o argumento de que a 7 de 10 as três exceções ainda compensam ser
+nomeadas uma a uma. O catálogo discorda: **dez slots é o tier modal e 7-de-10 a sua divisão mais
+comum, então a comparação estrita excluía 35 dos 265 tiers comparáveis exatamente na fronteira** —
+entre eles `blizzard-sorceress/bis` e `hammerdin/optimized`, que são as duas builds que o PRD nomeia
+como baseline. Como "mantido" nunca é desenhado, o custo era **só audível**: nesses 35 tiers um leitor
+de tela ouvia "Mantido" sete vezes onde um leitor vidente via uma linha silenciosa. Incluir a
+fronteira leva o corpus de **602 para 454** repetições e torna verdadeira nas páginas-carro-chefe a
+promessa deste plano — o estado majoritário dito uma vez, **nos dois canais**. A frase carrega os dois
+números ("7 de 10 slots"), portanto não exagera um 70% raso como a palavra "quase" sozinha faria.
+
+### 7.2.1 O que a evidência visual refutou
+
+As capturas de §7.5 foram produzidas e **contradizem parte da justificação acima**, exatamente como o
+proprietário pediu que pudessem. Medido a 1280 px:
+
+| | como enviado | sintético (selo em tudo) |
+|---|---|---|
+| `blizzard-sorceress`/`bis` | 3 de 10 desenhados · 1.762 px | 10 de 10 · **1.762 px (+0)** |
+| `blade-fury`/`bis` (maioria dispara) | 1 + uma frase · 1.306 px | 10 desenhados · **1.270 px, 36 px mais curto** |
+
+**A partir de 640 px, silenciar "mantido" não poupa pixel nenhum** — §7.1 diz que o marcador custa
+zero altura acima de `sm`, e isso corta para os dois lados. Onde a linha de maioria dispara, o
+tratamento rejeitado é até **36 px mais curto**. A 390 px o silêncio poupa 48–112 px por tier, que é
+real mas é metade do argumento.
+
+**A decisão fica; a justificação muda.** O ganho não é altura nem "ruído" em geral: é
+**encontrabilidade da exceção**. "MANTIDO" desenha no mesmo cinza esmaecido de "NOVO", então a 7 de 10
+as três linhas que de facto mudaram deixam de ser figura contra fundo. É esse o motivo que vai ao
+relatório, e não o de altura que a primeira versão deste plano usou.
 
 **Como o texto do marcador existe, e a armadilha evitada.** Sempre `<span class="sr-only">`, **nunca
 `aria-label`**. A linha do slot é `<div data-gear-slot=…>` e a célula do rótulo um `<span>` puro: ambos
@@ -1209,7 +1240,7 @@ refinamento de R-BUILD-4.
 |---|---|---|
 | a | R-BUILD-6: *"A comparação usa `ref.slug`"* | `ref.kind + ref.slug` |
 | b | R-BUILD-7 *Aceite:* *"presente nos seis tiers"* | insatisfazível em `bis` para 45 de 53; reescrito para o contrato terminal de §6 |
-| c | §14 Fase 2: *"marcadores em todos os slots das 53 builds"* | o primeiro tier é isento. **Classificados: 2.369 de 2.659. Desenhados: 775. Só para leitor de tela: 622. Linhas de maioria: 126** (73 "mantido", 53 "novo"), cobrindo 349 ocorrências. **Os números vão ao proprietário antes do commit 4**, não no relatório depois |
+| c | §14 Fase 2: *"marcadores em todos os slots das 53 builds"* | o primeiro tier é isento. **Classificados: 2.369 de 2.659. Desenhados: 698. Só no leitor de tela: 454. Cobertos por uma linha de maioria: 1.217, em 161 linhas** (97 "mantido", 64 "novo"). Todos medidos depois de implementado |
 | d | R-BUILD-6: removidos *"listado ao fim"* | **48 remoções em 30 pares**; o bloco está ausente de **235 de 265** renderizações: é **condicional**, e não se orça altura para ele |
 | e | R-BUILD-7: *"repetido … no `<summary>` do tier compacto seguinte"* | vai no bloco de preview, **fora** do `<summary>` (nome acessível), e **só no tier seguinte ao expandido** (§3.8.1) |
 | f | **J5** (`PRD:206`) e R-BUILD-6: *"cada slot … carrega um marcador"* | refinado: *cada slot recebe um marcador; o estado majoritário do tier pode ser declarado uma vez em vez de repetido por slot*. **É a condição de avanço da fase** — a primeira versão não a listou |

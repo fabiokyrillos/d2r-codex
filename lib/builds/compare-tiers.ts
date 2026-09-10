@@ -110,10 +110,26 @@ export interface TierComparison {
 }
 
 /**
- * The share one state must pass to be declared once for the whole tier.
+ * The share one state must reach to be declared once for the whole tier.
  *
- * Strictly greater than: at exactly 70% — seven of ten — the exceptions are
- * still numerous enough that naming them one by one is the shorter sentence.
+ * Inclusive, and that was measured rather than assumed. The first version of
+ * this was strictly greater than, on the reasoning that at exactly 70% — seven
+ * of ten — the three exceptions are numerous enough to be worth naming one by
+ * one. The catalogue disagrees: **ten slots is the modal tier and 7-of-10 is
+ * its most common split, so a strict comparison excludes 35 of the 265
+ * comparable tiers at precisely the boundary** — among them
+ * `blizzard-sorceress/bis` and `hammerdin/optimized`, which are the two builds
+ * the PRD names as its baseline.
+ *
+ * What that cost is audible rather than visible. "Kept" is never drawn, so the
+ * only place it repeats is the screen-reader text, and on those 35 tiers a
+ * reader heard "Kept" seven times where a sighted reader saw one quiet row.
+ * Including the boundary takes the corpus from 602 such repetitions to 454, and
+ * makes the promise in the plan — that a tier's majority state is said once, in
+ * *both* channels — true on the flagship pages instead of nearly true.
+ *
+ * The sentence carries both numbers ("7 of 10 slots"), so it cannot overstate a
+ * bare 70% the way the word "almost" alone would.
  */
 const MAJORITY_SHARE = 0.7;
 
@@ -199,7 +215,7 @@ function majorityOf(slots: SlotComparison[]): TierComparison["majority"] {
   }
   if (total === 0) return undefined;
   for (const [marker, count] of counts) {
-    if (count / total > MAJORITY_SHARE) return { marker, count, total };
+    if (count / total >= MAJORITY_SHARE) return { marker, count, total };
   }
   return undefined;
 }
