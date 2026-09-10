@@ -16,6 +16,7 @@ import {
   StatGrid,
 } from "@/components/ui";
 import { ConfidenceNote, ElementBadge, RichText, SkillTree } from "@/components/game";
+import { AnchorRealign } from "@/components/game/anchor-realign";
 import { SectionNav, type SectionNavEntry } from "@/components/game/section-nav";
 import { FilterableBuildList } from "@/components/builds/filterable-build-list";
 import { CLASS_PAGE_FILTER_GROUPS } from "@/lib/builds/filter";
@@ -188,6 +189,22 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
           reader-visible difference.
         */}
         <SectionNav entries={sections} label={t.builds.sections.label} />
+        {/*
+          The other half of the summary, and the reason it is a separate
+          component rather than a prop on the one above: `SectionNav` is a
+          server component that behaves identically with scripting off, and
+          this is only ever needed when scripting is *on*.
+
+          `#builds` below is a `FilterableBuildList`, and its static HTML is
+          the Suspense fallback — the plain list. Hydration replaces it with
+          the filter panel and the list, and the section grows: 86px at 390,
+          338–428 at 1280. That growth is above every other anchor on this
+          page, and a load that already carries `#skills` has been jumped
+          before it happens, so the reader arrives that far below the heading
+          they asked for. This puts them back once the page has stopped
+          growing. It renders nothing.
+        */}
+        <AnchorRealign />
 
         {cls.requiresDlc && (
           <Callout variant="warning" title={t.classes.dlcCalloutTitle}>
