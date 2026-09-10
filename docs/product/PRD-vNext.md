@@ -204,6 +204,14 @@ Cada jornada: ponto de entrada, objetivo, etapas desejadas, atritos atuais (com 
 - **Atritos:** a informação existe nas 53 builds, mas só em prosa e sem diferença marcada entre tiers.
 - **Resultado:** diferença entre tiers adjacentes derivada dos dados, sem custo editorial.
 - **Sucesso:** cada slot do tier ativo carrega um marcador derivado por comparação com o tier anterior; "o que consertar em seguida" permanece ao fim do tier.
+  > **Refinamento contratual (proprietário, 2026-09-10, após a Fase 2).** Cada slot recebe um
+  > marcador, mas **o estado majoritário de um tier pode ser declarado uma vez em vez de repetido
+  > slot a slot**. O motivo é medido: "mantido" é 1.245 das 2.369 ocorrências classificadas e sobe
+  > com o tier (443 de 519 em `bis`), e um selo em cada uma delas é um fundo, não um marcador —
+  > em ambos os canais, porque repetir "Mantido" oito vezes num leitor de tela é o mesmo ruído. A
+  > regra dispara acima de 70% e a frase carrega os dois números ("7 de 10 slots"). Medido depois
+  > de implementado: **698 desenhados, 454 só no leitor de tela, 1.217 cobertos por 161 linhas de
+  > maioria**.
 
 ### J6. Consultar skills e pré-requisitos
 
@@ -295,9 +303,24 @@ Ao abrir qualquer build, o jogador vê em uma tela o que a build é e, logo abai
 - **R-BUILD-4 · Navegação dentro da seção Gear.** A partir de 640 px, o controle é repetido de forma sticky abaixo do header dentro da seção Gear e reflete o tier em foco durante a rolagem; abaixo de 640 px não há barra sticky (os chips roláveis de R-BUILD-9 e o resumo compacto dos tiers cumprem o papel). *Aceite:* rolagem entre tiers adjacentes ≤ 1 tela em 390 px com os demais compactos; nenhum elemento sticky além do header abaixo de 640 px; estado ativo segue a rolagem a partir de 640 px.
   > **Refinamento contratual (proprietário, 2026-09-09, após a Fase 1).** O controle repetido dentro de Gear é um **espelho de navegação**: reflete o tier visível e navega por âncoras, mas **não grava a preferência, não altera `aria-pressed` e não expande nem compacta conteúdo acima da viewport**. Só o controle principal, no topo, grava. O motivo é medido: um controle que grava a meio da página reflui milhares de pixels acima da viewport, e o *scroll anchoring* do navegador então move `scrollY` sozinho — fazendo R-BUILD-2 falhar por comportamento correto do navegador, não por defeito do código. O espelho mantém alvo ≥ 24 px; o controle principal segue os ≥ 44 px de R-A11Y-4. Consequência assumida: a métrica "≤ 2 ações" de §12.2 vale a partir do controle principal.
 - **R-BUILD-5 · Tiers compactos.** Um tier compacto é um `<details>` cujo `<summary>` traz número, nome, faixa de nível e objetivo em uma frase, seguido (ainda visível quando fechado) de uma linha por slot com a escolha principal e de "Expandir". Altura alvo ≤ 320 px em 390 px (**hipótese** a medir; baseline por tier expandido: 2.191 a 3.421 px). O conteúdo completo continua no DOM dentro do `<details>`. *Aceite:* medição por teste de viewport de cada um dos seis tiers compactos; sem JS, todos os `<details>` renderizam com `open`; nenhum conteúdo de tier fica fora do DOM.
-- **R-BUILD-6 · Comparação adjacente.** No tier expandido, cada slot recebe um marcador derivado por comparação com o tier anterior: **novo** (escolha principal diferente), **mantido** (mesma referência), **alternativa** (a principal anterior aparece como alternativa aqui), **removido** (slot presente antes e ausente agora, listado ao fim). A comparação usa `ref.slug` e, na ausência de `ref`, `label`. O tier Início não tem marcador. *Aceite:* função pura com testes unitários sobre as 53 builds; marcador com texto, não só cor; nenhum marcador em texto livre.
+- **R-BUILD-6 · Comparação adjacente.** No tier expandido, cada slot recebe um marcador derivado por comparação com o tier anterior: **novo** (escolha principal diferente), **mantido** (mesma referência), **alternativa** (a principal anterior aparece como alternativa aqui), **removido** (slot presente antes e ausente agora, listado ao fim). *(Após a Fase 2: "removido" é o **nome do slot** deixar de ter qualquer ocorrência, não uma ocorrência sumir — a diferença é `blade-fury/budget`, o único slot duplicado do catálogo. O bloco é **condicional**: 48 remoções em 30 de 265 renderizações, ausente das outras 235.)* A comparação usa `ref.slug` e, na ausência de `ref`, `label`. *(Corrigido após a Fase 2: a comparação usa `ref.kind + ref.slug`. Resultado idêntico hoje — nenhum slug aparece sob dois `kind` — mas é o que impede a primeira colisão futura.)* O tier Início não tem marcador. *Aceite:* função pura com testes unitários sobre as 53 builds; marcador com texto, não só cor; nenhum marcador em texto livre.
 - **R-BUILD-7 · Upgrades.** "O que consertar em seguida" permanece ao fim do tier expandido e é repetido em forma curta no `<summary>` do tier compacto seguinte ("Próximo: Oculus, HotO, Nightwing"). *Aceite:* presente nos seis tiers; texto vem de `nextUpgrade`.
+  > **Refinamento contratual (proprietário, 2026-09-10, após a Fase 2).** "Presente nos seis
+  > tiers" é **insatisfazível em `bis`**: 45 das 53 builds não têm `nextUpgrade` ali, e as 45
+  > lacunas do catálogo são **todas** em `bis`. `bis` é terminal — nunca recebe um "próximo"
+  > derivado; onde o texto existe (8 builds, 6 com conselho real), continua a ser renderizado sob
+  > a mensagem terminal. A repetição curta vai no bloco de preview, **fora do `<summary>`** (lá
+  > viraria o nome acessível da divulgação), e **só no tier compacto seguinte ao expandido** — o
+  > que é o que mantém a primeira visita idêntica à Fase 1 ao pixel. E a "forma curta" é o texto
+  > completo com `line-clamp-2`: extrair nomes falha em 103 dos 265 textos, e truncar pela
+  > primeira oração **inverte o conselho**.
 - **R-BUILD-8 · Sumário da página.** Um sumário com as onze seções (e o tier ativo) fica disponível no topo em desktop e como botão "Seções" no celular. *Aceite:* cada seção alcançável em um toque; âncoras existentes preservadas; ao fechar a sheet de seções, o foco volta ao botão.
+  > **Refinamento contratual (proprietário, 2026-09-10, após a Fase 2).** Abaixo de 640 px são
+  > **dois** toques — abrir a sheet, tocar a entrada — que é o que a decisão do proprietário já
+  > prevê ("uma interação **após abrir**"). Na página de classe continua **um**, porque lá o
+  > sumário é sempre visível. O foco volta ao `<summary>` em Escape, fundo e no botão de fechar,
+  > mas **não** ao ativar uma entrada: o navegador está a saltar para a seção pedida, e puxar o
+  > foco de volta desfaria o salto.
 - **R-BUILD-9 · Mobile.** Em <640 px o controle vira chips roláveis com fade e o tier ativo centralizado; o sumário vira sheet reutilizando o foco preso e o travamento de rolagem já existentes. *Aceite:* sem overflow; alvos ≥ 24 px (gate existente); Esc e fundo fecham a sheet; foco devolvido ao gatilho.
 - **R-BUILD-10 · URLs, HTML estático e estabilidade visual.** As âncoras `#gear-<tier>` continuam válidas e idênticas nos dois idiomas; nenhum parâmetro de query é introduzido para tier; a página continua totalmente estática (`dynamicParams = false`). Ao carregar com preferência, o deslocamento cumulativo de layout (CLS) medido em teste headless é < 0,1, e nenhuma exceção nova é aberta no teste de fronteira cliente/servidor (se um script inline for necessário, ele entra na lista vigiada). O mecanismo (script antes da pintura, classe no `<html>`, ou outro) é hipótese de implementação do plano da fase, não requisito. *Aceite:* CLS < 0,1; teste de fronteira verde sem exceções novas; seis âncoras presentes em EN e PT.
 - **R-BUILD-11 · Acessibilidade do controle e dos tiers.** O controle é um grupo de botões (com JS) ou links (sem JS) com `aria-pressed` no tier ativo, navegável por setas; não é `tablist` (os tiers não são painéis mutuamente exclusivos). Os tiers usam `<details>`/`<summary>`, cujo estado expandido é nativo. O marcador de comparação tem texto. Foco visível de 2 px como no resto do site. *Aceite:* teste de a11y construído verifica papéis, `aria-pressed`, nomes e ordem de foco; nenhum `role=tab` na página.
@@ -627,6 +650,14 @@ Reavaliada após a revisão independente. Regras: remover o resolvido; não prom
 - **R-NAV-2 · CTA de classe.** "Começar um personagem" leva à escolha de classe (`/leveling` ou seletor), não à Sorceress. *Aceite:* href ≠ `/leveling/sorceress`; crawl.
 - **R-NAV-3 · Sumário na página de classe.** Sumário sticky ou abas com Builds / Mecânicas / Atributos / Skills / Breakpoints. *Aceite:* "Skill trees" alcançável em um toque a partir do topo; âncoras existentes preservadas.
 - **R-NAV-4 · Referência descoberta.** Cinco cartões (Runas, Itens, Breakpoints, Mercenários, Mecânicas) na home e rótulo "Referência ▾" no header em vez de "Menu". *Aceite:* cinco cartões com href; rótulo nos dois dicionários.
+  > **Refinamento contratual (proprietário, 2026-09-10, após a Fase 2).** O rótulo é
+  > **condicional à largura**, que é o que a própria decisão condiciona ao dizer "quando esse for
+  > o agrupamento": abaixo de 900 px a nav primária não está na linha, então aquele `<details>` é
+  > a **única** via para Classes, Builds, Leveling e Farming, e chamá-lo "Referência" arquivaria a
+  > navegação primária sob "Referência" em todo telefone. Fica `nav.menu` abaixo de 900 px e
+  > `nav.reference` a partir daí; `nav.menu` **não** é apagado e o ADR 0003 não muda. O
+  > `aria-label` do landmark continua "Menu" em todas as larguras, porque é um atributo e um
+  > atributo não tem largura a que responder.
 - **R-LEVEL-1 · Progresso persistido.** Marcação de etapa atual por classe (`d2rc.leveling.<classe>`), badge "você está na etapa N" e retorno à etapa ao abrir; controle ausente sem JS (R-PREF-4). *Aceite:* ao reabrir, a etapa marcada está em foco; HTML sem scripts sem o controle.
 - **R-LEVEL-2 · Barra de etapas.** Indicador de rolagem no desktop; etapa atual centralizada no celular. *Aceite:* viewport test em 1280 px mostra o indicador quando há overflow.
 
@@ -705,6 +736,9 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 - **Dependências:** Fase 1 (forma dos dados de tier e módulo de preferências).
 - **Riscos:** regra de comparação; dispersão entre páginas (escopo fechado em seis requisitos).
 - **Aceite:** marcadores em todos os slots das 53 builds; "Seções" em um toque; seis cartões de tier com href; CTA de classe; "Skill trees" em um toque na classe; referência na home e no header.
+  > **Medido na execução (2026-09-10):** o primeiro tier é isento por R-BUILD-6, então o número
+  > alcançável é **2.369 de 2.659** ocorrências de slot — todas classificadas. Desenhadas: 698;
+  > só no leitor de tela: 454; cobertas por uma das 161 linhas de maioria: 1.217.
 - **Testes novos:** `compareTiers` sobre as 53 builds; crawl de links; HTML.
 - **Entregável visível:** marcadores novo/mantido/alternativa/removido; sumário; home com tiers clicáveis e referência.
 - **Condição para avançar:** J5 concluída na sessão do proprietário.
@@ -908,6 +942,9 @@ Capturas e textos coletados na auditoria (pasta temporária, não versionados): 
 | 2026-09-08 | **Correção factual de duas afirmações sobre a árvore**, descobertas pela medição da Fase 0B.1: "Corpse Explosion" é da tree Poison and Bone, não Summoning (`skill-graph.ts`); e alargar a grade **não** corrige sozinho o `role=grid` inválido, porque a célula vazia é `aria-hidden="true"` em qualquer largura | §2.2 D7, §8.2 R-TREE-0, §8.3 R-TREE-1; errata em [`reviews/`](reviews/2026-09-08-prd-vnext-review.md) |
 | 2026-09-09 | **Fase 1 executada.** Tiers compactos e preferência `d2rc.tier`. A hipótese de ≤ 320 px por tier compacto foi **refutada por medição** (real: 251–420 px, conforme os slots e a largura) e §12.1 recalculada com números medidos, como o próprio §12.1 manda. Seção Gear da build de referência: 16.458 → 2.034 px (−87,6%); primeira visita 32.574 → 18.344 px (−43,7%). Controle dentro do alvo de 560 px em 104 das 106 páginas, duas a 575 px em pt-BR, nenhuma acima do teto de 640 px | [`plans/phase-1-report.md`](plans/phase-1-report.md) |
 | 2026-09-09 | **Refinamento contratual de R-BUILD-4** aprovado pelo proprietário: o controle repetido dentro de Gear é espelho de navegação e não grava a preferência | §6.3 R-BUILD-4 |
+| 2026-09-10 | **Fase 2 executada.** Comparação adjacente, upgrades, sumário da build, descoberta e o fragmento na troca de idioma. `compactGear` fica **idêntico ao pixel** (2.034 en / 2.146 pt), portanto a afirmação publicada de 87,6% da Fase 1 não foi tocada; só `openGear` e `openPage` se moveram, pelo crescimento medido. As 45 lacunas de `nextUpgrade` são **todas** em `bis`, o que a decisão de BiS terminal cobre inteiramente — nenhum dado alterado, nenhum conteúdo inventado | [`plans/phase-2-report.md`](plans/phase-2-report.md) |
+| 2026-09-10 | **Refinamentos contratuais de J5, R-BUILD-6, R-BUILD-7, R-BUILD-8 e R-NAV-4** registados nos próprios requisitos: estado majoritário dito uma vez; identidade por `ref.kind + ref.slug`; `bis` terminal e a repetição só no tier seguinte ao expandido; dois toques na build abaixo de 640 px e um na classe; rótulo do header condicional à largura | §5 J5, §6.3, §13.1 |
+| 2026-09-10 | **Quatro gates que não podiam falhar**, encontrados por 43 mutations e corrigidos: uma regex apanhada por `peer-open:hidden`; a regressão do sumário invisível sem asserção de navegador; a regra de escritor único de `d2rc.tier` nunca escrita; e um gate satisfeito pelo próprio comentário de aviso | [`plans/phase-2-report.md`](plans/phase-2-report.md) §6 |
 
 ---
 
