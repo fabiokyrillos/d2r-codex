@@ -908,6 +908,11 @@ Implementado como dois `<span>` com `hidden` / `min-[900px]:inline` — o padrã
 `gear-progression.tsx:109-114` já usa. `display:none` remove um dos dois da árvore de acessibilidade,
 portanto o nome acessível é sempre exatamente um.
 
+> **Errata (passe corretivo, 2026-09-10).** O degrau ficou `min-[56.25rem]`, não `min-[900px]`: o
+> mesmo 900 px no tamanho de texto padrão, e um número que acompanha quem ampliou o texto. Em
+> pixels o rótulo era promovido em larguras onde a linha ampliada já não tinha espaço para ele.
+> Medido em [`phase-2-report.md`](phase-2-report.md) §10.5–10.6.
+
 Consequências: **`nav.menu` não é apagado**, o ADR 0003 **não muda**, `dictionary.test.ts` fica verde
 sem edição. Em troca, perde-se a propriedade de "apagar a chave para que dois gates falhem a compilar".
 **O substituto é mais forte**: os gates passam a afirmar o nome acessível do gatilho **por largura** —

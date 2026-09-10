@@ -1125,9 +1125,9 @@ async function main(): Promise<void> {
      * overflow there (415px against 320 at 150%, 552 at 200%) is the same to the
      * pixel before and after Phase 2.
      *
-     * It cost width in exactly two of the thirty combinations, both of them
-     * pages that already overflowed: +45px (en) / +50 (pt) at 960px and 150%,
-     * and +61 / +66 at 1280px and 200%. Both are the same fact — `min-[900px]`
+     * It cost width in exactly two of the eighteen width-and-text-size
+     * combinations measured per language, both already overflowing: +45px (en)
+     * / +50 (pt) at 960px and 150%, and +61 / +66 at 1280px and 200%. Both are the same fact — `min-[900px]`
      * is a *pixel* query, so it kept promoting the longer word at widths where
      * the enlarged row no longer had room for it.
      *

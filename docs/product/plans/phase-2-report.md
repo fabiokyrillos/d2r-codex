@@ -210,6 +210,12 @@ documento acima dele. Ambas as leituras são de página assente. Um carregamento
 nenhum, reproduz as duas. É defeito pré-existente da árvore — **Fase 4** — e o gate imprime o desvio em
 vez de o asserir, para não fixar uma moeda ao ar nem culpar o switcher.
 
+> **Errata (passe corretivo, 2026-09-10).** A atribuição está errada e a conclusão também. Não é a
+> árvore: a árvore está *dentro* de `#skills`, onde crescer não mexe no topo da própria seção. O que
+> cresce é `#builds`, cujo HTML estático é o *fallback* do Suspense da `FilterableBuildList`. E não
+> é pré-existente no sentido que importa: a Fase 2 é que pôs um sumário a apontar para ali. Medido,
+> corrigido e testado em §10.
+
 ### Descoberta
 Os seis cartões de tier da home são links inteiros para `/builds` (sem parâmetro de query), gravando
 `d2rc.tier` num handler de clique e nunca no render. O CTA e o bloco de destaque de leveling apontam
@@ -278,10 +284,13 @@ Voltar/Avançar com o menu aberto.
 - **`leveling/[classSlug]/page.tsx:105` é `sticky top-14` em todas as larguras** e mede 57 + 65 = 122 px
   a 320 px, 10 px acima do teto de R-A11Y-8. Mesmo defeito que a Fase 1 corrigiu no gear; fora do
   escopo.
-- **A âncora `#skills` da página de classe corre com a hidratação** (§4). Fase 4.
+- ~~**A âncora `#skills` da página de classe corre com a hidratação** (§4). Fase 4.~~
+  **Corrigido no passe corretivo, e a causa não era a que está escrita** — §10.1–10.4.
 - **A 200% de texto a 320 px a página transborda lateralmente** (scrollWidth 552 contra 320). Apagar
   todos os marcadores deixa-a em 552: a causa é a linha do header, não esta fase. A 100% a mesma página
   mede exatamente 320.
+  **Confirmado contra uma build real de `0b5a2bc`**, ao pixel, a 320 e 390 px, a 100/150/200 % — mas
+  R-NAV-4 **piorava** o transbordo em duas larguras maiores, e essa parte foi corrigida. §10.5–10.6.
 - **`TIER_CEILING` não significa nada a 200% de texto**, onde os tiers compactos medem 923–1.068 px.
 - **`Emulation.setScriptExecutionDisabled(false)` depois do load deixa os scripts diferidos correrem**,
   e vários gates "sem JS" deste repositório desligam o script, navegam e **religam-no para chamar
@@ -320,3 +329,256 @@ editorial foi alterado; nenhuma URL, rota ou entrada de sitemap mudou; as seis �
 os sete ids de seção existentes continuam a existir.
 
 **As Fases 3, 4 e 5 não foram iniciadas.**
+
+---
+
+## 10. Passe corretivo — a âncora `#skills` e o header a texto ampliado
+
+Dois achados da §7 foram reavaliados porque ambos tocam funcionalidade entregue nesta fase. Um
+**era** defeito da Fase 2 e está corrigido. O outro é pré-existente e continua a existir, mas a
+Fase 2 **piorava-o** em duas das quinze combinações largura×tamanho-de-texto medidas por idioma, e
+essa parte está corrigida.
+
+As entradas da §7 e o parágrafo da §4 ficam onde estão, com errata: apagar o que foi registado seria
+apagar o registo de ter atribuído a causa errada.
+
+### 10.1 `#skills`: o controlo, antes
+
+96 leituras — três classes (Sorceress, Necromancer, Warlock), quatro larguras, dois idiomas, quatro
+caminhos de chegada — todas depois de a página assentar, com rolagem **e** altura do documento
+paradas, que é a única forma de não ler o retângulo que a seção está a deixar.
+
+O contrato de aterragem não é um número escrito à mão: é o `scroll-margin-top` da própria `<Section>`
+(96 px, de `scroll-mt-24`) mais o `scroll-padding-top` do `<html>` (8 px abaixo de 640 px, 48 a
+partir daí). **104 px abaixo de `sm`, 144 px a partir dele.**
+
+| largura | contrato | carregamento com `#skills` | clique no sumário | soft nav | sem JS |
+|---|---|---|---|---|---|
+| 320 | 104 | **208** (+104) | 104 | 104 | 104 |
+| 390 | 104 | **190** (+86) | 104 | 104 | 104 |
+| 768 | 144 | **482–528** (+338…+384) | 144 | 144 | 144 |
+| 1280 | 144 | **482–572** (+338…+428) | 144 | 144 | 144 |
+
+Os dois caminhos **não** erravam igual, e é isso que torna a asserção possível: o clique e a
+navegação soft aterravam no contrato **ao pixel**, em 24 de 24 casos do gate — que confirma o alvo
+com `elementFromPoint` antes de premir. (A única leitura discrepante das 96 do varrimento foi um
+clique que falhou o link, num varrimento que ainda não fazia essa confirmação.) Comparar um caminho
+com o outro nunca teria provado nada; o que se afirma é a posição absoluta.
+
+O erro é sempre **exatamente** o que a seção `#builds` cresce, e o crescimento é sempre dela: o bloco
+que muda de altura é `builds#2` na Sorceress e na Necromancer e `builds#3` no Warlock, que tem um
+bloco a mais acima (o aviso de DLC). `#builds` é uma `FilterableBuildList` e o HTML estático dela é o
+*fallback* do Suspense: a lista simples, sem painel de filtros. O painel chega com a hidratação —
+**acima** de todas as outras âncoras da página.
+
+**A árvore de skills não é a causa.** A §4 atribuía-lhe o crescimento, e não pode ser: a árvore está
+*dentro* de `#skills`, onde crescer não move o topo da própria seção. Nenhuma alteração de Fase 4 foi
+necessária, e nenhuma foi feita.
+
+### 10.2 A causa, quadro a quadro
+
+Um carregamento de `/en-us/classes/sorceress#skills` a 390 px, amostrado a cada 25 ms desde antes do
+primeiro script da página:
+
+```
+   56ms  DOMContentLoaded         y=0      doc=13301   #skills a 6019
+  311ms  o salto começa           y=9                  animação: scroll-behavior é smooth
+  332ms  a hidratação troca o     y=39     doc=13387   #skills passa a 6105  (+86)
+         fallback pelo painel
+ 1658ms  a animação chega         y=5915               #skills a 190, não a 104
+```
+
+O destino da animação é calculado **uma vez**, a 311 ms, sobre o layout de então. A 332 ms o
+documento cresce 86 px acima da âncora e o destino já não é revisto. A 1658 ms o leitor aterra 86 px
+abaixo do cabeçalho que pediu.
+
+Isto invalidou a primeira correção escrita — um `ResizeObserver` que corrigia o crescimento. Não
+fazia nada, e com razão: a 332 ms a seção está 6.066 px abaixo da dobra, e corrigir ali é ou um
+no-op ou um salto para onde ninguém está a olhar. **O único instante em que "isto está no sítio
+errado?" tem resposta é depois de a rolagem parar.**
+
+### 10.3 A correção
+
+`components/game/anchor-realign.tsx`, renderizado ao lado do `<SectionNav>` da página de classe.
+Não desenha nada.
+
+Espera com um laço de quadros — o Chrome não dispara evento nenhum quando uma rolagem suave termina,
+e o documento também não anuncia que parou de crescer — até rolagem e altura estarem ambas paradas
+250 ms. Aí, e só aí, mede: se a seção assentou **abaixo** da marca que a folha de estilos lhe dá e
+ainda está no ecrã, rola uma vez, sem animação, até à marca. A marca é lida da página
+(`scroll-margin-top` + `scroll-padding-top`), nunca reescrita ali.
+
+Não é movimento automático: tem de haver fragmento, o fragmento tem de nomear um elemento, e
+qualquer roda, toque, tecla ou pressão termina a vigilância antes — `pointerdown` incluído, porque
+arrastar a barra de rolagem não produz nenhum dos outros três. Há um limite exterior de 8 s, após o
+qual a página fica como está em vez de ser movida tarde: um separador em segundo plano não recebe
+quadros, e "decorrido" ali pode ser minutos.
+
+**Porquê ali e não na lista.** A lista não é desta fase. E o *fallback* dela é o que um leitor sem
+JavaScript recebe para sempre: reservar ali a altura do painel dava-lhe uma caixa vazia permanente
+para pagar um painel que nunca chega.
+
+### 10.4 `#skills`: depois
+
+O mesmo varrimento na build corrigida, agora com cinco caminhos de chegada: **120 de 120** no
+contrato, sem uma única exceção.
+
+| largura | contrato | carregamento | clique antes da hidratação | clique | soft nav | sem JS |
+|---|---|---|---|---|---|---|
+| 320 | 104 | 104 | 104 | 104 | 104 | 104 |
+| 390 | 104 | 104 | 104 | 104 | 104 | 104 |
+| 768 | 144 | 144 | 144 | 144 | 144 | 144 |
+| 1280 | 144 | 144 | 144 | 144 | 144 | 144 |
+
+O caminho sem JavaScript nunca esteve errado e continua igual — o realinhamento é uma ilha cliente que
+não desenha nada e, sem script, não corre. A navegação soft também nunca esteve errada, e agora
+sabe-se porquê: ali o painel de filtros já está montado antes de a âncora ser aplicada, e o
+crescimento medido é **zero**. O `early` — premir o link antes de a hidratação acabar — é o caso que a
+primeira versão deste componente não cobria.
+
+Tempos, medidos nas 120 leituras: o crescimento que causa o defeito termina **178–282 ms** depois do
+início da navegação num carregamento direto; numa navegação soft já aconteceu antes de a âncora ser
+aplicada, e o crescimento medido é **zero**. A animação do salto chega por volta de 1,7 s a 390 px
+(§10.2), e a correção acontece 250 ms depois de tudo parar.
+
+**Uma medição foi descartada, e vale a pena dizer porquê.** As duas primeiras corridas deste
+varrimento deram 116 de 120 e 119 de 120: leituras isoladas com a seção no seu deslocamento total,
+como se a página nunca tivesse rolado. A terceira, com as duas causas abaixo corrigidas, deu
+**120 de 120**. Nenhuma reproduziu — cinco repetições do pior caso deram
+144 px, cinco vezes — e a diferença estava no relógio, não na página: as falhas assentaram **1,3 s
+mais cedo** do que as corridas boas. Sob carga o Chrome pode começar o salto do fragmento com mais de
+um segundo de atraso, e até lá `scrollY` não se mexeu e a altura do documento já estabilizou, de modo
+que uma espera que só procura sossego conclui **antes de a coisa medida ter começado**. A segunda
+causa foi minha: o próprio auxiliar de clique rolava o alvo para o centro do ecrã, o que tirava
+`scrollY` de zero e desarmava essa guarda.
+
+As duas foram corrigidas — no gate, exigindo que o salto tenha acontecido antes de contar sossego; no
+varrimento, além disso, só rolando para o alvo quando ele está mesmo fora do ecrã. Sem a primeira, o
+gate herdaria a mesma intermitência, e uma falha intermitente num gate de aterragem seria lida como o
+defeito a voltar.
+
+### 10.5 O header a texto ampliado: `0b5a2bc` contra `9a4aaa4`
+
+Construção real dos dois SHAs — `git worktree` em `0b5a2bc`, `npm run build`, `next start` —, o mesmo
+Chrome, as mesmas fontes, as mesmas páginas, e o **tamanho de texto do próprio Chrome**
+(`Page.setFontSizes`), não um `style.fontSize` no `<html>`.
+
+`scrollWidth` do documento contra `clientWidth`, na home e numa página de classe, en-US e pt-BR:
+
+| largura | texto | `0b5a2bc` | `9a4aaa4` | diferença |
+|---|---|---|---|---|
+| 320 | 100 % | 320 (cabe) | 320 (cabe) | **0** |
+| 320 | 150 % | 415 (+95) | 415 (+95) | **0** |
+| 320 | 200 % | 552 (+232) | 552 (+232) | **0** |
+| 390 | 100 % | 390 (cabe) | 390 (cabe) | **0** |
+| 390 | 150 % | 415 (+25) | 415 (+25) | **0** |
+| 390 | 200 % | 552 (+162) | 552 (+162) | **0** |
+| 900 | 100 % e 150 % | cabe | cabe | **0** |
+| 900 | 200 % | 1192 (+292) | 1192 (+292) | **0** |
+| 960 | 100 % | cabe | cabe | **0** |
+| 960 | 150 % | 1194 (+234) | **1239** (+279) | **+45** en / **+50** pt |
+| 960 | 200 % | 1192 (+232) | 1192 (+232) | **0** |
+| 1280 | 100 % e 150 % | cabe | cabe | **0** |
+| 1280 | 200 % | 1562 (+282) | **1623** (+343) | **+61** en / **+66** pt |
+
+Respostas diretas às quatro perguntas:
+
+1. **O transbordo existia antes?** Sim. A 320 e 390 px, a 150 % e 200 % de texto, **idêntico ao
+   pixel** nos dois SHAs. A 100 % de texto nenhuma página transborda, em nenhuma largura, em nenhum
+   dos SHAs.
+2. **A troca para "Reference/Referência" criou ou aumentou o transbordo?** A 320 e 390 px, **nem
+   uma coisa nem outra: custa exatamente 0 px**, porque abaixo de `sm` a palavra é `sr-only`, e `sm`
+   é `40rem` — 640 px a 100 %, 960 a 150 %, 1280 a 200 %. **Criou zero** em qualquer largura: não há
+   combinação em que o SHA antigo coubesse e o novo não. **Aumentou** um transbordo já existente em
+   **duas das quinze** combinações largura×tamanho por idioma — 960 px a 150 % e 1280 px a 200 % —
+   o que dá **16 das 120 leituras** (quatro páginas × cinco larguras × três tamanhos × dois idiomas).
+   Verificado por comparação exaustiva das 120: **nenhuma** onde o antigo coubesse e o novo não, e o
+   número de controlos que exigem rolagem horizontal idêntico nas 120.
+3. **Qual é a largura excedente em cada SHA?** A tabela acima, coluna a coluna.
+4. **Algum controlo fica inacessível?** **Não.** `unreachable = 0` em todas as combinações dos dois
+   SHAs, e o número de controlos do header que exigem rolagem horizontal é **igual nos dois** em
+   todas elas (0, 11, 12, 13 ou 14, conforme largura e tamanho do texto). O que a Fase 2 mudou foi a
+   largura excedente, não o alcance de nada.
+
+O elemento que define `scrollWidth` é a linha do header — `header > div > div` — em todas as
+combinações que transbordam a 320 e 390 px; os elementos concretos que passam da borda são o
+agrupamento de busca + idioma e, por ser o último da linha, o `<details>` do menu. Numa página de
+build a `tier-chips` e numa de classe a tabela de breakpoints chegam mais à direita, mas ambas vivem
+dentro de um `overflow-x-auto` e não alargam o documento.
+
+### 10.6 A correção do header, e a medição que quase a escreveu ao contrário
+
+`min-[900px]` é uma consulta em **pixels**, e por isso o rótulo continuava a ser promovido em
+larguras onde a linha ampliada já não tinha espaço para ele. `min-[56.25rem]` é o **mesmo 900 px** no
+tamanho de texto padrão e um número diferente para quem ampliou o texto — 1350 px a 150 %, 1800 a
+200 % — de modo que a palavra só aparece onde a linha ainda cabe. Duas classes; a nav primária
+(`min-[900px]:flex`) não foi tocada, porque não é de R-NAV-4.
+
+Nada some e nada reverte em silêncio: o gatilho, os dez links e o rótulo `nav.reference` estão
+exatamente como estavam em todas as larguras que um leitor com texto padrão vê. O que substitui a
+palavra quando o texto é grande é `nav.menu`, que nunca é falso — este `<details>` contém os dez
+links em todas as larguras, e o `aria-label` do landmark sempre disse isso. Dois gates independentes
+apanham uma reversão silenciosa: o nome acessível por largura, em `nav-discovery`, e o controlo do
+`viewport` que exige que trocar a palavra mude a largura do gatilho **nalgum** ponto do varrimento.
+
+**A primeira medição estava errada e teria escrito este relatório ao contrário.** Emular 150 % de
+texto com `document.documentElement.style.fontSize = '24px'` escala os comprimentos em `rem` mas
+deixa em paz a consulta de média em `rem` — e mediu esta linha **68 px mais larga** do que o browser
+a desenha, porque o agrupamento de busca + idioma não escala igual. Com essa emulação, 1280 px a
+150 % aparecia como *transbordo criado pela Fase 2* (0 → 27 px), o que não é verdade: com a
+definição real do Chrome cabe nos dois SHAs. `Page.setTextScale` foi acrescentado a
+`scripts/headless.ts` por causa disto, e o comentário lá diz porquê.
+
+### 10.7 RED antes de GREEN
+
+| gate | antes da correção | depois |
+|---|---|---|
+| `test:nav-discovery` | **437 passaram, 20 falharam** (aterragens, por 86–428 px) | **461, 0** |
+| `test:viewport` | **846 passaram, 4 falharam** (960/150 % e 1280/200 %, nos dois idiomas) | **850, 0** |
+
+O RED do `nav-discovery` só ficou honesto à segunda. Escrito sem um documento em branco entre casos,
+falhava apenas na primeira largura do varrimento e passava nas outras três — porque ir de
+`…/sorceress` para `…/sorceress#skills` é navegação **no mesmo documento**: nada recarrega e nada
+re-hidrata, e a seção aterra certa. Está no comentário do gate, com os números que provariam o
+contrário.
+
+As quatro falhas do `viewport` trazem os números exatos que o controlo entre SHAs mediu à parte —
++45/+50/+61/+66, contra larguras base de 1194/1170/1562/1531. O gate reconstrói dentro da própria
+página o header que `0b5a2bc` publicava (uma palavra visível, `nav.menu`) e compara as duas larguras
+de documento; a coincidência ao pixel com uma build real do commit antigo é o que diz que nenhum dos
+dois métodos está a medir outra coisa.
+
+### 10.8 Mutations
+
+Cada uma foi aplicada sobre os commits já feitos, medida, e revertida com `git checkout --` — nunca
+reescrita de memória. A Fase 1 perdeu correções duas vezes por reverter à mão; aqui cada reversão foi
+confirmada com `git diff --quiet` antes de a seguinte começar, e a árvore no fim é a mesma de antes.
+
+| mutation | gate | resultado |
+|---|---|---|
+| **M1** o `<AnchorRealign />` deixa de ser renderizado na página de classe | `test:nav-discovery` | **442 passaram, 19 falharam** |
+| **M2** o realinhamento em si vira no-op (`return` no topo de `align`) | `test:nav-discovery` | **438 passaram, 23 falharam** |
+| **M3** o degrau do rótulo volta a `min-[900px]` | `test:viewport` | **846 passaram, 4 falharam** |
+
+M1 e M2 falham em números diferentes — 19 e 23 das 24 aterragens — porque o defeito é uma race: em
+quatro ou cinco casos a animação do salto começa depois de a hidratação já ter crescido a página, e
+aterra certo por acaso. **Depois da correção são 24 de 24, em corridas independentes.** O que a
+correção compra não é só a média; é o determinismo. As quatro falhas de M3 são exatamente as quatro do
+RED, com os mesmos números.
+
+Uma quarta corrida **não conta como mutation apanhada**: a primeira tentativa de M3 rebentou em
+`assertFreshBuild()` porque editei um comentário de componente entre o build e o gate. Build velho,
+não defeito detectado. Foi repetida limpa, e é a repetição que está na tabela.
+
+### 10.9 O que continua registado e não corrigido
+
+- A barra `sticky top-14` do leveling, 10 px acima do teto de R-A11Y-8 a 320 px, **permanece por
+  corrigir por instrução explícita** do proprietário nesta continuação.
+- O transbordo lateral a 150 % e 200 % de texto a 320 e 390 px **continua**: é a linha do header,
+  medida idêntica nos dois SHAs, e corrigi-la é recompor essa linha — trabalho de outra fase, com o
+  seu próprio orçamento de larguras.
+- `TIER_CEILING` continua a não significar nada a 200 % de texto.
+- Os gates "sem JS" que voltam a ligar o script antes de `evaluate` continuam por investigar. O
+  controlo desta passagem contornou o problema com um proxy que neutraliza cada `<script>` servido —
+  uma página realmente sem JavaScript, sem desligar `Runtime.evaluate`. O método fica registado aqui
+  caso valha a pena adotá-lo nos gates.

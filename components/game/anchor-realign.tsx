@@ -18,8 +18,10 @@ import { useEffect } from "react";
  *      768       144    482–528   +338…+384
  *     1280       144    482–572   +338…+428
  *
- * A press on the summary *after* hydration landed at the contract to the pixel,
- * in 23 of 24 cases. So the anchors are right and one path is early.
+ * A press on the summary *after* hydration lands at the contract to the pixel in
+ * every one of the 24 cases the gate presses — and the gate confirms with
+ * `elementFromPoint` that the coordinate really is the link before pressing it.
+ * So the anchors are right, and one path is simply early.
  *
  * **Why "once it stops moving" and not "when it grows".** The first version of
  * this watched for the growth and corrected it, and it did nothing at all,

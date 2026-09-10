@@ -638,9 +638,9 @@ const TRIGGER_NAMES = (nodes: { role: string; name: string }[]) =>
  *     1280       144    482–572   +338…+428
  *
  * A press on the summary *after* hydration landed at the contract to the pixel
- * in 23 of 24 cases, so the two paths do not fail alike and comparing them
- * would have proved nothing. What is asserted here is the absolute position,
- * against the number the stylesheet itself computes.
+ * in every one of the 24 cases below, so the two paths do not fail alike and
+ * comparing them would have proved nothing. What is asserted here is the
+ * absolute position, against the number the stylesheet itself computes.
  */
 const ANCHOR_CLASSES = ["sorceress", "necromancer", "warlock"] as const;
 const ANCHOR_WIDTHS = [320, 390, 768, 1280] as const;
@@ -681,25 +681,38 @@ interface Landing {
 }
 
 /**
- * Wait until the scroll offset *and* the document height have both stopped.
+ * Wait until the jump has happened and then until nothing is moving any more.
  *
- * Both, because on this page they stop at different times: the jump finishes
- * long before hydration has finished growing the document above it, and a
- * probe that settles on `scrollY` alone reads the position the section is
- * about to leave. `scroll-behavior: smooth` is site-wide, so this also covers
- * the animation a press starts.
+ * Three separate things have to stop, and they stop at different times:
+ *
+ *   1. **The jump has to start.** Under load Chrome can be a second or more
+ *      late beginning a fragment scroll, and until it does, `scrollY` is 0 and
+ *      the document height has already settled — so a wait that only looks for
+ *      quiet concludes immediately and reports the section at its full document
+ *      offset, thousands of pixels out. That is not a landing; it is a
+ *      measurement taken before the thing being measured. It cost 4 readings of
+ *      120 on one run of a read-only sweep, and none of the four reproduced.
+ *   2. **The scroll has to finish.** `scroll-behavior: smooth` is site-wide.
+ *   3. **The document has to stop growing**, which on this page happens *after*
+ *      the jump begins and is the whole reason this section exists.
+ *
+ * Returns the time taken, or -1 if the page never scrolled or never went quiet
+ * — reported as a failure of its own, rather than left to surface as a wrong
+ * number somewhere else.
  */
-async function settled(page: Page, budgetMs = 5000): Promise<number> {
+async function settled(page: Page, budgetMs = 9000): Promise<number> {
   const started = Date.now();
+  let moved = false;
   let last = "";
   let quiet = 0;
   while (Date.now() - started < budgetMs) {
     const now = await page.evaluate<string>(
       `Math.round(window.scrollY) + ':' + document.documentElement.scrollHeight`,
     );
+    if (!moved) moved = !now.startsWith("0:");
     quiet = now === last ? quiet + 1 : 0;
     last = now;
-    if (quiet >= 4) return Date.now() - started;
+    if (moved && quiet >= 4) return Date.now() - started;
     await new Promise((r) => setTimeout(r, 80));
   }
   return -1;

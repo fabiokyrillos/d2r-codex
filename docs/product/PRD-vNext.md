@@ -649,6 +649,14 @@ Reavaliada após a revisão independente. Regras: remover o resolvido; não prom
 - **R-NAV-1 · Tiers da home clicáveis.** Cada um dos seis cartões de tier da home é um link para `/builds`; com JS, o clique também grava `d2rc.tier`. *Aceite:* href em cada cartão; teste de que o clique grava a preferência; sem JS, o link funciona sem preferência.
 - **R-NAV-2 · CTA de classe.** "Começar um personagem" leva à escolha de classe (`/leveling` ou seletor), não à Sorceress. *Aceite:* href ≠ `/leveling/sorceress`; crawl.
 - **R-NAV-3 · Sumário na página de classe.** Sumário sticky ou abas com Builds / Mecânicas / Atributos / Skills / Breakpoints. *Aceite:* "Skill trees" alcançável em um toque a partir do topo; âncoras existentes preservadas.
+  > **Refinamento contratual (proprietário, 2026-09-10, passe corretivo da Fase 2).** "Alcançável
+  > em um toque" inclui **onde se aterra**. Medido na build publicada, um carregamento que já traz
+  > `#skills` aterrava a 208 px (320), 190 (390) e 482–572 (768 e 1280) contra as 104/144 px que a
+  > folha de estilos promete — porque `#builds` é uma `FilterableBuildList` cujo HTML estático é o
+  > *fallback* do Suspense, e o painel de filtros chega com a hidratação, **acima** de todas as
+  > outras âncoras da página. O aceite passa a exigir a **posição absoluta**, não a resolução da
+  > âncora: o cabeçalho de `#skills` visível abaixo do header e a menos de 2 px da marca. Comparar o
+  > clique com o carregamento direto não serve de aceite — os dois podem errar igual.
 - **R-NAV-4 · Referência descoberta.** Cinco cartões (Runas, Itens, Breakpoints, Mercenários, Mecânicas) na home e rótulo "Referência ▾" no header em vez de "Menu". *Aceite:* cinco cartões com href; rótulo nos dois dicionários.
   > **Refinamento contratual (proprietário, 2026-09-10, após a Fase 2).** O rótulo é
   > **condicional à largura**, que é o que a própria decisão condiciona ao dizer "quando esse for
@@ -658,6 +666,15 @@ Reavaliada após a revisão independente. Regras: remover o resolvido; não prom
   > `nav.reference` a partir daí; `nav.menu` **não** é apagado e o ADR 0003 não muda. O
   > `aria-label` do landmark continua "Menu" em todas as larguras, porque é um atributo e um
   > atributo não tem largura a que responder.
+  >
+  > **Correção (2026-09-10, passe corretivo).** O degrau é `56.25rem`, não `900px`. São o mesmo
+  > número no tamanho de texto padrão; são números diferentes para quem ampliou o texto, e em
+  > pixels o rótulo continuava a ser promovido onde a linha ampliada já não tinha espaço para ele.
+  > Medido contra `0b5a2bc` com a própria definição de tamanho de texto do Chrome, custava +45 px
+  > (en) / +50 (pt) a 960 px e 150 %, e +61 / +66 a 1280 px e 200 %, sempre numa página que já
+  > rolava lateralmente. A 320 e 390 px custava **zero** nos dois SHAs, a 100 %, 150 % e 200 % —
+  > ali a palavra é `sr-only` e `sm` é `40rem`. Em rem o degrau acompanha o leitor: 900 px a
+  > 100 %, 1350 a 150 %, 1800 a 200 %, e a palavra só aparece onde a linha ainda cabe.
 - **R-LEVEL-1 · Progresso persistido.** Marcação de etapa atual por classe (`d2rc.leveling.<classe>`), badge "você está na etapa N" e retorno à etapa ao abrir; controle ausente sem JS (R-PREF-4). *Aceite:* ao reabrir, a etapa marcada está em foco; HTML sem scripts sem o controle.
 - **R-LEVEL-2 · Barra de etapas.** Indicador de rolagem no desktop; etapa atual centralizada no celular. *Aceite:* viewport test em 1280 px mostra o indicador quando há overflow.
 
@@ -945,6 +962,8 @@ Capturas e textos coletados na auditoria (pasta temporária, não versionados): 
 | 2026-09-10 | **Fase 2 executada.** Comparação adjacente, upgrades, sumário da build, descoberta e o fragmento na troca de idioma. `compactGear` fica **idêntico ao pixel** (2.034 en / 2.146 pt), portanto a afirmação publicada de 87,6% da Fase 1 não foi tocada; só `openGear` e `openPage` se moveram, pelo crescimento medido. As 45 lacunas de `nextUpgrade` são **todas** em `bis`, o que a decisão de BiS terminal cobre inteiramente — nenhum dado alterado, nenhum conteúdo inventado | [`plans/phase-2-report.md`](plans/phase-2-report.md) |
 | 2026-09-10 | **Refinamentos contratuais de J5, R-BUILD-6, R-BUILD-7, R-BUILD-8 e R-NAV-4** registados nos próprios requisitos: estado majoritário dito uma vez; identidade por `ref.kind + ref.slug`; `bis` terminal e a repetição só no tier seguinte ao expandido; dois toques na build abaixo de 640 px e um na classe; rótulo do header condicional à largura | §5 J5, §6.3, §13.1 |
 | 2026-09-10 | **Quatro gates que não podiam falhar**, encontrados por 43 mutations e corrigidos: uma regex apanhada por `peer-open:hidden`; a regressão do sumário invisível sem asserção de navegador; a regra de escritor único de `d2rc.tier` nunca escrita; e um gate satisfeito pelo próprio comentário de aviso | [`plans/phase-2-report.md`](plans/phase-2-report.md) §6 |
+| 2026-09-10 | **Passe corretivo da Fase 2.** Dois achados registados como "fora de escopo" reavaliados por medição. A âncora `#skills` **era** defeito desta fase, e a causa registada estava errada: o salto do fragmento é uma animação cujo destino fica fixado a 311 ms e a hidratação faz `#builds` crescer a 332 ms, de modo que o leitor aterrava 86–428 px abaixo do cabeçalho — a árvore de skills está *dentro* de `#skills` e não podia ser a causa. Corrigido com realinhamento após estabilização na própria integração sumário/âncora, sem tocar na árvore. O transbordo do header a texto ampliado é **pré-existente e idêntico ao pixel** a 320 e 390 px nos dois SHAs, mas R-NAV-4 piorava-o em duas das quinze combinações largura×tamanho de texto por idioma; corrigido trocando o degrau do rótulo de `900px` para `56.25rem` | [`plans/phase-2-report.md`](plans/phase-2-report.md) §10 |
+| 2026-09-10 | **Uma emulação de texto a 150 % quase inverteu uma conclusão.** `documentElement.style.fontSize` escala `rem` mas não as consultas de média em `rem`, e mediu a linha do header 68 px mais larga do que o Chrome a desenha — o suficiente para reportar como "transbordo criado pela Fase 2" uma largura que cabe nos dois SHAs. `Page.setTextScale`, que é a definição de tamanho de texto do próprio browser, foi acrescentado ao harness | `scripts/headless.ts`; [`plans/phase-2-report.md`](plans/phase-2-report.md) §10.6 |
 
 ---
 

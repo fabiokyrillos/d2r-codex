@@ -204,9 +204,12 @@ export async function SiteHeader() {
               and 552px wide either way — that sideways overflow at enlarged
               text is the header row, and it is older than this phase. Do not
               "simplify" that `sr-only sm:not-sr-only` pair: `sm` is `40rem`, so
-              it is itself why the word withdraws at 960px and 1280px as the
-              text grows, and it is what prevents the 320px overflow this header
-              documents having had.
+              it already moves with the reader's text size — 640px, then 960,
+              then 1280 — and it is what keeps the word free at 320 and 390 at
+              every size, and what prevents the 320px overflow this header
+              documents having had. The `56.25rem` step above is the other half
+              of the same idea, for the widths where `sm` has been cleared and
+              the row still has to fit.
 
               `navigationLabel` stays `nav.menu` at every width. It is an
               `aria-label` on the `<nav>` inside, which no media query can
