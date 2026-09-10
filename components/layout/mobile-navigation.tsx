@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import { cn } from "@/components/ui";
 
@@ -67,8 +67,21 @@ export function MobileNavigation({
   navigationLabel,
 }: {
   items: MobileNavigationItem[];
-  /** The trigger's name. Drawn from `sm` up, `sr-only` below it. */
-  menuLabel: string;
+  /**
+   * The trigger's name. Drawn from `sm` up, `sr-only` below it.
+   *
+   * A node rather than a string, and only for R-NAV-4: what this disclosure
+   * *is* changes with the width. Below 900px it is the site's whole navigation
+   * and is called "Menu"; from 900px up the primary nav is already in the row
+   * and what is left really is the reference. CSS cannot swap a text node, so
+   * the caller passes two spans and hides one — `display: none` takes a node
+   * out of the accessibility tree, so exactly one accessible name exists at any
+   * width. The arithmetic that decides the breakpoint is in `site-header.tsx`.
+   *
+   * `navigationLabel` stays a string on purpose: it is an `aria-label`, and an
+   * attribute has no width to respond to.
+   */
+  menuLabel: ReactNode;
   /** Names the region for a screen reader, since it duplicates two navs. */
   navigationLabel: string;
 }) {

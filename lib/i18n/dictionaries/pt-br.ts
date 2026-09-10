@@ -128,6 +128,23 @@ export const ptBR: Dictionary = {
     featureRunewordsTitle: "Regras de base impossíveis de ler errado",
     featureRunewordsBody:
       "{count} runewords com contagem de sockets, ordem exata das runas e exclusões explícitas. Insight vai em polearm, não em spear — e a página diz isso.",
+    /*
+     * Os cinco cartões de referência de R-NAV-4. Curtos de propósito: a
+     * `indexDescription` de cada seção tem cerca de quarenta palavras porque é
+     * copy de cabeçalho de página. Os títulos não estão aqui — são as strings
+     * `nav.*` que o cabeçalho e o rodapé já usam, para que os lugares que
+     * nomeiam uma seção não possam divergir.
+     */
+    refRunesBody:
+      "As 33 runas, o que cada uma faz em arma, armadura e escudo, e as receitas do Cubo que as sobem de nível.",
+    refItemsBody:
+      "Únicos e peças de set com os valores escritos como faixas, porque um Nightwing's Veil é uma faixa, não uma média.",
+    refBreakpointsBody:
+      "As animações correm a 25 quadros por segundo, e um atributo de velocidade não faz nada até tirar um quadro inteiro. Estes são os números onde parar.",
+    refMercenariesBody:
+      "Qual mercenário contratar, por que a dificuldade em que você o contrata é permanente, e o que vestir nele depois disso.",
+    refMechanicsBody:
+      "Imunidades, resistências, magic find e o resto dos sistemas em que os guias se apoiam — com as partes não confirmadas marcadas como não confirmadas.",
     accuracyTitle: "Sobre precisão",
     accuracyBodyA:
       "Os números deste site vêm de fontes primárias: os arquivos de dados do próprio jogo para níveis de área, o material oficial da Blizzard para mudanças de patch e bases de dados da comunidade cruzadas entre si para estatísticas de itens. Quando fontes confiáveis discordam, ou quando algo não foi confirmado, a página diz isso em vez de escolher um número e soar segura.",

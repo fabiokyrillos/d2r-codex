@@ -18,7 +18,7 @@
  *     come from the same dictionary value, and both ends are checked, so a
  *     summary cannot come to call a section something the section does not.
  *   - **A heading in the summary.** `scripts/heading-snapshot.json` pins the
- *     ordered `h2`/`h3` list of all 106 build pages; one `<h2>` in here fails
+ *     ordered `h2`/`h3` list of every build page; one `<h2>` in here fails
  *     every page at once, and the failure would arrive as 106 red lines in an
  *     unrelated gate rather than as one line here.
  *   - **A promise the served page cannot keep.** The active tier's name exists
@@ -41,7 +41,7 @@
  * a fact about laid-out boxes after CSS. That gap is why §4b reads
  * `app/globals.css` at source: no browser gate covers this control, and a
  * `display: none` on the trigger that outlived the rule revealing the panel
- * would empty the row on all 106 pages with every markup rule still green.
+ * would empty the row on every build page with every markup rule still green.
  *
  * Requires `npm run build`. Run with `npm run test:build-toc-html`.
  */
@@ -473,7 +473,7 @@ for (const locale of LOCALES) {
  * desktop. The other half lives in `app/globals.css` and is asserted here
  * because nothing else asserts it: no browser gate drives `[data-sections]`,
  * and both halves fail *silently* in opposite directions. Lose the reveal and
- * the row is empty on 106 pages; lose the `@supports` guard and the same row
+ * the row is empty on every build page; lose the `@supports` guard and the same row
  * empties on every browser below the `::details-content` floor, which is
  * exactly the class of browser no gate here runs on.
  *
@@ -523,7 +523,7 @@ for (const locale of LOCALES) {
     );
     check(
       "…and withdraws the trigger inside the same guard, never outside it",
-      WITHDRAW.test(block ?? "") && !WITHDRAW.test(rules.replace(block ?? " ", " ")),
+      WITHDRAW.test(block ?? "") && !WITHDRAW.test(rules.replace(block ?? "\0", " ")),
     );
     /*
      * `blockAfter` returns the *first* match, and this stylesheet already

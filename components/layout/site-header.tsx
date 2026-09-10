@@ -141,7 +141,66 @@ export async function SiteHeader() {
           */}
           <MobileNavigation
             items={[...primary, ...reference]}
-            menuLabel={t.nav.menu}
+            /*
+              R-NAV-4, and the reason the label is a pair rather than a rename.
+
+              The owner's decision was conditional — call it "Reference" *when
+              that is the grouping* — and below 900px it is not. The primary nav
+              above appears at `min-[900px]`, so from 320 to 899px this
+              disclosure is the only way to reach Classes, Builds, Leveling and
+              Farming. Calling it "Reference" there files the site's spine under
+              "Reference" on every phone. So: `nav.menu` below 900, and
+              `nav.reference` from 900 up, where the four primary links are
+              already in the row and what is left really is the reference
+              material.
+
+              Two spans, one hidden. `display: none` takes a node out of the
+              accessibility tree, so there is exactly one accessible name at
+              every width rather than two concatenated. `nav.menu` survives, so
+              ADR 0003's invariant-strings list and `dictionary.test.ts` are
+              untouched; what replaces "delete the key and watch two gates fail
+              to compile" is `scripts/nav-discovery.test.ts` asserting the
+              trigger's computed accessible name *per width*, in both languages.
+
+              The width cost is measured, and 900px is the tightest step this
+              row has — it is where the primary nav joins while the container is
+              still narrow. Measured in Chrome on the built site, both ways:
+
+                width  trigger        slack en-US      slack pt-BR
+                 899   81 → 81        369 → 369        370 → 370
+                 900   81 → 112/115    42 →  12         58 →  25
+                 960   81 → 112/115   102 →  72        118 →  85
+                1024   81 → 112/115   100 →  70        116 →  83
+                1400   (withdrawn)     33 →  33         53 →  53
+
+              So the word costs +31px in en-US and +34px in pt-BR — less than
+              the +38/+45 the plan estimated — and 900px keeps 12px in en-US and
+              25px in pt-BR. It fits, `scrollWidth <= clientWidth` at every
+              width in both languages, and 900 and 960 are now in
+              `viewport.test.ts`'s `WIDTHS` so the row is measured on every run
+              rather than argued about. 12px is the thinnest margin in this
+              header: if anything ever takes it, the label's step moves up to
+              `min-[960px]`, which keeps 72/85px. That is the fallback, written
+              here because this is where this arithmetic lives.
+
+              Below `sm` both words are `sr-only` (see `mobile-navigation.tsx`),
+              so a longer word costs *zero* width at 320 and 390, and the ~22px
+              of headroom the 320px row has is not touched. Do not "simplify"
+              that `sr-only sm:not-sr-only` pair: it is what prevents the 320px
+              overflow this header documents having had.
+
+              `navigationLabel` stays `nav.menu` at every width. It is an
+              `aria-label` on the `<nav>` inside, which no media query can
+              reach, and "Menu" is the honest name for a region holding all ten
+              links. Naming *that* "Reference" is the half of the rename the
+              owner's condition rules out.
+            */
+            menuLabel={
+              <>
+                <span className="min-[900px]:hidden">{t.nav.menu}</span>
+                <span className="hidden min-[900px]:inline">{t.nav.reference}</span>
+              </>
+            }
             navigationLabel={t.nav.menu}
           />
         </div>

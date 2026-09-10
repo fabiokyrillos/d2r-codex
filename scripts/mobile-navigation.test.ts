@@ -209,8 +209,27 @@ async function main(): Promise<void> {
       {
         await page.goto(site.origin + r.home());
         await openMenu(page);
-        // Bottom-left of the viewport: page content, never the panel, which is
-        // pinned to the top right.
+        /*
+         * Bottom-left of the viewport: page content, never the panel, which is
+         * pinned to the top right.
+         *
+         * Re-measured when the home's six tier cards became links (R-NAV-1),
+         * because a dismissal that lands on one of them is not a dismissal —
+         * the press would navigate to `/builds` and the assertion below would
+         * run against a different page, with nothing to say it had. Measured on
+         * the built site at 390px, menu open, `scrollY` 0:
+         *
+         *   - the six anchors span x 20→370 and start at y=849 (en-US) /
+         *     y=1010 (pt-BR), so (12, 700) misses them by 8px horizontally and
+         *     149px vertically;
+         *   - `document.elementFromPoint(12, 700)` is the container's own
+         *     gutter div (`.mx-auto.w-full.px-5`) in both languages, and
+         *     `.closest('a')` on it is null.
+         *
+         * The horizontal margin is the durable one: x=12 sits inside the
+         * `Container`'s 20px `px-5` gutter, which no amount of content above
+         * can move. The coordinate therefore stays where it was.
+         */
         await page.click(12, 700);
         check(
           `${locale}: a press outside closes the menu`,

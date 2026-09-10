@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Badge, Container, LinkCard, cn } from "@/components/ui";
+import { TierCards } from "@/components/home/tier-cards";
 import { getBuilds, getClasses, getFarmingAreas, getRunewords } from "@/lib/registry";
 import { GAME_VERSION } from "@/lib/game-version";
 import { fmt } from "@/lib/i18n";
@@ -49,8 +50,15 @@ export default async function Home() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
+            {/*
+              The leveling index, not one class's journey. "Start a character"
+              used to land on the Sorceress whoever pressed it, which is a
+              wrong answer for seven of the eight classes; `/leveling` lists
+              all eight and lets the reader say which one they are. The string
+              never promised a class, so nothing about the copy changes.
+            */}
             <Link
-              href={r.levelingFor("sorceress")}
+              href={r.leveling()}
               className="rounded-md bg-ember px-5 py-2.5 text-sm font-semibold text-abyss transition-colors hover:bg-ember-bright"
             >
               {t.home.ctaStart}
@@ -74,30 +82,55 @@ export default async function Home() {
           {t.home.tiersLede}
         </p>
 
-        <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {/*
+          Six cards that were six dead `<li>`. They described the six tiers,
+          carried a border and a hover state, and went nowhere — a card that
+          looks pressable and is not is worse than a plain paragraph.
+
+          The whole card is the link now, through `LinkCard`, because a bordered
+          box whose only target is a small label inside it is a worse affordance
+          than the box itself. All six go to `/builds` bare: `?tier=` is
+          forbidden by R-FILT-10 and R-BUILD-10, so which tier was chosen is
+          carried by the preference `TierCards` writes rather than by the URL.
+
+          Six links to one href with six different accessible names, inside one
+          `<ol>` — written down here rather than discovered in an a11y review.
+          The name of each is its tier, its question and its context, which is
+          exactly what distinguishes them.
+        */}
+        <TierCards className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {tierOrder.map((tier, i) => {
             const meta = tiers[tier];
             return (
-              <li
-                key={tier}
-                className="rounded-lg border border-border bg-surface p-4 transition-colors hover:border-border-strong"
-              >
-                <div className="flex items-baseline gap-2">
-                  <span className="font-mono text-xs text-ember">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="font-display text-base text-ink">{meta.label}</span>
-                </div>
-                <p className="mt-2 text-sm leading-relaxed text-pretty text-ink-muted">
-                  &ldquo;{meta.question}&rdquo;
-                </p>
-                <p className="mt-2 text-xs leading-relaxed text-ink-subtle">
-                  {meta.context}
-                </p>
+              <li key={tier} data-tier={tier}>
+                {/*
+                  `h-full` only. Nothing here tries to trim `LinkCard`'s `p-5`
+                  back to the `p-4` these boxes used to have: `cn()` is a plain
+                  join, so two padding utilities of equal specificity are
+                  decided by their order in the stylesheet rather than in the
+                  attribute, and `p-4` would be a silent no-op. The card keeps
+                  the padding every other card on this page has.
+                */}
+                <LinkCard href={r.builds()} className="h-full">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-mono text-xs text-ember">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="font-display text-base text-ink transition-colors group-hover:text-ember-bright">
+                      {meta.label}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-pretty text-ink-muted">
+                    &ldquo;{meta.question}&rdquo;
+                  </p>
+                  <p className="mt-2 text-xs leading-relaxed text-ink-subtle">
+                    {meta.context}
+                  </p>
+                </LinkCard>
               </li>
             );
           })}
-        </ol>
+        </TierCards>
       </Container>
 
       {/* ------------------------------------------------------------------ */}
@@ -142,8 +175,13 @@ export default async function Home() {
       {/* ------------------------------------------------------------------ */}
       <Container size="wide" className="pb-16">
         <div className="grid gap-6 lg:grid-cols-3">
+          {/*
+            The same wrong href as the CTA above, and the same fix. This block
+            presents the *area* — "a walkthrough, level 1 to Hell" — and sent
+            everyone to the Sorceress's copy of it.
+          */}
           <FeatureBlock
-            href={r.levelingFor("sorceress")}
+            href={r.leveling()}
             eyebrow={t.home.featureLevelingEyebrow}
             title={t.home.featureLevelingTitle}
             body={t.home.featureLevelingBody}
@@ -163,6 +201,54 @@ export default async function Home() {
             title={t.home.featureRunewordsTitle}
             body={fmt(t.home.featureRunewordsBody, { count: runewords.length })}
           />
+        </div>
+      </Container>
+
+      {/* ------------------------------------------------------------------ */}
+      {/*
+        R-NAV-4's other half. The three blocks above are the three the home page
+        has always had, and none of the five reference sections was among them:
+        Runes, Items, Breakpoints, Mercenaries and Mechanics were reachable only
+        from the header disclosure — which is not on screen — and from the
+        footer. This block is the first place on the site that says they exist.
+
+        Titles are the `nav.*` strings the header and footer already use, so a
+        rename lands in one place. The bodies are new and deliberately short:
+        each section's own `indexDescription` is about forty words of page-header
+        copy and would turn a card into a paragraph.
+
+        The footer's Reference column is left as it is. It lists six, this lists
+        five, and the difference is on purpose — Runewords already has a feature
+        block of its own two rows up, and repeating it here would be the third
+        time the same page offers it.
+      */}
+      <Container size="wide" className="pb-16">
+        <h2 className="font-display text-2xl text-ink">{t.nav.reference}</h2>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { href: r.runes(), title: t.nav.runes, body: t.home.refRunesBody },
+            { href: r.items(), title: t.nav.items, body: t.home.refItemsBody },
+            {
+              href: r.breakpoints(),
+              title: t.nav.breakpoints,
+              body: t.home.refBreakpointsBody,
+            },
+            {
+              href: r.mercenaries(),
+              title: t.nav.mercenaries,
+              body: t.home.refMercenariesBody,
+            },
+            { href: r.mechanics(), title: t.nav.mechanics, body: t.home.refMechanicsBody },
+          ].map((card) => (
+            <LinkCard key={card.href} href={card.href} className="h-full">
+              <h3 className="font-display text-lg text-ink transition-colors group-hover:text-ember-bright">
+                {card.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-pretty text-ink-muted">
+                {card.body}
+              </p>
+            </LinkCard>
+          ))}
         </div>
       </Container>
 

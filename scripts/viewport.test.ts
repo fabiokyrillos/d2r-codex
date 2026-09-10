@@ -69,8 +69,18 @@ assertFreshBuild();
  * 768 is where the tablet layout starts, 1280 is a laptop, and 1440 is the
  * width at which the third nav tier appears — the last time this row overflowed
  * it did so at the top of the range, not the bottom.
+ *
+ * 900 and 960 were added with R-NAV-4, and 900 is the tightest width the header
+ * has. It is the step where the primary nav appears (`min-[900px]:flex` in
+ * `components/layout/site-header.tsx`) while the shell container is still
+ * narrow, so four more links land in a row that has nothing left to give:
+ * measured in Chrome, the row has 42px of slack there in en-US and 58px in
+ * pt-BR, against 369/370px one pixel below it. 960 is the next step up (102 and
+ * 118px) and is here because it is the fallback the header's own comment names
+ * if the 900px label ever stops fitting. Neither width was covered before, and
+ * the menu trigger's label now changes across exactly this boundary.
  */
-const WIDTHS = [320, 360, 375, 390, 640, 768, 1280, 1440] as const;
+const WIDTHS = [320, 360, 375, 390, 640, 768, 900, 960, 1280, 1440] as const;
 
 /** The minimum effective target, in CSS pixels. WCAG 2.2 SC 2.5.8. */
 const MIN_TARGET = 24;

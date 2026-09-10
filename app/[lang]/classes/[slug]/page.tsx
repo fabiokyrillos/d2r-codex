@@ -16,6 +16,7 @@ import {
   StatGrid,
 } from "@/components/ui";
 import { ConfidenceNote, ElementBadge, RichText, SkillTree } from "@/components/game";
+import { SectionNav, type SectionNavEntry } from "@/components/game/section-nav";
 import { FilterableBuildList } from "@/components/builds/filterable-build-list";
 import { CLASS_PAGE_FILTER_GROUPS } from "@/lib/builds/filter";
 import {
@@ -33,6 +34,36 @@ import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import { budgetLabels, playDifficultyLabels, releaseLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
+
+/**
+ * The five ids R-NAV-3 names, written once and read twice on this page — by the
+ * `<Section>` that carries one and by the summary entry that points at it, so
+ * the two cannot drift into disagreeing.
+ *
+ * `skills` is not new. It is the only id this page has ever had, it is what
+ * `lib/routes.ts` builds `classSkills()` out of, and it is a published URL: it
+ * does not change. The other four are sections that had a heading and no
+ * anchor.
+ *
+ * Three of the page's eight sections are deliberately absent — "Strengths and
+ * weaknesses", "Class-specific items" and the untitled introduction — because
+ * R-NAV-3 names five. That is why no gate here counts entries against sections:
+ * five is not eight, and a gate that compared the two would be red on the day
+ * it was written. What is asserted instead is that every entry resolves, and
+ * that every section *on this list* which rendered has exactly one.
+ *
+ * Not in the client module for the reason `page-sections.tsx` documents at
+ * length: a Server Component importing a plain value from a `"use client"`
+ * module receives a client reference rather than the value, and the failure is
+ * silent — eleven `href="#undefined"` with every `id` attribute gone.
+ */
+const S = {
+  builds: "builds",
+  mechanics: "mechanics",
+  attributes: "attributes",
+  skills: "skills",
+  breakpoints: "breakpoints",
+} as const;
 
 /**
  * Slugs are identical across locales by design, so this returns only the slug
@@ -84,6 +115,30 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
   const budgets = budgetLabels(t);
   const difficulties = playDifficultyLabels(t);
 
+  /*
+   * The summary, built from the same guards as the sections themselves.
+   *
+   * Every entry is conditional on exactly the condition its section is
+   * conditional on — `journey || builds.length`, `cls.attributes`, `trees`,
+   * `breakpoints` — because an entry pointing at a section that did not render
+   * is defect D2's exact shape, and three of these five are genuinely optional:
+   * the Warlock has no breakpoint tables of its own, and a class documented
+   * without attributes would lose that section and its anchor together.
+   *
+   * The labels are the headings' own strings rather than a second set written
+   * for the summary, so an entry and the heading it points at cannot come to
+   * disagree in either language.
+   */
+  const sections: SectionNavEntry[] = [
+    ...(journey || builds.length > 0 ? [{ id: S.builds, label: t.classes.startHere }] : []),
+    { id: S.mechanics, label: t.classes.coreMechanics },
+    ...(cls.attributes ? [{ id: S.attributes, label: t.classes.attributes }] : []),
+    ...(trees.length > 0 ? [{ id: S.skills, label: t.classes.skillTrees }] : []),
+    ...(breakpoints.length > 0
+      ? [{ id: S.breakpoints, label: t.classes.breakpointsTitle }]
+      : []),
+  ];
+
   return (
     <Container className="py-10">
       <PageHeader
@@ -114,6 +169,26 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
       />
 
       <div className="mt-8 space-y-10">
+        {/*
+          "Where am I?", first thing after the title block, as on the build page.
+
+          A different component from the build page's, and the reason is the
+          requirement rather than the plumbing. R-NAV-3 asks for "Skill trees
+          reachable in one interaction from the top", and a disclosure is two:
+          open it, then choose. Five entries wrap into a single row even at
+          320px, so there is nothing here to hide behind a button — and nothing
+          to observe either, since a class page has no gear tiers. That leaves a
+          plain server-rendered `<nav>`, which behaves the same with scripting
+          on and off and does not depend on the `::details-content` support
+          floor the build page's panel needs.
+
+          The strings are `builds.sections` — generic ("Sections on this page"),
+          and the entry labels are the headings themselves, so a second copy
+          under a `classes.*` key would be more things to keep in step for no
+          reader-visible difference.
+        */}
+        <SectionNav entries={sections} label={t.builds.sections.label} />
+
         {cls.requiresDlc && (
           <Callout variant="warning" title={t.classes.dlcCalloutTitle}>
             {t.classes.dlcCalloutBody
@@ -129,7 +204,7 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
         </Section>
 
         {(journey || builds.length > 0) && (
-          <Section title={t.classes.startHere}>
+          <Section id={S.builds} title={t.classes.startHere}>
             {/*
               The class filter is deliberately absent here: every build on this
               page is this class's, so the control could only ever be ticked or
@@ -188,6 +263,7 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
         </Section>
 
         <Section
+          id={S.mechanics}
           title={t.classes.coreMechanics}
           description={t.classes.coreMechanicsDescription}
         >
@@ -204,7 +280,11 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
         </Section>
 
         {cls.attributes && (
-          <Section title={t.classes.attributes} description={t.classes.attributesDescription}>
+          <Section
+            id={S.attributes}
+            title={t.classes.attributes}
+            description={t.classes.attributesDescription}
+          >
             <div className="space-y-4">
               <StatGrid
                 items={[
@@ -235,7 +315,7 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
         )}
 
         {trees.length > 0 && (
-          <Section id="skills" title={t.classes.skillTrees}>
+          <Section id={S.skills} title={t.classes.skillTrees}>
             {showSkillTree ? (
               /*
                * The visual tree, one per skill page, each with its own docked
@@ -300,6 +380,7 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
 
         {breakpoints.length > 0 && (
           <Section
+            id={S.breakpoints}
             title={t.classes.breakpointsTitle}
             description={t.classes.breakpointsDescription}
           >

@@ -44,7 +44,7 @@ import { lockScroll } from "@/lib/scroll-lock";
  * override a `content-visibility` on an *ancestor* — measured in Chrome 151,
  * `checkVisibility()` returns false while the links are still in the markup and
  * their boxes still lay out. An HTML gate reads the links, a height gate reads
- * 36px of panel, and the row is invisible on all 106 pages.
+ * 36px of panel, and the row is invisible on every build page.
  * `display:flex|grid|contents|block` on the `<details>` itself fail the same
  * way. Only the pseudo-element works.
  *
@@ -88,7 +88,7 @@ import { lockScroll } from "@/lib/scroll-lock";
  * too; the listeners are always attached and read `details.open` directly.
  *
  * **Three tripwires this must not trip.** No `<h2>` or `<h3>` anywhere in here
- * — `scripts/heading-snapshot.json` pins the ordered heading list of all 106
+ * — `scripts/heading-snapshot.json` pins the ordered heading list of every
  * build pages, so one new heading fails every page at once. No `aria-current`
  * — `build-tier-state.test.ts` reads `dataset.tier` off every
  * `[aria-current="location"]`, and this is not a tier control. No `next/link`

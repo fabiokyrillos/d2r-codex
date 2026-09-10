@@ -53,7 +53,7 @@ import { resolveRef } from "@/lib/registry/resolve";
  * All three take `t` (and one takes `locale`) as props instead of awaiting
  * `getI18n()` themselves, which is the house convention everywhere else in
  * `components/game`. The reason is volume: `SlotMarkerLabel` renders once per
- * slot occurrence, 2,659 times per build page across 106 pages, and the caller
+ * slot occurrence, 2,659 times per build page, in both locales, and the caller
  * already holds both values.
  */
 

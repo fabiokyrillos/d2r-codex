@@ -121,6 +121,23 @@ export const enUS = {
     featureRunewordsTitle: "Base rules you cannot misread",
     featureRunewordsBody:
       "{count} runewords with socket counts, exact rune order and explicit exclusions. Insight goes in a polearm, not a spear — and the page says so.",
+    /*
+     * R-NAV-4's five reference cards. Card-sized on purpose: each section's own
+     * `indexDescription` runs to about forty words because it is page-header
+     * copy, and the titles are not here at all — they are the `nav.*` strings
+     * the header and footer already use, so the five places that name a section
+     * cannot come to disagree.
+     */
+    refRunesBody:
+      "All 33 runes, what each one does in a weapon, an armor and a shield, and the Cube recipes that upgrade them.",
+    refItemsBody:
+      "Uniques and set pieces with their rolls written as ranges, because a Nightwing's Veil is a range, not an average.",
+    refBreakpointsBody:
+      "Animations run at 25 frames per second, and a speed stat does nothing until it removes a whole frame. These are the numbers to stop at.",
+    refMercenariesBody:
+      "Which hireling to take, why the difficulty you hire in is permanent, and what to put on them once you have.",
+    refMechanicsBody:
+      "Immunities, resistances, magic find and the rest of the systems the guides stand on — with the unconfirmed parts marked as unconfirmed.",
     accuracyTitle: "On accuracy",
     accuracyBodyA:
       "Numbers on this site come from primary sources: the game's own data files for area levels, Blizzard's official material for patch changes, and cross-checked community databases for item statistics. Where reputable sources disagree, or where something has not been confirmed, the page says so rather than picking a number and sounding confident.",
