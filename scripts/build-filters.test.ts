@@ -3,63 +3,85 @@
  *
  * The filtering itself is a pure function over plain rows, which is the whole
  * reason it can be tested here rather than only through a browser: `filter.ts`
- * imports nothing but `fold` and types, so this file exercises exactly the code
- * the browser runs.
+ * imports nothing but types, so this file exercises exactly the code the
+ * browser runs.
  *
- * Four things are asserted that a reader would otherwise have to take on trust:
+ * Five things are asserted that a reader would otherwise have to take on trust:
  *
- *   1. **The semantics.** OR inside a group, AND between groups and the query.
- *      Both mutations — AND inside, OR between — are implemented here and shown
- *      to disagree with the real function on a specific pair of builds.
+ *   1. **The semantics.** OR inside a group, AND between groups. Both mutations
+ *      — AND inside, OR between — are implemented here and shown to disagree
+ *      with the real function on a specific pair of builds.
  *   2. **The URL is a round trip.** Serialise, parse, and the state and its
  *      results are identical — which is what "reload a filtered link" means.
- *      Unknown keys, unknown values, empty segments, duplicates and a group the
- *      page does not offer are all dropped rather than thrown on.
+ *      Unknown keys, unknown values, empty segments, duplicates, a group the
+ *      page does not offer and a sort it does not offer are all dropped rather
+ *      than thrown on. The sort is a *view* carried in the same URL, and it is
+ *      asserted to stay out of every count.
  *   3. **Nothing is invented.** `RATING_AXES` is checked against the real
  *      `BuildRatings` keys, the option sets are checked against the real
- *      catalogue, and every refused filter is checked to still have no data
- *      behind it.
+ *      catalogue, the rows' ratings and stage picks are recomputed from the
+ *      builds they came from, and every refused filter is checked to still
+ *      have no data behind it.
  *   4. **The threshold is the one the scale names.** `GOOD_AT_THRESHOLD` is 4
  *      because `ratingLabels` calls 4 "Good"; the distribution that made the
  *      alternatives unusable is asserted so a future edit has to argue with
  *      numbers.
+ *   5. **No tick strands the reader on an empty list.** `toggleKeepingResults`
+ *      is the one rule that reconciles "an option with zero results is
+ *      disabled" with "a selected option is always removable": un-ticking the
+ *      last value that still contributed empties the group instead of leaving
+ *      its zero-count siblings behind. The plain toggle is kept as the control
+ *      that would have stranded the reader.
+ *
+ * The conditional counts themselves, the sort orders and the empty-state
+ * helpers have files of their own: `facet-counts.test.ts`, `build-sort.test.ts`
+ * and `empty-state.test.ts`.
  *
  * Run with `npm run test:build-filters`.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { getBuilds } from "../lib/registry";
+import { getBuilds, resolveRef } from "../lib/registry";
 import { LOCALES, DEFAULT_LOCALE, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import { ratingLabels } from "../lib/labels";
-import { BUDGET_LEVELS, DIFFICULTY_RATINGS, ELEMENTS } from "../lib/types/core";
 import {
+  BUDGET_LEVELS,
+  DIFFICULTY_RATINGS,
+  ELEMENTS,
+  PROGRESSION_TIERS,
+} from "../lib/types/core";
+import {
+  ADVANCED_GROUPS,
   CLASS_PAGE_FILTER_GROUPS,
+  DEFAULT_SORT,
   EMPTY_FILTER_STATE,
   FILTER_GROUPS,
   GOOD_AT_THRESHOLD,
-  MAX_QUERY_LENGTH,
   QUERY_KEYS,
   RATING_AXES,
   REFUSED_FILTERS,
+  SORT_KEYS,
   activeCount,
+  advancedCount,
+  facetCounts,
   filterBuilds,
   filterQueryString,
   goodAtAxes,
   isDiscriminating,
   isEmptyState,
-  matchesQuery,
   narrowingOptionsFor,
-  normalizeQuery,
   optionsFor,
   parseFilterState,
   serializeFilterState,
   shouldOfferFilters,
+  toggleKeepingResults,
   toggleValue,
   type BuildFilterState,
   type BuildRow,
   type FilterGroup,
+  type SortKey,
 } from "../lib/builds/filter";
 import {
   applyFilterDraft,
@@ -68,6 +90,7 @@ import {
   sheetFilterCount,
   toggleDraftValue,
 } from "../lib/builds/filter-sheet";
+import { availableSorts } from "../lib/builds/sort";
 import { buildRows, classOrderOf } from "../lib/builds/rows";
 
 let passed = 0;
@@ -93,7 +116,33 @@ const allOptions = (rs: readonly BuildRow[]) =>
   Object.fromEntries(
     FILTER_GROUPS.map((g) => [g, optionsFor(rs, g).map((o) => o.value)]),
   ) as Record<FilterGroup, string[]>;
-const options = allOptions(rows);
+/**
+ * What the catalogue page hands the parser: every group's options, and every
+ * sort — the component passes `availableSorts(hasTier)` here, and the sections
+ * below that need the no-preference variant say so explicitly.
+ */
+const options: Record<FilterGroup, string[]> & { sort: readonly SortKey[] } = {
+  ...allOptions(rows),
+  sort: SORT_KEYS,
+};
+const results = (s: BuildFilterState, rs: readonly BuildRow[] = rows) => filterBuilds(rs, s).length;
+
+/**
+ * A class with no build of some damage type, and one of another, found in the
+ * data rather than named. Necromancer + Cold is the case the plan describes,
+ * but the day a cold Necromancer is published the assertion has to move with
+ * the catalogue rather than fail for an unrelated reason.
+ */
+const zeroCase = (() => {
+  for (const classSlug of classOrderOf(rows)) {
+    const classRows = rows.filter((r) => r.classSlug === classSlug);
+    const carried = (d: string) => classRows.filter((r) => r.damageTypes.includes(d)).length;
+    const missing = options.damage.find((d) => carried(d) === 0);
+    const present = options.damage.find((d) => carried(d) > 0);
+    if (missing && present) return { classSlug, missing, present, classRows };
+  }
+  throw new Error("no class in the catalogue lacks a damage type; the fixture needs one");
+})();
 
 // ===========================================================================
 // The model is the only source
@@ -278,10 +327,6 @@ console.log("\nOR inside a group, AND between groups");
       crossed.every((r) => r.classSlug === "sorceress" && r.damageTypes.includes("cold")),
     `${crossed.length}`,
   );
-  check(
-    "the query is ANDed with the groups too",
-    filterBuilds(rows, state({ class: ["sorceress"], q: "hammerdin" })).length === 0,
-  );
 
   /*
    * Mutations. Each is the rule written the other way round, and each has to
@@ -327,87 +372,18 @@ console.log("\nOR inside a group, AND between groups");
 }
 
 // ===========================================================================
-// Search
-// ===========================================================================
-
-console.log("\nSearch: case, accents, fields and multiple terms");
-{
-  const byName = filterBuilds(rows, state({ q: "hammerdin" }));
-  check("finds a build by name", byName.some((r) => r.slug === "hammerdin"));
-  check(
-    "case-insensitive",
-    filterBuilds(rows, state({ q: "HaMMerDiN" })).length === byName.length,
-  );
-
-  // Diacritic-insensitive in both directions: the pt-BR catalogue is where the
-  // accents actually live.
-  const ptRows = rowsFor("pt-br");
-  const accented = filterBuilds(ptRows, state({ q: "física" }));
-  const unaccented = filterBuilds(ptRows, state({ q: "fisica" }));
-  check(
-    "accented and unaccented queries agree",
-    accented.length === unaccented.length && slugs(accented).join() === slugs(unaccented).join(),
-    `${accented.length} vs ${unaccented.length}`,
-  );
-  check("the accent test is not vacuous", accented.length > 0, `${accented.length}`);
-
-  check(
-    "searches the class name",
-    filterBuilds(rows, state({ q: "necromancer" })).every((r) => r.classSlug === "necromancer") &&
-      filterBuilds(rows, state({ q: "necromancer" })).length > 0,
-  );
-  check(
-    "searches the summary",
-    filterBuilds(rows, state({ q: "corpse" })).length > 0,
-  );
-  check(
-    "searches aliases that really exist",
-    filterBuilds(rows, state({ q: "fishymancer" })).some((r) => r.slug === "summoner-necromancer"),
-  );
-  check(
-    "a build with no alias is still searchable by name",
-    rows.some((r) => r.aliases === "") &&
-      rows
-        .filter((r) => r.aliases === "")
-        .every((r) => matchesQuery(r, r.name)),
-  );
-
-  check(
-    "every term must match: two terms from different builds find nothing",
-    filterBuilds(rows, state({ q: "hammerdin fishymancer" })).length === 0,
-  );
-  check(
-    "two terms from the same build still match",
-    filterBuilds(rows, state({ q: "poison nova" })).some((r) => r.slug === "poison-nova-necromancer"),
-  );
-  check("whitespace-only query matches everything", filterBuilds(rows, state({ q: "   " })).length === rows.length);
-
-  // Mutation: an unfolded search breaks exactly the reader the folding is for.
-  const naive = (r: BuildRow, q: string) =>
-    [r.name, r.summary, r.className, r.aliases].join(" ").includes(q);
-  check(
-    "control: an unfolded search misses the unaccented spelling",
-    ptRows.filter((r) => naive(r, "fisica")).length < unaccented.length,
-  );
-  check(
-    "control: an unfolded search misses a capitalised query",
-    rows.filter((r) => naive(r, "HaMMerDiN")).length < byName.length,
-  );
-}
-
-// ===========================================================================
 // The URL
 // ===========================================================================
 
 console.log("\nQuery parameters: round trip, and everything invalid dropped");
 {
   const full = state({
-    q: "cold",
     class: ["sorceress"],
     damage: ["cold", "fire"],
     difficulty: ["beginner"],
     budget: ["medium"],
     goodAt: ["bossing"],
+    sort: "name",
   });
 
   const round = parseFilterState(serializeFilterState(full), options);
@@ -443,7 +419,21 @@ console.log("\nQuery parameters: round trip, and everything invalid dropped");
   check("toggling twice removes the value", toggleValue(a, "damage", "cold", options.damage).damage.join() === "fire");
 
   const parse = (qs: string) => parseFilterState(new URLSearchParams(qs), options);
-  check("an unknown parameter is ignored", isEmptyState(parse("sort=name&page=3&utm_source=x")));
+  check("an unknown parameter is ignored", isEmptyState(parse("page=3&utm_source=x&tier=budget")));
+  /*
+   * `q` was a parameter of this URL until the inline search box left with
+   * R-FILT-8 — one search, the global one. A link that still carries it is
+   * exactly the stale-link case the parser exists for: the query is ignored,
+   * and the filters beside it are kept.
+   */
+  check(
+    "a stale `?q=` is an unknown parameter now, not a filter",
+    isEmptyState(parse("q=hammerdin")) && results(parse("q=hammerdin")) === rows.length,
+  );
+  check(
+    "…and does not take the valid filters beside it down with it",
+    parse("q=hammerdin&class=sorceress").class.join() === "sorceress",
+  );
   check(
     "an unknown value inside a known group is dropped",
     parse("damage=cold,plasma,,cold").damage.join() === "cold",
@@ -454,10 +444,6 @@ console.log("\nQuery parameters: round trip, and everything invalid dropped");
   check(
     "a filtered link with only invalid values shows the whole catalogue",
     filterBuilds(rows, parse("damage=plasma&class=tinker")).length === rows.length,
-  );
-  check(
-    "an over-long query is truncated rather than carried",
-    parse(`q=${"x".repeat(500)}`).q.length === 120,
   );
   check(
     "a value for a group this page does not offer is dropped",
@@ -502,11 +488,6 @@ console.log("\nQuery parameters: round trip, and everything invalid dropped");
     "a duplicate of the same value is not counted twice",
     parse("damage=cold&damage=cold").damage.length === 1,
   );
-  check(
-    "a repeated q takes the first, which is what `get` means",
-    parse("q=cold&q=fire").q === "cold",
-    parse("q=cold&q=fire").q,
-  );
   // Mutation: reading only the first value loses the second half of the link.
   check(
     "control: a get-only parser drops the repeated value",
@@ -515,48 +496,122 @@ console.log("\nQuery parameters: round trip, and everything invalid dropped");
       options,
     ).damage.join() === "cold",
   );
+}
 
-  /*
-   * Whitespace, which is where the search box and the URL disagreed.
-   *
-   * `serializeFilterState` trims and `parseFilterState` truncates, so a written
-   * query comes back normalised. The box compares against that normalised form;
-   * comparing against the raw draft made the trim look like a URL change and
-   * deleted the space out of "cold " while the reader was still typing.
-   */
-  check("normalizeQuery trims", normalizeQuery("  cold  ") === "cold");
+// ===========================================================================
+// The sort, which is a view carried in the same URL
+// ===========================================================================
+
+/*
+ * `?sort=` rides in the filter URL because a sorted, filtered link has to mean
+ * the same list to whoever opens it — but it is a *view*, not a filter, and
+ * the two are kept apart at every point the model can be asked: it is not an
+ * active filter, it is not counted, it never changes which rows match, and the
+ * default is omitted so the unsorted, unfiltered listing keeps its bare URL.
+ *
+ * "For my stage" is the one sort that is not always on offer: it needs the
+ * tier preference, which lives in the browser and never in the URL. So the
+ * component passes `availableSorts(hasTier)` as the parser's allow-list, and a
+ * `?sort=stage` opened without a preference degrades to the default the same
+ * way a value for a group the page does not offer does. There is no second
+ * mechanism for it.
+ */
+console.log("\nThe sort is a view in the URL, not a filter");
+{
+  const parse = (qs: string, opts: typeof options = options) =>
+    parseFilterState(new URLSearchParams(qs), opts);
+
+  check("the empty state sorts by the default", EMPTY_FILTER_STATE.sort === DEFAULT_SORT);
+  check("the default sort is one of the keys", (SORT_KEYS as readonly string[]).includes(DEFAULT_SORT));
   check(
-    "normalizeQuery truncates at the one cap the input also uses",
-    normalizeQuery("x".repeat(500)).length === MAX_QUERY_LENGTH,
+    "the default sort is omitted from the URL, so the bare listing stays bare",
+    filterQueryString(state({ sort: DEFAULT_SORT })) === "" && !serializeFilterState(EMPTY_FILTER_STATE).has(QUERY_KEYS.sort),
+    filterQueryString(state({ sort: DEFAULT_SORT })),
   );
   check(
-    "a query with a trailing space round-trips to its normalised form",
-    parseFilterState(serializeFilterState(state({ q: "cold " })), options).q ===
-      normalizeQuery("cold "),
+    "a non-default sort is written under its English key",
+    filterQueryString(state({ sort: "name" })) === `?${QUERY_KEYS.sort}=name`,
+    filterQueryString(state({ sort: "name" })),
   );
   check(
-    "…and the normalised form is stable, so the second write is a no-op",
-    normalizeQuery(normalizeQuery("cold ")) === normalizeQuery("cold "),
+    "…after the filter groups, so a link reads filters-then-view",
+    [...serializeFilterState(state({ damage: ["cold"], sort: "name" })).keys()].join() ===
+      `${QUERY_KEYS.damage},${QUERY_KEYS.sort}`,
   );
-  check(
-    "leading whitespace round-trips the same way",
-    parseFilterState(serializeFilterState(state({ q: "  hammer" })), options).q === "hammer",
-  );
-  check(
-    "whitespace does not change which builds match",
-    slugs(filterBuilds(rows, state({ q: "cold " }))).join() ===
-      slugs(filterBuilds(rows, state({ q: "cold" }))).join(),
-  );
-  // Mutation: the comparison the component used to make.
-  {
-    const draft = "cold ";
-    const backFromUrl = parseFilterState(serializeFilterState(state({ q: draft })), options).q;
+  for (const key of SORT_KEYS) {
     check(
-      "control: comparing the raw draft to the URL reports a change that never happened",
-      draft !== backFromUrl && normalizeQuery(draft) === backFromUrl,
-      `${JSON.stringify(draft)} vs ${JSON.stringify(backFromUrl)}`,
+      `${key}: survives the round trip`,
+      parseFilterState(serializeFilterState(state({ sort: key })), options).sort === key,
     );
   }
+  check("an unknown sort falls back to the default", parse("sort=bogus").sort === DEFAULT_SORT);
+  check(
+    "an empty sort falls back to the default",
+    parse("sort=").sort === DEFAULT_SORT && parse("sort").sort === DEFAULT_SORT,
+  );
+  check(
+    "a sort that is not a single key is unknown — it is a view, not a list",
+    parse("sort=name,easiest").sort === DEFAULT_SORT,
+  );
+  check(
+    "a repeated sort keeps the first value the page offers",
+    parse("sort=bogus&sort=easiest").sort === "easiest",
+  );
+  check(
+    "an unknown sort does not take the valid filters beside it down",
+    parse("class=sorceress&sort=bogus").class.join() === "sorceress",
+  );
+  check(
+    "unknown filter values do not take a valid sort down",
+    parse("class=tinker&sort=name").sort === "name",
+  );
+  check(
+    "with no sort allow-list, every sort degrades to the default",
+    parseFilterState(new URLSearchParams("sort=name"), allOptions(rows)).sort === DEFAULT_SORT,
+  );
+
+  // "For my stage" without a stage.
+  const withoutTier = { ...options, sort: availableSorts(false) };
+  const withTier = { ...options, sort: availableSorts(true) };
+  check(
+    "`stage` is dropped when the page has no tier preference to sort by",
+    parse("sort=stage", withoutTier).sort === DEFAULT_SORT,
+    parse("sort=stage", withoutTier).sort,
+  );
+  check("…and kept when it has one", parse("sort=stage", withTier).sort === "stage");
+  check(
+    "…while the four other sorts are offered either way",
+    SORT_KEYS.filter((k) => k !== "stage").every(
+      (k) => parse(`sort=${k}`, withoutTier).sort === k && parse(`sort=${k}`, withTier).sort === k,
+    ),
+  );
+  // Mutation: a parser that trusts the URL would sort by a stage nobody chose.
+  check(
+    "control: a trusting parser keeps `stage` without a preference",
+    new URLSearchParams("sort=stage").get("sort") === "stage" &&
+      parse("sort=stage", withoutTier).sort !== "stage",
+  );
+
+  // A view, not a filter.
+  check("a sort alone is the empty state", isEmptyState(state({ sort: "name" })));
+  check("a sort is not an active filter", activeCount(state({ sort: "name" })) === 0);
+  check("a sort is not an advanced filter", advancedCount(state({ sort: "name" })) === 0);
+  check(
+    "a sort never changes which builds match",
+    SORT_KEYS.every(
+      (key) =>
+        slugs(filterBuilds(rows, state({ damage: ["cold"], sort: key }))).join() ===
+        slugs(filterBuilds(rows, state({ damage: ["cold"] }))).join(),
+    ),
+  );
+  check(
+    "toggling a filter leaves the sort alone",
+    toggleValue(state({ sort: "cheapest" }), "damage", "cold", options.damage).sort === "cheapest",
+  );
+  check(
+    "the sort key is a language-independent slug like the others",
+    /^[a-zA-Z]+$/.test(QUERY_KEYS.sort) && QUERY_KEYS.sort === "sort",
+  );
 }
 
 // ===========================================================================
@@ -658,20 +713,152 @@ console.log("\nThe language switch carries the filters, without de-statifying th
 console.log("\nCount, active filters, clear and empty");
 {
   check("an empty state is empty", isEmptyState(EMPTY_FILTER_STATE) && activeCount(EMPTY_FILTER_STATE) === 0);
-  check("a query alone counts as one active filter", activeCount(state({ q: "cold" })) === 1);
-  check("whitespace is not an active filter", activeCount(state({ q: "  " })) === 0 && isEmptyState(state({ q: "  " })));
   check(
     "each selected value counts once",
     activeCount(state({ damage: ["cold", "fire"], budget: ["low"] })) === 3,
   );
   check(
     "a combination with no builds behind it produces the empty state, not a crash",
-    filterBuilds(rows, state({ class: ["necromancer"], damage: ["lightning"] })).length === 0,
+    results(state({ class: [zeroCase.classSlug], damage: [zeroCase.missing] })) === 0,
   );
   check(
     "clearing restores the full catalogue",
     filterBuilds(rows, EMPTY_FILTER_STATE).length === rows.length,
   );
+
+  /*
+   * Two counts, because two surfaces badge them. The applied-chips row counts
+   * every selection; "More filters (N)" counts only what is behind it — the
+   * class chips are always visible, so a class ticked there is not something
+   * the reader has to open a popover to find.
+   */
+  check(
+    "the advanced groups are every group but class, in group order",
+    ADVANCED_GROUPS.join() === FILTER_GROUPS.filter((g) => g !== "class").join(),
+    ADVANCED_GROUPS.join(),
+  );
+  check("nothing advanced is selected in the empty state", advancedCount(EMPTY_FILTER_STATE) === 0);
+  const mixed = state({ class: ["sorceress"], damage: ["cold", "fire"], budget: ["low"] });
+  check(
+    "a class selection is active but not advanced",
+    activeCount(mixed) === 4 && advancedCount(mixed) === 3,
+    `${activeCount(mixed)} active, ${advancedCount(mixed)} advanced`,
+  );
+  check("a class alone leaves the advanced badge empty", advancedCount(state({ class: ["sorceress"] })) === 0);
+  check(
+    "every advanced value counts once, whichever group it is in",
+    advancedCount(state({ damage: ["cold"], difficulty: ["beginner"], budget: ["low"], goodAt: ["bossing"] })) === 4,
+  );
+}
+
+// ===========================================================================
+// Un-ticking never strands the reader on an empty list
+// ===========================================================================
+
+/*
+ * Two rules the counts impose collide in exactly one case. Rule one: an option
+ * whose conditional count is 0 is disabled, so no click produces an empty
+ * list. Rule two: a selected option is always removable, even at 0 — a reader
+ * who arrived by URL with `damage=cold,fire&class=necromancer` sees Cold at 0
+ * and must be able to un-tick it. Un-ticking *Fire* there is the collision:
+ * the plain toggle leaves `damage=cold`, and Cold contributes nothing, so the
+ * list goes empty on a click — the very thing rule one exists to prevent.
+ *
+ * `toggleKeepingResults` is the reconciliation: when the value being removed
+ * was the last one still contributing, the siblings at 0 go with it and the
+ * group empties. Nothing else changes — adding never prunes, a removal that
+ * leaves results never prunes, and from a list that is already empty nothing
+ * is pruned, because that state was reached by URL and is being reported
+ * honestly. The class and the damage types below come from the data.
+ */
+console.log("\nUn-ticking the last contributing value empties the group");
+{
+  const { classSlug, missing, present, classRows } = zeroCase;
+  const arrived = state({ class: [classSlug], damage: [missing, present] });
+  const counts = facetCounts(rows, arrived);
+  check(
+    `${classSlug} + ${missing},${present}: the state lists builds, so the reader is not on an empty page`,
+    results(arrived) > 0 && results(arrived) === classRows.filter((r) => r.damageTypes.includes(present)).length,
+    `${results(arrived)}`,
+  );
+  check(
+    `…and ${missing} is shown at 0 while ${present} carries the results`,
+    counts.damage[missing] === 0 && counts.damage[present] === results(arrived),
+    `${counts.damage[missing]} / ${counts.damage[present]}`,
+  );
+
+  // Removing the value at 0 is an ordinary removal.
+  const withoutMissing = toggleKeepingResults(arrived, "damage", missing, options.damage, rows);
+  check(
+    "un-ticking the value at 0 removes just it",
+    withoutMissing.damage.join() === present && results(withoutMissing) === results(arrived),
+    withoutMissing.damage.join(),
+  );
+
+  // Removing the last contributing value is the collision.
+  const withoutPresent = toggleKeepingResults(arrived, "damage", present, options.damage, rows);
+  check(
+    "un-ticking the last contributing value empties the group instead of stranding the sibling at 0",
+    withoutPresent.damage.length === 0,
+    withoutPresent.damage.join(),
+  );
+  check(
+    "…so the list shows the class's builds rather than nothing",
+    results(withoutPresent) === classRows.length && results(withoutPresent) > 0,
+    `${results(withoutPresent)}`,
+  );
+  check(
+    "…and the other groups are untouched",
+    withoutPresent.class.join() === classSlug && withoutPresent.sort === arrived.sort,
+  );
+  // The mutation the plan names (M8): the plain toggle is the stranding.
+  const plain = toggleValue(arrived, "damage", present, options.damage);
+  check(
+    "control: the plain toggle leaves the sibling at 0 behind and the list empty",
+    plain.damage.join() === missing && results(plain) === 0,
+    `${plain.damage.join()} → ${results(plain)}`,
+  );
+
+  // Adding never prunes, whatever it adds.
+  const added = toggleKeepingResults(state({ class: [classSlug] }), "damage", present, options.damage, rows);
+  check(
+    "adding a value with results is the plain toggle",
+    JSON.stringify(added) === JSON.stringify(toggleValue(state({ class: [classSlug] }), "damage", present, options.damage)),
+  );
+  const addedZero = toggleKeepingResults(state({ class: [classSlug] }), "damage", missing, options.damage, rows);
+  check(
+    "adding a value at 0 — unreachable through a disabled option — is honoured, not pruned",
+    addedZero.damage.join() === missing && results(addedZero) === 0,
+    addedZero.damage.join(),
+  );
+
+  // A removal that leaves results is the plain toggle.
+  const twoLive = state({ damage: [zeroCase.present, options.damage.find((d) => d !== present) ?? present] });
+  check(
+    "control: the second live damage type is a different one, so the removal below is not vacuous",
+    twoLive.damage.length === 2 && twoLive.damage[0] !== twoLive.damage[1],
+  );
+  check(
+    "un-ticking one of two contributing values is the plain toggle",
+    JSON.stringify(toggleKeepingResults(twoLive, "damage", present, options.damage, rows)) ===
+      JSON.stringify(toggleValue(twoLive, "damage", present, options.damage)),
+  );
+
+  // From an empty list, nothing is pruned.
+  const empty = state({ class: [classSlug], damage: [missing], difficulty: [...options.difficulty] });
+  check("control: that state is empty", results(empty) === 0);
+  const stillEmpty = toggleKeepingResults(empty, "difficulty", options.difficulty[0], options.difficulty, rows);
+  check(
+    "from an already-empty list a removal is the plain toggle, so the state stays honest",
+    JSON.stringify(stillEmpty) === JSON.stringify(toggleValue(empty, "difficulty", options.difficulty[0], options.difficulty)) &&
+      stillEmpty.damage.join() === missing,
+    JSON.stringify(stillEmpty),
+  );
+
+  // The canonical order the URL relies on survives the guarded toggle.
+  const a = toggleKeepingResults(toggleKeepingResults(EMPTY_FILTER_STATE, "damage", "fire", options.damage, rows), "damage", "cold", options.damage, rows);
+  const b = toggleKeepingResults(toggleKeepingResults(EMPTY_FILTER_STATE, "damage", "cold", options.damage, rows), "damage", "fire", options.damage, rows);
+  check("toggle order does not change the URL under the guarded toggle either", filterQueryString(a) === filterQueryString(b), `${filterQueryString(a)} vs ${filterQueryString(b)}`);
 }
 
 // ===========================================================================
@@ -871,6 +1058,109 @@ console.log("\nNo offered option selects the whole listing");
 }
 
 // ===========================================================================
+// The row carries what the card and the sort need, copied from the build
+// ===========================================================================
+
+/*
+ * Two fields joined the row with Phase 3, and neither is filtered on. The
+ * ratings feed the sort orders and the card's two highest axes; the stage
+ * picks feed the "At your stage" line, which R-FILT-2 defines as the first
+ * pick of the first three slots of the saved tier's gear set. Both are
+ * recomputed here from the build the row came from, through the same
+ * `resolveRef` the gear tables use, so the row cannot quietly carry a summary
+ * of its own.
+ */
+console.log("\nRows carry the ratings and the stage picks the card and the sort need");
+{
+  for (const locale of LOCALES) {
+    const localeRows = rowsFor(locale);
+    const catalogue = getBuilds(locale);
+    check(
+      `${locale}: every row carries all ${RATING_AXES.length} rating axes, equal to the build's`,
+      catalogue.every((b, i) =>
+        RATING_AXES.every((axis) => localeRows[i].ratings[axis] === b.ratings[axis]),
+      ),
+    );
+    check(
+      `${locale}: the ratings object carries nothing but the axes`,
+      localeRows.every((r) => Object.keys(r.ratings).sort().join() === [...RATING_AXES].sort().join()),
+    );
+    const expectedPicks = (b: (typeof catalogue)[number], tier: (typeof PROGRESSION_TIERS)[number]) =>
+      (b.gearSets.find((g) => g.tier === tier)?.slots.slice(0, 3) ?? [])
+        .map((s) => s.picks[0])
+        .map((p) => (p?.ref ? resolveRef(locale, p.ref).name : (p?.label ?? "")))
+        .filter((name) => name.length > 0);
+    check(
+      `${locale}: every row carries a stage-picks entry for each of the ${PROGRESSION_TIERS.length} tiers`,
+      localeRows.every((r) => PROGRESSION_TIERS.every((tier) => Array.isArray(r.stagePicks[tier]))),
+    );
+    check(
+      `${locale}: the stage picks are the first pick of the first three slots, resolved by name`,
+      catalogue.every((b, i) =>
+        PROGRESSION_TIERS.every(
+          (tier) => localeRows[i].stagePicks[tier].join("|") === expectedPicks(b, tier).join("|"),
+        ),
+      ),
+    );
+    check(
+      `${locale}: no stage pick is empty, and none runs past three`,
+      localeRows.every((r) =>
+        PROGRESSION_TIERS.every(
+          (tier) => r.stagePicks[tier].length <= 3 && r.stagePicks[tier].every((n) => n.trim().length > 0),
+        ),
+      ),
+    );
+    check(
+      `${locale}: the stage line is not vacuous — every tier has three picks on some build`,
+      PROGRESSION_TIERS.every((tier) => localeRows.some((r) => r.stagePicks[tier].length === 3)),
+    );
+  }
+
+  /*
+   * Catalogue names are invariant across locales (`resolveRef` says so), but a
+   * described pick — a rare, a craft — is prose, and pt-BR builds carry it
+   * translated. So the two locales' stage lines must agree wherever the pick is
+   * a catalogued item and differ somewhere where it is not; equal everywhere
+   * would mean the locale was ignored.
+   */
+  const en = rowsFor("en-us");
+  const pt = rowsFor("pt-br");
+  const enBuilds = getBuilds("en-us");
+  const refOnly = (i: number, tier: (typeof PROGRESSION_TIERS)[number]) =>
+    (enBuilds[i].gearSets.find((g) => g.tier === tier)?.slots.slice(0, 3) ?? []).every((s) => s.picks[0]?.ref);
+  check(
+    "where every pick is a catalogued item, both locales carry the same names",
+    en.every((r, i) =>
+      PROGRESSION_TIERS.every(
+        (tier) => !refOnly(i, tier) || r.stagePicks[tier].join("|") === pt[i].stagePicks[tier].join("|"),
+      ),
+    ),
+  );
+  check(
+    "…and a described pick reads differently in pt-BR, so the locale reached the row",
+    en.some((r, i) => PROGRESSION_TIERS.some((tier) => r.stagePicks[tier].join("|") !== pt[i].stagePicks[tier].join("|"))),
+  );
+  /*
+   * A slug is an identifier, not display text (R-I18N-3, which `hygiene` guards
+   * in components). A row that copied `ref.slug` instead of resolving it would
+   * pass every "not empty" check above; this is the one that sees it.
+   */
+  const SLUG_SHAPED = /^[a-z0-9]+(-[a-z0-9]+)+$/;
+  check(
+    "no stage pick is slug-shaped",
+    en.every((r) => PROGRESSION_TIERS.every((tier) => r.stagePicks[tier].every((n) => !SLUG_SHAPED.test(n)))),
+  );
+  const slugged = enBuilds.flatMap((b) =>
+    (b.gearSets.find((g) => g.tier === "bis")?.slots.slice(0, 3) ?? []).map((s) => s.picks[0]?.ref?.slug ?? ""),
+  );
+  check(
+    "control: a row built from the refs' slugs would be caught by that rule",
+    slugged.some((s) => SLUG_SHAPED.test(s)),
+    slugged.filter((s) => SLUG_SHAPED.test(s)).slice(0, 3).join(","),
+  );
+}
+
+// ===========================================================================
 // Both locales
 // ===========================================================================
 
@@ -889,12 +1179,7 @@ console.log("\nBoth locales filter identically");
     );
     check(
       `${locale}: option values are the same slugs in both languages`,
-      JSON.stringify(allOptions(localeRows)) === JSON.stringify(options),
-    );
-    check(
-      `${locale}: the class name is translated and searchable`,
-      localeRows.every((r) => r.className.length > 0) &&
-        filterBuilds(localeRows, state({ q: localeRows[0].className })).length > 0,
+      JSON.stringify(allOptions(localeRows)) === JSON.stringify(allOptions(rows)),
     );
     const t = dictionaryFor(locale);
     check(
@@ -936,18 +1221,23 @@ console.log("\nBoth locales filter identically");
 // ===========================================================================
 
 /*
- * Below `sm` the five groups move into a modal sheet, and the selections made
- * inside it are a *draft*: the count in the primary action follows every tick,
- * but the listing and the URL do not move until Apply, which writes one history
- * entry. That is a state machine with four transitions — open, toggle, clear,
- * apply — and one property that decides whether any of it works: the draft must
- * not share a single array with the applied state, or "cancel" silently keeps
- * the changes it claims to discard.
+ * Below `sm` the advanced groups move into a modal sheet, and the selections
+ * made inside it are a *draft*: the count in the primary action follows every
+ * tick, but the listing and the URL do not move until Apply, which writes one
+ * history entry. That is a state machine with four transitions — open, toggle,
+ * clear, apply — and one property that decides whether any of it works: the
+ * draft must not share a single array with the applied state, or "cancel"
+ * silently keeps the changes it claims to discard.
  *
  * All four live in `lib/builds/filter-sheet.ts` as pure functions over the same
  * `BuildFilterState` the URL carries, so the rules are exercised here rather
  * than only through a browser. `scripts/mobile-filter-sheet.test.ts` drives the
  * modal itself.
+ *
+ * The class chips and the sort live outside the sheet — always visible, on
+ * both layouts — so the sheet's Clear and its badge leave them alone. A Clear
+ * that emptied a chip the reader can see, and did not put there, would be the
+ * same surprise the old Clear avoided for the search box.
  */
 console.log("\nThe mobile sheet drafts, and only Apply commits");
 {
@@ -969,7 +1259,7 @@ console.log("\nThe mobile sheet drafts, and only Apply commits");
   );
 
   // -- toggling touches the draft only -------------------------------------
-  const ticked = toggleDraftValue(draft, "damage", "fire", options.damage);
+  const ticked = toggleDraftValue(draft, "damage", "fire", options.damage, rows);
   check(
     "ticking a box adds it to the draft",
     ticked.damage.includes("fire") && ticked.damage.includes("cold"),
@@ -983,14 +1273,33 @@ console.log("\nThe mobile sheet drafts, and only Apply commits");
   );
   check(
     "ticking the same box again removes it",
-    toggleDraftValue(ticked, "damage", "fire", options.damage).damage.join(",") === "cold",
+    toggleDraftValue(ticked, "damage", "fire", options.damage, rows).damage.join(",") === "cold",
   );
   check(
     "the draft keeps the canonical option order however it is built",
-    toggleDraftValue(state({ damage: ["fire"] }), "damage", "cold", options.damage).damage.join(
+    toggleDraftValue(state({ damage: ["fire"] }), "damage", "cold", options.damage, rows).damage.join(
       ",",
     ) === options.damage.filter((v) => v === "cold" || v === "fire").join(","),
   );
+  /*
+   * The sheet shows the draft's conditional counts and disables the zeros, so
+   * the tick inside it has to follow the same reconciliation the live panel
+   * does — a draft that stranded a zero-count sibling would apply as an empty
+   * list, which is the click the counts exist to prevent.
+   */
+  {
+    const arrived = state({ class: [zeroCase.classSlug], damage: [zeroCase.missing, zeroCase.present] });
+    const unticked = toggleDraftValue(arrived, "damage", zeroCase.present, options.damage, rows);
+    check(
+      "un-ticking the last contributing value inside the sheet empties the group, as the live panel does",
+      unticked.damage.length === 0 && results(unticked) > 0,
+      unticked.damage.join(","),
+    );
+    check(
+      "…and the draft it came from is still a copy",
+      arrived.damage.length === 2 && FILTER_GROUPS.every((g) => unticked[g] !== arrived[g]),
+    );
+  }
 
   // -- cancel, and reopening -----------------------------------------------
   /*
@@ -1000,10 +1309,11 @@ console.log("\nThe mobile sheet drafts, and only Apply commits");
    * starts from *that*, not from the abandoned draft.
    */
   const abandoned = toggleDraftValue(
-    toggleDraftValue(draft, "damage", "fire", options.damage),
+    toggleDraftValue(draft, "damage", "fire", options.damage, rows),
     "budget",
     "high",
     options.budget,
+    rows,
   );
   check(
     "an abandoned draft never reached the applied state",
@@ -1024,13 +1334,22 @@ console.log("\nThe mobile sheet drafts, and only Apply commits");
   // -- clear ---------------------------------------------------------------
   const cleared = clearFilterDraft(abandoned);
   check(
-    "Clear empties every group in the draft",
-    FILTER_GROUPS.every((g) => cleared[g].length === 0),
+    "Clear empties every advanced group in the draft",
+    ADVANCED_GROUPS.every((g) => cleared[g].length === 0),
   );
-  check(
-    "…and leaves the search box alone, because it is outside the sheet",
-    clearFilterDraft(state({ q: "cold", damage: ["fire"] })).q === "cold",
-  );
+  {
+    const outside = clearFilterDraft(state({ class: ["sorceress"], damage: ["fire"], sort: "name" }));
+    check(
+      "…and leaves the class chips alone, because they are outside the sheet",
+      outside.class.join(",") === "sorceress" && outside.damage.length === 0,
+      JSON.stringify(outside),
+    );
+    check("…and the sort, which is a view and not a filter", outside.sort === "name");
+    check(
+      "…without sharing an array with the draft it cleared",
+      FILTER_GROUPS.every((g) => outside[g] !== abandoned[g]),
+    );
+  }
   check("…and does not touch the applied state", applied.damage.join(",") === "cold");
   check(
     "…so the page is only unfiltered once Clear is applied",
@@ -1066,9 +1385,13 @@ console.log("\nThe mobile sheet drafts, and only Apply commits");
     }).class.length === 0,
   );
   check(
-    "Apply sanitises: the query is trimmed and capped",
-    applyFilterDraft(state({ q: `  ${"x".repeat(MAX_QUERY_LENGTH + 40)}  ` }), options).q.length ===
-      MAX_QUERY_LENGTH,
+    "Apply sanitises: a sort the page does not offer falls back to the default",
+    applyFilterDraft(state({ damage: ["cold"], sort: "stage" }), { ...options, sort: availableSorts(false) }).sort ===
+      DEFAULT_SORT,
+  );
+  check(
+    "Apply keeps a sort the page does offer",
+    applyFilterDraft(state({ damage: ["cold"], sort: "name" }), options).sort === "name",
   );
   check(
     "Apply is idempotent — applying its own output changes nothing",
@@ -1082,19 +1405,24 @@ console.log("\nThe mobile sheet drafts, and only Apply commits");
 
   // -- the trigger's badge --------------------------------------------------
   /*
-   * The badge counts what the sheet can change. `activeCount` counts the query
-   * too, which was right while the query and the boxes lived in one panel and
-   * is wrong now that the box is outside: a reader who has only typed would see
-   * "Filters 1", open the sheet, and find nothing ticked and a Clear that does
-   * nothing.
+   * The badge counts what the sheet can change. `activeCount` counts the class
+   * chips too, and they are outside: a reader who has only tapped a class would
+   * see "More filters (1)", open the sheet, and find nothing ticked and a Clear
+   * that does nothing. So the badge is `advancedCount`, the same number the
+   * desktop popover's trigger shows.
    */
   check(
     "the trigger's badge counts the groups the sheet holds",
     sheetFilterCount(state({ damage: ["cold", "fire"], budget: ["low"] })) === 3,
   );
   check(
-    "…and not the search box, which is outside it",
-    sheetFilterCount(state({ q: "cold" })) === 0 && activeCount(state({ q: "cold" })) === 1,
+    "…and not the class chips, which are outside it",
+    sheetFilterCount(state({ class: ["sorceress"] })) === 0 && activeCount(state({ class: ["sorceress"] })) === 1,
+  );
+  check(
+    "…and it is the same count the desktop trigger shows",
+    sheetFilterCount(state({ class: ["sorceress"], damage: ["cold"], goodAt: ["bossing"] })) ===
+      advancedCount(state({ class: ["sorceress"], damage: ["cold"], goodAt: ["bossing"] })),
   );
 
   // -- controls -------------------------------------------------------------
@@ -1121,7 +1449,7 @@ console.log("\nThe mobile sheet drafts, and only Apply commits");
     );
     check(
       "…while the real one does not, which is the whole difference",
-      toggleDraftValue(cloneFilterState(applied), "damage", "fire", options.damage) !== applied &&
+      toggleDraftValue(cloneFilterState(applied), "damage", "fire", options.damage, rows) !== applied &&
         applied.damage.join(",") === "cold",
     );
   }
