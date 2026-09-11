@@ -104,6 +104,18 @@ export function StagePicker({
     row.scrollLeft = chip.offsetLeft - (row.clientWidth - chip.offsetWidth) / 2;
   }, []);
 
+  /*
+   * The pressed chip is brought into view whenever the stage changes hands —
+   * which includes the first time it arrives from storage, after the parent's
+   * boot effect. A press centres its own chip already; on a phone, a stage
+   * read back on load used to sit half off the right edge of the row, which
+   * is a carousel hiding the one state the reader chose. Horizontal only:
+   * `scrollLeft` on the row never moves the page.
+   */
+  useEffect(() => {
+    if (tier) centre(tier);
+  }, [tier, centre]);
+
   const select = useCallback(
     (slug: ProgressionTierLike) => {
       // Re-pressing the pressed chip is idempotent: "show me my stage again"
