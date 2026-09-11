@@ -142,6 +142,16 @@ const emptyQuery = (locale: Locale): string => {
 
 /** The listing has hydrated. */
 const FILTERS_READY = `document.querySelector('[data-filters][data-filters-ready]') !== null`;
+/** The skill-tree island has mounted (plan §5.5). */
+const TREES_READY = `document.querySelector('[data-trees][data-trees-ready]') !== null`;
+/**
+ * The same, but settled at once on a page with no island at all — the old
+ * tree, or a page that lost the section — so a sweep does not spend its whole
+ * timeout on a wait that can never end. The island's absence is asserted
+ * where it matters (section 7b: "the skill-tree island mounted"); here it
+ * only decides when to measure.
+ */
+const TREES_SETTLED = `document.querySelector('[data-trees]') === null || ${TREES_READY}`;
 
 /**
  * Opens the advanced filters through their one trigger and says which regime
@@ -358,6 +368,22 @@ const SURFACES: Surface[] = [
   {
     name: "build page",
     path: (l) => routes(l).build(firstBuild(l).classSlug as Slug, firstBuild(l).slug as Slug),
+  },
+  /*
+   * Phase 4 (R-TREE-1, R-TREE-15, R-A11Y-8): the class pages carrying the two
+   * trees the prototype measured — Cold on the Sorceress, Summoning on the
+   * Necromancer, the longest names — and the reference build. Three columns
+   * at 320px is the point of the phase, and a grid that kept its columns by
+   * overflowing would pass every other gate but this one. Waited for the
+   * island: the served grid and the hydrated one are the same width by design,
+   * and the rule is asserted once the second one exists.
+   */
+  { name: "class page, Sorceress (skill trees)", path: (l) => routes(l).class("sorceress" as Slug), ready: () => TREES_SETTLED },
+  { name: "class page, Necromancer (skill trees)", path: (l) => routes(l).class("necromancer" as Slug), ready: () => TREES_SETTLED },
+  {
+    name: "build page, Blizzard Sorceress (skill trees)",
+    path: (l) => routes(l).build("sorceress" as Slug, "blizzard-sorceress" as Slug),
+    ready: () => TREES_SETTLED,
   },
   {
     /*
@@ -1277,6 +1303,154 @@ async function main(): Promise<void> {
           `${t.restored} links after removal, ${t.total} before`,
         );
       }
+    }
+
+    // -------------------------------------------------------------------------
+    // 7b. Phase 4: the skill tree's targets, and its section at enlarged text
+    // -------------------------------------------------------------------------
+    /*
+     * R-A11Y-4 names the tree's nodes among the primary controls held to 44px
+     * on both axes, and plan §5.5 gives the tab control the same floor (review
+     * LOW-10 struck the 24px the first draft allowed). Measured on what is
+     * painted — below `sm` one tree and three tabs, from `sm` three trees and
+     * no tabs — at every width the sweep above uses, on the two class pages
+     * the prototype measured and on the reference build.
+     */
+    const TREE_TARGET = 44;
+    const TREE_PAGES: [string, (l: Locale) => string][] = [
+      ["class page, Sorceress", (l) => routes(l).class("sorceress" as Slug)],
+      ["class page, Necromancer", (l) => routes(l).class("necromancer" as Slug)],
+      ["build page, Blizzard Sorceress", (l) => routes(l).build("sorceress" as Slug, "blizzard-sorceress" as Slug)],
+    ];
+    const TREE_TARGETS = `(() => {
+      const vis = (el) => el.checkVisibility();
+      const box = (el) => { const r = el.getBoundingClientRect(); return { w: Math.round(r.width * 10) / 10, h: Math.round(r.height * 10) / 10 }; };
+      const nodes = [...document.querySelectorAll('a[data-node]')].filter(vis).map(box);
+      const tabs = [...document.querySelectorAll('nav[data-tree-tabs] a')].filter(vis).map(box);
+      const under = (rows) => rows.filter((b) => b.w < ${TREE_TARGET} - 0.5 || b.h < ${TREE_TARGET} - 0.5).length;
+      const smallest = (rows) => rows.length ? rows.reduce((a, b) => (Math.min(b.w, b.h) < Math.min(a.w, a.h) ? b : a)) : null;
+      return JSON.stringify({ nodes: nodes.length, nodesUnder: under(nodes), smallestNode: smallest(nodes), tabs: tabs.length, tabsUnder: under(tabs), smallestTab: smallest(tabs) });
+    })()`;
+    interface TreeTargets {
+      nodes: number;
+      nodesUnder: number;
+      smallestNode: { w: number; h: number } | null;
+      tabs: number;
+      tabsUnder: number;
+      smallestTab: { w: number; h: number } | null;
+    }
+    for (const locale of LOCALES) {
+      console.log(`\nskill-tree targets clear the ${TREE_TARGET}px floor — ${locale}`);
+      for (const [name, path] of TREE_PAGES) {
+        for (const width of WIDTHS) {
+          await page.setViewport(width);
+          await page.goto(site.origin + path(locale as Locale));
+          const where = `${locale} ${name} @${width}`;
+          const ready = (await page.waitFor(TREES_SETTLED)) && (await page.evaluate<boolean>(TREES_READY));
+          check(`${where}: the skill-tree island mounted`, ready);
+          if (!ready) continue;
+          const t = JSON.parse(await page.evaluate<string>(TREE_TARGETS)) as TreeTargets;
+          const expectedNodes = width < 640 ? 10 : 30;
+          check(
+            `${where}: all ${t.nodes} painted nodes are at least ${TREE_TARGET}×${TREE_TARGET} (smallest ${JSON.stringify(t.smallestNode)})`,
+            t.nodes === expectedNodes && t.nodesUnder === 0,
+            `${t.nodesUnder} under, ${t.nodes} painted (expected ${expectedNodes})`,
+          );
+          if (width < 640) {
+            check(
+              `${where}: the three tabs are at least ${TREE_TARGET}×${TREE_TARGET} (smallest ${JSON.stringify(t.smallestTab)})`,
+              t.tabs === 3 && t.tabsUnder === 0,
+              `${t.tabsUnder} under, ${t.tabs} painted`,
+            );
+          } else {
+            check(`${where}: no tab is painted from 640px`, t.tabs === 0, `${t.tabs} painted`);
+          }
+        }
+      }
+    }
+    /*
+     * Control: the measurer sees a target that is too small. A planted anchor
+     * wearing the node marker at 20×20 must be counted, or the sweep above is
+     * an absence claim over a predicate that matches nothing.
+     */
+    {
+      const planted = JSON.parse(await page.evaluate<string>(`(() => {
+        const a = document.createElement('a');
+        a.setAttribute('data-node', 'probe');
+        a.href = '#';
+        a.style.cssText = 'display:block;width:20px;height:20px';
+        document.body.appendChild(a);
+        const r = ${TREE_TARGETS};
+        a.remove();
+        return r;
+      })()`)) as TreeTargets;
+      check("control: a planted 20×20 node is counted under the floor", planted.nodesUnder >= 1, JSON.stringify(planted));
+    }
+
+    /*
+     * The section at enlarged text (R-TREE-15: reflow without sideways
+     * scrolling). At 200% the *document* already scrolls sideways by the
+     * header row — 552px at 320 (plan §3.1) — which is older than this phase
+     * and not its to fix, so the document rule above cannot carry the tree's
+     * promise. It is asserted on `section#skills` instead: its own
+     * `scrollWidth` never exceeds its `clientWidth`, and nothing inside it
+     * crosses its right edge, at the widths where the grid has the least room.
+     */
+    const SECTION_OVERFLOW = `(() => {
+      const s = document.querySelector('section#skills');
+      if (!s) return JSON.stringify({ missing: true });
+      const limit = s.getBoundingClientRect().right + 0.5;
+      const offenders = [];
+      for (const el of s.querySelectorAll('*')) {
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 && r.height === 0) continue;
+        if (r.right > limit) offenders.push(el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.split(' ').slice(0, 2).join('.') : '') + ' right=' + Math.round(r.right));
+      }
+      return JSON.stringify({ scrollWidth: s.scrollWidth, clientWidth: s.clientWidth, offenders: offenders.slice(0, 4) });
+    })()`;
+    interface SectionOverflow {
+      missing?: boolean;
+      scrollWidth: number;
+      clientWidth: number;
+      offenders: string[];
+    }
+    for (const locale of LOCALES) {
+      console.log(`\nthe skill-tree section never scrolls sideways at enlarged text — ${locale}`);
+      for (const scale of [150, 200] as const) {
+        await page.setTextScale(scale);
+        for (const width of [320, 390, 640] as const) {
+          await page.setViewport(width);
+          await page.goto(site.origin + routes(locale as Locale).class("sorceress" as Slug));
+          const where = `${locale} class page, Sorceress @${width} ${scale}% text`;
+          const ready = (await page.waitFor(TREES_SETTLED)) && (await page.evaluate<boolean>(TREES_READY));
+          check(`${where}: the skill-tree island mounted`, ready);
+          if (!ready) continue;
+          await page.waitFor("document.fonts.status === 'loaded'", 8000);
+          const m = JSON.parse(await page.evaluate<string>(SECTION_OVERFLOW)) as SectionOverflow;
+          check(
+            `${where}: section#skills does not overflow (${m.scrollWidth} vs ${m.clientWidth})`,
+            !m.missing && m.scrollWidth <= m.clientWidth && m.offenders.length === 0,
+            m.missing ? "no section" : `scrollWidth ${m.scrollWidth} > clientWidth ${m.clientWidth}; ${m.offenders.join(" | ")}`,
+          );
+        }
+      }
+    }
+    await page.setTextScale(100);
+    // Control: a planted over-wide element inside the section is reported.
+    {
+      await page.setViewport(320);
+      await page.goto(site.origin + routes("en-us").class("sorceress" as Slug));
+      const wide = JSON.parse(await page.evaluate<string>(`(() => {
+        const s = document.querySelector('section#skills');
+        if (!s) return JSON.stringify({ missing: true });
+        const el = document.createElement('div');
+        el.style.cssText = 'width:2000px;height:2px';
+        s.appendChild(el);
+        const r = ${SECTION_OVERFLOW};
+        el.remove();
+        return r;
+      })()`)) as SectionOverflow;
+      check("control: a planted 2000px element inside the section is reported as overflow", !wide.missing && wide.scrollWidth > wide.clientWidth && wide.offenders.length >= 1, JSON.stringify(wide));
     }
 
     // -------------------------------------------------------------------------

@@ -14,7 +14,6 @@ import {
   Rating,
   Section,
 } from "@/components/ui";
-import { SkillTree } from "@/components/game";
 import { SkillPackages } from "@/components/game/skill-packages";
 import {
   AvailabilityTable,
@@ -24,6 +23,7 @@ import {
   ItemRefLink,
   RichText,
   SkillLink,
+  SkillTreesSection,
 } from "@/components/game";
 import { GearProgression } from "@/components/game/gear-progression";
 import { PageSections, type PageSectionEntry } from "@/components/game/page-sections";
@@ -37,7 +37,7 @@ import {
   getRuneword,
   getSkill,
 } from "@/lib/registry";
-import { dictionaryFor, fmt, formatPoints, isLocale } from "@/lib/i18n";
+import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
 import {
@@ -49,7 +49,7 @@ import {
   ratingLabels,
 } from "@/lib/labels";
 import { routes } from "@/lib/routes";
-import { MAX_HARD_POINTS, hasSkillPages } from "@/lib/skills";
+import { hasSkillPages } from "@/lib/skills";
 
 /**
  * The eleven section ids, in document order, written once.
@@ -144,21 +144,10 @@ export default async function BuildPage(
     .sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
   const onePoints = build.skills.filter((s) => s.points < 20);
 
-  // Flex allocations are optional by definition, so they are shown on the tree
-  // but excluded from the mandatory budget the legend reports.
-  const mandatoryPoints = build.skills
-    .filter((a) => a.role !== "flex" && a.points > 0)
-    .reduce((sum, a) => sum + a.points, 0);
-  const flexPointsSpent = build.skills
-    .filter((a) => a.role === "flex")
-    .reduce((sum, a) => sum + a.points, 0);
-
   // Same gate as the class page: the tree links to skill pages, which exist
-  // for the Paladin only in this slice.
+  // only for the classes in the extracted graph. The mandatory/optional
+  // totals the section header shows are worded inside `SkillTreesSection`.
   const hasSkillTree = hasSkillPages(build.classSlug);
-  const trees = hasSkillTree
-    ? (getClass(locale, build.classSlug)?.trees ?? [])
-    : [];
 
   const rate = (value: number) => fmt(t.common.outOfFive, { value });
 
@@ -384,38 +373,18 @@ export default async function BuildPage(
           <div className="space-y-8">
             {hasSkillTree && (
               /*
-               * The same tree the class page draws, with this build's hard
-               * points on it. Hard points only: no gear, no +skills, and no
+               * The same trees the class page draws, with this build's hard
+               * points on them. Hard points only: no gear, no +skills, and no
                * "effective level" — that number would need a +skills total we
                * cannot source, and a number we cannot defend is worse than none.
+               *
+               * The section carries what the legend card used to (Phase 4,
+               * decision 14): the total "N of M mandatory hard points" in its
+               * header, worded by `buildSkillTreesData`, and one legend for the
+               * three trees whose `h3` still reads `legendTitle`, after the
+               * three tree names — the order `heading-snapshot.json` pins.
                */
-              <div className="space-y-10">
-                {trees.map((tree) => (
-                  <SkillTree
-                    key={tree}
-                    classSlug={build.classSlug}
-                    treeSlug={tree}
-                    allocations={build.skills}
-                  />
-                ))}
-
-                <div className="rounded border border-border bg-surface-raised p-4">
-                  <h3 className="text-sm font-semibold text-ink">{t.skills.legendTitle}</h3>
-                  <p className="mt-1 text-sm text-ink-muted">{t.skills.legendHardPoints}</p>
-                  <p className="mt-2 font-mono text-sm text-ink">
-                    {fmt(t.skills.legendMandatory, {
-                      points: mandatoryPoints,
-                      cap: MAX_HARD_POINTS,
-                    })}
-                    {flexPointsSpent > 0 && (
-                      <span className="text-ink-subtle">
-                        {" "}
-                        {formatPoints(t.skills.legendFlex, flexPointsSpent)}
-                      </span>
-                    )}
-                  </p>
-                </div>
-              </div>
+              <SkillTreesSection classSlug={build.classSlug} allocations={build.skills} />
             )}
 
             <div>

@@ -273,3 +273,469 @@
     }
   }
 }
+
+/* ---- skill tree (Phase 4) ---- */
+/*
+ * The 3×6 skill grid of R-TREE-1: three columns at every width from 320px,
+ * six rows with a floor and no ceiling, the level rail in the gutter, and the
+ * prerequisite connectors as items of the same grid. The numbers are the
+ * prototype's variant F (docs/product/prototypes/mobile-skill-tree, §11):
+ * node 88 × 74 at 320 (3 × 88 + 2 × 8 = the 280px `Container` leaves), name at
+ * 12px, rail 14px wide ending 2px before the grid, grid 484px tall.
+ *
+ * Tokens live on the grid rather than in `@theme`, because nothing outside
+ * the tree reads them and `@theme` would mint utilities nobody asks for.
+ * `--tree-gap` is also the number `lib/skill-tree-geometry.ts` sizes its
+ * pieces by; the two are kept equal by the browser gate, not by a comment.
+ */
+@layer components {
+  .tree-grid {
+    --tree-gap: 8px;
+    --tree-row: 74px;
+    --tree-rail-w: 14px;
+    --tree-name-size: 0.75rem;
+
+    position: relative;
+    /* The nodes' `z-index: 1` over the overlay's 0 stays inside the tree. */
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /*
+     * A floor, never a fixed height (R-TREE-3): a fixed row cuts the name
+     * when the text is scaled, and mutation M5 is exactly that. `auto` lets
+     * one row grow for one long name and leaves the other five alone.
+     */
+    grid-template-rows: repeat(6, minmax(var(--tree-row), auto));
+    gap: var(--tree-gap);
+  }
+
+  .tree-cell {
+    min-width: 0;
+  }
+
+  /*
+   * The overlay: rail and connectors, one `aria-hidden` grid item spanning
+   * the whole area, laid out as a subgrid so its children can name the same
+   * rows and columns the nodes use — and follow them when a row grows. It is
+   * the grid's first child, inert to the pointer (review, MED-2) and painted
+   * under the nodes, whose background is opaque in every state.
+   */
+  .tree-overlay {
+    grid-area: 1 / 1 / -1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /*
+   * Without subgrid, the same template again: exact while no row grows
+   * (plan decision 3), which is every row at 100% text, and off by the
+   * growth of one row otherwise. Preferable to no connectors at all.
+   */
+  @supports not (grid-template-rows: subgrid) {
+    .tree-overlay {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(6, minmax(var(--tree-row), auto));
+      gap: var(--tree-gap);
+    }
+  }
+
+  /*
+   * The rail cell is an item of the row it labels — that is what keeps it
+   * level with an elastic row without a `syncRail` (plan decision 4). It
+   * hangs in the gutter: 14px wide, ending 2px before the grid, so at 320px
+   * it sits at x = 4…18 inside the 20px `px-5` the `Container` leaves.
+   */
+  .tree-rail {
+    justify-self: start;
+    width: var(--tree-rail-w);
+    margin-left: calc(-1 * (var(--tree-rail-w) + 2px));
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 2px;
+    border-right: 1px solid var(--color-border);
+  }
+
+  /*
+   * A connector piece is an empty `<span>` — a grid item with no intrinsic
+   * size — and the `<svg>` is absolutely positioned inside it. Measured in
+   * the prototype (plan §5.4): with the `<svg>` as the item, its 150px
+   * intrinsic height inflated rows 2–4 to 134px and the document overflowed
+   * 24px at 320. With the span: 484px, 0px overflow, and every edge of Cold
+   * Spells starting on the bottom of A and ending on the top of B (±1px) at
+   * six widths, including with row 4 grown to 123px.
+   *
+   * `ink-subtle` on `abyss` is 4.19:1, over the 3:1 WCAG 1.4.11 asks of a
+   * graphic that carries meaning; `border-strong` measured 1.71:1. Ember when
+   * the piece is on the shown node's prerequisite path (`data-related`).
+   */
+  .tree-piece {
+    position: relative;
+    display: block;
+    color: var(--color-ink-subtle);
+  }
+
+  .tree-piece[data-related] {
+    color: var(--color-ember);
+  }
+
+  .tree-piece > svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /*
+   * Placement per kind (plan §5.4). The negative margins are what reach into
+   * the gaps: a piece is sized to the gap and pulled out of its cell by the
+   * same amount, so it starts on one node's edge and ends on the other's.
+   */
+  .tree-piece-v-cell {
+    align-self: end;
+    justify-self: center;
+    width: 2px;
+    height: var(--tree-gap);
+    margin-bottom: calc(-1 * var(--tree-gap));
+  }
+
+  .tree-piece-v-span {
+    align-self: stretch;
+    justify-self: center;
+    width: 2px;
+    margin-top: calc(-1 * var(--tree-gap));
+  }
+
+  /* Only for a same-column edge: a diagonal's lower gap belongs to its jog. */
+  .tree-piece-v-span-gap {
+    margin-bottom: calc(-1 * var(--tree-gap));
+  }
+
+  .tree-piece-h-cell {
+    align-self: center;
+    justify-self: end;
+    width: var(--tree-gap);
+    height: 2px;
+    margin-right: calc(-1 * var(--tree-gap));
+  }
+
+  .tree-piece-h-cell-left {
+    justify-self: start;
+    margin-right: 0;
+    margin-left: calc(-1 * var(--tree-gap));
+  }
+
+  .tree-piece-h-span {
+    align-self: center;
+    justify-self: stretch;
+    height: 2px;
+    margin-inline: calc(-1 * var(--tree-gap));
+  }
+
+  /*
+   * The jog sits in the gap above its target and spans the columns between
+   * the two nodes' centres; the component sets `margin-inline` per piece,
+   * because the number of columns spanned decides it.
+   */
+  .tree-piece-jog {
+    align-self: end;
+    justify-self: stretch;
+    height: var(--tree-gap);
+    margin-bottom: calc(-1 * var(--tree-gap));
+  }
+
+  /* R-A11Y-6: the path lighting up is a state change for a reader who asked. */
+  @media (prefers-reduced-motion: no-preference) {
+    .tree-piece {
+      transition: color 150ms ease;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tree-piece {
+      transition-duration: 0s;
+    }
+  }
+
+  /*
+   * The node: an `<a>` that fills its cell, stacks the sigil line over the
+   * name, and keeps the row's floor as its own minimum so the target is
+   * 88 × 74 at 320 (R-A11Y-4). The frame per state is a Tailwind class on
+   * the element (`skill-tree-grid.tsx`, `stateStyle`), where the contrast
+   * gate reads it.
+   */
+  .tree-node {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    height: 100%;
+    min-height: var(--tree-row);
+    padding: 6px 5px;
+    border-radius: 4px;
+    text-decoration: none;
+    overflow-wrap: break-word;
+  }
+
+  /*
+   * 12px, up to two lines, hyphenated as English (`lang="en"` is on the
+   * span). When a word would still break, the island measures it in the
+   * probe state and switches to glyph mode instead (R-TREE-15).
+   */
+  .tree-name {
+    display: block;
+    font-size: var(--tree-name-size);
+    font-weight: 500;
+    line-height: 1.25;
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+
+  .tree-sigil {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  /* Maxed: the inner ring, 2px inside the ember frame, whatever the background. */
+  .tree-node[data-state="maxed"]::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border: 1px solid var(--color-ember-dim);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* The points counter: round when invested, chamfered when at the cap. */
+  .tree-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    /* A floor, not a height: the 11px figure is 22px at 200 % text and must
+       still sit inside its pill. */
+    min-height: 18px;
+    min-width: 18px;
+    padding: 1px 6px;
+    line-height: 1.2;
+    border-radius: 9999px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .tree-pill-max {
+    border-radius: 0;
+    clip-path: polygon(
+      3px 0,
+      calc(100% - 3px) 0,
+      100% 3px,
+      100% calc(100% - 3px),
+      calc(100% - 3px) 100%,
+      3px 100%,
+      0 calc(100% - 3px),
+      0 3px
+    );
+  }
+
+  /*
+   * Glyph mode (R-TREE-15, plan decisions 9 and 10). The island sets
+   * `data-glyph` when a name no longer fits; the names leave the nodes, the
+   * sigil grows, and the name bar — which does not exist at 100%, where it
+   * would cost 28px of the 900px budget — shows the focused node's name.
+   * `[data-glyph]` is matched anywhere above the node, so the island may set
+   * it on the section or the grid may set it on its own block.
+   */
+  .tree-namebar {
+    display: none;
+  }
+
+  [data-glyph] .tree-namebar {
+    display: block;
+  }
+
+  [data-glyph] .tree-name {
+    display: none;
+  }
+
+  [data-glyph] .tree-sigil > svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  /*
+   * The probe state. The measurement that decides glyph mode runs with the
+   * names forced visible, synchronously, and the attribute is gone before
+   * the frame paints — measuring names already hidden reads zero breaks,
+   * shows them again, grows the rows, and loops (review, HIGH-4).
+   */
+  [data-measuring] .tree-name {
+    display: block !important;
+  }
+
+  /*
+   * The floor without JavaScript. In a media query `em` is the browser's
+   * default body size — the thing a reader's text setting changes — so
+   * `width < 13.5em` is "fewer than thirteen and a half bodies of text
+   * across the screen": 320px at 200% text is 10em, at 150% it is 13.3em.
+   * Scoped to the not-yet-mounted island so that with JavaScript only the
+   * measurement decides. The prototype put the threshold at 13em (§11.4);
+   * the measurement moved it — at 320px and 150% a nine-letter name at 18px
+   * is 80px in a 78px box, and every class has one, so the probe chooses
+   * glyph mode there and the floor agrees with it. Not a contract: the gate
+   * asserts the invariant (no broken word, name in `title` and
+   * `aria-label`), not the number.
+   *
+   * The bar comes with the floor, with the first node's name already in
+   * it, so that the render before the island mounts has the height of the
+   * render after — a fragment below the section lands where the browser
+   * put it (browser gate C2b at 200%).
+   */
+  @media (width < 13.5em) {
+    [data-trees]:not([data-trees-ready]) .tree-name {
+      display: none;
+    }
+
+    [data-trees]:not([data-trees-ready]) .tree-namebar {
+      display: block;
+    }
+
+    /* The glyph-mode sigil too: on a build the pill wraps under it at 200%
+       and the row grows by the difference — 50px over six rows. */
+    [data-trees]:not([data-trees-ready]) .tree-sigil > svg {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  /* The legend's swatches: the frames of the four states at 12 × 12. */
+  .tree-swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--color-ink-subtle);
+    border-radius: 2px;
+    background-color: var(--color-surface);
+  }
+
+  .tree-swatch-locked {
+    border-style: dashed;
+  }
+
+  .tree-swatch-invested,
+  .tree-swatch-maxed {
+    border: 2px solid var(--color-ember);
+  }
+
+  .tree-swatch-maxed {
+    box-shadow:
+      inset 0 0 0 1px var(--color-surface),
+      inset 0 0 0 2px var(--color-ember-dim);
+  }
+
+  /* `display: flex` on a summary drops the marker; this puts one back. */
+  .tree-disclosure::before {
+    content: "▸";
+  }
+
+  details[open] > summary > .tree-disclosure::before {
+    content: "▾";
+  }
+}
+
+/*
+ * Unlayered, for the reason the block above this one gives: each of these
+ * has to beat a utility on the same element, and only an unlayered
+ * declaration outranks `@layer utilities`.
+ *
+ *   - The node carries `bg-surface` (the class the contrast gate reads); a
+ *     selected or hovered node is `surface-raised`.
+ *   - The tree control carries `grid`; from `sm` up the three trees are
+ *     stacked and the control is withdrawn (plan decision 5).
+ *   - The trees are plain blocks, but nothing about the island's wrapper is
+ *     this file's to assume.
+ */
+.tree-node[data-selected] {
+  background-color: var(--color-surface-raised);
+}
+
+@media (hover: hover) {
+  .tree-node:hover {
+    background-color: var(--color-surface-raised);
+  }
+}
+
+@media (width >= 40rem) {
+  [data-tree-tabs] {
+    display: none;
+  }
+}
+
+/*
+ * Large text on a narrow screen: the same 13.5em floor as the names. Three
+ * columns hold "Summoning" at 14px and 320px; at 150 % they are 55px inside
+ * and every word breaks, so the control becomes one column of three full-width
+ * tabs. Unlayered, to beat the `grid-cols-3` utility.
+ */
+@media (width < 13.5em) {
+  [data-tree-tabs] {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*
+ * One tree before the island mounts, below `sm`, with no inline script and
+ * no `<noscript>` (plan decision 6). Until `[data-trees-ready]` is set, the
+ * default tree is the only one shown — or, when the URL names a tree
+ * (`/classes/sorceress#lightning-spells`, the URL `routes.skillTree`
+ * publishes), that one. The island then takes over with the real `hidden`.
+ *
+ * `(scripting: enabled)` is the whole point: without scripts the query is
+ * false and the three trees stay stacked, which is what R-TREE-16 promises
+ * and what a `<noscript><style>` in the body could only do non-conformantly.
+ * Measured in Chrome by the repository's driver (2026-09-11): at 320 with
+ * scripts only the default is visible; with `#c` only the target; under
+ * `Emulation.setScriptExecutionDisabled` the query reads false and all three
+ * are visible; at 800 nothing is hidden. Mutation M15 removes the condition.
+ */
+@media (width < 40rem) and (scripting: enabled) {
+  [data-trees]:not([data-trees-ready]):not(:has([data-tree]:target)) [data-tree]:not([data-tree-default]) {
+    display: none;
+  }
+
+  [data-trees]:not([data-trees-ready]):has([data-tree]:target) [data-tree]:not(:target) {
+    display: none;
+  }
+}
+
+/*
+ * The "My level" control's box, reserved before the island mounts. The
+ * control itself is client-only (R-PREF-4), so if it were inserted bare
+ * after hydration everything below the section would move by its height —
+ * measured: a reader arriving at `#gear-budget` on a build page landed 56px
+ * late (2026-09-11, the locale-switch gate). The server render carries an
+ * inert skeleton of the control's shape (`SkillLevelSkeleton`), which
+ * wraps where the control wraps at any width and text size; `.75rem` is
+ * the spacing above it and `2.75rem` a floor. Under `(scripting: enabled)`
+ * only — the later rule wins there: without scripts the control never
+ * comes, and an empty gap would be the one trace of it. Browser gate C2b
+ * compares the two heights.
+ */
+.tree-level-skeleton {
+  display: none;
+}
+
+@media (scripting: enabled) {
+  .tree-level-slot {
+    margin-top: 0.75rem;
+    min-height: 2.75rem;
+  }
+
+  .tree-level-skeleton {
+    display: flex;
+  }
+}

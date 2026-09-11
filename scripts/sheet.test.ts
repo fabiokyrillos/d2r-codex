@@ -84,40 +84,43 @@ check(
 console.log("\nThe component wires it up");
 // ===========================================================================
 /*
- * Comments are stripped first. They explain what the code used to do — this
- * file's own history is written into them — and a rule that matched prose would
- * report the explanation of a fixed defect as the defect.
+ * The sheet now lives in the one skill-tree island, `skill-trees.tsx` (plan
+ * §6, C16). Read only if it exists (review LOW-1): a renamed or missing file
+ * is a red line here, not a crash before the first line of output. Comments
+ * are stripped first — they explain what the code used to do, and a rule that
+ * matched prose would report the explanation of a fixed defect as the defect.
  */
-const src = readFileSync(
-  join(process.cwd(), "components", "game", "skill-tree-interactive.tsx"),
-  "utf8",
-)
+const ISLAND = "components/game/skill-trees.tsx";
+const islandPath = join(process.cwd(), ...ISLAND.split("/"));
+check(`${ISLAND} exists`, existsSync(islandPath), islandPath);
+const src = (existsSync(islandPath) ? readFileSync(islandPath, "utf8") : "")
   .replace(/\/\*[\s\S]*?\*\//g, " ")
   .replace(/(^|[^:])\/\/[^\n]*/g, "$1 ");
 
-const sheetBlock = src.slice(src.indexOf('role="dialog"'), src.indexOf('role="dialog"') + 700);
+const sheetAt = src.indexOf('role="dialog"');
+const sheetBlock = sheetAt >= 0 ? src.slice(sheetAt, sheetAt + 900) : "";
 check("the sheet declares itself modal", /aria-modal="true"/.test(sheetBlock));
-check("no element still declares aria-modal=\"false\"", !src.includes('aria-modal="false"'));
-check("the sheet is only rendered while open", /\{sheetOpen && selected && \(/.test(src));
+check("no element declares aria-modal=\"false\"", src.length > 0 && !src.includes('aria-modal="false"'));
 check("the sheet carries an accessible name", /aria-label=\{strings\.panelHeading\}/.test(sheetBlock));
-check("the sheet takes focus when it opens", /focusablesIn\(sheet\)\[0\]/.test(src));
+check("the sheet is marked [data-sheet] and its close control [data-close-sheet] (plan §5.5)",
+  /data-sheet=""/.test(sheetBlock) && /data-close-sheet=""/.test(sheetBlock));
+check("the sheet is only rendered while open", /\{sheetVisible && \(/.test(src) && /const sheetVisible = [^;]*sheetOpen/.test(src));
+check("the close control takes focus when the sheet opens (R-A11Y-9)",
+  /const unlock = lockScroll\(document\.body\);[\s\S]{0,200}closeRef\.current\?\.focus\(\)/.test(src) && /ref=\{closeRef\}[\s\S]{0,120}data-close-sheet=""/.test(src));
 check("Tab is routed through trapTarget", /trapTarget\(/.test(src));
 check("the trap listens in the capture phase", /addEventListener\("keydown", onKey, true\)/.test(src));
 check("the trap is removed when the sheet closes", /removeEventListener\("keydown", onKey, true\)/.test(src));
-check("Escape closes and returns focus", /e\.key === "Escape"[\s\S]{0,120}close\(true\)/.test(src));
-check("the scrim closes and returns focus", /onClick=\{\(\) => close\(true\)\}/.test(src));
-check("closing restores focus to the tile", /lastTrigger\.current\.focus\(\)/.test(src));
+check("Escape is handled while a selection exists", /event\.key !== "Escape"\) return;/.test(src));
+check("the scrim closes", /data-scrim=""[\s\S]{0,120}onClick=\{\(\) => close\(/.test(src));
+check("closing returns focus to the node", /\[data-node="\$\{slug\}"\][\s\S]{0,200}node\.focus\(/.test(src));
 
 // The desktop panel must NOT become modal in the process.
-const asideBlock = src.slice(src.indexOf("<aside"), src.indexOf("</aside>"));
-check("the desktop panel is a region, not a dialog", /role="region"/.test(asideBlock));
-check("the desktop panel is not modal", !/aria-modal/.test(asideBlock));
-check("the desktop panel has no scrim", !/inset-0/.test(asideBlock));
-check(
-  "the trap declines to run while the sheet is not laid out",
-  /getClientRects\(\)\.length === 0/.test(src),
-);
-check("the sheet and its scrim are both hidden above lg", (sheetBlock.match(/lg:hidden/g) ?? []).length >= 1);
+const asideAt = src.indexOf("<aside");
+const asideBlock = asideAt >= 0 ? src.slice(asideAt, src.indexOf("</aside>", asideAt)) : "";
+check("the desktop panel is a region, not a dialog", /role="region"/.test(asideBlock) && /data-panel=""/.test(asideBlock));
+check("the desktop panel is not modal", asideBlock.length > 0 && !/aria-modal/.test(asideBlock));
+check("the desktop panel has no scrim", asideBlock.length > 0 && !/inset-0/.test(asideBlock));
+check("the sheet and its scrim are both hidden above lg", (sheetBlock.match(/lg:hidden/g) ?? []).length >= 1 && /data-scrim=""[\s\S]{0,200}lg:hidden/.test(src));
 
 // ===========================================================================
 console.log("\nThe page is held still while the sheet is open");
@@ -191,22 +194,18 @@ console.log("\nThe page is held still while the sheet is open");
   check("and releases it in the same cleanup", /return \(\) => \{[\s\S]{0,200}unlock\(\);/.test(src));
 
   /*
-   * The desktop guard has to come first, or the docked panel locks the page it
-   * does not cover. Compared by index rather than trusted: this is the one
-   * ordering in the effect that is load-bearing.
+   * The lock is taken only while the sheet is visible — `sheetVisible` is
+   * false from `lg` up, where the docked panel covers nothing. Compared by
+   * index rather than trusted: this ordering in the effect is load-bearing.
    */
-  const guardAt = src.indexOf("getClientRects().length === 0");
+  const guardAt = src.indexOf("if (!sheetVisible) return;");
   const lockAt = src.indexOf("lockScroll(document.body)");
   check(
-    "the lock is taken after the desktop guard, so the panel never locks",
-    guardAt !== -1 && lockAt !== -1 && guardAt < lockAt,
+    "the lock is taken after the sheet-visible guard, so the docked panel never locks",
+    guardAt !== -1 && lockAt !== -1 && guardAt < lockAt && lockAt - guardAt < 400,
     `guard at ${guardAt}, lock at ${lockAt}`,
   );
-  check(
-    "the lock lives in the sheet effect, not the Escape effect",
-    /if \(!sheetOpen \|\| !selected\) return;[\s\S]{0,900}lockScroll\(document\.body\)/.test(src),
-  );
-  check("the desktop panel never locks anything", !/lockScroll/.test(asideBlock));
+  check("the desktop panel never locks anything", asideBlock.length > 0 && !/lockScroll/.test(asideBlock));
 }
 
 // ===========================================================================
@@ -236,8 +235,10 @@ for (const locale of LOCALES) {
     // A closed sheet must leave nothing for a screen reader to find.
     check(`${locale} ${label}: no dialog in the initial HTML`, !html.includes('role="dialog"'));
     check(`${locale} ${label}: no aria-modal in the initial HTML`, !html.includes("aria-modal"));
-    // The docked panel is present and is a region.
-    check(`${locale} ${label}: the docked panel ships as a region`, html.includes('role="region"'));
+    check(`${locale} ${label}: no sheet, scrim or close control in the initial HTML`,
+      !html.includes("data-sheet") && !html.includes("data-scrim") && !html.includes("data-close-sheet"));
+    // The docked panel is present and is a named region (plan §5.5).
+    check(`${locale} ${label}: the docked panel ships as a named region`, /data-panel=""[^>]*role="region"[^>]*aria-label="[^"]+"/.test(html) || /role="region"[^>]*data-panel=""[^>]*aria-label="[^"]+"/.test(html));
     // The close control and the call to action are real, translated strings.
     check(`${locale} ${label}: the close label is translated`, t.closePanel.length > 0);
     check(`${locale} ${label}: the panel's call to action is present`, html.includes(t.fullPage.replace(" →", "")));
@@ -259,17 +260,20 @@ console.log("\nThe second sheet, and what the two of them share");
  * only becomes true because there are now two of them.
  */
 {
-  const filterSheet = readFileSync(
-    join(process.cwd(), "components", "builds", "mobile-filter-sheet.tsx"),
-    "utf8",
-  )
+  const FILTER_SHEET = "components/builds/mobile-filter-sheet.tsx";
+  const filterPath = join(process.cwd(), ...FILTER_SHEET.split("/"));
+  check(`${FILTER_SHEET} exists`, existsSync(filterPath), filterPath);
+  const filterSheet = (existsSync(filterPath) ? readFileSync(filterPath, "utf8") : "")
     .replace(/\/\*[\s\S]*?\*\//g, " ")
     .replace(/(^|[^:])\/\/[^\n]*/g, "$1 ");
 
   // -- the shared contract has exactly the consumers it claims --------------
-  const consumers = ["components/game/skill-tree-interactive.tsx", "components/builds/mobile-filter-sheet.tsx"];
+  const consumers = [ISLAND, FILTER_SHEET];
   const importers = (helper: string) =>
-    consumers.filter((c) => readFileSync(join(process.cwd(), ...c.split("/")), "utf8").includes(helper));
+    consumers.filter((c) => {
+      const p = join(process.cwd(), ...c.split("/"));
+      return existsSync(p) && readFileSync(p, "utf8").includes(helper);
+    });
   check("both sheets route Tab through the one trapTarget", importers("trapTarget").length === 2);
   check("both sheets hold the page still with the one lockScroll", importers("lockScroll").length === 2);
   check("neither reimplements a trap of its own", !/tabbable|firstFocusable\s*=/.test(filterSheet));

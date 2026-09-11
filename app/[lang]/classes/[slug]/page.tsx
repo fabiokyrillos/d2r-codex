@@ -15,7 +15,7 @@ import {
   Section,
   StatGrid,
 } from "@/components/ui";
-import { ConfidenceNote, RichText, SkillTree } from "@/components/game";
+import { ConfidenceNote, RichText, SkillTreesSection } from "@/components/game";
 import { AnchorRealign } from "@/components/game/anchor-realign";
 import { SectionNav, type SectionNavEntry } from "@/components/game/section-nav";
 import { BuildCard } from "@/components/builds/build-card";
@@ -317,17 +317,13 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
           <Section id={S.skills} title={t.classes.skillTrees}>
             {showSkillTree ? (
               /*
-               * The visual tree, one per skill page, each with its own docked
-               * detail panel. Stacked rather than tabbed: tabs would need
-               * JavaScript to switch, and every tree stays readable without it.
+               * The three trees as one island rendered from data (Phase 4,
+               * decision 1). The `#<tree>` ids `routes.skillTree` publishes
+               * are rendered by the island on `[data-tree]`, so this page
+               * keeps no wrapper of its own with the same id: two elements
+               * per id is what an anchor jump silently gets wrong.
                */
-              <div className="space-y-10">
-                {trees.map((tree) => (
-                  <div key={tree.slug} id={tree.slug} className="scroll-mt-24">
-                    <SkillTree classSlug={cls.slug} treeSlug={tree.slug} />
-                  </div>
-                ))}
-              </div>
+              <SkillTreesSection classSlug={cls.slug} />
             ) : (
               <div className="space-y-4">
                 {trees.map((tree) => {

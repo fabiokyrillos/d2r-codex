@@ -613,18 +613,25 @@ async function runCase(
          * differently by a fresh load and by `location.assign` from a page that
          * was already scrolled.
          *
-         * That is a real, pre-existing defect, and it is the skill tree's —
-         * Phase 4 owns it, and it is recorded in the plan's out-of-scope list.
-         * R-I18N-7 is about carrying the fragment, which is asserted above and
-         * holds. Pinning either number here would make this gate a coin toss
-         * and would blame the switcher for something it does not touch, so the
-         * drift is printed and the only assertion left is the one that cannot
-         * race: the anchor is a real element, and the reader is not left under
-         * the header.
+         * The growth was not the tree's. It was `#builds`, above `#skills` on
+         * the class page, filling in on hydration (Phase 2 §10), and
+         * `AnchorRealign` re-aligns a fragment landing after it (Phase 2). The
+         * skill tree itself is served at its final height since Phase 4: the
+         * grid, the connectors and the nodes are in the HTML, and hydration
+         * adds only the level control *below* the trees (plan decision 10) —
+         * so the tree no longer moves the document above the anchor. What
+         * remains is the timing of Chrome's last fragment re-anchor against a
+         * page that is still settling, which no assertion on the landing can
+         * make honest. R-I18N-7 is about carrying the fragment, which is
+         * asserted above and holds. Pinning either number here would make this
+         * gate a coin toss and would blame the switcher for something it does
+         * not touch, so the drift is printed and the only assertion left is
+         * the one that cannot race: the anchor is a real element, and the
+         * reader is not left under the header.
          */
         note(
-          `${label}: the class page's anchor races its own hydration (drift ${drift}px) — ` +
-            `pre-existing, skill tree, Phase 4. Not asserted here; the fragment itself is.`,
+          `${label}: the class page's anchor races the page's own settling (drift ${drift}px) — ` +
+            `pre-existing (Phase 2 §10, #builds; AnchorRealign). Not asserted here; the fragment itself is.`,
         );
       }
       check(

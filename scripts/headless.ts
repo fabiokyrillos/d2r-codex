@@ -160,6 +160,13 @@ export class Page {
   private sessionId?: string;
   private loaded?: () => void;
   private problems: string[] = [];
+  /**
+   * Every emulated media feature, sent together: `Emulation.setEmulatedMedia`
+   * replaces the whole set on each call, so a gate that emulated a touch
+   * screen and then asked for reduced motion would have silently got its
+   * mouse back.
+   */
+  private media = new Map<string, string>();
 
   static async launch(): Promise<Page> {
     const page = new Page();
@@ -344,9 +351,7 @@ export class Page {
 
   /** Emulates the OS-level light/dark preference. */
   async setColorScheme(scheme: "light" | "dark"): Promise<void> {
-    await this.send("Emulation.setEmulatedMedia", {
-      features: [{ name: "prefers-color-scheme", value: scheme }],
-    });
+    await this.emulateMedia({ "prefers-color-scheme": scheme });
   }
 
   /**
@@ -355,8 +360,33 @@ export class Page {
    * by asking the browser to make it true; an empty value lifts the emulation.
    */
   async setReducedMotion(reduce: boolean): Promise<void> {
+    await this.emulateMedia({ "prefers-reduced-motion": reduce ? "reduce" : "" });
+  }
+
+  /**
+   * A touch screen or a mouse, as `(hover: hover)` and `(pointer: fine)` see
+   * it. `setViewport(…, mobile)` changes the metrics and nothing else: a
+   * phone-sized headless window still answers `(hover: hover)` — the tree's
+   * own guard against phantom previews reads that query, so a gate about
+   * touch has to set it. `hover` and `pointer` are not among the features
+   * `Emulation.setEmulatedMedia` accepts (the `prefers-*` family is); what
+   * flips them is touch emulation, which is how a device profile does it.
+   * `null` lifts the emulation.
+   */
+  async setHoverCapable(capable: boolean | null): Promise<void> {
+    await this.send("Emulation.setTouchEmulationEnabled", {
+      enabled: capable === false,
+      maxTouchPoints: capable === false ? 5 : 1,
+    });
+  }
+
+  private async emulateMedia(features: Record<string, string>): Promise<void> {
+    for (const [name, value] of Object.entries(features)) {
+      if (value === "") this.media.delete(name);
+      else this.media.set(name, value);
+    }
     await this.send("Emulation.setEmulatedMedia", {
-      features: [{ name: "prefers-reduced-motion", value: reduce ? "reduce" : "" }],
+      features: [...this.media].map(([name, value]) => ({ name, value })),
     });
   }
 

@@ -222,21 +222,43 @@ for (const [label, file, re] of semantic) {
 
 // Emphasis inside a skill tree panel specifically: the defect's origin.
 {
+  /*
+   * The same note is on the page twice. The "points remaining" table renders
+   * it on the server, as `<strong>` — in the HTML and again in the RSC
+   * payload, where an element reads as \"strong\". Phase 4 (plan decision 1,
+   * C12b, review HIGH-1) added the second copy: the panel is no longer a
+   * React element in the payload — the island renders it from data, so the
+   * note travels once more as a *string*, markers and all, and `RichText`
+   * turns them into `<strong>` only when a reader selects the node
+   * (`scripts/skill-tree-browser.test.ts` selects Resist Lightning on this
+   * page and reads `[data-panel-note]`). So: the rendered copy is a strong
+   * element, the data copy keeps its `**`, and no reader ever sees literal
+   * asterisks.
+   */
   const html = readFileSync(join(root, "pt-br/builds/paladin/hammerdin.html"), "utf8");
-  // Panel bodies are serialized into the RSC payload rather than the initial
-  // HTML, and the payload is JSON escaped inside a <script>, so an element
-  // reads as \"strong\" there. Asserting on the sentence that shipped broken
-  // keeps this specific rather than a shape check that could drift.
   const payload = (html.match(/<script[\s\S]*?<\/script>/g) ?? []).join(" ");
   const sentence = "A variante para Uber Tristram";
-  const i = payload.indexOf(sentence);
-  check("the panel sentence that shipped broken is in the payload", i > -1);
+  const at = [...payload.matchAll(new RegExp(sentence, "g"))].map((m) => m.index);
+  check("the note that shipped broken is in the RSC payload", at.length > 0);
   check(
-    "and it is inside a strong element, not surrounded by asterisks",
-    i > -1 &&
-      /\\"strong\\"/.test(payload.slice(Math.max(0, i - 200), i)) &&
-      !payload.slice(Math.max(0, i - 40), i).includes("**"),
-    payload.slice(Math.max(0, i - 90), i + 40),
+    "the table's copy is inside a strong element, not surrounded by asterisks",
+    at.some((i) => /\\"strong\\"/.test(payload.slice(Math.max(0, i - 200), i)) && !payload.slice(Math.max(0, i - 40), i).includes("**")),
+  );
+  check(
+    "the island's copy travels as data — the note string still wears its ** markers",
+    at.some((i) => payload.slice(Math.max(0, i - 20), i).endsWith('\\"note\\":\\"**')),
+    at.map((i) => payload.slice(Math.max(0, i - 20), i)).join(" | "),
+  );
+  const text = visibleText(html);
+  check("the table renders the note as text, without literal markers", text.includes(sentence) && !text.includes(`**${sentence}`));
+  check(
+    "the served panel is empty — no [data-panel-note] until a selection",
+    html.includes("data-panel") && !/<[^>]*\sdata-panel-note[\s=>]/.test(html),
+  );
+  // Control: the same reader would catch the sentence rendered with literal markers.
+  check(
+    "control: a note rendered as literal ** would be visible text",
+    visibleText(`<p>**${sentence}, não a build principal.**</p>`).includes(`**${sentence}`),
   );
 }
 

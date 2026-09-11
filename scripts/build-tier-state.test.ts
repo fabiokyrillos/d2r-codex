@@ -129,7 +129,18 @@ const PROBE = `(() => {
     href: location.href,
     storage: (() => { try { return Object.keys(localStorage).sort(); } catch { return ["<blocked>"]; } })(),
     tierValue: (() => { try { return localStorage.getItem(${JSON.stringify(TIER_KEY)}); } catch { return "<blocked>"; } })(),
-    roleTab: document.querySelectorAll('[role="tab"], [role="tablist"]').length,
+    // Scoped to the tier control (the gear section, the top selector and its
+    // mirror). R-A11Y-3 forbids tab roles where there are no exclusive panels,
+    // which is the tier control's case; the skill-tree section below sm has
+    // exactly such panels and is legitimately a tablist (Phase 4, decision 5),
+    // so a page-wide count would fail on the one place tabs are right.
+    roleTab: (() => {
+      const inGear = document.querySelectorAll('#gear [role="tab"], #gear [role="tablist"]').length;
+      const onControl = [...document.querySelectorAll('[role="tab"], [role="tablist"]')].filter(
+        (n) => n.matches("[data-tier], [data-tier-mirror]") || n.closest("[data-tier], [data-tier-mirror]") || n.querySelector("[data-tier], [data-tier-mirror]"),
+      ).length;
+      return inGear + onControl;
+    })(),
     stickyBelowHeader: [...document.querySelectorAll("*")]
       .filter((n) => getComputedStyle(n).position === "sticky")
       .map((n) => (n.closest("header") ? "header" : (n.id || n.className || n.tagName).toString().slice(0, 40))),
@@ -254,7 +265,7 @@ async function main() {
       check(`${locale}: every affordance reads "expand"`,
         s.affordance.every((a) => a.shown === "expand"), JSON.stringify(s.affordance));
       check(`${locale}: the control became buttons`, s.topIsButton === true && s.topCount === 6, `${s.topCount}`);
-      check(`${locale}: no tab semantics anywhere`, s.roleTab === 0, `${s.roleTab}`);
+      check(`${locale}: no tab semantics on the tier control (R-A11Y-3)`, s.roleTab === 0, `${s.roleTab}`);
     }
 
     // The slot lines must match the data, in every state.

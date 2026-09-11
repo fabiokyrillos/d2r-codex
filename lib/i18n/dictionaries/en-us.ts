@@ -795,23 +795,6 @@ export const enUS = {
     synergiesNone: "No synergies.",
     panelPoints: "Points in this build: {points}",
     placeholderNote: "The mark is a placeholder by type and element until the icon set arrives.",
-    // ---- tile ----
-    // One composition, four shapes. The classification is a single phrase, so
-    // no word the template already said gets repeated: an earlier version
-    // announced "20 points, Optional, optional".
-    ariaNoBuild: "{skill}, level {level}, {tree}.",
-    // `{points}` arrives already worded by `formatPoints`, so there is one
-    // build template rather than a second key existing only to say "1 point".
-    ariaBuild: "{skill}, level {level}, {tree}, {points}, {classification}.",
-    ariaBuildUnused: "{skill}, level {level}, {tree}, {classification}.",
-    classMaxed: "maxed and mandatory",
-    classInvested: "mandatory",
-    classOnePoint: "mandatory",
-    classPrerequisite: "prerequisite",
-    classSynergy: "synergy, mandatory",
-    classUtility: "mandatory",
-    classFlex: "optional",
-    classUnused: "not used",
     // The one point-count string. Read through `formatPoints`, never `fmt`.
     points: { one: "{points} point", other: "{points} points" },
     noPoints: "not used",

@@ -39,7 +39,7 @@ import { FilterGroups, type FilterGroupView } from "./filter-groups";
  * keyboard user must not either: `aria-modal="true"`, focus into the sheet on
  * open, Tab and Shift+Tab contained by `trapTarget`, the document held still by
  * `lockScroll`, and focus back on the trigger on the way out. That is the same
- * contract `components/game/skill-tree-interactive.tsx` settled on, and the
+ * contract `components/game/skill-trees.tsx` (formerly `skill-tree-interactive.tsx`) settled on, and the
  * same two helpers, rather than a second opinion about what modal means.
  *
  * **What it holds, since Phase 3: the four advanced groups and nothing else**

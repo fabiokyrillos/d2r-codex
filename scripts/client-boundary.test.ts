@@ -105,6 +105,32 @@ const clientEntries = allFiles.filter((f) => /^\s*["']use client["']/.test(readF
 check("the client boundary is not empty", clientEntries.length > 0, `${clientEntries.length} entries`);
 console.log(`       entries: ${clientEntries.map(posix).join(", ")}`);
 
+/*
+ * Phase 4 (plan §9, C18): the skill-tree section is one island, `skill-trees`,
+ * and the three-island `skill-tree-interactive` it replaces is deleted with the
+ * old tree — not merely unused, because a `"use client"` file that still exists
+ * is still an entry the walk has to clear, and still a chunk if anything
+ * imports it. The parts the island composes are client files too; the walk
+ * above already proves none of them reaches the registry, the graph or content.
+ */
+{
+  const entryNames = clientEntries.map(posix);
+  check("the skill-tree island is a client entry", entryNames.includes("components/game/skill-trees.tsx"));
+  for (const part of [
+    "components/game/skill-tree-grid.tsx",
+    "components/game/skill-tree-tabs.tsx",
+    "components/game/skill-tree-legend.tsx",
+    "components/game/skill-tree-panel.tsx",
+    "components/game/skill-level-control.tsx",
+    "components/game/use-name-fit.ts",
+  ]) {
+    check(`${part} is a client file the island composes`, entryNames.includes(part));
+  }
+  const old = "components/game/skill-tree-interactive.tsx";
+  check(`${old} is gone, not merely unused`, !entryNames.includes(old) && !existsSync(join(repo, ...old.split("/"))));
+  check("components/game/skill-tree.tsx (the old server tree) is gone", !existsSync(join(repo, "components", "game", "skill-tree.tsx")));
+}
+
 /** Modules that must never be reachable from a Client Component. */
 const FORBIDDEN: { label: string; test: (p: string) => boolean }[] = [
   { label: "lib/registry", test: (p) => p.startsWith("lib/registry/") || p === "lib/registry.ts" },

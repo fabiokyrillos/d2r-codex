@@ -4,7 +4,6 @@ import {
   TIER_LEVELS,
   type SkillGraphNode,
 } from "@/content/classes/skill-graph";
-import { formatPoints, type Plural } from "@/lib/i18n";
 import type { AllocationRole, ClassSlug, Element, Skill, SkillAllocation, Slug } from "@/lib/types";
 
 /**
@@ -555,49 +554,4 @@ export function progressionLevels(node: SkillGraphNode, recommended: number[]): 
     if (level > 1 && level < node.maxLevel) set.add(level);
   }
   return [...set].sort((a, b) => a - b);
-}
-
-/**
- * The accessible name of a tile.
- *
- * Pure and exported, because this is the one string a screen-reader user
- * actually receives and it is easier to get subtly wrong than anything else
- * here — an earlier version ended "20 points, Optional, optional", saying the
- * same thing twice because a state label and a separate duty word overlapped.
- *
- * One composition: name, unlock level, tree, then hard points and a single
- * classification phrase. On a class page, where no build context exists,
- * neither points nor obligation are mentioned at all rather than invented.
- */
-export interface SkillAriaStrings {
-  noBuild: string;
-  build: string;
-  buildUnused: string;
-  /**
-   * Both wordings of a point count. There used to be a second template here
-   * (`buildOne`) whose only job was to say "1 point" instead of "1 points" —
-   * a fix for one surface while the tile and the tables kept shipping the bug.
-   * The count is worded once, by `formatPoints`, and dropped into `{points}`.
-   */
-  points: Plural;
-  classification: Record<TileState, string>;
-}
-
-export function skillAriaLabel(
-  tile: { name: string; level: number; tree: string; points: number; state: TileState },
-  strings: SkillAriaStrings,
-  /** False on a class page: there is no plan, so there are no points to report. */
-  inBuild: boolean,
-): string {
-  const fill = (template: string) =>
-    template
-      .replace("{skill}", tile.name)
-      .replace("{level}", String(tile.level))
-      .replace("{tree}", tile.tree)
-      .replace("{points}", formatPoints(strings.points, tile.points))
-      .replace("{classification}", strings.classification[tile.state]);
-
-  if (!inBuild) return fill(strings.noBuild);
-  if (tile.points <= 0) return fill(strings.buildUnused);
-  return fill(strings.build);
 }
