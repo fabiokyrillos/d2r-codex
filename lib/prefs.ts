@@ -156,6 +156,46 @@ export function clearTier(): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// "My level" (R-TREE-9, Phase 4 by decision D1)
+// ---------------------------------------------------------------------------
+
+export const LEVEL_KEY = "d2rc.level";
+
+/**
+ * Dispatched on `window` after every successful write or clear, so a second
+ * island on the same page — or the tree, when the control lives at the end of
+ * the section — follows without polling. Cross-tab changes arrive through the
+ * platform's own `storage` event.
+ */
+export const LEVEL_EVENT = "d2rc:level";
+
+/**
+ * A whole number from 1 to 99, and nothing else. Stub until
+ * `scripts/prefs.test.ts` is red (plan §5.7): accepts a number or the exact
+ * decimal string storage hands back; rejects `"18.5"`, `" 18"`, `""`, 0, 100.
+ */
+export function isLevel(value: unknown): value is number {
+  void value;
+  return false;
+}
+
+/** The stored level, or null when absent, invalid, or unreachable. Never writes. */
+export function readLevel(): number | null {
+  return null;
+}
+
+/** Returns false when storage refused or the value is not a level. Stub. */
+export function writeLevel(level: number): boolean {
+  void level;
+  return false;
+}
+
+/** The "clear" of R-PREF-3 for this key. Stub. */
+export function clearLevel(): boolean {
+  return false;
+}
+
+// ---------------------------------------------------------------------------
 // Resolution
 // ---------------------------------------------------------------------------
 

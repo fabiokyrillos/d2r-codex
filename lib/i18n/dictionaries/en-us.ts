@@ -764,6 +764,37 @@ export const enUS = {
     panelEmpty: "Select a skill to see what it does, what it needs, and where it sits.",
     closePanel: "Close details",
     fullPage: "View full skill page",
+    // ---- Phase 4: the structural tree (plan §5.6) ----
+    // One composition, two shapes: "name, level, tree, state" on a class
+    // page, plus the points on a build page. `{state}` is one of the four
+    // visual states below; `{points}` arrives already worded by `formatPoints`.
+    ariaNode: "{skill}, level {level}, {tree}, {state}.",
+    ariaNodeBuild: "{skill}, level {level}, {tree}, {state}, {points}.",
+    stateLocked: "Locked",
+    stateAvailable: "Available",
+    announceSelected: "{skill} selected. {state}.",
+    treesLabel: "Trees",
+    treePoints: "{points} of {max} points in this tree",
+    treePointsShort: "{points}/{max}",
+    treeThemeSummary: "About this tree",
+    levelLabel: "My level",
+    levelHelp: "Only marks what is still locked. It changes nothing else.",
+    levelClear: "Clear",
+    levelClearLabel: "Clear my level",
+    levelInvalid: "A whole number from 1 to 99.",
+    legendLocked: "Locked: dashed frame and a padlock — above your level.",
+    legendAvailable: "Available: plain frame.",
+    legendInvested: "Invested: ember frame and the points in the corner.",
+    legendMaxed: "Maxed: ember frame, inner ring and a star.",
+    legendOptional: "Optional: the points pill is dashed — this build leaves the choice to you.",
+    legendConnector:
+      "A line links a prerequisite to the skill that needs it; it lights up on the selected skill.",
+    legendKeyboard:
+      "Arrows move along the row and the column; at an edge they continue into the next row. Home and End go to the first and last skill.",
+    unlocksNone: "Nothing requires this skill.",
+    synergiesNone: "No synergies.",
+    panelPoints: "Points in this build: {points}",
+    placeholderNote: "The mark is a placeholder by type and element until the icon set arrives.",
     // ---- tile ----
     // One composition, four shapes. The classification is a single phrase, so
     // no word the template already said gets repeated: an earlier version
