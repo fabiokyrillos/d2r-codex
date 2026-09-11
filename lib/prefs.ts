@@ -58,8 +58,12 @@ export const PREF_KEYS = [
 /** Prefixes for the per-class keys, which cannot be enumerated literally. */
 export const PREF_KEY_PREFIXES = ["d2rc.leveling."] as const;
 
-/** What Phase 1 actually writes. */
-export const IMPLEMENTED_PREF_KEYS = ["d2rc.tier"] as const;
+/**
+ * What the site actually writes: `d2rc.tier` since Phase 1, `d2rc.level` since
+ * Phase 4 (R-TREE-9, owner's decision D1). `scripts/prefs.test.ts` asserts the
+ * list whole and in order.
+ */
+export const IMPLEMENTED_PREF_KEYS = ["d2rc.tier", "d2rc.level"] as const;
 
 export const TIER_KEY = "d2rc.tier";
 
@@ -169,30 +173,94 @@ export const LEVEL_KEY = "d2rc.level";
  */
 export const LEVEL_EVENT = "d2rc:level";
 
+const LEVEL_MIN = 1;
+const LEVEL_MAX = 99;
+
 /**
- * A whole number from 1 to 99, and nothing else. Stub until
- * `scripts/prefs.test.ts` is red (plan §5.7): accepts a number or the exact
- * decimal string storage hands back; rejects `"18.5"`, `" 18"`, `""`, 0, 100.
+ * A whole number from 1 to 99, as a number or as the exact decimal string
+ * storage hands back — and nothing else.
+ *
+ * The rule is a round-trip, not a parse: `Number(v)` must be an integer in
+ * range *and* `String(Number(v))` must equal `String(v)`. `writeLevel` stores
+ * `String(level)` and nothing else, so "18" is the only spelling this module
+ * can have produced for 18; "018", "1e1", " 18" and "18.0" all parse to a
+ * level and were all written by something else. R-PREF-1 says an invalid
+ * stored value is ignored, and a value that merely parses is where a
+ * hand-edited "1e1" would otherwise become level 10.
+ *
+ * Restricted to numbers and strings before anything is coerced: `[18]` and
+ * `{ valueOf }` both survive `Number()` and `String()`, and neither is a level.
  */
 export function isLevel(value: unknown): value is number {
-  void value;
-  return false;
+  if (typeof value !== "number" && typeof value !== "string") return false;
+  const n = Number(value);
+  return (
+    Number.isInteger(n) &&
+    n >= LEVEL_MIN &&
+    n <= LEVEL_MAX &&
+    String(n) === String(value)
+  );
+}
+
+/**
+ * Tells the page a level was written or cleared, when there is a page.
+ *
+ * Best effort by design: the write has already succeeded by the time this
+ * runs, and a listener that throws must not turn that success into a reported
+ * failure. `window` is looked for rather than assumed, because the module is
+ * imported on the server, where there is none.
+ */
+function announceLevel(): void {
+  try {
+    const w = (globalThis as { window?: { dispatchEvent?: (event: Event) => boolean } }).window;
+    if (!w || typeof w.dispatchEvent !== "function" || typeof Event !== "function") return;
+    w.dispatchEvent(new Event(LEVEL_EVENT));
+  } catch {
+    // A listener threw. The write stands.
+  }
 }
 
 /** The stored level, or null when absent, invalid, or unreachable. Never writes. */
 export function readLevel(): number | null {
-  return null;
+  try {
+    const raw = store()?.getItem(LEVEL_KEY) ?? null;
+    // Narrowed on the raw string, then converted: the predicate's type says
+    // `number`, but what storage returns is the string it was given.
+    return isLevel(raw) ? Number(raw) : null;
+  } catch {
+    return null;
+  }
 }
 
-/** Returns false when storage refused or the value is not a level. Stub. */
+/**
+ * Returns false when storage refused or the value is not a level, rather than
+ * throwing at the caller. Dispatches `LEVEL_EVENT` only after a write that
+ * succeeded, so the island never re-reads a value that did not land.
+ */
 export function writeLevel(level: number): boolean {
-  void level;
-  return false;
+  if (!isLevel(level)) return false;
+  try {
+    const s = store();
+    if (!s) return false;
+    s.setItem(LEVEL_KEY, String(level));
+  } catch {
+    return false;
+  }
+  announceLevel();
+  return true;
 }
 
-/** The "clear" of R-PREF-3 for this key. Stub. */
+/** The "clear" R-PREF-3 requires next to every preference the site writes. */
 export function clearLevel(): boolean {
-  return false;
+  try {
+    const s = store();
+    if (!s) return false;
+    s.removeItem(LEVEL_KEY);
+  } catch {
+    return false;
+  }
+  announceLevel();
+  return true;
 }
 
 // ---------------------------------------------------------------------------

@@ -128,24 +128,40 @@ export interface SkillTreesData {
 /**
  * The visual state of a node for a given "my level" (null when unset).
  *
- * Stub: the real rule is written against `scripts/skill-tree.test.ts` first
- * (plan §11, T9). Plan §5.1: locked when `level !== null && node.level > level`;
- * else maxed when `points >= maxLevel`; else invested when `points > 0`; else
- * available.
+ * Locked wins (plan decision 13): a build's 20 points in a level-30 skill are
+ * still 20 points on the counter, but for a level-18 character the frame and
+ * the accessible name say "locked" — that is the one thing `d2rc.level` is
+ * for (R-TREE-4). With no level set nothing is ever locked (R-TREE-9), which
+ * is why the comparison is guarded on `null` rather than on `0`.
  */
 export function nodeState(
   node: Pick<TreeNodeData, "points" | "maxLevel" | "level">,
   level: number | null,
 ): NodeState {
-  void node;
-  void level;
+  if (level !== null && node.level > level) return "locked";
+  if (node.points >= node.maxLevel) return "maxed";
+  if (node.points > 0) return "invested";
   return "available";
 }
 
 /**
- * The accessible name of a node: "name, level N, tree, state[, points]".
- *
- * Stub: composed against `scripts/skill-tree.test.ts` first (plan §5.1).
+ * Fills `{name}` placeholders, leaving unknown ones intact — the same
+ * contract as `lib/i18n`'s `fmt`, re-stated here because this module may
+ * import nothing (it is the one the client bundle carries).
+ */
+export function fill(template: string, values: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (match, key: string) =>
+    key in values ? String(values[key]) : match,
+  );
+}
+
+/**
+ * The accessible name of a node: "name, level N, tree, state[, points]"
+ * (R-TREE-14). One composition for both surfaces: the class page's template
+ * has no `{points}` slot, so no plan is invented where there is none; the
+ * build's template gets `pointsLabel`, already worded once by `formatPoints`.
+ * The state is one of the four of R-TREE-5, never an editorial role — the
+ * defect this replaced read "20 points, Optional, optional".
  */
 export function nodeAriaLabel(
   node: Pick<TreeNodeData, "name" | "level" | "pointsLabel">,
@@ -157,10 +173,17 @@ export function nodeAriaLabel(
   >,
   inBuild: boolean,
 ): string {
-  void node;
-  void tree;
-  void state;
-  void strings;
-  void inBuild;
-  return "";
+  const stateLabel = {
+    locked: strings.stateLocked,
+    available: strings.stateAvailable,
+    invested: strings.stateInvested,
+    maxed: strings.stateMaxed,
+  }[state];
+  return fill(inBuild ? strings.ariaNodeBuild : strings.ariaNode, {
+    skill: node.name,
+    level: node.level,
+    tree,
+    state: stateLabel,
+    points: node.pointsLabel,
+  });
 }

@@ -30,10 +30,16 @@ import {
   IMPLEMENTED_PREF_KEYS,
   TIER_KEY,
   TIER_ANCHOR_PREFIX,
+  LEVEL_KEY,
+  LEVEL_EVENT,
   isTier,
   readTier,
   writeTier,
   clearTier,
+  isLevel,
+  readLevel,
+  writeLevel,
+  clearLevel,
   tierAnchorId,
   tierAnchorHref,
   tierFromHash,
@@ -125,12 +131,21 @@ const settle = (fn: () => unknown): { ok: boolean; value: unknown } => {
 
 console.log("\nthe closed list of preference keys");
 
+/*
+ * Phase 1 implemented `d2rc.tier` alone; Phase 4 adds `d2rc.level` by the
+ * owner's decision D1 (R-TREE-9). The list is asserted whole and in order,
+ * because a gate that only counted it could not tell a key added from a key
+ * renamed.
+ */
 check(
-  "d2rc.tier is the only key Phase 1 implements",
-  IMPLEMENTED_PREF_KEYS.length === 1 && IMPLEMENTED_PREF_KEYS[0] === "d2rc.tier",
+  "d2rc.tier and d2rc.level are the two keys implemented, in that order",
+  IMPLEMENTED_PREF_KEYS.length === 2 &&
+    IMPLEMENTED_PREF_KEYS[0] === "d2rc.tier" &&
+    IMPLEMENTED_PREF_KEYS[1] === "d2rc.level",
   IMPLEMENTED_PREF_KEYS.join(", "),
 );
 check("TIER_KEY agrees with the list", TIER_KEY === "d2rc.tier", TIER_KEY);
+check("LEVEL_KEY agrees with the list", LEVEL_KEY === "d2rc.level", LEVEL_KEY);
 check(
   "every implemented key is on the documented list",
   IMPLEMENTED_PREF_KEYS.every((k) => (PREF_KEYS as readonly string[]).includes(k)),
@@ -490,6 +505,159 @@ check("from 640px the offset leaves room for the sticky mirror", anchorOffsetPx(
 check("…and at 1280 too", anchorOffsetPx(1280) === 112, String(anchorOffsetPx(1280)));
 check("below 640px there is no mirror, so the offset is smaller", anchorOffsetPx(390) === 72, String(anchorOffsetPx(390)));
 check("…and at 320 too", anchorOffsetPx(320) === 72, String(anchorOffsetPx(320)));
+
+// ---------------------------------------------------------------------------
+// 8. My level (R-TREE-9, decision D1; plan §5.7)
+// ---------------------------------------------------------------------------
+
+console.log("\nmy level: a whole number from 1 to 99, and nothing else");
+
+/*
+ * The rule, stated once so the table below is not the specification: a value
+ * is a level when it is a number or a string, `Number(v)` is an integer from
+ * 1 to 99, and `String(Number(v)) === String(v)`.
+ *
+ * The round-trip is the half that matters. `writeLevel` stores `String(level)`
+ * and nothing else, so "18" is the only spelling storage can hand back for 18;
+ * "018", "1e1", " 18" and "18.0" all *parse* to a level and were all written by
+ * something other than this module. R-PREF-1 says an invalid stored value is
+ * ignored, and ignoring a value that merely parses is how a hand-edited "1e1"
+ * would quietly become level 10.
+ */
+const GOOD_LEVELS: unknown[] = [1, 18, 99, "1", "18", "99"];
+const BAD_LEVELS: unknown[] = [
+  0, 100, -1, 18.5, 1e2, Infinity, NaN,
+  "0", "100", "18.5", " 18", "18 ", "", "018", "1e1", "18.0", "+18", "-1", "1,8", "abc", "18px",
+  null, undefined, true, false, [18], { valueOf: () => 18 }, "__proto__",
+];
+check(
+  `the six valid spellings are accepted (${GOOD_LEVELS.map((v) => JSON.stringify(v)).join(", ")})`,
+  GOOD_LEVELS.every((v) => isLevel(v)),
+  GOOD_LEVELS.filter((v) => !isLevel(v)).map((v) => JSON.stringify(v)).join(", "),
+);
+{
+  const wrongly = BAD_LEVELS.filter((v) => isLevel(v));
+  check(
+    `nothing else is — ${BAD_LEVELS.length} spellings rejected`,
+    wrongly.length === 0,
+    wrongly.map((v) => (typeof v === "number" ? String(v) : JSON.stringify(v))).join(", "),
+  );
+}
+check("control: 100 is rejected (mutation M23 flips exactly this)", !isLevel(100));
+check("control: the exact decimal string storage hands back is accepted", isLevel("18"));
+
+/*
+ * A fake `window`, so the event contract can be exercised without a browser.
+ * Node has no `window`; the module has to look for one rather than assume it,
+ * because `readLevel` runs on the server too (never at module scope, but the
+ * function is imported there).
+ */
+const events: string[] = [];
+function installWindow(mode: "ok" | "throws" | "none"): void {
+  events.length = 0;
+  if (mode === "none") {
+    delete (globalThis as { window?: unknown }).window;
+    return;
+  }
+  Object.defineProperty(globalThis, "window", {
+    configurable: true,
+    value: {
+      dispatchEvent: (event: Event) => {
+        if (mode === "throws") throw new Error("a listener threw");
+        events.push(event.type);
+        return true;
+      },
+    },
+  });
+}
+
+{
+  const f = installStorage("none");
+  f.store.set(LEVEL_KEY, "18");
+  const r = settle(() => readLevel());
+  check("a stored \"18\" reads back as the number 18", r.ok && r.value === 18, String(r.value));
+  check("reading wrote nothing", f.writes === 0, `${f.writes} writes`);
+  check("reading removed nothing", f.removes === 0, `${f.removes} removes`);
+}
+
+for (const bad of ["abc", "100", "0", "18.5", " 18", "018", "1e1", ""]) {
+  const f = installStorage("none");
+  f.store.set(LEVEL_KEY, bad);
+  const r = settle(() => readLevel());
+  check(`a corrupt level (${JSON.stringify(bad)}) reads as null`, r.ok && r.value === null, String(r.value));
+  check(`  …and is kept, not deleted`, f.removes === 0 && f.writes === 0 && f.store.get(LEVEL_KEY) === bad);
+}
+
+{
+  installStorage("none");
+  const r = settle(() => readLevel());
+  check("no stored level reads as null", r.ok && r.value === null, String(r.value));
+}
+
+for (const mode of ["get", "access"] as const) {
+  const f = installStorage(mode);
+  const r = settle(() => readLevel());
+  check(`throwing on ${mode}: readLevel returns null without throwing`, r.ok && r.value === null, r.ok ? String(r.value) : "threw");
+  check(`  …and touched nothing`, f.writes === 0 && f.removes === 0);
+}
+
+{
+  removeStorage();
+  const r = settle(() => readLevel());
+  check("localStorage undefined: readLevel returns null", r.ok && r.value === null);
+}
+
+{
+  const f = installStorage("none");
+  installWindow("ok");
+  f.store.set(TIER_KEY, "budget");
+  const w = settle(() => writeLevel(18));
+  check("writeLevel(18) reports success", w.ok && w.value === true, String(w.value));
+  check("…and stores exactly \"18\" under d2rc.level", f.store.get(LEVEL_KEY) === "18", String(f.store.get(LEVEL_KEY)));
+  check("…touching no other key", f.store.size === 2 && f.store.get(TIER_KEY) === "budget", [...f.store.keys()].join(", "));
+  check(`…and dispatches ${LEVEL_EVENT} on window exactly once`, events.length === 1 && events[0] === LEVEL_EVENT, events.join(", "));
+
+  events.length = 0;
+  const bad = settle(() => writeLevel(100));
+  check("writeLevel(100) reports failure", bad.ok && bad.value === false, String(bad.value));
+  check("…stores nothing", f.store.get(LEVEL_KEY) === "18" && f.writes === 1, `${f.writes} writes`);
+  check("…and dispatches nothing", events.length === 0, events.join(", "));
+  const frac = settle(() => writeLevel(18.5));
+  check("writeLevel(18.5) reports failure and stores nothing", frac.ok && frac.value === false && f.store.get(LEVEL_KEY) === "18");
+
+  events.length = 0;
+  const c = settle(() => clearLevel());
+  check("clearLevel() reports success and removes the key", c.ok && c.value === true && !f.store.has(LEVEL_KEY), String(c.value));
+  check("…leaving the tier alone", f.store.get(TIER_KEY) === "budget");
+  check(`…and dispatches ${LEVEL_EVENT} once`, events.length === 1 && events[0] === LEVEL_EVENT, events.join(", "));
+}
+
+{
+  const f = installStorage("none");
+  installWindow("none");
+  const w = settle(() => writeLevel(30));
+  check("without a window the write still succeeds — the event is a courtesy, not the write", w.ok && w.value === true && f.store.get(LEVEL_KEY) === "30");
+}
+
+{
+  const f = installStorage("none");
+  installWindow("throws");
+  const w = settle(() => writeLevel(30));
+  check("a listener that throws does not turn a successful write into a failure", w.ok && w.value === true && f.store.get(LEVEL_KEY) === "30");
+}
+
+for (const { mode, write, clear } of HOSTILE) {
+  installStorage(mode);
+  installWindow("ok");
+  const w = settle(() => writeLevel(18));
+  const c = settle(() => clearLevel());
+  check(`throwing on ${mode}: writeLevel reports ${write}, clearLevel reports ${clear}, nothing throws`, w.ok && c.ok && w.value === write && c.value === clear, `${String(w.value)}/${String(c.value)}`);
+  const expected = (write ? 1 : 0) + (clear ? 1 : 0);
+  check(`  …and the event fires only after an operation that succeeded (${expected})`, events.length === expected, `${events.length} events`);
+}
+
+installWindow("none");
+removeStorage();
 
 // ---------------------------------------------------------------------------
 

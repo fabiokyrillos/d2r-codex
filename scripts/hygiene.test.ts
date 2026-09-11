@@ -409,6 +409,86 @@ console.log("\nOnly three surfaces may write the tier preference");
   );
 }
 
+// ---------------------------------------------------------------------------
+console.log("\nOnly \"My level\" may write the level preference");
+// ---------------------------------------------------------------------------
+/*
+ * Phase 4, decision 12 (R-TREE-9, R-PREF-3, C17): the level preference
+ * (`LEVEL_KEY`) has one writer, the level control at the end of the
+ * skill-tree section, for the same reason the tier preference has three named
+ * ones — a second writer is a second rule about what the preference means. The island *reads* the level
+ * (`readLevel`) and listens for the event the writer dispatches; it never
+ * writes. Same allowlist shape, same scope, same controls as above.
+ */
+{
+  const LEVEL_WRITERS = /\b(?:writeLevel|clearLevel)\b/;
+  const ALLOWED_LEVEL_WRITER = "components/game/skill-level-control.tsx";
+  const WRITER_HOME = "lib/prefs.ts";
+
+  const scanned = tracked.filter((f) => /^(app|components|lib)\//.test(f));
+  const writers = scanned
+    .filter((f) => f !== WRITER_HOME && f !== ALLOWED_LEVEL_WRITER)
+    .filter((f) => LEVEL_WRITERS.test(stripComments(readFileSync(f, "utf8"))));
+  check("only the level control touches writeLevel/clearLevel", writers.length === 0, writers.join(", "));
+  check(
+    "control: the declaring module is still where the exemption says",
+    tracked.includes(WRITER_HOME) && LEVEL_WRITERS.test(readFileSync(WRITER_HOME, "utf8")),
+    WRITER_HOME,
+  );
+  check(
+    "control: the level control really does import one, so the allowlist is not decoration",
+    tracked.includes(ALLOWED_LEVEL_WRITER) && LEVEL_WRITERS.test(stripComments(readFileSync(ALLOWED_LEVEL_WRITER, "utf8"))),
+    ALLOWED_LEVEL_WRITER,
+  );
+  check(
+    "control: the pattern matches the import and the call, and not a longer name",
+    LEVEL_WRITERS.test('import { writeLevel } from "@/lib/prefs";') &&
+      LEVEL_WRITERS.test("onClick={() => clearLevel()}") &&
+      !LEVEL_WRITERS.test("const rewriteLevels = 1; const clearLevels = 2;"),
+  );
+  check("control: the scan covers the island that must only read", scanned.includes("components/game/skill-trees.tsx"));
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nThe skill-tree island neither routes a fragment nor scrolls the page");
+// ---------------------------------------------------------------------------
+/*
+ * Phase 4, plan §6 and C17. Two rules the browser gate can only sample:
+ *
+ * **No `<Link>` with a fragment** in the grid or the tab control. The node is
+ * an `<a href>` whose plain click the island intercepts, and a tab is an
+ * `<a href="#<tree>">` that must never reach the router: Next's `<Link>` runs
+ * its own `scrollIntoView` on a fragment, which is the one thing the section
+ * must not do when a reader switches trees (R-TREE-8: no navigation).
+ *
+ * **No `scrollIntoView` anywhere in the island.** Focus moves with
+ * `preventScroll`; the page stays where the reader left it. A hidden call
+ * would pass every static assertion and move the page under a thumb.
+ */
+{
+  const NO_LINK_FRAGMENT = ["components/game/skill-tree-grid.tsx", "components/game/skill-tree-tabs.tsx"];
+  const island = tracked.filter(
+    (f) => /^components\/game\/skill-tree[a-z-]*\.tsx$/.test(f) || f === "components/game/skill-level-control.tsx" || f === "components/game/use-name-fit.ts",
+  );
+  check("the grid and the tab control are tracked", NO_LINK_FRAGMENT.every((f) => tracked.includes(f)), NO_LINK_FRAGMENT.filter((f) => !tracked.includes(f)).join(", "));
+  check("the island files are tracked", island.length >= 6, island.join(", "));
+
+  const routed = NO_LINK_FRAGMENT.filter((f) => existsSync(f) && /<Link\b[^>]*href=\{?["'`]#/.test(stripComments(readFileSync(f, "utf8"))));
+  check("no node or tab is a <Link> with a fragment", routed.length === 0, routed.join(", "));
+  const SCROLLS = /\bscrollIntoView\w*\s*\(/;
+  const scrolling = island.filter((f) => SCROLLS.test(stripComments(readFileSync(f, "utf8"))));
+  check("no island file calls scrollIntoView", scrolling.length === 0, scrolling.join(", "));
+
+  check(
+    "control: the scroll pattern matches the call and its IfNeeded variant",
+    SCROLLS.test("el.scrollIntoView({ block: 'center' })") && SCROLLS.test("el.scrollIntoViewIfNeeded()") && !SCROLLS.test("preventScroll: true"),
+  );
+  check(
+    "control: the island uses plain anchors, so the <Link> rule has something to guard",
+    NO_LINK_FRAGMENT.every((f) => existsSync(f) && /<a\b/.test(readFileSync(f, "utf8"))),
+  );
+}
+
 console.log(`\n${passed} checks passed.`);
 if (failures.length) {
   console.error(`\n${failures.length} FAILED:`);
