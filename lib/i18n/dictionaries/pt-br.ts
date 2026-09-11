@@ -217,7 +217,6 @@ export const ptBR: Dictionary = {
     indexTitle: "Guias de build",
     indexDescription:
       "Toda build aqui é documentada em seis níveis de equipamento, do personagem recém-criado ao best in slot — para que a página seja útil independentemente do que você tem agora.",
-    awaitingTitle: "Classes aguardando guias de build",
 
     howItPlays: "Como se joga",
     atAGlance: "Resumo",
@@ -356,8 +355,25 @@ export const ptBR: Dictionary = {
 
     filters: {
       regionLabel: "Filtrar builds",
-      searchLabel: "Buscar builds",
-      searchPlaceholder: "Nome, classe ou apelido…",
+      classesLabel: "Filtrar por classe",
+      stageLegend: "Onde você está?",
+      stageMine: "Meu estágio: {tier}",
+      stageClear: "Limpar",
+      stageClearLabel: "Limpar meu estágio",
+      stageHelp: "Seu estágio nunca esconde uma build — só ordena a lista e mostra o que vestir.",
+      stageAnnounce: "Meu estágio: {tier}.",
+      moreFilters: "Mais filtros",
+      sortLabel: "Ordenar",
+      sortRecommended: "Recomendado",
+      sortStage: "Para o meu estágio",
+      sortEasiest: "Mais fáceis primeiro",
+      sortCheapest: "Mais baratas primeiro",
+      sortName: "Nome A–Z",
+      sortHelpLabel: "O que as ordens significam",
+      sortHelpRecommended: "Recomendado é a ordem editorial: builds de referência primeiro.",
+      sortHelpStage:
+        "Para o meu estágio ordena pelo que serve ao estágio salvo: os estágios iniciais põem builds fáceis e baratas primeiro; Econômico põe solo self-found primeiro; Otimizado e Best in Slot põem velocidade de limpeza primeiro.",
+      stageLine: "No seu estágio:",
       resultsOne: "{count} build",
       resultsMany: "{count} builds",
       activeLabel: "Filtrando por",
@@ -366,8 +382,10 @@ export const ptBR: Dictionary = {
       emptyTitle: "Nenhuma build corresponde a estes filtros",
       emptyBody:
         "Tente remover um filtro, ou limpar todos. Toda build do site é documentada em seis níveis de equipamento, então quanto mais estreita a pergunta, menos respostas existem.",
+      removeLast: "Remover último filtro",
+      removeGroup: "Remover {group}",
+      nearTitle: "Builds próximas, ignorando {group}",
       showFilters: "Filtros",
-      searchChipPrefix: "Busca:",
       sheetTitle: "Filtrar builds",
       sheetClose: "Fechar filtros",
       sheetCancel: "Cancelar",

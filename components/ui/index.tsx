@@ -47,14 +47,30 @@ export function PageHeader({
   title,
   description,
   meta,
+  compact = false,
 }: {
   eyebrow?: ReactNode;
   title: string;
   description?: string;
   meta?: ReactNode;
+  /**
+   * The listing variant: the same eyebrow and title, a description — if one
+   * is given — at body size from `sm` up and not drawn on a phone, and less
+   * room below. A catalogue's header is the thing standing between the
+   * reader and its first card, and every pixel of it counts against the fold
+   * (R-FILT-1, R-FILT-11). Nothing else changes, so the page still reads as
+   * this site.
+   *
+   * The phone rule is measured, not stylistic: at 320px a listing's
+   * description wraps to four lines in en-US and five in pt-BR — 91 to
+   * 114px — inside a budget of 120px between the title's bottom edge and the
+   * first row of controls, which R-FILT-1 fixes for every width. The build
+   * catalogue passes no description at all; its page says why.
+   */
+  compact?: boolean;
 }) {
   return (
-    <header className="border-b border-border pb-8">
+    <header className={cn("border-b border-border", compact ? "pb-4" : "pb-8")}>
       {eyebrow && (
         <div className="mb-3 flex flex-wrap items-center gap-2 text-xs font-medium tracking-wide text-ink-subtle uppercase">
           {eyebrow}
@@ -64,7 +80,12 @@ export function PageHeader({
         {title}
       </h1>
       {description && (
-        <p className="mt-3 max-w-3xl text-lg leading-relaxed text-pretty text-ink-muted">
+        <p
+          className={cn(
+            "leading-relaxed text-pretty text-ink-muted",
+            compact ? "mt-2 hidden max-w-5xl text-sm sm:block" : "mt-3 max-w-3xl text-lg",
+          )}
+        >
           {description}
         </p>
       )}
@@ -145,14 +166,23 @@ export function LinkCard({
   href,
   children,
   className,
+  attrs,
 }: {
   href: string;
   children: ReactNode;
   className?: string;
+  /**
+   * `data-*` attributes only, spread onto the link. The build card carries
+   * `data-card` so the browser gates can tell a build from the other links
+   * on a listing without parsing hrefs; nothing else about the element is
+   * open to the caller.
+   */
+  attrs?: Record<`data-${string}`, string>;
 }) {
   return (
     <Link
       href={href}
+      {...attrs}
       className={cn(
         "group block rounded-lg border border-border bg-surface p-5 transition-colors",
         "hover:border-border-strong hover:bg-surface-raised",

@@ -1,23 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import {
-  Badge,
-  Container,
-  LinkCard,
-  PageHeader,
-  Rating,
-  Section,
-} from "@/components/ui";
-import { ElementBadge } from "@/components/game";
+import { Container, PageHeader, Section } from "@/components/ui";
+import { BuildCard } from "@/components/builds/build-card";
 import { FilterableBuildList } from "@/components/builds/filterable-build-list";
-import { getBuilds, getClass, getClasses } from "@/lib/registry";
-import { dictionaryFor, fmt, isLocale } from "@/lib/i18n";
+import { getBuilds } from "@/lib/registry";
+import { dictionaryFor, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
-import { budgetLabels, playDifficultyLabels } from "@/lib/labels";
-import { routes } from "@/lib/routes";
 
 export async function generateMetadata(
   props: PageProps<"/[lang]/builds">,
@@ -34,109 +24,37 @@ export async function generateMetadata(
 
 export default async function BuildsPage() {
   const { locale, t } = await getI18n();
-  const r = routes(locale);
-  const budgets = budgetLabels(t);
-  const difficulties = playDifficultyLabels(t);
-
   const builds = getBuilds(locale);
-  const classes = getClasses(locale);
-  const documented = new Set(builds.map((b) => b.classSlug));
-  const undocumented = classes.filter((c) => !documented.has(c.slug));
 
   return (
     <Container size="wide" className="py-10">
-      <PageHeader
-        eyebrow={<span>{t.nav.builds}</span>}
-        title={t.builds.indexTitle}
-        description={t.builds.indexDescription}
-      />
+      {/*
+        The compact header, and no description under the title.
 
-      <div className="mt-8 space-y-10">
+        On this page the header is what stands between the reader and the
+        first card, and two of the phase's acceptances are distances from the
+        title: the chip row within 120px of its bottom edge at every width
+        (R-FILT-1), and the grid within 220px of its top at 1280px
+        (R-FILT-11). The title, the chip row, the second row of controls and
+        the hairline between them and the cards are 219px on their own at
+        1280 — with the 44px targets both rows have to be, there is no
+        smaller arrangement — so the description's one line in en-US and two
+        in pt-BR (31 and 54px) could only push the grid past the line, and at
+        320px its four to five lines were the whole of R-FILT-1's budget by
+        themselves. The plan (§3) reserved exactly this as the decision to
+        make; the numbers are in the Phase 3 report. The `<meta>` description
+        still carries the sentence, and the cards say what each build is.
+      */}
+      <PageHeader eyebrow={<span>{t.nav.builds}</span>} title={t.builds.indexTitle} compact />
+
+      <div className="mt-4">
         <Section>
           <FilterableBuildList
             builds={builds}
             listClassName="grid gap-4 lg:grid-cols-2"
-            cardFor={(build) => {
-              const cls = getClass(locale, build.classSlug);
-              return (
-                  <LinkCard href={r.build(build.classSlug, build.slug)} className="h-full">
-                    <p className="text-xs font-semibold tracking-widest text-ember uppercase">
-                      {cls?.name}
-                    </p>
-                    <h2 className="mt-1.5 font-display text-xl text-ink transition-colors group-hover:text-ember-bright">
-                      {build.name}
-                    </h2>
-                    <p className="mt-2 text-sm leading-relaxed text-pretty text-ink-muted">
-                      {build.summary}
-                    </p>
-
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {build.damageTypes.map((el) => (
-                        <ElementBadge key={el} element={el} />
-                      ))}
-                      <Badge tone="outline">{budgets[build.budget]}</Badge>
-                      <Badge tone="outline">{difficulties[build.difficulty]}</Badge>
-                    </div>
-
-                    <div className="mt-4 grid grid-cols-2 gap-x-6 border-t border-border pt-3">
-                      <Rating
-                        value={build.ratings.clearSpeed}
-                        label={t.builds.clearSpeed}
-                        valueLabel={fmt(t.common.outOfFive, {
-                          value: build.ratings.clearSpeed,
-                        })}
-                      />
-                      <Rating
-                        value={build.ratings.magicFind}
-                        label={t.builds.magicFind}
-                        valueLabel={fmt(t.common.outOfFive, {
-                          value: build.ratings.magicFind,
-                        })}
-                      />
-                      <Rating
-                        value={build.ratings.survivability}
-                        label={t.builds.survivability}
-                        valueLabel={fmt(t.common.outOfFive, {
-                          value: build.ratings.survivability,
-                        })}
-                      />
-                      <Rating
-                        value={build.ratings.soloSelfFound}
-                        label={t.builds.soloSelfFound}
-                        valueLabel={fmt(t.common.outOfFive, {
-                          value: build.ratings.soloSelfFound,
-                        })}
-                      />
-                    </div>
-                  </LinkCard>
-              );
-            }}
+            cardFor={(build, row) => <BuildCard build={build} row={row} variant="catalogue" />}
           />
         </Section>
-
-        {/*
-          Guarded, as `leveling/page.tsx` guards its twin. Without it the
-          heading rendered over an empty list on every visit in both
-          languages — every class has a build now, so the filter has been
-          returning nothing for as long as that has been true.
-        */}
-        {undocumented.length > 0 && (
-          <Section title={t.builds.awaitingTitle}>
-            <ul className="flex flex-wrap gap-2">
-              {undocumented.map((cls) => (
-                <li key={cls.slug}>
-                  <Link
-                    href={r.class(cls.slug)}
-                    className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm text-ink-muted transition-colors hover:border-border-strong hover:text-ink"
-                  >
-                    {cls.name}
-                    {cls.requiresDlc && <Badge tone="ember">{t.home.dlcBadge}</Badge>}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Section>
-        )}
       </div>
     </Container>
   );

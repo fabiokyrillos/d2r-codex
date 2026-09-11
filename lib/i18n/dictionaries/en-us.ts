@@ -221,7 +221,6 @@ export const enUS = {
     indexTitle: "Build guides",
     indexDescription:
       "Every build here is documented at six gear tiers, from a fresh character to best in slot — so the page is useful whatever you currently own.",
-    awaitingTitle: "Classes awaiting build guides",
 
     howItPlays: "How it plays",
     atAGlance: "At a glance",
@@ -366,8 +365,37 @@ export const enUS = {
 
     filters: {
       regionLabel: "Filter builds",
-      searchLabel: "Search builds",
-      searchPlaceholder: "Name, class or nickname…",
+      // The class chips: the listing's primary control, and the accessible
+      // name of the row they sit in.
+      classesLabel: "Filter by class",
+      // "Where are you?" — the same question the build page asks, and the same
+      // preference. `stageMine` names the saved stage; `stageHelp` is the one
+      // sentence that keeps a reader from expecting it to filter.
+      stageLegend: "Where are you?",
+      stageMine: "My stage: {tier}",
+      stageClear: "Clear",
+      stageClearLabel: "Clear my stage",
+      stageHelp: "Your stage never hides a build — it only orders the list and shows what to wear.",
+      stageAnnounce: "My stage: {tier}.",
+      // The disclosure over the four advanced groups: `showFilters` on a phone,
+      // `moreFilters` from the tablet up, where the class chips make "more"
+      // true.
+      moreFilters: "More filters",
+      // The sort control and its `?`. One sentence each, because the two
+      // orders that need explaining are the two whose names do not say how
+      // they rank.
+      sortLabel: "Sort",
+      sortRecommended: "Recommended",
+      sortStage: "For my stage",
+      sortEasiest: "Easiest first",
+      sortCheapest: "Cheapest first",
+      sortName: "Name A–Z",
+      sortHelpLabel: "What the orders mean",
+      sortHelpRecommended: "Recommended is the editorial order: reference builds first.",
+      sortHelpStage:
+        "For my stage ranks by what suits your saved stage: the early stages put easy, cheap builds first; Budget puts solo self-found first; Optimized and Best in Slot put clear speed first.",
+      // The card's line under a saved stage: "At your stage: Spirit · Oculus · Vipermagi".
+      stageLine: "At your stage:",
       resultsOne: "{count} build",
       resultsMany: "{count} builds",
       activeLabel: "Filtering by",
@@ -376,8 +404,13 @@ export const enUS = {
       emptyTitle: "No builds match these filters",
       emptyBody:
         "Try removing a filter, or clearing them all. Every build on the site is documented at six gear tiers, so the narrower the question the fewer answers there are.",
+      // The empty state's offers. `removeLast` undoes the last decision made
+      // here; `removeGroup` names the group whose removal brings builds back;
+      // `nearTitle` heads the builds the reader is closest to.
+      removeLast: "Remove last filter",
+      removeGroup: "Remove {group}",
+      nearTitle: "Near builds, ignoring {group}",
       showFilters: "Filters",
-      searchChipPrefix: "Search:",
       // The mobile sheet. Its selections are a draft, so the primary action
       // has to say what applying them would produce, not what the page shows.
       sheetTitle: "Filter builds",

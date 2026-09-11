@@ -15,9 +15,10 @@ import {
   Section,
   StatGrid,
 } from "@/components/ui";
-import { ConfidenceNote, ElementBadge, RichText, SkillTree } from "@/components/game";
+import { ConfidenceNote, RichText, SkillTree } from "@/components/game";
 import { AnchorRealign } from "@/components/game/anchor-realign";
 import { SectionNav, type SectionNavEntry } from "@/components/game/section-nav";
+import { BuildCard } from "@/components/builds/build-card";
 import { FilterableBuildList } from "@/components/builds/filterable-build-list";
 import { CLASS_PAGE_FILTER_GROUPS } from "@/lib/builds/filter";
 import {
@@ -33,7 +34,7 @@ import { hasSkillPages } from "@/lib/skills";
 import { fmt, isLocale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getI18n } from "@/lib/i18n/server";
-import { budgetLabels, playDifficultyLabels, releaseLabels } from "@/lib/labels";
+import { releaseLabels } from "@/lib/labels";
 import { routes } from "@/lib/routes";
 
 /**
@@ -113,8 +114,6 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
   const showSkillTree = hasSkillPages(cls.slug);
 
   const releases = releaseLabels(t);
-  const budgets = budgetLabels(t);
-  const difficulties = playDifficultyLabels(t);
 
   /*
    * The summary, built from the same guards as the sections themselves.
@@ -196,9 +195,11 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
           this is only ever needed when scripting is *on*.
 
           `#builds` below is a `FilterableBuildList`, and its static HTML is
-          the Suspense fallback — the plain list. Hydration replaces it with
-          the filter panel and the list, and the section grows: 86px at 390,
-          338–428 at 1280. That growth is above every other anchor on this
+          the Suspense fallback — since Phase 3 the plain list under the class
+          chips on the catalogue, and the plain list alone here. Hydration
+          replaces it with the live listing, and what the section gains is the
+          second row of controls: the stage picker, "More filters", the sort
+          and the count. That growth is above every other anchor on this
           page, and a load that already carries `#skills` has been jumped
           before it happens, so the reader arrives that far below the heading
           they asked for. This puts them back once the page has stopped
@@ -246,26 +247,7 @@ export default async function ClassPage(props: PageProps<"/[lang]/classes/[slug]
                   </LinkCard>
                 ) : undefined
               }
-              cardFor={(build) => (
-                <LinkCard href={r.build(cls.slug, build.slug)} className="h-full">
-                  <p className="text-xs font-semibold tracking-widest text-ember uppercase">
-                    {t.classes.endgameEyebrow}
-                  </p>
-                  <h3 className="mt-1.5 font-display text-lg text-ink group-hover:text-ember-bright">
-                    {build.name}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-pretty text-ink-muted">
-                    {build.summary}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {build.damageTypes.map((el) => (
-                      <ElementBadge key={el} element={el} />
-                    ))}
-                    <Badge tone="outline">{budgets[build.budget]}</Badge>
-                    <Badge tone="outline">{difficulties[build.difficulty]}</Badge>
-                  </div>
-                </LinkCard>
-              )}
+              cardFor={(build, row) => <BuildCard build={build} row={row} variant="class" />}
             />
           </Section>
         )}

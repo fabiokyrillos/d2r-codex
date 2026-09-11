@@ -2,19 +2,25 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 
-import { cn } from "@/components/ui";
 import { trapTarget } from "@/lib/focus-trap";
 import { lockScroll } from "@/lib/scroll-lock";
-import type { BuildFilterState, FilterGroup, OptionSets } from "@/lib/builds/filter";
+import {
+  facetCounts,
+  filterBuilds,
+  type BuildFilterState,
+  type BuildRow,
+  type FilterGroup,
+  type OptionSets,
+} from "@/lib/builds/filter";
 import {
   clearFilterDraft,
   cloneFilterState,
   toggleDraftValue,
 } from "@/lib/builds/filter-sheet";
-import type { FilterGroupView } from "./build-filters";
+import { FilterGroups, type FilterGroupView } from "./filter-groups";
 
 /**
- * The filter groups, below `sm`, as a modal bottom sheet.
+ * The advanced filter groups, below `sm`, as a modal bottom sheet.
  *
  * **Why a sheet at all.** The groups used to expand inline above the results.
  * Five of them is most of a phone screen, so the listing was pushed out of view
@@ -36,6 +42,17 @@ import type { FilterGroupView } from "./build-filters";
  * contract `components/game/skill-tree-interactive.tsx` settled on, and the
  * same two helpers, rather than a second opinion about what modal means.
  *
+ * **What it holds, since Phase 3: the four advanced groups and nothing else**
+ * (R-FILT-12). The class chips and the stage picker are always on the page,
+ * above the results, on both layouts. A class chip inside a draft would be the
+ * one control whose tick is not a decision, and a stage picker inside a modal
+ * would hide a preference behind Apply. So the sheet renders `FilterGroups` —
+ * the same disclosures the desktop popover shows — over the **draft**, with
+ * the draft's own conditional counts: every option says what the sheet would
+ * list with it ticked, a `0` is disabled, and the number in the primary action
+ * is the same `filterBuilds` the listing renders from (R-FILT-4, "também
+ * dentro da sheet"). The rows are the parent's; the sheet only holds a state.
+ *
  * **Nothing here moves.** The site ships no animation, so a sheet that slid up
  * would be a new visual language rather than the established one — and it would
  * be the one piece of motion a `prefers-reduced-motion` reader has to opt out
@@ -54,7 +71,7 @@ export interface MobileFilterSheetStrings {
   close: string;
   /** The secondary action beside Apply. Discards, like Escape. */
   cancel: string;
-  /** Empties the draft's groups. The search box is outside the sheet. */
+  /** Empties the draft's advanced groups. The class chips are outside the sheet. */
   clear: string;
   /** `Show {count} build`. */
   showOne: string;
@@ -62,93 +79,14 @@ export interface MobileFilterSheetStrings {
   showMany: string;
 }
 
-/**
- * The checkbox rows, shared by the sheet and the desktop panel.
- *
- * One component rather than two copies because the two things that make these
- * rows correct are easy to lose in a copy: the row *is* the label, so the whole
- * strip toggles with no dead space inside it, and `py-1` around a 20px line
- * makes it 28px tall — clearing WCAG 2.5.8's 24×24 minimum on its own terms
- * rather than through the spacing exception it used to lean on.
- *
- * `idPrefix` differs between the two so the two renderings never collide on an
- * `id`, and `data-group`/`data-value` are what the browser gate steers by, so
- * it never has to parse a generated id.
- */
-export function FilterGroupFieldsets({
-  groups,
-  state,
-  id,
-  idPrefix,
-  onToggle,
-  className,
-  note,
-}: {
-  groups: FilterGroupView[];
-  state: BuildFilterState;
-  /** So the trigger's `aria-controls` resolves to whichever of the two is live. */
-  id?: string;
-  idPrefix: string;
-  onToggle: (group: FilterGroup, value: string) => void;
-  className?: string;
-  note?: string;
-}) {
-  return (
-    <div id={id} className={className}>
-      {groups.map((group) => (
-        <fieldset key={group.group} className="min-w-0">
-          <legend className="text-xs font-semibold tracking-widest text-ink-subtle uppercase">
-            {group.legend}
-          </legend>
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5">
-            {group.options.map((option) => {
-              const id = `${idPrefix}-${group.group}-${option.value}`;
-              const checked = state[group.group].includes(option.value);
-              return (
-                <label
-                  key={option.value}
-                  htmlFor={id}
-                  className={cn(
-                    "flex min-h-6 cursor-pointer items-center gap-1.5 py-1 text-sm",
-                    checked ? "text-ink" : "text-ink-muted",
-                  )}
-                >
-                  <input
-                    id={id}
-                    type="checkbox"
-                    checked={checked}
-                    data-group={group.group}
-                    data-value={option.value}
-                    onChange={() => onToggle(group.group, option.value)}
-                    className="size-3.5 shrink-0 accent-[var(--color-ember)]"
-                  />
-                  <span>
-                    {option.label} <span className="text-xs text-ink-subtle">({option.count})</span>
-                  </span>
-                </label>
-              );
-            })}
-          </div>
-        </fieldset>
-      ))}
-      {/*
-        Directly under the group it defines, wherever that group is rendered.
-        It used to sit after the whole listing — four screens below the "Good
-        at" checkboxes on the unfiltered catalogue.
-      */}
-      {note && <p className="col-span-full text-xs text-ink-subtle">{note}</p>}
-    </div>
-  );
-}
-
 export function MobileFilterSheet({
   applied,
   groups,
   options,
+  rows,
   strings,
   note,
   labelledBy,
-  resultCountFor,
   onApply,
   onCancel,
 }: {
@@ -156,12 +94,12 @@ export function MobileFilterSheet({
   applied: BuildFilterState;
   groups: FilterGroupView[];
   options: OptionSets;
+  /** Every row the listing was built from — what the counts and the guarded toggle are computed over. */
+  rows: readonly BuildRow[];
   strings: MobileFilterSheetStrings;
   note?: string;
   /** The id the parent gave the sheet, so the trigger's `aria-controls` resolves. */
   labelledBy: string;
-  /** The real number of builds a state would show. The parent owns the rows. */
-  resultCountFor: (state: BuildFilterState) => number;
   /** Commits the draft. Exactly one history entry, written by the parent. */
   onApply: (next: BuildFilterState) => void;
   /** Discards. Escape, the close control and the backdrop all land here. */
@@ -177,7 +115,13 @@ export function MobileFilterSheet({
   const sheetRef = useRef<HTMLDivElement>(null);
   const headingId = useId();
 
-  const count = useMemo(() => resultCountFor(draft), [draft, resultCountFor]);
+  /*
+   * The primary action says what applying the draft *would* produce, and the
+   * rows say what each option would add to that — both from the same pure
+   * functions the listing renders from, rather than from an estimate.
+   */
+  const count = useMemo(() => filterBuilds(rows, draft).length, [rows, draft]);
+  const counts = useMemo(() => facetCounts(rows, draft), [rows, draft]);
 
   /*
    * The effect below runs once, for the life of the open sheet, and reads the
@@ -238,8 +182,11 @@ export function MobileFilterSheet({
     };
   }, []);
 
+  // `toggleDraftValue` is `toggleKeepingResults` plus a clone: an un-tick
+  // inside the draft follows the same reconciliation the live surfaces do, so
+  // a draft can never apply as the empty list the counts exist to prevent.
   const toggle = (group: FilterGroup, value: string) =>
-    setDraft((d) => toggleDraftValue(d, group, value, options[group] ?? []));
+    setDraft((d) => toggleDraftValue(d, group, value, options[group] ?? [], rows));
 
   return (
     <>
@@ -273,13 +220,14 @@ export function MobileFilterSheet({
           </button>
         </div>
 
-        <FilterGroupFieldsets
+        <FilterGroups
           groups={groups}
           state={draft}
+          counts={counts}
           idPrefix={`${headingId}-sheet`}
           onToggle={toggle}
           note={note}
-          className="grid min-h-0 grow gap-y-4 overflow-y-auto px-4 py-4"
+          className="grid min-h-0 grow content-start gap-y-1 overflow-y-auto px-4 py-3"
         />
 
         <div className="flex shrink-0 items-center gap-3 border-t border-border px-4 py-3">

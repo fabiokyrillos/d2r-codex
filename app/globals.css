@@ -150,7 +150,7 @@
 
 @layer components {
   /*
-   * The edge fade on the horizontally scrolling tier chips.
+   * The edge fade on a horizontally scrolling chip row.
    *
    * Applied only when the row genuinely overflows — the class is added from
    * a measurement, not a breakpoint — because the mask clips the 2px focus
@@ -158,7 +158,7 @@
    * the same reason, so a focused chip is never under the faded band.
    */
   /*
-   * The horizontally scrolling tier chips.
+   * A horizontally scrolling chip row.
    *
    * `overflow-x: auto` clips the row visually, but the six chips still
    * contributed to `documentElement.scrollWidth` — 568px against a 320px
@@ -166,12 +166,22 @@
    * forbids. `contain: paint` says what is actually meant: nothing inside
    * this box affects anything outside it. There is nothing absolutely
    * positioned in the row, so making it a containing block costs nothing.
+   *
+   * Two names for one rule. `.tier-chips` is the build page's tier control;
+   * `.chip-row` is the same row on a listing — the class chips and the stage
+   * picker of Phase 3 — where the same overflow, the same containment and
+   * the same fade apply. Paint containment also clips at the padding edge,
+   * which is why every row that wears it carries a little padding: the 2px
+   * focus ring, offset 2px, needs 4px of room on each side or it is cut off
+   * on the first and last chip.
    */
-  .tier-chips {
+  .tier-chips,
+  .chip-row {
     contain: paint;
   }
 
-  .tier-chips-fade {
+  .tier-chips-fade,
+  .chip-row-fade {
     mask-image: linear-gradient(
       to right,
       transparent 0,
@@ -182,7 +192,8 @@
   }
 
   @media (width >= 40rem) {
-    .tier-chips-fade {
+    .tier-chips-fade,
+    .chip-row-fade {
       mask-image: none;
     }
   }
