@@ -8,8 +8,23 @@
  * a browser session. The island wires events to `reduce` and renders the
  * result; it decides nothing itself.
  *
- * Client-safe and dependency-free. Phase 4 plan §5.3. Stub until the test is
- * red: every event returns the state unchanged.
+ * Client-safe and dependency-free. Phase 4 plan §5.3.
+ *
+ * The rules, each one a check in the test:
+ *   hover-in     preview only, and only when `ctx.hoverCapable` — the same
+ *                event on a touch device changes nothing (R-TREE-11);
+ *   hover-out    preview cleared, so the panel falls back to the selection;
+ *   focus        preview; never an announcement (R-TREE-14: the live region
+ *                is written on confirmation, not on arrow moves);
+ *   blur         preview cleared;
+ *   activate     selection confirmed, preview dropped, the sheet opened when
+ *                the panel is not docked, the announcement worded; on the
+ *                node already selected the result is the same and the
+ *                announcement is written again — never a toggle (R-TREE-12);
+ *   escape/close selection, preview, sheet and announcement cleared; the
+ *                active tree stays;
+ *   switch-tree  the active tree only;
+ *   announced    the island has spoken the announcement.
  */
 import type { NodeState } from "@/lib/skill-tree-data-pure";
 
@@ -53,13 +68,43 @@ export function initialState(activeTree: string): TreeUiState {
 }
 
 export function reduce(state: TreeUiState, event: TreeEvent, ctx: TreeUiContext): TreeUiState {
-  void event;
-  void ctx;
-  return state;
+  switch (event.type) {
+    case "hover-in":
+      return ctx.hoverCapable ? { ...state, preview: event.slug } : state;
+    case "hover-out":
+    case "blur":
+      return { ...state, preview: null };
+    case "focus":
+      return { ...state, preview: event.slug };
+    case "activate":
+      return {
+        ...state,
+        selected: event.slug,
+        preview: null,
+        sheetOpen: !ctx.wide,
+        announce: wordAnnouncement(ctx, event.name, event.state),
+      };
+    case "escape":
+    case "close":
+      return { ...state, selected: null, preview: null, sheetOpen: false, announce: null };
+    case "switch-tree":
+      return { ...state, activeTree: event.tree };
+    case "announced":
+      return { ...state, announce: null };
+  }
+}
+
+/**
+ * Function replacers, not replacement strings: a `$` in a name would otherwise
+ * be read as a replacement pattern.
+ */
+function wordAnnouncement(ctx: TreeUiContext, name: string, state: NodeState): string {
+  return ctx.announceTemplate
+    .replace("{skill}", () => name)
+    .replace("{state}", () => ctx.stateLabels[state]);
 }
 
 /** What the panel shows: the preview if there is one, else the selection. */
 export function shownSlug(state: TreeUiState): string | null {
-  void state;
-  return null;
+  return state.preview ?? state.selected;
 }
