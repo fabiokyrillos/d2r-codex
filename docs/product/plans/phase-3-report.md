@@ -223,3 +223,22 @@ idiomas (chips, popover/sheet, `?class=`, `?sort=`, URL vazia, página de classe
 `localhost` no HTML servido). O SHA publicado, o deployment e o resultado do smoke ficam no
 registro de publicação que sucede este relatório (§12.1), escrito só depois de a produção servir o
 SHA — nunca antes.
+
+### 12.1 Registro de publicação (2026-09-11)
+
+- `npm run predeploy` com `NEXT_PUBLIC_SITE_URL=https://d2r-codex.vercel.app`: **`EXIT=0`**, 70
+  scripts, 0 linhas `FAIL`, `check:site-url` em modo `production (strict)` verde; `git diff --check`
+  limpo; árvore limpa.
+- **SHA publicado: `505310e0a81ba891e47a8f1be214e30808f2c802`** (`git push origin main`,
+  `a0258b9..505310e`, nove commits).
+- **Deployment (GitHub deployments API): `6388024744`**, ambiente `Production`, `state=success`
+  para exatamente esse SHA, `2026-09-11T06:49:28Z`.
+- **Smoke público** (`https://d2r-codex.vercel.app`, Chrome headless, nos dois idiomas): **58 de 58**
+  — HTML servido com os oito links `?class=`, sem caixa de busca, sem `localhost`, canonical
+  absoluto, 53 links de build; hidratação; chip → `?class=sorceress` em uma entrada; popover não
+  modal com zeros desabilitados (`magic,poison` com Sorceress) e Escape devolvendo o foco;
+  `?sort=name` com cartões em ordem alfabética; Back e Forward; estágio gravando só `d2rc.tier` e
+  a linha em todos os cartões; URL vazia com "Remover {grupo}" e builds próximas; página de classe
+  sem chips e com estágio; zero erro/aviso de console; a sheet a 390 modal, com rascunho e um
+  `pushState` ao aplicar; sem overflow.
+- Este registro é o commit seguinte a `505310e` e não altera o site construído.
