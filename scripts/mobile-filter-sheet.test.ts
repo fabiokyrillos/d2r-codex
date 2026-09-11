@@ -826,9 +826,17 @@ async function main(): Promise<void> {
           const limit = document.documentElement.clientWidth;
           let worst = 0;
           const who = [];
+          // A chip inside one of the two horizontal scrollers is *meant* to sit
+          // past the edge — that row scrolling instead of the page is what the
+          // fold gate requires at 320 and 390 — so a scroller's descendants are
+          // judged by the scroller's own box, which is in the sweep like any other.
+          const scrolls = (el) => { const o = getComputedStyle(el).overflowX; return o === "auto" || o === "scroll"; };
           for (const el of document.querySelectorAll("*")) {
             const r = el.getBoundingClientRect();
             if (r.width === 0 && r.height === 0) continue;
+            let inScroller = false;
+            for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) { if (scrolls(a)) { inScroller = true; break; } }
+            if (inScroller) continue;
             if (r.right > worst) worst = r.right;
             if (r.right > limit + 0.5) {
               who.push(el.tagName.toLowerCase() + " " + Math.round(r.left) + ".." + Math.round(r.right));

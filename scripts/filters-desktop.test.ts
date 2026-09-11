@@ -604,6 +604,11 @@ async function main(): Promise<void> {
       if (!coldLike) throw new Error(`${locale}: no damage type leaves some class at zero — the data cannot exercise R-FILT-4`);
       const dmg = coldLike.d;
       const dmgTotal = matching(rows, { damage: [dmg] }).length;
+      // A class that has builds of `dmg`, for the sections that press a class chip
+      // and then tick `dmg`: with `classes[0]` the tick could land on an option the
+      // page rightly disables, and a disabled option pushes nothing.
+      const withDmg = classes.find((c) => !coldLike.zero.includes(c));
+      if (!withDmg) throw new Error(`${locale}: every class is at zero for ${dmg}`);
       const pair = emptyPair(locale);
       const emptyUrl = `${catalogue}?class=${pair.classSlug}&damage=${pair.damage}`;
 
@@ -971,7 +976,7 @@ async function main(): Promise<void> {
       console.log(`\n${locale}: Back and Forward restore the URL, the controls and the list (M5)`);
       // ---------------------------------------------------------------------
       if (await load(page, catalogue)) {
-        const first = classes[0];
+        const first = withDmg;
         const base = (await snapshot(page))!;
         await clickThat(page, CHIP(first));
         await urlIs(page, { class: first });
@@ -1006,7 +1011,7 @@ async function main(): Promise<void> {
       console.log(`\n${locale}: applied chips remove one filter each; Clear all needs two`);
       // ---------------------------------------------------------------------
       {
-        const first = classes[0];
+        const first = withDmg;
         if (await load(page, `${catalogue}?class=${first}&damage=${dmg}`)) {
           const s = (await snapshot(page))!;
           check(`${locale}: two applied chips, Clear all offered, badge 1 (the class is not an advanced filter)`, sameSet(s.applied, [`class=${first}`, `damage=${dmg}`]) && s.clearAll && s.more.badge === "1", json({ applied: s.applied, clearAll: s.clearAll, badge: s.more.badge }));
@@ -1093,7 +1098,11 @@ async function main(): Promise<void> {
           const all = matching(rows, { class: [cp.classSlug] }).length;
           await cardsAre(page, all);
           const after = (await snapshot(page))!;
-          check(`${locale}: …and the class's whole list is back, never zero`, after.cards.length === all && all > 0 && after.history === s.history + 1, `${after.cards.length} vs ${all}`);
+          // Not `history.length + 1` here: this section runs after a `history.back()`,
+          // so the page carries a forward entry that the untick's push truncates, and
+          // the length stays put. One entry per decision is the M5 section's claim,
+          // made on a history with nothing ahead of it.
+          check(`${locale}: …and the class's whole list is back, never zero`, after.cards.length === all && all > 0, `${after.cards.length} vs ${all}`);
           await page.press("Escape", "Escape", 27);
           await page.waitFor(`${POPOVER} === null`, 4000);
         } else if (!cp) {
