@@ -539,6 +539,11 @@ async function withoutScripts(): Promise<void> {
       await page.evaluate(`document.querySelector('[data-class-chips] a[data-class=${JSON.stringify(first)}]').click()`);
       const landed = await page.waitFor(`location.pathname === ${JSON.stringify(r.class(first))} && location.hash === '#builds'`, 10_000);
       check(`${locale}: clicking the ${first} chip without scripting opens ${r.class(first)}#builds`, landed, await page.evaluate<string>("location.href"));
+      // The URL commits before the new document has finished streaming, and a
+      // class page is a third of a megabyte: probe a complete document, not the
+      // first bytes of one. Against production the probe once ran between the
+      // two and read an empty page.
+      await page.waitFor("document.readyState === 'complete'", 15_000);
       const followed = await page.evaluate<Plain & { section: boolean }>(`(() => { const p = ${probe}; p.section = !!document.querySelector('section#builds'); return p; })()`);
       check(`${locale}: …the section the fragment names exists`, followed.section);
       check(

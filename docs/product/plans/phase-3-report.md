@@ -1,7 +1,7 @@
 # Fase 3 — relatório factual
 
 **Data:** 2026-09-11 · **Baseline:** `a0258b9` · **Plano:** [`phase-3-filters-plan.md`](phase-3-filters-plan.md) · **Evidência visual:** [`phase-3-visual/`](phase-3-visual/README.md)
-**Estado:** aprovada pelo proprietário em 2026-09-11 com as decisões D1–D7 (§13); D7 implementada no produto na segunda passagem de fechamento (§14), **definitivamente concluída** quando a produção servir o commit de D7 e a verificação pública de §14.5 estiver registrada. Produção anterior: `505310e` (deployment `6388024744`). **A Fase 4 não começou.**
+**Estado:** **definitivamente concluída em 2026-09-11** — aprovada com as decisões D1–D7 (§13), D7 implementada no produto e verificada em produção (§14). Produção: `15846f3` (deployment `6396670505`). **A Fase 4 não começou.**
 **Escopo:** R-FILT-1…16, consumo de R-FILT-17, cartão, página de classe, ordenação, busca única. **As Fases 4 e 5 não foram iniciadas.** A sticky bar do leveling e as correções da Fase 2 não foram tocadas.
 
 Este documento publica o que foi medido, incluindo onde a medição contraria o PRD — e aqui ela o
@@ -377,10 +377,30 @@ relatório: §2, §3, §9.6, §13.1 e este §14.
 |---|---|
 | `4b5a70d` | commit 11: os gates de D7 e das métricas fechadas, vermelhos antes do código |
 | `c029dbd` | commit 12: D7 — o chip de classe é um link para a página de classe, e um toggle por cima |
-| *(este)* | commit 13: o registro — PRD, plano, relatório |
+| `15846f3` | commit 13: o registro — PRD, plano, relatório (é o SHA publicado) |
+| *(este)* | commit 14: o registro de publicação e a verificação pública de D7; o gate sem scripts espera o documento completo antes de sondar |
 
-### 14.5 Publicação e verificação em produção
+### 14.5 Publicação e verificação em produção (2026-09-11)
 
-Preenchido no registro que sucede este commit, só depois de a produção servir o SHA e a verificação
-pública de D7 (oito links nos dois idiomas, clique simples com JavaScript, destino sem JavaScript,
-`#builds` nas páginas de classe, ausência de regressões nos filtros) ter passado.
+- `npm run predeploy` com `NEXT_PUBLIC_SITE_URL=https://d2r-codex.vercel.app` sobre `15846f3`:
+  **`EXIT=0`**, 70 scripts, 0 `FAIL`, `check:site-url` estrito verde — inclui `build-filters-html` 315,
+  `filters-desktop` 452, `mobile-filter-sheet` 292, `filters-fold` 110, `viewport` 905, `lint`,
+  `typecheck`, `build`, `check`, `check:built`. `git diff --check` limpo; árvore limpa.
+- **SHA publicado: `15846f3f307c9d894041dac46f50660a680299d2`** (`git push origin main`,
+  `67cc98b..15846f3`, três commits). **Deployment `6396670505`**, `Production`, `state=success`,
+  `2026-09-11T15:49:38Z`.
+- **Verificação pública de D7 e smoke dos filtros: 54 de 54**, nos dois idiomas, contra
+  `https://d2r-codex.vercel.app`: HTML servido com os oito links `/<locale>/classes/<slug>#builds` e
+  nenhum `?class=`; `section#builds` nas 16 páginas de classe; com JavaScript, os oito chips são `<a
+  role="button" aria-pressed>` com o `href` da classe, o clique simples alterna `?class=sorceress`
+  sem sair de `/builds` em uma entrada de histórico, Ctrl/Cmd/Shift + clique não são interceptados e
+  não alternam, Espaço e Enter alternam sem seguir o `href`; sem JavaScript, os oito links são
+  simples e clicar num chip abre `/<locale>/classes/sorceress#builds` com a `section#builds` e as 11
+  builds da classe, sem chips; popover com zeros desabilitados, `?sort=name`, Back, estágio,
+  estado vazio, sheet a 390 com rascunho e um `pushState`, sem overflow, console limpo.
+- A primeira corrida da verificação sondou a página de classe **antes de o documento terminar de
+  chegar** (a URL já tinha mudado; 350 KB ainda a caminho) e leu 0 cartões em en-US; pt-BR passou
+  por tempo. Corrigido no probe e, por robustez, no gate `build-filters-html`, que agora espera
+  `document.readyState === 'complete'` antes de sondar a página aterrada — alteração só de teste,
+  validada por `typecheck`, `lint` e a própria corrida do gate (315), sem efeito no site construído.
+- Este registro é o commit seguinte a `15846f3` e não altera o site construído.
