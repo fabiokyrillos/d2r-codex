@@ -519,7 +519,17 @@ Posições (fileira/coluna) e pré-requisitos gerados dos dados do jogo (`conten
 - **R-TREE-7 · Pré-requisitos e sinergias no painel.** O painel/sheet mostra: descrição, nível, pré-requisitos (links), desbloqueia (links), sinergias recebidas e dadas (links), pontos nesta build e link "Ver página completa". *Aceite:* mesmo conteúdo da página de skill em forma resumida; todos os nomes são links.
 - **R-TREE-8 · Abas por tree no celular (confirmado em Q2).** Abaixo de 640 px a seção mostra um controle com as três trees e renderiza **uma por vez**; a partir de 640 px, as três **empilhadas** (tablet mantém visão completa). As trees não ativas ficam fora da árvore de acessibilidade e do Tab (`hidden`, não `aria-hidden` isolado). **Legenda: uma só, compartilhada pela seção** — nunca uma por tree. Pode iniciar compacta ou recolhida, mas **continua expansível e explica todos os símbolos**. Baseline: 3.511 px de seção em 320 px. **Orçamento aprovado: ≤ 900 px por seção com uma tree em 320 px** (F mede 829,5 px na Cold e 877,7 px na Summoning, com a grade em 484 px). *Aceite:* troca de tree sem navegação e com foco preservado; nenhum elemento focável dentro de tree inativa; uma única legenda por seção, expansível e completa; sem JS, as três renderizam empilhadas; altura por tree dentro do orçamento.
 - **R-TREE-9 · Nível de personagem (opcional).** Um campo "Meu nível" (1–99, `d2rc.level`, R-PREF-3/4) que só marca bloqueio; sem valor, nada fica bloqueado. *Aceite:* não altera nenhum dado; testes por estado; ausente sem JS.
+  > **Decisão do proprietário D1 (Fase 4, 2026-09-11).** R-TREE-9 **entra na Fase 4**: os estados
+  > bloqueados de R-TREE-4/5 dependem de `d2rc.level`, então "Meu nível" é implementado agora, com
+  > `d2rc.level` em `IMPLEMENTED_PREF_KEYS`, um único escritor, "limpar" na própria interface e
+  > ausência total sem JavaScript. A Fase 5 (§14) deixa de listar R-TREE-9 e fica só com os ícones
+  > próprios e o acabamento correspondente. Plano: [`plans/phase-4-tree-structure-plan.md`](plans/phase-4-tree-structure-plan.md).
 - **R-TREE-10 · Uso em build e leveling.** Na build, o componente recebe alocações (já faz). No leveling, cada etapa pode renderizar a árvore da tree relevante com os pontos daquela etapa (dados já existem em `skillPoints`), em modo compacto (P3). *Aceite:* pelo menos a jornada da Sorceress renderiza a árvore por etapa sem custo editorial novo.
+  > **Decisão do proprietário D2 (Fase 4, 2026-09-11).** R-TREE-10 é **dividido**. Na Fase 4:
+  > a árvore estrutural nas páginas de classe e a árvore com as alocações reais nas páginas de
+  > build. **Fora da Fase 4:** a árvore em cada etapa do leveling, que fica **adiada** para a
+  > iniciativa já prevista (P3.6, Fase 7) com o aceite acima intacto. A Fase 4 **não** alega ter
+  > implementado essa metade.
 
 ### 8.4 Interação
 
@@ -791,7 +801,7 @@ Reavaliada após a revisão independente. Regras: remover o resolvido; não prom
 **P3.2 Favoritos locais** (estrela em build/runeword; `localStorage`; custo marginal de uma chave após R-PREF) — pequeno.
 **P3.3 Página "O que mudou no 3.3"** — editorial.
 **P3.5 Farm por build e imunidade + Terror Zones documentadas** — médio.
-**P3.6 Árvore por etapa no leveling** (R-TREE-10) — pequeno após P1.5.
+**P3.6 Árvore por etapa no leveling** (R-TREE-10) — pequeno após P1.5. *Confirmado pela decisão D2 (2026-09-11): é a metade de R-TREE-10 que a Fase 4 adia; a metade "classe e build" é da Fase 4.*
 
 **Removidos (não adiados):** P2.9 (404: header já entregue; "um idioma por rota" refutado por medição; busca no 404 não é iniciativa), P3.1 comparação de builds, P3.4 PWA, P3.7 JSON-LD, P3.8 rótulo de confiança no cartão, formulário GET de filtros avançados, folha de impressão acoplada ao modo compacto. Justificativas na seção 19.
 
@@ -823,6 +833,16 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 > (320/390 ≤ 420 px; 768 ≤ 480 px; 1280 só o contrato relativo de 220 px, com 211 aprovados; §12.2).
 > Produção serve `15846f3` (deployment `6396670505`) e a verificação pública de D7 passou 54/54 nos
 > dois idiomas (relatório §14.5): **a Fase 3 está definitivamente concluída.** **A Fase 4 não começou.**
+>
+> **Fase 4 iniciada (2026-09-11).** Plano em [`plans/phase-4-tree-structure-plan.md`](plans/phase-4-tree-structure-plan.md),
+> a partir de `436dc88`. Duas decisões do proprietário resolvem duas inconsistências deste documento:
+> **D1** move R-TREE-9 (`d2rc.level`) da Fase 5 para a Fase 4; **D2** divide R-TREE-10 — classe e
+> build na Fase 4, leveling adiado para P3.6. Baseline remedido antes de qualquer código: o pior
+> documento de página de classe (`/pt-br/classes/sorceress`) está em **348.313 bytes**, acima do
+> alerta de 348.160 do spike e a 20.327 bytes do teto de 368.640; a seção de skills mede 3.511 px a
+> 320 px na Sorceress e 3.761 na Necromancer (pt-BR); as 24 células vazias continuam `aria-hidden`
+> (30 de 54 `gridcell` na árvore de acessibilidade). **A Fase 4 não está publicada**: há um portão de
+> UAT físico antes de qualquer push.
 
 ### Fase 0A — Correções comprovadas
 
@@ -891,6 +911,8 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 
 - **Objetivo:** árvore 3×6 com conectores, contador, estados e teclado previsível em todas as larguras.
 - **Escopo:** P1.5 (R-TREE-1…17), com o sigilo atual como placeholder declarado.
+  > **D1/D2 (2026-09-11):** o escopo inclui R-TREE-9 ("Meu nível", `d2rc.level`) e a metade
+  > "classe e build" de R-TREE-10; a metade "leveling" de R-TREE-10 fica em P3.6 (Fase 7).
 - **Fora:** ícones por skill; árvore no leveling.
 - **Dependências:** Q2 aprovada (Fase 0B) — **aprovada em 2026-09-08 como direção estrutural, com condição de UAT físico antes da publicação**.
 - **Riscos:** regressão de teclado (mitigado pelo teste de alcançabilidade 24/24); peso do HTML.
@@ -904,6 +926,8 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 
 - **Objetivo:** reconhecimento por ícone com uma única mão visual.
 - **Escopo:** P2.1 (R-TREE-18, 19): manifesto, troca completa de uma vez, moldura e estados finais, nível de personagem (R-TREE-9).
+  > **D1 (2026-09-11):** R-TREE-9 **saiu deste escopo** e foi implementado na Fase 4. A Fase 5
+  > fica com os ícones próprios (manifesto 240/240, troca completa) e o acabamento correspondente.
 - **Fora:** qualquer asset do jogo; cobertura parcial.
 - **Dependências:** Fase 4; Q1 decidida.
 - **Riscos:** licença; consistência (mitigada pela regra de conjunto único).
@@ -1083,6 +1107,7 @@ Capturas e textos coletados na auditoria (pasta temporária, não versionados): 
 | 2026-09-11 | **Fase 3 aprovada e concluída (fechamento).** Decisões do proprietário: **D1** meta absoluta do primeiro cartão em 320/390 px passa a ≤ 420 (medido 401; gates medidos preservados; 768/1280 continuam sem decisão); **D2** o cartão de evolução precede o primeiro cartão de build no celular por decisão — R-FILT-15 reformulado para medir descoberta e acesso numa tela; **D3** retirada da descrição visível de `/builds` aceita (metadata inalterada, confirmada em produção); **D4** nomes curtos dos tiers aceitos, nome completo para tecnologia assistiva mantido e "onde houver espaço" como acompanhamento; **D5** "Para o meu estágio" hipótese validada provisoriamente, algoritmo intocado; **D6** "hdin" em segundo lugar é dívida da Fase 6c (P2.6); **D7** sem JavaScript a listagem por classe é `/classes/<slug>#builds` e `/builds` serve a lista completa — R-FILT-14 reescrito para o comportamento real, sem infraestrutura nova. **A Fase 4 não começou** | §7.2 (R-FILT-2, 5, 8, 11, 14, 15), §12.2, §13 P2.6, §14 |
 | 2026-09-11 | **UAT visual read-only da produção (fechamento).** 64 combinações (2 idiomas × 320/390/768/1280 × listagem, ordenação, filtros abertos, sheet, preferência, estado vazio, página de classe, texto a 200 %): sem sobreposição, corte, chip inalcançável, fade sobre chip pressionada, sheet fora da tela ou foco invisível; console limpo. Achados MEDIUM/LOW registrados para outras passagens: a 200 % de texto a 320/390 os cartões medem 408–434 px (antes da Fase 3 mediam 353–436 e a página já rolava por causa do header — pré-existente, reduzido); "Spirit · Spirit" na linha de estágio quando a build veste duas Spirits; o contador quebra para segunda linha a 1280 em pt-BR com estágio gravado; o rodapé da sheet quebra em duas linhas a 320. **Errata:** a nota de §12.2 dizia que 768 (en) e 1280 cumpriam a meta absoluta — nenhuma das quatro cumpre | [`plans/phase-3-report.md`](plans/phase-3-report.md) §13 |
 | 2026-09-11 | **Segunda passagem de fechamento: D7 implementada e métricas responsivas fechadas.** O proprietário recusou a primeira leitura de D7 (registrar `?class=` como fallback): os chips de classe servidos passam a apontar para `/<locale>/classes/<slug>#builds`, permanecem `<a>` depois da hidratação com `role=button`/`aria-pressed`, interceptam só o clique simples (alternância na URL) e deixam Ctrl/Cmd/Shift/Alt, clique do meio, nova aba e copiar link ao navegador; a página de classe continua sem chips. Gates: HTML construído sem scripts (oito destinos, locale, `#builds`, `id="builds"` na página de classe, zero `?class=`, clique real sem scripts aterrando na seção da classe) e navegador (clique simples sem navegar, cliques modificados não interceptados, Enter/Espaço). Mutations: sem interceptação → 54 falhas em `filters-desktop`; `?class=` de volta → 17 em `build-filters-html`. Contratos definitivos de posição do primeiro cartão: 320/390 ≤ 420 px, 768 ≤ 480 px, 1280 exclusivamente relativo (≤ 220 px após o título; 211 aprovado); metas anteriores registradas como substituídas; o gate deixa de imprimir metas substituídas | R-FILT-14, §12.2, §14; [`plans/phase-3-report.md`](plans/phase-3-report.md) §14 |
+| 2026-09-11 | **Fase 4 iniciada — decisões D1 e D2.** D1: R-TREE-9 (`d2rc.level`, "Meu nível") sai da Fase 5 e entra na Fase 4, porque os estados bloqueados de R-TREE-4/5 dependem dele. D2: R-TREE-10 é dividido — árvore estrutural nas páginas de classe e árvore com alocações nas páginas de build na Fase 4; árvore por etapa no leveling adiada para P3.6 (Fase 7), sem alegação de entrega. Baseline remedido em `436dc88` (pior página de classe 348.313 bytes, acima do alerta; seção de skills 3.511 px a 320). Plano executável com três frentes, contratos fixos, mutations e portão de UAT físico | [`plans/phase-4-tree-structure-plan.md`](plans/phase-4-tree-structure-plan.md); R-TREE-9, R-TREE-10, §13 P3.6, §14 Fases 4 e 5 |
 | 2026-09-10 | **Uma emulação de texto a 150 % quase inverteu uma conclusão.** `documentElement.style.fontSize` escala `rem` mas não as consultas de média em `rem`, e mediu a linha do header 68 px mais larga do que o Chrome a desenha — o suficiente para reportar como "transbordo criado pela Fase 2" uma largura que cabe nos dois SHAs. `Page.setTextScale`, que é a definição de tamanho de texto do próprio browser, foi acrescentado ao harness | `scripts/headless.ts`; [`plans/phase-2-report.md`](plans/phase-2-report.md) §10.6 |
 
 ---
