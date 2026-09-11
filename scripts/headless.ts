@@ -350,6 +350,17 @@ export class Page {
   }
 
   /**
+   * Emulates the OS-level "reduce motion" preference. R-A11Y-6 is a promise
+   * about what the page does under it, and a gate can only hold that promise
+   * by asking the browser to make it true; an empty value lifts the emulation.
+   */
+  async setReducedMotion(reduce: boolean): Promise<void> {
+    await this.send("Emulation.setEmulatedMedia", {
+      features: [{ name: "prefers-reduced-motion", value: reduce ? "reduce" : "" }],
+    });
+  }
+
+  /**
    * Runs `source` in every document this page loads from now on, before any
    * of the page's own script.
    *

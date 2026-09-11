@@ -577,20 +577,6 @@ const urlIs = (page: Page, expected: Record<string, string>) =>
 const sameSet = (a: readonly string[], b: readonly string[]) =>
   a.length === b.length && [...a].sort().join(",") === [...b].sort().join(",");
 
-/**
- * `headless.ts` emulates the colour scheme and nothing else, and its `send` is
- * private on purpose — its header says anything wanting more should argue for
- * it there. Reduced motion is the same CDP call with a different feature name,
- * so this reaches through once, from the one gate that needs it, rather than
- * widening a harness this file does not own. Promote it to a method the day a
- * second gate wants it.
- */
-const emulateReducedMotion = (page: Page, on: boolean) =>
-  (page as unknown as { send(method: string, params: Record<string, unknown>): Promise<unknown> }).send(
-    "Emulation.setEmulatedMedia",
-    { features: [{ name: "prefers-reduced-motion", value: on ? "reduce" : "" }] },
-  );
-
 // ===========================================================================
 
 async function main(): Promise<void> {
@@ -1182,7 +1168,7 @@ async function main(): Promise<void> {
       } else check(`${locale} @200% text: the catalogue hydrates`, false);
       await page.setTextScale(100);
 
-      await emulateReducedMotion(page, true);
+      await page.setReducedMotion(true);
       if (await load(page, catalogue)) {
         const reduced = await page.evaluate<{ matches: boolean; behavior: string }>(
           `({ matches: matchMedia('(prefers-reduced-motion: reduce)').matches, behavior: getComputedStyle(document.documentElement).scrollBehavior })`,
@@ -1190,7 +1176,7 @@ async function main(): Promise<void> {
         check(`${locale}: control — the browser reports reduced motion once emulated`, reduced.matches);
         check(`${locale}: under reduced motion the page arrives without the journey — scroll-behavior is auto`, reduced.behavior === "auto", reduced.behavior);
       }
-      await emulateReducedMotion(page, false);
+      await page.setReducedMotion(false);
       if (await load(page, catalogue)) {
         const normal = await page.evaluate<string>("getComputedStyle(document.documentElement).scrollBehavior");
         check(`${locale}: control — and smooth again without it, so the rule above discriminates`, normal === "smooth", normal);
