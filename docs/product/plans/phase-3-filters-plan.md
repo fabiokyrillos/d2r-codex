@@ -82,6 +82,11 @@ são gate.
    oito links, os slugs ingleses nos dois idiomas, a lista completa e a ausência de qualquer controle
    avançado. A listagem estática por classe continua sendo `/classes/<slug>#builds`. Registrado como
    limitação, não silenciado.
+   > **Substituída no fechamento (D7, 2026-09-11):** o proprietário não aceitou documentar a limitação.
+   > O `href` servido de cada chip passou a ser `/<locale>/classes/<slug>#builds` (`routes().classBuilds`),
+   > o `<a>` continua `<a>` depois da hidratação (`role=button`, `aria-pressed`) e só o clique simples é
+   > interceptado; cliques modificados, clique do meio, nova aba e copiar link seguem o link. Ver PRD
+   > R-FILT-14 e o relatório §14.
 5. **"Para o meu estágio"** (hipótese, R-FILT-5) — critério determinístico: `starter`/`nightmare`/
    `early-hell` → dificuldade (`beginner` < `moderate` < `advanced` < `expert`), depois orçamento
    (`low` < … < `extreme`); `budget` → nota `soloSelfFound` decrescente; `optimized`/`bis` → nota
@@ -242,7 +247,7 @@ Ficam: `regionLabel`, `resultsOne/Many`, `activeLabel`, `removeOne`, `clearAll`,
 | chips de classe abaixo do `h1` (borda inferior do h1 → topo dos chips) | — | ≤ 120 px em 320/390/768/1280 | ≤ 120 |
 | grade abaixo do `h1` a 1280 | +519 | ≤ 220 | ≤ 220 |
 | 1º cartão da classe abaixo de "Comece por aqui" | 308–476 | ≤ 260 | ≤ 260 |
-| 1º cartão, absoluto, 320/390/768/1280 | 490/443/772/644 | ≤ 300/300/360/220 | **medido e publicado**; teto de regressão = medido + 5 % |
+| 1º cartão, absoluto, 320/390/768/1280 | 490/443/772/644 | ≤ 300/300/360/220 | **medido e publicado**; teto de regressão = medido + 5 % — *substituído no fechamento (2026-09-11) pelos contratos definitivos do proprietário: ≤ 420/420/480 e, a 1280, só o relativo (≤ 220 após o título, 211 aprovado)* |
 | altura do cartão a 390 (en/pt, padrão) | 315 / 386 | ≤ 80 % (252 / 309) | ≤ 252 / ≤ 309 |
 | combinações vazias por controle habilitado | todas | 0 | `facetCounts` + navegador |
 | alvos: chips de classe e de estágio | — | ≥ 44×44 | viewport |

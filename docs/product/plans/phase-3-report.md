@@ -1,7 +1,7 @@
 # Fase 3 — relatório factual
 
 **Data:** 2026-09-11 · **Baseline:** `a0258b9` · **Plano:** [`phase-3-filters-plan.md`](phase-3-filters-plan.md) · **Evidência visual:** [`phase-3-visual/`](phase-3-visual/README.md)
-**Estado:** **concluída** — aprovada pelo proprietário em 2026-09-11 com as decisões D1–D7 e fechada com a UAT de §13. Produção: `505310e` (deployment `6388024744`). **A Fase 4 não começou.**
+**Estado:** aprovada pelo proprietário em 2026-09-11 com as decisões D1–D7 (§13); D7 implementada no produto na segunda passagem de fechamento (§14), **definitivamente concluída** quando a produção servir o commit de D7 e a verificação pública de §14.5 estiver registrada. Produção anterior: `505310e` (deployment `6388024744`). **A Fase 4 não começou.**
 **Escopo:** R-FILT-1…16, consumo de R-FILT-17, cartão, página de classe, ordenação, busca única. **As Fases 4 e 5 não foram iniciadas.** A sticky bar do leveling e as correções da Fase 2 não foram tocadas.
 
 Este documento publica o que foi medido, incluindo onde a medição contraria o PRD — e aqui ela o
@@ -45,12 +45,12 @@ próprio repositório, contra o build de produção local.
 Topo do documento → topo do primeiro cartão (a definição do PRD §12.2; os números de baseline
 batem ao pixel com os publicados lá):
 
-| Largura | antes en / pt | depois en / pt | meta PRD (O2) | redução |
-|---|---|---|---|---|
-| 320 | 490 / 519 | **401 / 401** | ≤ 300 | −18 % / −23 % |
-| 390 | 443 / 472 | **401 / 401** | ≤ 300 | −9 % / −15 % |
-| 768 | 772 / 847 | **428 / 456** | ≤ 360 | −45 % / −46 % |
-| 1280 | 644 / 703 | **336 / 336** | ≤ 220 | −48 % / −52 % |
+| Largura | antes en / pt | depois en / pt | meta original (O2), substituída | contrato definitivo (2026-09-11) | redução |
+|---|---|---|---|---|---|
+| 320 | 490 / 519 | **401 / 401** | ≤ 300 | **≤ 420** ✓ | −18 % / −23 % |
+| 390 | 443 / 472 | **401 / 401** | ≤ 300 | **≤ 420** ✓ | −9 % / −15 % |
+| 768 | 772 / 847 | **428 / 456** | ≤ 360 | **≤ 480** ✓ | −45 % / −46 % |
+| 1280 | 644 / 703 | **336 / 336** | ≤ 220 | **só relativo: grade ≤ 220 px após o título; medido +211, aprovado** ✓ | −48 % / −52 % |
 
 Os aceites **relativos ao título**, que são os de R-FILT-1, 11 e 15, todos medidos e verdes:
 
@@ -59,7 +59,7 @@ Os aceites **relativos ao título**, que são os de R-FILT-1, 11 e 15, todos med
 | chips de classe abaixo da borda inferior do `h1` (320/390/768/1280, en e pt) | — | **29 px** em todas | ≤ 120 |
 | grade abaixo do topo do `h1` a 1280 | +519 | **+211** | ≤ 220 |
 | classe, "Comece por aqui" → 1º cartão de build a 768/1280 | 386/386 (en) · 432/476 (pt) | **165/153 (en) · 193/165 (pt)** | ≤ 260 |
-| classe, idem a 320/390 | 349/308 (en) · 400/331 (pt) | **394/371 (en) · 445/394 (pt)** | ≤ 260 — **não alcançável** (§9) |
+| classe, idem a 320/390 | 349/308 (en) · 400/331 (pt) | **394/371 (en) · 445/394 (pt)** | 260 substituído por D2: uma tela (≤ 844) com o cartão de evolução mantido; teto de regressão 468 |
 | cartão a 390, 1º do catálogo | 315 (en) · 386 (pt) | **249 · 272** | ≤ 252 · ≤ 309 (80 %) |
 | cartão a 390, mediana do catálogo | 338 · 363 | **272 · 272** | — |
 | caixas de seleção visíveis por padrão | 29 (≥ 640) | **0** | 0 |
@@ -72,7 +72,9 @@ Header (57) + `py-10` + eyebrow + título terminam a **216 px** a 320 px antes d
 R-FILT-1 exige a linha de classes aí, R-FILT-2 exige uma linha de estágio de 44 px (R-A11Y-4) mais
 legenda, e R-FILT-11 uma linha de ferramentas. A soma dá 401. Chegar a 300 exige tirar o eyebrow
 ou a linha de estágio do celular: **decisão do proprietário**, registrada em §12.2 do PRD, não
-defeito do código. O gate segura o medido × 1,05 e imprime a meta ao lado em toda execução.
+defeito do código. *Decidido no fechamento (2026-09-11):* o proprietário manteve o layout e fixou os
+contratos definitivos — ≤ 420 a 320/390, ≤ 480 a 768, só o relativo a 1280 — que o gate afirma sem
+mencionar as metas substituídas (§14).
 
 ## 3. R-FILT-1…17, com evidência
 
@@ -91,8 +93,8 @@ defeito do código. O gate segura o medido × 1,05 e imprime a meta ao lado em t
 | R-FILT-11 desktop | ✅ | duas linhas; grade a +211 px do título a 1280 |
 | R-FILT-12 sheet | ✅ | preservada, só grupos avançados, rascunho com contagens vivas, uma entrada ao aplicar, foco preso, scroll travado, Esc/fundo cancelam, foco de volta — `test:mobile-filter-sheet` (290) |
 | R-FILT-13 acessibilidade | ✅ | chips `button[aria-pressed]`; popover `role=dialog` sem `aria-modal`, foco gerido, Escape devolve ao gatilho; ordenação `<select>` nativo; contador `aria-live=polite`; picker com roving tabindex e `role=status` só na escolha |
-| R-FILT-14 sem JS | ✅ com limitação registrada | oito `a[data-class][href=?class=…]` no HTML servido, lista completa, nenhum formulário/caixa/select/diálogo; `?class=` estático não estreita (nota no PRD) — `test:build-filters-html` (305) |
-| R-FILT-15 página de classe | ✅ a 768/1280; **não alcançável** a 320/390 | 153–193 px / 371–445 px (§9) |
+| R-FILT-14 sem JS | ✅ (D7 implementada, §14) | oito `a[data-class][href="/<locale>/classes/<slug>#builds"]` no HTML servido, lista completa, nenhum formulário/caixa/select/diálogo, zero `?class=`; sem scripts, um clique real aterra na seção `#builds` da classe com só as builds dela; com JavaScript o mesmo `<a>` alterna o filtro e os cliques modificados seguem o link — `test:build-filters-html` (315), `test:filters-desktop` (452) |
+| R-FILT-15 página de classe | ✅ (reformulado por D2) | 153–193 px a 768/1280 (≤ 260); 371–445 px a 320/390, dentro de uma tela de 844 px com o cartão de evolução mantido por decisão |
 | R-FILT-16 cartão | ✅ | 249/272 px a 390 (tetos 252/309); duas notas ou os eixos escolhidos; tags em texto |
 | R-FILT-17 limiar | consumido | ADR 0004; `test:rating-distribution` verde; limiar 4 sobre 53 builds |
 
@@ -175,8 +177,10 @@ um gate a apanhar nada; a forma que conta remove os chips com o tipo intacto.
    nome acessível e na legenda; a longa não cabe na linha a 1280 em pt-BR.
 4. **"Para o meu estágio"** é hipótese até a sessão J1/J2/J10; o critério está publicado em §5.
 5. **"hdin"** encontra Hammerdin em segundo lugar; é do pontuador (6c).
-6. **Sem JS, `?class=` não estreita a lista** — um site estático não lê a query; os links existem e
-   levam a uma página inteira; `/classes/<slug>#builds` é a listagem estática por classe.
+6. ~~**Sem JS, `?class=` não estreita a lista** — um site estático não lê a query; os links existem e
+   levam a uma página inteira; `/classes/<slug>#builds` é a listagem estática por classe.~~
+   **Resolvido no fechamento (D7, §14):** os chips servidos apontam para `/<locale>/classes/<slug>#builds`
+   e seguem alternando o filtro com JavaScript; não há mais ressalva aqui.
 7. **Os cartões cruzam para o cliente como uma promessa** (`use(data)`): partilhados entre o
    fallback do Suspense e os filhos como prop simples, o React Flight escreve uma referência de
    caminho para a mesma linha e toda página de classe ficava no fallback para sempre, sem erro.
@@ -261,7 +265,7 @@ produção em `505310e`.
 | **D4** | Nomes curtos dos tiers no controle **aceitos**; o completo continua no `sr-only` de cada chip e na legenda "Meu estágio: {tier}". Mostrar a forma longa "onde houver espaço" fica como acompanhamento de código | PRD R-FILT-2 |
 | **D5** | "Para o meu estágio" **hipótese validada provisoriamente**; algoritmo intocado | PRD R-FILT-5 |
 | **D6** | "hdin" em segundo lugar é **dívida da Fase 6c** (P2.6): apelido exato deve pontuar acima de substring casual | PRD R-FILT-8, §13 P2.6, §14 6c |
-| **D7** | Sem JavaScript a listagem por classe é `/classes/<slug>#builds`; `/builds` serve a lista completa e os chips servidos são links `?class=<slug>` que só estreitam com JavaScript. R-FILT-14 reescrito para o comportamento real; **nenhuma** filtragem dinâmica ou infraestrutura sem JavaScript foi criada. Os `href` dos chips servidos **não foram alterados** nesta passagem (continuam `?class=<slug>`) — se o proprietário quiser que apontem para a página de classe sem JavaScript, é uma alteração de código e de gate para a próxima passagem | PRD R-FILT-14 |
+| **D7** | *Primeira leitura (recusada pelo proprietário):* registrar que `/builds` serve a lista completa e que os chips servidos são `?class=<slug>` sem estreitar. *Correção obrigatória, implementada em §14:* os chips servidos levam para `/<locale>/classes/<slug>#builds`, onde existe a listagem estática da classe; com JavaScript o mesmo `<a>` alterna o filtro; cliques modificados, clique do meio, nova aba e copiar link seguem o link | PRD R-FILT-14; §14 |
 
 As metas substituídas (300 px absolutos no celular; 260 px em todas as larguras na classe; "filtrar
 por classe via link" sem JavaScript) ficam registradas no PRD, ao lado das medições, como
@@ -300,7 +304,83 @@ das capturas em pt-BR a 320/390: quebras de linha, nunca palavras cortadas.
 
 Nenhum destes é regressão introduzida pela Fase 3 com impacto HIGH; nenhum código foi alterado.
 
-### 13.4 Estado
+### 13.4 Estado (superado por §14)
 
-`main` = `origin/main` no commit deste fechamento (docs apenas; a implementação em produção
-continua `505310e`). Fase 3 **concluída**. **Fase 4 não iniciada.**
+Ao fim da primeira passagem: `main` = `origin/main` = `67cc98b` (docs apenas; produção em `505310e`).
+O proprietário devolveu D7 como **correção obrigatória** — registrar `?class=` como fallback não
+cumpria a decisão — e fechou as métricas responsivas; §14 é essa segunda passagem.
+
+## 14. Segunda passagem de fechamento (2026-09-11): D7 no produto e as métricas fechadas
+
+O proprietário devolveu o fechamento com uma correção obrigatória — **D7 precisa existir no
+produto** — e as decisões definitivas das métricas responsivas. Baseline: `main` = `origin/main` =
+`67cc98b`, árvore limpa, produção em `505310e`.
+
+### 14.1 D7 implementada
+
+- **`href` real de cada chip de classe:** `routes(locale).classBuilds(slug)` =
+  `/<locale>/classes/<slug>#builds` (`lib/routes.ts`), no HTML servido (`static-listing.tsx`) e no
+  chip hidratado (`build-filters.tsx` → `class-chip.tsx`). O locale é o da página.
+- **Progressive enhancement, no mesmo elemento:** o `<a>` permanece `<a>` depois da hidratação e
+  ganha `role="button"`, `aria-pressed` e, quando a contagem é 0 e não está pressionado,
+  `aria-disabled` + fora da ordem de tabulação. Só o **clique simples do botão primário** é
+  interceptado (`preventDefault` → `toggleKeepingResults` → um `pushState`); Ctrl, Cmd, Shift e Alt +
+  clique, clique do meio (`auxclick`), "abrir em nova aba" e "copiar link" não são tocados e usam o
+  destino real. Enter chega como o clique do próprio `<a>`; Espaço é tratado para que o papel
+  anunciado seja o papel real. Seleção múltipla, URL, Back/Forward, contagens e a página de classe
+  (sem chips) inalterados; nenhum formulário paralelo; nenhuma filtragem dinâmica sem JavaScript.
+- **RED → GREEN.** Gates escritos primeiro e corridos contra o build anterior:
+  `test:build-filters-html` 282 ok / **33 FAIL** (destinos `?class=`, locale, `#builds`, fallback) e
+  `test:filters-desktop` **16+ FAIL** (chip não é `a[role=button]`, `href` nulo, cliques modificados). Depois
+  do código: `build-filters-html` **315**, `filters-desktop` **452**, `mobile-filter-sheet` **292**,
+  `filters-fold` **110**, todos verdes. Os oito itens pedidos: (1) HTML construído sem scripts com os
+  oito destinos; (2) locale preservado; (3) `#builds` em cada destino; (4) `id="builds"` lido da página
+  de classe construída; (5) clique simples com JavaScript alterna sem navegar (`location.pathname`
+  continua `/builds`); (6) Ctrl/Cmd/Shift/Alt e `auxclick` não interceptados (`defaultPrevented ===
+  false`, nada alternado), `href` e ausência de `target` confirmados; (7) Tab, Enter e Espaço alternam
+  sem navegar, Escape devolve o foco; (8) zero `?class=` em qualquer `href` servido ou hidratado. Mais um
+  clique real sem scripts que aterra em `/<locale>/classes/sorceress#builds`, na `section#builds`, com
+  exatamente as 11 builds da classe e nenhum chip.
+- **Mutations, detectadas por testes distintos e revertidas com a árvore confirmada limpa:** remover a
+  interceptação do clique (`event.preventDefault()` fora do `onClick`) → `filters-desktop` **398 ok /
+  54 FAIL** ("pressing it writes ?class=sorceress", o `<a>` navegou); devolver `?class=` ao `href`
+  servido → `build-filters-html` **298 ok / 17 FAIL**.
+- **Uma lição de processo, registrada:** a primeira corrida da mutation A foi feita com a
+  implementação ainda **não commitada**, e o `git checkout --` de reversão devolveu o chip antigo; o
+  arquivo foi reescrito a partir do conteúdo exato, verificado por `typecheck`, `lint`, build e os
+  dois gates verdes, e commitado **antes** de qualquer nova mutation. Mutation só sobre estado commitado.
+
+### 14.2 Métricas responsivas — contratos definitivos (proprietário)
+
+| Largura | contrato | medido | gate |
+|---|---|---|---|
+| 320 e 390 | primeiro cartão de `/builds` ≤ **420 px** | 401 / 401 | `FIRST_CARD_CEILING` |
+| 768 | ≤ **480 px** | 428 (en) / 456 (pt) | `FIRST_CARD_CEILING` |
+| 1280 | **exclusivamente relativo**: início da grade ≤ 220 px após o título; **211 px aprovados** | +211 (abs. 336, só registro) | R-FILT-11 |
+
+As metas anteriores (300/300/360/220 absolutos; 260 na classe em todas as larguras) permanecem no
+PRD §12.2 e em R-FILT-15 como **substituídas por decisão**. `scripts/filters-fold.test.ts` afirma só
+os contratos vigentes: o rótulo "PRD target 300" e o comentário que contava metas nunca atingidas
+saíram; nenhuma mensagem apresenta uma meta substituída como falha atual. O teto de 468 px da
+classe abaixo de 640 px continua a ser o de D2 (uma tela), com a mensagem redigida como tal.
+
+### 14.3 Documentos
+
+PRD: R-FILT-14 (D7 implementada, com os oito aceites e as mutations), §12.2 (linha dos contratos
+definitivos; a linha D1 anterior marcada como substituída), R-FILT-11 (211 aprovados; único contrato a
+1280), §14 (estado), §18 (nova entrada). Plano: §4.4 e §8 anotados como substituídos. Este
+relatório: §2, §3, §9.6, §13.1 e este §14.
+
+### 14.4 Commits desta passagem
+
+| SHA | |
+|---|---|
+| `4b5a70d` | commit 11: os gates de D7 e das métricas fechadas, vermelhos antes do código |
+| `c029dbd` | commit 12: D7 — o chip de classe é um link para a página de classe, e um toggle por cima |
+| *(este)* | commit 13: o registro — PRD, plano, relatório |
+
+### 14.5 Publicação e verificação em produção
+
+Preenchido no registro que sucede este commit, só depois de a produção servir o SHA e a verificação
+pública de D7 (oito links nos dois idiomas, clique simples com JavaScript, destino sem JavaScript,
+`#builds` nas páginas de classe, ausência de regressões nos filtros) ter passado.

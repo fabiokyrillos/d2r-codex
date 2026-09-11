@@ -406,7 +406,9 @@ Decisão: a preferência de tier **não filtra** (todas as 53 builds têm os sei
 - **R-FILT-9 · URL e histórico.** Semântica atual mantida (toggle = `pushState`, digitação = `replaceState` com debounce; parâmetros em inglês nos dois idiomas; parâmetros desconhecidos ignorados). *Aceite:* testes existentes de `filter.ts` continuam verdes; `sort` entra no `parseFilterState`.
 - **R-FILT-10 · Persistência.** Nenhum filtro é persistido além da URL. A única persistência é a preferência de tier. *Aceite:* nenhuma chave nova em `localStorage` além das listadas em `R-PREF-3`.
 - **R-FILT-11 · Desktop.** Duas linhas de controle (classe; estágio + mais filtros + ordenar + contador); grade começa ≤ 220 px abaixo do título. *Aceite:* medição no teste de viewport em 1280 px.
-  > **Medido na execução (Fase 3, 2026-09-11):** +211 px a 1280 nos dois idiomas — cumprido. Para
+  > **Medido na execução (Fase 3, 2026-09-11):** +211 px a 1280 nos dois idiomas — cumprido; **a
+  > medida de 211 px está aprovada pelo proprietário (2026-09-11), e a 1280 este aceite relativo é o
+  > único contrato de posição do primeiro cartão** (§12.2). Para
   > cumprir este aceite e o de R-FILT-1 a **descrição visível saiu do topo de `/builds`** (com ela, a
   > grade ficava além dos 220 a 1280 e os chips além dos 120 a 320). **Decisão do proprietário D3
   > (fechamento, 2026-09-11): retirada aceita.** Confirmado em produção: título "Build guides" /
@@ -422,17 +424,24 @@ Decisão: a preferência de tier **não filtra** (todas as 53 builds têm os sei
   > site estático não lê a query, e o gate afirma exatamente isso — a página que se abre carrega
   > todas as builds e os oito links. A listagem estática por classe continua sendo
   > `/classes/<slug>#builds`. Limitação registrada, não silenciada.
-  > **Decisão do proprietário D7 (fechamento, 2026-09-11) — o requisito passa a dizer o comportamento
-  > real.** Sem JavaScript, a listagem por classe é a **página de classe** (`/classes/<slug>#builds`,
-  > estática, alcançada pela navegação do site e pelo índice `/classes`); a listagem `/builds` serve
-  > **sempre a lista completa**, e os oito chips servidos são links `?class=<slug>` que só estreitam
-  > quando o JavaScript os transforma em botões. **Não** se cria filtragem dinâmica nem
-  > infraestrutura sem JavaScript. *Aceite (substitui "consegue filtrar por classe via link"):* o HTML
-  > servido de `/builds` carrega a lista completa, os oito links `?class=<slug>` com slugs ingleses
-  > nos dois idiomas e **nenhum** formulário, caixa, `select` ou diálogo; cada página de classe
-  > carrega a lista completa da sua classe no HTML servido; seguir `?class=<slug>` sem scripts abre uma
-  > página inteira e íntegra. É o que `test:build-filters-html` já afirma. A meta anterior fica
-  > registrada acima como substituída.
+  > **Decisão do proprietário D7 (fechamento, 2026-09-11), implementada no produto (commit `c029dbd`).**
+  > Sem JavaScript, **os chips de classe levam para `/<locale>/classes/<slug>#builds`**, onde existe a
+  > listagem estática daquela classe. O `href` servido de cada chip é esse destino, no idioma da
+  > página (`/en-us/…`, `/pt-br/…`); com JavaScript o mesmo `<a>` ganha `role="button"` e
+  > `aria-pressed`, e um clique simples é interceptado para alternar a classe na URL da listagem
+  > (seleção múltipla, `pushState`, Back/Forward e contagens como antes), enquanto Ctrl/Cmd/Shift/Alt
+  > + clique, clique do meio, "abrir em nova aba" e "copiar link" seguem o `href` real. Nenhum
+  > formulário paralelo, nenhuma filtragem dinâmica sem JavaScript; a página de classe continua sem
+  > chips. *Aceite (substitui "consegue filtrar por classe via link"; a redação intermediária deste
+  > fechamento, que documentava `?class=` como href servido, fica substituída por esta):* (1) o HTML
+  > construído, sem scripts, contém os oito destinos `/<locale>/classes/<slug>#builds`; (2) cada destino
+  > preserva o locale; (3) cada destino termina em `#builds`; (4) a página de classe correspondente
+  > carrega `id="builds"`; (5) com JavaScript, o clique simples alterna o filtro sem navegar; (6)
+  > Ctrl/Cmd+clique e abertura em nova aba mantêm a semântica nativa do link; (7) Enter e Espaço
+  > alternam pelo teclado sem navegar; (8) nenhum link usa `?class=` como fallback. Gates:
+  > `test:build-filters-html` (1–4 e 8, mais um clique real sem scripts que aterra na seção da classe
+  > com só as builds dela) e `test:filters-desktop` (5–7). Mutations: remover a interceptação (54
+  > falhas em `filters-desktop`) e devolver `?class=` ao `href` (17 falhas em `build-filters-html`).
 - **R-FILT-15 · Página de classe.** Mesmo padrão, sem chips de classe; "Onde você está" presente; filtros avançados só sob demanda. *Aceite:* primeiro cartão ≤ 260 px abaixo de "Comece por aqui".
   > **Medido na execução (Fase 3, 2026-09-11).** A 768 e 1280 px: 165/153 (en-US) e 193/165
   > (pt-BR) — dentro dos 260. A 320 e 390 px: **394/371 (en-US) e 445/394 (pt-BR)**, e o número
@@ -655,7 +664,8 @@ Os 320 px por tier compacto são hipótese; se a medição da Fase 1 der outro n
 | Tempo para localizar o equipamento do próprio tier (sessão do proprietário) | Não medido | ≤ 10 s em telefone, sem instrução | Sessão J3/J4 |
 | Px até o primeiro cartão em `/builds` | 490 (320 px), 442 (390), 771 (768), ≈ 640 (1280) | ≤ 300 / ≤ 300 / ≤ 360 / ≤ 220 | Viewport test |
 | *↳ medido após a Fase 3 (2026-09-11, `7ba8a05`, topo do documento → topo do primeiro cartão)* | 490/443/772/644 (en) · 519/472/847/703 (pt) | **401/401/428/336 (en) · 401/401/456/336 (pt)** — **nenhuma das quatro metas absolutas é atingida** *(errata do fechamento: a redação anterior desta célula dizia "só 1280 e 768 (en) abaixo da meta", o que é falso — 428 > 360 e 336 > 220)*; a 320/390 o cabeçalho (57) + `py-10` + eyebrow + título terminam em 216 px e R-FILT-2 acrescenta 44 px de linha de estágio, logo 300 exigiria remover o eyebrow ou a linha: decisão do proprietário | `test:filters-fold` (teto de regressão = medido × 1,05; a meta do PRD é impressa ao lado) |
-| *↳ **decisão do proprietário D1 (fechamento, 2026-09-11)*** | — | **A meta absoluta em 320 e 390 px passa a ser ≤ 420 px** (medido 401; a meta anterior de 300 fica registrada acima como substituída). Os gates medidos são preservados: `REGRESSION_CEILING` = 422/422/479/353 (medido × 1,05). **Em 768 e 1280 as metas absolutas de 360 e 220 continuam sem decisão**: a 1280 o bloco de título sozinho termina a ~200 px antes de qualquer controle, e o aceite relativo de R-FILT-11 (grade ≤ 220 px abaixo do título) está cumprido com +211; a 768 mede 428/456. O rótulo "PRD target 300" que `test:filters-fold` imprime a 320/390 refere-se à meta substituída e é atualizado na próxima passagem de código | `test:filters-fold` |
+| *↳ **decisão do proprietário D1 (fechamento, 2026-09-11)*** | — | **A meta absoluta em 320 e 390 px passa a ser ≤ 420 px** (medido 401; a meta anterior de 300 fica registrada acima como substituída). Na primeira redação deste fechamento, 768 e 1280 ficaram sem decisão e o gate guardava tetos medidos (422/422/479/353) com o rótulo "PRD target 300" — ambos substituídos pela linha seguinte | — |
+| *↳ **contratos definitivos (proprietário, 2026-09-11, segunda passagem de fechamento)*** | — | **320 e 390 px: primeiro cartão ≤ 420 px** (medido 401/401). **768 px: ≤ 480 px** (medido 428 en / 456 pt). **1280 px: o contrato é exclusivamente relativo** — início da grade ≤ 220 px após o título (R-FILT-11); **a medida atual de 211 px está aprovada** e nenhum número absoluto é exigido nessa largura (medido 336, só como registro). As metas anteriores (300/300/360/220) ficam nesta tabela como **substituídas por decisão**, não como pendências | `test:filters-fold` (`FIRST_CARD_CEILING` 420/420/480; a 1280 só o aceite relativo de R-FILT-11; nenhum rótulo de meta substituída) |
 | Combinações de filtro vazias clicáveis | Todas (contagens globais) | 0 | Teste de `facetCounts` |
 | Limiar "Boa para" | Justificado sobre 29 builds | Justificado sobre 53, com gate | R-FILT-17 |
 | Tempo para identificar uma skill na árvore (320 px) | Não medível: árvore é lista | ≤ 5 s para achar Blizzard e seu caminho | Protótipo + sessão |
@@ -804,8 +814,15 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 > **Fechamento da Fase 3 (2026-09-11, mais tarde).** **Fase 3 concluída**: aprovada pelo
 > proprietário com as decisões D1–D7 (registradas nos requisitos R-FILT-2, 5, 8, 11, 14 e 15, em
 > §12.2 e em §18) e fechada com UAT visual da produção nos dois idiomas em 320/390/768/1280 sem
-> defeito BLOCKER ou HIGH (relatório §13). Ficam por decidir as metas absolutas de O2 a 768 e 1280,
-> que D1 não cobriu. **A Fase 4 não começou.**
+> defeito BLOCKER ou HIGH (relatório §13). Na primeira passagem de fechamento ficaram por decidir as
+> metas absolutas de O2 a 768 e 1280, e D7 tinha sido registrada só em documento.
+>
+> **Segunda passagem de fechamento (2026-09-11).** **D7 existe no produto** — os chips de classe
+> servidos levam a `/<locale>/classes/<slug>#builds` e continuam a alternar o filtro com JavaScript
+> (R-FILT-14, commit `c029dbd`) — e as métricas responsivas fecharam por decisão do proprietário
+> (320/390 ≤ 420 px; 768 ≤ 480 px; 1280 só o contrato relativo de 220 px, com 211 aprovados; §12.2).
+> A Fase 3 fica **definitivamente concluída** quando a produção servir esse commit e a verificação
+> pública de D7 estiver registrada (relatório §14). **A Fase 4 não começou.**
 
 ### Fase 0A — Correções comprovadas
 
@@ -1065,6 +1082,7 @@ Capturas e textos coletados na auditoria (pasta temporária, não versionados): 
 | 2026-09-11 | **Notas de execução nos requisitos R-FILT-2, 4, 8, 14, 15 e 16** (regra do toggle que nunca zera; "Remover último filtro" só de vazio para vazio e "Remover {grupo}" para a chegada por URL; `q` extinto; `?class=` estático não estreita; formas curtas dos tiers no segmento; todos os eixos escolhidos no cartão) — decisões do coordenador dentro do PRD, **pendentes da validação do proprietário** na sessão J1/J2/J10, junto com a hipótese "Para o meu estágio" | §7.2, §12.2 |
 | 2026-09-11 | **Fase 3 aprovada e concluída (fechamento).** Decisões do proprietário: **D1** meta absoluta do primeiro cartão em 320/390 px passa a ≤ 420 (medido 401; gates medidos preservados; 768/1280 continuam sem decisão); **D2** o cartão de evolução precede o primeiro cartão de build no celular por decisão — R-FILT-15 reformulado para medir descoberta e acesso numa tela; **D3** retirada da descrição visível de `/builds` aceita (metadata inalterada, confirmada em produção); **D4** nomes curtos dos tiers aceitos, nome completo para tecnologia assistiva mantido e "onde houver espaço" como acompanhamento; **D5** "Para o meu estágio" hipótese validada provisoriamente, algoritmo intocado; **D6** "hdin" em segundo lugar é dívida da Fase 6c (P2.6); **D7** sem JavaScript a listagem por classe é `/classes/<slug>#builds` e `/builds` serve a lista completa — R-FILT-14 reescrito para o comportamento real, sem infraestrutura nova. **A Fase 4 não começou** | §7.2 (R-FILT-2, 5, 8, 11, 14, 15), §12.2, §13 P2.6, §14 |
 | 2026-09-11 | **UAT visual read-only da produção (fechamento).** 64 combinações (2 idiomas × 320/390/768/1280 × listagem, ordenação, filtros abertos, sheet, preferência, estado vazio, página de classe, texto a 200 %): sem sobreposição, corte, chip inalcançável, fade sobre chip pressionada, sheet fora da tela ou foco invisível; console limpo. Achados MEDIUM/LOW registrados para outras passagens: a 200 % de texto a 320/390 os cartões medem 408–434 px (antes da Fase 3 mediam 353–436 e a página já rolava por causa do header — pré-existente, reduzido); "Spirit · Spirit" na linha de estágio quando a build veste duas Spirits; o contador quebra para segunda linha a 1280 em pt-BR com estágio gravado; o rodapé da sheet quebra em duas linhas a 320. **Errata:** a nota de §12.2 dizia que 768 (en) e 1280 cumpriam a meta absoluta — nenhuma das quatro cumpre | [`plans/phase-3-report.md`](plans/phase-3-report.md) §13 |
+| 2026-09-11 | **Segunda passagem de fechamento: D7 implementada e métricas responsivas fechadas.** O proprietário recusou a primeira leitura de D7 (registrar `?class=` como fallback): os chips de classe servidos passam a apontar para `/<locale>/classes/<slug>#builds`, permanecem `<a>` depois da hidratação com `role=button`/`aria-pressed`, interceptam só o clique simples (alternância na URL) e deixam Ctrl/Cmd/Shift/Alt, clique do meio, nova aba e copiar link ao navegador; a página de classe continua sem chips. Gates: HTML construído sem scripts (oito destinos, locale, `#builds`, `id="builds"` na página de classe, zero `?class=`, clique real sem scripts aterrando na seção da classe) e navegador (clique simples sem navegar, cliques modificados não interceptados, Enter/Espaço). Mutations: sem interceptação → 54 falhas em `filters-desktop`; `?class=` de volta → 17 em `build-filters-html`. Contratos definitivos de posição do primeiro cartão: 320/390 ≤ 420 px, 768 ≤ 480 px, 1280 exclusivamente relativo (≤ 220 px após o título; 211 aprovado); metas anteriores registradas como substituídas; o gate deixa de imprimir metas substituídas | R-FILT-14, §12.2, §14; [`plans/phase-3-report.md`](plans/phase-3-report.md) §14 |
 | 2026-09-10 | **Uma emulação de texto a 150 % quase inverteu uma conclusão.** `documentElement.style.fontSize` escala `rem` mas não as consultas de média em `rem`, e mediu a linha do header 68 px mais larga do que o Chrome a desenha — o suficiente para reportar como "transbordo criado pela Fase 2" uma largura que cabe nos dois SHAs. `Page.setTextScale`, que é a definição de tamanho de texto do próprio browser, foi acrescentado ao harness | `scripts/headless.ts`; [`plans/phase-2-report.md`](plans/phase-2-report.md) §10.6 |
 
 ---
