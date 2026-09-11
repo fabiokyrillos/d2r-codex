@@ -13,13 +13,18 @@
  * none of the interactive controls may be, because a checkbox that cannot do
  * anything is worse than no checkbox.
  *
- * **…plus the eight class chips, as links (R-FILT-14).** Since Phase 3 the
- * fallback also carries the class row, as `<a data-class href="…?class=slug">`
- * in the English slugs both languages share, so the one filter a reader without
- * scripting can reach is a link. What that link can *do* is the limit the plan
- * records (§4.4) rather than hides: a static site does not read the query, so
- * following it renders the same complete list. The browser half below drives
- * exactly that, with scripting off, and asserts the limit as it is. The
+ * **…plus the eight class chips, as links (R-FILT-14, decision D7).** Since
+ * Phase 3 the fallback also carries the class row, as
+ * `<a data-class href="/<locale>/classes/<slug>#builds">`: the destination is
+ * the class page's own builds section, the one listing already narrowed to a
+ * class that a static site can serve. The chip first shipped pointing at
+ * `…/builds?class=<slug>`, a link to a page that cannot read the query and so
+ * rendered the whole catalogue; the owner rejected documenting that as the
+ * fallback, and this file now forbids it. With scripting the same anchors gain
+ * `role="button"` and `aria-pressed` and intercept a plain click to toggle the
+ * filter, while a modified click, a middle click or "open in new tab" follow
+ * the href — `filters-desktop.test.ts` holds that half. The browser half below
+ * drives the plain page, with scripting off, and follows a chip. The
  * advanced groups, the stage picker, the sort control and the dialogs have no
  * no-JS version and must be absent from the file — there is no `<form>` and no
  * parallel GET filter (R-PREF-4 for the picker).
@@ -166,26 +171,55 @@ for (const locale of LOCALES) {
     const expected = listing.slugsFor(locale);
 
     /*
-     * The class row, as links (R-FILT-14): exactly eight on the catalogue, in
-     * both languages, each pointing at the listing with `?class=<slug>` and
-     * nothing else; none on a class page, whose every build is that class's
-     * already. English slugs in both languages, because a shared link must
-     * land both readers on the same list.
+     * The class row, as links (R-FILT-14, owner's decision D7): exactly eight
+     * on the catalogue, in both languages, each pointing at **the class page's
+     * `#builds`** — the one place a reader without JavaScript can get a listing
+     * narrowed to that class, because this static page cannot read a query
+     * string. `?class=<slug>` is what the hydrated chip *writes* when it is
+     * pressed; as a served href it was a link to a page that ignored it, and it
+     * is forbidden here as a fallback. None on a class page, whose every build
+     * is that class's already. The locale is the page's own, so a pt-BR reader
+     * lands on the pt-BR class page.
      */
     const links = classLinks(body);
     if (listing.catalogue) {
-      const want = CLASS_SLUGS.map((slug) => `/${locale}/builds?class=${slug}`);
+      const want = CLASS_SLUGS.map((slug) => `/${locale}/classes/${slug}#builds`);
       const got = links.map((l) => l.href);
       check(
-        `${locale} ${listing.label}: exactly eight class chip links, each to ?class=<slug>`,
+        `${locale} ${listing.label}: exactly eight class chip links, each to /${locale}/classes/<slug>#builds`,
         links.length === CLASS_SLUGS.length &&
-          CLASS_SLUGS.every((slug) => links.some((l) => l.slug === slug && l.href === `/${locale}/builds?class=${slug}`)),
+          CLASS_SLUGS.every((slug) => links.some((l) => l.slug === slug && l.href === `/${locale}/classes/${slug}#builds`)),
         `got ${JSON.stringify(got)} want ${JSON.stringify(want)}`,
       );
       check(
         `${locale} ${listing.label}: …each slug exactly once`,
         new Set(links.map((l) => l.slug)).size === links.length,
         links.map((l) => l.slug).join(","),
+      );
+      check(
+        `${locale} ${listing.label}: …every destination keeps the locale and ends in #builds`,
+        links.every((l) => (l.href ?? "").startsWith(`/${locale}/classes/`) && (l.href ?? "").endsWith("#builds")),
+        got.join(","),
+      );
+      check(
+        `${locale} ${listing.label}: no chip falls back to ?class= (a static page cannot honour it)`,
+        !links.some((l) => (l.href ?? "").includes("?class=")) && !/data-class="[a-z-]+"[^>]*href="[^"]*\?class=/.test(body),
+        got.filter((h) => (h ?? "").includes("?class=")).join(","),
+      );
+      /*
+       * …and every destination exists: the class page carries `id="builds"` on
+       * the section the fragment names. Read from the built page itself rather
+       * than assumed from the route helper, so a renamed id fails here and not
+       * in a reader's browser.
+       */
+      const withoutBuilds = CLASS_SLUGS.filter((slug) => {
+        const page = read(join(locale, "classes", `${slug}.html`));
+        return !page || !/<section[^>]*\bid="builds"/.test(markup(page));
+      });
+      check(
+        `${locale} ${listing.label}: every destination's class page carries id="builds"`,
+        withoutBuilds.length === 0,
+        withoutBuilds.join(","),
       );
     } else {
       check(`${locale} ${listing.label}: no class chip links — every build here is this class's`, links.length === 0, `${links.length}`);
@@ -268,12 +302,22 @@ console.log("\nControl: the markers are real");
    */
   const chips = CLASS_SLUGS.map((slug, i) =>
     i % 2 === 0
-      ? `<a data-class="${slug}" href="/en-us/builds?class=${slug}">x</a>`
-      : `<a class="chip" href="/en-us/builds?class=${slug}" data-class="${slug}">x</a>`,
+      ? `<a data-class="${slug}" href="/en-us/classes/${slug}#builds">x</a>`
+      : `<a class="chip" href="/en-us/classes/${slug}#builds" data-class="${slug}">x</a>`,
   ).join("");
   check(
     "control: the link scan reads all eight chips in either attribute order",
-    classLinks(chips).length === 8 && classLinks(chips).every((l) => l.href === `/en-us/builds?class=${l.slug}`),
+    classLinks(chips).length === 8 && classLinks(chips).every((l) => l.href === `/en-us/classes/${l.slug}#builds`),
+  );
+  check(
+    "control: the ?class= fallback scan catches the href it forbids, in either attribute order",
+    /data-class="[a-z-]+"[^>]*href="[^"]*\?class=/.test('<a data-class="sorceress" href="/en-us/builds?class=sorceress">x</a>') &&
+      classLinks('<a class="c" href="/en-us/builds?class=druid" data-class="druid">x</a>').some((l) => (l.href ?? "").includes("?class=")),
+  );
+  check(
+    "control: the id scan finds a builds section and misses a heading that merely says so",
+    /<section[^>]*\bid="builds"/.test('<section id="builds" class="scroll-mt-24"><h2>Start here</h2></section>') &&
+      !/<section[^>]*\bid="builds"/.test('<section class="x"><h2 id="builds-title">Builds</h2></section>'),
   );
   check(
     "control: …and reads nothing off a card that only names a class",
@@ -422,20 +466,19 @@ console.log("\nCanonical, hreflang and the sitemap are untouched by filtering");
 /*
  * Reading the file with `<script>` stripped proves what is *served*. Driving
  * a real browser with scripting disabled proves what a reader without a
- * bundle can *do* with it, which is the R-FILT-14 question: the eight links
- * are there, following one lands on the listing — and, because a static site
- * does not read the query, on the *whole* listing. That last part is the
- * limit the plan records (§4.4): a reader without JavaScript can reach the
- * class row but cannot narrow by it, and the per-class listing for them is
- * `/classes/<slug>#builds`. It is asserted as the limit it is rather than
- * dressed up as filtering.
+ * bundle can *do* with it, which is the R-FILT-14 question under the owner's
+ * decision D7: the eight links are there, and following one lands on **that
+ * class's page, at its builds section** — a listing already narrowed to the
+ * class, which is the one thing a static `/builds` cannot produce from a
+ * query string. The old served href (`?class=<slug>`) pointed at a page that
+ * ignored it; that is what the `?class=` assertions above forbid.
  *
  * Scripts are turned off *before* the navigation and stay off through the
  * probe: re-enabling them between `goto` and `evaluate` would let the bundle
  * hydrate under the probe and report the enhanced page as the plain one.
  */
 async function withoutScripts(): Promise<void> {
-  console.log("\nWithout JavaScript, the class row is eight links and the list is the whole list");
+  console.log("\nWithout JavaScript, the class row is eight links to the class pages, and the list is the whole list");
   const site = await startSite();
   const page = await Page.launch();
   try {
@@ -477,32 +520,44 @@ async function withoutScripts(): Promise<void> {
       const plain = await page.evaluate<Plain>(probe);
       check(`${locale}: the browser shows the eight class links, and no chip is a button`, plain.links.length === 8 && plain.buttons === 0, `${plain.links.length} links, ${plain.buttons} buttons`);
       check(
-        `${locale}: …each pointing at the listing with ?class=<slug>`,
-        CLASS_SLUGS.every((slug) => plain.links.some((l) => l.slug === slug && l.href === `${r.builds()}?class=${slug}`)),
+        `${locale}: …each pointing at its class page's #builds, in this locale`,
+        CLASS_SLUGS.every((slug) => plain.links.some((l) => l.slug === slug && l.href === `${r.class(slug)}#builds`)),
         JSON.stringify(plain.links),
       );
       check(`${locale}: …over the complete catalogue as cards`, plain.builds === total && plain.cards === total, `${plain.builds} builds, ${plain.cards} cards, want ${total}`);
       check(`${locale}: …with nothing a static page cannot act on`, plain.boxes === 0 && plain.dialogs === 0 && plain.pickers === 0 && plain.selects === 0 && plain.forms === 0, JSON.stringify(plain));
 
-      // Following a link: the same complete list, the same eight links. The limit, stated.
+      /*
+       * Following a link, the way a reader would: click the first chip. The
+       * document that opens is the class page, the fragment is `#builds`, the
+       * section with that id is there, and the cards on it are exactly that
+       * class's builds — a listing narrowed to the class, without a line of
+       * JavaScript.
+       */
       const first = CLASS_SLUGS[0];
-      await page.goto(`${site.origin}${r.builds()}?class=${first}`);
-      const followed = await page.evaluate<Plain>(probe);
+      const ofClass = getBuildsForClass(locale as Locale, first).length;
+      await page.evaluate(`document.querySelector('[data-class-chips] a[data-class=${JSON.stringify(first)}]').click()`);
+      const landed = await page.waitFor(`location.pathname === ${JSON.stringify(r.class(first))} && location.hash === '#builds'`, 10_000);
+      check(`${locale}: clicking the ${first} chip without scripting opens ${r.class(first)}#builds`, landed, await page.evaluate<string>("location.href"));
+      const followed = await page.evaluate<Plain & { section: boolean }>(`(() => { const p = ${probe}; p.section = !!document.querySelector('section#builds'); return p; })()`);
+      check(`${locale}: …the section the fragment names exists`, followed.section);
       check(
-        `${locale}: following ?class=${first} without scripting renders the whole catalogue — a static site cannot narrow it (plan §4.4)`,
-        followed.builds === total && followed.cards === total,
-        `${followed.builds} builds, ${followed.cards} cards, want ${total}`,
+        `${locale}: …and it lists exactly that class's ${ofClass} builds — narrowed without scripting`,
+        followed.builds === ofClass && followed.cards === ofClass && followed.builds > 0,
+        `${followed.builds} builds, ${followed.cards} cards, want ${ofClass}`,
       );
-      check(`${locale}: …and the eight links are still there to follow`, followed.links.length === 8, `${followed.links.length}`);
-      check(`${locale}: …and still nothing interactive appeared`, followed.boxes === 0 && followed.dialogs === 0 && followed.selects === 0, JSON.stringify(followed));
+      check(`${locale}: …with no class chips of its own and nothing a static page cannot act on`, followed.links.length === 0 && followed.boxes === 0 && followed.dialogs === 0 && followed.selects === 0 && followed.forms === 0, JSON.stringify(followed));
     }
-    // Control: with scripting on, the same page turns the links into buttons —
-    // so "no chip is a button" above is a claim about the no-JS page, not about
-    // a page that never enhances.
+    // Control: with scripting on, the same links take `role="button"` and
+    // `aria-pressed` and keep their class-page href — so the no-JS claims above
+    // are about the plain page, not about a page that never enhances.
     await page.setScriptsEnabled(true);
     await page.goto(site.origin + routes("en-us").builds());
-    const enhanced = await page.waitFor(`document.querySelectorAll('[data-class-chips] button[data-class]').length === 8`, 10_000);
-    check("control: with scripting on, the same row hydrates into eight buttons", enhanced);
+    const enhanced = await page.waitFor(`document.querySelectorAll('[data-class-chips] a[data-class][role="button"][aria-pressed]').length === 8`, 10_000);
+    const keptHref = await page.evaluate<boolean>(
+      `[...document.querySelectorAll('[data-class-chips] a[data-class]')].every((a) => (a.getAttribute('href') || '').endsWith('#builds') && (a.getAttribute('href') || '').includes('/classes/'))`,
+    );
+    check("control: with scripting on, the same eight links become pressable and keep their class-page href", enhanced && keptHref);
   } finally {
     page.close();
     site.stop();

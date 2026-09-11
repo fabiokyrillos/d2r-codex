@@ -594,7 +594,7 @@ async function main(): Promise<void> {
 
         // The chips, measured before any dialog is in front of them.
         const chips = await page.evaluate<{ chips: number; tiers: number; small: string[]; smallest: string }>(`(() => {
-          const chips = [...document.querySelectorAll('[data-class-chips] button[data-class]')];
+          const chips = [...document.querySelectorAll('[data-class-chips] a[data-class]')];
           const tiers = [...document.querySelectorAll('[data-stage-picker] button[data-tier]')];
           const small = [];
           let minW = Infinity, minH = Infinity;

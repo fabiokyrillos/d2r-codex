@@ -97,7 +97,8 @@ const IN_SHEET = (group: string, value: string) =>
 const APPLY = `(${SHEET} ? [...${SHEET}.querySelectorAll('button')].find((b) => b.hasAttribute('data-apply')) : null)`;
 const CLEAR = `(${SHEET} ? [...${SHEET}.querySelectorAll('button')].find((b) => b.hasAttribute('data-clear')) : null)`;
 const CLOSE = `(${SHEET} ? [...${SHEET}.querySelectorAll('button')].find((b) => b.hasAttribute('data-close')) : null)`;
-const CHIP = (slug: string) => `document.querySelector('[data-class-chips] button[data-class=${json(slug)}]')`;
+// A hydrated chip is an anchor with role="button" (D7): its href is the class page's #builds.
+const CHIP = (slug: string) => `document.querySelector('[data-class-chips] a[data-class=${json(slug)}][role="button"]')`;
 
 /** How many distinct build cards the listing is showing right now. */
 const SHOWN = (locale: Locale) =>
@@ -268,7 +269,7 @@ async function main(): Promise<void> {
       check(
         `${locale}: the class chips and the stage picker are on the page, outside any sheet`,
         await page.evaluate<boolean>(
-          `document.querySelectorAll('[data-class-chips] button[data-class]').length === 8 && document.querySelector('[data-stage-picker]') !== null && ${SHEET} === null`,
+          `document.querySelectorAll('[data-class-chips] a[data-class][role="button"]').length === 8 && document.querySelector('[data-stage-picker]') !== null && ${SHEET} === null`,
         ),
       );
       check(
@@ -944,6 +945,10 @@ async function main(): Promise<void> {
       check(`${locale}: …no checkbox`, plain.boxes === 0, String(plain.boxes));
       check(`${locale}: …no More-filters trigger, no stage picker, no search box`, plain.triggers === 0 && plain.pickers === 0 && plain.search === 0, `${plain.triggers}/${plain.pickers}/${plain.search}`);
       check(`${locale}: …and the eight class chips as links (R-FILT-14)`, plain.links === 8, String(plain.links));
+      check(
+        `${locale}: …each to its class page's #builds in this locale (D7)`,
+        await page.evaluate<boolean>(`[...document.querySelectorAll('[data-class-chips] a[data-class][href]')].every((a) => a.getAttribute('href') === ${json(routes(locale).classes())} + '/' + a.dataset.class + '#builds')`),
+      );
     }
     await page.setScriptsEnabled(true);
   } finally {

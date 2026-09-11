@@ -16,18 +16,18 @@
  * because a card measured while the page is still growing is a number about a
  * moment nobody sees.
  *
- * Two kinds of assertion live here and they are deliberately not the same:
- *
- *   - **The PRD's own limits**, held as written: chips within 120px of the
- *     title, the grid within 220px of it at 1280, the class page's first card
- *     within 260px of its heading, a card at 390px no taller than 80% of what
- *     it was, chips 44px on both axes.
- *   - **A regression ceiling on the absolute offset**, which the plan (§8)
- *     says is *measured and published* rather than promised: the PRD's targets
- *     are the placeholder, and the coordinator replaces them with what the
- *     integrated build measures, plus five percent, so the next change to the
- *     title block or the controls cannot quietly give the pixels back. The
- *     numbers are printed on every run for exactly that reason.
+ * Every assertion here is a contract the PRD carries today, after the owner's
+ * closing decisions of 2026-09-11 (PRD §12.2 and R-FILT-11/15): chips within
+ * 120px of the title; the first card within 420px of the top of the document
+ * at 320 and 390 and within 480px at 768; at 1280 the contract is relative
+ * only — the grid within 220px of the title's top — and no absolute number is
+ * asserted there; the class page's first build card within 260px of its
+ * heading from 640px up and within one phone screen below; a card at 390px no
+ * taller than 80% of what it was; chips 44px on both axes. The superseded
+ * targets (300/300/360/220 absolute, 260 on phones) live in the PRD as
+ * history, not in a gate: a green run must never print an old target as if
+ * it were a current failure. The measured offsets are still printed on every
+ * run, so the next change to the title block or the controls is visible.
  *
  * Requires `npm run build`. Run with `npm run test:filters-fold`.
  */
@@ -64,19 +64,21 @@ const TARGET_WIDTHS: readonly Width[] = [320, 390, 1280];
 const CHIPS_BELOW_TITLE = 120;
 /** R-FILT-11: at 1280 the grid starts within this of the title's top edge. */
 const GRID_BELOW_TITLE_AT_DESKTOP = 220;
-/** R-FILT-15: on a class page the first card is within this of "Start here". */
+/** R-FILT-15 from 640px up: the first build card is within this of "Start here". */
 const CLASS_CARD_BELOW_HEADING = 260;
 /**
- * …except below 640px, where the target is not reachable by any filter work.
+ * R-FILT-15 below 640px, as the owner reformulated it (decision D2, 2026-09-11).
  *
  * In one column the levelling card — the class page's "start here" journey,
  * first on purpose and not a build — sits between the heading and the first
- * build card and measures ~166px on its own, so even with no controls at all
- * the distance would be ~238px, and with the 44px stage row R-FILT-2 puts on
- * every phone it is 371–445px (measured on `7ba8a05`: en-US 394/371, pt-BR
- * 445/394 at 320/390). Whether that card moves is the owner's call, not a
- * gate's; until it is made, phones are held to the worse measurement × 1.05
- * so the number cannot drift, and 768/1280 — 153–193px — are held to 260.
+ * build card and measures ~166px on its own, so with the 44px stage row
+ * R-FILT-2 puts on every phone the first build card lands 371–445px below the
+ * heading (measured on `7ba8a05`: en-US 394/371, pt-BR 445/394 at 320/390).
+ * The owner kept the card where it is as deliberate context, and the phone
+ * contract became "discovery within one screen": heading, stage control,
+ * disclosure, sort, levelling card and first build card inside 844px. That is
+ * held here as the worse measurement × 1.05 so the number cannot drift toward
+ * the screen's edge; 768/1280 — 153–193px — are held to 260.
  */
 const CLASS_CARD_BELOW_HEADING_NARROW = 468;
 /** R-A11Y-4: a primary control is at least this on both axes. */
@@ -95,24 +97,23 @@ const CARD_HEIGHT_CEILING: Record<Locale, number> = { "en-us": 252, "pt-br": 309
 
 /**
  * The first card's absolute offset from the top of the document — the metric
- * PRD §12.2 (O2) is written in — as a regression ceiling on what shipped.
+ * PRD §12.2 (O2) is written in — as the owner set it on 2026-09-11.
  *
- * The PRD's targets are ≤ 300 / 300 / 360 / 220 at 320 / 390 / 768 / 1280.
  * Measured on the integrated build (`7ba8a05`, both locales, headless Chrome,
- * default text size): 401 / 401 / 428–456 / 336, down from 490 / 443 / 772–847
- * / 644–703. Three of the four targets are not reached, and the plan's
- * arithmetic (§3) said so before a line was written: the header (57px), the
- * page's own padding, the eyebrow and the title alone end at 216px at 320px,
- * and R-FILT-2 then adds a 44px stage row plus its legend on every phone, so
- * 300 would need the eyebrow or the stage row gone — a decision the report
- * puts to the owner rather than a defect this gate can hold the listing to.
- *
- * So the ceiling is the worse locale's measurement × 1.05, rounded up, and
- * the PRD's numbers stay in `PRD_TARGET` so every run prints the gap. Move a
- * ceiling down when the listing improves; never up without a measurement.
+ * default text size): 401 / 401 / 428–456 / 336 at 320 / 390 / 768 / 1280,
+ * down from 490 / 443 / 772–847 / 644–703. The PRD's first targets — 300 /
+ * 300 / 360 / 220 — were not reached at any width, and the plan's arithmetic
+ * (§3) said so before a line was written: the header (57px), the page's own
+ * padding, the eyebrow and the title alone end at 216px at 320px, and
+ * R-FILT-2 then adds a 44px stage row plus its legend on every phone. The
+ * owner kept the layout and replaced the targets: **420 at 320 and 390, 480 at
+ * 768**, and at **1280 a relative contract only** — the grid within 220px of
+ * the title's top (R-FILT-11, measured +211 and approved), which is asserted
+ * above, so no absolute number is held there. The old targets are history in
+ * the PRD, not labels here. Move a ceiling down when the listing improves;
+ * never up without a measurement.
  */
-const REGRESSION_CEILING: Record<Width, number> = { 320: 422, 390: 422, 768: 479, 1280: 353 };
-const PRD_TARGET: Record<Width, number> = { 320: 300, 390: 300, 768: 360, 1280: 220 };
+const FIRST_CARD_CEILING: Partial<Record<Width, number>> = { 320: 420, 390: 420, 768: 480 };
 
 const READY = `document.querySelector('[data-filters][data-filters-ready]')`;
 
@@ -178,7 +179,7 @@ const TARGETS = `(() => {
   const box = (el) => { const r = el.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height) }; };
   const visible = (el) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
   return {
-    chips: [...document.querySelectorAll('[data-class-chips] button[data-class]')].map(box),
+    chips: [...document.querySelectorAll('[data-class-chips] a[data-class]')].map(box),
     tiers: [...document.querySelectorAll('[data-stage-picker] button[data-tier]')].map(box),
     visibleBoxes: [...document.querySelectorAll('input[type="checkbox"]')].filter((b) => visible(b) && !b.closest('[role="dialog"]')).length,
     dialogs: document.querySelectorAll('[role="dialog"]').length,
@@ -264,7 +265,12 @@ async function main(): Promise<void> {
           check(`${where}: the first card is no taller than ${CARD_HEIGHT_CEILING[locale]}px — 80% of its 315/386 baseline (R-FILT-16) — ${f.firstCard.height}px`, f.firstCard.height <= CARD_HEIGHT_CEILING[locale], `${f.firstCard.height}px`);
         }
         measured.push(`${where}: first card at ${f.firstCard.top}px (title top ${f.h1.top}, bottom ${f.h1.bottom}; chips at ${f.chipsTop}; card ${f.firstCard.height}px tall)`);
-        check(`${where}: the first card sits at ${f.firstCard.top}px, under the ceiling of ${REGRESSION_CEILING[width]} (PRD target ${PRD_TARGET[width]})`, f.firstCard.top <= REGRESSION_CEILING[width], `${f.firstCard.top}px — see REGRESSION_CEILING`);
+        // At 1280 the contract is R-FILT-11's relative one, asserted above; no
+        // absolute ceiling is held there by the owner's decision.
+        const ceiling = FIRST_CARD_CEILING[width];
+        if (ceiling !== undefined) {
+          check(`${where}: the first card sits at ${f.firstCard.top}px, within the ${ceiling}px the PRD sets for this width (§12.2, 2026-09-11)`, f.firstCard.top <= ceiling, `${f.firstCard.top}px`);
+        }
 
         // Targets, controls and the chip rows, at this width.
         const tg = await page.evaluate<Targets>(TARGETS);
@@ -328,7 +334,7 @@ async function main(): Promise<void> {
         const below = m.card - m.heading;
         const ceiling = width < 640 ? CLASS_CARD_BELOW_HEADING_NARROW : CLASS_CARD_BELOW_HEADING;
         check(
-          `${where}: the first build card is within ${ceiling}px of "Start here" (R-FILT-15${width < 640 ? ", phone ceiling; target 260" : ""}) — ${below}px`,
+          `${where}: the first build card is within ${ceiling}px of "Start here" (R-FILT-15${width < 640 ? " as reformulated by D2: one phone screen, held at the measured ceiling" : ""}) — ${below}px`,
           below <= ceiling,
           `${below}px`,
         );
@@ -342,7 +348,7 @@ async function main(): Promise<void> {
     site.stop();
   }
 
-  console.log("\nmeasured — the numbers REGRESSION_CEILING is replaced from:");
+  console.log("\nmeasured — the offsets behind the contracts above, printed so the next change is visible:");
   for (const line of measured) console.log(`  ${line}`);
 
   console.log(`\n${passed} passed, ${failures.length} failed`);

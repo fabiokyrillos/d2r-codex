@@ -211,7 +211,14 @@ function contributingPair(locale: Locale): { classSlug: string; zero: string; on
 // ---------------------------------------------------------------------------
 
 const READY = `document.querySelector('[data-filters][data-filters-ready]')`;
-const CHIP = (slug: string) => `document.querySelector('[data-class-chips] button[data-class=${json(slug)}]')`;
+/*
+ * A hydrated class chip is an anchor with `role="button"` and `aria-pressed`
+ * (owner's decision D7): the href is the class page's `#builds`, kept so that a
+ * modified click, a middle click or "copy link" reach that page, while a plain
+ * click is intercepted and toggles the filter in place. So the locator is the
+ * anchor, and nothing here looks for a `<button>` in the class row.
+ */
+const CHIP = (slug: string) => `document.querySelector('[data-class-chips] a[data-class=${json(slug)}][role="button"]')`;
 const TIER = (tier: string) => `document.querySelector('[data-stage-picker] button[data-tier=${json(tier)}]')`;
 const CLEAR_TIER = `document.querySelector('[data-filters] button[data-clear-tier], #builds button[data-clear-tier]')`;
 const MORE = `document.querySelector('button[data-more-filters]')`;
@@ -243,7 +250,11 @@ const HELPERS = `
 interface Chip {
   slug: string;
   pressed: string | null;
+  /** `aria-disabled="true"` — an anchor has no `disabled` attribute. */
   disabled: boolean;
+  /** The class page's `#builds`, kept on the hydrated chip (D7). */
+  href: string | null;
+  role: string | null;
   count: number | null;
   countText: string | null;
   w: number;
@@ -265,7 +276,10 @@ interface Snapshot {
   search: number;
   visibleBoxes: number;
   chipsRow: boolean;
+  /** Plain links in the row — the served fallback's shape; zero once hydrated. */
   chipLinks: number;
+  /** `<button>`s in the row — never, in either state. */
+  chipButtons: number;
   chips: Chip[];
   picker: boolean;
   tiers: { tier: string; pressed: string | null; w: number; h: number }[];
@@ -327,7 +341,7 @@ const SNAPSHOT = (scope = "document") => `(() => {
   let focus = 'none';
   if (active === more) focus = 'more';
   else if (popover && popover.contains(active)) focus = 'in-popover';
-  else if (active && active.matches('[data-class-chips] button[data-class]')) focus = 'chip:' + active.dataset.class;
+  else if (active && active.matches('[data-class-chips] a[data-class]')) focus = 'chip:' + active.dataset.class;
   else if (active) focus = active.tagName.toLowerCase();
   return {
     url: location.search,
@@ -337,11 +351,14 @@ const SNAPSHOT = (scope = "document") => `(() => {
     search: document.querySelectorAll('input[type="search"]').length,
     visibleBoxes: [...document.querySelectorAll('input[type="checkbox"]')].filter((b) => visible(b) && !b.closest('[role="dialog"]')).length,
     chipsRow: !!root.querySelector('[data-class-chips]'),
-    chipLinks: root.querySelectorAll('[data-class-chips] a[data-class]').length,
-    chips: [...root.querySelectorAll('[data-class-chips] button[data-class]')].map((b) => ({
+    chipLinks: root.querySelectorAll('[data-class-chips] a[data-class]:not([role="button"])').length,
+    chipButtons: root.querySelectorAll('[data-class-chips] button').length,
+    chips: [...root.querySelectorAll('[data-class-chips] a[data-class][role="button"]')].map((b) => ({
       slug: b.dataset.class,
       pressed: b.getAttribute('aria-pressed'),
-      disabled: b.disabled,
+      disabled: b.getAttribute('aria-disabled') === 'true',
+      href: b.getAttribute('href'),
+      role: b.getAttribute('role'),
       count: countOf(b),
       countText: b.querySelector('[data-count]') ? (b.querySelector('[data-count]').textContent || '').trim() : null,
       ...box(b),
@@ -541,8 +558,8 @@ async function load(page: Page, url: string, tier: string | null = null, ready =
   if (!(await navigate(page, url))) return false;
   if (!(await page.waitFor(`${ready} !== null`, 10_000))) return false;
   await page.waitFor(
-    `(() => { const chips = document.querySelectorAll('[data-class-chips] button[data-class]');
-       return chips.length === 0 || document.querySelectorAll('[data-class-chips] button[data-class] [data-count]').length === chips.length; })()`,
+    `(() => { const chips = document.querySelectorAll('[data-class-chips] a[data-class][role="button"]');
+       return chips.length === 0 || document.querySelectorAll('[data-class-chips] a[data-class][role="button"] [data-count]').length === chips.length; })()`,
     4000,
   );
   return true;
@@ -581,10 +598,22 @@ const sameSet = (a: readonly string[], b: readonly string[]) =>
 
 async function main(): Promise<void> {
   const site = await startSite();
-  const page = await Page.launch();
+  /*
+   * One browser per locale. Chrome caps a tab's session history at 50 entries,
+   * and a locale's run makes more decisions than that — each a `pushState` the
+   * gate then counts as "exactly one entry". `location.replace` between
+   * sections keeps navigations off the stack, but the decisions themselves
+   * stay on it, so the second locale in one tab reached the cap and every
+   * "+1" read as "+0". A fresh browser is a fresh stack.
+   */
+  let page = await Page.launch();
 
   try {
     for (const locale of LOCALES as readonly Locale[]) {
+      if (locale !== LOCALES[0]) {
+        page.close();
+        page = await Page.launch();
+      }
       const dict = t(locale);
       const r = routes(locale);
       const catalogue = site.origin + r.builds();
@@ -625,7 +654,12 @@ async function main(): Promise<void> {
       check(`${locale}: the catalogue hydrates with [data-filters][data-filters-ready]`, s0.ready);
       check(`${locale}: there is no inline search box — the global search is the one search (R-FILT-8)`, s0.search === 0, `${s0.search}`);
       check(`${locale}: no checkbox is laid out outside a dialog by default (R-FILT-3)`, s0.visibleBoxes === 0, `${s0.visibleBoxes}`);
-      check(`${locale}: the eight class chips are buttons after hydration, and the links are gone`, s0.chips.length === classes.length && s0.chipLinks === 0, `${s0.chips.length} buttons, ${s0.chipLinks} links`);
+      check(`${locale}: the eight class chips are anchors with role=button and aria-pressed after hydration, and no plain link or <button> remains`, s0.chips.length === classes.length && s0.chipLinks === 0 && s0.chipButtons === 0, `${s0.chips.length} pressable anchors, ${s0.chipLinks} plain links, ${s0.chipButtons} buttons`);
+      check(
+        `${locale}: every hydrated chip keeps its href — the class page's #builds in this locale (D7)`,
+        s0.chips.every((c) => c.href === `${r.class(c.slug as Slug)}#builds`),
+        json(s0.chips.map((c) => c.href)),
+      );
       check(`${locale}: the chips are the eight classes, each exactly once`, sameSet(s0.chips.map((c) => c.slug), classes), s0.chips.map((c) => c.slug).join(","));
       check(`${locale}: every chip is unpressed and enabled with nothing selected`, s0.chips.every((c) => c.pressed === "false" && !c.disabled), json(s0.chips.map((c) => [c.slug, c.pressed, c.disabled])));
       check(
@@ -678,14 +712,72 @@ async function main(): Promise<void> {
          */
         check(`${locale}: …and no class count moves — a group ignores its own selection`, after.chips.map((c) => c.count).join() === before.chips.map((c) => c.count).join(), json(after.chips.map((c) => c.countText)));
         check(`${locale}: …nothing was written to storage`, after.storage.length === 0, after.storage.join(","));
+        check(`${locale}: …and the page did not navigate — the chip's own href was not followed (D7)`, await page.evaluate<boolean>(`location.pathname === ${json(r.builds())}`), await page.evaluate<string>("location.pathname"));
       }
+
+      // ---------------------------------------------------------------------
+      console.log(`\n${locale}: the chip is still a link — a plain click is intercepted, a modified one is not (D7)`);
+      // ---------------------------------------------------------------------
+      /*
+       * The hydrated chip is an anchor whose href is the class page's `#builds`.
+       * A plain left click is intercepted and toggles the filter in place; a
+       * click with Ctrl, Cmd, Shift or Alt is the browser's — a new tab, a new
+       * window, a download — and must reach it untouched, which is what "the
+       * link semantics survive enhancement" means and what a reader copying the
+       * link gets. The probe dispatches the click, listens at the document —
+       * after the chip's own handler — for whether default was prevented, and
+       * then prevents it itself so this tab does not actually leave the page.
+       *
+       * Plan mutation: an enhancement that stops intercepting the plain click
+       * makes `prevented` false and the page navigate to the class page; one
+       * that intercepts every click makes the modified clicks `prevented` too.
+       */
+      if (await load(page, catalogue)) {
+        const target = classes[1];
+        const probe = (init: string) => page.evaluate<{ prevented: boolean | null; search: string; path: string; pressed: string | null } | null>(`(() => {
+          const el = ${CHIP(target)};
+          if (!el) return null;
+          let prevented = null;
+          const spy = (e) => { prevented = e.defaultPrevented; e.preventDefault(); };
+          document.addEventListener('click', spy, false);
+          el.dispatchEvent(new MouseEvent('click', Object.assign({ bubbles: true, cancelable: true, button: 0, view: window }, ${init})));
+          document.removeEventListener('click', spy, false);
+          return { prevented, search: location.search, path: location.pathname, pressed: el.getAttribute('aria-pressed') };
+        })()`);
+        const link = await page.evaluate<{ href: string; path: string; hash: string; target: string | null } | null>(`(() => {
+          const el = ${CHIP(target)};
+          if (!el) return null;
+          const u = new URL(el.href);
+          return { href: el.getAttribute('href'), path: u.pathname, hash: u.hash, target: el.getAttribute('target') };
+        })()`);
+        check(`${locale}: the ${target} chip's href is ${r.class(target as Slug)}#builds and opens in this tab by default`, !!link && link.path === r.class(target as Slug) && link.hash === "#builds" && link.target === null, json(link));
+        for (const [name, init] of [["Ctrl", "{ ctrlKey: true }"], ["Cmd", "{ metaKey: true }"], ["Shift", "{ shiftKey: true }"], ["Alt", "{ altKey: true }"]] as const) {
+          const m = await probe(init);
+          check(`${locale}: a ${name}+click is left to the browser — not intercepted, nothing toggled`, !!m && m.prevented === false && m.search === "" && m.pressed === "false", json(m));
+        }
+        const plain = await probe("{}");
+        check(`${locale}: a plain click is intercepted and toggles the filter in place`, !!plain && plain.prevented === true && (await urlIs(page, { class: target })) && plain.path === r.builds(), json(plain));
+        check(`${locale}: …and the chip reports itself pressed while its href is unchanged`, await page.waitFor(`${CHIP(target)}?.getAttribute('aria-pressed') === 'true' && (${CHIP(target)}?.getAttribute('href') || '').endsWith('#builds')`, 4000));
+        const middle = await page.evaluate<boolean>(`(() => {
+          const el = ${CHIP(target)};
+          if (!el) return false;
+          let prevented = null;
+          const spy = (e) => { prevented = e.defaultPrevented; e.preventDefault(); };
+          document.addEventListener('auxclick', spy, false);
+          el.dispatchEvent(new MouseEvent('auxclick', { bubbles: true, cancelable: true, button: 1, view: window }));
+          document.removeEventListener('auxclick', spy, false);
+          return prevented === false;
+        })()`);
+        check(`${locale}: a middle click (auxclick) is not intercepted either`, middle);
+      } else check(`${locale}: the catalogue hydrates for the link semantics`, false);
 
       // ---------------------------------------------------------------------
       console.log(`\n${locale}: multi-select, in canonical URL order`);
       // ---------------------------------------------------------------------
-      {
+      if (await load(page, `${catalogue}?class=${classes[0]}`)) {
         const [a, b] = [classes[0], classes[1]];
-        // From ?class=a (the page is there already), add b.
+        // From ?class=a, loaded as a precondition rather than inherited from
+        // whatever the previous section left pressed, add b.
         const pre = (await snapshot(page))!;
         const shown = matching(rows, { class: [a, b] });
         /** The class parameter carries exactly these slugs, whatever their order. */
@@ -721,7 +813,7 @@ async function main(): Promise<void> {
         await clickThat(page, CHIP(a));
         check(`${locale}: pressing a pressed chip removes it`, await urlIs(page, { class: b }));
         check(`${locale}: …and it reports itself unpressed`, await page.waitFor(`${CHIP(a)}?.getAttribute('aria-pressed') === 'false'`, 4000));
-      }
+      } else check(`${locale}: the catalogue hydrates for multi-select`, false);
 
       // ---------------------------------------------------------------------
       console.log(`\n${locale}: a chip that would show nothing is disabled, and says 0`);
@@ -1123,6 +1215,7 @@ async function main(): Promise<void> {
         const before = tabbed.history;
         await page.press("Enter", "Enter", 13, "\r");
         check(`${locale}: Enter presses the focused chip`, await urlIs(page, { class: second }));
+        check(`${locale}: …without following the anchor's href (still on the catalogue)`, await page.evaluate<boolean>(`location.pathname === ${json(r.builds())}`), await page.evaluate<string>("location.pathname"));
         check(`${locale}: …aria-pressed follows`, await page.waitFor(`${CHIP(second)}?.getAttribute('aria-pressed') === 'true'`, 4000));
         await page.press(" ", "Space", 32, " ");
         check(`${locale}: Space presses it again`, await page.waitFor(`location.search === ''`, 4000), await page.evaluate<string>("location.search"));
@@ -1162,7 +1255,7 @@ async function main(): Promise<void> {
           if (header) header.style.setProperty('display', 'none', 'important');
           const withoutHeader = de.scrollWidth;
           if (header) header.style.removeProperty('display');
-          const chips = [...document.querySelectorAll('[data-class-chips] button[data-class], [data-stage-picker] button[data-tier]')]
+          const chips = [...document.querySelectorAll('[data-class-chips] a[data-class], [data-stage-picker] button[data-tier]')]
             .map((b) => { const r = b.getBoundingClientRect(); return Math.round(r.width) + 'x' + Math.round(r.height); });
           return { clientWidth: de.clientWidth, scrollWidth, withoutHeader, restored: de.scrollWidth === scrollWidth, chips };
         })()`);
