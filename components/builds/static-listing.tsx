@@ -15,12 +15,15 @@ import { ClassChip } from "./class-chip";
  *   - **The complete list**, every card, in catalogue order. That is what lets
  *     the route stay statically generated while the filtering happens in the
  *     browser, and it is R-FILT-14's "the full listing renders on the server".
- *   - **The eight class chips as links** — `?class=<slug>` on the listing's own
- *     path — on the catalogue only. Without JavaScript a static site cannot
- *     read a query string, so the link does not narrow this page; it is the
- *     entry the PRD asks for, and the gate records that limitation rather than
- *     hiding it (plan §4.4). With JavaScript the row is replaced by toggle
- *     buttons before the reader can press anything.
+ *   - **The eight class chips as links to the class pages** —
+ *     `/<locale>/classes/<slug>#builds` — on the catalogue only. Without
+ *     JavaScript a static site cannot read a query string, so a link back to
+ *     this listing with `?class=` narrowed nothing; the class page's builds
+ *     section is the one listing already narrowed to a class that exists
+ *     without a script, and the owner made it the destination (R-FILT-14,
+ *     decision D7). With JavaScript the same anchors become pressable — a
+ *     plain click toggles the filter here, a modified click still opens the
+ *     class page — see `class-chip.tsx`.
  *   - **Nothing else.** No stage picker, no sort, no "More filters", no
  *     checkbox, no dialog: every one of those needs a script to do anything,
  *     and a control that does nothing is worse than none (R-PREF-4,

@@ -153,16 +153,19 @@ export async function FilterableBuildList({
 
   /*
    * The class chips: the same eight, in the same order, for the static row
-   * (as links, with the catalogue-wide counts) and for the live one (as
-   * buttons, whose counts the client recomputes under the other groups'
-   * selections). Only where the page offers the class group at all.
+   * (plain links, with the catalogue-wide counts) and for the live one (the
+   * same links made pressable, whose counts the client recomputes under the
+   * other groups' selections). Only where the page offers the class group at
+   * all. The href is the class page's builds section in this locale (D7): the
+   * one listing narrowed to a class that exists without JavaScript, and what a
+   * new tab or a copied link gets with it.
    */
   const classOptions = withClass ? narrowingOptionsFor(rows, "class", orders.class) : [];
   const chips: StaticClassChip[] = classOptions.map((o) => ({
     slug: o.value as ClassSlug,
     label: labelFor("class", o.value),
     count: o.count,
-    href: `${r.builds()}?class=${o.value}`,
+    href: r.classBuilds(o.value),
   }));
 
   /*
@@ -199,7 +202,7 @@ export async function FilterableBuildList({
       <BuildFilters
         // Already resolved; see the header for why it is a promise at all.
         data={Promise.resolve({ items, leading })}
-        classOptions={withClass ? chips.map((c) => ({ value: c.slug, label: c.label })) : undefined}
+        classOptions={withClass ? chips.map((c) => ({ value: c.slug, label: c.label, href: c.href })) : undefined}
         groups={views}
         tiers={tierOrder.map((slug) => ({ slug, label: tiers[slug].label, short: tiers[slug].short }))}
         listClassName={listClassName}

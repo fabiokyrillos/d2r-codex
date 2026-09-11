@@ -23,6 +23,13 @@ export function routes(locale: Locale) {
     class: (slug: Slug) => `${base}/classes/${slug}`,
     classSkills: (slug: Slug) => `${base}/classes/${slug}#skills`,
     /**
+     * The class page's builds section — the one listing already narrowed to a
+     * class that a static site can serve. It is where a class chip on `/builds`
+     * takes a reader without JavaScript (R-FILT-14, decision D7), so the
+     * fragment is composed here, next to `classSkills`, and never by hand.
+     */
+    classBuilds: (slug: Slug) => `${base}/classes/${slug}#builds`,
+    /**
      * Nested under the class page's own `[slug]` segment. Next 16 throws E912
      * ("Ambiguous app routes") when two paths normalize to the same structure
      * with different param names, so this cannot introduce `[classSlug]` here.

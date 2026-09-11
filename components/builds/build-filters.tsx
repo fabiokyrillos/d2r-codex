@@ -55,9 +55,12 @@ import { StagePicker, type StageOption } from "./stage-picker";
  * prerendered route forces the tree up to the nearest boundary to be
  * client-rendered, so what the page passes as that boundary's fallback is what
  * the built HTML contains: `StaticListing`, the complete list under the eight
- * class chips as links. With no filters in the URL this component lists the
- * same cards in the same order, so the swap adds the second row of controls
- * and moves nothing else.
+ * class chips as links to the class pages. With no filters in the URL this
+ * component lists the same cards in the same order, so the swap adds the
+ * second row of controls and moves nothing else. The chips stay anchors after
+ * the swap (D7): a plain press toggles the class here, every other kind of
+ * press — modified, middle, "open in new tab" — follows the href to the class
+ * page's builds section, as `class-chip.tsx` explains.
  *
  * **Every decision is one `pushState`, and the URL is the state.** A class
  * chip, a tick in the popover, a sort change, an applied chip's ✕, "Clear
@@ -167,7 +170,7 @@ export function BuildFilters({
    */
   data: Promise<{ items: BuildFilterItem[]; leading?: ReactNode }>;
   /** The catalogue's classes, in chip order. Absent on a class page, which has no class control. */
-  classOptions?: { value: ClassSlug; label: string }[];
+  classOptions?: { value: ClassSlug; label: string; href: string }[];
   /** The advanced groups, in `ADVANCED_GROUPS` order: what the popover and the sheet hold. */
   groups: FilterGroupView[];
   tiers: StageOption[];
@@ -405,10 +408,13 @@ export function BuildFilters({
                     slug={option.value}
                     label={option.label}
                     count={n}
+                    href={option.href}
                     pressed={pressed}
                     // A pressed chip is never disabled, whatever its count.
                     disabled={!pressed && n === 0}
-                    onClick={() => {
+                    // A plain press toggles here; the href stays the class
+                    // page for every other way of following a link (D7).
+                    onToggle={() => {
                       toggle("class", option.value);
                       if (!pressed) centreChip(option.value);
                     }}
