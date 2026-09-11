@@ -334,17 +334,19 @@ check("no generated or scratch files are tracked", junk.length === 0, junk.slice
 }
 
 // ---------------------------------------------------------------------------
-console.log("\nOnly two components may write the tier preference");
+console.log("\nOnly three surfaces may write the tier preference");
 // ---------------------------------------------------------------------------
 /*
- * One writer, by name, because §8.2 rests on it.
+ * Every writer, by name, because §8.2 rests on it.
  *
  * `d2rc.tier` has exactly one resolution rule, and the reason it can have one is
- * that exactly two surfaces ever set it: the tier control on a build page, and
- * the six tier cards on the home. Everything else — the summary included —
- * *reads* the open tier off the DOM. A third writer would not be a bug that
- * fails; it would be a second rule about what the preference means, arriving
- * silently.
+ * that only named surfaces ever set it: the tier control on a build page, the
+ * six tier cards on the home, and — since Phase 3 — the "where are you" stage
+ * picker on the two build listings (R-FILT-2), which writes the same key under
+ * the same R-PREF-1 contract and informs the listing of nothing but the tier.
+ * Everything else — the summary included — *reads* the open tier off the DOM.
+ * A fourth writer would not be a bug that fails; it would be a second rule
+ * about what the preference means, arriving silently.
  *
  * Nothing saw that. Measured: `components/game/page-sections.tsx` importing
  * `writeTier` from `@/lib/prefs` and calling it in the summary nav's `onClick`
@@ -359,8 +361,12 @@ console.log("\nOnly two components may write the tier preference");
  */
 {
   const WRITERS = /\b(?:writeTier|clearTier)\b/;
-  /** The two surfaces §8.2 names, and nothing else. */
-  const ALLOWED_WRITERS = ["components/game/tier-selector.tsx", "components/home/tier-cards.tsx"];
+  /** The two surfaces §8.2 names, the one R-FILT-2 adds, and nothing else. */
+  const ALLOWED_WRITERS = [
+    "components/game/tier-selector.tsx",
+    "components/home/tier-cards.tsx",
+    "components/builds/stage-picker.tsx",
+  ];
   /** Where the two functions are *declared*. Declaring is not importing. */
   const WRITER_HOME = "lib/prefs.ts";
 
@@ -369,14 +375,14 @@ console.log("\nOnly two components may write the tier preference");
     .filter((f) => f !== WRITER_HOME && !ALLOWED_WRITERS.includes(f))
     .filter((f) => WRITERS.test(stripComments(readFileSync(f, "utf8"))));
   check(
-    "only the tier control and the home tier cards touch writeTier/clearTier",
+    "only the tier control, the home tier cards and the stage picker touch writeTier/clearTier",
     writers.length === 0,
     writers.join(", "),
   );
 
   /*
    * Controls. This is an absence claim over a name, so it is worth nothing
-   * unless the name exists, the two allowed files really do carry it, and the
+   * unless the name exists, every allowed file really does carry it, and the
    * pattern matches the shape the mutation used.
    */
   check(
@@ -385,9 +391,9 @@ console.log("\nOnly two components may write the tier preference");
     WRITER_HOME,
   );
   check(
-    "control: both allowed writers really do import one, so the allowlist is not decoration",
+    "control: every allowed writer really does import one, so the allowlist is not decoration",
     ALLOWED_WRITERS.every((f) => tracked.includes(f) && WRITERS.test(stripComments(readFileSync(f, "utf8")))),
-    ALLOWED_WRITERS.join(", "),
+    ALLOWED_WRITERS.filter((f) => !tracked.includes(f) || !WRITERS.test(stripComments(readFileSync(f, "utf8")))).join(", "),
   );
   check(
     "control: the pattern matches the import and the call the mutation added",

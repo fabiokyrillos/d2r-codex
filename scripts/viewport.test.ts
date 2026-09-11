@@ -19,14 +19,19 @@
  * you can fall out of by changing a gap. The row is now the label, 28px tall,
  * so it clears the 24×24 minimum on its own terms — and this measures the
  * *effective* target, the box that actually toggles the control, rather than
- * the square the browser draws.
+ * the square the browser draws. Since Phase 3 the rows live behind "More
+ * filters" — a modal sheet below 640px, a non-modal popover from it — and the
+ * page's primary controls, the class chips and the stage picker, are held to
+ * the 44px R-A11Y-4 asks of a primary control.
  *
  * The pages are derived from the registry rather than listed, so a new class or
  * build is covered without editing this file. The states are the ones a reader
- * puts the page into: menu shut, menu open, a filtered listing, a query that
- * matches nothing, and a build page with its table of contents in front of them
- * — which below 640px is a modal sheet and above it a row of links, two layouts
- * behind one name and neither of them measured while the disclosure is shut.
+ * puts the page into: menu shut, menu open, a filtered listing, a link that
+ * matches nothing, the advanced filters open in whichever dialog the width
+ * gives them, a listing with a stage preference stored, and a build page with
+ * its table of contents in front of them — which below 640px is a modal sheet
+ * and above it a row of links, two layouts behind one name and neither of them
+ * measured while the disclosure is shut.
  *
  * Requires `npm run build`. Run with `npm run test:viewport`.
  */
@@ -45,6 +50,10 @@ import {
 import { LOCALES, type Locale } from "../lib/i18n/config";
 import { dictionaryFor } from "../lib/i18n";
 import { routes } from "../lib/routes";
+import { buildRows } from "../lib/builds/rows";
+import { EMPTY_FILTER_STATE, filterBuilds } from "../lib/builds/filter";
+import { TIER_KEY } from "../lib/prefs";
+import { ELEMENTS } from "../lib/types/core";
 import type { Slug } from "../lib/types";
 
 let passed = 0;
@@ -94,12 +103,66 @@ interface Surface {
   ready?: (locale: Locale) => string;
   /** Run after load — opens a menu, ticks a box. */
   after?: (page: Page, locale: Locale) => Promise<void>;
+  /**
+   * Widths this surface exists at. The filter trigger opens a sheet below
+   * 640px and a popover from it, and those are two surfaces, not one measured
+   * twice under a name that is wrong half the time.
+   */
+  only?: (width: number) => boolean;
+  /**
+   * Storage the page boots with. Written into the document that is open
+   * before the navigation and cleared again afterwards, so a preference set
+   * for one surface cannot leak into the next one's measurement.
+   */
+  storage?: Record<string, string>;
 }
 
 const firstBuild = (locale: Locale) => getBuilds(locale)[0];
 const firstClass = (locale: Locale) => getClasses(locale)[0];
 const firstSkill = (locale: Locale) =>
   getSkillsForClass(locale, firstClass(locale).slug as Slug)[0];
+
+/**
+ * A class and a damage type it has no build of — the empty state, from the
+ * data. The inline search that `?q=zzqqxx` used to reach it with is gone
+ * (R-FILT-8), and the redesign lets no click produce zero results, so the only
+ * empty surface left is a link, and this is the link.
+ */
+const emptyQuery = (locale: Locale): string => {
+  const rows = buildRows(locale, getBuilds(locale));
+  for (const c of getClasses(locale)) {
+    for (const d of ELEMENTS) {
+      if (filterBuilds(rows, { ...EMPTY_FILTER_STATE, class: [c.slug], damage: [d] }).length === 0) {
+        return `?class=${c.slug}&damage=${d}`;
+      }
+    }
+  }
+  throw new Error(`${locale}: every class has every damage type, so no link reaches the empty state`);
+};
+
+/** The listing has hydrated. */
+const FILTERS_READY = `document.querySelector('[data-filters][data-filters-ready]') !== null`;
+
+/**
+ * Opens the advanced filters through their one trigger and says which regime
+ * answered: the modal sheet below 640px or the non-modal popover from it. The
+ * raise matters for the same reason it does in `openSections`: a click that
+ * finds nothing and carries on reports "the checkboxes render: FAIL" without
+ * saying why.
+ */
+const openFilters = async (page: Page): Promise<"sheet" | "popover"> => {
+  const clicked = await page.evaluate<boolean>(
+    `(() => { const b = document.querySelector('button[data-more-filters]'); if (!b) return false; b.click(); return true; })()`,
+  );
+  if (!clicked) throw new Error("no [data-more-filters] trigger to activate");
+  const opened = await page.waitFor(`document.querySelector('[role="dialog"] input[type="checkbox"]') !== null`, 4000);
+  if (!opened) throw new Error("the trigger opened nothing with a checkbox in it");
+  const regime = await page.evaluate<"sheet" | "popover" | "neither">(
+    `document.querySelector('[role="dialog"][aria-modal="true"]') ? 'sheet' : document.querySelector('[role="dialog"][data-popover]') ? 'popover' : 'neither'`,
+  );
+  if (regime === "neither") throw new Error("the dialog is neither the modal sheet nor the popover");
+  return regime;
+};
 
 const openMenu = async (page: Page) => {
   const opened = await page.evaluate<boolean>(
@@ -227,41 +290,71 @@ const SURFACES: Surface[] = [
   {
     name: "builds catalogue, filtered",
     path: (l) => `${routes(l).builds()}?class=${firstBuild(l).classSlug}`,
-    ready: () => `document.querySelector('input[type="search"]') !== null`,
+    ready: () => FILTERS_READY,
   },
   {
     name: "builds catalogue, no results",
-    path: (l) => `${routes(l).builds()}?q=zzqqxx`,
-    ready: (l) =>
-      `document.body.textContent.includes(${JSON.stringify(dictionaryFor(l).builds.filters.emptyTitle)})`,
+    path: (l) => `${routes(l).builds()}${emptyQuery(l)}`,
+    ready: () => `${FILTERS_READY} && document.querySelector('[data-empty]') !== null`,
   },
   {
     /*
-     * Below `sm` this now opens a modal sheet rather than an inline panel, and
-     * the surface is still worth measuring for the same reason: an open sheet
-     * puts `overflow: hidden` on the body, and a clipped document could have
-     * made `scrollWidth <= clientWidth` true for free. It does not — measured
-     * at 320px with the dialog open and a deliberately over-wide element
-     * planted, `scrollWidth` reported 620 against a `clientWidth` of 320, so
-     * the rule still has teeth. From `sm` up the trigger is `display: none`,
-     * the click is a no-op, and the inline desktop panel supplies the boxes.
-     *
-     * The raise matters: the click used to be allowed to find nothing and carry
-     * on to a `waitFor` that timed out and reported "the checkboxes render:
-     * FAIL" without saying why.
+     * Below `sm` the trigger opens a modal sheet, and the surface is still
+     * worth measuring for the same reason it always was: an open sheet puts
+     * `overflow: hidden` on the body, and a clipped document could have made
+     * `scrollWidth <= clientWidth` true for free. It does not — measured at
+     * 320px with the dialog open and a deliberately over-wide element planted,
+     * `scrollWidth` reported 620 against a `clientWidth` of 320, so the rule
+     * still has teeth. From `sm` up the same trigger opens the popover, which
+     * is the next surface; a sheet measured there would be a popover under
+     * the wrong name, so this one stops at the breakpoint.
      */
     name: "builds catalogue, filter sheet open",
     path: (l) => routes(l).builds(),
-    ready: () => `document.querySelector('button[aria-controls]') !== null`,
+    ready: () => FILTERS_READY,
+    only: (width) => width < 640,
     after: async (page) => {
-      const clicked = await page.evaluate<boolean>(
-        `(() => { const b = [...document.querySelectorAll('button[aria-controls]')].find(x => x.getAttribute('aria-expanded') === 'false'); if (!b) return false; b.click(); return true; })()`,
-      );
-      if (!clicked) throw new Error("no filter trigger to activate");
-      await page.waitFor(`document.querySelector('input[type="checkbox"]') !== null`);
+      const regime = await openFilters(page);
+      if (regime !== "sheet") throw new Error(`below 640px the trigger opened the ${regime}, not the sheet`);
     },
   },
+  {
+    /*
+     * From `sm` up the advanced groups open in a non-modal popover anchored to
+     * the control row. It is `position: absolute` or thereabouts, and an
+     * absolutely positioned box past the right edge is precisely what
+     * `scrollWidth` reports — so this is where a popover that opens off-screen
+     * at 640px, the width with the least room, goes red.
+     */
+    name: "builds catalogue, filter popover open",
+    path: (l) => routes(l).builds(),
+    ready: () => FILTERS_READY,
+    only: (width) => width >= 640,
+    after: async (page) => {
+      const regime = await openFilters(page);
+      if (regime !== "popover") throw new Error(`from 640px the trigger opened the ${regime}, not the popover`);
+    },
+  },
+  {
+    /*
+     * With a stage preference stored, every card carries one more line — the
+     * "at your stage" picks — and the picker row shows a pressed chip, a
+     * different legend and a clear control. None of that exists without the
+     * preference, so none of it is measured by the surfaces above.
+     */
+    name: "builds catalogue, preference set",
+    path: (l) => routes(l).builds(),
+    storage: { [TIER_KEY]: "budget" },
+    ready: () => `${FILTERS_READY} && document.querySelector('a[data-card] [data-stage-line]') !== null`,
+  },
   { name: "class page", path: (l) => routes(l).class(firstClass(l).slug as Slug) },
+  {
+    name: "class page, preference set",
+    path: (l) => routes(l).class(firstClass(l).slug as Slug),
+    storage: { [TIER_KEY]: "budget" },
+    ready: () =>
+      `document.querySelector('#builds [data-filters][data-filters-ready]') !== null && document.querySelector('#builds a[data-card] [data-stage-line]') !== null`,
+  },
   {
     name: "build page",
     path: (l) => routes(l).build(firstBuild(l).classSlug as Slug, firstBuild(l).slug as Slug),
@@ -375,23 +468,41 @@ async function main(): Promise<void> {
       for (const surface of SURFACES) {
         const url = site.origin + surface.path(locale as Locale);
         for (const width of WIDTHS) {
+          if (surface.only && !surface.only(width)) continue;
           await page.setViewport(width);
-          await page.goto(url);
-          if (surface.ready) {
-            const ready = await page.waitFor(surface.ready(locale as Locale));
-            if (!ready) {
-              check(`${surface.name} @${width}`, false, "never became interactive");
-              continue;
-            }
+          /*
+           * A preference is read by the page as it boots, so it has to be in
+           * storage *before* the navigation: written into the document that
+           * is open now, which is the same origin, and cleared in the
+           * `finally` so the next surface starts the way a reader without one
+           * does. The first load lands on a plain document for the write.
+           */
+          if (surface.storage) {
+            await page.goto(url);
+            await page.evaluate(
+              `(() => { localStorage.clear(); for (const [k, v] of Object.entries(${JSON.stringify(surface.storage)})) localStorage.setItem(k, v); return 1; })()`,
+            );
           }
-          if (surface.after) await surface.after(page, locale as Locale);
+          try {
+            await page.goto(url);
+            if (surface.ready) {
+              const ready = await page.waitFor(surface.ready(locale as Locale));
+              if (!ready) {
+                check(`${surface.name} @${width}`, false, "never became interactive");
+                continue;
+              }
+            }
+            if (surface.after) await surface.after(page, locale as Locale);
 
-          const m = await page.evaluate<Measurement>(MEASURE);
-          check(
-            `${surface.name} @${width}`,
-            m.scrollWidth <= m.clientWidth,
-            `scrollWidth ${m.scrollWidth} > clientWidth ${m.clientWidth}; ${m.offenders.join(" | ")}`,
-          );
+            const m = await page.evaluate<Measurement>(MEASURE);
+            check(
+              `${surface.name} @${width}`,
+              m.scrollWidth <= m.clientWidth,
+              `scrollWidth ${m.scrollWidth} > clientWidth ${m.clientWidth}; ${m.offenders.join(" | ")}`,
+            );
+          } finally {
+            if (surface.storage) await page.evaluate(`(() => { try { localStorage.clear(); } catch {} return 1; })()`);
+          }
         }
       }
     }
@@ -462,30 +573,61 @@ async function main(): Promise<void> {
     // 3. Filter rows are targets you can hit
     // -------------------------------------------------------------------------
     console.log("\nfilter targets");
+    /*
+     * Two sizes, because the redesign has two kinds of control (R-A11Y-4). The
+     * class chips and the stage picker are the page's *primary* controls and
+     * are held to 44px on both axes; the option rows behind "More filters" are
+     * secondary and are held to the 24px minimum, measured inside whichever
+     * dialog the width opens — the sheet below 640, the popover from it — with
+     * every group disclosed so each row has a box.
+     */
+    const PRIMARY_TARGET = 44;
     for (const locale of LOCALES) {
       for (const width of [320, 390, 1280] as const) {
         await page.setViewport(width);
         await page.goto(site.origin + routes(locale as Locale).builds());
-        const hydrated = await page.waitFor(`document.querySelector('input[type="search"]') !== null`);
+        const hydrated = await page.waitFor(FILTERS_READY);
         if (!hydrated) {
           check(`${locale} @${width}: the filters hydrate`, false);
           continue;
         }
-        if (width < 640) {
-          await page.evaluate(
-            `(() => { const b = [...document.querySelectorAll('button[aria-controls]')].find(x => x.getAttribute('aria-expanded') === 'false'); b && b.click(); })()`,
-          );
-        }
-        const ok = await page.waitFor(`document.querySelectorAll('input[type="checkbox"]').length > 0`);
-        if (!ok) {
-          check(`${locale} @${width}: the checkboxes render`, false);
+
+        // The chips, measured before any dialog is in front of them.
+        const chips = await page.evaluate<{ chips: number; tiers: number; small: string[]; smallest: string }>(`(() => {
+          const chips = [...document.querySelectorAll('[data-class-chips] button[data-class]')];
+          const tiers = [...document.querySelectorAll('[data-stage-picker] button[data-tier]')];
+          const small = [];
+          let minW = Infinity, minH = Infinity;
+          for (const b of [...chips, ...tiers]) {
+            const r = b.getBoundingClientRect();
+            minW = Math.min(minW, r.width);
+            minH = Math.min(minH, r.height);
+            if (r.width < ${PRIMARY_TARGET} - 0.5 || r.height < ${PRIMARY_TARGET} - 0.5) {
+              small.push((b.dataset.class || b.dataset.tier || '?') + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
+            }
+          }
+          return { chips: chips.length, tiers: tiers.length, small: small.slice(0, 5), smallest: Math.round(minW) + 'x' + Math.round(minH) };
+        })()`);
+        check(
+          `${locale} @${width}: every class chip and stage control is at least ${PRIMARY_TARGET}×${PRIMARY_TARGET} (${chips.chips} chips, ${chips.tiers} tiers, smallest ${chips.smallest})`,
+          chips.chips > 0 && chips.tiers > 0 && chips.small.length === 0,
+          chips.small.join(", "),
+        );
+
+        let regime: "sheet" | "popover";
+        try {
+          regime = await openFilters(page);
+        } catch (err) {
+          check(`${locale} @${width}: the checkboxes render`, false, err instanceof Error ? err.message : String(err));
           continue;
         }
+        check(`${locale} @${width}: the trigger opened the ${width < 640 ? "sheet" : "popover"}`, regime === (width < 640 ? "sheet" : "popover"), regime);
 
         /*
          * The effective target is the box that toggles the control — the label —
          * not the square the browser paints. Both are reported so a failure says
-         * which one moved.
+         * which one moved. Every group is disclosed first: a row inside a shut
+         * `<details>` has no box, and a 0×0 target is not a target.
          */
         const targets = await page.evaluate<{
           total: number;
@@ -494,7 +636,9 @@ async function main(): Promise<void> {
           smallest: string;
           overflowing: number;
         }>(`(() => {
-          const boxes = [...document.querySelectorAll('input[type="checkbox"]')];
+          const dialog = document.querySelector('[role="dialog"]');
+          for (const d of dialog.querySelectorAll('details[data-group]')) d.open = true;
+          const boxes = [...dialog.querySelectorAll('input[type="checkbox"]')];
           const small = [];
           let minW = Infinity, minH = Infinity;
           for (const cb of boxes) {
@@ -503,11 +647,11 @@ async function main(): Promise<void> {
             minW = Math.min(minW, r.width);
             minH = Math.min(minH, r.height);
             if (r.width < ${MIN_TARGET} - 0.5 || r.height < ${MIN_TARGET} - 0.5) {
-              small.push((cb.id || '?') + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
+              small.push((cb.id || cb.dataset.value || '?') + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
             }
           }
           const first = boxes[0].getBoundingClientRect();
-          const groups = [...document.querySelectorAll('fieldset')];
+          const groups = [...dialog.querySelectorAll('details[data-group]')];
           const vw = document.documentElement.clientWidth;
           return {
             total: boxes.length,
@@ -534,42 +678,59 @@ async function main(): Promise<void> {
     {
       await page.setViewport(1280);
       await page.goto(site.origin + routes("en-us").builds());
-      await page.waitFor(`document.querySelectorAll('input[type="checkbox"]').length > 0`);
+      /*
+       * The rows live behind "More filters" now, so the popover is opened
+       * first and the row is the first *enabled* one inside it — a disabled
+       * zero row would not toggle, and that would be the rule working, not
+       * the label failing.
+       */
+      let opened = false;
+      if (await page.waitFor(FILTERS_READY)) {
+        try {
+          opened = (await openFilters(page)) === "popover";
+        } catch {
+          opened = false;
+        }
+      }
+      check("the popover opens at 1280 to offer the rows", opened);
 
-      const spot = await page.evaluate<{ x: number; y: number; id: string; before: boolean } | null>(
+      const spot = await page.evaluate<{ x: number; y: number; group: string; value: string; before: boolean } | null>(
         `(() => {
-          const cb = document.querySelector('input[type="checkbox"]');
+          const cb = [...document.querySelectorAll('[role="dialog"][data-popover] input[type="checkbox"][data-group][data-value]')].find((b) => !b.disabled && b.getClientRects().length > 0);
+          if (!cb) return null;
           const label = cb.closest('label');
           if (!label) return null;
           const r = label.getBoundingClientRect();
           // The far end of the text, well away from the drawn box.
-          return { x: r.right - 6, y: r.top + r.height / 2, id: cb.id, before: cb.checked };
+          return { x: r.right - 6, y: r.top + r.height / 2, group: cb.dataset.group, value: cb.dataset.value, before: cb.checked };
         })()`,
       );
       check("the row is a label wrapping its control", spot !== null);
       if (spot) {
+        // The same box, found again by what it filters rather than by a generated id.
+        const THE_BOX = `document.querySelector('[role="dialog"][data-popover] input[type="checkbox"][data-group=${JSON.stringify(spot.group)}][data-value=${JSON.stringify(spot.value)}]')`;
         await page.click(spot.x, spot.y);
-        const after = await page.evaluate<{ checked: boolean; focused: boolean; url: string }>(
-          `(() => { const cb = document.getElementById(${JSON.stringify(spot.id)}); return { checked: cb.checked, focused: document.activeElement === cb, url: location.search }; })()`,
+        const after = await page.evaluate<{ checked: boolean; focused: boolean; url: string } | null>(
+          `(() => { const cb = ${THE_BOX}; if (!cb) return null; return { checked: cb.checked, focused: document.activeElement === cb, url: location.search }; })()`,
         );
-        check("tapping the text toggles the box once", after.checked === !spot.before, JSON.stringify(after));
-        check("focus lands on the control itself", after.focused, JSON.stringify(after));
-        check("and the filter reached the URL", after.url.length > 0, after.url);
+        check("the popover is still open after the tap — a live tick, not a draft", after !== null);
+        check("tapping the text toggles the box once", !!after && after.checked === !spot.before, JSON.stringify(after));
+        check("focus lands on the control itself", !!after && after.focused, JSON.stringify(after));
+        check("and the filter reached the URL", !!after && after.url.length > 0, after?.url ?? "");
 
         // The gap between the box and the text is inside the row, and live.
         const gap = await page.evaluate<{ x: number; y: number } | null>(
           `(() => {
-            const cb = document.getElementById(${JSON.stringify(spot.id)});
-            const label = cb.closest('label');
+            const cb = ${THE_BOX};
+            const label = cb ? cb.closest('label') : null;
+            if (!cb || !label) return null;
             const b = cb.getBoundingClientRect(), l = label.getBoundingClientRect();
             return { x: b.right + 2, y: l.top + l.height / 2 };
           })()`,
         );
         if (gap) {
           await page.click(gap.x, gap.y);
-          const back = await page.evaluate<boolean>(
-            `document.getElementById(${JSON.stringify(spot.id)}).checked`,
-          );
+          const back = await page.evaluate<boolean | null>(`(() => { const cb = ${THE_BOX}; return cb ? cb.checked : null; })()`);
           check("the gap between box and text toggles too", back === spot.before, String(back));
         }
       }
@@ -598,16 +759,27 @@ async function main(): Promise<void> {
         await page.setColorScheme(scheme);
         await page.setViewport(1280);
         await page.goto(site.origin + routes("en-us").builds());
-        await page.waitFor(`document.querySelectorAll('input[type="checkbox"]').length > 0`);
-        const styles = await page.evaluate<string>(
-          `(() => {
-            const cb = document.querySelector('input[type="checkbox"]');
-            const cs = getComputedStyle(cb);
-            return [cs.accentColor, cs.colorScheme, getComputedStyle(document.documentElement).colorScheme].join("|");
-          })()`,
-        );
+        // The checkbox is inside the popover now; a page with none reports "".
+        let inPopover = false;
+        if (await page.waitFor(FILTERS_READY)) {
+          try {
+            inPopover = (await openFilters(page)) === "popover";
+          } catch {
+            inPopover = false;
+          }
+        }
+        const styles = inPopover
+          ? await page.evaluate<string>(
+              `(() => {
+                const cb = document.querySelector('[role="dialog"][data-popover] input[type="checkbox"]');
+                const cs = getComputedStyle(cb);
+                return [cs.accentColor, cs.colorScheme, getComputedStyle(document.documentElement).colorScheme].join("|");
+              })()`,
+            )
+          : "";
         seen.push(styles);
       }
+      check("both schemes found a checkbox in the popover to read", seen.every((s) => s.length > 0), seen.join(" vs "));
       check(
         "the checkbox renders identically whichever theme the OS is in",
         seen[0] === seen[1],

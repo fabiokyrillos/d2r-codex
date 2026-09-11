@@ -19,6 +19,9 @@
  *
  * Needs no build and no network. Run with `npm run test:search`.
  */
+import { readFileSync, readdirSync, statSync } from "node:fs";
+import { join } from "node:path";
+
 import { NICKNAMES, buildSearchIndex } from "../lib/search";
 import { searchEntries, type SearchEntry } from "../lib/search/scoring";
 import { LOCALES, type Locale } from "../lib/i18n/config";
@@ -247,6 +250,80 @@ console.log("\nThe words deliberately left out of the nickname map");
     "control: adding an over-broad word would be caught",
     rejected.filter((w) => `${NICKNAMES["bone-spear-necromancer"]} osso`.split(/\s+/).includes(w))
       .length === 1,
+  );
+}
+
+// ---------------------------------------------------------------------------
+console.log("\nOne search");
+// ---------------------------------------------------------------------------
+/*
+ * R-FILT-8. The build listings used to carry a second search — an inline box
+ * with its own matcher over name, summary, class and the same nicknames —
+ * beside the global one (Ctrl/Cmd+K, `/`, the magnifier). Two paths to the
+ * same question can give two answers, and the PRD's acceptance is a test
+ * that fails if they do for "hdin". Phase 3 resolves it by removing the
+ * inline box (plan §4.1) rather than by keeping two matchers in step, so the
+ * assertion has two halves: the one path that remains does find the
+ * Hammerdin for "hdin", through the same index and the same scorer
+ * `components/search/search-dialog.tsx` calls — `searchEntries` over
+ * `buildSearchIndex` — and nothing under `components/builds/` renders a
+ * search box or reaches for the scorer to build a second one.
+ */
+{
+  const index = indexes.get("en-us")!;
+  const hammerdin = getBuilds("en-us").find((b) => b.slug === "hammerdin");
+  check("the Hammerdin is a published build, so the alias has somewhere to land", !!hammerdin);
+  /*
+   * "Finds", not "ranks first". Measured on the index as it is: "hdin" is a
+   * substring of *FoHdin*, and a name-substring hit (250) outranks a nickname
+   * hit (120), so the FoHdin sits above the Hammerdin for this query. That is
+   * the scorer's rule, older than this phase and not this file's to change;
+   * what R-FILT-8 asks is that the one remaining path reaches the build at
+   * all, and the rank is printed so the fact stays visible.
+   */
+  const results = buildsIn(searchEntries("hdin", index));
+  const rank = hammerdin ? results.findIndex((r) => r.h === `/en-us/builds/${hammerdin.classSlug}/${hammerdin.slug}`) : -1;
+  check(
+    `"hdin" finds the Hammerdin through the global index and scorer${rank >= 0 ? ` (build rank ${rank + 1} of ${results.length})` : ""}`,
+    rank >= 0,
+    results.length === 0 ? "no build in the results at all" : `builds found: ${results.map((r) => r.n).join(", ")}`,
+  );
+  // The alias, not a substring of a name, is what does that.
+  check("control: the alias is registered on the Hammerdin", (NICKNAMES["hammerdin"] ?? "").split(/\s+/).includes("hdin"));
+  check('control: a near miss ("hdinz") finds no build', buildsIn(searchEntries("hdinz", index)).length === 0);
+
+  /** Every source file under `components/builds/`, recursively. */
+  const listingFiles = (dir: string): string[] => {
+    const out: string[] = [];
+    for (const entry of readdirSync(dir)) {
+      const full = join(dir, entry);
+      if (statSync(full).isDirectory()) out.push(...listingFiles(full));
+      else if (/\.(ts|tsx)$/.test(entry)) out.push(full);
+    }
+    return out;
+  };
+  /** The two shapes a second search path takes: a box, or the scorer imported to feed one. */
+  const SECOND_SEARCH: [string, RegExp][] = [
+    ["a search box", /type=["']search["']/],
+    ["the scorer", /from\s+["']@?\/?(?:\.\.\/)*lib\/search(?:\/scoring)?["']/],
+  ];
+  const files = listingFiles(join(process.cwd(), "components", "builds"));
+  check("control: the listing components exist to scan", files.length > 0, `${files.length}`);
+  for (const [what, re] of SECOND_SEARCH) {
+    const offenders = files
+      .filter((f) => re.test(readFileSync(f, "utf8")))
+      .map((f) => f.slice(process.cwd().length + 1).split("\\").join("/"));
+    check(`no listing component carries ${what} — the global search is the one search`, offenders.length === 0, offenders.join(", "));
+  }
+  check(
+    "control: the scan would catch both shapes",
+    SECOND_SEARCH[0][1].test('<input id={q} type="search" value={draft} />') &&
+      SECOND_SEARCH[1][1].test('import { fold } from "@/lib/search/scoring";') &&
+      SECOND_SEARCH[1][1].test('import { NICKNAMES } from "@/lib/search";'),
+  );
+  check(
+    "control: …and leaves an ordinary import alone",
+    !SECOND_SEARCH[1][1].test('import { routes } from "@/lib/routes";') && !SECOND_SEARCH[0][1].test('type="checkbox"'),
   );
 }
 
