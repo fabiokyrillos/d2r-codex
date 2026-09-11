@@ -156,11 +156,12 @@ pela URL), `sheetFilterCount` = `advancedCount`.
 ```ts
 export interface Decision { from: string; to: string }   // query strings ("?a=b" ou "")
 export function undoAvailable(log: readonly Decision[], current: string): boolean; // log.at(-1)?.to === current
-export function zeroingGroup(rows, s): FilterGroup | null;
-// entre os grupos com seleção, exceto "class", na ordem FILTER_GROUPS, o primeiro cuja remoção
-// sozinha devolve > 0 resultados; se nenhum, o primeiro cuja remoção junto com os anteriores devolve > 0; senão null.
-export function nearBuilds(rows, s): { ignoring: FilterGroup; values: string[]; rows: BuildRow[] } | null;
-// até 3, na ordem "Recomendado", do estado sem o grupo `ignoring` (classe mantida quando selecionada)
+export function zeroingGroups(rows, s): FilterGroup[];
+// entre os grupos com seleção, exceto "class", na ordem FILTER_GROUPS: o primeiro cuja remoção
+// sozinha devolve > 0 resultados; se nenhum, os grupos removidos cumulativamente até devolver > 0; senão [].
+// (Corrigido na execução: devolve a lista dos grupos removidos, para que o rótulo diga exatamente o que ignora.)
+export function nearBuilds(rows, s): { ignoring: FilterGroup[]; rows: BuildRow[] } | null;
+// até 3, na ordem "Recomendado", do estado sem os grupos `ignoring` (classe mantida quando selecionada)
 ```
 
 ### 5.5 DOM (o que os gates de navegador procuram — estável nos dois idiomas)
@@ -253,7 +254,7 @@ Ficam: `regionLabel`, `resultsOne/Many`, `activeLabel`, `removeOne`, `clearAll`,
 | Frente | Cria | Modifica | Não toca |
 |---|---|---|---|
 | **1 · Modelo** | `lib/builds/sort.ts`, `lib/builds/empty-state.ts`, `scripts/facet-counts.test.ts`, `scripts/build-sort.test.ts` | `lib/builds/filter.ts`, `lib/builds/filter-sheet.ts`, `lib/builds/rows.ts`, `scripts/build-filters.test.ts` | componentes, páginas, dicionários |
-| **2 · Visual** | `components/builds/{class-glyph,class-chip,static-listing,build-card,card-ratings,stage-line,stage-picker,filter-popover,filter-groups,listing-context}.tsx` | `components/builds/{build-filters,filterable-build-list,mobile-filter-sheet}.tsx`, `app/[lang]/builds/page.tsx`, `app/[lang]/classes/[slug]/page.tsx`, `app/globals.css`, `lib/i18n/dictionaries/{en-us,pt-br}.ts` | `lib/builds/*`, `scripts/*` |
+| **2 · Visual** | `components/builds/{class-glyph,class-chip,static-listing,build-card,card-ratings,stage-line,stage-picker,filter-popover,filter-groups,listing-context}.tsx` | `components/builds/{build-filters,filterable-build-list,mobile-filter-sheet}.tsx`, `app/[lang]/builds/page.tsx`, `app/[lang]/classes/[slug]/page.tsx`, `app/globals.css`, `components/ui/index.tsx` (só `LinkCard attrs` e `PageHeader compact`), `lib/i18n/dictionaries/{en-us,pt-br}.ts` | `lib/builds/*`, `scripts/*` |
 | **3 · Mobile/A11y/Resiliência** | `scripts/filters-desktop.test.ts`, `scripts/filters-fold.test.ts` | `scripts/{mobile-filter-sheet,build-filters-html,viewport,hygiene,search-aliases}.test.ts`, `package.json` (scripts), `scripts/client-boundary.test.ts` se necessário | `lib/`, `components/`, `app/` |
 | **Coordenador** | `docs/product/plans/phase-3-{filters-plan,report}.md`, capturas | `docs/product/PRD-vNext.md` (§18 e notas), remoção de `lib/builds/query-draft.ts` + `scripts/query-draft.test.ts` | — |
 
