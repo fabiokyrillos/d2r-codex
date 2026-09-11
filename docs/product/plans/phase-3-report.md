@@ -1,6 +1,7 @@
 # Fase 3 — relatório factual
 
 **Data:** 2026-09-11 · **Baseline:** `a0258b9` · **Plano:** [`phase-3-filters-plan.md`](phase-3-filters-plan.md) · **Evidência visual:** [`phase-3-visual/`](phase-3-visual/README.md)
+**Estado:** **concluída** — aprovada pelo proprietário em 2026-09-11 com as decisões D1–D7 e fechada com a UAT de §13. Produção: `505310e` (deployment `6388024744`). **A Fase 4 não começou.**
 **Escopo:** R-FILT-1…16, consumo de R-FILT-17, cartão, página de classe, ordenação, busca única. **As Fases 4 e 5 não foram iniciadas.** A sticky bar do leveling e as correções da Fase 2 não foram tocadas.
 
 Este documento publica o que foi medido, incluindo onde a medição contraria o PRD — e aqui ela o
@@ -242,3 +243,64 @@ SHA — nunca antes.
   sem chips e com estágio; zero erro/aviso de console; a sheet a 390 modal, com rascunho e um
   `pushState` ao aplicar; sem overflow.
 - Este registro é o commit seguinte a `505310e` e não altera o site construído.
+
+## 13. Fechamento (2026-09-11): decisões do proprietário, UAT da produção, achados
+
+Passagem documental e de UAT, **sem alteração de código**: nenhum defeito BLOCKER ou HIGH
+introduzido pela Fase 3 foi encontrado, e o proprietário decidiu as três pendências de §9 mais
+quatro pontos de leitura. Baseline da passagem: `main` = `origin/main` = `1e85e9b`, árvore limpa,
+produção em `505310e`.
+
+### 13.1 As decisões, e onde ficaram registradas
+
+| | Decisão | Registro |
+|---|---|---|
+| **D1** | Primeiro cartão de `/builds` a 401 px no celular **aceito**; a meta absoluta em 320 e 390 px passa a **≤ 420 px**; os gates medidos ficam (`REGRESSION_CEILING` 422/422/479/353). **768 e 1280 continuam sem decisão** (medido 428/456 e 336 contra 360 e 220; a 1280 o aceite relativo de R-FILT-11 está cumprido com +211) | PRD §12.2, linha D1 |
+| **D2** | Na página de classe, o cartão de evolução vem antes do primeiro cartão de build no celular **por decisão**; R-FILT-15 reformulado: ≤ 260 px a partir de 640, uma tela (844 px) abaixo, cartão de evolução nunca contado como build, teto 468 preservado | PRD R-FILT-15 |
+| **D3** | Descrição visível de `/builds` **retirada, aceito**. Confirmado em produção nos dois idiomas: `h1` "Build guides"/"Guias de build", contador "53 builds" e as duas linhas de controle; `<title>` "Builds · D2 Codex", `meta description` e `og:description` com o texto original, `og:title`, `canonical` absoluto | PRD R-FILT-11 |
+| **D4** | Nomes curtos dos tiers no controle **aceitos**; o completo continua no `sr-only` de cada chip e na legenda "Meu estágio: {tier}". Mostrar a forma longa "onde houver espaço" fica como acompanhamento de código | PRD R-FILT-2 |
+| **D5** | "Para o meu estágio" **hipótese validada provisoriamente**; algoritmo intocado | PRD R-FILT-5 |
+| **D6** | "hdin" em segundo lugar é **dívida da Fase 6c** (P2.6): apelido exato deve pontuar acima de substring casual | PRD R-FILT-8, §13 P2.6, §14 6c |
+| **D7** | Sem JavaScript a listagem por classe é `/classes/<slug>#builds`; `/builds` serve a lista completa e os chips servidos são links `?class=<slug>` que só estreitam com JavaScript. R-FILT-14 reescrito para o comportamento real; **nenhuma** filtragem dinâmica ou infraestrutura sem JavaScript foi criada. Os `href` dos chips servidos **não foram alterados** nesta passagem (continuam `?class=<slug>`) — se o proprietário quiser que apontem para a página de classe sem JavaScript, é uma alteração de código e de gate para a próxima passagem | PRD R-FILT-14 |
+
+As metas substituídas (300 px absolutos no celular; 260 px em todas as larguras na classe; "filtrar
+por classe via link" sem JavaScript) ficam registradas no PRD, ao lado das medições, como
+substituídas por decisão — não apagadas.
+
+### 13.2 UAT visual read-only da produção
+
+Método: Chrome headless (`--headless=new`) contra `https://d2r-codex.vercel.app`, **64
+combinações** — en-US e pt-BR × 320/390/768/1280 × oito estados: listagem, `?sort=name`, filtros
+avançados abertos (popover ≥ 640, sheet abaixo, com `?class=sorceress,druid`), preferência gravada
+com `?sort=stage`, estado vazio (`?class=necromancer&damage=cold`), página de classe com preferência
+e, a 200 % de texto (definição de tamanho de texto do Chrome, `Page.setFontSizes`), a listagem
+filtrada e a página de classe. Cada combinação: captura de tela mais medição — overflow do
+documento, popover e sheet dentro da viewport e botão "Mostrar N" visível, chips alcançáveis por
+rolagem, chip pressionada fora da faixa do fade (12 px), alvos ≥ 44 px, texto cortado dentro de
+controle ou cartão, cartões sobrepostos, anel de foco (`:focus-visible`, `outline` sólido de 2 px
+ember) e console.
+
+Resultado: **64/64 hidrataram**; **0** sobreposições, **0** chips inalcançáveis, **0** chips
+pressionadas sob o fade, **0** alvos < 44 px, **0** popovers ou sheets fora da tela, **0** focos
+invisíveis, **0** mensagens de console. Os únicos sinais programáticos: o rótulo "Ordenar"/"Sort",
+que é `sr-only` abaixo de 640 px por desenho (o heurístico de corte lê `overflow: hidden` de 1 px),
+e o overflow do documento a **200 % de texto** em 320/390/1280, tratado em 13.3. Leitura visual
+das capturas em pt-BR a 320/390: quebras de linha, nunca palavras cortadas.
+
+### 13.3 Achados — nenhum BLOCKER ou HIGH; MEDIUM/LOW registrados para outras passagens
+
+| Sev. | Achado | Medição | Destino |
+|---|---|---|---|
+| MEDIUM | A **200 % de texto** a 320/390 os cartões medem 408 px (en) / 433–434 px (pt) e a linha de ferramentas 331–339 px, além da viewport; a 1280 só o header transborda | **Pré-existente e reduzido**: em `a0258b9`, no mesmo Chrome, a mesma página sem o header já media 426 (en) / 467 (pt) a 320 e os cartões chegavam a 353/436; o `scrollWidth` do documento é **552 nos dois SHAs**, imposto pela linha do header (Fase 2 §10.10). Grid de uma coluna com faixa `auto` cresce até o `min-content` do cartão a 200 % | passagem que recompuser o layout estreito a texto ampliado (o header), fora do escopo desta fase |
+| LOW | Linha de estágio "**Spirit · Spirit** · Skin of the Vipermagi" quando a build veste Spirit na arma e no escudo (Fire Ball Meteor, Frozen Orb, Hydra em `early-hell`) | fiel aos dados (`picks[0]` dos três primeiros slots); lê-se como repetição | acompanhamento de conteúdo/UI: prefixar o slot ou agregar ("Spirit ×2") |
+| LOW | A 1280 em pt-BR com estágio gravado, o contador "53 builds" quebra para uma segunda linha da linha 2 | sem corte nem sobreposição | polimento na próxima passagem sobre a listagem |
+| LOW | A 320 o rodapé da sheet quebra "Limpar filtros" e "Mostrar N builds" em duas linhas; a linha de ferramentas põe o contador numa segunda linha | tudo visível e dentro da tela; comportamento herdado do rodapé anterior | polimento |
+| LOW | `test:filters-fold` imprime "PRD target 300" a 320/390, meta substituída por D1 (≤ 420); o comentário do gate diz "three of the four targets are not reached" quando nenhuma das quatro é | rótulo/comentário, sem efeito no veredito | próxima passagem de código (rótulo e comentário) |
+| — | **Errata deste relatório e do PRD:** a nota de §12.2 dizia "só 1280 e 768 (en) abaixo da meta"; nenhuma das quatro metas absolutas foi atingida (428/456 > 360; 336 > 220) | corrigida no PRD nesta passagem | — |
+
+Nenhum destes é regressão introduzida pela Fase 3 com impacto HIGH; nenhum código foi alterado.
+
+### 13.4 Estado
+
+`main` = `origin/main` no commit deste fechamento (docs apenas; a implementação em produção
+continua `505310e`). Fase 3 **concluída**. **Fase 4 não iniciada.**

@@ -365,6 +365,12 @@ Decisão: a preferência de tier **não filtra** (todas as 53 builds têm os sei
   > A linha do cartão usa `resolveRef(...).name`, com `label` como recurso, e o segmento é o
   > **terceiro escritor** nominal de `d2rc.tier` (`components/builds/stage-picker.tsx`), sob a
   > mesma regra de resolução única de `lib/prefs.ts`.
+  > **Decisão do proprietário D4 (fechamento, 2026-09-11).** Os nomes curtos no controle visual são
+  > aceitos. O nome completo **deve** continuar disponível para tecnologia assistiva — hoje está: no
+  > `sr-only` de cada chip (o nome acessível é o completo) e, visivelmente, na legenda "Meu estágio:
+  > {tier}" assim que há escolha — e onde houver espaço suficiente. Mostrar a forma longa onde ela
+  > couber (por medição, não por breakpoint) fica registrado como acompanhamento para a próxima
+  > passagem de código sobre a listagem; nesta passagem de fechamento nenhum código mudou.
 - **R-FILT-3 · Filtros avançados sob demanda.** Tipo de dano, dificuldade, orçamento e "boa para" ficam atrás de "Mais filtros (N)" (popover no desktop, a sheet atual no celular), com grupos colapsáveis e o primeiro aberto. *Aceite:* zero checkboxes visíveis por padrão fora da sheet/popover; badge com contagem de ativos (já existe).
 - **R-FILT-4 · Contagens condicionais e estado vazio (um requisito, porque só fazem sentido juntos).** As contagens de cada opção refletem os outros filtros ativos (AND entre grupos, OR dentro do grupo, a própria opção excluída do cálculo do seu grupo), somando-se à poda de facetas não discriminantes que já existe. Opções com zero resultado ficam desabilitadas e mostram `0` visível (a informação "esta classe não tem build de frio" continua legível). O estado vazio, alcançável só por URL, mantém o texto atual e oferece "Remover último filtro", definido como desfazer a última decisão registrada no histórico (`pushState` de R-FILT-9), e lista até três builds próximas (mesma classe, ignorando o grupo que zerou). O callout "Por que tão poucas builds?" e o título "Classes aguardando" são removidos (D2, D3). *Aceite:* função pura `facetCounts(rows, state)` com testes; nenhuma combinação clicável leva a zero; snapshot do estado vazio; nenhuma seção sem conteúdo.
   > **Medido na execução (Fase 3, 2026-09-11; decisões do coordenador pendentes de validação do
@@ -380,6 +386,11 @@ Decisão: a preferência de tier **não filtra** (todas as 53 builds têm os sei
   > devolve resultados (o primeiro sozinho, na ordem dos grupos, senão cumulativos), e as até
   > três builds próximas **rotuladas com o que ignoram**. Nada remove um parâmetro arbitrário.
 - **R-FILT-5 · Ordenação.** Opções: **Recomendado** (padrão sempre; ordem editorial atual, explicada em um `?`: "builds de referência primeiro"), **Para o meu estágio** (disponível só com preferência; nunca padrão; critério editorial publicado com teste e explicado no `?`: para Início/Nightmare/Início do Hell prioriza dificuldade "iniciante" e orçamento baixo; para Econômico prioriza a nota de solo self-found; para Otimizado/BiS prioriza velocidade de limpeza), **Mais fáceis**, **Mais baratas**, **Nome A–Z**. Persistida na URL como `?sort=`. O critério de "Para o meu estágio" é **hipótese** (17.7) validada na sessão do proprietário ao fim da Fase 3. *Aceite:* testes da função de ordenação; `?` presente para Recomendado e Para o meu estágio; ordenação padrão inalterada com preferência definida.
+  > **Decisão do proprietário D5 (fechamento, 2026-09-11).** "Para o meu estágio" permanece
+  > **hipótese validada provisoriamente**, com o critério publicado em `lib/builds/sort.ts` e no
+  > relatório da Fase 3 §5 (estágios iniciais: dificuldade, depois orçamento; Econômico: solo
+  > self-found; Otimizado e BiS: velocidade de limpeza; empates na ordem "Recomendado"). O algoritmo
+  > não foi alterado no fechamento. Continua a ser validado em sessão de jogo do proprietário.
 - **R-FILT-6 · Chips aplicados inline.** Os filtros ativos aparecem como chips com ✕ na própria linha de controles, mais "Limpar tudo" quando ≥ 2 ativos. *Aceite:* linha única; remoção individual mantém o histórico como hoje.
 - **R-FILT-7 · (incorporado em R-FILT-4).** Mantido o identificador para rastreabilidade; sem requisito separado. *Aceite:* o de R-FILT-4.
 - **R-FILT-8 · Uma busca.** O campo "Nome, classe ou apelido" sai do bloco; a lupa/Ctrl K é a busca. Se for mantido um campo inline, ele deve consultar o mesmo índice e os mesmos apelidos da busca global. *Aceite:* um único índice de busca; teste que falha se houver dois caminhos de busca com resultados diferentes para "hdin".
@@ -389,9 +400,19 @@ Decisão: a preferência de tier **não filtra** (todas as 53 builds têm os sei
   > nenhum componente de listagem importa o pontuador da busca, e que o índice global encontra
   > `hammerdin` para "hdin" — no **segundo** lugar: a substring do nome "FoHdin" pontua acima do
   > apelido. É fato do pontuador (6c), registrado para o proprietário, não desta fase.
+  > **Decisão do proprietário D6 (fechamento, 2026-09-11).** "hdin" em segundo lugar é **dívida da
+  > Fase 6c** (P2.6), não defeito da Fase 3: o pontuador não muda agora. Dívida registrada em §13 P2.6
+  > e na Fase 6c (§14): um apelido exato deve pontuar acima de uma substring casual de outro nome.
 - **R-FILT-9 · URL e histórico.** Semântica atual mantida (toggle = `pushState`, digitação = `replaceState` com debounce; parâmetros em inglês nos dois idiomas; parâmetros desconhecidos ignorados). *Aceite:* testes existentes de `filter.ts` continuam verdes; `sort` entra no `parseFilterState`.
 - **R-FILT-10 · Persistência.** Nenhum filtro é persistido além da URL. A única persistência é a preferência de tier. *Aceite:* nenhuma chave nova em `localStorage` além das listadas em `R-PREF-3`.
 - **R-FILT-11 · Desktop.** Duas linhas de controle (classe; estágio + mais filtros + ordenar + contador); grade começa ≤ 220 px abaixo do título. *Aceite:* medição no teste de viewport em 1280 px.
+  > **Medido na execução (Fase 3, 2026-09-11):** +211 px a 1280 nos dois idiomas — cumprido. Para
+  > cumprir este aceite e o de R-FILT-1 a **descrição visível saiu do topo de `/builds`** (com ela, a
+  > grade ficava além dos 220 a 1280 e os chips além dos 120 a 320). **Decisão do proprietário D3
+  > (fechamento, 2026-09-11): retirada aceita.** Confirmado em produção: título "Build guides" /
+  > "Guias de build", contador "53 builds" e as duas linhas de controle identificam a função da
+  > página; `<title>` "Builds · D2 Codex", `meta description`/`og:description` (o texto original,
+  > inalterado), `og:title` e `canonical` absolutos permanecem corretos nos dois idiomas.
 - **R-FILT-12 · Bottom sheet mobile.** Preservada como está (rascunho, "Mostrar N builds" ao vivo, foco preso, scroll travado, Esc/fundo cancelam), passando a conter só os filtros avançados. *Aceite:* testes existentes da sheet continuam verdes; contagens condicionais também dentro da sheet.
 - **R-FILT-13 · Acessibilidade.** Chips são botões com `aria-pressed`; popover é `role=dialog` não modal com foco gerenciado e Esc; ordenação é `<select>` nativo; contador é `aria-live=polite` (já existe). *Aceite:* teste de a11y construído.
 - **R-FILT-14 · Sem JavaScript (proporcional).** Os chips de classe são links para `?class=`; a listagem completa renderiza no servidor (já é assim); os filtros avançados não têm versão sem JS (a lista completa e a busca por classe bastam). *Aceite:* teste de HTML sem scripts consegue filtrar por classe via link; nenhum formulário paralelo.
@@ -401,6 +422,17 @@ Decisão: a preferência de tier **não filtra** (todas as 53 builds têm os sei
   > site estático não lê a query, e o gate afirma exatamente isso — a página que se abre carrega
   > todas as builds e os oito links. A listagem estática por classe continua sendo
   > `/classes/<slug>#builds`. Limitação registrada, não silenciada.
+  > **Decisão do proprietário D7 (fechamento, 2026-09-11) — o requisito passa a dizer o comportamento
+  > real.** Sem JavaScript, a listagem por classe é a **página de classe** (`/classes/<slug>#builds`,
+  > estática, alcançada pela navegação do site e pelo índice `/classes`); a listagem `/builds` serve
+  > **sempre a lista completa**, e os oito chips servidos são links `?class=<slug>` que só estreitam
+  > quando o JavaScript os transforma em botões. **Não** se cria filtragem dinâmica nem
+  > infraestrutura sem JavaScript. *Aceite (substitui "consegue filtrar por classe via link"):* o HTML
+  > servido de `/builds` carrega a lista completa, os oito links `?class=<slug>` com slugs ingleses
+  > nos dois idiomas e **nenhum** formulário, caixa, `select` ou diálogo; cada página de classe
+  > carrega a lista completa da sua classe no HTML servido; seguir `?class=<slug>` sem scripts abre uma
+  > página inteira e íntegra. É o que `test:build-filters-html` já afirma. A meta anterior fica
+  > registrada acima como substituída.
 - **R-FILT-15 · Página de classe.** Mesmo padrão, sem chips de classe; "Onde você está" presente; filtros avançados só sob demanda. *Aceite:* primeiro cartão ≤ 260 px abaixo de "Comece por aqui".
   > **Medido na execução (Fase 3, 2026-09-11).** A 768 e 1280 px: 165/153 (en-US) e 193/165
   > (pt-BR) — dentro dos 260. A 320 e 390 px: **394/371 (en-US) e 445/394 (pt-BR)**, e o número
@@ -409,6 +441,17 @@ Decisão: a preferência de tier **não filtra** (todas as 53 builds têm os sei
   > cartão de build e mede ~166 px sozinho, o que já dá ~238 px sem controle nenhum; a linha de
   > estágio de R-FILT-2 acrescenta 44 px. Mover esse cartão é decisão do proprietário; até lá o
   > gate segura 260 a partir de 768 e um teto de regressão de 468 (pior medição × 1,05) abaixo.
+  > **Decisão do proprietário D2 (fechamento, 2026-09-11) — aceite reformulado.** O cartão de
+  > evolução vem antes do primeiro cartão de build no celular **por decisão**: é conteúdo contextual
+  > deliberado, e o aceite passa a medir a descoberta e o acesso às builds sem exigir a sua remoção.
+  > *Aceite (substitui o anterior):* (a) a partir de 640 px, o primeiro cartão de build fica ≤ 260 px
+  > abaixo de "Comece por aqui" (medido 165/153 en-US, 193/165 pt-BR); (b) abaixo de 640 px, o
+  > cabeçalho "Comece por aqui", o controle de estágio, "Mais filtros", a ordenação, o cartão de
+  > evolução e o primeiro cartão de build cabem numa única tela de 844 px a partir do cabeçalho
+  > (medido: o primeiro cartão de build a 394/371 en-US e 445/394 pt-BR a 320/390), com o teto de
+  > regressão de 468 px preservado no gate; (c) o primeiro cartão de build é sempre o primeiro
+  > `a[data-card]` da seção e o cartão de evolução nunca é contado como build. A meta anterior de
+  > 260 px em todas as larguras fica registrada acima como substituída.
 - **R-FILT-16 · Cartão.** Duas notas por padrão (as duas mais altas, ou as escolhidas em "boa para"), chips de tag como texto discreto em uma linha, linha "No seu estágio" quando houver preferência. Padrão visual alinhado ao cartão de runeword (nome em Cinzel, metadados em texto, uma única borda). *Aceite:* altura do cartão em 390 px ≤ 80% da atual.
   > **Medido na execução (Fase 3, 2026-09-11).** Primeiro cartão a 390 px: **315 → 249 px** (en-US,
   > teto 252) e **386 → 272 px** (pt-BR, teto 309); mediana do catálogo 338 → 272 e 363 → 272.
@@ -611,7 +654,8 @@ Os 320 px por tier compacto são hipótese; se a medição da Fase 1 der outro n
 | Distância de rolagem entre tiers adjacentes | ≈ 2.191–3.421 px por tier em 390 px | ≤ 1 tela com os demais compactos | Viewport test |
 | Tempo para localizar o equipamento do próprio tier (sessão do proprietário) | Não medido | ≤ 10 s em telefone, sem instrução | Sessão J3/J4 |
 | Px até o primeiro cartão em `/builds` | 490 (320 px), 442 (390), 771 (768), ≈ 640 (1280) | ≤ 300 / ≤ 300 / ≤ 360 / ≤ 220 | Viewport test |
-| *↳ medido após a Fase 3 (2026-09-11, `7ba8a05`, topo do documento → topo do primeiro cartão)* | 490/443/772/644 (en) · 519/472/847/703 (pt) | **401/401/428/336 (en) · 401/401/456/336 (pt)** — só 1280 e 768 (en) abaixo da meta; a 320/390 o cabeçalho (57) + `py-10` + eyebrow + título terminam em 216 px e R-FILT-2 acrescenta 44 px de linha de estágio, logo 300 exigiria remover o eyebrow ou a linha: decisão do proprietário | `test:filters-fold` (teto de regressão = medido × 1,05; a meta do PRD é impressa ao lado) |
+| *↳ medido após a Fase 3 (2026-09-11, `7ba8a05`, topo do documento → topo do primeiro cartão)* | 490/443/772/644 (en) · 519/472/847/703 (pt) | **401/401/428/336 (en) · 401/401/456/336 (pt)** — **nenhuma das quatro metas absolutas é atingida** *(errata do fechamento: a redação anterior desta célula dizia "só 1280 e 768 (en) abaixo da meta", o que é falso — 428 > 360 e 336 > 220)*; a 320/390 o cabeçalho (57) + `py-10` + eyebrow + título terminam em 216 px e R-FILT-2 acrescenta 44 px de linha de estágio, logo 300 exigiria remover o eyebrow ou a linha: decisão do proprietário | `test:filters-fold` (teto de regressão = medido × 1,05; a meta do PRD é impressa ao lado) |
+| *↳ **decisão do proprietário D1 (fechamento, 2026-09-11)*** | — | **A meta absoluta em 320 e 390 px passa a ser ≤ 420 px** (medido 401; a meta anterior de 300 fica registrada acima como substituída). Os gates medidos são preservados: `REGRESSION_CEILING` = 422/422/479/353 (medido × 1,05). **Em 768 e 1280 as metas absolutas de 360 e 220 continuam sem decisão**: a 1280 o bloco de título sozinho termina a ~200 px antes de qualquer controle, e o aceite relativo de R-FILT-11 (grade ≤ 220 px abaixo do título) está cumprido com +211; a 768 mede 428/456. O rótulo "PRD target 300" que `test:filters-fold` imprime a 320/390 refere-se à meta substituída e é atualizado na próxima passagem de código | `test:filters-fold` |
 | Combinações de filtro vazias clicáveis | Todas (contagens globais) | 0 | Teste de `facetCounts` |
 | Limiar "Boa para" | Justificado sobre 29 builds | Justificado sobre 53, com gate | R-FILT-17 |
 | Tempo para identificar uma skill na árvore (320 px) | Não medível: árvore é lista | ≤ 5 s para achar Blizzard e seu caminho | Protótipo + sessão |
@@ -728,7 +772,7 @@ Reavaliada após a revisão independente. Regras: remover o resolvido; não prom
 **P2.3 Filtros em runewords e itens** (base, sockets, classe, slot; mesmo padrão de chips) — pequeno/médio.
 **P2.4 Calculadora de breakpoint** ("tenho X% → frame; próximo em Y%") em `/breakpoints` e no bloco da build — pequeno/médio.
 **P2.5 Modo de consulta compacto** (R-BUILD-15) — médio; impressão desacoplada.
-**P2.6 Busca: tolerância a erro e uma só busca** (R-FILT-8; distância de edição 1 para termos ≥ 5 letras) — pequeno.
+**P2.6 Busca: tolerância a erro e uma só busca** (R-FILT-8; distância de edição 1 para termos ≥ 5 letras) — pequeno. *Dívida registrada no fechamento da Fase 3 (D6, 2026-09-11):* a busca única já existe (o campo inline saiu); falta o pontuador preferir um apelido exato a uma substring casual de outro nome — hoje "hdin" traz FoHdin antes de Hammerdin (nome-substring 250 > apelido 120 em `lib/search/scoring.ts`).
 **P2.7 Higiene** (E6a, E7) — pequeno; vai na Fase 0A.
 **P2.8 Aprofundamento editorial** — fluxo contínuo (9.2).
 
@@ -756,6 +800,12 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 > **As Fases 4 e 5 não foram iniciadas.** A Fase 3 deixa ao proprietário a validação da hipótese
 > "Para o meu estágio" e três decisões de conteúdo/layout medidas (O2 a 320/390, R-FILT-15 abaixo
 > de 640 px, a descrição da listagem fora do cabeçalho visível).
+>
+> **Fechamento da Fase 3 (2026-09-11, mais tarde).** **Fase 3 concluída**: aprovada pelo
+> proprietário com as decisões D1–D7 (registradas nos requisitos R-FILT-2, 5, 8, 11, 14 e 15, em
+> §12.2 e em §18) e fechada com UAT visual da produção nos dois idiomas em 320/390/768/1280 sem
+> defeito BLOCKER ou HIGH (relatório §13). Ficam por decidir as metas absolutas de O2 a 768 e 1280,
+> que D1 não cobriu. **A Fase 4 não começou.**
 
 ### Fase 0A — Correções comprovadas
 
@@ -849,7 +899,7 @@ Cada unidade entrega melhoria perceptível, cabe em ~2 semanas e termina com pel
 
 - **6a Leveling:** R-LEVEL-1…2 (P1.6). Aceite: etapa em foco ao reabrir; indicador de rolagem. Testes: HTML por estado; viewport.
 - **6b Referência:** P2.3 filtros em runewords/itens; P2.4 calculadora de breakpoint. Aceite: chips de base/sockets/classe/slot; calculadora com testes.
-- **6c Skill e busca:** P2.2 dano 1–30 e anterior/próximo; P2.6 tolerância a erro e busca única. Aceite: ≥ 7 pontos de dano; "blizard" encontra Blizzard.
+- **6c Skill e busca:** P2.2 dano 1–30 e anterior/próximo; P2.6 tolerância a erro e busca única. Aceite: ≥ 7 pontos de dano; "blizard" encontra Blizzard; **"hdin" traz Hammerdin em primeiro** (dívida D6 da Fase 3: apelido exato acima de substring casual).
 - **6d Acabamento:** padrão de cartão (runeword como referência), blocos de referência da home, modo compacto (P2.5). Aceite: 12.1 coluna transversal medida; altura compacta ≤ 60%.
 - Cada entrega é visível por si; nenhuma depende das irmãs; dependências: Fases 1–3 (componentes e preferências).
 
@@ -1013,6 +1063,8 @@ Capturas e textos coletados na auditoria (pasta temporária, não versionados): 
 | 2026-09-10 | **Passe corretivo da Fase 2.** Dois achados registados como "fora de escopo" reavaliados por medição. A âncora `#skills` **era** defeito desta fase, e a causa registada estava errada: o salto do fragmento é uma animação cujo destino fica fixado a 311 ms e a hidratação faz `#builds` crescer a 332 ms, de modo que o leitor aterrava 86–428 px abaixo do cabeçalho — a árvore de skills está *dentro* de `#skills` e não podia ser a causa. Corrigido com realinhamento após estabilização na própria integração sumário/âncora, sem tocar na árvore. O transbordo do header a texto ampliado é **pré-existente e idêntico ao pixel** a 320 e 390 px nos dois SHAs, mas R-NAV-4 piorava-o em duas das quinze combinações largura×tamanho de texto por idioma; corrigido trocando o degrau do rótulo de `900px` para `56.25rem` | [`plans/phase-2-report.md`](plans/phase-2-report.md) §10 |
 | 2026-09-11 | **Fase 3 executada.** Filtros redesenhados: oito chips de classe com glifo e contagem condicional (links no HTML servido, botões com JS), "Onde você está" como preferência que nunca filtra, filtros avançados atrás de "Mais filtros (N)" — popover não modal a partir de 640 px, a sheet existente abaixo, só com os quatro grupos avançados —, contagens condicionais com zero visível e desabilitado, ordenação em `?sort=` (cinco critérios; "Recomendado" inalterado com preferência), chips aplicados inline, uma só busca (o campo inline saiu), estado vazio só por URL com "Remover {grupo}" e três builds próximas rotuladas, cartão compacto (315 → 249 px a 390). Primeiro cartão 490/443/772/644 → 401/401/428/336 px. Duas metas não alcançadas por aritmética do conteúdo, registradas nos requisitos: O2 a 320/390 e R-FILT-15 abaixo de 640. **Publicada e validada em produção:** commit `505310e`, deployment `6388024744`, smoke público 58/58 nos dois idiomas | [`plans/phase-3-filters-plan.md`](plans/phase-3-filters-plan.md), [`plans/phase-3-report.md`](plans/phase-3-report.md) §12.1 |
 | 2026-09-11 | **Notas de execução nos requisitos R-FILT-2, 4, 8, 14, 15 e 16** (regra do toggle que nunca zera; "Remover último filtro" só de vazio para vazio e "Remover {grupo}" para a chegada por URL; `q` extinto; `?class=` estático não estreita; formas curtas dos tiers no segmento; todos os eixos escolhidos no cartão) — decisões do coordenador dentro do PRD, **pendentes da validação do proprietário** na sessão J1/J2/J10, junto com a hipótese "Para o meu estágio" | §7.2, §12.2 |
+| 2026-09-11 | **Fase 3 aprovada e concluída (fechamento).** Decisões do proprietário: **D1** meta absoluta do primeiro cartão em 320/390 px passa a ≤ 420 (medido 401; gates medidos preservados; 768/1280 continuam sem decisão); **D2** o cartão de evolução precede o primeiro cartão de build no celular por decisão — R-FILT-15 reformulado para medir descoberta e acesso numa tela; **D3** retirada da descrição visível de `/builds` aceita (metadata inalterada, confirmada em produção); **D4** nomes curtos dos tiers aceitos, nome completo para tecnologia assistiva mantido e "onde houver espaço" como acompanhamento; **D5** "Para o meu estágio" hipótese validada provisoriamente, algoritmo intocado; **D6** "hdin" em segundo lugar é dívida da Fase 6c (P2.6); **D7** sem JavaScript a listagem por classe é `/classes/<slug>#builds` e `/builds` serve a lista completa — R-FILT-14 reescrito para o comportamento real, sem infraestrutura nova. **A Fase 4 não começou** | §7.2 (R-FILT-2, 5, 8, 11, 14, 15), §12.2, §13 P2.6, §14 |
+| 2026-09-11 | **UAT visual read-only da produção (fechamento).** 64 combinações (2 idiomas × 320/390/768/1280 × listagem, ordenação, filtros abertos, sheet, preferência, estado vazio, página de classe, texto a 200 %): sem sobreposição, corte, chip inalcançável, fade sobre chip pressionada, sheet fora da tela ou foco invisível; console limpo. Achados MEDIUM/LOW registrados para outras passagens: a 200 % de texto a 320/390 os cartões medem 408–434 px (antes da Fase 3 mediam 353–436 e a página já rolava por causa do header — pré-existente, reduzido); "Spirit · Spirit" na linha de estágio quando a build veste duas Spirits; o contador quebra para segunda linha a 1280 em pt-BR com estágio gravado; o rodapé da sheet quebra em duas linhas a 320. **Errata:** a nota de §12.2 dizia que 768 (en) e 1280 cumpriam a meta absoluta — nenhuma das quatro cumpre | [`plans/phase-3-report.md`](plans/phase-3-report.md) §13 |
 | 2026-09-10 | **Uma emulação de texto a 150 % quase inverteu uma conclusão.** `documentElement.style.fontSize` escala `rem` mas não as consultas de média em `rem`, e mediu a linha do header 68 px mais larga do que o Chrome a desenha — o suficiente para reportar como "transbordo criado pela Fase 2" uma largura que cabe nos dois SHAs. `Page.setTextScale`, que é a definição de tamanho de texto do próprio browser, foi acrescentado ao harness | `scripts/headless.ts`; [`plans/phase-2-report.md`](plans/phase-2-report.md) §10.6 |
 
 ---
