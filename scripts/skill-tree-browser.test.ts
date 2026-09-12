@@ -503,10 +503,18 @@ async function main() {
         let total = 0;
         const obs = new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) total += e.value; });
         obs.observe({ type: 'layout-shift', buffered: true });
-        setTimeout(() => {
-          document.getElementById('a').style.height = '700px';
-          setTimeout(() => { obs.disconnect(); resolve(Math.round(total * 1000) / 1000); }, 700);
-        }, 500);
+        // Not before a second, and again if nothing arrives: Chrome reports
+        // no layout shift in a document's first ~500ms, and under load a
+        // 500ms timer scored 0 over a correct observer (build-cls.test.ts).
+        const go = (tries) => {
+          const a = document.getElementById('a');
+          a.style.height = (parseFloat(a.style.height) + 660) + 'px';
+          setTimeout(() => {
+            if (total > 0 || tries >= 3) { obs.disconnect(); resolve(Math.round(total * 1000) / 1000); }
+            else go(tries + 1);
+          }, 700);
+        };
+        setTimeout(() => go(1), 1000);
       }))()`);
       check(`a deliberately shifting page scores above ${CLS_LIMIT}`, shift >= CLS_LIMIT, `scored ${shift}`);
     }

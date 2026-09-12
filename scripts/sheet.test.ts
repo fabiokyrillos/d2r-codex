@@ -110,7 +110,10 @@ check("the close control takes focus when the sheet opens (R-A11Y-9)",
 check("Tab is routed through trapTarget", /trapTarget\(/.test(src));
 check("the trap listens in the capture phase", /addEventListener\("keydown", onKey, true\)/.test(src));
 check("the trap is removed when the sheet closes", /removeEventListener\("keydown", onKey, true\)/.test(src));
-check("Escape is handled while a selection exists", /event\.key !== "Escape"\) return;/.test(src));
+// The key test admits the "already handled" clause: an Escape the search dialog
+// or the mobile navigation consumed must not also drop the tree's selection
+// (review M2).
+check("Escape is handled while a selection exists", /event\.key !== "Escape"(?: \|\| event\.defaultPrevented)?\) return;/.test(src));
 check("the scrim closes", /data-scrim=""[\s\S]{0,120}onClick=\{\(\) => close\(/.test(src));
 check("closing returns focus to the node", /\[data-node="\$\{slug\}"\][\s\S]{0,200}node\.focus\(/.test(src));
 

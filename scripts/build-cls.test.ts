@@ -100,6 +100,16 @@ async function main() {
        * nothing, because the first paint of new content is not a shift. That
        * is how this control scored 0 on its first run, and it would have
        * certified every measurement below as meaningful when it was not.
+       *
+       * And not too early: Chrome reports no layout shift in a document's
+       * first ~500ms (measured 2026-09-11: a resize at 450ms scores 0, at
+       * 500ms 0.229 — an animation frame or two after the insert scores 0
+       * as well), and at the tail of a full `check:built`, with a dozen
+       * browser gates behind it, a 500ms timer scored 0 twice over a correct
+       * observer. So the first resize waits a full second, and if no entry
+       * arrives it resizes again — up to three 660px shifts, until one is
+       * seen. The 700ms after each resize stay: the entry is delivered
+       * asynchronously.
        */
       await page.goto("about:blank");
       const shifted = await page.evaluate<number>(`(() => new Promise((resolve) => {
@@ -108,10 +118,15 @@ async function main() {
         let total = 0;
         const obs = new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) total += e.value; });
         obs.observe({ type: "layout-shift", buffered: true });
-        setTimeout(() => {
-          document.getElementById("a").style.height = "700px";
-          setTimeout(() => { obs.disconnect(); resolve(Math.round(total * 1000) / 1000); }, 700);
-        }, 500);
+        const go = (tries) => {
+          const a = document.getElementById("a");
+          a.style.height = (parseFloat(a.style.height) + 660) + "px";
+          setTimeout(() => {
+            if (total > 0 || tries >= 3) { obs.disconnect(); resolve(Math.round(total * 1000) / 1000); }
+            else go(tries + 1);
+          }, 700);
+        };
+        setTimeout(() => go(1), 1000);
       }))()`);
       check("a deliberately shifting page scores above the limit", shifted > LIMIT, `scored ${shifted}`);
     }
