@@ -1,0 +1,10 @@
+320-pt-br-sorceress-class: /pt-br/classes/sorceress @320×1000 — hydrated: true; section 798 px; horizontal overflow 0 px; trees 3 (hidden 2); console errors/warnings 0
+320-en-us-necromancer-class: /en-us/classes/necromancer @320×1000 — hydrated: true; section 787 px; horizontal overflow 0 px; trees 3 (hidden 2); console errors/warnings 0
+390-pt-br-blizzard-build: /pt-br/builds/sorceress/blizzard-sorceress @390×1000 — hydrated: true; section 3216 px; horizontal overflow 0 px; trees 3 (hidden 2); console errors/warnings 0
+390-en-us-blizzard-build-sheet: /en-us/builds/sorceress/blizzard-sorceress @390×1000 — hydrated: true; section 3096 px; horizontal overflow 0 px; trees 3 (hidden 2); console errors/warnings 0; tapped Blizzard → sheet open: true
+390-pt-br-necromancer-level-18-locked: /pt-br/classes/necromancer @390×1000 d2rc.level=18 — hydrated: true; section 783 px; horizontal overflow 0 px; trees 3 (hidden 2); console errors/warnings 0; locked nodes: 10
+320-en-us-sorceress-text-200-glyph: /en-us/classes/sorceress @320×1000 text 200% — hydrated: true; section 1610 px; horizontal overflow 232 px; trees 3 (hidden 2); console errors/warnings 0; glyph mode: true; name bar: "Ice Blast · Level 6 · Available"
+768-en-us-sorceress-class-stacked: /en-us/classes/sorceress @768×900 — hydrated: true; section 1938.5 px; horizontal overflow 0 px; trees 3 (hidden 0); console errors/warnings 0
+1280-pt-br-blizzard-build-panel: /pt-br/builds/sorceress/blizzard-sorceress @1280×900 — hydrated: true; section 3021 px; horizontal overflow 0 px; trees 3 (hidden 0); console errors/warnings 0; clicked Glacial Spike → panel filled: true; related pieces: 2
+1280-en-us-warlock-class: /en-us/classes/warlock @1280×900 — hydrated: true; section 2136.5 px; horizontal overflow 0 px; trees 3 (hidden 0); console errors/warnings 0
+320-pt-br-sorceress-noscript-stacked: /pt-br/classes/sorceress @320×1000 scripts off — hydrated: false; section 1894 px; horizontal overflow 0 px; trees 3 (hidden 0); console errors/warnings 0
