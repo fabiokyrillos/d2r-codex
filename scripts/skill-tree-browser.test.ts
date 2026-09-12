@@ -92,8 +92,13 @@ const EDGE_WIDTHS = [320, 390, 640, 1280] as const;
 const SM = 640;
 const LG = 1024;
 const BUDGET = 900;
-/** The build box as measured on 2026-09-11 (worst 1044.0, pt-BR Summoner), rounded up — see the check for why. */
-const BUILD_BUDGET_PROVISIONAL = 1050;
+/**
+ * The build page's §8.1 box: the owner's contract (decision D3, 2026-09-12),
+ * fixed at 1050px after the physical UAT — measured 903–992px on the six
+ * build combinations, with the section description, the points on the tabs
+ * and the section total all kept. Not a ratchet any more: a requirement.
+ */
+const BUILD_BUDGET = 1050;
 const CLS_LIMIT = 0.1;
 
 const classUrl = (origin: string, locale: Locale, cls: string, hash = "") => `${origin}${routes(locale).class(cls as Slug)}${hash}`;
@@ -604,14 +609,14 @@ async function main() {
               /*
                * The build box carries what a class page does not: the section
                * header with `skillsDescription` and the total line (150–193px),
-               * tabs with points (65–100px) and the per-tree points line. Measured
-               * 918–1044px on the six build combinations against the plan's
-               * ≈ 880–895 estimate, with every class page inside 900. Plan §8.2's
-               * stop rule says the number goes to the owner, not that anything
-               * is tightened here — so this holds the build box at what was
-               * measured (a ratchet against growth) until that decision lands.
+               * tabs with points (60px) and the per-tree points line. Measured
+               * 903–992px on the six build combinations against the plan's
+               * ≈ 880–895 estimate, with every class page inside 900; plan
+               * §8.2's stop rule sent the number to the owner, who fixed the
+               * contract at 1050px with the description, the tab points and
+               * the total kept (decision D3, 2026-09-12, after the phone UAT).
                */
-              check(`${where}: the §8.1 build box is ≤ ${BUILD_BUDGET_PROVISIONAL}px (provisional — owner decision pending, plan §8.2)`, box <= BUILD_BUDGET_PROVISIONAL, `${box.toFixed(1)}px — ${blocks.join(", ")}`);
+              check(`${where}: the §8.1 build box is ≤ ${BUILD_BUDGET}px (owner's contract D3)`, box <= BUILD_BUDGET, `${box.toFixed(1)}px — ${blocks.join(", ")}`);
             }
           }
 

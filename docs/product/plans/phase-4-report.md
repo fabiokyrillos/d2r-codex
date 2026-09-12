@@ -1,10 +1,9 @@
-# Fase 4 — relatório factual (parada no portão de UAT físico)
+# Fase 4 — relatório factual
 
 **Data:** 2026-09-11 · **Baseline:** `436dc88` (= `origin/main`, produção) · **Plano:** [`phase-4-tree-structure-plan.md`](phase-4-tree-structure-plan.md) · **Evidência visual:** [`phase-4-visual/`](phase-4-visual/README.md)
-**Estado:** **implementada e validada localmente; não publicada.** Nada foi enviado (`push`), mesclado ou
-implantado. A fase **não está concluída**: o PRD exige um UAT em telefone real antes de qualquer
-publicação (§14 "Portão de publicação"), e é nesse portão que esta execução parou — com um servidor de
-produção local ligado na rede, as URLs e a lista de dez itens em §12.
+**Estado (§1–§12, escritos na parada de 2026-09-11):** implementada e validada localmente, parada no
+portão de UAT físico com um servidor de produção local na rede. **§13 (2026-09-12):** o UAT físico
+foi **aprovado**, D3 decidida, e a fase publicada e verificada em produção — o estado final está lá.
 **Escopo:** R-TREE-1…17 com as decisões D1 (R-TREE-9 entra) e D2 (R-TREE-10 dividido: classe e build
 agora, leveling adiado para P3.6). **Fora:** os 240 ícones (Fase 5), a árvore por etapa do leveling, os
 filtros da Fase 3 e a sticky bar do leveling, backend, contas, compartilhamento.
@@ -81,7 +80,7 @@ fase, num Chrome real pelo driver do próprio repositório, contra o build de pr
 | R-TREE-5 quatro estados por forma e texto | ✅ | `data-state` + molduras/pílula/cadeado (`scripts/contrast.test.ts`: os pares ≥ 4,5:1 / ≥ 3:1); estado no `aria-label` e na faixa; "opcional" pela pílula tracejada (decisão 13) |
 | R-TREE-6 contador de pontos (nó, tree, seção) | ✅ | C1 em build: `[data-points]` nos 30 nós = pontos-base ("—" sem pontos, ✦ só na maximizada), `[data-tree-points]` "N de M pontos nesta árvore", `[data-trees-total]` "N de M pontos duros obrigatórios [e mais K opcionais]" |
 | R-TREE-7 painel: descrição, nível, pré-requisitos, desbloqueia, sinergias, pontos, papel, página completa — tudo link | ✅ | C10: listas com `a[href]` no idioma da página para Blizzard e Raise Skeletal Mage; M13 (pré-requisito em `<span>`) vermelha; RichText na nota (`test:markup`) |
-| R-TREE-8 abas < 640, empilhadas ≥ 640, uma legenda, trees inativas `hidden`, ≤ 900 px | ✅ classe / ⚠ build | C3: troca sem navegação, foco na aba, 0 focáveis na tree inativa; C2: uma legenda, `tablist` só < 640; §6: classe 778–807 ≤ 900; **build 903–992 — decisão pendente (§4)** |
+| R-TREE-8 abas < 640, empilhadas ≥ 640, uma legenda, trees inativas `hidden`, ≤ 900 px (classe) / ≤ 1.050 px (build, D3) | ✅ | C3: troca sem navegação, foco na aba, 0 focáveis na tree inativa; C2: uma legenda, `tablist` só < 640; §6: classe 778–807 ≤ 900; **build 903–992 — decisão pendente (§4)** |
 | R-TREE-9 "Meu nível" | ✅ | C8 + `test:prefs` (126): 1–99, uma chave, "Limpar" remove, valor inválido gravado à mão ignorado e mantido, sincroniza por `storage` e `d2rc:level`; ausente sem JS (C1, C12) |
 | R-TREE-10 classe e build (D2) | ✅ | classe: `available` nos 30; build: alocações reais (C1 recompõe estado e pontos do registro); leveling **não** alegado |
 | R-TREE-11 hover no desktop | ✅ | C6: com `(hover: hover)` a prévia muda o painel sem mudar a seleção e sair restaura; sob toque emulado (`(hover: hover)` falso) os mesmos eventos não mudam nada |
@@ -93,13 +92,13 @@ fase, num Chrome real pelo driver do próprio repositório, contra o build de pr
 | R-TREE-17 desempenho | ✅ | 16 documentos ≤ 368.640 (§5), nenhum em alerta; JS +20.638 B publicado; nenhum elemento React no payload da ilha (`scripts/client-boundary.test.ts`) |
 | R-TREE-18 placeholders (parcial, por decisão) | ✅ | `[data-placeholder="type-element"]` no sigilo dos 30 nós, `skills.placeholderNote` na legenda, nenhum `<img>` nem asset externo (C20) |
 
-## 4. As decisões do proprietário, e uma que fica com ele
+## 4. As decisões do proprietário, e uma que ficou com ele (decidida em §13)
 
 - **D1 — R-TREE-9 entra na Fase 4.** Registrada no PRD (R-TREE-9, §14, §18). Implementada: os
   estados bloqueados de R-TREE-4/5 dependem de `d2rc.level`, que existe agora.
 - **D2 — R-TREE-10 dividido.** Registrada no PRD (R-TREE-10, P3.6, §14, §18). Implementada a metade
   "classe e build"; a árvore por etapa do leveling não é alegada em lugar nenhum.
-- **D3 (pendente) — a caixa de altura da página de build a 320 px.** O plano definiu a caixa da build
+- **D3 (pendente na parada; decidida em 2026-09-12 — §13) — a caixa de altura da página de build a 320 px.** O plano definiu a caixa da build
   como "do topo da seção ao fundo de `[data-trees]`" (§8.1) e estimou 880–895 px; o gate mediu
   **903–992 px** nas seis combinações (Blizzard, Summoner, Abyss × en/pt), com todas as páginas de
   classe dentro dos 900 (778–807). A regra de parada do plano (§8.2) diz que o número vai ao
@@ -110,7 +109,10 @@ fase, num Chrome real pelo driver do próprio repositório, contra o build de pr
   gate) e mantém os 900 duros para a classe. Opções para o proprietário: (a) aceitar a caixa da
   build como medida e fixar o número no PRD; (b) tirar a descrição do cabeçalho da build (−60 a −80
   px); (c) tirar os pontos das abas (−16 px) ou o total do cabeçalho (−24 a −48 px). Nenhuma foi
-  aplicada.
+  aplicada. **Decisão do proprietário (2026-09-12): (a) — contrato definitivo de ≤ 1.050 px para a
+  caixa da build, preservando descrição, pontos nas abas e total.** O gate afirma o contrato
+  (`BUILD_BUDGET = 1050`), não mais uma catraca provisória; registrado no PRD (R-TREE-8, §12.2, §14,
+  §18) e no plano (§8.2, §16).
 
 ## 5. Os 16 documentos e o teto (R-TREE-17)
 
@@ -289,7 +291,7 @@ Duas notas de honestidade sobre a execução:
 
 ### 9.2 Residuais, registrados
 
-- **D3 (§4):** a caixa da build a 320 px acima de 900.
+- **D3 (§4):** a caixa da build a 320 px acima de 900 — decidida em 2026-09-12: contrato ≤ 1.050 px (§13).
 - **Faixa entre o piso e a sonda:** o piso CSS (13,5em) é por largura em `em`; a sonda é por
   conteúdo. Onde discordam — 390 px a 150 % (Warlock em glifo, Sorceress não) — a altura antes da
   ilha difere da altura depois pela faixa e pelas linhas dos nomes. Só a partir de 150 % de texto,
@@ -374,7 +376,9 @@ sheet.test,skill-tree.test,skill-tree-a11y.test,skill-tree-browser.test,skill-tr
 skill-tree-nav.test,skill-tree-state.test,viewport.test}`, `docs/product/PRD-vNext.md`, e os
 apagados `components/game/skill-tree.tsx` e `skill-tree-interactive.tsx`.
 
-## 12. Parada: servidor de UAT, URLs e a lista do telefone
+## 12. A parada de 2026-09-11: servidor de UAT, URLs e a lista do telefone
+
+*(Como estava na parada. O que aconteceu depois está em §13.)*
 
 **Nada foi enviado, mesclado ou implantado.** `git status` limpo depois do último commit; `origin/main`
 continua em `436dc88`; produção continua a servir a Fase 3. A fase não está marcada como concluída.
@@ -414,3 +418,25 @@ aparelhos, nos dois idiomas:
 
 **Reprovação em qualquer item** autoriza ajustar dimensão, inset e comportamento sem reabrir a
 direção estrutural (PRD §14). **Aprovação explícita** é o que destrava o push.
+
+## 13. Fechamento (2026-09-12): UAT físico aprovado, D3, publicação e verificação em produção
+
+### 13.1 O UAT físico
+
+O proprietário testou em telefone real, no mesmo Wi-Fi, as páginas de Sorceress, Necromancer e
+Blizzard Sorceress servidas pelo servidor de §12, e **aprovou os dez itens**: precisão de toque em dez
+nós consecutivos; troca entre as três árvores; abertura e fechamento da sheet; rolagem sem
+acionamentos acidentais; safe area e ausência de cortes; nomes no estado normal; grade 3×6 com texto
+ampliado; identificação da skill no modo glifo; pt-BR e en-US; contadores e total da build; "Meu
+nível" em 18, persistência após recarregar e "Limpar".
+
+### 13.2 D3
+
+**Aceita a altura medida de 903–992 px nas páginas de build; contrato definitivo ≤ 1.050 px;
+descrição, pontos nas abas e total da seção preservados.** Registrada no PRD (R-TREE-8, §12.2, §14,
+§18) e no plano (§8.2, §16); o gate `test:tree-browser` afirma `BUILD_BUDGET = 1050` como contrato,
+não mais como catraca provisória (commit 7).
+
+### 13.3 Publicação
+
+«pendente — preenchido depois do deployment e do smoke público»

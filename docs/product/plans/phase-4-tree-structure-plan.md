@@ -532,6 +532,13 @@ recolhido, "Meu nível"). **Regra de parada:** se o gate medir > 900 em qualquer
 combinações (Cold/Summoning × en/pt) na classe, ou na caixa da build, a execução para e o número vai
 ao proprietário com a decomposição real — não se aperta nada além do que está aqui.
 
+> **A regra disparou, e foi decidida (2026-09-12).** O gate C2 mediu a caixa da build em **903–992 px**
+> nas seis combinações (Blizzard, Summoner, Abyss × en/pt), com as quatro combinações da classe em
+> 778–807. A decomposição real foi ao proprietário no relatório (§4, §6), nada foi apertado, e a
+> **decisão D3** fixou o contrato definitivo da caixa da build em **≤ 1.050 px**, preservando a
+> descrição da seção, os pontos nas abas e o total. O gate deixou de ser catraca provisória e passou
+> a afirmar o contrato (`BUILD_BUDGET = 1050` em `scripts/skill-tree-browser.test.ts`).
+
 ## 9. Testes, por requisito (novos em **negrito**; todos com controle anti-vacuidade)
 
 | # | Req. | Arquivo | Asserção | Cadeia |
@@ -703,6 +710,12 @@ troca de trees, sheet abre e fecha, retorno do foco, rolagem sem toques acidenta
 nomes no estado normal, seleção no modo glifo, os dois idiomas, ≈320 e ≈390 px). **Sem push, sem
 deploy, sem marcar a fase como concluída, sem encerrar o servidor** até a aprovação explícita.
 
+> **Cumprido e aprovado (2026-09-12).** A execução parou aqui em `3dadc34` com o servidor em
+> `0.0.0.0:3400` (relatório §12). O proprietário testou em telefone real, no mesmo Wi-Fi, Sorceress,
+> Necromancer e Blizzard Sorceress, e **aprovou os dez itens** (dez toques consecutivos, troca de
+> trees, sheet, rolagem, safe area, nomes, grade 3×6 com texto ampliado, modo glifo, os dois idiomas,
+> contadores e total, "Meu nível" 18 com persistência e "Limpar"). A publicação segue no relatório §13.
+
 ## 16. Decisões do proprietário registradas nesta fase
 
 - **D1 — R-TREE-9 entra na Fase 4.** "Meu nível" e `d2rc.level` são implementados agora, porque os
@@ -711,6 +724,10 @@ deploy, sem marcar a fase como concluída, sem encerrar o servidor** até a apro
 - **D2 — R-TREE-10 é dividido.** Nesta fase: árvore estrutural nas páginas de classe e árvore com
   alocações nas páginas de build. Fora desta fase: árvore em cada etapa do leveling, adiada para a
   iniciativa já prevista (P3.6, Fase 7). Esta fase **não** alega ter implementado essa metade.
+- **D3 — a caixa de altura da página de build (2026-09-12, depois do UAT físico).** Medida em
+  903–992 px a 320 px contra a estimativa de 880–895 (§8.2), a caixa da build ganha contrato
+  definitivo de **≤ 1.050 px**; descrição da seção, pontos nas abas e total da seção preservados. As
+  páginas de classe continuam em ≤ 900 (medidas 778–807).
 
 ## 17. Disposição da revisão adversarial deste plano (2026-09-11)
 
