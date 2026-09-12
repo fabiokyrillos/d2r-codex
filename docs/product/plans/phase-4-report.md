@@ -363,7 +363,9 @@ que a revisão (M2) acrescentou — alargada.
 | `0f278b7` Phase 4, commit 3 | `d2rc.level` em `lib/prefs.ts`; o payload por classe (`skill-tree-data*.ts`); allowlist do escritor no `test:hygiene` |
 | `865bb3a` Phase 4, commit 4 | a árvore: componentes, páginas, CSS, remoção de `skill-tree.tsx`/`skill-tree-interactive.tsx`, `skillAriaLabel` e onze chaves; os gates reescritos e os novos; `check:built` encadeado |
 | `86b4b68` Phase 4, commit 5 | duas calibrações de gate que a cadeia inteira do `predeploy` pediu: o controle de deslocamento (`build-cls`, `skill-tree-browser`) e a expressão do Esc em `sheet.test.ts` (§10) |
-| commit 6 | este relatório, as notas medidas no PRD (R-TREE-1…17, §12.2, §14, §18), a evidência visual e o registro das mutations (§8) |
+| `3dadc34` Phase 4, commit 6 | este relatório, as notas medidas no PRD (R-TREE-1…17, §12.2, §14, §18), a evidência visual e o registro das mutations (§8) |
+| `3d77ec6` Phase 4, commit 7 | o UAT físico aprovado e D3: `BUILD_BUDGET = 1050` como contrato no gate; PRD, plano e relatório anotados |
+| commit 8 | o fechamento (§13.3): a publicação, o smoke público, a fase marcada como concluída; o padrão de bloqueio de C2b alargado ao caminho `immutable/` da Vercel |
 
 Arquivos alterados pela fase (commits 2–6, sobre `58747df`): `app/globals.css`, as duas páginas
 (`classes/[slug]`, `builds/[classSlug]/[slug]`), `components/game/{skill-trees,skill-tree-grid,
@@ -437,6 +439,45 @@ descrição, pontos nas abas e total da seção preservados.** Registrada no PRD
 §18) e no plano (§8.2, §16); o gate `test:tree-browser` afirma `BUILD_BUDGET = 1050` como contrato,
 não mais como catraca provisória (commit 7).
 
-### 13.3 Publicação
+### 13.3 Publicação e verificação em produção
 
-«pendente — preenchido depois do deployment e do smoke público»
+Depois de D3 no gate (commit 7), `test:tree-browser` reexecutado (2.759, seis verificações da caixa
+da build como "owner's contract D3") e `npm run predeploy` completo com
+`NEXT_PUBLIC_SITE_URL=https://d2r-codex.vercel.app` sobre `.next` apagado: **EXIT=0** (a mesma tabela
+de §10; `test:tree-browser` 2.759, `test:a11y` 1.477, `test:viewport` 1.171, "SITE_URL is
+publishable"). O servidor de UAT (PID 16436) foi encerrado antes do push: nenhum `next start`, nenhum
+Chrome headless e nenhum processo desta execução restou.
+
+**Push normal** (sem force, rebase, squash ou reset): `436dc88..3d77ec6 main -> main` — os oito commits
+locais (0–7). **Deployment** registrado pelo `vercel[bot]` no GitHub para o SHA exato
+`3d77ec6015adf84d5645a156dcb85a4adfbf7b6d`: **`6414265076`**, ambiente Production, `state=success`
+às 20:53:03Z; `https://d2r-codex.vercel.app` a servir a marcação da Fase 4 (`[data-trees]`,
+`[data-level-slot]`) 55 s depois do push.
+
+**Smoke público, contra `https://d2r-codex.vercel.app`** (o driver do repositório apontado à produção
+por `D2R_BASE_URL`; os gates de arquivo lidos de uma cópia dos documentos de produção):
+
+| O quê | Resultado |
+|---|---|
+| `test:tree-browser` em produção — geometria em seis larguras, os dois idiomas, classe e build, abas, sheet e painel, teclado, hover e toque, "Meu nível" (`d2rc.level`), texto a 200 %, **sem JavaScript**, movimento reduzido, altura antes/depois da hidratação, CLS na chegada por `#skills` | **2.759 checks passed**; 146 páginas com console limpo (0 erros, avisos ou exceções) |
+| `test:viewport` em produção — sem transbordo em 320/390/640/768/1024/1280 e a 200 % | **1.171 passed, 0 failed** |
+| `test:a11y` sobre os 22 documentos de produção (16 de classe + 3 builds × 2 idiomas) — 54 células, 0 `aria-hidden`, 30 links com locale, `aria-label` composto, conectores, legenda, abas, esqueleto do nível, nenhum `<script>`/`<noscript>` na seção | **1.477 checks passed** |
+| `test:class-html-size` sobre os 16 documentos de produção | **22 checks passed**; pior `pt-br/classes/sorceress` **248.575 bytes**, 120.065 abaixo do teto, 0 em alerta (os 16 entre 182.599 e 248.575) |
+| 24 documentos (16 de classe + Blizzard, Summoner, Abyss, Hammerdin × 2 idiomas) por HTTP | 24 × HTTP 200; **0 ocorrências de `localhost`, `127.0.0.1`, `192.168.*` ou `0.0.0.0`**; `canonical` absoluto em `https://d2r-codex.vercel.app` em todos; 1 `[data-trees]`, 1 `[data-level-slot]`, 30 `a[data-node]` em cada |
+| Caixa §8.2 em produção | idêntica à local: classe 778–807, build 903–992 (≤ 1.050, D3) |
+
+Uma calibração a mais saiu daqui: o padrão de bloqueio de C2b (`*/_next/static/chunks/*.js`) não
+alcançava o caminho `_next/static/immutable/chunks/` da Vercel, e o **controle** do próprio C2b
+acusou (16 falhas "nothing mounted" na primeira execução em produção): o padrão passou a
+`*/_next/static/*.js` e a reexecução em produção deu 2.759/2.759 (commit 8).
+
+### 13.4 Estado final
+
+- **Fase 4 concluída em 2026-09-12**: UAT físico aprovado, D3 fixada, publicada em
+  `3d77ec6` (deployment `6414265076`) e verificada em produção nos dois idiomas, desktop e mobile.
+- **Git:** `main` = `origin/main`, árvore limpa; nenhum force push, rebase, squash ou reset.
+- **Fora desta fase, intactos:** os 240 ícones (Fase 5, não iniciada), a árvore por etapa do
+  leveling (P3.6), os filtros da Fase 3, a sticky bar do leveling.
+- **Residuais** (§9.2), nenhum bloqueante: a faixa entre o piso em `em` e a sonda por conteúdo a
+  150 %; o transbordo do header a 320/200 %, anterior à fase; `tileState` morto em `lib/skills.ts`;
+  os pontos cegos dos gates listados pela revisão.

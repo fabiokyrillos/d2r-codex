@@ -700,7 +700,10 @@ async function main() {
           await page.setTextScale(scale);
           const send = (method: string, params?: object) => (page as unknown as { send(m: string, p?: object): Promise<unknown> }).send(method, params);
           await send("Network.enable");
-          await send("Network.setBlockedURLs", { urls: ["*/_next/static/chunks/*.js"] });
+          // Every script under `_next/static` and nothing else: locally the chunks live
+          // at `_next/static/chunks/`, on Vercel at `_next/static/immutable/chunks/`,
+          // and the stylesheet must keep loading either way.
+          await send("Network.setBlockedURLs", { urls: ["*/_next/static/*.js"] });
           await page.goto(url);
           await pause(300);
           const served = await page.evaluate<{ ready: boolean; scripting: boolean; height: number; slot: number; control: number }>(`(() => {
